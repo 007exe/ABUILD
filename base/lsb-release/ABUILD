@@ -1,0 +1,21 @@
+pkgname=lsb-release
+pkgver=1.4.1
+_srcver=1.4
+pkgbuild=4
+arch=('noarch')
+
+shortdesc=("LSB version query program")
+
+source=("http://downloads.sourceforge.net/project/lsb/lsb_release/${_srcver}/lsb-release-${_srcver}.tar.gz")
+tags="base sys-base"
+adddep="etc agilialinux-version"
+
+build_deps="mkpkg"
+
+build() {
+	go_src_dir
+	burn_patches
+	make
+	make install prefix=${pkgdir}/usr mandir=${pkgdir}/usr/share/man
+	install -Dm644 ${filedir}/lsb-release ${pkgdir}/etc/lsb-release
+}

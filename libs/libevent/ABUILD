@@ -1,0 +1,21 @@
+pkgname=libevent
+pkgver=2.1.12
+pkgbuild=1
+arch=('auto')
+
+shortdesc="An event notification library"
+longdesc=("LibEvent provides engine for calling callback-functions when some changed")
+
+source=("https://github.com/libevent/libevent/releases/download/release-$pkgver-stable/$pkgname-$pkgver-stable.tar.gz")
+tags="dev-libs libs"
+build_deps="openssl python"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="

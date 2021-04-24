@@ -1,0 +1,23 @@
+pkgname=bc
+pkgver=2.1.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An arbitrary precision calculator language")
+
+tags=("console sys-devel")
+
+source=("https://github.com/gavinhoward/bc/archive/${pkgver}/bc-${pkgver}.tar.gz")
+
+build_deps="readline"
+
+build() {
+  go_src_dir
+
+  PREFIX=/usr CC=gcc CFLAGS="-std=c99" ./configure.sh -G -O3
+  make
+  make test
+  make DESTDIR="$pkgdir" install
+}
+
+

@@ -1,0 +1,82 @@
+pkgname=ffmpeg
+pkgver=4.2.2
+pkgbuild=1
+arch=('auto')
+
+conflicts="libav"
+
+shortdesc="Multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play pretty much anything."
+
+source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.bz2")
+
+tags="libs media-video"
+
+build_deps=("yasm alsa-lib bzip2 fontconfig gsm lame libass libbluray libmodplug
+      libtheora libva libvorbis libvpx opencore-amr openjpeg rtmpdump
+      schroedinger sdl x265  speex v4l-utils x264 xvidcore zlib libvdpau")
+
+build(){
+  go_src_dir
+  burn_patches
+
+  LDFLAGS="$SLKLDFLAGS" \
+	CFLAGS="$SLKCFLAGS" \
+	CXXFLAGS="$SLKCFLAGS" \
+	./configure \
+	--prefix=/usr \
+    	--libdir=/usr/lib${LIBDIRSUFFIX} \
+    	--shlibdir=/usr/lib${LIBDIRSUFFIX} \
+	--enable-version3 \
+    	--enable-shared \
+	--disable-debug \
+    	--disable-static \
+    	--disable-stripping \
+    	--enable-fontconfig \
+    	--enable-gnutls \
+    	--enable-gpl \
+    	--enable-libass \
+    	--enable-libbluray \
+    	--enable-libfreetype \
+	--enable-libgsm \
+    	--enable-libiec61883 \
+    	--enable-libjack \
+	--enable-libmp3lame \
+	--enable-libmodplug \
+    	--enable-libopencore_amrnb \
+    	--enable-libopencore_amrwb \
+    	--enable-libopus \
+    	--enable-libspeex \
+    	--enable-libssh \
+    	--enable-libtheora \
+    	--enable-libv4l2 \
+	--enable-libvorbis \
+    	--enable-libx264 \
+    	--enable-libxcb \
+    	--enable-libxml2
+#	--enable-libxvid
+#    --enable-nvdec \
+#    --enable-libx265 \
+#    --enable-omx \
+#    --enable-libvpx \
+#    --enable-libwebp \
+#    --enable-libsrt \      
+#    --enable-ladspa \
+#    --enable-libaom \
+#    --enable-libdav1d \
+#    --enable-gmp \
+#    --enable-libmfx
+#    --enable-libsoxr
+#    --enable-libpulse \
+#    --enable-libopenjpeg \
+#    --enable-libfribidi
+#    --enable-libdrm
+  make -j${numjobs}
+  make tools/qt-faststart -j${numjobs}
+  make doc/ff{mpeg,play}.1
+}
+
+after_build(){
+  go_src_dir
+  make DESTDIR="${pkgdir}" install install-man
+  install -D -m755 tools/qt-faststart "${pkgdir}/usr/bin/qt-faststart"
+}

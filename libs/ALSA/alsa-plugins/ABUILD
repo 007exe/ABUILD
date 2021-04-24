@@ -1,0 +1,21 @@
+pkgname=alsa-plugins
+pkgver=1.2.2
+pkgbuild=1
+arch=('auto')
+shortdesc="Extra ALSA plugins"
+source=("ftp://ftp.alsa-project.org/pub/plugins/$pkgname-$pkgver.tar.bz2")
+tags="libs media-sound"
+
+build_deps="alsa-lib"
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/share/man \
+--program-prefix= \
+--program-suffix="
+INSTALL_KEYS="DESTDIR=$pkgdir"

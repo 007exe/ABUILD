@@ -1,0 +1,49 @@
+pkgname=man-db
+pkgver=2.9.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="man (format and display the on-line manual pages)"
+
+source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz")
+
+tags="console sys-base"
+
+build_deps="bash gdbm zlib groff less gzip libpipeline"
+
+provides="man"
+
+adddep="groff zlib gdbm"
+
+build(){
+  go_src_dir
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc \
+              --libdir=/usr/lib${LIBDIRSUFFIX} \
+              --sbindir=/usr/bin \
+              --with-systemdsystemunitdir=/usr/lib${LIBDIRSUFFIX}/systemd/system \
+              --enable-cache-owner=root \
+              --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+              --docdir=/usr/doc/share/${pkgname}-${pkgver} \
+              --with-db=gdbm \
+              --disable-setuid \
+              --enable-mandirs=GNU \
+              --with-sections="1 n l 8 3 0 2 5 4 9 6 7"
+  make
+  make check
+  make DESTDIR=${pkgdir} install
+}
+
+after_build(){
+  # part of groff pkg
+  rm -f ${pkgdir}/usr/bin/zsoelim
+
+  # script from LFS to convert manpages, see
+  # http://www.linuxfromscratch.org/lfs/view/6.4/chapter06/man-db.html
+  install -D -m755 ${filedir}/convert-mans  ${pkgdir}/usr/bin/convert-mans 
+
+  #install whatis cron script
+  install -D -m744 ${filedir}/man-db.cron.daily ${pkgdir}/etc/cron.daily/man-db
+  #installign cache directory
+  mkdir -p ${pkgdir}/var/cache/man
+}

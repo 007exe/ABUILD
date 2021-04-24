@@ -1,0 +1,29 @@
+pkgname=icu
+pkgver=67.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="International Components for Unicode library"
+
+source=("https://github.com/unicode-org/icu/releases/download/release-${pkgver//./-}/${pkgname}4c-${pkgver//./_}-src.tgz")
+tags="dev-libs libs compat32"
+
+build_deps="glibc gcc"
+
+#provides="icu4c"
+
+build() {
+	go_src_dir
+	cd source
+./configure --prefix=/usr \
+	--sbindir=/usr/bin \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--docdir=/usr/share/doc/${pkgname}-${pkgver} \
+	--mandir=/usr/share/man
+make
+
+make -j1 DESTDIR="${pkgdir}" install
+}

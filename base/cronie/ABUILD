@@ -1,0 +1,53 @@
+pkgname=cronie
+pkgver=1.5.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Daemon that runs specified programs at scheduled times and related tools")
+
+source=("https://github.com/cronie-crond/cronie/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("base sys-process")
+
+build_deps="glibc"
+
+#provides="dcron"
+conflicts="dcron"
+
+
+config_files="etc/cron.deny
+etc/pam.d/crond
+etc/cron.d/0hourly
+etc/anacrontab"
+
+build() {
+	go_src_dir
+	burn_patches
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--sbindir=/usr/bin \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--enable-anacron \
+		--with-inotify \
+		--with-pam
+	make
+}
+
+after_build() {
+	go_src_dir
+	make DESTDIR="${pkgdir}" install
+
+	chmod u+s "${pkgdir}"/usr/bin/crontab
+	install -d "${pkgdir}"/var/spool/{ana,}cron
+	install -d "${pkgdir}"/etc/cron.{d,hourly,daily,weekly,monthly}
+
+	install -Dm0644 ${filedir}/deny "${pkgdir}"/etc/cron.deny
+	install -Dm0644 ${filedir}/pam.d "${pkgdir}"/etc/pam.d/crond
+	install -Dm755 ${filedir}/cron.init ${pkgdir}/etc/init.d/cron
+
+	install -Dm0644 contrib/anacrontab "${pkgdir}"/etc/anacrontab
+	install -Dm0644 contrib/0hourly "${pkgdir}"/etc/cron.d/0hourly
+	install -Dm0755 contrib/0anacron "${pkgdir}"/etc/cron.hourly/0anacron
+}

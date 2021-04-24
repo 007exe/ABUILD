@@ -1,0 +1,49 @@
+pkgname=openbox
+pkgver=3.6.1
+pkgbuild=2
+arch=('auto')
+
+shortdesc="A window manager for the X11 windowing system"
+
+#source=("git:git://git.openbox.org/dana/${pkgname}.git")
+source=("http://openbox.org/dist/openbox/openbox-$pkgver.tar.xz")
+#source=("http://openbox.org/dist/openbox/openbox-$pkgver.tar.gz")
+
+tags="xapps x11-wm"
+
+adddep="ConsoleKit>=0.4.1 upower>=0.9.4 pyxdg"
+build_deps="startup-notification libxml2 libXinerama libXrandr libXcursor pango imlib2 pyxdg"
+
+BUILD_KEYS="--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--mandir=/usr/man \
+	--docdir=/usr/doc/${pkgname}-${pkgver} \
+	--disable-debug \
+	--enable-nls \
+	--disable-rpath \
+	--enable-shared \
+	--disable-doc \
+	--enable-fast-install"
+
+
+before_build() {
+	go_src_dir
+	burn_patches
+	sed -i -e "s:docbook-to-man:docbook2man:" ./Makefile.am
+}
+build() {
+	go_src_dir
+
+	#LDFLAGS="$SLKLDFLAGS" CFLAGS="$SLKCFLAGS" CXXFLAGS="$SLKCFLAGS" ./bootstrap && ./configure $BUILD_KEYS
+	LDFLAGS="$SLKLDFLAGS" CFLAGS="$SLKCFLAGS" CXXFLAGS="$SLKCFLAGS" ./configure $BUILD_KEYS
+
+	make -j${numjobs} || make
+	make install DESTDIR=${pkgdir}
+}
+
+after_build() {
+	install -Dm755 $filedir/xinitrc.openbox $pkgdir/etc/X11/xinit/xinitrc.openbox
+}

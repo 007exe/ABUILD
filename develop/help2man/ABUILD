@@ -1,0 +1,23 @@
+pkgname=help2man
+pkgver=1.47.16
+pkgbuild=1
+arch="auto"
+
+# Package description
+shortdesc=("Conversion tool to create man files")
+source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags="develop dev-util"
+
+# FIXME: locale-gettext eventually should be renamed to perl-locale-gettext to conform naming standards
+adddep="bash perl-gettext"
+build_deps="perl-gettext"
+
+# Build system
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+	--mandir=/usr/share/man \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--localstatedir=/var \
+	--sysconfdir=/etc"
+

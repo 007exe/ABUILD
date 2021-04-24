@@ -1,0 +1,16 @@
+pkgname=freetype2
+pkgver=2.10.3
+pkgbuild=1
+shortdesc="TrueType font rendering library"
+longdesc="TrueType font rendering library"
+arch=('auto')
+source=("http://downloads.sourceforge.net/sourceforge/freetype/freetype-${pkgver}.tar.xz")
+tags=("libs media-libs")
+
+provides="freetype"
+
+build_deps="bzip2 zlib"
+adddep="bash"
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX}"
+

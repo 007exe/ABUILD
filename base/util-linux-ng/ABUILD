@@ -1,0 +1,86 @@
+# util-linux-ng ABUILD
+pkgname=util-linux-ng
+pkgver=2.36
+pkgbuild=2
+arch=('auto')
+
+shortdesc=('util-linux-ng (a huge collection of essential utilities)')
+longdesc=('The util-linux package is a huge collection of random utilities that are essential to run a Linux system. This is a fork of the original util-linux, based on version 2.13-pre7. http://kernel.org/~kzak/util-linux-ng/')
+
+tags=('base sys-apps')
+
+source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${pkgver}/util-linux-${pkgver}.tar.xz")
+conflicts="eject"
+
+config_files="etc/pam.d/chfn
+etc/pam.d/chsh
+etc/pam.d/login
+etc/pam.d/runuser
+etc/pam.d/runuser-l
+etc/pam.d/su
+etc/pam.d/su-l"
+
+build_deps="udev linux-pam acl shadow coreutils"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+  --bindir=/bin \
+  --sbindir=/sbin \
+  --libdir=/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --docdir=/usr/share/doc/${pkgname}-${pkgver} \
+  --mandir=/usr/share/man \
+  --infodir=/usr/share/info \
+  --localstatedir=/var \
+  --enable-usrdir-path \
+  --enable-fs-paths-default=/usr/bin:/usr/local/bin \
+  --enable-raw \
+  --enable-vipw \
+  --enable-newgrp \
+  --enable-chfn-chsh \
+  --enable-write \
+  --enable-mesg \
+  --disable-hardlink \
+  --with-python=3
+" 
+
+after_build() {
+  # Moving things around that have been in the same place
+  # for 15 years is, IMHO, not a wise idea AT ALL.
+  # If this had to be moved, some place out of /usr might
+  # have shown a grain of insight...
+  if [ -r ${pkgdir}/sbin/fdformat ]; then
+    mkdir -p ${pkgdir}/bin
+    mv ${pkgdir}/sbin/fdformat ${pkgdir}/bin/fdformat
+    # Now since stuff will start looking in this new place,
+    # we have no choice but to link these:
+    ( cd ${pkgdir}/sbin
+      ln -sf ../bin/fdformat .
+    )
+  fi
+
+  # setuid chfn and chsh
+  chmod 4755 "$pkgdir"/usr/bin/{newgrp,ch{sh,fn}}
+
+
+  # Now let's add some important symlinks :)
+  ( cd ${pkgdir}/sbin
+    ln -s ../bin/mount .
+    ln -s ../bin/umount .
+    ln -s hwclock clock
+    cd ${pkgdir}/bin
+    ln -s ../sbin/readprofile .
+    ln -s ../sbin/tunelp .
+    ln -s ../sbin/raw .
+    cd ${pkgdir}/usr/share/man/man8
+    ln -s hwclock.8 clock.8
+  )
+
+  # Add pam.d configs                                                                                                                                                                    
+  for i in ${filedir}/pam.d/* ; do                                                                                                                                                       
+      install -D -m0644 ${i} ${pkgdir}/etc/pam.d/`basename ${i}`                                                                                                                         
+  done  
+
+  # runtime libs are shipped as part of util-linux-libs
+  rm "$pkgdir"/usr/lib${LIBDIRSUFFIX}/lib*.{a,so}*
+}

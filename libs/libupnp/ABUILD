@@ -1,0 +1,28 @@
+pkgname=libupnp
+pkgver=1.6.25
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Libupnp (Linux SDK for UPnP Devices)"
+
+source=("http://downloads.sourceforge.net/sourceforge/pupnp/${pkgname}-${pkgver}.tar.bz2")
+
+
+tags="libs net-libs"  
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--docdir=/usr/doc/${pkgname}-${pkgver} \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

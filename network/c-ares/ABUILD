@@ -1,0 +1,30 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru
+
+pkgname=c-ares
+pkgver=1.16.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="C library that performs DNS requests and name resolves asynchronously"
+
+source=("http://${pkgname}.haxx.se/download/${pkgname}-${pkgver}.tar.gz")
+
+tags="network net-dns"
+
+build_deps="make gcc sed grep kernel-headers binutils"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/share/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+

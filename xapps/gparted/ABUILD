@@ -1,0 +1,26 @@
+pkgname=gparted
+# Для версий выше (1.0.0. и 1.1.0) требуется GTK3
+pkgver=0.33.0 
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Partition table editor, frontend to GNU Parted"
+longdesc="Partition table editor similar to PartitionMagic, frontend to GNU Parted."
+
+tags=("sys-fs xapps")
+														#.tar.bz2
+source=(http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz)
+
+build_deps="atk atkmm cairo cairomm gcc gtk+2 gdk-pixbuf gtkmm glib2 glibmm pango pangomm parted perl-xml-parser"
+#build_deps="atk atkmm cairo cairomm gcc-libs gtk+2 gdk-pixbuf gtkmm glib2 glibmm pango pangomm parted perl-xml-parser"
+adddep=("e2fsprogs dosfstools jfsutils ntfsprogs reiserfsprogs xfsprogs xdg-utils")
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --disable-doc \
+--enable-online-resize \
+ --disable-scrollkeeper"
+
+after_build() {
+ sed -i "/^Exec=/s|=.*|=xdg-su -c /usr/sbin/gparted %f|" \
+	 ${pkgdir}/usr/share/applications/gparted.desktop || exit 1
+}

@@ -1,0 +1,21 @@
+pkgname=giflib
+pkgver=5.2.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A library for reading and writing GIF images."
+source=("http://downloads.sourceforge.net/sourceforge/giflib/giflib-${pkgver}.tar.gz")
+
+tags="libs media-gfx"
+
+build_deps="make gcc kernel-headers coreutils grep sed xmlto docbook-xml docbook-xsl libtool"
+
+build() {
+  go_src_dir
+  make
+}
+
+after_build(){
+ go_src_dir
+ make PREFIX=/usr DESTDIR="${pkgdir}" install
+}

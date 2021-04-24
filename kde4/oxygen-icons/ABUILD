@@ -1,0 +1,25 @@
+pkgname=oxygen-icons
+pkgver=4.14.2
+pkgbuild=1
+arch=('noarch')
+
+
+shortdesc="Full set of oxygen icons"
+
+#shortdesc=('Oxygen Icons')
+#longdesc=('Full set of oxygen icons.')
+
+
+tags=('kde4 media-icons')
+build_deps="gcc"
+
+source=("https://download.kde.org/Attic/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+BUILD_SYSTEM='cmake'
+BUILD_KEYS="-DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DCMAKE_SKIP_RPATH=ON"
+INSTALL_KEYS="DESTDIR=$pkgdir"

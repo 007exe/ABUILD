@@ -1,0 +1,22 @@
+pkgname=libidn
+pkgver=1.36
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNU Internationalized Domain Name library")
+longdesc=("GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN) working group, used for internationalized domain names.")
+
+tags=("libs net-dns")
+build_deps="glibc"
+source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+before_build() {
+	go_src_dir
+# https://git.savannah.gnu.org/cgit/gnulib.git/commit/?id=cca32830b5
+sed -i '/pragma weak pthread_create/d' {lib/,}gltests/glthread/thread.h
+}
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/share/man --docdir=/usr/share/doc/${pkgname}-${pkgver}"
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

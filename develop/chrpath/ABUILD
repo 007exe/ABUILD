@@ -1,0 +1,43 @@
+#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
+
+pkgname=chrpath
+pkgver=0.16
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Tool to edit the rpath in ELF binaries"
+
+longdesc=("chrpath allows you to change the rpath (where the application looks for libraries) in an application. It does not (yet) allow you to add an rpath if there isn't one already."
+)
+
+source=("http://ftp.debian.org/debian/pool/main/c/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz")
+
+patch_opts=("")
+
+tags="develop dev-util"
+
+build_deps=" "
+
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/share/man \
+--docdir=/usr/share/doc/${pkgname}_${pkgver} \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir docdir=/usr/share/doc/chrpath"
+
+#ran after function build() 
+#после сборки
+after_build()
+{
+echo ""
+}

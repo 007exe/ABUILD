@@ -1,0 +1,42 @@
+pkgname=doxygen
+pkgver=1.8.20
+pkgbuild=1
+arch=("auto")
+
+#Надо переписать иначе не собирается выше 1.8.9.1 и cmake нужен выше 3 версии
+#http://www.doxygen.nl/download.html
+#mkdir build
+#cd build
+#cmake -G "Unix Makefiles" ..
+#make
+
+shortdesc=("doxygen (documentation generator)")
+longdesc=("Doxygen is a documentation system for C++, C, Java, IDL, and to some extent PHP and C special documentation blocks in the source code, easing the process of keeping docs and code in sync. Doxygen produces documentation in several output formats, including HTML, LaTeX, man pages, RTF, XML, compressed HTML, PostScript, and PDF.")
+
+tags=("develop app-doc")
+
+source=("https://github.com/doxygen/doxygen/archive/Release_${pkgver//./_}.tar.gz")
+
+
+build_deps="make gcc gcc-g++ perl bison fontconfig glibc-solibs python qt4 graphviz flex ghostscript binutils"
+
+before_build() {
+  go_src_dir
+  # fix final DESTDIR issue
+  sed -i.orig -e "s:\$(INSTALL):\$(DESTDIR)/\$(INSTALL):g" \
+              addon/doxywizard/Makefile.in || die
+}
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="QTDIR=/usr ./configure"
+BUILD_KEYS="--prefix /usr --with-doxywizard"
+INSTALL_KEYS="DESTDIR=${pkgdir} all"
+
+after_build() {
+  go_src_dir  
+  sed -i.orig -e "s/GENERATE_LATEX    = YES/GENERATE_LATEX    = NO/" doc/Doxyfile
+  sed -i.orig -e "s/@epstopdf/# @epstopdf/" -e "s/@cp Makefile.latex/# @cp Makefile.latex/" \
+              -e "s/@sed/# @sed/" doc/Makefile
+  make docs
+  cp -r html ${pkgdir}/usr/doc/${pkgname}-${pkgver}
+}

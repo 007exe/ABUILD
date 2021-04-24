@@ -1,0 +1,115 @@
+diff -up Python-3.8.0/Include/internal/pycore_atomic.h.omv~ Python-3.8.0/Include/internal/pycore_atomic.h
+--- Python-3.8.0/Include/internal/pycore_atomic.h.omv~	2019-12-04 20:28:30.815369685 +0100
++++ Python-3.8.0/Include/internal/pycore_atomic.h	2019-12-04 20:34:05.466506917 +0100
+@@ -1,5 +1,18 @@
+ #ifndef Py_ATOMIC_H
+ #define Py_ATOMIC_H
++
++#if defined(__cplusplus) && !defined(NO_CXX_ATOMICS)
++#include <atomic>
++typedef std::atomic<uintptr_t> atomic_uintptr_t;
++typedef std::atomic<int> atomic_int;
++#define memory_order_relaxed std::memory_order_relaxed
++#define memory_order_acquire std::memory_order_acquire
++#define memory_order_release std::memory_order_release
++#define memory_order_acq_rel std::memory_order_acq_rel
++#define memory_order_seq_cst std::memory_order_seq_cst
++#define CXX_ATOMICS 1
++#endif
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -12,7 +25,7 @@ extern "C" {
+ 
+ #include "pyconfig.h"
+ 
+-#if defined(HAVE_STD_ATOMIC)
++#if defined(HAVE_STD_ATOMIC) && !defined(CXX_ATOMICS)
+ #include <stdatomic.h>
+ #endif
+ 
+diff -up Python-3.8.0/Include/internal/pycore_gil.h.omv~ Python-3.8.0/Include/internal/pycore_gil.h
+--- Python-3.8.0/Include/internal/pycore_gil.h.omv~	2019-12-04 20:35:55.904864865 +0100
++++ Python-3.8.0/Include/internal/pycore_gil.h	2019-12-04 20:36:27.517966175 +0100
+@@ -1,5 +1,8 @@
+ #ifndef Py_INTERNAL_GIL_H
+ #define Py_INTERNAL_GIL_H
++
++#include "pycore_atomic.h" /* Intentionally not in extern C */
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -9,7 +12,6 @@ extern "C" {
+ #endif
+ 
+ #include "pycore_condvar.h"
+-#include "pycore_atomic.h"
+ 
+ #ifndef Py_HAVE_CONDVAR
+ #  error You need either a POSIX-compatible or a Windows system!
+diff -up Python-3.8.0/Include/internal/pycore_initconfig.h.omv~ Python-3.8.0/Include/internal/pycore_initconfig.h
+--- Python-3.8.0/Include/internal/pycore_initconfig.h.omv~	2019-12-04 20:37:34.995180931 +0100
++++ Python-3.8.0/Include/internal/pycore_initconfig.h	2019-12-04 20:37:44.413210755 +0100
+@@ -1,5 +1,8 @@
+ #ifndef Py_INTERNAL_CORECONFIG_H
+ #define Py_INTERNAL_CORECONFIG_H
++
++#include "pycore_pystate.h"   /* _PyRuntimeState */
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -8,8 +11,6 @@ extern "C" {
+ #  error "this header requires Py_BUILD_CORE define"
+ #endif
+ 
+-#include "pycore_pystate.h"   /* _PyRuntimeState */
+-
+ /* --- PyStatus ----------------------------------------------- */
+ 
+ /* Almost all errors causing Python initialization to fail */
+diff -up Python-3.8.0/Include/internal/pycore_pylifecycle.h.omv~ Python-3.8.0/Include/internal/pycore_pylifecycle.h
+--- Python-3.8.0/Include/internal/pycore_pylifecycle.h.omv~	2019-12-04 20:37:49.948228267 +0100
++++ Python-3.8.0/Include/internal/pycore_pylifecycle.h	2019-12-04 20:37:59.385258097 +0100
+@@ -1,5 +1,9 @@
+ #ifndef Py_INTERNAL_LIFECYCLE_H
+ #define Py_INTERNAL_LIFECYCLE_H
++
++#include "pycore_initconfig.h"   /* _PyArgv */
++#include "pycore_pystate.h"      /* _PyRuntimeState */
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -8,9 +12,6 @@ extern "C" {
+ #  error "this header requires Py_BUILD_CORE define"
+ #endif
+ 
+-#include "pycore_initconfig.h"   /* _PyArgv */
+-#include "pycore_pystate.h"      /* _PyRuntimeState */
+-
+ /* True if the main interpreter thread exited due to an unhandled
+  * KeyboardInterrupt exception, suggesting the user pressed ^C. */
+ PyAPI_DATA(int) _Py_UnhandledKeyboardInterrupt;
+diff -up Python-3.8.0/Include/internal/pycore_pystate.h.omv~ Python-3.8.0/Include/internal/pycore_pystate.h
+--- Python-3.8.0/Include/internal/pycore_pystate.h.omv~	2019-12-04 20:37:04.562084313 +0100
++++ Python-3.8.0/Include/internal/pycore_pystate.h	2019-12-04 20:37:15.506119102 +0100
+@@ -1,5 +1,8 @@
+ #ifndef Py_INTERNAL_PYSTATE_H
+ #define Py_INTERNAL_PYSTATE_H
++
++#include "pycore_gil.h"   /* _gil_runtime_state  */
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -14,7 +17,6 @@ extern "C" {
+ #include "pythread.h"
+ #include "sysmodule.h"
+ 
+-#include "pycore_gil.h"   /* _gil_runtime_state  */
+ #include "pycore_pathconfig.h"
+ #include "pycore_pymem.h"
+ #include "pycore_warnings.h"

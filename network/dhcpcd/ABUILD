@@ -1,0 +1,55 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru 
+
+pkgname=dhcpcd
+pkgver=9.2.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="RFC2131 compliant DHCP client daemon"
+
+source=("http://roy.marples.name/downloads/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags="network net-misc"
+
+config_files="etc/dhcpcd.conf
+etc/conf.d/dhcpcd"
+
+build_deps="make bash gcc pkg-config eudev"
+
+adddep="bash"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sbindir=/usr/bin \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/dhcpcd \
+--dbdir=/usr/lib${LIBDIRSUFFIX}/dhcpcd \
+--rundir=/run \
+--disable-static \
+--mandir=/usr/man"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+after_build(){
+  go_src_dir
+
+  #Patch config for MS static routes on default
+  sed -i 's/option classless_static_routes/# Obtain from server and write in routing table MS classless static routes.\
+option ms_classless_static_routes/' ${pkgdir}/etc/dhcpcd.conf
+
+  # Disable IPV4LL
+  echo noipv4ll >> ${pkgdir}/etc/dhcpcd.conf
+
+  # Install License
+  #sed 26q control.h >> "${pkgdir}/usr/doc/${pkgname}-${pkgver}/LICENSE"
+  cp LICENSE ${pkgdir}/usr/doc/${pkgname}-${pkgver}/
+  # Copy OpenRC scripts
+  mkdir -p ${pkgdir}/etc/{conf.d,init.d}
+  install -m0755 ${filedir}/dhcpcd.initd ${pkgdir}/etc/init.d/dhcpcd
+  install -m0644 ${filedir}/dhcpcd.confd ${pkgdir}/etc/conf.d/dhcpcd
+}

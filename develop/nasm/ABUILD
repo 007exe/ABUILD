@@ -1,0 +1,19 @@
+#ABUILD created by/создан: SirAnthony, anthony at adsorbtion.org 
+pkgname=nasm
+pkgver=2.15.05
+pkgbuild=1
+arch=('auto')
+
+shortdesc="An 80x86 assembler designed for portability and modularity"
+source=("http://www.nasm.us/pub/nasm/releasebuilds/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+tags="develop dev-lang"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  ./configure --prefix=/usr
+  make
+#  make -C doc
+  make DESTDIR="${pkgdir}" install install_rdf
+}

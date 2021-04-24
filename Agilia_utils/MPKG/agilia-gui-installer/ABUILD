@@ -1,0 +1,40 @@
+# Package metadata
+pkgname=agilia-gui-installer
+pkgver=1.1
+pkgbuild=1
+arch=("auto")
+
+# Package description
+shortdesc=("AgiliaLinux system installer")
+longdesc=("This is an AgiliaLinux installer. It is used to install this operating system from LiveCD. Also you can try to use it from real system.")
+
+# Source URL
+source=("git:git://github.com/007exe/mpkg.git")
+
+# Tags
+tags="xapps sys-apps"
+
+build_deps=" "
+
+# Build system
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr"
+
+build() {
+	go_src_dir
+	cd guiinstaller
+	mkdir build
+	cd build
+#	cmake $BUILD_KEYS ../guiinstaller
+	cmake $BUILD_KEYS ..
+	make -j${numjobs}
+	make install DESTDIR=${pkgdir}
+}
+after_build() {
+	go_src_dir
+	set -e
+	cd guiinstaller
+	mkdir -p ${pkgdir}/usr/share/setup/help/{ru_RU,en_US}
+	cp -v helpfiles/ru/*.html ${pkgdir}/usr/share/setup/help/ru_RU/
+	cp -v helpfiles/en/*.html ${pkgdir}/usr/share/setup/help/en_US/
+	set +e
+}

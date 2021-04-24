@@ -1,0 +1,31 @@
+#ABUILD created by: NK, nk-man at yandex.ru 
+pkgname=mpg123
+pkgver=1.25.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Fast console MPEG Audio Player and decoder library"
+source=("http://downloads.sourceforge.net/project/mpg123/mpg123/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+tags="media-sound libs"
+build_deps="alsa-lib sdl"
+
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure" # --help"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--docdir=/usr/doc/${pkgname}-${pkgver} \
+--with-module-suffix=.so \
+--with-audio='alsa oss sdl' \
+--enable-int-quality \
+--enable-debug=no \
+--enable-static=no"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

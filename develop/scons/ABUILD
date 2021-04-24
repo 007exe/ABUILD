@@ -1,0 +1,12 @@
+pkgname=scons
+pkgver=3.1.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Extensible Python-based build utility"
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+tags="develop dev-python"
+build_deps="python"
+
+BUILD_SYSTEM="python"
+BUILD_KEYS=

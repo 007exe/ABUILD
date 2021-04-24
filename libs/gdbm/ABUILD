@@ -1,0 +1,28 @@
+pkgname=gdbm
+pkgver=1.18.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="GNU database library"
+source=("ftp://prep.ai.mit.edu/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+tags="sys-libs libs"
+BUILD_SYSTEM="autotools"
+build_deps="glibc-solibs"
+adddep="bash"
+
+BUILD_KEYS="--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--mandir=/usr/man \
+	--enable-libgdbm-compat"
+
+after_build() {
+	# For compatibility (FIXME: do we really need this?)
+	install -dm755 "${pkgdir}"/usr/include/gdbm
+	ln -sf ../gdbm.h "${pkgdir}"/usr/include/gdbm/gdbm.h
+	ln -sf ../ndbm.h "${pkgdir}"/usr/include/gdbm/ndbm.h
+	ln -sf ../dbm.h  "${pkgdir}"/usr/include/gdbm/dbm.h
+
+} 

@@ -1,0 +1,58 @@
+# ABUILD for mc
+pkgname=mc
+pkgver=4.8.24
+srcver=${pkgver//_/-}
+pkgbuild=1
+arch=('auto')
+
+shortdesc=('Midnight Commander is a text based file manager')
+
+tags=('console app-misc')
+
+source=("http://www.midnight-commander.org/downloads/mc-${pkgver}.tar.bz2")
+build_deps='glibc-solibs glib2 libssh2 slang'
+# Добавить в зависимость slang
+# Удалил
+# etc/mc/mc.menu
+# etc/mc/mc.menu.sr
+config_files="etc/mc/edit.indent.rc
+etc/mc/filehighlight.ini
+etc/mc/mc.ext
+etc/mc/mc.keymap
+etc/mc/sfs.ini"
+
+build()
+{
+go_src_dir
+./configure \
+      --prefix=/usr \
+      --libexecdir=/usr/lib \
+      --sysconfdir=/etc \
+      --enable-vfs-smb \
+      --libdir=/usr/lib$LIBDIRSUFFIX \
+      --with-screen=slang \
+      --with-x
+#./autogen.sh || echo " Автогена нету , попробуйте конфигуре "
+#./configure --prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --sysconfdir=/etc --localstatedir=/var \
+#	--enable-shared=yes \
+#	--enable-fast-install=yes \
+#	--enable-largefile=yes \
+#	--enable-nls=yes \
+#	--enable-extcharset=yes \
+#	--enable-vfs=yes \
+#	--enable-netcode=yes \
+#	--with-search-engine=glib \	
+#	--enable-background=yes \
+#	--with-subshell=yes \
+#	--with-edit=yes \
+#	--with-gpm-mouse=yes \
+#	--with-screen=slang \
+#	--with-slang-includes=yes \
+#	--enable-charset=yes \
+#	--enable-rpath=yes \
+#	--enable-vfs-mcfs=yes \
+#	--enable-static=no \
+#	--with-slang-libs=/usr/lib$LIBDIRSUFFIX
+make -j${numjobs} || make
+make DESTDIR=$pkgdir install
+}

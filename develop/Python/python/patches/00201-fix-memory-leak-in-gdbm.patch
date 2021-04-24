@@ -1,0 +1,12 @@
+diff --git a/Modules/_gdbmmodule.c b/Modules/_gdbmmodule.c
+index f070a14..fb567b7 100644
+--- a/Modules/_gdbmmodule.c
++++ b/Modules/_gdbmmodule.c
+@@ -114,6 +114,7 @@ dbm_length(dbmobject *dp)
+             if(okey.dsize) free(okey.dptr);
+             okey=key;
+         }
++        if(okey.dsize) free(okey.dptr);
+         dp->di_size = size;
+     }
+     return dp->di_size;

@@ -1,0 +1,26 @@
+# Package metadata
+pkgname=nilfs-utils
+pkgver=2.2.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("NILFS2 utilities")
+longdesc=("NILFS is a log-structured file system supporting versioning of the entire file system and continuous snapshotting which allows users to even restore files mistakenly overwritten or destroyed just a few seconds ago.")
+
+source=("http://nilfs.sourceforge.net/download/nilfs-utils-${pkgver}.tar.bz2")
+
+tags="sys-fs base"
+
+build_deps="util-linux-ng"
+
+build() {
+  go_src_dir
+  sed -i -e 's#root_sbindir=/sbin#root_sbindir=/usr/bin#' configure
+  ./configure --prefix=/usr --sbindir=/usr/bin --libdir=/usr/lib${LIBDIRSUFFIX} --mandir=/usr/share/man --sysconfdir=/etc --with-libmount
+  make
+}
+
+after_build() {
+	go_src_dir
+	make DESTDIR="$pkgdir" sbindir=/usr/bin install LDCONFIG=/bin/true
+}

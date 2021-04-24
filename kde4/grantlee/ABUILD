@@ -1,0 +1,22 @@
+#ABUILD created by/создан: aix27249, i27249 at gmail.com 
+#url https://github.com/steveire/grantlee/releases
+
+pkgname=grantlee
+pkgver=0.5.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Grantlee is a string template engine based on the Django template system and written in Qt."
+
+source=("http://downloads.grantlee.org/grantlee-${pkgver}.tar.gz")
+
+tags="kde-misc kde4"
+
+build_deps="cmake gcc gcc-g++"
+
+BUILD_SYSTEM="cmake"
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=RELEASE \
+-DLIB_DIR=lib${LIBDIRSUFFIX} \
+-DLIB_SUFFIX=${LIBDIRSUFFIX} \
+../"

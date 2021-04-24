@@ -1,0 +1,30 @@
+pkgname=elfutils
+pkgver=0.181
+pkgbuild=1
+arch=('auto')
+shortdesc="collection of utilities to handle ELF objects"
+
+source=("https://sourceware.org/ftp/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2")
+
+tags="develop dev-libs compat32"
+
+build_deps="zlib bzip2 xz sqlite libmicrohttpd"
+
+build() {
+	go_src_dir
+	# required for test-suite success
+	CFLAGS+=" -g"
+
+	./configure --prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--mandir=/usr/share/man \
+		--program-prefix="eu-" \
+		--enable-deterministic-archives
+	make
+
+	# Some tests fail due to limited capabilities of build chroot
+	make check || :
+	make DESTDIR="$pkgdir" install
+}

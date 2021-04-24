@@ -1,0 +1,23 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru 
+
+pkgname=perl-gettext
+pkgver=0.01
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Perl/CPAN Module Gettext"
+
+source=("https://www.cpan.org/authors/id/J/JB/JBRIGGS/Gettext-${pkgver}.tar.gz")
+
+tags="libs dev-perl"
+
+build_deps="perl"
+
+build() {
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make install DESTDIR="$pkgdir"
+  find "$pkgdir" -name '.packlist' -delete
+  find "$pkgdir" -name '*.pod' -delete
+}

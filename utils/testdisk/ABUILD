@@ -1,0 +1,32 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru.
+
+pkgname=testdisk
+pkgver=7.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
+
+source=("https://www.cgsecurity.org/$pkgname-$pkgver.tar.bz2")
+
+tags="utils app-admin"
+#libjpeg-turbo
+build_deps="make gcc"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+            --sysconfdir=/etc \
+            --localstatedir=/var \
+            --libdir=/usr/lib${LIBDIRSUFFIX} \
+            --disable-static \
+            --mandir=/usr/share/man \
+	    --docdir=/usr/share/doc/${pkgname}-${pkgver} \
+            --program-prefix= \
+            --program-suffix= \
+            --without-ewf \
+            --enable-sudo"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"

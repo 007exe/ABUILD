@@ -1,0 +1,32 @@
+pkgname=btrfs-progs
+pkgver=5.7
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Btrfs filesystem utilities"
+longdesc=("Btrfs is a new copy on write filesystem for Linux aimed at implementing advanced features while focusing on fault tolerance, repair and easy administration. Initially developed by Oracle, Btrfs is licensed under the GPL and open for contribution from anyone."
+)
+
+source=("https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v$pkgver.tar.xz")
+
+tags="base sys-fs"
+
+build_deps="e2fsprogs glibc xmlto python python-setuptools reiserfsprogs asciidoc lzo"
+
+build()
+{
+	go_src_dir
+	burn_patches
+	# Какаято фигня не находит python и zstd --disable-python --disable-zstd
+	./configure --prefix=/usr --with-crypto=libgcrypt --libdir=/usr/lib$LIBDIRSUFFIX --disable-zstd --disable-python
+	make -j${numjobs}
+	#make DESTDIR="$pkgdir" install install_python
+	make DESTDIR="$pkgdir" install
+
+	# install bash completion (FS#44618)
+	install -Dm644 btrfs-completion "$pkgdir/usr/share/bash-completion/completions/btrfs"
+
+	# install mkinitcpio hooks
+	install -Dm644 ${filedir}/initcpio-install-btrfs "$pkgdir/usr/lib$LIBDIRSUFFIX/initcpio/install/btrfs"
+	install -Dm644 ${filedir}/initcpio-hook-btrfs "$pkgdir/usr/lib$LIBDIRSUFFIX/initcpio/hooks/btrfs"
+}

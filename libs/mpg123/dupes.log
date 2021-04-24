@@ -1,0 +1,7 @@
+libarchive-3.1.2-x86_64-1.txz: local://libs/ => local://libs/
+mpg123-1.25.10-x86_64-1.txz: local://libs/ => local://libs/
+doxygen-1.8.6-x86_64-1.txz: local://develop/ => local://develop/
+doxygen-1.8.4-x86_64-1.txz: local://develop/ => local://develop/
+doxygen-1.8.4-x86_64-1.txz: local://develop/ => local://develop/
+gcc-gcj-ecj-4.5-x86_64-1.txz: local://develop/ => local://develop/
+yasm-1.3.0-x86_64-2.txz: local://drugie/ => local://drugie/

@@ -1,0 +1,31 @@
+pkgname=sysvinit
+pkgver=2.97
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("sysvinit - classical init system")
+longdesc=("System V style init programs by Miquel van Smoorenburg that control the booting and shutdown of your system. These support a number of system runlevels, each with a specific set of utilities spawned. For example, the normal system runlevel is 3, which starts agetty on virtual consoles tty1 - tty6. Runlevel 4 starts xdm. Runlevel 0 shuts the system down.")
+
+tags=("base sys-apps")
+
+source=("http://download.savannah.gnu.org/releases/sysvinit/${pkgname}-${pkgver}.tar.xz")
+build_deps="glibc util-linux-ng coreutils gawk"
+adddep="coreutils util-linux-ng gawk"
+
+build() {
+	go_src_dir
+	burn_patches
+	make -j${numjobs}
+	make install ROOT=${pkgdir}
+	mv ${pkgdir}/sbin/init ${pkgdir}/sbin/init.new
+
+	# provided by util-linux
+	( cd "${pkgdir}"
+#	rm bin/mountpoint
+#	rm usr/share/man/man1/mountpoint.1
+	rm usr/bin/{mesg,utmpdump,wall}
+	rm usr/share/man/man1/{mesg,utmpdump,wall}.1
+	rm sbin/sulogin
+	rm usr/share/man/man8/sulogin.8
+	)
+}

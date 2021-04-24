@@ -1,0 +1,23 @@
+pkgname=automake
+pkgver=1.16.2
+pkgbuild=2
+arch=('noarch')
+
+shortdesc="A GNU tool for automatically creating Makefiles"
+
+source=("ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+tags="develop sys-devel"
+
+build_deps="make grep binutils autoconf"
+
+adddep="bash perl"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_KEYS="--prefix=/usr \
+            --sysconfdir=/etc \
+            --mandir=/usr/share/man \
+            --docdir=/usr/share/doc/${pkgname}-${pkgver}"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+

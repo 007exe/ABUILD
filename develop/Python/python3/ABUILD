@@ -1,0 +1,74 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru 
+pkgname=python
+pkgver=3.8.5
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Next generation of the python high-level scripting language"
+
+source=("http://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz")
+
+lover=${pkgver%.*}
+
+tags="develop dev-python"
+# build_deps="make gcc grep sqlite coreutils tk valgrind"
+build_deps="make gcc grep sqlite coreutils valgrind"
+
+before_build(){
+  go_src_dir
+  # FS#23997
+  sed -i -e "s|^#.* /usr/local/bin/python|#!/usr/bin/python|" Lib/cgi.py
+
+  # Speed up LTO
+  sed -i -e "s|-flto |-flto=4 |g" configure configure.ac
+
+  # Ensure that we are using the system copy of various libraries (expat, zlib, libffi, and libmpdec),
+  # rather than copies shipped in the tarball
+  rm -r Modules/expat
+  rm -r Modules/_ctypes/{darwin,libffi}*
+  rm -r Modules/_decimal/libmpdec
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--mandir=/usr/share/man \
+--docdir=/usr/doc/python-${pkgver} \
+--program-prefix= \
+--program-suffix= \
+--enable-shared \
+--with-threads \
+--enable-optimizations \
+--with-lto \
+--with-computed-gotos \
+--enable-ipv6 \
+--with-valgrind \
+--with-system-expat \
+--with-dbmliborder=gdbm:ndbm \
+--with-system-ffi \
+--with-system-libmpdec \
+--without-ensurepip"
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+#
+# Хрен его знает почему но модули лезут в /usr/lib а не в /usr/lib64
+#--libdir=/usr/lib${LIBDIRSUFFIX} \
+after_build(){
+  go_src_dir
+
+  # Why are these not done by default...
+  ln -s python3               "${pkgdir}"/usr/bin/python
+  ln -s python3-config        "${pkgdir}"/usr/bin/python-config
+  ln -s idle3                 "${pkgdir}"/usr/bin/idle
+  ln -s pydoc3                "${pkgdir}"/usr/bin/pydoc
+  ln -s python${lover}.1 "${pkgdir}"/usr/share/man/man1/python.1
+  
+    # some useful "stuff" FS#46146
+  install -dm755 "${pkgdir}"/usr/lib/python${_pybasever}/Tools/{i18n,scripts}
+  install -m755 Tools/i18n/{msgfmt,pygettext}.py "${pkgdir}"/usr/lib/python${_pybasever}/Tools/i18n/
+  install -m755 Tools/scripts/{README,*py} "${pkgdir}"/usr/lib/python${_pybasever}/Tools/scripts/
+}

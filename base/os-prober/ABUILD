@@ -1,0 +1,55 @@
+pkgname=os-prober
+pkgver=1.77
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Utility to detect other OSes on a set of drives."
+
+source="http://http.debian.net/debian/pool/main/o/${pkgname}/${pkgname}_${pkgver}.tar.xz"
+
+tags="base sys-boot"
+build_deps="glibc gcc"
+adddep="bash"
+
+build() {
+	go_src_dir
+	sed -i -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" os-probes/mounted/common/90linux-distro
+	sed -i -e 's:grub-mount:grub2-mount:g'  common.sh \
+		linux-boot-probes/common/50mounted-tests \
+		os-probes/common/50mounted-tests
+	rm -f Makefile
+	make -j${numjobs} newns
+}
+
+
+after_build() {
+	go_src_dir
+	
+	# fix lib64
+	sed -i -e "s/\/usr\/lib/\/usr\/lib$LIBDIRSUFFIX/g" common.sh
+	sed -i -e "s/\/usr\/lib/\/usr\/lib$LIBDIRSUFFIX/g" os-probes/common/50mounted-tests
+	sed -i -e "s/\/usr\/lib/\/usr\/lib$LIBDIRSUFFIX/g" linux-boot-probes/common/50mounted-tests
+	sed -i -e "s/\/usr\/lib/\/usr\/lib$LIBDIRSUFFIX/g" os-prober
+	sed -i -e "s/\/usr\/lib/\/usr\/lib$LIBDIRSUFFIX/g" linux-boot-prober
+
+	install -Dm755 linux-boot-prober $pkgdir/usr/bin/linux-boot-prober
+	install -Dm755 os-prober $pkgdir/usr/bin/os-prober
+	install -Dm755 newns $pkgdir/usr/lib$LIBDIRSUFFIX/os-prober/newns
+	install -Dm755 common.sh $pkgdir/usr/share/os-prober/common.sh
+
+	for dir in os-probes{,/mounted,/init} linux-boot-probes{,/mounted}; do
+	    install -dm755 "$pkgdir/usr/lib$LIBDIRSUFFIX/$dir"
+	    install -m755 -t "$pkgdir/usr/lib$LIBDIRSUFFIX/$dir" "$dir"/common/*
+	    if [[ -d "$dir"/x86 ]]; then
+		cp -r "$dir"/x86/* "$pkgdir/usr/lib$LIBDIRSUFFIX/$dir"
+	    fi
+	done
+
+	install -Dm755 os-probes/mounted/powerpc/20macosx "$pkgdir"/usr/lib$LIBDIRSUFFIX/os-probes/mounted/20macosx
+	install -Dm644 debian/copyright $pkgdir/usr/share/doc/os-prober-$pkgver/copyright
+
+	# create a empty labels file, will be used by os-prober at execution
+	install -dm755 "$pkgdir"/var/lib/os-prober
+	touch $pkgdir/var/lib/os-prober/labels
+	chmod 644 $pkgdir/var/lib/os-prober/labels
+}

@@ -1,0 +1,28 @@
+pkgname=libass
+pkgver=0.14.0
+pkgbuild=2
+arch=('auto')
+
+shortdesc="LibASS (SSA/ASS subtitles rendering library)"
+
+#source=("http://libass.googlecode.com/files/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/libass/libass/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags="libs media-libs"
+
+build_deps="make gcc enca harfbuzz fontconfig fribidi pkg-config binutils grep sed kernel-headers"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--disable-require-system-font-provider"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"

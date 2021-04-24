@@ -1,0 +1,26 @@
+pkgname=autoconf
+pkgver=2.69
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Generate configuration scripts")
+
+tags=("develop sys-devel")
+
+source=("ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+build_deps="perl"
+adddep="gawk m4 diffutils bash"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+   --infodir=/usr/info \
+   --mandir=/usr/man"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build() {
+	# conflict with bintuils
+	rm -f ${pkgdir}/usr/info/standards.info
+}
+

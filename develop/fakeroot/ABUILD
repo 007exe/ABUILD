@@ -1,0 +1,24 @@
+pkgname=fakeroot
+pkgver=1.24
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Fakeroot makes it possible to run commands in an environment  faking root privileges"
+
+source=("https://deb.debian.org/debian/pool/main/f/$pkgname/${pkgname}_${pkgver}.orig.tar.gz")
+
+tags="develop dev-util"
+build_deps="glibc"
+
+adddep="sed util-linux-ng bash coreutils"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="-prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--mandir=/usr/share/man \
+	--with-ipc=sysv \
+	--docdir=/usr/share/doc/$pkgname-$pkgver"
+

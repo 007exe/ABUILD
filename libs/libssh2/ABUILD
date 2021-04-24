@@ -1,0 +1,19 @@
+pkgname=libssh2
+pkgver=1.9.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A library implementing the SSH2 protocol as defined by Internet Drafts"
+source=("http://www.libssh2.org/download/${pkgname}-${pkgver}.tar.gz")
+tags="libs net-misc"
+build_deps="openssl zlib"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--mandir=/usr/share/man"
+
+

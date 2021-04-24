@@ -1,0 +1,31 @@
+#ABUILD created by: Drakmail, coder at dps.ru 
+pkgname=libjpeg-turbo
+pkgver=6b_1.5.3
+srcver=1.5.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="JPEG image codec with accelerated baseline compression and decompression."
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${srcver}.tar.gz")
+tags="media-libs libs compat32"
+build_deps="nasm m4 autoconf automake"
+
+provides="libjpeg"
+
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--datadir=/usr/doc/$pkgname-$pkgver \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build()
+{
+    install -m644 jpegint.h ${pkgdir}/usr/include/
+}

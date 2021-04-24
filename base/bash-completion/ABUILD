@@ -1,0 +1,34 @@
+pkgname=bash-completion
+pkgver=2.10
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Programmable completion for the bash shell")
+longdesc=("Adds programmable completion to the bash shell. A new file called /etc/bash_completion will be sourced for interactive bash shells adding all sorts of enhanced command completion features. Once installed, you may get a list of all commands that have associated completions with 'complete -p', and examine the code for the shell functions with 'declare -f'. bash-completion was written by Ian Macdonald <ian@caliban.org>.")
+
+tags=("app-shells console")
+
+source=("https://github.com/scop/bash-completion/archive/${pkgver}.tar.gz")
+
+adddep="bash"
+build_deps="mkpkg autoconf automake"
+
+before_build() {
+  go_src_dir
+  autoreconf -i
+}
+
+
+build() {
+	./configure --prefix=/usr --sysconfdir=/etc
+	make
+	make DESTDIR=$pkgdir install
+}
+
+#INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build() {
+  chmod 755 ${pkgdir}/etc/profile.d/bash_completion.sh
+  # bash-completion is sourced in /etc/bash.bashrc so that non-bash shell don't source it
+  rm "${pkgdir}/etc/profile.d/bash_completion.sh"
+}

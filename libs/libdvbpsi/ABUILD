@@ -1,0 +1,41 @@
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=libdvbpsi
+pkgver=1.3.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Libdvbpsi (MPEG TS and DVB PSI tables library)"
+#-ruler---|--------------------------------------------------------------------------|
+longdesc=("Libdvbpsi is a simple library designed for decoding and generation of MPEG TS and DVB PSI tables."
+	  ""
+	  "Homepage: http://download.videolan.org/pub/libdvbpsi/"
+)
+
+source=("http://download.videolan.org/pub/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+
+tags="libs media-libs"     #short and long tags / длинный и короткий тег
+build_deps=" " 
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

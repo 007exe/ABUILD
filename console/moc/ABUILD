@@ -1,0 +1,34 @@
+#ABUILD created by/создан: agr3ss0r, agr3ss0r86 at gmail.com 
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=moc
+pkgver=2.5.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc="MOC (music on console)"
+longdesc=("MOC is a console audio player for LINUX/UNIX designed to be powerful and easy to use."
+	  ""
+	  "Homepage: http://moc.daper.net"
+)
+
+source=("http://ftp.daper.net/pub/soft/moc/stable/${pkgname}-${pkgver}.tar.bz2")
+tags="console media-sound"
+build_deps=" "
+
+before_build()
+{
+	go_src_dir
+	burn_patches
+}
+
+build() {
+	go_src_dir
+  ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --without-rcc \
+    --with-oss --with-alsa --with-jack --with-aac --with-mp3 \
+    --with-musepack --with-vorbis --with-flac --with-wavpack \
+    --with-sndfile --with-modplug --with-ffmpeg --with-speex \
+    --with-samplerate --with-curl  --disable-cache --disable-debug
+  make
+  make DESTDIR="${pkgdir}" install
+}

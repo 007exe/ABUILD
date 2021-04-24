@@ -1,0 +1,21 @@
+pkgname=m4
+pkgver=1.4.18
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An implementation of the UNIX macro processor")
+
+tags=("develop dev-util")
+
+source=("ftp://ftp.gnu.org/gnu/m4/$pkgname-$pkgver.tar.xz")
+build_deps="glibc-solibs"
+adddep="bash"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="  --prefix=/usr \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--mandir=/usr/man \
+	--infodir=/usr/info \
+	--docdir=/usr/doc/m4-${pkgver}"
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

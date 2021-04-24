@@ -1,0 +1,75 @@
+# Coreutils ABUILD
+pkgname=coreutils
+pkgver=8.32
+pkgbuild=3
+arch=('auto')
+
+shortdesc=('coreutils (core GNU utilities)')
+longdesc=('These are the GNU core utilities, the basic command line programs such as mkdir, ls, and rm that are needed for the system to run. This package is the union of the GNU fileutils, sh-utils, and textutils packages. Most of these programs have significant advantages over their Unix counterparts, such as greater speed, additional options, and fewer arbitrary limits.')
+
+tags=('base sys-apps')
+
+source=("http://ftp.gnu.org/gnu/coreutils/coreutils-${pkgver}.tar.xz")
+config_files="etc/DIR_COLORS"
+
+build_deps="acl gmp libcap"
+
+build() {
+	go_src_dir
+	burn_patches
+
+	# As we build within fakeroot, FORCE_UNSAFE_CONFIGURE should be set to 1
+	FORCE_UNSAFE_CONFIGURE=1 \
+	DEFAULT_POSIX2_VERSION=199209 \
+	CFLAGS="$SLKCFLAGS" \
+		./configure \
+		--prefix=/usr \
+		--enable-no-install-program=groups,hostname,kill,uptime \
+		--bindir=/bin \
+		--docdir=/usr/share/doc/${pkgname}-${pkgver} \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--sysconfdir=/etc
+
+	make -j${numjobs} || make || exit 1
+	make install DESTDIR=$pkgdir
+
+
+	# This seems wrong, and it stomps on files in the ksh93 package, though I'm
+	# not sure the placement of those is correct, either...  The ksh93 package
+	# installs them as flat text files, while coreutils installs empty directories
+	# Oh well, this is what we've done for years, and nobody's complained...
+	rm -rf $pkgdir/usr/share/locale/*/LC_TIME
+
+	# These are important enough that they should probably all go into /bin at this
+	# point...   Having some of them unavailable when /usr isn't mounted is just a
+	# source of unending bug reports for various third party applications.
+	# Time to end those reports.  :-)
+	mkdir -p $pkgdir/bin $pkgdir/usr/bin
+	( cd $pkgdir/usr/bin
+	for file in ../../bin/* ; do
+		ln --verbose -sf $file .
+	done
+	)
+
+	# Add some defaults, although a very slack-like set of default options are built
+	# into /bin/ls now anyway:
+	mkdir -p $pkgdir/etc
+	zcat $filedir/DIR_COLORS.gz > $pkgdir/etc/DIR_COLORS
+
+	# Since dircolors no longer provides any default aliases these scripts
+	# will be needed for ls to act as expected:
+	mkdir -p $pkgdir/etc/profile.d
+	zcat $filedir/coreutils-dircolors.csh.gz > $pkgdir/etc/profile.d/coreutils-dircolors.csh
+	zcat $filedir/coreutils-dircolors.sh.gz > $pkgdir/etc/profile.d/coreutils-dircolors.sh
+	chmod 755 $pkgdir/etc/profile.d/*
+
+	# Add ginstall links (there's still a lot of stuff that needs this to compile):
+	( cd $pkgdir/bin ; ln -sf install ginstall )
+	( cd $pkgdir/usr/bin ; ln -sf ../../bin/ginstall ginstall )
+	( cd $pkgdir/usr/share/man/man1 ; ln -sf install.1 ginstall.1 )
+
+
+	rm -rf $pkgdir/usr/info
+
+}

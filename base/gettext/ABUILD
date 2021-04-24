@@ -1,0 +1,37 @@
+pkgname=gettext
+pkgver=0.21
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("gettext (internationalization framework)")
+longdesc=("The GNU gettext package contains 'gettext' and 'ngettext', programs that are used to internationalize the messages given by shell scripts.")
+
+tags=("base sys-devel")
+
+source=("ftp://ftp.gnu.org/pub/gnu/gettext/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="make gcc gcc-g++ acl glib2 sed grep coreutils"
+
+before_build() {
+  go_src_dir
+#  sed -i -e 's/libexpat.so.0/libexpat.so.1/' gettext-tools/src/x-glade.c
+#  sed -i -e '/gets is a/d' gettext-*/*/stdio.in.h
+sed -i '/^TESTS =/d' gettext-runtime/tests/Makefile.in &&
+sed -i 's/test-lock..EXEEXT.//' gettext-tools/gnulib-tests/Makefile.in
+
+#sed -e '/AppData/{N;N;p;s/\.appdata\./.metainfo./}' \
+#    -i gettext-tools/its/appdata.loc
+
+}
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+            --libdir=/usr/lib${LIBDIRSUFFIX} \
+            --infodir=/usr/share/info \
+            --mandir=/usr/share/man \
+            --docdir=/usr/share/doc/gettext-${pkgver} \
+            --disable-static"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+

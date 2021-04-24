@@ -1,0 +1,45 @@
+pkgname=glib2
+pkgver=2.66.0
+pkgtree=${pkgver%.*}
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Library of C routines"
+source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgtree}/glib-${pkgver}.tar.xz")
+tags="libs dev-libs compat32"
+
+#libelf sysprof gtk-doc
+build_deps="gettext shared-mime-info python git util-linux-ng meson dbus"
+
+build() {
+  go_src_dir
+  CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
+  meson build \
+    -D selinux=disabled \
+    -D sysprof=enabled \
+    -D man=true
+#    -D gtk_doc=true
+  meson compile -C build
+  meson test -C build --no-suite flaky --print-errorlogs
+  DESTDIR="$pkgdir" meson install -C build
+}
+
+after_build() {
+  # Install profile scripts:
+  mkdir -p $pkgdir/etc/profile.d/
+  cp -a $filedir/libglib2.{csh,sh} $pkgdir/etc/profile.d/
+  chown root:root $pkgdir/etc/profile.d/*
+  chmod 755 $pkgdir/etc/profile.d/*
+  mv $pkgdir/etc/profile.d/libglib2.csh $pkgdir/etc/profile.d/libglib2.csh.new
+  mv $pkgdir/etc/profile.d/libglib2.sh $pkgdir/etc/profile.d/libglib2.sh.new
+
+  # bash-completion
+  for _i in "$pkgdir/usr/share/bash-completion/completions/"*; do
+    chmod -x "$_i"
+  done
+
+  # doinst.sh manages permissions in /etc/profile.d, we need some methods to not to use this
+  mkdir -p $pkgdir/install
+  zcat $filedir/doinst.sh.gz > $pkgdir/install/doinst.sh
+}
+

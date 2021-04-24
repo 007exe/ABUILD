@@ -1,0 +1,26 @@
+pkgname=libmpdclient
+pkgver=2.9
+pkgbuild=1
+arch=('auto')
+
+shortdesc="LibMPDclient (MPD client library)"
+longdesc=("A library for interfacing MPD in the C, C++ & Objective C languages."
+	  "http://sourceforge.net/projects/musicpd/files/libmpdclient/"
+)
+
+source=("http://www.musicpd.org/download/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+tags="libs media-libs"
+build_deps="glibc"
+
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-static \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/${pkgname}-${pkgver} \
+  --program-prefix= \
+  --program-suffix="
+INSTALL_KEYS="DESTDIR=$pkgdir"

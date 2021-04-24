@@ -1,0 +1,44 @@
+pkgname=glib2
+pkgver=2.57.1
+pkgtree=${pkgver%.*}
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Library of C routines"
+source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgtree}/glib-${pkgver}.tar.xz")
+tags="libs dev-libs compat32"
+build_deps="libffi pcre python pkg-config automake autoconf perl"
+
+before_build() {
+  go_src_dir
+  autoreconf
+}
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --with-pcre=system \
+  --disable-fam \
+  --mandir=/usr/share/man"
+INSTALL_KEYS="DESTDIR=${pkgdir} completiondir=/usr/share/bash-completion/completions"
+
+after_build() {
+  # Install profile scripts:
+  mkdir -p $pkgdir/etc/profile.d/
+  cp -a $filedir/libglib2.{csh,sh} $pkgdir/etc/profile.d/
+  chown root:root $pkgdir/etc/profile.d/*
+  chmod 755 $pkgdir/etc/profile.d/*
+  mv $pkgdir/etc/profile.d/libglib2.csh $pkgdir/etc/profile.d/libglib2.csh.new
+  mv $pkgdir/etc/profile.d/libglib2.sh $pkgdir/etc/profile.d/libglib2.sh.new
+
+  # bash-completion
+  for _i in "$pkgdir/usr/share/bash-completion/completions/"*; do
+    chmod -x "$_i"
+  done
+
+  # doinst.sh manages permissions in /etc/profile.d, we need some methods to not to use this
+  mkdir -p $pkgdir/install
+  zcat $filedir/doinst.sh.gz > $pkgdir/install/doinst.sh
+}
+

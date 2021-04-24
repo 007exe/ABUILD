@@ -1,0 +1,32 @@
+# Package metadata
+pkgname=mpkgsupport
+pkgver=0.17
+pkgbuild=1
+arch="auto"
+
+# Package description
+shortdesc=("Support library from mpkg")
+longdesc=("Support library from mpkg. Contains many useful functions, not related directly to mpkg and which can be used in other programs.")
+
+# Source URL
+source=("git:git://github.com/007exe/mpkg.git")
+
+# Tags
+tags="base sys-libs"
+
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
+-DSYSCONF_INSTALL_DIR=/etc \
+-DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DMAN_INSTALL_DIR=/usr/man"
+build_deps="glibc-solibs gcc cmake"
+
+build() {
+	go_src_dir
+	burn_patches
+	mkdir build
+	cd build
+	cmake $BUILD_KEYS ../mpkgsupport
+	make -j${numjobs}
+	make install DESTDIR=${pkgdir}
+}
+

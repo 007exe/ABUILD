@@ -1,0 +1,29 @@
+pkgname=rtmpdump
+pkgver=2.4
+pkgbuild=3
+arch=("auto")
+
+shortdesc=("A tool to download rtmp streams, also contains librtmp")
+
+longdesc=("A tool to download rtmp streams. Also contains librtmp.")
+
+tags=("media-video libs")
+
+build_deps="make gcc openssl git"
+
+#source=("http://rtmpdump.mplayerhq.hu/download/rtmpdump-$pkgver.tgz")
+source=("git:git://git.ffmpeg.org/rtmpdump.git")
+
+build() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs} prefix=/usr \
+       sbindir=/usr/bin \
+       MANDIR="${pkgdir}/usr/share/man" \
+       LIBDIR="${pkgdir}/usr/lib${LIBDIRSUFFIX}" \
+       DESTDIR="${pkgdir}" install
+       
+#Симлинк для совместимости ломает cmake mpkg curl
+ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/librtmp.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/librtmp.so.0
+}
+

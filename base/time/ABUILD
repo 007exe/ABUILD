@@ -1,0 +1,16 @@
+pkgname=time
+pkgver=1.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The GNU time command for measuring program resource use")
+
+tags=("base sys-process")
+
+source=("http://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+build_deps="glibc"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/share/man --sysconfdir=/etc --infodir=/usr/share/info"
+INSTALL_KEYS="exec_prefix=${pkgdir}/usr infodir=${pkgdir}/usr/info"
+

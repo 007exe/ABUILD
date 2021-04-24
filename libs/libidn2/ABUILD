@@ -1,0 +1,16 @@
+pkgname=libidn2
+pkgver=2.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNU Internationalized Domain Name library")
+longdesc=("GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN) working group, used for internationalized domain names.")
+
+tags=("libs net-dns")
+build_deps="glibc"
+source=("http://ftp.gnu.org/gnu/libidn/${pkgname}-${pkgver}.tar.gz")
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --disable-static --mandir=/usr/share/man --docdir=/usr/share/doc/${pkgname}-${pkgver}"
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

@@ -1,0 +1,21 @@
+diff -up Python-3.8.0/setup.py.link~ Python-3.8.0/setup.py
+--- Python-3.8.0/setup.py.link~	2019-10-14 15:34:47.000000000 +0200
++++ Python-3.8.0/setup.py	2019-11-03 02:45:00.776977608 +0100
+@@ -745,7 +745,7 @@ class PyBuildExt(build_ext):
+                            libraries=['m']))
+ 
+         # time libraries: librt may be needed for clock_gettime()
+-        time_libs = []
++        time_libs = ['m']
+         lib = sysconfig.get_config_var('TIMEMODULE_LIB')
+         if lib:
+             time_libs.append(lib)
+@@ -2077,7 +2077,7 @@ class PyBuildExt(build_ext):
+         undef_macros = []
+         if '--with-system-libmpdec' in sysconfig.get_config_var("CONFIG_ARGS"):
+             include_dirs = []
+-            libraries = [':libmpdec.so.2']
++            libraries = [':libmpdec.so.2', 'm']
+             sources = ['_decimal/_decimal.c']
+             depends = ['_decimal/docstrings.h']
+         else:

@@ -1,0 +1,40 @@
+pkgname=dracut
+pkgver=050
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Generic, modular, cross-distribution initramfs generation tool"
+
+source=("http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-$pkgver.tar.xz")
+
+tags="base sys-kernel"
+
+adddep="kernel fakeroot fakechroot gzip cpio bash util-linux-ng"
+#asciidoc libxslt docbook-xml docbook-xsl
+build_deps=" "
+
+config_files="etc/dracut.conf"
+
+build() {
+	go_src_dir
+	burn_patches
+	set -e
+    ./configure \
+    --sysconfdir=/etc \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --systemdsystemunitdir=/usr/lib/systemd/system \
+
+	make sysconfdir=/etc -j${numjobs}
+	make DESTDIR=$pkgdir sysconfdir=/etc install
+
+	# Add i18n to config
+	cat $filedir/i18n-settings.conf >> $pkgdir/etc/dracut.conf
+
+	# MPKG hooks
+	install -Dm0755 $filedir/dracut-generate-initrd.sh ${pkgdir}/etc/mpkg/hooks/dracut-generate-initrd.sh
+
+	set +e
+}
+

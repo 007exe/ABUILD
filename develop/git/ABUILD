@@ -1,0 +1,67 @@
+pkgname=git
+pkgver=2.28.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("git (the stupid content tracker)")
+longdesc=("Git is a fast, scalable, distributed revision control system with an unusually rich command set that provides both high-level operations and full access to internals. "git" can mean anything, depending on your mood. Git was originally written by Linus Torvalds and is currently maintained by Junio C. Hamano.")
+
+tags=("dev-util develop")
+
+source=("https://mirrors.edge.kernel.org/pub/software/scm/git/git-$pkgver.tar.xz")
+
+config_files="etc/conf.d/git-daemon"
+build_deps="python curl expat perl openssl pcre" # emacs
+
+build() {
+	go_src_dir
+	burn_patches
+
+	make prefix=/usr gitexecdir=/usr/lib${LIBDIRSUFFIX}/git-core \
+		CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \
+		USE_LIBPCRE=1 \
+		NO_CROSS_DIRECTORY_HARDLINKS=1 \
+		all -j${numjobs}
+
+	make prefix=/usr gitexecdir=/usr/lib${LIBDIRSUFFIX}/git-core \
+		CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \
+		USE_LIBPCRE=1 \
+		NO_CROSS_DIRECTORY_HARDLINKS=1 \
+		INSTALLDIRS=vendor \
+		install DESTDIR=${pkgdir}
+
+
+
+	# Bash completion
+	mkdir -p $pkgdir/usr/share/bash-completion/completions/
+	install -m644 ./contrib/completion/git-completion.bash $pkgdir/usr/share/bash-completion/completions/git
+
+	# Fancy git prompt
+	mkdir -p ${pkgdir}/usr/share/git
+	install -m644 ./contrib/completion/git-prompt.sh ${pkgdir}/usr/share/git/git-prompt.sh
+
+	# More contrib stuff
+	cp -a ./contrib/* ${pkgdir}/usr/share/git/
+
+	# Switch a hard link with a soft link:
+	( cd ${pkgdir}/usr/bin
+		find . -links +1 -not -name git | while read gitfile ; do
+			if [ git -ef $gitfile ]; then
+				rm -vf $gitfile
+				ln -vfs git $gitfile
+			fi
+		done
+	)
+
+	# remove perllocal.pod, .packlist, and empty directories.
+	rm -rf $pkgdir/usr/lib${LIBDIRSUFFIX}/perl5
+
+	# Directory for daemon
+	mkdir -p ${pkgdir}/var/git
+	chown nobody:nobody ${pkgdir}/var/git
+
+	# OpenRC
+	install -Dm755 ${filedir}/git-daemon.initd ${pkgdir}/etc/init.d/git-daemon
+	install -Dm644 ${filedir}/git-daemon.confd ${pkgdir}/etc/conf.d/git-daemon
+
+}

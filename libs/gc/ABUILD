@@ -1,0 +1,33 @@
+#ABUILD created by/создан: Ben, ivan29m at rambler.ru 
+pkgname=gc
+pkgver=8.0.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A garbage collector for C and C++"
+
+source=("https://github.com/ivmai/bdwgc/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="dev-libs libs"
+
+build_deps="gcc"
+
+
+build()
+{
+
+go_src_dir
+burn_patches
+
+ autoreconf -fi
+   ./configure --prefix=/usr --sysconfdir=/etc \
+	--localstatedir=/var \
+	--docdir=/usr/share/doc \
+	--mandir=/usr/share/man \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--enable-cplusplus --enable-static
+
+	make
+	make DESTDIR=${pkgdir} install
+
+}

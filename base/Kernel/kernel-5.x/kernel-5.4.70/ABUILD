@@ -1,0 +1,178 @@
+pkgname=kernel
+# Kernel version may contain '-' symbol, so let's protect from it by using kernel_ver everywhere.
+pkgver=5.4.70
+
+kernel_ver=`echo ${pkgver} | sed -e s/_/-/g`
+if [ "${kernel_ver}" = "`echo ${kernel_ver} | sed 's/\.0$//g'`" ] ; then
+   srcver=${kernel_ver}
+else
+   srcver=`echo ${kernel_ver} | sed 's/\.0$//g'`
+fi
+kernel_base=`echo ${kernel_ver} | cut -d . -f 1-2`
+ver_group=`echo ${kernel_ver} | cut -d . -f 1-1`
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux kernel")
+longdesc=("This is a Linux kernel with built-in support for most disk controllers and filesystems.")
+
+tags=("base sys-kernel")
+adddep="linux-firmware"
+conflicts="kernel-modules"
+
+source=("https://cdn.kernel.org/pub/linux/kernel/v${ver_group}.x/linux-${srcver}.tar.xz")
+custom_opts="skip_gendeps no_strip skip_validate"
+
+skip_gendeps=1
+
+# Explicitly specify gcc as build_deps, since the order matters
+build_deps="make gcc bc diffutils git rsync"
+
+pkglist=("headers sources")
+
+headers() {
+  pkgname=kernel-headers
+  arch=("auto")
+  shortdesc=('Linux kernel include files')
+  longdesc=('These are the include files from the Linux kernel. You will need these to compile most system software for Linux.')
+
+  tags=('develop sys-kernel')
+}
+
+sources() {
+  pkgname=kernel-source
+  arch=('auto')
+  shortdesc=('Linux kernel source')
+  longdesc=('Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.')
+
+  tags=('develop sys-kernel')
+}
+
+
+build() {
+  go_src_dir
+  burn_patches
+
+# Копирование настроек ядра из работающей системы 
+echo "Копирую настроеки ядра из работающей системы"
+zcat /proc/config.gz > .config
+
+# Автоматическая адоптация настроек ядра
+clear
+echo ""
+echo 'Предварительная настройка ядра'
+while
+read -n1 -p  "
+ 1 - Выполнить make olddefconfig (Новые опции будут оставленны как есть по умолчанию)
+
+ 2 - Выполнить make oldconfig? (Интерактивное меню настройки, будит много вопросов) " KERNEL_OLD_CONFIG
+echo ''
+[[ "$KERNEL_OLD_CONFIG" =~ [^12] ]]
+do
+	:
+done
+if [[ "$KERNEL_OLD_CONFIG" == 1 ]]; then
+echo "
+===============================================
+
+Новые опции оставленны как есть (по умолчанию)
+
+===============================================" 
+	make olddefconfig
+elif [[ "$KERNEL_OLD_CONFIG" == 2 ]]; then
+echo "
+=============================================================
+Готовы? Тогда поехали
+
+y - включить, n - не включать, m - включить в качестве модуля
+=============================================================
+"
+	make oldconfig
+fi
+
+# Ручная настройка ядра
+clear
+echo ""
+echo 'Ручная настройка ядра'
+while
+read -n1 -p  "
+ 1 - Выполнить make menuconfig? (Конфигуратор с псевдографическим интерфейсом.)
+
+ 2 - Выполнить make nconfig? (Конфигуратор с псевдографическим интерфейсом. Требуется, чтобы библиотека ncurses)
+
+ 0 - Пропустить ручную настройку " KERNEL_CONFIG_MENU
+echo ''
+[[ "$KERNEL_CONFIG_MENU" =~ [^120] ]]
+do
+	:
+done
+if [[ "$KERNEL_CONFIG_MENU" == 1 ]]; then
+        make menuconfig
+elif [[ "$KERNEL_CONFIG_MENU" == 2 ]]; then
+	make nconfig
+elif [[ "$KERNEL_CONFIG_MENU" == 0 ]]; then
+echo ""
+fi
+
+  # Сборка ядра
+  make -j${numjobs}
+  echo "Ядро собрано, упаковываем"
+}
+
+modules() {
+echo "Сборка модулей" 
+   make modules_install INSTALL_MOD_PATH=${pkgdir}
+echo "Удаляем прошивки из пакета модулей. Не понимаю, зачем они устанавливаеются вместе с модулями ..."
+  rm -rf ${pkgdir}/lib/firmware
+echo " rm /lib/modules/kernel_ver/source,build"
+  rm ${pkgdir}/lib/modules/${kernel_ver}/{source,build}
+  ln -sf /usr/src/linux-${kernel_ver} ${pkgdir}/lib/modules/${kernel_ver}/source
+  ln -sf /usr/src/linux-${kernel_ver} ${pkgdir}/lib/modules/${kernel_ver}/build
+
+  mkdir -p ${pkgdir}/install
+  cat << EOF > ${pkgdir}/install/doinst.sh
+
+echo " A good idea whenever kernel modules are added or changed: "
+if [ -x sbin/depmod ]; then
+  chroot . /sbin/depmod -a ${kernel_ver} 1> /dev/null 2> /dev/null
+fi
+
+EOF
+}
+
+after_build() {
+  go_src_dir
+echo "Копирую ядро"
+  mkdir -p ${pkgdir}/boot
+  cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-${kernel_ver}
+  ln -s vmlinuz-${kernel_ver} ${pkgdir}/boot/vmlinuz
+  cp System.map ${pkgdir}/boot/System.map-${kernel_ver}
+  ln -s System.map-${kernel_ver} ${pkgdir}/boot/System.map
+  cp .config ${pkgdir}/boot/config-${kernel_ver}
+  ln -s config-${kernel_ver} ${pkgdir}/boot/config
+  modules
+}
+
+headers_prep() {
+  go_src_dir
+  make headers_check
+  make headers_install INSTALL_HDR_PATH=${pkgdir}/usr
+
+  # Copy aufs-tree manually, since we removed dirty hacks
+  if [ -f include/linux/aufs_type.h ]; then
+     install -m644 include/linux/aufs_type.h ${pkgdir}/usr/include/linux/
+  fi
+}
+
+sources_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/src/linux-${kernel_ver}
+echo "Копирование дерева исходников ядра. Это может занять около 10 минут"
+  cp -ard ./* ${pkgdir}/usr/src/linux-${kernel_ver}/
+  ( cd ${pkgdir}/usr/src/linux-${kernel_ver} && make mrproper )
+  cat .config > ${pkgdir}/usr/src/linux-${kernel_ver}/.config
+  ( cd ${pkgdir}/usr/src/linux-${kernel_ver} && make prepare && make modules_prepare )
+  ( cd ${pkgdir}/usr/src ; ln -s linux-${kernel_ver} linux )
+  # recreate config. I forgot why it was needed, but it takes no time, so let it be.
+  cat .config > ${pkgdir}/usr/src/linux-${kernel_ver}/.config
+}

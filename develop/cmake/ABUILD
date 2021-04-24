@@ -1,0 +1,32 @@
+pkgname=cmake
+pkgver=3.18.4
+pkgbuild=1
+shortdesc="A cross-platform open-source make system"
+longdesc=("CMake is used to control the software process using simple platform and compiler independed configuration files. CMake generates native makefiles and workspaces that can be used in the compiler environment of your choice. CMake's home on the web is: http://www.cmake.org")
+arch=('auto')
+
+source=("http://www.cmake.org/files/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("develop dev-util")
+
+gendeps_blacklist="usr/bin/cmake-gui"
+
+build_deps="libarchive curl shared-mime-info rhash"
+
+adddep="shared-mime-info"
+
+build() {
+	go_src_dir
+	burn_patches
+        export CXXFLAGS+=" ${CPPFLAGS}"
+	./bootstrap --prefix=/usr \
+            --system-libs \
+            --system-libs \
+	    --no-system-librhash \
+	    --no-system-jsoncpp  \
+            --mandir=/share/man \
+	    --docdir=/usr/share/doc/${pkgname}-${pkgver}
+	make -j${numjobs}
+	make DESTDIR=${pkgdir} install
+	install -Dm644 Copyright.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
+}

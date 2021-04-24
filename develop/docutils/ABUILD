@@ -1,0 +1,16 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru
+
+pkgname=docutils
+pkgver=0.7
+pkgbuild=2
+arch=('noarch')
+
+shortdesc="Docutils is an open-source text processing system for processing plaintext documentation into useful formats, such as HTML or LaTeX (Virtual package.)"
+
+tags="dev-python virtual"
+
+adddep="python-docutils"
+
+build(){
+ echo "End build"
+}

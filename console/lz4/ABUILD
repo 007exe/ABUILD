@@ -1,0 +1,21 @@
+pkgname=lz4
+pkgver=1.9.2
+pkgbuild=1
+arch="auto"
+
+# Package description
+shortdesc=("LZ4 - Extremely fast compression")
+
+# Source URL
+source=("https://github.com/lz4/lz4/archive/v${pkgver}.tar.gz")
+# Tags
+tags="sys-fs console"
+
+build_deps="gcc git"
+
+build() {
+	go_src_dir
+	make -C lib PREFIX=/usr
+	make -C programs PREFIX=/usr lz4 lz4c
+	make PREFIX=/usr DESTDIR="$pkgdir" install
+}

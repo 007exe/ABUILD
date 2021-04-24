@@ -1,0 +1,35 @@
+pkgname=ocaml
+pkgver=4.07.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="ocaml (A functional programming language)"
+longdesc=("Caml is a general-purpose programming language, designed with program safety and reliability in mind. It is very expressive, yet easy to learn and use. Caml supports functional, imperative, and object-oriented programming styles. The Objective Caml system is the main implementation of the Caml language. It features a powerful module system and a full-fledged object-oriented layer. It comes with a native-code compiler that supports numerous architectures, for high performance; a bytecode compiler, for increased portability; and an interactive loop, for experimentation and rapid development."
+"Homepage: http://caml.inria.fr/")
+source=("http://caml.inria.fr/distrib/ocaml-${pkgver%.*}/$pkgname-$pkgver.tar.gz")
+tags="develop dev-lang"
+build_deps="tk ncurses libX11 gdbm"
+
+build()
+{
+  go_src_dir
+  burn_patches
+
+  ./configure \
+    --prefix /usr \
+    --libdir /usr/lib${LIBDIRSUFFIX}/ocaml \
+    --host $ARCH-slackware-linux
+
+  sed -i -e "s/\\(BYTECCCOMPOPTS=.*\\)/\\1 ${SLKCFLAGS}/" config/Makefile
+  sed -i -e "s/\\(NATIVECCCOMPOPTS=.*\\)/\\1 ${SLKCFLAGS}/" config/Makefile
+
+  make world.opt || return 1
+  make install \
+    PREFIX=$pkgdir/usr \
+    LIBDIR=$pkgdir/usr/lib${LIBDIRSUFFIX}/ocaml \
+    MANDIR=$pkgdir/usr/man || return 1
+
+  # install license
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

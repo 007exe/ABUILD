@@ -1,0 +1,52 @@
+pkgname=fontconfig
+pkgver=2.12.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("fontconfig (Font library and tools)")
+longdesc=("Fontconfig is a library and tools designed to provide system-wide font configuration, customization, and application access. Fontconfig is written and maintained by Keith Packard.")
+
+tags=("xserver x11-utils")
+
+source=("http://www.fontconfig.org/release/$pkgname-$pkgver.tar.gz")
+
+build_deps="make gcc binutils bzip2 expat freetype pkg-config grep kernel-headers sed"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+	--libdir=/usr/lib$LIBDIRSUFFIX \
+	--mandir=/usr/man \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--disable-docs \
+	--with-add-fonts=/usr/share/fonts \
+	--with-templatedir=/etc/fonts/conf.avail \
+	--with-xmldir=/etc/fonts \
+	--with-default-fonts=/usr/share/fonts"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+
+after_build() {
+	rm -rf ${pkgdir}/usr/share/doc
+	( cd ${pkgdir}/etc/fonts/conf.d
+	
+	# FIXME: Maybe we should leave these settings to user?
+	for fontconf in \
+		20-unhint-small-vera.conf \
+		30-urw-aliases.conf \
+		30-metric-aliases.conf \
+		40-nonlatin.conf \
+		45-latin.conf \
+		49-sansserif.conf \
+		50-user.conf \
+		51-local.conf \
+		60-latin.conf \
+		65-fonts-persian.conf \
+		65-nonlatin.conf \
+		69-unifont.conf \
+		80-delicious.conf \
+		90-synthetic.conf ; do
+	    ln -sf ../conf.avail/$fontconf . || exit 1
+	done )
+}

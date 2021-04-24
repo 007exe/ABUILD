@@ -1,0 +1,37 @@
+pkgname=mtools
+pkgver=4.0.24
+pkgbuild=1
+arch=('auto')
+
+shortdesc="tools for access MS-DOS disks"
+
+longdesc=("A collection of utilities to access MS-DOS disks"
+)
+
+source=("http://ftp.gnu.org/gnu/mtools/${pkgname}-${pkgver}.tar.bz2")
+tags="sys-fs base"
+#libX11 libSM
+build_deps="texinfo"
+
+before_build()
+{
+go_src_dir
+sed -i '/^SAMPLE FILE$/s:^:# :' mtools.conf
+}
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/share/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+after_build()
+{
+install -Dm644 mtools.conf "${pkgdir}/etc/mtools.conf" || return 1
+}

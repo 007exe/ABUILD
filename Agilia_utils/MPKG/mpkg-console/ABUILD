@@ -1,0 +1,34 @@
+# Package metadata
+pkgname=mpkg-console
+pkgver=0.17
+pkgbuild=1
+arch="auto"
+
+# Package description
+shortdesc=("MPKG package system: console utilities")
+longdesc=("Console tools related to mpkg. A must-have package.")
+
+# Source URL
+source=("git:git://github.com/007exe/mpkg.git")
+# Tags
+tags="base sys-pkgtools"
+
+# Build system
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr"
+build_deps="mpkg-core cmake"
+
+build() {
+	go_src_dir
+	burn_patches
+	mkdir build
+	cd build
+	cmake $BUILD_KEYS ../console
+	make -j${numjobs}
+	make install DESTDIR=${pkgdir}
+}
+
+after_build() {
+	( cd ${pkgdir}/usr/bin ; ln -s mpkg buildpkg )
+	( cd ${pkgdir}/usr/bin ; ln -s mpkg buildsrcpkg )
+}
+

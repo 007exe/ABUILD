@@ -1,0 +1,29 @@
+pkgname=dialog
+pkgver=1.3-20200327
+pkgbuild=2
+arch=('auto')
+
+shortdesc="dialog (display dialog boxes from shell scripts) "
+source=("https://invisible-mirror.net/archives/dialog/${pkgname}-${pkgver//_/-}.tgz")
+tags="base sys-base"
+build_deps="ncurses"
+
+
+
+build()
+{
+go_src_dir
+./configure \
+--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--with-ncursesw \
+--enable-nls
+
+make DESTDIR=$pkgdir install-full
+}

@@ -1,0 +1,30 @@
+# Note: we build procps-ng instead of procps, but the package name remains the same.
+pkgname=procps
+pkgver=3.3.16
+pkgbuild=1
+arch=("auto")
+
+config_files="etc/sysctl.conf"
+
+shortdesc=("Utilities for displaying process information)")
+longdesc=("The procps package provides the classic set of utilities used to display information about the processes currently running on the machine.")
+
+tags=("base sys-base")
+source=("https://downloads.sourceforge.net/project/procps-ng/Production/procps-ng-${pkgver}.tar.xz")
+
+build_deps="ncurses pkg-config"
+
+before_build() {
+	go_src_dir
+#	echo ${pkgver} > .tarball-version
+#	./autogen.sh
+}
+
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr --bindir=/usr/bin --sbindir=/usr/bin --libdir=/usr/lib$LIBDIRSUFFIX --docdir=/usr/share/doc/${pkgname}-${pkgver} --mandir=/usr/share/man --sysconfdir=/etc --exec-prefix=/ --docdir=/usr/share/doc/${pkgname}-ng-${pkgver}"
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build() {
+	install -Dm0644 ${filedir}/sysctl.conf ${pkgdir}/etc/sysctl.conf
+}

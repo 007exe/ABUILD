@@ -1,0 +1,175 @@
+source=("http://mirror.easyname.at/kde/Attic/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+kdebindings                     | Virtual Packge
+kdegraphics                     | Virtual Packge
+kdeaccessibility                | Virtual Packge
+kdeutils                        | Virtual Packge
+kdemultimedia                   | Virtual Packge
+grantlee                        | Update =>0.4.0 => 0.5.1   Есть версии старше Для Qt5
+Polkit-kde-agent                | Пересобрался 1-0.99.0
+kde-base-artwork                | Update => 4.14.2
+kdelibs                         | Не собирается Упирается в зависимости udisks2, giflib, media-player-info и ещё в какуюто хрень
+kdepimlibs                      | Не собирается требует Kdelibs < 4.13.0
+kdebase-runtime                 | Не собирается требует Kdelibs < 4.9.95
+kde-baseapps                    | Не собирается требует Kdelibs < 4.10.60
+kactivities                     | 4.9.5 Пересобрался | Update => 
+kde-workspace                   | 4.9.5 Не собирается
+kde-workspace-gles              | 4.9.5 Пересобрался | Update => (4.11.14)
+nepomuk-core                    | Update => 4.10.0 => 4.10.5  =>
+nepomuk-widgets                 | Update => 4.14.2
+libkcompactdisc                 | Update => 4.14.3
+libkdeedu                       | Update => 4.10.5 => 4.13.3
+libkipi                         | Update => 4.14.3
+libksane                        | Update => 4.14.3
+perlkde                         | 4.9.5 Не собирается
+perlqt                          | Update => 4.14.3
+phonon-gstreamer                | Update => 4.7.1 => 4.7.2 | Новее не собирается
+prison                          | 1.0 Пересобрался | Update => 1.1.1 | Новее не собирается
+pykde4                          | Требует sip>=4.14
+qtruby                          | Update => 4.14.3
+smokegen                        | Update => 4.14.3
+smokekde                        | Update => 4.11.3 => 4.13.3
+printer-applet                  | 4.9.5 Пересобрался | Последняя версия
+smokeqt                         | скомпилился но не собрался пакет
+svgpart                         | Update => 4.14.3
+kde-l10n-ru                     | Update => 4.14.3
+kde-l10n-uk                     | Update => 4.14.3
+=====================================================Виджеты
+superkaramba                    | Update => 4.14.3
+=====================================================KDE Additional Packages
+kde-networkmanagement           | Update => 0.9.0.6
+konsole                         | Update => 4.14.3
+ark                             | Update => 4.14.3
+kmix                            | Update => 4.14.3
+libkcddb                        | Update => 4.14.3
+libkexiv2                       | Update => 4.14.3
+kdeplasma-addons                | Update => 4.14.3
+oxygen-icons                    | Update => 4.14.3
+kcalc                           | Update => 4.14.3
+kcharselect                     | Update => 4.14.3
+kde-wallpapers                  | Update => 4.14.3
+kdegraphics-strigi-analyzer     | Update => 4.14.3
+kdegraphics-thumbnailers        | Update => 4.14.3
+kdf                             | Update => 4.14.3
+kfloppy                         | Update => 4.14.3
+kolourpaint                     | Update => 4.14.3
+sweeper                         | Update => 4.14.3
+kate                            | Update => 4.10.5 =>
+okular                          | Update => 4.13.5 =>
+kdepim-runtime                  | Не собирается требует Kdelibs < 4.13.0
+kdepim                          | Не собирается требует Kdelibs < 4.13.0
+gwenview                        | 4.9.5 Пересобрался | Update =>
+bluedevil                       | 1.2.2 Пересобрался | Update =>
+kdeadmin                        | 4.9.5 Не собирается
+kdeartwork                      | 4.9.5 Не собирается
+kdenetwork                      | 4.9.5 Не собирается
+kgamma                          | 4.9.5 Не собирается
+ktorrent                        | Update => 4.3.1 Последняя версия 4х
+libktorrent                     | Update => 1.3.1
+============
+kwallet                         | Update => 4.10.5 => 4.14.3 (Начиная с 14.12.3 переименовали в kwalletmanager наверное тоже стоит это сделать)
+kwalletmanager                  | Build => 4.14.3
+===========
+yakuake                         | Build => 2.9.9
+kgpg                            | Update => 4.14.3
+kmag                            | Update => 4.14.3
+kmousetool                      | Update => 4.14.3
+korundum                        | Update => 4.14.3
+=====
+kdesdk                          | Update => 4.10.5 => | Долго собирается
+kdesdk-kioslaves                | Build => 4.14.3
+kdesdk-strigi-analyzers         | Build => 4.14.3
+kdesdk-thumbnailers             | Build => 4.14.3
+====
+========= Мультимедиа
+amarok                          | Update => 2.8.0 => Не собираются 2.8.90 => 2.9.0 Последняя версия
+k3b                             | Update => 2.0.3a =>
+audiocd-kio                     | Update => 4.14.3
+dragon                          | Update => 4.14.3
+ffmpegthumbs                    | Update => 4.14.3
+juk                             | Update => 4.14.3
+kamera                          | Update => 4.14.3
+mplayerthumbs                   | Update => 4.14.3
+kscd                            | Update => 4.14.3
+ksnapshot                       | Update => 4.14.3
+=================================== Не обновлял ===================================
+ksecrets                        | Не собирается
+libkdcraw                       | Не собирается требует libraw>=0.15.4
+jovie
+kaccessible
+kcolorchooser
+kmouth
+kremotecontrol
+mobipocket
+ktimer
+libmm-qt
+kdewebdev
+========= Игры
+kdegames
+blinken
+kanagram
+khangman
+kdeedu
+pairs
+kdetoys
+========= Обучалки
+cantor
+kalgebra
+kalzium
+kbruch
+kgeography
+kig
+kipi-plugins
+kiten
+klettres
+kmplot
+kstars
+ktouch
+kturtle
+kwordquiz
+marble
+parley
+rocs
+step
+kross-interpreters
+=================================== Нет ABUILD
+agilia-wallpapers-10.4-noarch-1.txz
+DMZ-cursors 
+skanlite
+kruler
+ksaneplugin
+============================ userland
+calligra
+customizable-weather-plasmoid
+dolphin-box-plugin-9999_git20110822
+dolphin-dropbox-plugin-1.2_hg20121017
+dropbox-servicemenu
+guidance-power-manager
+kcm-gtk
+kde-gtk-config
+kde-workspace-gles
+kde4-plasmoid-ihatethecashew
+kde4-synaptiks
+kdevelop
+kdevplatform
+kile
+konq-plugins
+kopete-antispam
+krename
+ksuperkey
+openscad
+phonon-vlc
+phonon-xine
+plasma-active
+plasma-glassified
+plasmoid-adjustable-clock
+plasmoid-application-name
+plasmoid-daisy
+plasmoid-eventlist
+plasmoid-geek-clock
+plasmoid-kwin-button-applet
+plasmoid-plasma-widget-menubar
+plasmoid-smooth-tasks-wip
+plasmoid-toggle-compositing
+plasmoid-yawp
+serverstatuswidget
+soundkonverter

@@ -1,0 +1,21 @@
+pkgname=orc
+pkgver=0.4.32
+pkgbuild=1
+arch=('auto')
+
+shortdesc="The Oil Runtime Compiler (and OIL stands for Optimized Inner Loops)"
+
+source=("https://gitlab.freedesktop.org/gstreamer/orc/-/archive/${pkgver}/orc-${pkgver}.tar.bz2")
+
+tags="develop dev-util"
+
+build_deps="glibc valgrind meson"
+
+build()
+{
+  go_src_dir
+  meson build -Dprefix=/usr
+  meson compile -C build
+  meson test -C build --print-errorlogs
+  DESTDIR="$pkgdir" meson install -C build
+}
