@@ -17,8 +17,8 @@ tags="base sys-libs"
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
 -DSYSCONF_INSTALL_DIR=/etc \
 -DLIB_SUFFIX=${LIBDIRSUFFIX} \
--DMAN_INSTALL_DIR=/usr/man"
-build_deps="glibc-solibs gcc cmake"
+-DMAN_INSTALL_DIR=/usr/share/man"
+build_deps="glibc gcc cmake"
 
 build() {
 	go_src_dir

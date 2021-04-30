@@ -22,7 +22,7 @@ BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr -DLIB_SUFFIX=$LIBDIRSUFFIX"
 
 build() {
 	go_src_dir
-	git checkout delayedremove
+#	git checkout delayedremove
 	burn_patches
 	mkdir build
 	cd build

@@ -1,17 +1,16 @@
 pkgname=mkpkg
-pkgver=1.3.4
+pkgver=1.3.5
 pkgbuild=1
 arch=('noarch')
 shortdesc="mkpkg: AgiliaLinux package building tool"
 
-source="https://github.com/aix27249/mkpkg/archive/${pkgver}.tar.gz"
+source="https://github.com/007exe/mkpkg/archive/refs/tags/v${pkgver}.tar.gz"
 
 tags="dev-util develop"
 
 build_deps="cmake sed"
 
-# Убрал из зависимостей rpm хз зачем его добавили
-adddep="mpkg-console>=0.16 mkpkg-vercmp>=1.0 fakeroot python bash sed grep tar wget"
+adddep="mpkg-console mkpkg-vercmp fakeroot python bash sed grep tar wget"
 
 config_files="etc/mkpkg.conf"
 
