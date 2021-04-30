@@ -2,7 +2,7 @@
 
 pkgname=ncurses
 pkgver=6.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("ncurses (CRT screen handling and optimization package)")
@@ -10,9 +10,9 @@ longdesc=("The ncurses (new curses) library is a free software emulation of curs
 
 tags=("libs sys-libs compat32")
 
-source=("ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/pub/gnu/ncurses/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc-solibs libtermcap"
+build_deps="glibc libtermcap"
 if [ "$ARCH" = "x86_64" ] ; then
 	X86_64OPTS=" --with-chtype=long --with-mmask-t=long "
 fi
