@@ -1,18 +1,22 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
+#ABUILD created by/создан: chip
 pkgname=python
-pkgver=3.8.6
-pkgbuild=3
+pkgver=3.9.4
+pkgbuild=1
 arch=('auto')
 
 shortdesc="Next generation of the python high-level scripting language"
 
 source=("http://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz")
 
+pkglist="python-tests"
+
 lover=${pkgver%.*}
 
 tags="develop dev-python"
 
 build_deps="make gcc grep sqlite coreutils valgrind"
+
+shopt -s extglob
 
 before_build(){
   go_src_dir
@@ -55,20 +59,20 @@ build() {
               --with-system-ffi \
               --with-system-libmpdec \
               --enable-loadable-sqlite-extensions \
-              --without-ensurepip
+              --without-ensurepip \
+	      --with-platlibdir=lib${LIBDIRSUFFIX} \
+	      --with-tzpath=/usr/share/zoneinfo
 	make -j5
 
   # Obtain next free server number for xvfb-run; this even works in a chroot environment.
-  export servernum=99
- # while ! xvfb-run -a -n "$servernum" /bin/true 2>/dev/null; do servernum=$((servernum+1)); done
-
- # LC_CTYPE=en_US.UTF-8 xvfb-run -s "-screen 0 1920x1080x16 -ac +extension GLX" -a -n "$servernum" make EXTRA_CFLAGS="$CFLAGS"
-  
+#  export servernum=99
+#  while ! xvfb-run -a -n "$servernum" /bin/true 2>/dev/null; do servernum=$((servernum+1)); done
+#  LC_CTYPE=en_US.UTF-8 xvfb-run -s "-screen 0 1920x1080x16 -ac +extension GLX" -a -n "$servernum" make EXTRA_CFLAGS="$CFLAGS"
 }
 
 after_build(){
   go_src_dir
-  
+
   # Hack to avoid building again
   sed -i 's/^all:.*$/all: build_all/' Makefile
 
@@ -76,7 +80,7 @@ after_build(){
   CFLAGS="${CFLAGS/-O2/-O3}"
 
   make DESTDIR="${pkgdir}" EXTRA_CFLAGS="$CFLAGS" install
-  
+
   # Split tests
   rm -r "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/{test,ctypes/test,distutils/tests,idlelib/idle_test,lib2to3/tests,sqlite3/test,tkinter/test,unittest/test}
 
@@ -86,9 +90,37 @@ after_build(){
   ln -s idle3                 "${pkgdir}"/usr/bin/idle
   ln -s pydoc3                "${pkgdir}"/usr/bin/pydoc
   ln -s python${lover}.1 "${pkgdir}"/usr/share/man/man1/python.1
-  
+
     # some useful "stuff" FS#46146
   install -dm755 "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/python${_pybasever}/Tools/{i18n,scripts}
   install -m755 Tools/i18n/{msgfmt,pygettext}.py "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/python${_pybasever}/Tools/i18n/
   install -m755 Tools/scripts/{README,*py} "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/python${_pybasever}/Tools/scripts/
+}
+
+python-tests() {
+  pkgname=python-tests
+  tags=("develop dev-python")
+  shortdesc="Regression tests packages for Python"
+  adddep="python"
+}
+
+python-tests_prep() {
+go_src_dir
+make DESTDIR="${pkgdir}" EXTRA_CFLAGS="$CFLAGS" libinstall
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/
+rm -r !(test|ctypes|distutils|idlelib|lib2to3|sqlite3|tkinter|unittest)
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/ctypes
+rm -r -f !(test)
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/distutils
+rm -r -f !(tests)
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/idlelib
+rm -r -f !(idle_test)
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/lib2to3
+rm -r -f !(tests)
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/sqlite3
+rm -r -f !(test)
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/tkinter
+rm -r -f !(test)
+cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/unittest
+rm -r -f !(test)
 }
