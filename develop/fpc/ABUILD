@@ -1,9 +1,9 @@
 #ABUILD created by/создан: khvalera, khvalera at narod.ru
 pkgname=fpc
 pkgver=3.2.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
-gdbver=9.2
+gdbver=10.1
 
 shortdesc="Free Pascal Compiler (FPC)"
 
@@ -90,6 +90,7 @@ build() {
   make NOGDB=1 \
   INSTALL_PREFIX=${pkgdir}/usr \
   INSTALL_DOCDIR=${pkgdir}/usr/share/doc/${pkgname}-${pkgver} install
+  mv "$pkgdir"/usr/man "$pkgdir"/usr/share/
   echo "End build"
 }
 
