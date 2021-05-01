@@ -11,7 +11,9 @@ tags=("xapps net-ftp")
 
 source=("https://repo.yandex.ru/yandex-disk/deb/pool/main/y/yandex-disk/yandex-disk_${pkgver}_amd64.deb")
 
-build_deps="zlib libarchive"
+build_deps=" gcc-libs zlib libarchive"
+
+removedep="gcc"
 
 build() {
   go_src_dir
