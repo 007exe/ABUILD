@@ -1,0 +1,51 @@
+pkgname=pkgname	#Имя пакета
+pkgver=1	#Версия программы
+pkgbuild=1	#Номер сборки пакета
+arch=('auto')	#Архитектура auto, x86, x86_64
+
+shortdesc="Короткое описание пакета"
+longdesc="Полное описание пакета"
+#Ссылка на исходники могут скачиватся из нескольких источников
+source=("http://downloads/.../../${pkgname}-${pkgver}.tar.bz2"
+"git:https://github.com/.../${pkgname}.git")
+#
+patch_opts=("")
+#Длинный и короткий тег
+tags="games games-board"
+#Зависимости, необходимые только для сборки пакета
+build_deps="gcc cmake make"
+#Данный пакет заменяет пакет в списке
+provides="pkgname"
+#Данный пакет конфликтует с пакетами в списке
+conflicts="pkgname"
+#Добавить зависимости. mkpkg автоматически генерирует зависимости но при необходимости их можно добавить вручную
+adddep="pkgname1>=1.9.1 pkgname2>=1.1.6 pkgname3"
+#Удалить зависимости. Иногда mkpkg может автоматически добвить лишние зависимости их можно удалить вручную
+removedep="pkgname1>=1.9.1 pkgname2>=1.1.6 pkgname3"
+#Список пакетов которые будут также собраны сборка мультипакета
+pkglist="pkgname1 pkgname2"
+#Set number of jobs while compliling, otherwise it'll be autodetected
+#numjobs=1
+#additional files should be copied into /usr/docs/${pkgname} dir from sources
+docs=
+gendeps_blacklist=
+#Файл конфигурации программы перед упаковкой к нему добавится префикс nev
+config_files="etc/pkgname/pkgname.config"
+
+#Данная функция запускается первой полезна для подготовки исходников (наложение патчей, подмена или редактирование файлов...)
+before_build(){
+  go_src_dir #Пеерйти в каталог с исходниками
+}
+
+#В данноой функции описывается процесс компиляции
+build() {
+  go_src_dir #Пеерйти в каталог с исходниками
+  ./configure
+  make
+}
+
+#Данная функция вызывается последней полезна если необходимо создать символические ссылки переместить или удалить файлы в пакете
+after_build(){
+  go_src_dir #Пеерйти в каталог с исходниками
+  make DESTDIR="$pkgdir" install
+}
