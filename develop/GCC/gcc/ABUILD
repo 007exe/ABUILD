@@ -2,7 +2,7 @@
 # Свмый страшный пакет
 pkgname=gcc
 pkgver=11.1.0
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("The GNU Compiler Collection - C and C++ frontends")
@@ -26,7 +26,8 @@ _majorver=${pkgver%%.*}
 
 gcc-libs() {
   pkgname=gcc-libs
-  shortdesc="Runtime libraries that comes with gcc"
+  shortdesc=("Runtime libraries that comes with gcc")
+  longdesc=("Runtime libraries that comes with gcc")
 }
 
 gcc-fortran() {
@@ -65,8 +66,8 @@ gcc-d() {
 #}
 
 before_build() {
-	go_src_dir
-	burn_patches
+  go_src_dir
+  burn_patches
 
 # Do not run fixincludes
   sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
@@ -79,7 +80,7 @@ before_build() {
 }
 
 build() {
-	go_src_dir
+  go_src_dir
 
   mkdir -p gcc.build.lnx
   cd gcc.build.lnx
@@ -125,9 +126,6 @@ build() {
                --disable-werror
                gdc_include_dir=/usr/include/dlang/gdc \
 
-## --gdc_include_dir=/usr/include/dlang/gdc
-## --docdir=/usr/share/doc/${pkgname}-${pkgver} \
-
   make -j${numjobs}
 
 # make documentation
@@ -145,6 +143,7 @@ echo "=====> make documentation"
   make -C ${TARGET}/libgcc DESTDIR="$pkgdir" install
 #make -C ${TARGET}/32/libgcc DESTDIR="$pkgdir" install
 #rm -f "$pkgdir"/usr/lib{,32}/libgcc_s.so*
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libgcc_s.so*
   rm -rf "$pkgdir"/usr/lib${LIBDIRSUFFIX}/gcc/${TARGET}/lib*
 
   make -C ${TARGET}/libstdc++-v3/src		DESTDIR="$pkgdir" install
@@ -161,6 +160,7 @@ echo "=====> make documentation"
   mv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libstdc++.so.6.*-gdb.py ${pkgdir}/usr/share/gdb/auto-load/usr/lib${LIBDIRSUFFIX}/
 
 #rm "$pkgdir"/usr/lib{,32}/libstdc++.so*
+ rm "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libstdc++.so*
 
   make DESTDIR="$pkgdir" install-fixincludes
   make -C gcc DESTDIR="$pkgdir" install-mkheaders
@@ -215,24 +215,13 @@ echo "=====> make documentation"
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION \
     "$pkgdir/usr/share/licenses/$pkgname/"
 
-###########################################################################################################
-# Хрен его знает но почему то в пакет gcc попадают либы которые должны быть только в gcc-libs
-# что приводит к поломкам зависимостей
-# для исправления этой проблемы служит этот костыль.
-###########################################################################################################
-echo "Fix gcc удаляю илшние то что не должно было попасть в пакет gcc, а должно находится в gcc-libs"
-  rm -f $pkgdir/usr/lib${LIBDIRSUFFIX}/libstdc++.*
+# Fix
+  echo "Fix gcc: Удалить лишние файлы и каталоги"
   rm -f $pkgdir/usr/lib${LIBDIRSUFFIX}/libcc1.la
-  rm -f $pkgdir/usr/lib${LIBDIRSUFFIX}/libgcc_s.so
-  rm -f $pkgdir/usr/lib${LIBDIRSUFFIX}/libgcc_s.so.1
   rm -f $pkgdir/usr/lib${LIBDIRSUFFIX}/libsupc++.la
   rm -f "$pkgdir"/usr/share/info/dir
-###########################################################################################################
-}
 
-###########################################################################################################
-# Упаковка паковка gcc-libs
-###########################################################################################################
+}
 
 gcc-libs_prep() {
 	cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
@@ -270,27 +259,14 @@ gcc-libs_prep() {
   install -Dm644 "$srcdir/gcc-${pkgver}/COPYING.RUNTIME" \
     "$pkgdir/usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION"
 
-######################################################
-echo "Fix удалить .a и .la и лишние файлы"
-rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*.a
-rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*.la
-rm -f "$pkgdir"/usr/share/info/dir
-rm -r -f "$pkgdir"/usr/lib64/gcc
-rm -r -f "$pkgdir"/usr/usr/lib
-######################################################
+# Fix
+  echo "Fix gcc-libs: Удалить лишние файлы и каталоги"
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*.a
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*.la
+  rm -f "$pkgdir"/usr/share/info/dir
+  rm -r -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/gcc
+  rm -r -f "$pkgdir"/usr/usr/lib
 }
-
-###########################################################################################################
-# Упаковка GCC
-###########################################################################################################
-
-after_build() {
-echo "after"
-}
-
-###########################################################################################################
-# Упаковка паковка gcc-fortran
-###########################################################################################################
 
 gcc-fortran_prep() {
 	cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
@@ -310,20 +286,15 @@ gcc-fortran_prep() {
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION \
     "$pkgdir/usr/share/licenses/$pkgname/"
 
-######################################################
-echo "Fix лишние файлыи каталоги"
-rm -r -f "$pkgdir"/usr/include
-rm -f "$pkgdir"/usr/lib64/gcc/x86_64-slackware-linux/11.1.0/libcaf_single.la
-rm -f "$pkgdir"/usr/share/info/dir
-######################################################
+# Fix
+  echo "Fix gcc-fortran: Удалить лишние файлы и каталоги"
+  rm -r -f "$pkgdir"/usr/include
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/gcc/${TARGET}/${pkgver}/libcaf_single.la
+  rm -f "$pkgdir"/usr/share/info/dir
 }
 
-###########################################################################################################
-# Упаковка паковка gcc-objc
-###########################################################################################################
-
 gcc-objc_prep() {
-	cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
+  cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
 
   make DESTDIR="$pkgdir" -C ${TARGET}/libobjc install-headers
   install -dm755 "$pkgdir/${_libdir}"
@@ -333,16 +304,14 @@ gcc-objc_prep() {
   install -d "$pkgdir/usr/share/licenses/$pkgname/"
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION \
     "$pkgdir/usr/share/licenses/$pkgname/"
-# Fix Перемещение heder хрен его знает ведь хедеры должны устанавливатся в usr/lib${LIBDIRSUFFIX} н оу порно лезут в usr/lib
-mv "$pkgdir"/usr/lib "$pkgdir"/usr/lib${LIBDIRSUFFIX}
+# Fix Перемещение heders хрен его знает ведь хедеры должны быть устанавливатся в usr/lib${LIBDIRSUFFIX} но они упорно лезут в usr/lib
+ echo "Fix gcc-objc: Переместить heders"
+ mv -f "$pkgdir"/usr/lib "$pkgdir"/usr/lib${LIBDIRSUFFIX}
 }
 
-###########################################################################################################
-# Упаковка паковка gcc-ada
-###########################################################################################################
 
 gcc-ada_prep() {
-	cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx/gcc
+  cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx/gcc
 
   make DESTDIR="$pkgdir" ada.install-{common,info}
   install -m755 gnat1 "$pkgdir/${_libdir}"
@@ -373,16 +342,12 @@ gcc-ada_prep() {
   install -d "$pkgdir/usr/share/licenses/$pkgname/"
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION \
     "$pkgdir/usr/share/licenses/$pkgname/"
-######################################################
-echo "Fix gcc-ada удалить лишние файлыи каталоги"
-rm -r -f "$pkgdir"/usr/include
-rm -f "$pkgdir"/usr/share/info/dir
-######################################################
-}
 
-###########################################################################################################
-# Упаковка паковка gcc-go
-###########################################################################################################
+# Fix 
+  echo "Fix gcc-ada: Удалить лишние файлы и каталоги"
+  rm -r -f "$pkgdir"/usr/include
+  rm -f "$pkgdir"/usr/share/info/dir
+}
 
 gcc-go_prep() {
 	cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
@@ -393,6 +358,7 @@ gcc-go_prep() {
   make -C gcc DESTDIR="$pkgdir" go.install-{common,man,info}
 
 ##  rm -f "$pkgdir"/usr/lib{,32}/libgo.so*
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libgo.so*
   install -Dm755 gcc/go1 "$pkgdir/${_libdir}/go1"
 
 # Install Runtime Library Exception
@@ -400,17 +366,12 @@ gcc-go_prep() {
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION \
     "$pkgdir/usr/share/licenses/$pkgname/"
 
-######################################################
-echo "Fix gcc-go удалить лишние файлыи каталоги"
-rm -r -f "$pkgdir"/usr/include
-rm -f "$pkgdir"/usr/lib64/libgo.la
-rm -f "$pkgdir"/usr/share/info/dir
-######################################################
+# Fix
+  echo "Fix gcc-go: Удалить лишние файлы и каталоги"
+  rm -r -f "$pkgdir"/usr/include
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libgo.la
+  rm -f "$pkgdir"/usr/share/info/dir
 }
-
-###########################################################################################################
-# Упаковка паковка gcc-d
-###########################################################################################################
 
 gcc-d_prep() {
   cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
@@ -432,17 +393,12 @@ gcc-d_prep() {
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION \
     "$pkgdir/usr/share/licenses/$pkgname/"
 
-######################################################
-echo "Fix gcc-d удалить лишние файлыи каталоги"
-rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libgdruntime.la
-rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libgphobos.la
-rm -f "$pkgdir"/usr/share/info/dir
-######################################################
+# Fix
+  echo "Fix gcc-d: Удалить лишние файлы и каталоги"
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libgdruntime.la
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libgphobos.la
+  rm -f "$pkgdir"/usr/share/info/dir
 }
-
-###########################################################################################################
-# Упаковка паковка gcc-lib32
-###########################################################################################################
 
 ##gcc-lib32_prep() {
 ##	cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
