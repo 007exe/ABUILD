@@ -1,8 +1,0 @@
-#!/sbin/openrc-run
-
-command=/usr/bin/yandex-disk
-command_args="start -c %h/.config/yandex-disk/config.cfg"
-pidfile=
-
-name="yandex-disk"
-description="Yandex-Disk service"
