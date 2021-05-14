@@ -9,19 +9,20 @@ tags="sys-apps base"
 
 build_deps="zlib"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/share/man \
-	--program-prefix= \
-	--program-suffix= \
-	--enable-elf \
-	--enable-elf-core \
-	--enable-largefile \
-	--enable-fsect-man5"
+build() {
+  go_src_dir
+# Fix linking libmagic (vfork needs libpthread)
+  CFLAGS+=" -pthread"
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --datadir=/usr/share/file \
+    --enable-fsect-man5 \
+    --enable-libseccomp
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make DESTDIR="$pkgdir" install
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
 
