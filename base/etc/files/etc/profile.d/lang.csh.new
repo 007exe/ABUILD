@@ -1,0 +1,16 @@
+#!/bin/sh
+# Russian locale
+setenv LANG=ru_RU.UTF-8
+setenv LC_CTYPE=ru_RU.UTF-8
+setenv LC_NUMERIC=ru_RU.UTF-8
+setenv LC_TIME=ru_RU.UTF-8
+setenv LC_COLLATE=C
+setenv LC_MONETARY=ru_RU.UTF-8
+setenv LC_MESSAGES=ru_RU.UTF-8
+setenv LC_PAPER=ru_RU.UTF-8
+setenv LC_NAME=ru_RU.UTF-8
+setenv LC_ADDRESS=ru_RU.UTF-8
+setenv LC_TELEPHONE=ru_RU.UTF-8
+setenv LC_MEASUREMENT=ru_RU.UTF-8
+setenv LC_IDENTIFICATION=ru_RU.UTF-8
+setenv LESSCHARSET=UTF-8

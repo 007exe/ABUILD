@@ -1,0 +1,12 @@
+# Dynamic linker/loader configuration.
+# See ld.so(8) and ldconfig(8) for details.
+
+/usr/lib
+/usr/lib64
+/usr/local/lib
+/usr/local/lib64
+/usr/x86_64-slackware-linux/lib
+/opt/lib
+/opt/lib64
+
+include /etc/ld.so.conf.d/*.conf

@@ -1,0 +1,92 @@
+# /etc/profile: This file contains system-wide defaults used by
+# all Bourne (and related) shells.
+
+# Set the values for some environment variables:
+export MINICOM="-c on"
+export MANPATH=/usr/local/man:/usr/man
+export INFOPATH=/usr/local/info:/usr/info
+export HOSTNAME="`hostname`"
+export LESSOPEN="|lesspipe.sh %s"
+export LESS="-M"
+
+# If the user doesn't have a .inputrc, use the one in /etc.
+if [ ! -r "$HOME/.inputrc" ]; then
+  export INPUTRC=/etc/inputrc
+fi
+
+# Set the default system $PATH:
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/games"
+# From 2010.07, all users should share same PATH variable.
+PATH=/usr/local/sbin:/usr/sbin:/sbin:$PATH
+
+# I had problems with the backspace key using 'eval tset' instead of 'TERM=',
+# but you might want to try it anyway instead of the section below it.  I
+# think with the right /etc/termcap it would work.
+# eval `tset -sQ "$TERM"`
+
+# Set TERM to linux for unknown type or unset variable:
+if [ "$TERM" = "" -o "$TERM" = "unknown" ]; then
+ TERM=linux
+fi
+
+# Set ksh93 visual editing mode:
+if [ "$SHELL" = "/bin/ksh" ]; then
+  VISUAL=emacs
+#  VISUAL=gmacs
+#  VISUAL=vi
+fi
+
+
+# Set a default shell prompt:
+
+#PS1='`hostname`:`pwd`# '
+if [ "$SHELL" = "/bin/pdksh" ]; then
+ PS1='! $ '
+elif [ "$SHELL" = "/bin/ksh" ]; then
+ PS1='! ${PWD/#$HOME/~}$ '
+elif [ "$SHELL" = "/bin/zsh" ]; then
+ PS1='%n@%m:%~%# '
+elif [ "$SHELL" = "/bin/ash" ]; then
+ PS1='$ '
+else
+# Non-color one
+# PS1='\u@\h:\w\$ ' 
+# Color one, like in gentoo.
+ PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\]:\w\$\[\033[00m\] '
+fi
+PS2='> '
+export PATH DISPLAY LESS TERM PS1 PS2
+
+# Default umask.  A umask of 022 prevents new files from being created group
+# and world writable.
+umask 022
+
+# Notify user of incoming mail.  This can be overridden in the user's
+# local startup file (~/.bash.login or whatever, depending on the shell)
+if [ -x /usr/bin/biff ]; then
+ biff y 2> /dev/null
+fi
+
+# Append any additional sh scripts found in /etc/profile.d/:
+for profile_script in /etc/profile.d/*.sh ; do
+  if [ -x $profile_script ]; then
+    . $profile_script
+  fi
+done
+unset profile_script
+
+# For non-root users, add the current directory to the search path:
+# UPD by aix: BAD, VERY BAD IDEA. So, it is disabled.
+#if [ ! "`id -u`" = "0" ]; then
+# PATH="$PATH:."
+#fi
+
+# Color man
+export LESS_TERMCAP_mb=$'\E[01;31m' 
+export LESS_TERMCAP_md=$'\E[36;01m' 
+export LESS_TERMCAP_me=$'\E[0m' 
+export LESS_TERMCAP_se=$'\E[0m' 
+export LESS_TERMCAP_so=$'\E[47;30m' 
+export LESS_TERMCAP_ue=$'\E[0m' 
+export LESS_TERMCAP_us=$'\E[01;32m'
+
