@@ -1,13 +1,14 @@
 pkgname=bc
-pkgver=2.1.3
+pkgver=4.0.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An arbitrary precision calculator language")
+shortdesc="An arbitrary precision calculator language"
+longdesc="This is an implementation of the POSIX bc calculator that implements GNU bc extensions, as well as the period."
 
 tags=("console sys-devel")
 
-source=("https://github.com/gavinhoward/bc/archive/${pkgver}/bc-${pkgver}.tar.gz")
+source=("https://github.com/gavinhoward/bc/releases/download/${pkgver}/bc-${pkgver}.tar.xz")
 
 build_deps="readline"
 
