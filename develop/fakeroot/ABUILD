@@ -1,5 +1,5 @@
 pkgname=fakeroot
-pkgver=1.24
+pkgver=1.25.3
 pkgbuild=1
 arch=('auto')
 
@@ -12,13 +12,31 @@ build_deps="glibc"
 
 adddep="sed util-linux-ng bash coreutils"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="-prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/share/man \
-	--with-ipc=sysv \
-	--docdir=/usr/share/doc/$pkgname-$pkgver"
+build() {
+  go_src_dir
+  burn_patches
 
+# always force absolute path for LD_PRELOAD
+  sed -i scripts/fakeroot.in -e 's/@LDPRELOADABS@/1/'
+
+# don't build translated manpages
+  sed -i doc/Makefile.am -e '/SUBDIRS/d'
+
+  ./bootstrap
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}/libfakeroot \
+    --disable-static \
+    --with-ipc=sysv \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --mandir=/usr/share/man
+
+  make
+  make DESTDIR="$pkgdir" install
+  install -dm0755 "$pkgdir/etc/ld.so.conf.d/"
+
+  echo '/usr/lib/libfakeroot' > "$pkgdir/etc/ld.so.conf.d/fakeroot.conf"
+
+# install README for sysv/tcp usage
+  install -Dm0644 README "$pkgdir/usr/share/doc/$pkgname/README"
+}
