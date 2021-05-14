@@ -1,6 +1,6 @@
 # Package metadata
 pkgname=mpkg-core
-pkgver=0.17
+pkgver=0.17.1
 pkgbuild=1
 arch="auto"
 
@@ -18,7 +18,7 @@ tags="base sys-pkgtools"
 adddep="mpkg-i18n tar>=1.22 xz>=4.999 gzip sed wget"
 build_deps="nwidgets mpkgsupport cmake gcc"
 # Build system
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr -DLIB_SUFFIX=$LIBDIRSUFFIX"
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}"
 
 build() {
 	go_src_dir

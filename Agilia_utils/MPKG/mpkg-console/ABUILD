@@ -1,6 +1,6 @@
 # Package metadata
 pkgname=mpkg-console
-pkgver=0.17
+pkgver=0.17.1
 pkgbuild=1
 arch="auto"
 
@@ -14,7 +14,7 @@ source=("git:git://github.com/007exe/mpkg.git")
 tags="base sys-pkgtools"
 
 # Build system
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr"
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}"
 build_deps="mpkg-core cmake"
 
 build() {

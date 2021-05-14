@@ -1,6 +1,6 @@
 # Package metadata
 pkgname=mpkgsupport
-pkgver=0.17
+pkgver=0.17.1
 pkgbuild=1
 arch="auto"
 
@@ -16,7 +16,7 @@ tags="base sys-libs"
 
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
 -DSYSCONF_INSTALL_DIR=/etc \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
 -DMAN_INSTALL_DIR=/usr/share/man"
 build_deps="glibc gcc cmake"
 
@@ -29,4 +29,3 @@ build() {
 	make -j${numjobs}
 	make install DESTDIR=${pkgdir}
 }
-

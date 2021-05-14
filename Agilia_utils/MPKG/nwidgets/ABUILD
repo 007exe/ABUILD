@@ -1,7 +1,7 @@
 # Package metadata
 pkgname=nwidgets
-pkgver=0.17
-pkgbuild=2
+pkgver=0.17.1
+pkgbuild=1
 arch="auto"
 
 # Package description
@@ -18,7 +18,7 @@ build_deps="mpkgsupport ncurses cmake"
 # Build system
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
 -DSYSCONF_INSTALL_DIR=/etc \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
 -DMAN_INSTALL_DIR=/usr/share/man"
 
 build() {
