@@ -1,0 +1,25 @@
+pkgname=mpfr
+pkgver=4.1.0
+pkgbuild=3
+arch=("auto")
+
+shortdesc="mpfr (Multiple-Precision Floating-Point Reliable Library)"
+longdesc="The MPFR library is a C library for multiple-precision floating-point computations with exact rounding (also called correct rounding). It is based on the GMP multiple-precision library. The main goal of MPFR is to provide a library for multiple-precision floating-point computation which is both efficient and has well-defined semantics. It copies the good ideas from the ANSI/IEEE-754 standard for double-precision floating-point arithmetic (53-bit mantissa)."
+
+tags=("dev-libs libs")
+
+build_deps="gmp"
+
+source=("https://ftp.gnu.org/gnu/mpfr/mpfr-${pkgver}.tar.xz")
+
+build() {
+  go_src_dir
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-thread-safe \
+    --enable-shared
+  make DESTDIR="$pkgdir" install
+
+# Не могу понять почему gcc линкуется с /usr/lib64/libmpfr.so.4 в место нового /usr/lib64/libmpfr.so
+   ln -n $pkgdir/usr/lib64/libmpfr.so $pkgdir/usr/lib64/libmpfr.so.4
+}
