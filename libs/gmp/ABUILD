@@ -1,37 +1,23 @@
-#ABUILD created by: khvalera, khvalera at narod.ru 
 pkgname=gmp
 pkgver=6.2.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="gmp (GNU multiple precision arithmetic library)"
+longdesc="A free library for arbitrary precision arithmetic"
 
-source=("ftp://ftp.gnu.org/gnu/gmp/gmp-${pkgver}.tar.bz2")
+source=("https://gmplib.org/download/gmp/gmp-${pkgver}.tar.xz")
 
 tags="libs dev-libs"
 
 build_deps="gcc-libs"
 
-if [ "$ARCH" = "i686" ]; then
-  export ABI=32
-else
-  export ABI=64
-fi
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---build=${CHOST} \
---enable-cxx \
---enable-fat"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-after_build() {
+build() {
   go_src_dir
-  # Do check, let it be.
-  make check || exit 1
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-cxx \
+    --enable-fat
+  make DESTDIR="${pkgdir}" install
 }
