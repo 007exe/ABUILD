@@ -1,28 +1,27 @@
 pkgname=gdbm
-pkgver=1.18.1
+pkgver=1.19
 pkgbuild=1
 arch=('auto')
 
-shortdesc="GNU database library"
+shortdesc="A GNU set of database routines which use extensible hashing"
+longdesc="Gdbm is a GNU database indexing library, including routines which use extensible hashing.  Gdbm works in a similar way to standard UNIX dbm routines. Gdbm is useful for developers who write C applications and need access to a simple and efficient database or who are building C applications which will use such a database"
+
 source=("ftp://prep.ai.mit.edu/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
 tags="sys-libs libs"
-BUILD_SYSTEM="autotools"
-build_deps="glibc-solibs"
+
+build_deps="glibc"
+
 adddep="bash"
 
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--enable-libgdbm-compat"
-
-after_build() {
-	# For compatibility (FIXME: do we really need this?)
-	install -dm755 "${pkgdir}"/usr/include/gdbm
-	ln -sf ../gdbm.h "${pkgdir}"/usr/include/gdbm/gdbm.h
-	ln -sf ../ndbm.h "${pkgdir}"/usr/include/gdbm/ndbm.h
-	ln -sf ../dbm.h  "${pkgdir}"/usr/include/gdbm/dbm.h
-
-} 
+build() {
+  go_src_dir
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --enable-libgdbm-compat
+  make
+  make DESTDIR=${pkgdir} install
+}
