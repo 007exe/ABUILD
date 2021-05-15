@@ -1,10 +1,10 @@
 pkgname=gperf
 pkgver=3.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("gperf (a perfect hash function generator)")
-longdesc=("gperf is a perfect hash function generator written in C++. It transforms an n element user-specified keyword set W into a perfect hash function F. gperf currently generates the reserved keyword recognizer for lexical analyzers in several production and research compilers and language processing tools, including GNU C, GNU C++, GNU Java, GNU Pascal, GNU Modula 3, and GNU indent. gperf was written by by Douglas C. Schmidt and Bruno Haible.")
+shortdesc="Perfect hash function generator"
+longdesc="gperf is a perfect hash function generator written in C++. It transforms an n element user-specified keyword set W into a perfect hash function F. gperf currently generates the reserved keyword recognizer for lexical analyzers in several production and research compilers and language processing tools, including GNU C, GNU C++, GNU Java, GNU Pascal, GNU Modula 3, and GNU indent. gperf was written by by Douglas C. Schmidt and Bruno Haible."
 
 tags=("develop dev-util")
 
@@ -12,8 +12,12 @@ source=("http://ftp.gnu.org/pub/gnu/gperf/${pkgname}-${pkgver}.tar.gz")
 
 build_deps="glibc gcc"
 
-
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/share/man --sysconfdir=/etc --docdir=/usr/share/doc/gperf-${pkgver}"
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --docdir=/usr/share/doc/
+  make
+  make DESTDIR="${pkgdir}" install
+}
