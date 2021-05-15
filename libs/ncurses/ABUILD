@@ -1,6 +1,6 @@
 pkgname=ncurses
 pkgver=6.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc="CRT screen handling and optimization package"
@@ -37,6 +37,23 @@ build() {
 
 after_build() {
   go_src_dir
+
+# fool packages looking to link to non-wide-character ncurses libraries
+  for lib in ncurses ncurses++ form panel menu; do
+    echo "INPUT(-l${lib}w)" > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib${lib}.so
+    ln -sv ${lib}w.pc ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/${lib}.pc
+  done
+
+  for lib in tic tinfo; do
+    echo "INPUT(libncursesw.so.${pkgver:0:1})" > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib${lib}.so
+    ln -sv libncursesw.so.${pkgver:0:1} ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib${lib}.so.${pkgver:0:1}
+    ln -sv ncursesw.pc ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/${lib}.pc
+  done
+
+# some packages look for -lcurses during build
+  echo 'INPUT(-lncursesw)' > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcursesw.so
+  ln -s libncurses.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcurses.so
+
   cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}
   ln -sv libncursesw.so.${pkgver:0:1} libncurses.so.6
 }
