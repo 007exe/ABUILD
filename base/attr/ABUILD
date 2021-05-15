@@ -1,6 +1,6 @@
 pkgname=attr
-pkgver=2.4.47
-pkgbuild=3
+pkgver=2.5.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tools for using extended attributes on filesystems")
@@ -9,26 +9,26 @@ longdesc=("This package contains a set of tools for manipulating extended attrib
 tags=("base sys-apps compat32")
 build_deps="glibc-solibs autoconf"
 
-source=("http://download.savannah.gnu.org/releases/attr/attr-$pkgver.src.tar.gz")
+source=("http://download.savannah.gnu.org/releases/attr/attr-$pkgver.tar.xz")
+
+config_files="etc/xattr.conf"
 
 build() {
-	go_src_dir
+  go_src_dir
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --enable-lib64
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
 
-sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in 
-	./configure --prefix=/usr --docdir=/usr/share/doc/${pkgname}-${pkgver} --enable-lib64
-	make -j${numjobs}
+# tidy up
+  cd "${pkgdir}"
+  install -dm755 lib${LIBDIRSUFFIX}
 
-	make prefix=${pkgdir}/usr install install-lib install-dev
-	# tidy up
-	cd "${pkgdir}"
-
-	install -dm755 lib${LIBDIRSUFFIX}
-
-	ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so
-	ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so.1 ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so.1
-	ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so.1.1.0 ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so.1.1.0
-#	mv -v usr/lib${LIBDIRSUFFIX}/libattr.so* lib${LIBDIRSUFFIX}/
-#	ln -sv ../../lib${LIBDIRSUFFIX}/libattr.so.1 usr/lib${LIBDIRSUFFIX}/libattr.so
-#	mv -v usr/lib${LIBDIRSUFFIX}/libattr.{a,la} usr/lib${LIBDIRSUFFIX}/
-	rm -rvf usr/libexec${LIBDIRSUFFIX}
+  ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so
+  ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so.1 ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so.1
+  ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so.1.1.0 ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so.1.1.0
+  rm -rvf usr/libexec${LIBDIRSUFFIX}
 }
