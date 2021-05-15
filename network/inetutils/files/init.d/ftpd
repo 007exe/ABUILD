@@ -1,0 +1,8 @@
+#!/sbin/openrc-run
+
+command=/usr/bin/ftpd
+command_args="-D"
+pidfile=/run/ftpd.pid
+
+name="ftpd"
+description="FTPD Daemon"

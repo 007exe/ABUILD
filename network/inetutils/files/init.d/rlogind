@@ -1,0 +1,8 @@
+#!/sbin/openrc-run
+
+command=-/usr/bin/rlogind
+command_args=""
+pidfile=
+
+name="rlogind"
+description="Remote Login Facilities Server"

@@ -1,0 +1,8 @@
+#!/sbin/openrc-run
+
+command=-/usr/bin/rshd
+command_args=""
+pidfile=
+
+name="rshd"
+description="Remote Shell Facilities Server"

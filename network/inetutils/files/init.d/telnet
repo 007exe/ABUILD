@@ -1,0 +1,8 @@
+#!/sbin/openrc-run
+
+command=-/usr/bin/telnetd
+command_args=""
+pidfile=
+
+name="telnetd"
+description="Telnet Server"
