@@ -1,37 +1,52 @@
 pkgname=kmod
-pkgver=27
+pkgver=28
 pkgbuild=1
 arch=('auto')
 
-shortdesc="A kernel module management tool, a module-init-tools replacement"
+shortdesc="Utilities to load modules into the kernel"
+longdesc="kmod is a set of tools to handle common tasks with Linux kernel modules like insert, remove, list, check properties, resolve dependencies and aliases."
 
-source="ftp://ftp.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz"
+source="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz"
 
 tags="base sys-apps"
-build_deps="pkg-config zlib"
+
+build_deps="pkg-config zlib zstd"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --sysconfdir=/etc \
+    --prefix=/usr \
+    --bindir=/usr/bin \
+    --with-rootlibdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --with-zlib \
+    --with-xz \
+    --with-zstd \
+    --with-openssl
 
 
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"-Wstrict-aliasing=0\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--sysconfdir=/etc \
-	--prefix=/usr \
-	--bindir=/bin \
-	--with-rootlibdir=/lib$LIBDIRSUFFIX \
-	--libdir=/lib$LIBDIRSUFFIX \
-	--with-zlib \
-	--with-xz"
+  make
+  make DESTDIR=${pkgdir} install
+}
 
 after_build() {
-	mkdir -p $pkgdir/sbin
-	mkdir -p $pkgdir/{etc,lib$LIBDIRSUFFIX}/{depmod,modprobe}.d
-	for tool in insmod rmmod depmod lsmod modinfo modprobe; do
-		ln -s /bin/kmod "$pkgdir/sbin/$tool"
-	done
-	install -Dm644 $filedir/search.conf $pkgdir/lib$LIBDIRSUFFIX/depmod.d/search.conf
-	if [ -d ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig ] ; then
-		mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-		mv -v ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-	fi
+  mkdir -p $pkgdir/sbin
+  mkdir -p $pkgdir/{etc,lib$LIBDIRSUFFIX}/{depmod,modprobe}.d
+  for tool in insmod rmmod depmod lsmod modinfo modprobe; do
+    ln -s /usr/bin/kmod "$pkgdir/sbin/$tool"
+  done
+
+# install depmod.d file for search/ dir
+  install -Dm644 $filedir/search.conf $pkgdir/lib$LIBDIRSUFFIX/depmod.d/search.conf
+
+  if [ -d ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig ] ; then
+    mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+    mv -v ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
+  fi
+
+# hook
+  install -Dm644 "$filedir/depmod.hook" "$pkgdir/usr/share/libalpm/hooks/60-depmod.hook"
+  install -Dm755 "$filedir/depmod.script" "$pkgdir/usr/share/libalpm/scripts/depmod"
 }
