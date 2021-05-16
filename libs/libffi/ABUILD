@@ -1,24 +1,27 @@
 pkgname=libffi
 pkgver=3.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A Portable Foreign Function Interface Library")
+shortdesc="A Portable Foreign Function Interface Library"
+longdesc="The libffi library provides a portable, high level programming interface to various calling conventions. This allows a programmer to call any function specified by a call interface description at run time."
 
 tags=("dev-libs libs")
 
 source=("ftp://sourceware.org/pub/libffi/libffi-${pkgver}.tar.gz")
 
-build_deps="make gcc glibc-solibs binutils coreutils sed grep"
+build_deps="make gcc glibc binutils coreutils sed grep"
 
-BUILD_SYSTEM="autotools"
-
-BUILD_KEYS="--prefix=/usr \
-            --libdir=/usr/lib$LIBDIRSUFFIX \
-            --mandir=/usr/man \
-            --sysconfdir=/etc \
-            --disable-static \
-            --enable-shared"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
+build() {
+  go_src_dir
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --disable-static \
+    --enable-pax_emutramp
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm 644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
+  install -Dm 644 README.md -t "$pkgdir"/usr/share/doc/$pkgname
+}
