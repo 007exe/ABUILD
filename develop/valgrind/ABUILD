@@ -1,31 +1,39 @@
 pkgname=valgrind
-pkgver=3.16.1
+pkgver=3.17.0
 pkgbuild=1
 arch=('any')
 
 shortdesc="An instrumentation framework for building dynamic analysis tools."
+longdesc="Valgrind is an instrumentation framework for building dynamic analysis tools. You can also use it to build new tools."
+
 source=("https://sourceware.org/pub/valgrind/${pkgname}-${pkgver}.tar.bz2")
 
 tags="dev-util develop"
 
-build_deps="make gcc gcc-g++ glibc perl grep sed gdb binutils kernel-headers"
+build_deps="glibc perl gdb gcc-libs"
 
-if [ "$ARCH" = "x86_64" ]; then
-   conf_opts="--enable-only64bit"
-fi
+build() {
+  go_src_dir
+  burn_patches
 
-BUILD_SYSTEM="autotools"
+# valgrind does not like some of our flags
+  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+  CFLAGS=${CFLAGS/-fno-plt/}
+  CXXFLAGS=${CXXFLAGS/-fno-plt/}
 
-BUILD_WORD="LDFLAGS=\"${SLKLDFLAGS}\" CFLAGS=\"${SLKCFLAGS}\" CXXFLAGS=\"${SLKCFLAGS}\" ./configure"
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---docdir=/usr/doc/${pkgname}-${pkgver} \
---disable-static \
---mandir=/usr/share/man \
---program-prefix= \
---program-suffix= \
-$conf_opts"
-
+#  make -C docs man-pages
+#  install -Dm644 docs/*.1 -t "$pkgdir/usr/share/man/man1"
+  if check_option 'debug' n; then
+    find "${pkgdir}/usr/bin" -type f -executable -exec strip $STRIP_BINARIES {} + || :
+  fi
+}
