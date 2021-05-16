@@ -54,11 +54,11 @@ before_build(){
 build() {
   go_src_dir
   ./configure
-  make
+  make -j${numjobs}
 }
 
 #Данная функция вызывается последней полезна если необходимо создать символические ссылки переместить или удалить файлы в пакете
 after_build(){
   go_src_dir
-   make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} install
 }
