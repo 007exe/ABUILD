@@ -1,14 +1,10 @@
-#ABUILD created by/создан: Kroll, krlgs at front.ru 
-
 pkgname=emacs
-pkgver=27.1
+pkgver=27.2
 pkgbuild=1
 arch=('auto')
 
 shortdesc="GNU Emacs is much more then just an extensible, customizable text editor."
-longdesc=("GNU Emacs is an extensible, customizable text editor-and more. At its core is an interpreter for Emacs Lisp, a dialect of the Lisp programming language with extensions to support text editing."
-"http://www.gnu.org/software/emacs"
-)
+longdesc="GNU Emacs is an extensible, customizable text editor-and more. At its core is an interpreter for Emacs Lisp, a dialect of the Lisp programming language with extensions to support text editing."
 
 source=("http://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
@@ -19,21 +15,28 @@ build_deps=" "
 build() {
   cd "${srcdir}"/emacs-$pkgver
 
-  ./configure --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib${LIBDIRSUFFIX} \
-    --localstatedir=/var --without-x --without-sound --with-modules --with-gnutls=ifavailable
-  make
-  make DESTDIR="${pkgdir}" install
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+    --localstatedir=/var \
+    --without-x \
+    --without-sound \
+    --with-modules \
+    --with-gnutls=ifavailable
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
 
 
 after_build()
 {
-  # remove conflict with ctags package
+# remove conflict with ctags package
   mv "${pkgdir}"/usr/bin/{ctags,ctags.emacs}
   mv "${pkgdir}"/usr/share/man/man1/{ctags.1.gz,ctags.emacs.1}
 
-  # fix user/root permissions on usr/share files
+# fix user/root permissions on usr/share files
   find "${pkgdir}"/usr/share/emacs/$pkgver -exec chown root.root {} \;
-  # remove .desktop file and icons
+# remove .desktop file and icons
   rm -rf "${pkgdir}"/usr/share/{applications,icons}
 }
