@@ -21,7 +21,7 @@ etc/iproute2/rt_tables"
 
 build() {
   go_src_dir
-
+  burn_patches
 # do not treat warnings as errors
   sed -i 's/-Werror//' Makefile
 
