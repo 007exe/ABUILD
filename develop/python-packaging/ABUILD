@@ -1,0 +1,20 @@
+pkgname=python-packaging
+pkgver=20.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc="Core utilities for Python packages"
+longdesc="python-packaging provides core utilities for Python packages like utilities for dealing with versions, specifiers, markers etc."
+
+tags=("dev-python develop")
+
+source=("https://github.com/pypa/packaging/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
+
+build_deps="python"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir/" --optimize=1
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
+}
