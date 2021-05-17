@@ -53,7 +53,9 @@ before_build(){
 #В данноой функции описывается процесс компиляции
 build() {
   go_src_dir
-  ./configure
+  ./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX}
   make -j${numjobs}
 }
 
