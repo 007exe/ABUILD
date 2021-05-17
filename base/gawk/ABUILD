@@ -1,25 +1,26 @@
 pkgname=gawk
 pkgver=5.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Pattern scanning and processing language")
+shortdesc="The GNU version of the awk text processing utility"
+longdesc="The gawk packages contains the GNU version of awk, a text processing utility.  Awk interprets a special-purpose programming language to do quick and easy text pattern matching and reformatting jobs. Gawk should be upwardly compatible with the Bell Labs research version of awk and is almost completely compliant with the 1993 POSIX 1003.2 standard for awk."
+
 tags=("base sys-base")
 
-source=("ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-build_deps="glibc-solibs readline"
+source=("https://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="glibc readline mpfr gmp"
+
 adddep="bash"
 
-
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --libexecdir=/usr/lib${LIBDIRSUFFIX}"
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-after_build() {
-	# Slackware build scripts moves these two utilities into /bin, let't preserve this layout for compatibility
-	mkdir -p ${pkgdir}/bin
-	for i in awk gawk gawk-${pkgver} ; do
-		mv ${pkgdir}/usr/bin/$i ${pkgdir}/bin/$i
-		ln -sf ../../bin/$i ${pkgdir}/usr/bin/$i
-	done
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}\
+    --sysconfdir=/etc \
+    --without-libsigsegv
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
