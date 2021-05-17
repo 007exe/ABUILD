@@ -1,9 +1,10 @@
 pkgname=check
 pkgver=0.15.2
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Check is a unit testing framework for C"
+longdesc="It features a simple interface for defining unit tests, putting little in the way of the developer. Tests are run in a separate address space, so Check can catch both assertion failures and code errors that cause segmentation faults or other signals. The output from unit tests can be used within source code editors and IDEs."
 
 source=("https://github.com/libcheck/check/releases/download/${pkgver}/check-${pkgver}.tar.gz")
 
@@ -13,13 +14,12 @@ build_deps="mkpkg"
 
 build()
 {
-go_src_dir
-burn_patches
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/share/man
-make DESTDIR=$pkgdir install
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
