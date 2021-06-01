@@ -1,6 +1,6 @@
 pkgname=shadow
 pkgver=4.8.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc="Shadow (Password and account management tool suite with support for shadow files and PAM)"
