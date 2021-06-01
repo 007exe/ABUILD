@@ -1,11 +1,14 @@
 pkgname=glib2
-pkgver=2.66.0
+pkgver=2.68.2
 pkgtree=${pkgver%.*}
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Library of C routines"
+shortdesc="Low level core library"
+longdesc="Glib is a handy library of utility functions. This C library is designed to solve some portability problems and provide other useful functionality which most programs require."
+
 source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgtree}/glib-${pkgver}.tar.xz")
+
 tags="libs dev-libs compat32"
 
 #libelf sysprof gtk-doc
@@ -13,15 +16,17 @@ build_deps="gettext shared-mime-info python git util-linux-ng meson dbus"
 
 build() {
   go_src_dir
+  burn_patches
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
   meson build \
+    --prefix=/usr \
+    -D glib_debug=disabled \
     -D selinux=disabled \
-    -D sysprof=enabled \
     -D man=true
 #    -D gtk_doc=true
   meson compile -C build
-  meson test -C build --no-suite flaky --print-errorlogs
-  DESTDIR="$pkgdir" meson install -C build
+#  meson test -C build --no-suite flaky --no-suite slow --print-errorlogs
+  meson install -C build --destdir "$pkgdir"
 }
 
 after_build() {
@@ -42,4 +47,3 @@ after_build() {
   mkdir -p $pkgdir/install
   zcat $filedir/doinst.sh.gz > $pkgdir/install/doinst.sh
 }
-
