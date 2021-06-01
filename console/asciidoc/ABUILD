@@ -1,22 +1,26 @@
 pkgname=asciidoc
-pkgver=9.0.2
+pkgver=9.1.0
 pkgbuild=1
 arch=('noarch')
 
-shortdesc="Text document format for short documents, articles, books and UNIX man pages."
+shortdesc="Tool to convert AsciiDoc text files to DocBook, HTML or Unix man pages."
+longdesc="AsciiDoc is a text document format for writing short documents, articles, books and UNIX man pages."
+
 source=("https://github.com/asciidoc/asciidoc-py3/releases/download/${pkgver}/asciidoc-${pkgver}.tar.gz")
+
 tags="app-text console"
 
 adddep="python libxslt docbook-xsl"
+
 build_deps="python libxslt docbook-xsl"
 
 build() {
   go_src_dir
   autoconf
-  ./configure --prefix=/usr \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--mandir=/usr/share/man \
-	--sysconfdir=/etc
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc
   make manpages
   make install DESTDIR="${pkgdir}"
 }
