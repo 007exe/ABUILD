@@ -1,0 +1,68 @@
+pkgname=mkinitrd
+pkgver=1.4.11
+pkgbuild=1
+arch=("auto")
+busybox_ver=1.33.1
+
+shortdesc="Multi-call binary combining many common Unix tools into one executable"
+longdesc="BusyBox combines tiny versions of many common UNIX utilities into a single small executable. It provides minimalist replacements for most of the utilities you usually find in GNU coreutils, shellutils, etc. The utilities in BusyBox generally have fewer options than their full-featured GNU cousins; however, the options that are included provide the expected functionality and behave very much like their GNU counterparts. BusyBox provides a fairly complete POSIX environment for any small or embedded system."
+
+tags=("base sys-apps")
+
+build_deps="gcc bc diffutils kernel-source"
+
+adddep=("tar gzip")
+
+source=("http://busybox.net/downloads/busybox-${busybox_ver}.tar.bz2")
+
+build() {
+  go_src_dir
+  burn_patches
+  set -e
+# Write a warning to stdout if the mkinitrd script has a different version:
+  eval $( grep "^MKINITRD_VERSION=" $filedir/mkinitrd )
+    if [ "$pkgver" != "$MKINITRD_VERSION" ]; then
+        echo "The version of this package ($pkgver) is not equal to the version of the mkinitrd script ($MKINITRD_VERSION)."
+        exit 1
+    fi
+
+  sed -e 's#^CONFIG_PREFIX=.*#CONFIG_PREFIX="'$pkgdir'/usr/share/mkinitrd/initrd-tree"#' $filedir/busybox-dot-config > .config
+  make oldconfig
+  make -j$numjobs || make || exit 1
+
+  mkdir -p $pkgdir/usr/share/mkinitrd/initrd-tree/{bin,sbin}
+  make install
+  rm -f $pkgdir/usr/share/mkinitrd/initrd-tree/linuxrc
+
+# Copying additional files:
+  cp -a $filedir/mkinitrd_command_generator.sh $pkgdir/usr/share/mkinitrd
+  chown root:root $pkgdir/usr/share/mkinitrd/mkinitrd_command_generator.sh
+  chmod 755 $pkgdir/usr/share/mkinitrd/mkinitrd_command_generator.sh
+  cp -a $filedir/keymaps.tar.gz $pkgdir/usr/share/mkinitrd
+  chown root:root $PKG/usr/share/mkinitrd/keymaps.tar.gz
+  chmod 644 $PKG/usr/share/mkinitrd/keymaps.tar.gz
+
+# Zip up the initrd-tree:
+  ( cd $pkgdir/usr/share/mkinitrd/initrd-tree
+    tar xf $filedir/_initrd-tree.tar.gz
+    cat $filedir/init > init
+    tar czf ../initrd-tree.tar.gz .
+  )
+  rm -rf $pkgdir/usr/share/mkinitrd/initrd-tree
+
+  mkdir -p $pkgdir/sbin
+  cp -a $filedir/mkinitrd $pkgdir/sbin/mkinitrd
+  chown root:root $pkgdir/sbin/mkinitrd
+  chmod 755 $pkgdir/sbin/mkinitrd
+
+  mkdir -p $pkgdir/usr/share/man/man{5,8}
+  cat $filedir/mkinitrd.8 | gzip -9c > $pkgdir/usr/share/man/man8/mkinitrd.8.gz
+  cat $filedir/mkinitrd.conf.5 | gzip -9c > $pkgdir/usr/share/man/man5/mkinitrd.conf.5.gz
+
+  mkdir -p $pkgdir/etc
+  cp -a $filedir/mkinitrd.conf.sample $pkgdir/etc/mkinitrd.conf.sample
+  chown root:root $pkgdir/etc/mkinitrd.conf.sample
+  chmod 644 $pkgdir/etc/mkinitrd.conf.sample
+
+  set +e
+}
