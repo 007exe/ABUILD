@@ -1,5 +1,5 @@
 pkgname=perl
-pkgver=5.32.1
+pkgver=5.34.0
 _baseversion="${pkgver%.*}"
 pkgbuild=1
 arch=("auto")
@@ -80,10 +80,7 @@ build() {
 
   rm "$pkgdir/usr/bin/perl$pkgver"
 
-  install -D -m755 -t "$pkgdir/usr/share/libalpm/scripts" "${filedir}/detect-old-perl-modules.sh"
-  install -D -m644 -t "$pkgdir/usr/share/libalpm/hooks" "${filedir}/detect-old-perl-modules.hook"
-
-  find "$pkgdir" -name perllocal.pod -delete
-  find "$pkgdir" -name .packlist -delete
+#  find "$pkgdir" -name perllocal.pod -delete
+#  find "$pkgdir" -name .packlist -delete
 }
 
