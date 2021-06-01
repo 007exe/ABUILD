@@ -1,9 +1,10 @@
 pkgname=man-db
-pkgver=2.9.3
+pkgver=2.9.4
 pkgbuild=1
 arch=('auto')
 
-shortdesc="man (format and display the on-line manual pages)"
+shortdesc="A set of documentation tools: man, apropos and whatis"
+longdesc="The man package includes three tools for finding information and/or documentation about your Linux system: man, apropos and whatis. The man system formats and displays on-line manual pages about commands or functions on your system. Apropos searches the whatis database (containing short descriptions of system commands) for a string. Whatis searches its own database for a complete word."
 
 source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz")
 
@@ -17,33 +18,35 @@ adddep="groff zlib gdbm"
 
 build(){
   go_src_dir
-  ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --libdir=/usr/lib${LIBDIRSUFFIX} \
-              --sbindir=/usr/bin \
-              --with-systemdsystemunitdir=/usr/lib${LIBDIRSUFFIX}/systemd/system \
-              --enable-cache-owner=root \
-              --libexecdir=/usr/lib${LIBDIRSUFFIX} \
-              --docdir=/usr/doc/share/${pkgname}-${pkgver} \
-              --with-db=gdbm \
-              --disable-setuid \
-              --enable-mandirs=GNU \
-              --with-sections="1 n l 8 3 0 2 5 4 9 6 7"
-  make
-  make check
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sbindir=/usr/bin \
+    --enable-cache-owner=root \
+    --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-db=gdbm \
+    --disable-setuid \
+    --enable-mandirs=GNU \
+    --with-systemdtmpfilesdir=no \
+    --with-systemdsystemunitdir=no \
+    --with-sections="1 n l 8 3 0 2 5 4 9 6 7"
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
 
 after_build(){
-  # part of groff pkg
+# part of groff pkg
   rm -f ${pkgdir}/usr/bin/zsoelim
 
-  # script from LFS to convert manpages, see
-  # http://www.linuxfromscratch.org/lfs/view/6.4/chapter06/man-db.html
-  install -D -m755 ${filedir}/convert-mans  ${pkgdir}/usr/bin/convert-mans 
+# script from LFS to convert manpages, see
+# http://www.linuxfromscratch.org/lfs/view/6.4/chapter06/man-db.html
+  install -D -m755 ${filedir}/convert-mans  ${pkgdir}/usr/bin/convert-mans
 
-  #install whatis cron script
+#install whatis cron script
   install -D -m744 ${filedir}/man-db.cron.daily ${pkgdir}/etc/cron.daily/man-db
-  #installign cache directory
+
+#installign cache directory
   mkdir -p ${pkgdir}/var/cache/man
 }
