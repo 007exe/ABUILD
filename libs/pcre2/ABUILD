@@ -1,5 +1,5 @@
 pkgname=pcre2
-pkgver=10.36
+pkgver=10.37
 pkgbuild=1
 arch=("auto")
 
