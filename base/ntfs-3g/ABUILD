@@ -1,9 +1,10 @@
 pkgname=ntfs-3g
 pkgver=2017.3.23
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Free and open source NTFS driver for Linux."
+longdesc="The ntfs-3g package contains NTFS filesystem driver with read and write support. It provides safe and fast handling of MS Windows 10, 8.1, 8, 7 Vista, XP, 2000 and Server 2003 NTFS file systems. Most POSIX file system operations are supported."
 
 source="http://tuxera.com/opensource/ntfs-3g_ntfsprogs-${pkgver}.tgz"
 
@@ -11,31 +12,22 @@ tags="base sys-fs"
 
 build_deps="make gcc pkg-config autoconf coreutils binutils util-linux-ng fuse sed grep"
 
-before_build() {
-        go_src_dir
-        burn_patches
-	sed 's|$(DESTDIR)/sbin|$(DESTDIR)/usr/bin|' -i {ntfsprogs,src}/Makefile.in
-}
-
-
-build(){
+build() {
   go_src_dir
-	./configure \
-            --prefix=/usr \
-            --disable-static \
-	    --disable-ldconfig \
-	    --enable-xattr-mappings \
-	    --enable-crypto \
-            --mandir=/usr/share/man \
-            --docdir=/usr/share/doc \
-            --libdir=/usr/lib${LIBDIRSUFFIX} \
-            --with-fuse=external \
-            --enable-posix-acls \
-            --enable-extras
-
+  burn_patches
+  sed 's|$(DESTDIR)/sbin|$(DESTDIR)/usr/bin|' -i {ntfsprogs,src}/Makefile.in
+  ./configure \
+    --prefix=/usr \
+    --disable-static \
+    --disable-ldconfig \
+    --enable-xattr-mappings \
+    --enable-crypto \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-fuse=external \
+    --enable-posix-acls \
+    --enable-extras
   make -j${numjobs}
-
-      make DESTDIR="${pkgdir}" rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib${LIBDIRSUFFIX} install
-
-	ln -s /usr/bin/ntfs-3g ${pkgdir}/usr/bin/mount.ntfs
+  make DESTDIR="${pkgdir}" rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib${LIBDIRSUFFIX} install
+  rm "${pkgdir}"/usr/share/man/man8/ntfsfallocate.8 # uninstalled binary
+  ln -s /usr/bin/ntfs-3g ${pkgdir}/usr/bin/mount.ntfs
 }
