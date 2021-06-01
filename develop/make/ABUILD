@@ -1,25 +1,24 @@
 pkgname=make
 pkgver=4.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("GNU make utility to maintain groups of programs")
-longdesc=("This is the GNU implementation of make, which was written by Richard Stallman and Roland McGrath. The purpose of the make utility is to determine automatically which pieces of a large program need to be recompiled, and issue the commands to recompile them. This is needed to compile just about any major C program, including the Linux kernel.")
+shortdesc="A GNU tool which simplifies the build process for users"
+longdesc="A GNU tool for controlling the generation of executables and other non-source files of a program from the programs source files.  Make allows users to build and install packages without any significant knowledge about the details of the build process.  The details about how the program should be built are provided for make in the program's makefile."
 
 tags=("develop sys-devel")
 
 source=("http://ftp.gnu.org/gnu/make/make-${pkgver}.tar.gz")
 
-build_deps="make gcc glibc-solibs kernel-headers"
+build_deps="make gcc glibc"
+
 adddep="bash"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-            --libdir=/usr/lib$LIBDIRSUFFIX \
-            --mandir=/usr/man \
-            --sysconfdir=/etc"
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-after_build() {
-  ( cd ${pkgdir}/usr/bin ; ln -s make gmake )
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX
+  make DESTDIR=${pkgdir} install
 }
