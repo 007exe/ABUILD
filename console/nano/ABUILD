@@ -3,7 +3,8 @@ pkgver=5.7
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Pico editor clone with enhancements"
+shortdesc="Tiny console text editor that aims to emulate Pico"
+longdesc="nano (Nano's ANOther editor) is the editor formerly known as TIP (TIP Isn't Pico). It aims to emulate Pico as closely as possible while also offering a few enhancements."
 
 source=("http://www.nano-editor.org/dist/v5/${pkgname}-${pkgver}.tar.gz")
 
@@ -12,23 +13,16 @@ tags="console app-text"
 config_files="etc/nanorc"
 build_deps="ncurses"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--mandir=/usr/share/man \
-	--docdir=/usr/share/doc \
-	--program-prefix= \
-	--enable-color \
-	--enable-nanorc \
-	--enable-multibuffer \
-	--disable-wrapping-as-root \
-	--program-suffix="
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-
-after_build() {
-	install -DTm644 ${srcdir}/${pkgname}-${pkgver}/doc/sample.nanorc ${pkgdir}/etc/nanorc
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-color \
+    --enable-nanorc \
+    --enable-multibuffer
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -DTm644 ${srcdir}/${pkgname}-${pkgver}/doc/sample.nanorc ${pkgdir}/etc/nanorc
 }
