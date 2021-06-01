@@ -1,40 +1,37 @@
 pkgname=dracut
-pkgver=050
-pkgbuild=2
+pkgver=055
+pkgbuild=1
 arch=('auto')
 
 shortdesc="Generic, modular, cross-distribution initramfs generation tool"
+longdesc="Dracut contains tools to create a bootable initramfs for 2.6 Linux kernels. Unlike existing implementations, dracut does hard-code as little as possible into the initramfs. Dracut contains various modules which are driven by the event-based udev. Having root on MD, DM, LVM2, LUKS is supported as well as NFS, iSCSI, NBD, FCoE with the dracut-network package."
 
 source=("http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-$pkgver.tar.xz")
 
 tags="base sys-kernel"
 
 adddep="kernel fakeroot fakechroot gzip cpio bash util-linux-ng"
-#asciidoc libxslt docbook-xml docbook-xsl
-build_deps=" "
+
+build_deps="git mkpkg"
 
 config_files="etc/dracut.conf"
 
 build() {
-	go_src_dir
-	burn_patches
-	set -e
-    ./configure \
+  go_src_dir
+  burn_patches
+  set -e
+  ./configure \
     --sysconfdir=/etc \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --mandir=/usr/share/man \
-    --systemdsystemunitdir=/usr/lib/systemd/system \
+    --prefix=/usr
 
-	make sysconfdir=/etc -j${numjobs}
-	make DESTDIR=$pkgdir sysconfdir=/etc install
+  make -j${numjobs}
+  make DESTDIR=$pkgdir install
 
-	# Add i18n to config
-	cat $filedir/i18n-settings.conf >> $pkgdir/etc/dracut.conf
+# Add i18n to config
+  cat $filedir/i18n-settings.conf >> $pkgdir/etc/dracut.conf
 
-	# MPKG hooks
-	install -Dm0755 $filedir/dracut-generate-initrd.sh ${pkgdir}/etc/mpkg/hooks/dracut-generate-initrd.sh
-
-	set +e
+# MPKG hooks
+  install -Dm0755 $filedir/dracut-generate-initrd.sh ${pkgdir}/etc/mpkg/hooks/dracut-generate-initrd.sh
+  set +e
 }
 
