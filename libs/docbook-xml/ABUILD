@@ -1,27 +1,22 @@
 pkgname=docbook-xml
 pkgver=4.5
-pkgbuild=1
+pkgbuild=2
+arch="noarch"
+
 shortdesc="A widely used XML scheme for writing documentation and help"
 longdesc="A widely used XML scheme for writing documentation and help"
-arch="noarch"
-url="http://www.oasis-open.org/docbook/"
-license=('MIT')
+
 adddep=('libxml2')
 
 build_deps="libxml2 libarchive"
 
 tags=("app-text libs")
+
 source=("http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip n"
         "http://www.docbook.org/xml/4.4/docbook-xml-4.4.zip n"
         "http://www.docbook.org/xml/4.3/docbook-xml-4.3.zip n"
         "http://www.docbook.org/xml/4.2/docbook-xml-4.2.zip n"
         "http://www.docbook.org/xml/4.1.2/docbkx412.zip n")
-md5sums=('03083e288e87a7e829e437358da7ef9e'
-         'cbb04e9a700955d88c50962ef22c1634'
-         'ab200202b9e136a144db1e0864c45074'
-         '73fe50dfe74ca631c1602f558ed8961f'
-         '900d7609fb7e6d78901b357e4acfbc17'
-         '50e1eea70bc071b812e963e65af6707e')
 
 build() {
   for ver in 4.2 4.3 4.4 4.5; do
