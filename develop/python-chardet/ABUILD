@@ -1,0 +1,21 @@
+pkgname=python-chardet
+pkgver=4.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Character encoding auto-detection in Python"
+longdesc="Character encoding auto-detection in Python. As smart as your browser."
+
+source="https://pypi.io/packages/source/c/chardet/chardet-${pkgver}.tar.gz"
+
+tags="dev-python develop"
+
+build_deps="python python-setuptools"
+
+adddep="python"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+}
