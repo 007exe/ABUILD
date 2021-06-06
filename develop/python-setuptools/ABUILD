@@ -1,6 +1,6 @@
 pkgname=python-setuptools
 pkgver=56.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc="Easily build and distribute Python packages."
@@ -10,8 +10,7 @@ tags=("dev-python develop")
 
 source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
 
-# It's nonsense to build python-setuptools you need python-setuptools
-build_deps="python python-appdirs python-packaging python-setuptools"
+build_deps="python python-appdirs python-packaging python-setuptools python-more-itertools python-ordered-set python-pyparsing"
 
 adddep="python-appdirs python-packaging"
 
