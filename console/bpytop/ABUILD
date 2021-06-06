@@ -1,0 +1,20 @@
+pkgname=bpytop
+pkgver=1.0.66
+pkgbuild=1
+arch=("auto")
+
+shortdesc="Linux resource monitor"
+longdesc="Resource monitor that shows usage and stats for processor, memory, disks, network and processes."
+
+tags=("sys-process console")
+
+source=("https://github.com/aristocratos/bpytop/archive/refs/tags/v$pkgver.tar.gz")
+
+build_deps="mkpkg"
+
+adddep="python-psutil"
+
+build(){
+ go_src_dir
+ make DESTDIR="${pkgdir}" PREFIX=/usr install
+}
