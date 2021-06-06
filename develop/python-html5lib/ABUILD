@@ -1,0 +1,22 @@
+pkgname=python-html5lib
+pkgver=1.1
+pkgbuild=1
+arch='auto'
+
+shortdesc="A python based HTML parser/tokenizer based on the WHATWG HTML5 specification"
+longdesc="A python based HTML parser/tokenizer based on the WHATWG HTML5 specification for maximum compatibility with major desktop web browsers."
+
+source="https://github.com/html5lib/html5lib-python/archive/${pkgver}.tar.gz"
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+adddeps="python python-six"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
