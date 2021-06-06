@@ -1,0 +1,22 @@
+pkgname=python-imagesize
+pkgver=1.2.0
+pkgbuild=1
+arch='auto'
+
+shortdesc="Python library for determining image sizes"
+longdesc="Python library for determining image sizes"
+
+source="https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-$pkgver.tar.gz"
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+adddeps="python"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm644 LICENSE.rst "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.rst
+}
