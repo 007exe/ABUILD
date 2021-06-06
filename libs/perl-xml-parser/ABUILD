@@ -1,6 +1,6 @@
 pkgname=perl-xml-parser
 pkgver=2.46
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc="A perl module for parsing XML documents"
