@@ -1,15 +1,30 @@
 pkgname=python-sphinx
-pkgver=3.2.1
+pkgver=4.0.2
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Python documentation generator"
+longdesc="Sphinx is a tool that facilitates the creation of beautiful documentation for Python projects from reStructuredText sources. It was originally created to format the new documentation for Python, but has since been cleaned up in the hope that it will be useful in many other projects."
 
 source=("https://pypi.org/packages/source/S/Sphinx/Sphinx-$pkgver.tar.gz")
+
 tags="utils dev-python"
+
 build_deps="python python-setuptools python-docutils"
-adddep="python jinja pygments"
+
+adddep="python python-docutils python-setuptools"
+# Надо заняться сборкой этих зависимостей
+#python-babel, python-imagesize, python-jinja, python-pygments, python-requests, python-snowballstemmer, python-sphinx-alabaster-theme, python-sphinxcontrib-'{{apple,dev,html}help,jsmath,qthelp,serializinghtml})
 
 BUILD_SYSTEM="python"
 MAKE_WORD="python setup.py install --root=${pkgdir}"
 BUILD_KEYS=
+
+build() {
+  go_src_dir
+  burn_patches
+  make build
+  export PYTHONHASHSEED=0
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm644 -t "$pkgdir"/usr/share/licenses/$pkgname LICENSE
+}
