@@ -1,15 +1,31 @@
 pkgname=libxml2
-pkgver=2.9.10
+pkgver=2.9.12
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("XML parser library")
-longdesc=("Libxml2 is the XML C parser library and toolkit. XML itself is a metalanguage to design markup languages -- i.e. a text language where structures are added to the content using extra "markup" information enclosed between angle brackets. HTML is the most well-known markup language. Though the library is written in C, a variety of language bindings make it available in other environments.")
+shortdesc="Library providing XML and HTML support"
+longdesc="This library allows you to manipulate XML files. It includes support for reading, modifying and writing XML and HTML files. There is DTDs support: this includes parsing and validation even with complex DtDs, either at parse time or later once the document has been modified. The output can be a simple SAX stream or and in-memory DOM-like representations. In this case one can use the built-in XPath and XPointer implementation to select subnodes or ranges. A flexible Input/Output mechanism is available, with existing HTTP and FTP modules and combined to a URI library."
 
 tags=("dev-libs libs compat32")
 
-source=("ftp://ftp.xmlsoft.org/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("http://xmlsoft.org/sources/${pkgname}-${pkgver}.tar.gz")
 
 build_deps="ncurses readline xz zlib python"
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --with-threads --with-history --with-python=/usr/bin/python"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e '/cd fuzz; /d' -e 's/fuzz //g' -i Makefile.am
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-threads \
+    --with-history \
+    --with-icu \
+    --with-python=/usr/bin/python
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' libtool
+  PYTHONHASHSEED=0 make
+  find doc -type f -exec chmod 0644 {} +
+  make DESTDIR=${pkgdir} install
+}
