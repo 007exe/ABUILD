@@ -1,29 +1,24 @@
-# Parted ABUILD
 pkgname=parted
-pkgver=3.3
+pkgver=3.4
 pkgbuild=1
 arch=('auto')
 
-shortdesc=('parted (GNU disk partitioning tool)')
-longdesc=('GNU Parted is a program for creating, destroying, resizing, checking and copying partitions, and the filesystems on them. This is useful for creating space for new operating systems, reorganizing disk usage, copying data between hard disks, and disk imaging.')
+shortdesc="Flexible partitioning tool"
+longdesc="GNU Parted is a program that allows you to create, destroy, resize, move and copy hard disk partitions. This is useful for creating space for new operating systems, reorganising disk usage, and copying data to new hard disks."
 
 tags=('base sys-apps')
 
 source=("http://ftp.gnu.org/gnu/parted/${pkgname}-${pkgver}.tar.xz")
 
-build_deps='glibc-solibs util-linux-ng'
+build_deps='glibc util-linux-ng'
 
-BUILD_SYSTEM='autotools'
-BUILD_KEYS="--prefix=/usr \
-  --sbindir=/usr/bin \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --mandir=/usr/share/man \
-  --infodir=/usr/share/info \
-  --enable-shared=yes \
-  --enable-static=no \
-  --enable-device-mapper=yes \
-  --without-readline \
-  --disable-debug \
-  --build=$ARCH-slackware-linux"
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-rpath
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
