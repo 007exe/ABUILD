@@ -1,6 +1,6 @@
 pkgname=texinfo
 pkgver=6.7
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc="Tools needed to create Texinfo format documentation files"
