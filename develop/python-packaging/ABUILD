@@ -10,11 +10,12 @@ tags=("dev-python develop")
 
 source=("https://github.com/pypa/packaging/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
 
-build_deps="python"
+build_deps="python-setuptools python-pyparsing"
+
+adddep="python python-pyparsing python-six"
 
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir/" --optimize=1
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
+  python setup.py install --root "$pkgdir"
 }
