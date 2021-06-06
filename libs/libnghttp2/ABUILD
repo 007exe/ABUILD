@@ -1,0 +1,28 @@
+pkgname=libnghttp2
+pkgver=1.43.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc="Experimental HTTP/2 client, server and proxy"
+longdesc="This package contains the HTTP/2 client, server and proxy programs."
+
+tags=("libs net-libs")
+
+source=("https://github.com/nghttp2/nghttp2/archive/v$pkgver.tar.gz")
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-examples \
+    --disable-python-bindings \
+    --enable-lib-only
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/libnghttp2/COPYING"
+}
