@@ -1,10 +1,10 @@
 pkgname=sysklogd
 pkgver=1.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Linux system logging utilities")
-longdesc=("Dr. Greg Wettstein and Stephen Tweedie's syslogd/klogd. This package contains a modified version of syslogd for the Linux environment. An additional utility, klogd, is included which allows kernel logging to be directed through the syslogd facility. Syslogd and klogd are started when your system boots.")
+shortdesc="System logging and kernel message trapping daemons"
+longdesc="The sysklogd package contains two system utilities (syslogd and klogd) which provide support for system logging.  Syslogd and klogd run as daemons (background processes) and log system messages to different places, like sendmail logs, security logs, error logs, etc."
 
 tags=("app-admin base")
 
@@ -16,24 +16,26 @@ etc/logrotate.d/syslog
 etc/syslog.conf"
 
 build() {
-	go_src_dir
-	burn_patches
+  go_src_dir
+  burn_patches
+#First, fix problems that causes a segmentation fault under some conditions in klogd and fix an obsolete program construct:
+  sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
+  sed -i 's/union wait/int/' syslogd.c
 
-	sed -i "s/-O3/${SLKCFLAGS} -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE/" Makefile
-	make all syslog_tst -j${numjobs}
-	install -d ${pkgdir}/usr/sbin
-	install -d ${pkgdir}/usr/share/man/{man5,man8}
-	make INSTALL=/bin/install prefix=${pkgdir} install
+  make -j${numjobs}
+  install -d ${pkgdir}/usr/sbin
+  install -d ${pkgdir}/usr/share/man/{man5,man8}
 
-	install -D -m0755 ${filedir}/sysklogd ${pkgdir}/etc/init.d/sysklogd
-	install -D -m0644 ${filedir}/sysklogd.conf.d ${pkgdir}/etc/conf.d/sysklogd
-	install -D -m0644 ${filedir}/syslog.logrotate ${pkgdir}/etc/logrotate.d/syslog
-	install -D -m0644 ${filedir}/syslog.conf.new ${pkgdir}/etc/syslog.conf
-	install -m0755 syslog_tst ${pkgdir}/usr/sbin/syslog_tst
+  make INSTALL=/usr/bin/install prefix=${pkgdir} install
 
-	mkdir -p ${pkgdir}/var/log
-	for i in cron debug mail.log messages secure spooler syslog ; 
-		do touch ${pkgdir}/var/log/$i.new ;
-	done
+  install -D -m0755 ${filedir}/sysklogd ${pkgdir}/etc/init.d/sysklogd
+  install -D -m0644 ${filedir}/sysklogd.conf.d ${pkgdir}/etc/conf.d/sysklogd
+  install -D -m0644 ${filedir}/syslog.logrotate ${pkgdir}/etc/logrotate.d/syslog
+  install -D -m0644 ${filedir}/syslog.conf.new ${pkgdir}/etc/syslog.conf
+  mkdir -p ${pkgdir}/var/log
+
+  for i in cron debug mail.log messages secure spooler syslog ;
+        do touch ${pkgdir}/var/log/$i.new ;
+  done
 }
 
