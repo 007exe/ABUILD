@@ -1,0 +1,22 @@
+pkgname=python-sphinx-alabaster-theme
+pkgver=0.7.12
+pkgbuild=1
+arch='auto'
+
+shortdesc="Sphinx default theme"
+longdesc="Sphinx default theme"
+
+source="https://pypi.org/packages/source/a/alabaster/alabaster-$pkgver.tar.gz"
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+adddep="python"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
+}
