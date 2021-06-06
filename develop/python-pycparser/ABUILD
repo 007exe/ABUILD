@@ -1,0 +1,26 @@
+pkgname=python-pycparser
+pkgver=2.20
+pkgbuild=1
+arch=('auto')
+
+shortdesc="C parser and AST generator written in Python"
+longdesc="pycparser is a complete parser of the C language, written in pure Python using the PLY parsing library. It parses C code into an AST and can serve as a front-end for C compilers or analysis tools."
+
+source="https://github.com/eliben/pycparser/archive/release_v$pkgver.tar.gz"
+
+tags="develop dev-python"
+
+build_deps="python python-ply python-setuptools"
+
+adddep="python python-ply"
+
+build()
+{
+  go_src_dir
+  python setup.py build
+  cd pycparser
+  python _build_tables.py
+  cd ..
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
