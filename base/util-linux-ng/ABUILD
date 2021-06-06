@@ -1,6 +1,6 @@
 pkgname=util-linux-ng
-pkgver=2.36.2
-pkgbuild=2
+pkgver=2.37
+pkgbuild=1
 arch=('auto')
 
 shortdesc="A collection of basic system utilities"
@@ -19,7 +19,7 @@ etc/pam.d/runuser-l
 etc/pam.d/su
 etc/pam.d/su-l"
 
-build_deps="udev linux-pam acl shadow coreutils"
+build_deps="udev linux-pam acl shadow coreutils asciidoctor"
 
 build() {
   go_src_dir
