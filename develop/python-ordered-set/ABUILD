@@ -1,0 +1,22 @@
+pkgname=python-ordered-set
+pkgver=4.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc="Custom MutableSet that remembers its order"
+longdesc="An OrderedSet is a custom MutableSet that remembers its order, so that every entry has an index that can be looked up."
+
+tags=("dev-python develop")
+
+source=("https://pypi.io/packages/source/o/ordered-set/ordered-set-$pkgver.tar.gz")
+
+build_deps="python-setuptools python"
+
+adddep="python"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir/" --optimize=1
+  install -Dm644 MIT-LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
