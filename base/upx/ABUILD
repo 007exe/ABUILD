@@ -1,0 +1,25 @@
+pkgname=upx
+pkgver=3.96
+pkgbuild=1
+arch=("auto")
+
+shortdesc="The Ultimate Packer for eXecutables"
+longdesc="UPX is an advanced executable file compressor. UPX will typically reduce the file size of programs and DLLs by around 50%-70%, thus reducing disk space, network load times, download times and other distribution and storage costs."
+
+tags=("base app-arch")
+
+source=("https://github.com/upx/upx/releases/download/v$pkgver/upx-$pkgver-src.tar.xz")
+
+build_deps="git perl ucl"
+
+adddep="ucl"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e 's/ -O2/ -Ofast/' -e 's/ -Werror//' src/Makefile
+  make -j${numjobs} UPX_LZMA_VERSION=0x465 CHECK_WHITESPACE=/bin/true all
+  install -Dm755 src/upx.out "$pkgdir/usr/bin/upx"
+  install -Dm644 doc/upx.1 "$pkgdir/usr/share/man/man1/upx.1"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
