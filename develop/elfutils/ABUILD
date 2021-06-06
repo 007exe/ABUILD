@@ -1,5 +1,5 @@
 pkgname=elfutils
-pkgver=0.184
+pkgver=0.185
 pkgbuild=1
 arch=('auto')
 
