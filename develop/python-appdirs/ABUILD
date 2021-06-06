@@ -1,16 +1,18 @@
 pkgname=python-appdirs
 pkgver=1.4.4
 pkgbuild=1
-arch=("auto")
+arch='auto'
 
-shortdesc="A small Python module for determining appropriate platform-specific dirs, e.g. a user data dir."
-longdesc="What directory should your app use for storing user data? This kind of thing is what the ``appdirs`` module is for. ``appdirs`` will help you choose an appropriate"
+shortdesc="A small Python module for determining appropriate platform-specific dirs"
+longdesc="What directory should your app use for storing user data? This kind of thing is what the appdirs module is for."
 
-tags=("dev-python develop")
+source="https://pypi.io/packages/source/a/appdirs/appdirs-$pkgver.tar.gz"
 
-source=("https://pypi.io/packages/source/a/appdirs/appdirs-$pkgver.tar.gz")
+tags="libs dev-python"
 
-build_deps="python"
+build_deps="python python-setuptools"
+
+adddep="python"
 
 build() {
   go_src_dir
