@@ -1,14 +1,16 @@
 pkgname=ocaml
-pkgver=4.07.0
+pkgver=4.12.0
 pkgbuild=1
 arch=('auto')
 
-shortdesc="ocaml (A functional programming language)"
-longdesc=("Caml is a general-purpose programming language, designed with program safety and reliability in mind. It is very expressive, yet easy to learn and use. Caml supports functional, imperative, and object-oriented programming styles. The Objective Caml system is the main implementation of the Caml language. It features a powerful module system and a full-fledged object-oriented layer. It comes with a native-code compiler that supports numerous architectures, for high performance; a bytecode compiler, for increased portability; and an interactive loop, for experimentation and rapid development."
-"Homepage: http://caml.inria.fr/")
-source=("http://caml.inria.fr/distrib/ocaml-${pkgver%.*}/$pkgname-$pkgver.tar.gz")
+shortdesc="The Objective Caml compiler and programming environment"
+longdesc="OCaml is a high-level, strongly-typed, functional and object-oriented programming language from the ML family of languages."
+
+source=("https://caml.inria.fr/distrib/ocaml-${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
 tags="develop dev-lang"
-build_deps="tk ncurses libX11 gdbm"
+
+build_deps="ncurses>=5.6-7"
 
 build()
 {
@@ -18,16 +20,11 @@ build()
   ./configure \
     --prefix /usr \
     --libdir /usr/lib${LIBDIRSUFFIX}/ocaml \
-    --host $ARCH-slackware-linux
+    --mandir /usr/share/man \
+    --disable-force-safe-string
 
-  sed -i -e "s/\\(BYTECCCOMPOPTS=.*\\)/\\1 ${SLKCFLAGS}/" config/Makefile
-  sed -i -e "s/\\(NATIVECCCOMPOPTS=.*\\)/\\1 ${SLKCFLAGS}/" config/Makefile
-
-  make world.opt || return 1
-  make install \
-    PREFIX=$pkgdir/usr \
-    LIBDIR=$pkgdir/usr/lib${LIBDIRSUFFIX}/ocaml \
-    MANDIR=$pkgdir/usr/man || return 1
+  make --debug=v world.opt
+  make DESTDIR=${pkgdir} install
 
   # install license
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
