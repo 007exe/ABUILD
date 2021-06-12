@@ -1,0 +1,28 @@
+pkgname=python-toml
+_name=toml
+pkgver=0.10.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Python Library for Tom's Obvious, Minimal Language"
+longdesc="A Python library for parsing and creating TOML."
+
+source="https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz"
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools python-setuptools "
+
+adddep="python"
+
+build()
+{
+  go_src_dir
+  python setup.py build
+  python setup.py install --skip-build \
+    --optimize=1 \
+    --prefix=/usr \
+    --root="${pkgdir}"
+  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -vDm 644 README.rst -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
