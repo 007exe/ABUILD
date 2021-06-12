@@ -1,0 +1,30 @@
+pkgname=unzip
+pkgver=6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Unpacks ZIP files such as those made by pkzip under DOS")
+longdesc=("unzip will list, test, or extract files from a ZIP archive, commonly found on MS-DOS systems. A companion program, zip, creates ZIP archives; both programs are compatible with archives created by PKWARE's PKZIP and PKUNZIP for MS-DOS, but in many cases the program options or default behaviors differ.")
+
+tags=("base app-arch")
+
+source=("https://downloads.sourceforge.net/infozip/${pkgname}${pkgver/./}.tar.gz")
+
+build_deps="bzip2 bash"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
+  DEFINES='-DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT \
+           -DUNICODE_SUPPORT -DUNICODE_WCHAR -DUTF8_MAYBE_NATIVE -DNO_LCHMOD \
+           -DDATE_FORMAT=DF_YMD -DUSE_BZIP2 -DNOMEMCPY -DNO_WORKING_ISPRINT'
+
+  make -f unix/Makefile prefix=/usr \
+          D_USE_BZ2=-DUSE_BZIP2 L_BZ2=-lbz2 \
+          LF2="$LDFLAGS" CF="$CFLAGS $CPPFLAGS -I. $DEFINES" \
+          unzips
+
+  make -f unix/Makefile prefix="${pkgdir}"/usr install
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
