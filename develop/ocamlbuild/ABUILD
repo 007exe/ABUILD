@@ -1,0 +1,24 @@
+pkgname=ocamlbuild
+pkgver=0.14.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Build tool, that has built-in rules for building OCaml library and programs")
+longdesc=("OCamlbuild is a generic build tool, that has built-in rules for building OCaml library and programs.")
+
+source=("https://github.com/ocaml/${pkgname}/archive/$pkgver.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="ocaml"
+
+adddep="ocaml"
+
+build()
+{
+  go_src_dir
+  burn_patches
+  make configure PREFIX="/usr" MANDIR="/usr/share/man"
+  make
+  make DESTDIR="$pkgdir" install
+}
