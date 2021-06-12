@@ -1,0 +1,28 @@
+pkgname=dune
+pkgver=2.8.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A composable build system for OCaml (formerly jbuilder)")
+longdesc=("Dune is a build system designed for OCaml/Reason projects only. It focuses on providing the user with a consistent experience and takes care of most of the low-level details of OCaml compilation. All you have to do is provide a description of your project and dune will do the rest.")
+
+source=("https://github.com/ocaml/dune/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="glibc ocaml ocaml-findlib ocaml-csexp"
+
+adddep="ocaml ocaml-findlib ocaml-csexp"
+
+build()
+{
+  go_src_dir
+  make dune.exe
+  ./dune.exe build -p dune,dune-action-plugin,dune-build-info,dune-configurator,dune-glob,dune-private-libs,dune-site --profile dune-bootstrap
+
+  DESTDIR="${pkgdir}" ./dune.exe install --prefix "/usr" --libdir=$(ocamlfind printconf destdir)
+
+  rm -r "${pkgdir}"/usr/doc
+  install -dm755 "${pkgdir}"/usr/share
+  mv "${pkgdir}"/usr/{man,share/}
+}
