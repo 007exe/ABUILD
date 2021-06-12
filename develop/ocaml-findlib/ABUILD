@@ -1,0 +1,29 @@
+pkgname=ocaml-findlib
+pkgver=1.9.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A module packaging tool for OCaml")
+longdesc=("The findlib library provides a scheme to manage reusable software components (packages), and includes tools that support this scheme.")
+
+source=("http://download.camlcity.org/download/findlib-$pkgver.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="ocaml"
+
+adddep="ocaml"
+
+build()
+{
+  go_src_dir
+  burn_patches
+  ./configure \
+    -config /etc/findlib.conf \
+    -mandir /usr/share/man \
+    -sitelib /usr/lib${LIBDIRSUFFIX}/ocaml
+  make all opt
+  make prefix="$pkgdir" install
+  install -Dm755 src/findlib/ocamlfind_opt "$pkgdir/usr/bin/ocamlfind_opt"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
