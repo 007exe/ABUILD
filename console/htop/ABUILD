@@ -1,9 +1,10 @@
 pkgname=htop
-pkgver=3.0.2
+pkgver=3.0.5
 pkgbuild=1
 arch="auto"
 
-shortdesc=("Interactive process viewer")
+shortdesc=("Interactive text-mode process viewer for Linux")
+longdesc=("htop is an interactive process viewer for Linux, similar to top. It requires ncurses. Tested with Linux 2.4 and 2.6.")
 
 source=("https://github.com/htop-dev/htop/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
@@ -11,25 +12,19 @@ tags="sys-process console"
 
 build_deps="ncurses libnl pkg-config"
 
-before_build() {
-        go_src_dir
-	autoreconf -fi
-}
-
 build() {
   go_src_dir
-
+  burn_patches
+  autoreconf -fi
   ./configure \
-      --prefix=/usr \
-      --libdir=/usr/lib${LIBDIRSUFFIX} \
-      --mandir=/usr/share/man \
-      --sysconfdir=/etc \
-      --enable-cgroup \
-      --enable-delayacct \
-      --enable-openvz \
-      --enable-unicode \
-      --enable-vserver
-
-  make
-  make DESTDIR="$pkgdir" install
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --enable-cgroup \
+    --enable-delayacct \
+    --enable-openvz \
+    --enable-unicode \
+    --enable-vserver
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
