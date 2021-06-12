@@ -1,0 +1,27 @@
+pkgname=opam
+pkgver=2.0.8
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("OCaml package manager")
+longdesc=("Opam is a source-based package manager for OCaml. It supports multiple simultaneous compiler installations, flexible package constraints, and a Git-friendly development workflow.")
+
+source=("https://github.com/ocaml/opam/releases/download/$pkgver/opam-full-$pkgver.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="ocaml ocaml-findlib tar unzip"
+
+adddep="ocaml unzip"
+
+build()
+{
+  go_src_dir
+  burn_patches
+  ./configure --prefix=/usr --without-mccs
+  make lib-ext all -j1 \
+    OCAML_NATIVE=true \
+    OCAMLC='ocamlc -unsafe-string' \
+    OCAMLOPT='ocamlopt -unsafe-string'
+  make DESTDIR=${pkgdir} install
+}
