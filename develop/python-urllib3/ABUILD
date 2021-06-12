@@ -1,0 +1,27 @@
+pkgname=python-urllib3
+pkgver=1.26.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Python HTTP library with thread-safe connection pooling, file post, and more"
+longdesc="There are two critical features missing from the Python standard library: Connection re-using/pooling and file posting. Its not terribly hard to implement these yourself, but it's much easier to use a module that already did the work for you."
+
+source="https://github.com/urllib3/urllib3/archive/$pkgver/$pkgbase-$pkgver.tar.gz"
+
+tags="develop dev-python"
+
+#build_deps="python python-setuptools python-sphinx python-ndg-httpsclient python-pyasn1 python-pyopenssl python-pysocks python-mock python-brotli python-sphinx-furo"
+build_deps="python python-setuptools"
+
+adddep="python"
+
+build()
+{
+  go_src_dir
+  python setup.py build
+  cd docs
+#  make html
+  cd ..
+  python setup.py install --root="$pkgdir"
+  install -Dm644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
+}
