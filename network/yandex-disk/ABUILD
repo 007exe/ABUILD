@@ -1,6 +1,6 @@
 pkgname=yandex-disk
-pkgver=0.1.5.1039
-pkgbuild=2
+pkgver=0.1.6.1074
+pkgbuild=1
 arch=("x86_64")
 
 shortdesc="Yandex.Disk keeps your files with you at all times."
