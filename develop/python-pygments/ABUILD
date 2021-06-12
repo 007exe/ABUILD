@@ -1,0 +1,27 @@
+pkgname=python-pygments
+pkgver=2.9.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Syntax highlighting package written in Python"
+longdesc="Pygments is a syntax highlighting package written in Python.  It is a generic syntax highlighter for general use in all kinds of software such as forum systems, wikis or other applications that need to prettify source code."
+
+source="https://pypi.org/packages/source/P/Pygments/Pygments-$pkgver.tar.gz"
+
+tags="utils dev-python"
+
+build_deps="python python-sphinx python-setuptools"
+
+adddep="python python-setuptools"
+
+build() {
+  go_src_dir
+  export PYTHONHASHSEED=0
+  python3 setup.py install --root="$pkgdir" -O1
+  install -Dm644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
+  mkdir -p "$pkgdir/usr/share/doc"
+#  cp -rT doc/_build/html "$pkgdir/usr/share/doc/$pkgname"
+  install -Dm644 doc/pygmentize.1 -t "$pkgdir/usr/share/man/man1"
+  install -Dm644 external/pygments.bashcomp \
+     "$pkgdir/usr/share/bash-completion/completions/pygmentize"
+}
