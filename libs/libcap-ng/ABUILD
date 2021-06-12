@@ -1,27 +1,25 @@
-#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
 pkgname=libcap-ng
-pkgver=0.7.11
-pkgbuild=2
+pkgver=0.8.2
+pkgbuild=1
 arch=('auto')
 
-shortdesc="Utilities for analysing and setting file capabilities"
-longdesc=("This library implements the user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels. These capabilities are a partitioning of the all powerful root privilege into a set of distinct privileges. The libcap-ng library is intended to make programming with posix capabilities much easier than the traditional libcap library.")
+shortdesc="An alternate posix capabilities library"
+longdesc=("Libcap-ng is a library that makes using posix capabilities easier.")
+
 source=("http://people.redhat.com/sgrubb/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags="sys-libs libs"
-build_deps="gcc libnl"
 
-BUILD_SYSTEM="autotools"
+build_deps="gcc"
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/share/man \
---with-python"
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-static=no \
+    --with-python
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
