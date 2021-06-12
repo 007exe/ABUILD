@@ -1,5 +1,5 @@
 pkgname=grub
-pkgver=2.06~rc1
+pkgver=2.06
 _UNIFONT_VER=13.0.06
 pkgbuild=1
 arch=('auto')
@@ -7,8 +7,8 @@ arch=('auto')
 shortdesc="GNU GRUB is a Multiboot boot loader"
 longdesc="GNU GRUB is a Multiboot boot loader. It was derived from GRUB, the GRand Unified Bootloader, which was originally designed and implemented by Erich Stefan Boleyn."
 
-#source=("https://ftp.gnu.org/gnu/grub/grub-${pkgver}.tar.gz"
-source=("https://alpha.gnu.org/gnu/grub/grub-${pkgver}.tar.gz"
+source=("https://ftp.gnu.org/gnu/grub/grub-${pkgver}.tar.gz"
+#source=("https://alpha.gnu.org/gnu/grub/grub-${pkgver}.tar.gz"
 "https://ftp.gnu.org/gnu/unifont/unifont-${_UNIFONT_VER}/unifont-${_UNIFONT_VER}.bdf.gz")
 
 tags=("base sys-boot")
