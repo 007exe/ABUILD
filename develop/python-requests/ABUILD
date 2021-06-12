@@ -1,0 +1,24 @@
+pkgname=python-requests
+pkgver=2.25.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Python HTTP for Humans"
+longdesc="Requests allow you to send HTTP/1.1 requests. You can add headers, form data, multipart files, and parameters with simple Python dictionaries, and access the response data in the same way. It's powered by httplib and urllib3, but it does all the hard work and crazy hacks for you."
+
+source="https://github.com/psf/requests/archive/v$pkgver.tar.gz"
+
+tags="develop dev-python"
+
+#python-urllib3
+build_deps="python python-setuptools python-chardet python-idna"
+
+adddep="python python-urllib3 python-chardet python-idna"
+
+build()
+{
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --skip-build -O1 --root="$pkgdir"
+}
