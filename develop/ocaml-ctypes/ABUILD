@@ -1,0 +1,29 @@
+pkgname=ocaml-ctypes
+pkgver=0.17.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C type support for OCaml")
+longdesc=("Ctypes is a library for binding to C libraries using pure OCaml. The primary aim is to make writing C extensions as straightforward as possible.")
+
+source=("https://github.com/ocamllabs/ocaml-ctypes/archive/$pkgver.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="ocaml ocaml-findlib ocaml-integers libffi"
+
+adddep="ocaml libffi ocaml-integers"
+
+build()
+{
+  go_src_dir
+  burn_patches
+  make
+
+  local _destdir="$pkgdir$(ocamlfind printconf destdir)"
+  install -d "$_destdir/stublibs"
+
+  make OCAMLFIND_DESTDIR="$_destdir" install
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
