@@ -1,0 +1,23 @@
+pkgname=python-attrs
+pkgver=21.2.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Python library for attributes without boilerplate")
+longdesc=("Python library for atrributes without boilerplate")
+
+source=("https://pypi.io/packages/source/a/attrs/attrs-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+adddep="python"
+
+build()
+{
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
