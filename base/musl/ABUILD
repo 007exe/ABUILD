@@ -1,0 +1,32 @@
+pkgname=musl
+pkgver=1.2.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc="The musl C library"
+longdesc="Musl is a libc, an implementation of the standard library functionality described in the ISO C and POSIX standards, plus common extensions, intended for use on Linux-based systems. Whereas the kernel (Linux) governs access to hardware, memory, filesystems, and the privileges for accessing these resources, the C library is responsible for providing the actual C function interfaces userspace applications see, and for constructing higher-level buffered stdio, memory allocation management, thread creation and synchronization operations, and so on using the lower-level interfaces the kernel provides, as well as for implementing pure library routines of the C language like strstr, snprintf, strtol, exp, sqrt, etc."
+
+tags=("base sys-base")
+
+source=("https://www.musl-libc.org/releases/musl-$pkgver.tar.gz")
+
+build_deps="mkpkg"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --exec-prefix=/usr \
+    --enable-wrapper=all
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# configure syslibdir with /lib for PT_INTERP compat, but install to /usr/lib${LIBDIRSUFFIX}
+  mv "$pkgdir"/lib/ld-musl*.so* "$pkgdir"/usr/lib${LIBDIRSUFFIX}/
+  rmdir "$pkgdir"/lib
+
+  install -Dm0644 README "$pkgdir"/usr/share/doc/musl/README
+  install -Dm0644 COPYRIGHT "$pkgdir"/usr/share/licenses/musl/COPYRIGHT
+}
