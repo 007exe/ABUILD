@@ -1,0 +1,26 @@
+pkgname=python-zipp
+pkgver=3.4.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Backport of pathlib-compatible object wrapper for zip files")
+longdesc=("A pathlib-compatible Zipfile object wrapper. A backport of the Path object.")
+
+source=("https://github.com/jaraco/zipp/archive/v$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools-scm python-toml"
+
+  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+
+build()
+{
+  go_src_dir
+  python setup.py build
+
+#  python -m unittest discover
+
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
