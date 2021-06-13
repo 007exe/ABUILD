@@ -1,0 +1,40 @@
+pkgname=python-dephell
+_pkgname=dephell
+pkgver=0.8.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Universal Python project management: convert between formats, build, manage venvs")
+longdesc=("Universal Python project management: convert between formats, build, manage venvs")
+
+source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python"
+
+build()
+{
+  go_src_dir
+  burn_patches
+# don't lock pip version to below pip 20:
+# https://github.com/dephell/dephell/pull/363#issuecomment-606150965
+# because https://github.com/pypa/pip/issues/7629 seems insufficient
+# to hold up non-PyPY platforms :/
+  sed -i 's/pip<=19.3.1,>=18.0/pip/' setup.py
+
+  python setup.py build
+
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+
+# make shell completions
+  python -c 'from dephell.actions._autocomplete import make_bash_autocomplete as comp; print(comp())' | \
+      install -Dm644 /dev/stdin "${pkgdir}"/usr/share/bash-completion/completions/dephell
+
+# rewrite zsh completion to support autoloading
+  {   printf '#compdef dephell\n'
+      python -c 'from dephell.actions._autocomplete import make_zsh_autocomplete as comp; print(comp())' | \
+          sed 's/^compdef _dephell dephell$/_dephell/'
+  } | install -Dm644 /dev/stdin "${pkgdir}"/usr/share/zsh/site-functions/_dephell
+}
