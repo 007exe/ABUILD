@@ -64,3 +64,6 @@ after_build(){
   go_src_dir
   make DESTDIR=${pkgdir} install
 }
+
+############## Переменные
+${srcache} Каталог кеша исходников
