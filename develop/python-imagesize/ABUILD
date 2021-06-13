@@ -1,12 +1,12 @@
 pkgname=python-imagesize
 pkgver=1.2.0
-pkgbuild=1
+pkgbuild=2
 arch='auto'
 
-shortdesc="Python library for determining image sizes"
-longdesc="Python library for determining image sizes"
+shortdesc=("Python library for determining image sizes")
+longdesc=("Python library for determining image sizes")
 
-source="https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-$pkgver.tar.gz"
+source=("https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-$pkgver.tar.gz")
 
 tags="develop dev-python"
 
@@ -17,6 +17,7 @@ adddeps="python"
 build() {
   go_src_dir
   python setup.py build
+  python -m unittest discover -v
   python setup.py install --root="$pkgdir" --optimize=1 --skip-build
   install -Dm644 LICENSE.rst "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.rst
 }

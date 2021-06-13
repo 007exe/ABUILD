@@ -3,16 +3,14 @@ pkgver=2.1.0
 pkgbuild=1
 arch='auto'
 
-shortdesc="python-snowballstemmer"
-longdesc="This package provides 16 stemmer algorithms (15 + Poerter English stemmer) generated from Snowball algorithms."
+shortdesc=("python-snowballstemmer")
+longdesc=("This package provides 16 stemmer algorithms (15 + Poerter English stemmer) generated from Snowball algorithms.")
 
 source="https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-$pkgver.tar.gz"
 
 tags="libs dev-python"
 
 build_deps="python python-setuptools"
-
-adddep="python"
 
 build() {
   go_src_dir

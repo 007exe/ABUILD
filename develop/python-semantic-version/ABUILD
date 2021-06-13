@@ -3,16 +3,14 @@ pkgver=2.8.5
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Library implementing the SemVer scheme"
-longdesc="Library implementing the SemVer scheme"
+shortdesc=("Library implementing the SemVer scheme")
+longdesc=("Library implementing the SemVer scheme")
 
-source="https://github.com/rbarrois/python-semanticversion/archive/$pkgver.tar.gz"
+source=("https://github.com/rbarrois/python-semanticversion/archive/$pkgver.tar.gz")
 
 tags="develop dev-python"
 
 build_deps="python python-setuptools"
-
-adddep="python"
 
 build()
 {

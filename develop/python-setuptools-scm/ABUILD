@@ -3,16 +3,16 @@ pkgver=6.0.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Tool to manage python package versions by scm tags"
-longdesc="Tool to manage python package versions by scm tags"
+shortdesc=("Tool to manage python package versions by scm tags")
+longdesc=("Tool to manage python package versions by scm tags")
 
-source="https://pypi.io/packages/source/s/setuptools_scm/setuptools_scm-$pkgver.tar.gz"
+source=("https://pypi.io/packages/source/s/setuptools_scm/setuptools_scm-$pkgver.tar.gz")
 
 tags="develop dev-python"
 
 build_deps="python python-setuptools"
 
-adddep="python python-setuptools"
+adddep="python-setuptools"
 
 build()
 {

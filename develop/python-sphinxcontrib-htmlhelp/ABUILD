@@ -4,16 +4,14 @@ pkgver=2.0.0
 pkgbuild=1
 arch='auto'
 
-shortdesc="HTML help file support for the Sphinx documentation generator"
-longdesc="HTML help file support for the Sphinx documentation generator"
+shortdesc=("HTML help file support for the Sphinx documentation generator")
+longdesc=("HTML help file support for the Sphinx documentation generator")
 
 source="https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz"
 
 tags="libs dev-python"
 
 build_deps="python python-setuptools"
-
-adddeps="python"
 
 build() {
   go_src_dir

@@ -1,10 +1,10 @@
 pkgname=python-appdirs
 pkgver=1.4.4
-pkgbuild=1
+pkgbuild=2
 arch='auto'
 
-shortdesc="A small Python module for determining appropriate platform-specific dirs"
-longdesc="What directory should your app use for storing user data? This kind of thing is what the appdirs module is for."
+shortdesc=("A small Python module for determining appropriate platform-specific dirs")
+longdesc=("What directory should your app use for storing user data? This kind of thing is what the appdirs module is for.")
 
 source="https://pypi.io/packages/source/a/appdirs/appdirs-$pkgver.tar.gz"
 
@@ -12,11 +12,10 @@ tags="libs dev-python"
 
 build_deps="python python-setuptools"
 
-adddep="python"
-
 build() {
   go_src_dir
   python setup.py build
+  python setup.py test
   python setup.py install --root="$pkgdir/" --optimize=1
   install -Dm644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
 }

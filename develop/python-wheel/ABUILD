@@ -3,8 +3,8 @@ pkgver=0.36.2
 pkgbuild=1
 arch=('auto')
 
-shortdesc="A built-package format for Python"
-longdesc="A wheel is a ZIP-format archive with a specially formatted filename and the .whl extension. It is designed to contain all the files for a PEP 376 compatible install in a way that is very close to the on-disk format."
+shortdesc=("A built-package format for Python")
+longdesc=("A wheel is a ZIP-format archive with a specially formatted filename and the .whl extension. It is designed to contain all the files for a PEP 376 compatible install in a way that is very close to the on-disk format.")
 
 source=("https://pypi.io/packages/source/w/wheel/wheel-$pkgver.tar.gz"
 "https://github.com/pypa/wheel/archive/$pkgver.tar.gz")
@@ -13,7 +13,7 @@ tags="develop dev-python"
 
 build_deps="python python-packaging python-setuptools"
 
-adddep="python python-packaging"
+adddep="python-packaging"
 
 build()
 {

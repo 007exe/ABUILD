@@ -12,8 +12,6 @@ tags="develop dev-python"
 
 build_deps="python python-setuptools"
 
-adddep="python"
-
 build()
 {
   go_src_dir

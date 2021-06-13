@@ -3,16 +3,14 @@ pkgver=0.4.8
 pkgbuild=1
 arch=("auto")
 
-shortdesc="ASN.1 tools for Python"
-longdesc="This project is dedicated to implementation of ASN.1 types (concrete syntax) and codecs (transfer syntaxes) for Python programming environment. ASN.1 compiler is planned for implementation in the future."
+shortdesc=("ASN.1 tools for Python")
+longdesc=("This project is dedicated to implementation of ASN.1 types (concrete syntax) and codecs (transfer syntaxes) for Python programming environment. ASN.1 compiler is planned for implementation in the future.")
 
 tags=("dev-python develop")
 
-source="https://pypi.io/packages/source/p/pyasn1/pyasn1-$pkgver.tar.gz"
+source=("https://pypi.io/packages/source/p/pyasn1/pyasn1-$pkgver.tar.gz")
 
 build_deps="python python-setuptools"
-
-adddeps="python"
 
 build() {
   go_src_dir

@@ -1,23 +1,29 @@
 pkgname=python-babel
-pkgver=2.9.0
+pkgver=2.9.1
+_core=37
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Internationalization utilities for Python"
-longdesc="Babel is a Python library that provides an integrated collection of utilities that assist with internationalizing and localizing Python applications (in particular web-based applications.)"
+shortdesc=("Internationalization utilities for Python")
+longdesc=("Babel is a Python library that provides an integrated collection of utilities that assist with internationalizing and localizing Python applications (in particular web-based applications.)")
 
+source=("https://github.com/python-babel/babel/archive/v$pkgver.tar.gz"
+        "http://unicode.org/Public/cldr/$_core/core.zip")
+#python-pytest
 build_deps="python python-setuptools python-pytz"
 
 adddep="python python-pytz"
 
-source=("https://github.com/python-babel/babel/archive/v$pkgver.tar.gz")
-
 tags="develop dev-python"
 
 build() {
+  cp "$srcache"/core.zip babel-$pkgver/cldr/cldr-core-$_core.zip
   go_src_dir
   python setup.py import_cldr
   python setup.py build
+
+#  TZ=UTC python setup.py pytest
+
   export PYTHONHASHSEED=0
   python setup.py install --root="$pkgdir" --optimize=1 --skip-build
   install -D -m0644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE

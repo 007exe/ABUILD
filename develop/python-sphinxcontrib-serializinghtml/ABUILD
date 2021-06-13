@@ -4,10 +4,10 @@ pkgver=1.1.5
 pkgbuild=1
 arch='auto'
 
-shortdesc="Serialized HTML file support for the Sphinx documentation generator"
-longdesc="Serialized HTML file support for the Sphinx documentation generator"
+shortdesc=("Serialized HTML file support for the Sphinx documentation generator")
+longdesc=("Serialized HTML file support for the Sphinx documentation generator")
 
-source="https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz"
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
 
 tags="develop dev-python"
 

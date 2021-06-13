@@ -4,16 +4,14 @@ pkgver=0.10.2
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Python Library for Tom's Obvious, Minimal Language"
-longdesc="A Python library for parsing and creating TOML."
+shortdesc=("Python Library for Tom's Obvious, Minimal Language")
+longdesc=("A Python library for parsing and creating TOML.")
 
-source="https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz"
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
 
 tags="develop dev-python"
 
-build_deps="python python-setuptools python-setuptools "
-
-adddep="python"
+build_deps="python python-setuptools python-setuptools"
 
 build()
 {

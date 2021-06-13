@@ -3,16 +3,16 @@ pkgver=2.20
 pkgbuild=1
 arch=('auto')
 
-shortdesc="C parser and AST generator written in Python"
-longdesc="pycparser is a complete parser of the C language, written in pure Python using the PLY parsing library. It parses C code into an AST and can serve as a front-end for C compilers or analysis tools."
+shortdesc=("C parser and AST generator written in Python")
+longdesc=("Pycparser is a complete parser of the C language, written in pure Python using the PLY parsing library. It parses C code into an AST and can serve as a front-end for C compilers or analysis tools.")
 
-source="https://github.com/eliben/pycparser/archive/release_v$pkgver.tar.gz"
+source=("https://github.com/eliben/pycparser/archive/release_v$pkgver.tar.gz")
 
 tags="develop dev-python"
 
 build_deps="python python-ply python-setuptools"
 
-adddep="python python-ply"
+adddep="python-ply"
 
 build()
 {

@@ -1,10 +1,10 @@
 pkgname=python-pyparsing
 pkgver=2.4.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="General parsing module for Python"
-longdesc="General parsing module for Python"
+shortdesc=("General parsing module for Python")
+longdesc=("General parsing module for Python")
 
 tags=("dev-python develop")
 
@@ -17,6 +17,7 @@ adddep="python"
 build() {
   go_src_dir
   python setup.py build
+  python unitTests.py
   python setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
   install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }

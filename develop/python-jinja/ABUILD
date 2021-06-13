@@ -1,23 +1,30 @@
 pkgname=python-jinja
 pkgver=3.0.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="A simple pythonic template language written in Python"
-longdesc="A simple pythonic template language written in Python"
+shortdesc=("A simple pythonic template language written in Python")
+longdesc=("A simple pythonic template language written in Python")
 
 source="https://files.pythonhosted.org/packages/source/J/Jinja2/Jinja2-$pkgver.tar.gz"
 
 tags="dev-python develop"
-
+# python-pytest
 build_deps="python python-markupsafe python-setuptools"
 
-adddep="python"
+adddep="python python-setuptools python-markupsafe"
 
 build() {
   go_src_dir
   export PYTHONHASHSEED=0
   python3 setup.py build
+
+#  PYTHONPATH=build/lib pytest \
+#   --deselect tests/test_loader.py::test_package_dir_source \
+#   --deselect tests/test_loader.py::test_package_dir_list \
+#   --deselect tests/test_loader.py::test_package_zip_source \
+#   --deselect tests/test_loader.py::test_package_zip_list
+
   python3 setup.py install --root="$pkgdir" --optimize=1 --skip-build
   install -Dm644 LICENSE.rst -t "$pkgdir/usr/share/licenses/$pkgname"
 }

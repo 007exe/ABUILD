@@ -3,16 +3,14 @@ pkgver=4.0.0
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Character encoding auto-detection in Python"
-longdesc="Character encoding auto-detection in Python. As smart as your browser."
+shortdesc=("Character encoding auto-detection in Python")
+longdesc=("Character encoding auto-detection in Python. As smart as your browser.")
 
-source="https://pypi.io/packages/source/c/chardet/chardet-${pkgver}.tar.gz"
+source=("https://pypi.io/packages/source/c/chardet/chardet-${pkgver}.tar.gz")
 
 tags="dev-python develop"
 
 build_deps="python python-setuptools"
-
-adddep="python"
 
 build() {
   go_src_dir
