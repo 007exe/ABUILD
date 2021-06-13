@@ -1,9 +1,10 @@
 pkgname=ca-certificates
-pkgver=20190110
+pkgver=20210119
 pkgbuild=1
 arch=('noarch')
 
 shortdesc="Common CA certificates"
+longdesc="Common CA certificates"
 
 source=("http://ftp.debian.org/debian/pool/main/c/${pkgname}/${pkgname}_${pkgver}.tar.xz")
 
