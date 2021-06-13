@@ -1,0 +1,23 @@
+pkgname=python-cerberus
+pkgver=1.3.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Lightweight, extensible schema and data validation tool for Python dictionaries")
+longdesc=("Lightweight, extensible schema and data validation tool for Python dictionaries")
+
+source=("https://github.com/pyeve/cerberus/archive/$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+build()
+{
+  go_src_dir
+  python setup.py build
+
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
