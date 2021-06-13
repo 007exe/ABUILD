@@ -1,0 +1,19 @@
+pkgname=python-termcolor
+pkgver=1.1.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("ANSII Color formatting for output in terminal")
+longdesc=("ANSII Color formatting for output in terminal")
+
+source=("https://pypi.python.org/packages/source/t/termcolor/termcolor-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python"
+
+build()
+{
+  go_src_dir
+  python setup.py install --root="$pkgdir"
+}
