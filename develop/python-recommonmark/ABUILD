@@ -1,0 +1,20 @@
+pkgname=python-recommonmark
+pkgver=0.7.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Docutils compatibility bridge to CommonMark")
+longdesc=("A docutils-compatibility bridge to CommonMark.")
+
+source=("https://files.pythonhosted.org/packages/1c/00/3dd2bdc4184b0ce754b5b446325abf45c2e0a347e022292ddc44670f628c/recommonmark-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-docutils python-commonmark python-setuptools python-sphinx"
+
+build()
+{
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir"
+}
