@@ -1,0 +1,66 @@
+pkgname=npm
+pkgver=7.17.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A package manager for javascript")
+longdesc=("A package manager for javascript")
+
+source=("https://github.com/npm/cli/archive/v$pkgver.tar.gz")
+
+tags="develop dev-java"
+# libgl libxi
+build_deps="npm procps python nodejs node-gyp nodejs-nopt semver marked marked-man"
+
+adddep="nodejs node-gyp nodejs-nopt semver"
+
+before_build()
+{
+  go_src_dir
+
+  mkdir -p node_modules/.bin
+
+  ln -sf /usr/bin/marked{,-man} node_modules/.bin/
+
+# Use local marked/marked-man
+  sed -i 's|node bin/npm-cli.js install marked|true |' Makefile
+
+# Don't build twice
+  sed -i 's/install: all/install:/' Makefile
+
+  mkdir -p man/man1
+}
+
+build()
+{
+  go_src_dir
+  NODE_PATH=/usr/lib/node_modules make
+}
+
+after_build(){
+  go_src_dir
+  node bin/npm-cli.js install --no-audit --ignore-scripts -g -f --prefix="$pkgdir/usr" $(node bin/npm-cli.js pack | tail -1)
+
+# Non-deterministic race in npm gives 777 permissions to random directories.
+# See https://github.com/npm/npm/issues/9359 for details.
+  chmod -R u=rwX,go=rX "$pkgdir"
+
+# npm installs package.json owned by build user
+# https://bugs.archlinux.org/task/63396
+  chown -R root:root "$pkgdir"
+
+# Experimental dedup
+  _npmdir="$pkgdir"/usr/lib/node_modules/$pkgname
+  rm -r "$_npmdir"/node_modules/{,.bin/}semver
+  rm -r "$_npmdir"/node_modules/{,.bin/}node-gyp
+  rm -r "$_npmdir"/node_modules/{,.bin/}nopt
+  sed -i 's|../../node_modules/node-gyp/bin/node-gyp.js|../../../node-gyp/bin/node-gyp.js|' \
+    "$_npmdir"/bin/node-gyp-bin/node-gyp
+
+  install -dm755 "$pkgdir"/usr/share/bash-completion/completions
+  node "$srcdir"/cli-$pkgver/bin/npm-cli.js completion > "$pkgdir"/usr/share/bash-completion/completions/npm
+
+  mv "$pkgdir"/usr/lib/node_modules/npm/man "$pkgdir"/usr/share/
+
+  install -Dm644 "$srcdir"/cli-$pkgver/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
