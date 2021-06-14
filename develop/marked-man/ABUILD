@@ -1,0 +1,33 @@
+pkgname=marked-man
+pkgver=0.7.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Wrapper adding manpage output to marked, inspired by ronn")
+longdesc=("Wrapper adding manpage output to marked, inspired by ronn")
+
+source=("https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz")
+
+tags="develop dev-util"
+
+build_deps="npm"
+
+adddep="nodejs marked<1"
+
+build()
+{
+  cp "$srcache"/$pkgname-$pkgver.tgz .
+
+  npm install -g --user root --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
+
+  # Non-deterministic race in npm gives 777 permissions to random directories.
+  # See https://github.com/npm/npm/issues/9359 for details.
+  chmod -R u=rwX,go=rX "$pkgdir"
+
+  # npm installs package.json owned by build user
+  # https://bugs.archlinux.org/task/63396
+  chown -R root:root "$pkgdir"
+
+  install -d "$pkgdir"/usr/share/licenses/$pkgname
+  ln -s ../../../lib/node_modules/marked-man/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
