@@ -9,8 +9,8 @@ source="git:https://github.com/007exe/mkpkg.git"
 tags="dev-util develop"
 
 build_deps="cmake sed gcc"
-
-adddep="mpkg-console>=0.16 mkpkg-vercmp>=1.0 fakeroot python bash sed grep wget iputils"
+#mkpkg-vercmp>=1.0
+adddep="mpkg-console>=0.16 fakeroot python bash sed grep wget iputils"
 
 provides="mkpkg"
 

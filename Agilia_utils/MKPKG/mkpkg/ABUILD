@@ -9,8 +9,8 @@ source="https://github.com/007exe/mkpkg/archive/refs/tags/v${pkgver}.tar.gz"
 tags="dev-util develop"
 
 build_deps="cmake sed"
-
-adddep="mpkg-console mkpkg-vercmp fakeroot python bash sed grep tar wget"
+# mkpkg-vercmp
+adddep="mpkg-console fakeroot python bash sed grep tar wget"
 
 config_files="etc/mkpkg.conf"
 
