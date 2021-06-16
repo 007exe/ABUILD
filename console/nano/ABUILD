@@ -1,10 +1,10 @@
 pkgname=nano
-pkgver=5.7
+pkgver=5.8
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Tiny console text editor that aims to emulate Pico"
-longdesc="nano (Nano's ANOther editor) is the editor formerly known as TIP (TIP Isn't Pico). It aims to emulate Pico as closely as possible while also offering a few enhancements."
+shortdesc=("Tiny console text editor that aims to emulate Pico")
+longdesc=("nano (Nano's ANOther editor) is the editor formerly known as TIP (TIP Isn't Pico). It aims to emulate Pico as closely as possible while also offering a few enhancements.")
 
 source=("http://www.nano-editor.org/dist/v5/${pkgname}-${pkgver}.tar.gz")
 
