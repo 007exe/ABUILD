@@ -1,19 +1,26 @@
 pkgname=libssh2
 pkgver=1.9.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="A library implementing the SSH2 protocol as defined by Internet Drafts"
+shortdesc=("A library implementing the SSH2 protocol")
+longdesc=("libssh2 is a library implementing the SSH2 protocol as defined by Internet Drafts: SECSH-TRANS(22), SECSH-USERAUTH(25), SECSH-CONNECTION(23), SECSH-ARCH(20), SECSH-FILEXFER(06)*, SECSH-DHGEX(04), and SECSH-NUMBERS(10).")
+
 source=("http://www.libssh2.org/download/${pkgname}-${pkgver}.tar.gz")
+
 tags="libs net-misc"
+
 build_deps="openssl zlib"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/share/man"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
 
