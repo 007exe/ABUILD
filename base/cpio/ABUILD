@@ -1,40 +1,30 @@
 pkgname=cpio
 pkgver=2.13
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="A tool to copy files into or out of a cpio or tar archive"
+shortdesc=("A tool to copy files into or out of a cpio or tar archive")
+longdesc=("GNU cpio copies files into or out of a cpio or tar archive. The archive can be another file on the disk, a magnetic tape, or a pipe.")
 
-source=("ftp://ftp.gnu.org/gnu/cpio/cpio-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/gnu/cpio/cpio-${pkgver}.tar.gz")
 
 tags="base app-arch"
+
 build_deps="glibc"
 
-before_build() {
-	go_src_dir
+build() {
+  go_src_dir
 
-	# Always use 32-bit CRC
-	zcat ${filedir}/cpio.32bit.crc.diff.gz | patch -p1 -F 3 --verbose || exit 1
-}
+# https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
+  CFLAGS+=' -fcommon'
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-	--bindir=/bin \
-	--enable-mt \
-	--with-rmt=/sbin/rmt \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--libexecdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/share/man"
+  ./configure --prefix=/usr --mandir=/usr/share/man
+  make -j${numjobs}
 
-INSTALL_KEYS="DESTDIR=${pkgdir} INSTALL='install -p'"
-
-after_build() {
-	rm -rf ${pkgdir}/usr/libexec
-	
-	# Don't clobber mt
-	mv ${pkgdir}/bin/mt ${pkgdir}/bin/mt-GNU
-	mv ${pkgdir}/usr/share/man/man1/mt.1 ${pkgdir}/usr/share/man/man1/mt-GNU.1
+  make DESTDIR="${pkgdir}" install
+  rm -f "${pkgdir}/usr/bin/mt" "${pkgdir}/pkg/usr/share/man/man1/mt.1"
+  rm -rf "${pkgdir}/usr/libexec"
+  rm -f "${pkgdir}/usr/share/man/man8/rmt.8"
+  # remove infodir
+  rm "$pkgdir/usr/share/info/dir"
 }
