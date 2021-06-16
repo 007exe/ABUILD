@@ -1,32 +1,23 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=nettle
-pkgver=3.6
+pkgver=3.7.3
 pkgbuild=1
 arch=('auto')
 
-shortdesc="A low-level cryptographic library"
+shortdesc=("Nettle cryptographic library")
+longdesc=("Nettle is a cryptographic library that is designed to fit easily in more or less any context: In crypto toolkits for object-oriented languages (C++, Python, Pike, ...), in applications like LSH or GNUPG, or even in kernel space.")
 
 source=("http://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
 
 tags="sys-libs libs"
+
 build_deps="gmp"
 
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---mandir=/usr/share/man \
---program-prefix= \
---program-suffix= \
---enable-shared"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-after_build() {
-  # remove static
-  rm -f ${pkgdir}/usr/lib${LIBDIRSUFFIX}/{libhogweed,libnettle}.a
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
