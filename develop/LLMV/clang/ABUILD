@@ -1,0 +1,77 @@
+pkgname=clang
+pkgver=12.0.0
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("A C language family front-end for LLVM")
+longdesc=("The goal of the Clang project is to create a new C, C++, Objective C and Objective C++ front-end for the LLVM compiler. Its tools are built as libraries and designed to be loosely-coupled and extensible.")
+
+tags=("develop sys-devel")
+
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-$pkgver.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-$pkgver.src.tar.xz")
+
+build_deps="llvm cmake ninja python-sphinx python"
+
+adddep="gcc"
+
+before_build(){
+  go_src_dir
+  mkdir build
+  mv "$srcdir/clang-tools-extra-$pkgver.src" tools/extra
+
+  patch -Np2 -i ${filedir}/enable-SSP-and-PIE-by-default.patch
+
+# Some fixes from the release/12.x branch
+  patch -Np2 -i ${filedir}/partially-revert-scan-view-remove-Reporter.py.patch
+  patch -Np2 -i ${filedir}/opencl-respect-calling-convention-for-builtin.patch
+
+# https://bugs.llvm.org/show_bug.cgi?id=49990
+  patch -Np2 -d tools/extra <${filedir}/clangd-CompletionModel-cmake.patch
+
+# https://bugs.archlinux.org/task/70697
+  patch -Np2 -i ${filedir}/clang-link-with-Bsymbolic-functions.patch
+}
+
+build(){
+  go_src_dir
+  cd build
+
+  cmake ..  -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLLVM_LIBDIR_SUFFIX=${LIBDIRSUFFIX} \
+    -DLLVM_LINK_LLVM_DYLIB=ON \
+    -DCLANG_LINK_CLANG_DYLIB=ON \
+    -DLLVM_ENABLE_RTTI=ON \
+    -DLLVM_BUILD_TESTS=ON \
+    -DLLVM_INCLUDE_DOCS=ON \
+    -DLLVM_BUILD_DOCS=ON \
+    -DLLVM_ENABLE_SPHINX=ON \
+    -DSPHINX_WARNINGS_AS_ERRORS=OFF \
+    -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+    -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-$pkgver.src"
+  ninja
+}
+
+
+after_build(){
+  go_src_dir
+  cd build
+
+  DESTDIR="$pkgdir" ninja install
+  install -Dm644 ../LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+# Remove documentation sources
+  rm -r "$pkgdir"/usr/share/doc/clang{,-tools}/html/{_sources,.buildinfo}
+
+# Install Python bindings
+  install -d "$pkgdir/usr/lib/python3.9/site-packages"
+  cp -a ../bindings/python/clang "$pkgdir/usr/lib/python3.9/site-packages/"
+  python3 -m compileall "$pkgdir/usr/lib/python3.9"
+  python3 -O -m compileall "$pkgdir/usr/lib/python3.9"
+  python3 -OO -m compileall "$pkgdir/usr/lib/python3.9"
+
+  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*.a
+}
