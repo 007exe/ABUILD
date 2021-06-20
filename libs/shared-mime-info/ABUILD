@@ -1,27 +1,30 @@
-#url https://people.freedesktop.org/~hadess/
 pkgname=shared-mime-info
-pkgver=2.0
-arch=('auto')
+pkgver=2.1
 pkgbuild=1
+arch=('auto')
 
-shortdesc="Freedesktop.org Shared MIME Info"
-longdesc=("This package contains: The freedesktop.org shared MIME database spec. The merged GNOME and KDE databases, in the new format. The update-mime-database command, used to install new MIME data. See http://www.freedesktop.org/standards/shared-mime-info.html for more information.")
+shortdesc=("Shared MIME-Info Specification")
+longdesc=("This is the freedesktop.org shared MIME info database.")
 
-adddep=('libxml2' 'glib2')
 source=("https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/${pkgver}/shared-mime-info-${pkgver}.tar.gz")
 
 tags=("libs x11-misc")
-build_deps="libxml2 glib2 intltool pkg-config itstool meson gettext xmlto docbook-xsl ninja"
+
+build_deps="libxml2 glib2 itstool gettext xmlto docbook-xsl meson"
+
+adddep="libxml2 glib2"
 
 build() {
   go_src_dir
+  burn_patches
   meson build -Dprefix=/usr \
     -D update-mimedb=false \
     -D xdgmime-path=${srcdir}/xdgmime
 
-  # Print config
+# Print config
   meson configure build
-  # compile it
+
+# compile it
   ninja -C build
 
   DESTDIR="$pkgdir" meson install -C build
