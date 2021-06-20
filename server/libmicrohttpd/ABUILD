@@ -1,40 +1,30 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru
-
 pkgname=libmicrohttpd
-pkgver=0.9.71
+pkgver=0.9.73
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Small C web server library"
-
-longdesc=("GNU libmicrohttpd is a small C library that is supposed to make it easy to run an HTTP server as part of another application."
-)
+shortdesc=("Small C library to run an HTTP server")
+longdesc=("libmicrohttpd is a small C library that is supposed to make it easy to run an HTTP server as part of another application.")
 
 source=("http://ftp.gnu.org.ua/gnu/libmicrohttpd/libmicrohttpd-$pkgver.tar.gz")
 
 tags="server www-servers"
 
-build_deps="make gcc"
+build_deps="gnutls curl"
 
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---disable-dependency-tracking \
---disable-examples \
---mandir=/usr/share/man \
---program-prefix= \
---program-suffix= \
---enable-largefile \
---enable-curl \
---enable-https \
---enable-largefile \
---enable-messages \
---with-pic"
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-dependency-tracking \
+    --disable-examples \
+    --enable-largefile \
+    --enable-curl \
+    --enable-https \
+    --enable-largefile \
+    --enable-messages \
+    --with-pic
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
