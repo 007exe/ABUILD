@@ -1,33 +1,31 @@
-#ABUILD created by/создан: Ben, ivan29m at rambler.ru 
 pkgname=gc
 pkgver=8.0.4
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="A garbage collector for C and C++"
+shortdesc=("Conservative garbage collector for C")
+longdesc=("Boehm's GC is a garbage collecting storage allocator that is intended to be used as a plug-in replacement for C's malloc.")
 
 source=("https://github.com/ivmai/bdwgc/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags="dev-libs libs"
 
-build_deps="gcc"
+build_deps="gcc-libs"
 
 
 build()
 {
-
-go_src_dir
-burn_patches
-
- autoreconf -fi
-   ./configure --prefix=/usr --sysconfdir=/etc \
-	--localstatedir=/var \
-	--docdir=/usr/share/doc \
-	--mandir=/usr/share/man \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--enable-cplusplus --enable-static
-
-	make
-	make DESTDIR=${pkgdir} install
-
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --docdir=/usr/share/doc \
+    --mandir=/usr/share/man \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-cplusplus --enable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
