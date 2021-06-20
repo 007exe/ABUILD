@@ -1,58 +1,38 @@
-# ABUILD for mc
 pkgname=mc
-pkgver=4.8.24
+pkgver=4.8.26
 srcver=${pkgver//_/-}
 pkgbuild=1
 arch=('auto')
 
-shortdesc=('Midnight Commander is a text based file manager')
+shortdesc=("A file manager that emulates Norton Commander")
+longdesc=("Midnight Commander is a visual shell much like a file manager, only with way more features.  It is text mode, but also includes mouse support if you are running GPM.  Its coolest feature is the ability to ftp, view tar, zip files, and poke into RPMs for specific files.")
 
 tags=('console app-misc')
 
 source=("http://www.midnight-commander.org/downloads/mc-${pkgver}.tar.bz2")
-build_deps='glibc-solibs glib2 libssh2 slang'
-# Добавить в зависимость slang
-# Удалил
-# etc/mc/mc.menu
-# etc/mc/mc.menu.sr
+
+build_deps="glibc e2fsprogs glib2 gpm libssh2 slang which unzip"
+
+
 config_files="etc/mc/edit.indent.rc
 etc/mc/filehighlight.ini
 etc/mc/mc.ext
 etc/mc/mc.keymap
-etc/mc/sfs.ini"
+etc/mc/sfs.ini
+etc/mc/mc.menu
+etc/mc/mcedit.menu"
 
-build()
-{
-go_src_dir
-./configure \
-      --prefix=/usr \
-      --libexecdir=/usr/lib \
-      --sysconfdir=/etc \
-      --enable-vfs-smb \
-      --libdir=/usr/lib$LIBDIRSUFFIX \
-      --with-screen=slang \
-      --with-x
-#./autogen.sh || echo " Автогена нету , попробуйте конфигуре "
-#./configure --prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --sysconfdir=/etc --localstatedir=/var \
-#	--enable-shared=yes \
-#	--enable-fast-install=yes \
-#	--enable-largefile=yes \
-#	--enable-nls=yes \
-#	--enable-extcharset=yes \
-#	--enable-vfs=yes \
-#	--enable-netcode=yes \
-#	--with-search-engine=glib \	
-#	--enable-background=yes \
-#	--with-subshell=yes \
-#	--with-edit=yes \
-#	--with-gpm-mouse=yes \
-#	--with-screen=slang \
-#	--with-slang-includes=yes \
-#	--enable-charset=yes \
-#	--enable-rpath=yes \
-#	--enable-vfs-mcfs=yes \
-#	--enable-static=no \
-#	--with-slang-libs=/usr/lib$LIBDIRSUFFIX
-make -j${numjobs} || make
-make DESTDIR=$pkgdir install
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --enable-vfs-smb \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --with-screen=slang \
+    --with-x
+  make -j${numjobs} || make
+  make DESTDIR=$pkgdir install
+
+  rm "${pkgdir}"/etc/mc/mc.keymap && cp "${pkgdir}"/etc/mc/mc{.default,}.keymap
 }
