@@ -3,29 +3,32 @@ pkgver=5.3.28
 pkgbuild=2
 arch=('auto')
 
-shortdesc=("Berkeley embedded database system")
+shortdesc=("The Berkeley DB database library for C")
+longdesc=("The Berkeley Database (Berkeley DB) is a programmatic toolkit that provides embedded database support for both traditional and client/server applications. Berkeley DB is used by many applications, including Python and Perl, so this should be installed on all systems.")
 
 source=("http://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps="glibc gcc"
-
+build_deps="glibc gcc-libs"
 
 build() {
-	go_src_dir
-	burn_patches
-	cd build_unix
-		../dist/configure --prefix=/usr \
-		--libdir=/usr/lib${LIBDIRSUFFIX} \
-		--enable-compat185 \
-		--enable-shared \
-		--enable-static \
-		--enable-cxx \
-		--enable-dbm \
-		--mandir=/usr/share/man \
-		--docdir=/usr/share/doc\db-${pkgver}
-	make LIBSO_LIBS=-lpthread -j${numjobs}
-	make DESTDIR="${pkgdir}" install
-	rm -r "${pkgdir}"/usr/docs
+  go_src_dir
+  burn_patches
+  cd build_unix
+  ../dist/configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-compat185 \
+    --enable-shared \
+    --enable-static \
+    --enable-cxx \
+    --enable-dbm
+
+  make LIBSO_LIBS=-lpthread -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -r "${pkgdir}"/usr/docs
+
+ install -Dm644 "${srcdir}"/${pkgname}-${pkgver}/LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }
