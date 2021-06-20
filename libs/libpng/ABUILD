@@ -1,40 +1,29 @@
 pkgname=libpng
 pkgver=1.6.37
-_apngver=${pkgver}
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="libpng (Portable Network Graphics library)"
+shortdesc=("A library of functions for manipulating PNG image format files")
+longdesc=("The libpng package contains a library of functions for creating and manipulating PNG (Portable Network Graphics) image format files. PNG is a bit-mapped graphics format similar to the GIF format. PNG was created to replace the GIF format, since GIF uses a patented data compression algorithm.")
 
-source=("https://downloads.sourceforge.net/libpng/libpng-${pkgver}.tar.xz"
-"https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-$_apngver-apng.patch.gz")
+source=("https://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.xz")
 
 tags="media-libs libs"
 
 build_deps="zlib"
 
-before_build() {
-        go_src_dir
-	# Add animated PNG (apng) support
-	# We need to patch the patch
-	cp ${srcache}/libpng-${_apngver}-apng.patch.gz .
-	gzip -cd libpng-${_apngver}-apng.patch.gz | patch -p1
-}
-
 build() {
-	go_src_dir
-	./configure \
-	--prefix=/usr \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--mandir=/usr/share/man \
-	--docdir=/usr/share/doc/${pkgname}-${pkgver}
-	make
-}
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-after_build() {
-	go_src_dir
-	make DESTDIR="$pkgdir" install
-	cd contrib/pngminus
-	make PNGLIB_SHARED="-L$pkgdir/usr/lib${LIBDIRSUFFIX} -lpng" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" png2pnm pnm2png
-	install -m0755 png2pnm pnm2png "$pkgdir/usr/bin/"
+  install -D -m0644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+  cd contrib/pngminus
+  make PNGLIB_SHARED="-L$pkgdir/usr/lib${LIBDIRSUFFIX} -lpng" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" png2pnm pnm2png
+  install -m0755 png2pnm pnm2png "$pkgdir/usr/bin/"
 }
