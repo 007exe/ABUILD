@@ -1,18 +1,24 @@
 pkgname=libgpg-error
-pkgver=1.39
+pkgver=1.42
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("GnuPG Error Definitions Library")
-longdesc=("This is a library that defines common error values for all GnuPG components. Among these are GPG, GPGSM, GPGME, GPG-Agent, libgcrypt, Libksba, DirMngr, Pinentry, SmartCard Daemon, and more.")
+shortdesc=("Library containing common error values for GnuPG components")
+longdesc=("This is a library that defines common error values for all GnuPG components.  Among these are GPG, GPGSM, GPGME, GPG-Agent, libgcrypt, pinentry, SmartCard Daemon and possibly more in the future.")
 
 tags=("dev-libs network")
 
-source=("ftp://ftp.gnupg.org/gcrypt/libgpg-error/${pkgname}-${pkgver}.tar.bz2")
-build_deps="glibc-solibs"
+source=("https://www.gnupg.org/ftp/gcrypt/libgpg-error/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps="glibc"
+
 adddep="bash"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/share/man --sysconfdir=/etc"
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
