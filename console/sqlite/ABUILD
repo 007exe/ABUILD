@@ -1,8 +1,8 @@
 pkgname=sqlite
-pkgver=3.35.5
+pkgver=3.36.0
 pkgbuild=1
 arch=('auto')
-_amalgamationver=3350500
+_amalgamationver=3360000
 
 shortdesc=("C library that implements an embeddable SQL database engine")
 longdesc=("SQLite is a C library that implements an embeddable SQL database engine. Programs that link with the SQLite library can have SQL database access without running a separate RDBMS process. The distribution comes with a standalone command-line access program (sqlite) that can be used to administer an SQLite database and which serves as an example of how to use the SQLite library.")
