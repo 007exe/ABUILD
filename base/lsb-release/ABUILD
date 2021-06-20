@@ -1,21 +1,24 @@
 pkgname=lsb-release
 pkgver=1.4.1
 _srcver=1.4
-pkgbuild=4
+pkgbuild=5
 arch=('noarch')
 
-shortdesc=("LSB version query program")
+shortdesc=("Linux Standard Base tools")
+longdesc=("The program queries the installed state of the distribution to display certain properties such as the version of the LSB against which the distribution claims compliance as well. It can also attempt to display the name and release of the distribution along with an identifier of who produces the distribution.")
 
 source=("http://downloads.sourceforge.net/project/lsb/lsb_release/${_srcver}/lsb-release-${_srcver}.tar.gz")
+
 tags="base sys-base"
+
 adddep="etc agilialinux-version"
 
-build_deps="mkpkg"
+build_deps="mkpkg bash"
 
 build() {
-	go_src_dir
-	burn_patches
-	make
-	make install prefix=${pkgdir}/usr mandir=${pkgdir}/usr/share/man
-	install -Dm644 ${filedir}/lsb-release ${pkgdir}/etc/lsb-release
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  make install prefix=${pkgdir}/usr mandir=${pkgdir}/usr/share/man
+  install -Dm644 ${filedir}/lsb-release ${pkgdir}/etc/lsb-release
 }
