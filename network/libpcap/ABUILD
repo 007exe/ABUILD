@@ -1,27 +1,29 @@
 pkgname=libpcap
-pkgver=1.9.1
+pkgver=1.10.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Libpcap provides a portable framework for low-level network monitoring."
+shortdesc=("A system-independent interface for user-level packet capture")
+longdesc=("Libpcap provides a portable framework for low-level network monitoring. Libpcap can provide network statistics collection, security monitoring and network debugging. Since almost every system vendor provides a different interface for packet capture, the libpcap authors created this system-independent API to ease in porting and to alleviate the need for several system-dependent packet capture modules in each application.")
 
 source=("http://www.tcpdump.org/release/$pkgname-$pkgver.tar.gz")
+
 tags="network net-libs"
-build_deps="flex libnl libusb1"
 
+build_deps="libnl glibc"
 
-BUILD_SYSTEM="autotools"
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-ipv6 \
+    --enable-usb \
+    --with-libnl
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+  install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname/"
+  install -vDm 644 {CHANGES,{CONTRIBUTING,README}.md} \
+    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+}
