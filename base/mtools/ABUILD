@@ -1,37 +1,38 @@
 pkgname=mtools
-pkgver=4.0.24
+pkgver=4.0.31
 pkgbuild=1
 arch=('auto')
 
-shortdesc="tools for access MS-DOS disks"
-
-longdesc=("A collection of utilities to access MS-DOS disks"
-)
+shortdesc=("Programs for accessing MS-DOS disks without mounting the disks")
+longdesc=("Mtools is a collection of utilities for accessing MS-DOS files. Mtools allow you to read, write and move around MS-DOS filesystem files (normally on MS-DOS floppy disks).  Mtools supports Windows95 style long file names, OS/2 Xdf disks, and 2m disks.")
 
 source=("http://ftp.gnu.org/gnu/mtools/${pkgname}-${pkgver}.tar.bz2")
+
 tags="sys-fs base"
+
 #libX11 libSM
-build_deps="texinfo"
+build_deps="glibc texinfo"
+
+config_files="etc/mtools.conf"
 
 before_build()
 {
-go_src_dir
-sed -i '/^SAMPLE FILE$/s:^:# :' mtools.conf
+  go_src_dir
+# comment entry in default config
+  sed -i '/^SAMPLE FILE$/s:^:# :' mtools.conf
 }
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/share/man \
---program-prefix= \
---program-suffix="
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --infodir=/usr/share/info \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
-after_build()
-{
-install -Dm644 mtools.conf "${pkgdir}/etc/mtools.conf" || return 1
+  install -vDm 644 {README,NEWS} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -Dm644 mtools.conf "${pkgdir}/etc/mtools.conf" || return 1
 }
