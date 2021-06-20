@@ -1,26 +1,27 @@
 pkgname=mdadm
 pkgver=4.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Manage RAID arrays")
-longdesc=("mdadm is a utility program for creating, managing, and monitoring Linux MD (Software RAID) devices. Unlike the older raidtools package, mdadm is a single program (which should make it easier to use). mdadm was written by Neil Brown. Development of mdadm is sponsored by CSE@UNSW (The School of Computer Science and Engineering at The University of New South Wales).")
+shortdesc=("A tool for managing Soft RAID under Linux.")
+longdesc=("Mdadm is a program that can be used to create, manage, and monitor Linux MD (Software RAID) devices.")
 
 tags=("base sys-fs")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/utils/raid/mdadm/mdadm-$pkgver.tar.xz")
+
 config_files="etc/mdadm.conf"
 
-build_deps="glibc-solibs"
+build_deps="glibc"
 
 build() {
-	go_src_dir
-	burn_patches
-	sed -i "s,-Werror,," Makefile
-	make CXFLAGS="$CFLAGS" MANDIR=/usr/man
-	make install MANDIR=/usr/man DESTDIR=${pkgdir}
+  go_src_dir
+  burn_patches
+  sed -i "s,-Werror,," Makefile
+  make CXFLAGS="$CFLAGS" MANDIR=/usr/share/man
+  make install MANDIR=/usr/share/man DESTDIR=${pkgdir}
 
-	install -Dm0644 mdadm.conf-example ${pkgdir}/etc/mdadm.conf
-	mkdir ${pkgdir}/etc/init.d/
-        install -Dm755  ${filedir}/mdadm ${pkgdir}/etc/init.d/
+  install -Dm0644 mdadm.conf-example ${pkgdir}/etc/mdadm.conf
+  mkdir ${pkgdir}/etc/init.d/
+  install -Dm755  ${filedir}/mdadm ${pkgdir}/etc/init.d/
 }
