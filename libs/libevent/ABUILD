@@ -1,21 +1,26 @@
 pkgname=libevent
 pkgver=2.1.12
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="An event notification library"
-longdesc=("LibEvent provides engine for calling callback-functions when some changed")
+shortdesc=("Abstract asynchronous event notification library")
+longdesc=("The libevent API provides a mechanism to execute a callback function when a specific event occurs on a file descriptor or after a timeout has been reached. libevent is meant to replace the asynchronous event loop found in event driven network servers. An application just needs to call event_dispatch() and can then add or remove events dynamically without having to change the event loop.")
 
 source=("https://github.com/libevent/libevent/releases/download/release-$pkgver-stable/$pkgname-$pkgver-stable.tar.gz")
+
 tags="dev-libs libs"
+
 build_deps="openssl python"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm 644 LICENSE "${pkgdir}"/usr/share/licenses/libevent/LICENSE
+}
