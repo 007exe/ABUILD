@@ -1,0 +1,26 @@
+pkgname=libusb
+pkgver=1.0.24
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Library for accessing USB devices")
+longdesc=("This package provides a way for applications to access USB devices.")
+
+source=("https://github.com/libusb/libusb/releases/download/v${pkgver}/libusb-${pkgver}.tar.bz2")
+
+tags="libs dev-libs compat32"
+
+build_deps="glibc eudev"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -vDm 644 {AUTHORS,ChangeLog,README} \
+    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+}
