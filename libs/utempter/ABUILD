@@ -1,0 +1,21 @@
+pkgname=utempter
+pkgver=1.2.1
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("Priviledged helper for utmp/wtmp updates")
+longdesc=("Utempter is a utility which allows some non-privileged programs to have required root access without compromising system security. Utempter accomplishes this feat by acting as a buffer between root and the programs.")
+
+tags=("base sys-libs")
+
+source=("ftp://ftp.altlinux.org/pub/people/ldv/utempter/lib$pkgname-$pkgver.tar.gz")
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  make -j${numjobs}
+  make DESTDIR="$pkgdir" libdir="/usr/lib$LIBDIRSUFFIX" libexecdir="/usr/lib$LIBDIRSUFFIX" mandir="/usr/share/man" install
+  chown root:utmp "$pkgdir/usr/lib$LIBDIRSUFFIX/utempter/utempter"
+  chmod 2755 "$pkgdir/usr/lib$LIBDIRSUFFIX/utempter/utempter"
+}
