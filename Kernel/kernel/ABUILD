@@ -1,6 +1,6 @@
 pkgname=kernel
 # Kernel version may contain '-' symbol, so let's protect from it by using kernel_ver everywhere.
-pkgver=5.4.70
+pkgver=5.12.12
 
 kernel_ver=`echo ${pkgver} | sed -e s/_/-/g`
 if [ "${kernel_ver}" = "`echo ${kernel_ver} | sed 's/\.0$//g'`" ] ; then
@@ -52,20 +52,17 @@ sources() {
 build() {
   go_src_dir
   burn_patches
-
-# Копирование настроек ядра из работающей системы 
-echo "Копирую настроеки ядра из работающей системы"
+echo "Copying the current kernel configuration..."
 zcat /proc/config.gz > .config
 
-# Автоматическая адоптация настроек ядра
 clear
 echo ""
-echo 'Предварительная настройка ядра'
+echo "Kernel preconfiguration"
 while
 read -n1 -p  "
- 1 - Выполнить make olddefconfig (Новые опции будут оставленны как есть по умолчанию)
+ 1 - Run make olddefconfig (New options will be left as they are by default) 
 
- 2 - Выполнить make oldconfig? (Интерактивное меню настройки, будит много вопросов) " KERNEL_OLD_CONFIG
+ 2 - Run make oldconfig? (Interactive setup menu, prompts a lot of questions)  " KERNEL_OLD_CONFIG
 echo ''
 [[ "$KERNEL_OLD_CONFIG" =~ [^12] ]]
 do
@@ -75,32 +72,29 @@ if [[ "$KERNEL_OLD_CONFIG" == 1 ]]; then
 echo "
 ===============================================
 
-Новые опции оставленны как есть (по умолчанию)
+New options left as is (default)
 
 ===============================================" 
-	make olddefconfig
+  make olddefconfig
 elif [[ "$KERNEL_OLD_CONFIG" == 2 ]]; then
 echo "
 =============================================================
-Готовы? Тогда поехали
-
-y - включить, n - не включать, m - включить в качестве модуля
+y - enable, n - do not include, m - include as a module 
 =============================================================
 "
-	make oldconfig
+  make oldconfig
 fi
 
-# Ручная настройка ядра
 clear
 echo ""
-echo 'Ручная настройка ядра'
+echo "Manual kernel configuration"
 while
 read -n1 -p  "
- 1 - Выполнить make menuconfig? (Конфигуратор с псевдографическим интерфейсом.)
+ 1 - Run make menuconfig? (A configurator with a pseudo-graphic interface.) 
 
- 2 - Выполнить make nconfig? (Конфигуратор с псевдографическим интерфейсом. Требуется, чтобы библиотека ncurses)
+ 2 - Run make nconfig? (A pseudo-graphical configurator. Requires ncurses library) 
 
- 0 - Пропустить ручную настройку " KERNEL_CONFIG_MENU
+ 0 - Skip manual configuration " KERNEL_CONFIG_MENU
 echo ''
 [[ "$KERNEL_CONFIG_MENU" =~ [^120] ]]
 do
@@ -114,17 +108,12 @@ elif [[ "$KERNEL_CONFIG_MENU" == 0 ]]; then
 echo ""
 fi
 
-  # Сборка ядра
   make -j${numjobs}
-  echo "Ядро собрано, упаковываем"
 }
 
 modules() {
-echo "Сборка модулей" 
    make modules_install INSTALL_MOD_PATH=${pkgdir}
-echo "Удаляем прошивки из пакета модулей. Не понимаю, зачем они устанавливаеются вместе с модулями ..."
   rm -rf ${pkgdir}/lib/firmware
-echo " rm /lib/modules/kernel_ver/source,build"
   rm ${pkgdir}/lib/modules/${kernel_ver}/{source,build}
   ln -sf /usr/src/linux-${kernel_ver} ${pkgdir}/lib/modules/${kernel_ver}/source
   ln -sf /usr/src/linux-${kernel_ver} ${pkgdir}/lib/modules/${kernel_ver}/build
@@ -142,7 +131,6 @@ EOF
 
 after_build() {
   go_src_dir
-echo "Копирую ядро"
   mkdir -p ${pkgdir}/boot
   cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-${kernel_ver}
   ln -s vmlinuz-${kernel_ver} ${pkgdir}/boot/vmlinuz
@@ -158,7 +146,7 @@ headers_prep() {
   make headers_check
   make headers_install INSTALL_HDR_PATH=${pkgdir}/usr
 
-  # Copy aufs-tree manually, since we removed dirty hacks
+# Copy aufs-tree manually, since we removed dirty hacks
   if [ -f include/linux/aufs_type.h ]; then
      install -m644 include/linux/aufs_type.h ${pkgdir}/usr/include/linux/
   fi
@@ -167,12 +155,12 @@ headers_prep() {
 sources_prep() {
   go_src_dir
   mkdir -p ${pkgdir}/usr/src/linux-${kernel_ver}
-echo "Копирование дерева исходников ядра. Это может занять около 10 минут"
-  cp -ard ./* ${pkgdir}/usr/src/linux-${kernel_ver}/
+echo "Copying the kernel source tree. This may take about 10 minutes..."
+  cp -rd ./* ${pkgdir}/usr/src/linux-${kernel_ver}/
   ( cd ${pkgdir}/usr/src/linux-${kernel_ver} && make mrproper )
   cat .config > ${pkgdir}/usr/src/linux-${kernel_ver}/.config
   ( cd ${pkgdir}/usr/src/linux-${kernel_ver} && make prepare && make modules_prepare )
   ( cd ${pkgdir}/usr/src ; ln -s linux-${kernel_ver} linux )
-  # recreate config. I forgot why it was needed, but it takes no time, so let it be.
+# recreate config. I forgot why it was needed, but it takes no time, so let it be.
   cat .config > ${pkgdir}/usr/src/linux-${kernel_ver}/.config
 }
