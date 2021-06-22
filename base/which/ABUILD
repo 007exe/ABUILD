@@ -1,6 +1,6 @@
 pkgname=which
 pkgver=2.21
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Displays where a particular program in your path is located")
