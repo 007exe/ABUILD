@@ -1,16 +1,24 @@
 pkgname=time
 pkgver=1.9
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("The GNU time command for measuring program resource use")
+shortdesc=("A GNU utility for monitoring a program's use of system resources")
+longdesc=("The GNU time utility runs another program, collects information about the resources used by that program while it is running and displays the results.")
 
 tags=("base sys-process")
 
 source=("http://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
 build_deps="glibc"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/share/man --sysconfdir=/etc --infodir=/usr/share/info"
-INSTALL_KEYS="exec_prefix=${pkgdir}/usr infodir=${pkgdir}/usr/info"
-
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX
+  make -j${numjobs}
+  make exec_prefix=${pkgdir}/usr infodir=${pkgdir}/usr/share/info install
+}
