@@ -1,10 +1,10 @@
 pkgname=automake
 pkgver=1.16.3
-pkgbuild=1
+pkgbuild=2
 arch=('noarch')
 
-shortdesc="A GNU tool for automatically creating Makefiles"
-longdesc="Automake is a tool for automatically generating Makefiles compliant with the GNU Coding Standards. You should install Automake if you are developing software and would like to use its capabilities of automatically generating GNU standard Makefiles. If you install Automake, you will also need to install GNU's Autoconf package."
+shortdesc=("A GNU tool for automatically creating Makefiles")
+longdesc=("Automake is a tool for automatically generating Makefiles compliant with the GNU Coding Standards. You should install Automake if you are developing software and would like to use its capabilities of automatically generating GNU standard Makefiles. If you install Automake, you will also need to install GNU's Autoconf package.")
 
 source=("ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
@@ -19,8 +19,7 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --sysconfdir=/etc \
-    --build=x86_64-pc-linux-gnu
-  make
+    --sysconfdir=/etc
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
