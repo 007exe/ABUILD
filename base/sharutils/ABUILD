@@ -10,32 +10,21 @@ tags=("base app-arch")
 
 source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="glibc"
+build_deps="perl gettext texinfo"
 
 before_build() {
-	go_src_dir
-	sed 's/FUNC_FFLUSH_STDIN/-1/g' -i lib/fseeko.c
+  go_src_dir
+  sed 's/FUNC_FFLUSH_STDIN/-1/g' -i lib/fseeko.c
 }
 
 build() {
-	go_src_dir
-	CFLAGS+=' -fcommon' # https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
-	./configure \
-		--prefix=/usr \
-		--mandir=/usr/share/man \
-		--infodir=/usr/share/info \
-		--libdir=/usr/lib$LIBDIRSUFFIX \
-		--sysconfdir=/etc
-
-	make
+  go_src_dir
+  CFLAGS+=' -fcommon' # https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --mandir=/usr/share/man \
+    --infodir=/usr/share/info
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
 }
-
-after_build() {
-	go_src_dir
-	make DESTDIR="${pkgdir}" install
-}
-
-
-#BUILD_SYSTEM="autotools"
-#BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/share/man --sysconfdir=/etc"
-#INSTALL_KEYS="DESTDIR=$pkgdir"
