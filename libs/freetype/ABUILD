@@ -1,5 +1,5 @@
-pkgname=freetype2
-pkgver=2.10.4
+pkgname=freetype
+pkgver=2.11.0
 pkgbuild=1
 arch=('auto')
 
@@ -14,7 +14,7 @@ build_deps="bzip2 zlib"
 
 adddep="bash"
 
-provides="freetype"
+conflicts="freetype2"
 
 build() {
   go_src_dir
