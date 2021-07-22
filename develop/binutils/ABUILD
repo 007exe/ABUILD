@@ -1,10 +1,10 @@
 pkgname=binutils
-pkgver=2.36.1
+pkgver=2.37
 pkgbuild=1
 arch=("auto")
 
-shortdesc="GNU binary development tools"
-longdesc="binutils (GNU binary development tools)"
+shortdesc="GNU Binary Utility Development Utilities"
+longdesc="A set of programs to assemble and manipulate binary and object files"
 
 build_deps="glibc zlib gcc bison"
 
