@@ -1,12 +1,12 @@
 pkgname=lvm2
 pkgver=2.03.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="Logical Volume Manager version 2"
-longdesc="Heinz Mauelshagen's LVM (Logical Volume Manager) for Linux. LVM adds an additional layer between the physical peripherals and the low-level I/O interface to get a logical view of disks. This allows the concatenation of several disks (so-called physical volumes or PVs) to form a storage pool (so-called Volume Group or VG) with allocation units called physical extents (called PE). With LVM, you can extend, resize, or relocate storage dynamically."
+shortdesc=("Logical Volume Manager version 2")
+longdesc=("Heinz Mauelshagen's LVM (Logical Volume Manager) for Linux. LVM adds an additional layer between the physical peripherals and the low-level I/O interface to get a logical view of disks. This allows the concatenation of several disks (so-called physical volumes or PVs) to form a storage pool (so-called Volume Group or VG) with allocation units called physical extents (called PE). With LVM, you can extend, resize, or relocate storage dynamically.")
 
-build_deps="readline udev libaio"
+build_deps="readline eudev libaio"
 
 tags=("base sys-fs")
 

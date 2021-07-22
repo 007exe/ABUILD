@@ -1,10 +1,10 @@
 pkgname=util-linux-ng
 pkgver=2.37
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="A collection of basic system utilities"
-longdesc="The util-linux package contains a large variety of low-level system utilities that are necessary for a Linux system to function. Among others, Util-linux-ng contains the fdisk configuration tool and the login program."
+shortdesc=("A collection of basic system utilities")
+longdesc=("The util-linux package contains a large variety of low-level system utilities that are necessary for a Linux system to function. Among others, Util-linux-ng contains the fdisk configuration tool and the login program.")
 
 tags=('base sys-apps')
 
@@ -19,7 +19,7 @@ etc/pam.d/runuser-l
 etc/pam.d/su
 etc/pam.d/su-l"
 
-build_deps="udev linux-pam acl shadow coreutils asciidoctor"
+build_deps="eudev linux-pam acl shadow coreutils asciidoctor"
 
 build() {
   go_src_dir

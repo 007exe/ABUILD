@@ -1,6 +1,6 @@
 pkgname=eudev
 pkgver=3.2.10
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="The userspace dev tools (udev) forked by Gentoo"
@@ -13,7 +13,7 @@ tags=('base sys-fs')
 # gobject-introspection
 build_deps="kmod util-linux-ng acl gperf kernel-headers"
 
-provides="udev"
+#provides="udev"
 
 build(){
   go_src_dir

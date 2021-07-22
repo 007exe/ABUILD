@@ -1,6 +1,6 @@
 pkgname=pciutils
 pkgver=3.7.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("PCI bus related utilities")

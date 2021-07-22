@@ -1,6 +1,6 @@
 pkgname=dhcpcd
 pkgver=9.4.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("DHCP Client Daemon")
