@@ -1,10 +1,10 @@
 pkgname=meson
-pkgver=0.58.0
+pkgver=0.59.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc="High productivity build system"
-longdesc="Meson is an open source build system meant to be fast and user friendly."
+shortdesc=("High productivity build system")
+longdesc=("Meson is an open source build system meant to be fast and user friendly.")
 
 tags=("dev-util develop")
 
