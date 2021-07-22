@@ -1,5 +1,5 @@
 pkgname=python-setuptools
-pkgver=57.0.0
+pkgver=57.4.0
 pkgbuild=1
 url="https://pypi.org/project/setuptools/"
 arch=("auto")
@@ -10,8 +10,8 @@ longdesc=("Download, build, install, upgrade, and uninstall Python packages -- e
 
 tags=("dev-python develop")
 
-source=("https://files.pythonhosted.org/packages/88/fc/d17731c0cc67a5a8e385e4f47c3b0b186720e198b70f076ccb4676804a8f/setuptools-$pkgver.tar.gz")
-#source=("https://github.com/pypa/setuptools/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+#source=("https://files.pythonhosted.org/packages/88/fc/d17731c0cc67a5a8e385e4f47c3b0b186720e198b70f076ccb4676804a8f/setuptools-$pkgver.tar.gz")
+source=("https://github.com/pypa/setuptools/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
 
 build_deps="git python python-setuptools python-appdirs python-more-itertools python-ordered-set python-packaging python-pyparsing"
 
