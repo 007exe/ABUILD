@@ -1,0 +1,31 @@
+pkgname=aria2
+pkgver=1.35.0
+pkgbuild=2
+arch=('auto')
+
+shortdesc=("Download utility with resuming and segmented downloading")
+longdesc=("Aria2 has segmented downloading engine in its core. It can download one file from multiple URLs or multiple connections from one URL. This results in very high speed downloading, very much faster than ordinary browsers. This engine is implemented with a single-thread model.")
+
+source=("https://github.com/tatsuhiro-t/aria2/releases/download/release-$pkgver/aria2-$pkgver.tar.xz")
+
+tags="net-p2p console"
+
+build_deps="gnutls libxml2 sqlite c-ares ca-certificates libssh2"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-libaria2 \
+    --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# add bash completion
+  install -d "$pkgdir"/usr/share/bash-completion/completions
+  install -m644 "$pkgdir"/usr/share/doc/aria2/bash_completion/aria2c \
+      "$pkgdir"/usr/share/bash-completion/completions
+  rm -rf "$pkgdir"/usr/share/doc/aria2/bash_completion
+}
