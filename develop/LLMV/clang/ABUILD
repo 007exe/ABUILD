@@ -1,6 +1,6 @@
 pkgname=clang
-pkgver=12.0.0
-pkgbuild=2
+pkgver=12.0.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C language family front-end for LLVM")
@@ -20,18 +20,7 @@ before_build(){
   go_src_dir
   mkdir build
   mv "$srcdir/clang-tools-extra-$pkgver.src" tools/extra
-
-  patch -Np2 -i ${filedir}/enable-SSP-and-PIE-by-default.patch
-
-# Some fixes from the release/12.x branch
-  patch -Np2 -i ${filedir}/partially-revert-scan-view-remove-Reporter.py.patch
-  patch -Np2 -i ${filedir}/opencl-respect-calling-convention-for-builtin.patch
-
-# https://bugs.llvm.org/show_bug.cgi?id=49990
-  patch -Np2 -d tools/extra <${filedir}/clangd-CompletionModel-cmake.patch
-
-# https://bugs.archlinux.org/task/70697
-  patch -Np2 -i ${filedir}/clang-link-with-Bsymbolic-functions.patch
+  burn_patches
 }
 
 build(){
