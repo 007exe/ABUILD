@@ -1,5 +1,5 @@
 pkgname=llvm
-pkgver=12.0.0
+pkgver=12.0.1
 _ocaml_ver=4.12.0
 pkgbuild=1
 arch=("auto")
