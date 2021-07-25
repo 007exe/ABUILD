@@ -10,7 +10,7 @@ else
 fi
 kernel_base=`echo ${kernel_ver} | cut -d . -f 1-2`
 ver_group=`echo ${kernel_ver} | cut -d . -f 1-1`
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Linux kernel")
@@ -60,7 +60,7 @@ echo ""
 echo "Kernel preconfiguration"
 while
 read -n1 -p  "
- 1 - Run make olddefconfig (New options will be left as they are by default) 
+ 1 - Run make olddefconfig (New options will be left as they are by default)
 
  2 - Run make oldconfig? (Interactive setup menu, prompts a lot of questions)  " KERNEL_OLD_CONFIG
 echo ''
@@ -74,12 +74,12 @@ echo "
 
 New options left as is (default)
 
-===============================================" 
+==============================================="
   make olddefconfig
 elif [[ "$KERNEL_OLD_CONFIG" == 2 ]]; then
 echo "
 =============================================================
-y - enable, n - do not include, m - include as a module 
+y - enable, n - do not include, m - include as a module
 =============================================================
 "
   make oldconfig
@@ -90,9 +90,9 @@ echo ""
 echo "Manual kernel configuration"
 while
 read -n1 -p  "
- 1 - Run make menuconfig? (A configurator with a pseudo-graphic interface.) 
+ 1 - Run make menuconfig? (A configurator with a pseudo-graphic interface.)
 
- 2 - Run make nconfig? (A pseudo-graphical configurator. Requires ncurses library) 
+ 2 - Run make nconfig? (A pseudo-graphical configurator. Requires ncurses library)
 
  0 - Skip manual configuration " KERNEL_CONFIG_MENU
 echo ''
