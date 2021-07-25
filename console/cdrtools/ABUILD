@@ -1,10 +1,10 @@
 pkgname=cdrtools
 pkgver=3.02a09
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("CD-R, ISO and related tools")
-longdesc=("Tools for mastering and writing compact discs. cdda2wav -- CD audio sampling utility. cdrecord -- burn discs in most ATAPI and SCSI CD-R drives. mkisofs -- create ISO9660/HFS/Joliet CD-ROM images. mkzftree -- compress a file tree to make a compressed CD-ROM.")
+shortdesc=("Tools for working with writable CD, DVD and BluRay media")
+longdesc=("Cdrtools is a set of command line programs that allows to record CD/DVD/BluRay media.")
 
 tags=("console app-cdr")
 
@@ -12,34 +12,31 @@ source=("https://downloads.sourceforge.net/cdrtools/cdrtools-$pkgver.tar.bz2")
 
 build_deps="acl libcap"
 
-config_files="etc/default/cdrecord"
+config_files="etc/default/cdrecord
+etc/default/rscsi"
 
 build() {
-	go_src_dir
-	burn_patches
-
-	sed -i 's|/opt/schily|/usr|g' DEFAULTS/Defaults.linux
-	sed -i 's|DEFINSGRP=.*|DEFINSGRP=root|' DEFAULTS/Defaults.linux
-	export GMAKE_NOWARN=true
-
-	make -e -j${numjobs} INS_BASE=/usr DEFMANBASE=. || true 
-	# Without this second run, cdda2wav is skipped...
-	make -e INS_BASE=/usr DEFMANBASE=. 
-	make -e install INS_BASE=/usr DEFMANBASE=. DESTDIR=${pkgdir} 
-
-	# Note: this package uses /usr/lib in ALL architectures. Will see if it can be fixed later...
-	
-	rm -rf ${pkgdir}/usr/include \
-		${pkgdir}/usr/lib/profiled \
-		${pkgdir}/usr/lib/*.a \
-		${pkgdir}/usr/man/man5
-
-	# Next big hole? ;)   (don't ship rscsi)
-	rm -r ${pkgdir}/usr/sbin
-	rm -f ${pkgdir}/etc/default/rscsi ${pkgdir}/usr/man/man1/rscsi.1
-
-	# Remove dupes:
-	rm -rf ${pkgdir}/usr/share/doc
-	rmdir ${pkgdir}/usr/share
+  go_src_dir
+  burn_patches
+  sed -i 's|/opt/schily|/usr|g' DEFAULTS/Defaults.linux
+  sed -i 's|DEFINSGRP=.*|DEFINSGRP=root|' DEFAULTS/Defaults.linux
+# install rscsi to /usr/bin instead of /usr/sbin
+  sed -i 's|INSDIR=.*|INSDIR=bin|' rscsi/Makefile
+  export GMAKE_NOWARN=true
+  make INS_BASE=/usr INS_RBASE=/
+  make INS_BASE=/usr INS_RBASE=/ DESTDIR="$pkgdir" install
+# remove unneeded files that may cause conflicts
+  rm -rf "$pkgdir"/usr/include
+  rm -rf "$pkgdir"/usr/lib/{*.a,profiled}
+  rm -rf "$pkgdir"/usr/share/man/man3
+# autoload 'sg' module needed by cdrecord
+  install -d -m755 "$pkgdir"/usr/lib/modules-load.d/
+  echo sg > "$pkgdir"/usr/lib/modules-load.d/cdrecord.conf
+# create symlinks for cdrkit compatibility
+  cd "$pkgdir"/usr/bin
+  ln -s cdrecord wodim
+  ln -s readcd readom
+  ln -s mkisofs genisoimage
+  ln -s cdda2wav icedax
 }
 
