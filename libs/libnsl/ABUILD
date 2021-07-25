@@ -1,0 +1,25 @@
+pkgname=libnsl
+pkgver=1.3.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Public client interface library for NIS(YP) and NIS+")
+longdesc=("This package contains the libnsl library. This library contains the public client interface for NIS(YP) and NIS+. This code was formerly part of glibc, but is now standalone to be able to link against TI-RPC for IPv6 support.")
+
+tags=("libs net-libs")
+
+source=("https://github.com/thkukuk/libnsl/archive/v${pkgver}.tar.gz")
+
+build_deps="libtirpc glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
