@@ -1,12 +1,12 @@
 pkgname=coreutils
 pkgver=8.32
-pkgbuild=5
+pkgbuild=6
 arch=('auto')
 
-shortdesc="The GNU core utilities: a set of tools commonly used in shell scripts"
-longdesc="This package is the union of the old GNU fileutils, sh-utils, and textutils packages. These tools are the GNU versions of common useful and popular file & text utilities. Most of these programs have significant advantages over their Unix counterparts, such as greater speed, additional options, and fewer arbitrary limits."
+shortdesc=("The GNU core utilities: a set of tools commonly used in shell scripts")
+longdesc=("This package is the union of the old GNU fileutils, sh-utils, and textutils packages. These tools are the GNU versions of common useful and popular file & text utilities. Most of these programs have significant advantages over their Unix counterparts, such as greater speed, additional options, and fewer arbitrary limits.")
 
-tags=('base sys-apps')
+tags=("base sys-apps")
 
 source=("http://ftp.gnu.org/gnu/coreutils/coreutils-${pkgver}.tar.xz")
 
@@ -24,11 +24,10 @@ build() {
   CFLAGS="$SLKCFLAGS" \
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX} \
     --enable-no-install-program=groups,hostname,kill,uptime \
     --with-openssl \
     --sysconfdir=/etc
-
+#--libexecdir=/usr/lib${LIBDIRSUFFIX} \
   make -j${numjobs} || make || exit 1
   make DESTDIR=${pkgdir} install
 
