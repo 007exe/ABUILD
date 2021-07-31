@@ -1,6 +1,6 @@
 pkgname=squashfs-tools
 pkgver=4.5
-pkgbuild=1
+pkgbuild=2
 arch="auto"
 
 shortdesc=("Utilities for the creation of compressed squashfs images")
