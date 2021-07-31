@@ -1,9 +1,9 @@
 pkgname=cmake
-pkgver=3.21.0
+pkgver=3.21.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Cross-platform, open-source make system"
+shortdesc=("Cross-platform, open-source make system")
 longdesc=("CMake is used to control the software compilation process using simple platform and compiler independent configuration files. CMake generates native makefiles and workspaces that can be used in the compiler environment of your choice. CMake is quite sophisticated: it is possible to support complex environments requiring system configuration, pre-processor generation, code generation, and template instantiation.")
 
 source=("http://www.cmake.org/files/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
