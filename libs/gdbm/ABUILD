@@ -1,16 +1,16 @@
 pkgname=gdbm
-pkgver=1.19
+pkgver=1.20
 pkgbuild=1
 arch=('auto')
 
-shortdesc="A GNU set of database routines which use extensible hashing"
-longdesc="Gdbm is a GNU database indexing library, including routines which use extensible hashing.  Gdbm works in a similar way to standard UNIX dbm routines. Gdbm is useful for developers who write C applications and need access to a simple and efficient database or who are building C applications which will use such a database"
+shortdesc=("A GNU set of database routines which use extensible hashing")
+longdesc=("Gdbm is a GNU database indexing library, including routines which use extensible hashing.  Gdbm works in a similar way to standard UNIX dbm routines. Gdbm is useful for developers who write C applications and need access to a simple and efficient database or who are building C applications which will use such a database")
 
-source=("ftp://prep.ai.mit.edu/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/gnu/gdbm/${pkgname}-${pkgver}.tar.gz")
 
 tags="sys-libs libs"
 
-build_deps="glibc"
+build_deps="readline glibc"
 
 adddep="bash"
 
@@ -22,6 +22,6 @@ build() {
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --disable-static \
     --enable-libgdbm-compat
-  make
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
