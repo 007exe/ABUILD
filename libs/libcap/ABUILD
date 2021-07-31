@@ -1,16 +1,16 @@
 pkgname=libcap
-pkgver=2.49
+pkgver=2.51
 pkgbuild=1
 arch=("auto")
 
-shortdesc="POSIX 1003.1e capabilities"
-longdesc="This is a library for getting and setting POSIX.1e (formerly POSIX 6) draft 15 capabilities. Libcap was written by Andrew G. Morgan; however, it would not have been possible without the help of Aleph1, Roland Buresund, Andrew Main, and Alexander Kjeldaas."
+shortdesc=("Library for getting and setting POSIX.1e capabilities")
+longdesc=("libcap is a library for getting and setting POSIX.1e (formerly POSIX 6) draft 15 capabilities.")
 
 tags=("libs sys-libs compat32")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="attr libnl"
+build_deps="glibc linux-pam kernel-headers"
 
 build() {
   go_src_dir
