@@ -1,5 +1,5 @@
 pkgname=sudo
-pkgver=1.9.7p1
+pkgver=1.9.7p2
 pkgbuild=1
 arch=("auto")
 
