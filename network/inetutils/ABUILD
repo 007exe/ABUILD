@@ -1,6 +1,6 @@
 pkgname=inetutils
-pkgver=2.0
-pkgbuild=2
+pkgver=2.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A collection of common network programs")
