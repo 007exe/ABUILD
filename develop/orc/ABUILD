@@ -1,9 +1,10 @@
 pkgname=orc
 pkgver=0.4.32
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="The Oil Runtime Compiler (and OIL stands for Optimized Inner Loops)"
+shortdesc=("The Oil Runtime Compiler")
+longdesc=("Orc is a library and set of tools for compiling and executing very simple programs that operate on arrays of data. The language is a generic assembly language that represents many of the features available in SIMD architectures, including saturated addition and subtraction, and many arithmetic operations.")
 
 source=("https://gitlab.freedesktop.org/gstreamer/orc/-/archive/${pkgver}/orc-${pkgver}.tar.bz2")
 
@@ -18,4 +19,5 @@ build()
   meson compile -C build
   meson test -C build --print-errorlogs
   DESTDIR="$pkgdir" meson install -C build
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
 }
