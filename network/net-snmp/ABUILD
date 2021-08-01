@@ -1,55 +1,49 @@
 pkgname=net-snmp
-pkgver=5.9
+pkgver=5.9.1
 pkgbuild=1
-shortdesc="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
-longdesc=("Various tools relating to the Simple Network Management Protocol:
-
- An extensible agent
- An SNMP library
- Tools to request or set information from SNMP agents
- Tools to generate and handle SNMP traps
- A version of the unix 'netstat' command using SNMP
- A graphical Perl/Tk/SNMP based mib browser
-")
-
-
 arch=("auto")
+
+shortdesc=("A collection of SNMP protocol tools and libraries")
+longdesc=("SNMP (Simple Network Management Protocol) is a protocol used for network management. The NET-SNMP project includes various SNMP tools: an extensible agent, an SNMP library, tools for requesting or setting information from SNMP agents, tools for generating and handling SNMP traps, a version of the netstat command which uses SNMP, and a Tk/Perl mib browser. This package contains the snmpd and snmptrapd daemons, documentation, etc.")
+
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
 tags="network net-misc"
-build_deps="openssl libnl pciutils python-setuptools"
+
+build_deps="libnsl lm_sensors libpcap pciutils pcre python-setuptools"
+
 config_files="etc/conf.d/snmpd
 etc/conf.d/snmptrapd"
 
 build() {
-	go_src_dir
-	burn_patches
-	set -e
-	sed -i -e "s:\(install --basedir=\$\$dir\):\1 --root='${pkgdir}':" Makefile.in || exit 1
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --mandir=/usr/share/man \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --enable-ucd-snmp-compatibility \
+    --enable-ipv6 \
+    --with-libwrap \
+    --with-python-modules \
+    --without-rpm \
+    --with-default-snmp-version="3" \
+    --with-sys-contact="root@localhost" \
+    --with-sys-location="Unknown" \
+    --with-logfile="/var/log/snmpd.log" \
+    --with-mib-modules="host misc/ipfwacc ucd-snmp/diskio tunnel ucd-snmp/dlmod ucd-snmp/lmsensorsMib" \
+    --with-persistent-directory="/var/net-snmp"
+  make NETSNMP_DONT_CHECK_VERSION=1 -j${numjobs}
+  make DESTDIR="${pkgdir}" INSTALL_PREFIX="${pkgdir}" INSTALLDIRS=vendor install
 
-	./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man \
-		--libdir=/usr/lib$LIBDIRSUFFIX \
-		--enable-ucd-snmp-compatibility \
-		--enable-ipv6 \
-		--with-libwrap \
-		--with-python-modules \
-		--without-rpm \
-		--with-default-snmp-version="3" \
-		--with-sys-contact="root@localhost" \
-		--with-sys-location="Unknown" \
-		--with-logfile="/var/log/snmpd.log" \
-		--with-mib-modules="host misc/ipfwacc ucd-snmp/diskio tunnel ucd-snmp/dlmod" \
-		--with-persistent-directory="/var/net-snmp"
+  mkdir -p ${pkgdir}/etc/{init.d,conf.d}
 
-	make NETSNMP_DONT_CHECK_VERSION=1 LDFLAGS+="-Wl,-rpath -Wl,/usr/lib/perl5/core_perl/CORE" -j${numjobs}
+  install -D -m755 "${filedir}/init.d/snmpd" "${pkgdir}/etc/init.d/snmpd"
+  install -D -m755 "${filedir}/init.d/snmptrapd" "${pkgdir}/etc/init.d/snmptrapd"
+  install -D -m755 "${filedir}/conf.d/snmpd" "${pkgdir}/etc/conf.d/snmpd"
+  install -D -m755 "${filedir}/conf.d/snmptrapd" "${pkgdir}/etc/conf.d/snmptrapd"
 
-	make DESTDIR="${pkgdir}" INSTALL_PREFIX="${pkgdir}" INSTALLDIRS=vendor install
-	mkdir -p ${pkgdir}/etc/{init.d,conf.d}
-
-	install -D -m755 "${filedir}/init.d/snmpd" "${pkgdir}/etc/init.d/snmpd"
-	install -D -m755 "${filedir}/init.d/snmptrapd" "${pkgdir}/etc/init.d/snmptrapd"
-	install -D -m755 "${filedir}/conf.d/snmpd" "${pkgdir}/etc/conf.d/snmpd"
-	install -D -m755 "${filedir}/conf.d/snmptrapd" "${pkgdir}/etc/conf.d/snmptrapd"
-
-	install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
-	set +e
+  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }
