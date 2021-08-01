@@ -1,6 +1,6 @@
 pkgname=curl
-pkgver=7.77.0
-pkgbuild=2
+pkgver=7.78.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Gets a file from a FTP, GOPHER or HTTP server")
