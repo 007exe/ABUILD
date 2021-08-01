@@ -1,0 +1,34 @@
+pkgname=lm_sensors
+pkgver=3.6.0
+pkgverd=3-6-0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Collection of user space tools for general SMBus access and hardware monitoring")
+longdesc=("This package contains a collection of user space tools for general SMBus access and hardware monitoring. SMBus, also known as System Management Bus, is a protocol for communicating through a I2C ('I squared C') bus. Many modern mainboards have a System Management Bus. There are a lot of devices which can be connected to a SMBus; the most notable are modern memory chips with EEPROM memories and chips for hardware monitoring.")
+
+source=("https://github.com/lm-sensors/lm-sensors/archive/refs/tags/V$pkgverd.tar.gz")
+
+tags="console sys-apps"
+
+config_files="etc/sensors3.conf
+etc/healthd.conf
+etc/conf.d/sensord"
+
+build_deps="perl"
+build(){
+  go_src_dir
+  burn_patches
+  sed -i 's|/etc/sysconfig|/etc/conf.d|' prog/{detect/sensors-detect,init/{sensord,lm_sensors}.service}
+  sed -i 's/EnvironmentFile=/EnvironmentFile=-/' prog/init/lm_sensors.service
+
+  make PREFIX=/usr LIBDIR=/usr/lib${LIBDIRSUFFIX} MANDIR=/usr/share/man DESTDIR=$pkgdir install
+  mkdir -p ${pkgdir}/etc/init.d
+  cp ${filedir}/lm_sensors ${pkgdir}/etc/init.d
+  chmod 755 ${pkgdir}/etc/init.d/lm_sensors
+  install -D -m755 "${filedir}/healthd" "${pkgdir}/usr/bin/healthd"
+
+  install -D -m644 "${filedir}/healthd.conf" "${pkgdir}/etc/healthd.conf"
+  install -D -m644 "${filedir}/sensord.conf" "${pkgdir}/etc/conf.d/sensord"
+}
+
