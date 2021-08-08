@@ -1,0 +1,34 @@
+pkgname=alsa-plugins
+pkgver=1.2.5
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Advanced Linux Sound Architecture (ALSA) plugins")
+longdesc=("Advanced Linux Sound Architecture (ALSA) utilities. Modularized architecture with support for a large range of ISA and PCI cards. Fully compatible with OSS/Lite (kernel sound drivers), but contains many enhanced features.")
+
+source=("https://www.alsa-project.org/files/pub/plugins/$pkgname-$pkgver.tar.bz2")
+
+tags="libs media-sound"
+
+build_deps="alsa-lib dbus"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --enable-maemo-plugin \
+    --disable-static \
+    --enable-maemo-resource-manager
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dt "$pkgdir/usr/share/doc/$pkgbase" -m644 doc/README* doc/*.txt
+
+# remove maemo plugin configuration (it overrides defaults for pcm and ctl),
+# until a better way is found to package default overrides:
+# https://bugs.archlinux.org/task/65440
+  rm -v "${pkgdir}/etc/alsa/conf.d/98-maemo.conf"
+}
