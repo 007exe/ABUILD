@@ -1,0 +1,35 @@
+pkgname=alsa-firmware
+pkgver=1.2.4
+pkgbuild=1
+arch="noarch"
+
+shortdesc=("Firmware binaries for loader programs in alsa-tools and hotplug firmware loader")
+longdesc=("This package contains the firmware binaries for a number of sound cards. Some (but not all of these) require firmware loaders which are included in the alsa-tools-firmware package.")
+
+tags="sys-kernel base"
+
+source=("https://www.alsa-project.org/files/pub/firmware/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps="mkpkg"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --enable-buildfw \
+    --with-hotplug-dir=/lib/firmware
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# remove files which conflict with linux-firmware
+  rm -rf "${pkgdir}"/usr/lib/firmware/{ct{efx,speq}.bin,ess,korg,sb16,yamaha}
+# remove broken symlinks (broken upstream)
+  rm -rf "${pkgdir}"/usr/lib/firmware/turtlebeach
+  install -vDm 644 aica/license.txt \
+    -t "${pkgdir}/usr/share/licenses/${pkgname}/aica/"
+  install -vDm 644 ca0132/creative.txt \
+    -t "${pkgdir}/usr/share/licenses/${pkgname}/ca0132/"
+}
+
