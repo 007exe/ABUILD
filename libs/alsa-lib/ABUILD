@@ -1,0 +1,28 @@
+pkgname=alsa-lib
+pkgver=1.2.5.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Config files for Advanced Linux Sound Architecture (ALSA)")
+longdesc=("Advanced Linux Sound Architecture (ALSA) is a modularized architecture which supports quite a large range of ISA and PCI cards.")
+
+tags=('libs media-libs')
+
+source=("https://www.alsa-project.org/files/pub/lib/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps="glibc"
+
+adddep="alsa-topology-conf alsa-ucm-conf"
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --without-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  make DESTDIR="$pkgdir" install -C doc
+  install -vDm 644 {MEMORY-LEAK,TODO,NOTES,ChangeLog,doc/asoundrc.txt} -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
