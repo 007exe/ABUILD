@@ -1,0 +1,44 @@
+pkgname=alsa-utils
+pkgver=1.2.5.1
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Advanced Linux Sound Architecture (ALSA) utilities")
+longdesc=("Advanced Linux Sound Architecture (ALSA) utilities. Modularized architecture with support for a large range of ISA and PCI cards. Fully compatible with OSS/Lite (kernel sound drivers), but contains many enhanced features.")
+
+tags=('console media-sound')
+
+source=("ftp://ftp.alsa-project.org/pub/utils/${pkgname}-${pkgver}.tar.bz2")
+# fftw libsamplerate
+build_deps="alsa-lib docbook-xsl ncurses python-docutils xmlto"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-udev-rules-dir=/usr/lib/udev/rules.d \
+    --disable-alsaconf
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
+after_build() {
+# Add OpenRC scripts
+  mkdir -p ${pkgdir}/etc/conf.d
+  install -m644 ${filedir}/alsasound ${pkgdir}/etc/conf.d/alsasound
+  mkdir -p ${pkgdir}/etc/init.d
+  install -m755 ${filedir}/alsasound.init ${pkgdir}/etc/init.d/alsasound
+
+# Create alsascr directory (OpenRC scripts wants this, dunno why)
+  mkdir -p ${pkgdir}/etc/alsa.d
+
+  install -vDm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+
+# dir where to save ALSA state
+  install -d "${pkgdir}/var/lib/alsa"
+}
+
