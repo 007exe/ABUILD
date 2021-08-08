@@ -1,0 +1,24 @@
+pkgname=alsa-oss
+pkgver=1.1.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Advanced Linux Sound Architecture (ALSA) library")
+longdesc=("Advanced Linux Sound Architecture (ALSA) is a modularized architecture which supports quite a large range of ISA and PCI cards.")
+
+tags=("libs media-libs")
+
+source=("https://www.alsa-project.org/files/pub/oss-lib/$pkgname-$pkgver.tar.bz2")
+
+build_deps="alsa-lib"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
