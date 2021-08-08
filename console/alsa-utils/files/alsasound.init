@@ -67,9 +67,9 @@ set Playback 100% unmute
 set "SB Live Analog/Digital Output Jack" off
 set "Audigy Analog/Digital Output Jack" off
 EOF
-			echo "Storing default ALSA mixer settings:  /usr/sbin/alsactl store"
+			echo "Storing default ALSA mixer settings:  /usr/bin/alsactl store"
 			mkdir -p ${alsastatedir}
-			/usr/sbin/alsactl -f ${alsastatedir}/asound.state store
+			/usr/bin/alsactl -f ${alsastatedir}/asound.state store
 		fi
 	fi
 }
