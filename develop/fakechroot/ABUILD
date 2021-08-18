@@ -1,6 +1,6 @@
 pkgname=fakechroot
 pkgver=2.20.1
-pkgbuild=3
+pkgbuild=4
 arch=('auto')
 
 shortdesc=("A chroot-like wrapper for non-privileged users")
