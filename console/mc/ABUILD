@@ -1,5 +1,5 @@
 pkgname=mc
-pkgver=4.8.26
+pkgver=4.8.27
 srcver=${pkgver//_/-}
 pkgbuild=1
 arch=('auto')
@@ -12,7 +12,6 @@ tags=('console app-misc')
 source=("http://www.midnight-commander.org/downloads/mc-${pkgver}.tar.bz2")
 
 build_deps="glibc e2fsprogs glib2 gpm libssh2 slang which unzip"
-
 
 config_files="etc/mc/edit.indent.rc
 etc/mc/filehighlight.ini
