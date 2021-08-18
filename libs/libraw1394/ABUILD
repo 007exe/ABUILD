@@ -1,0 +1,23 @@
+pkgname=libraw1394
+pkgver=2.1.2
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Provides an API to the Linux IEEE1394 (FireWire) driver")
+longdesc=("libraw1394 is the only supported interface to the kernel side raw1394 of the Linux IEEE-1394 subsystem, which provides direct access to the connected 1394 buses to user space.  Through libraw1394/raw1394, applications can directly send to and receive from other nodes without requiring a kernel driver for the protocol in question.")
+
+tags=("sys-libs libs compat32")
+
+source=("https://www.kernel.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.xz")
+
+build_deps="glibc pkg-config"
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
