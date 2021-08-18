@@ -1,5 +1,5 @@
 pkgname=libaudit
-pkgver=3.0.2
+pkgver=3.0.4
 pkgbuild=1
 arch=("auto")
 
