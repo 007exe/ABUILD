@@ -1,0 +1,23 @@
+pkgname=libiec61883
+pkgver=1.2.0
+pkgbuild=1
+arch="auto"
+
+shortdesc=("A higher level API for streaming DV, MPEG-2 and audio over Linux IEEE 1394")
+longdesc=("The libiec61883 library provides an higher level API for streaming DV, MPEG-2 and audio over IEEE1394.  Based on the libraw1394 isochronous functionality, this library acts as a filter that accepts DV-frames, MPEG-2 frames or audio samples from the application and breaks these down to isochronous packets, which are transmitted using libraw1394.")
+
+source=("https://www.kernel.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.xz")
+
+tags="libs media-libs"
+
+build_deps="libraw1394"
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
