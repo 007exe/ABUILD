@@ -1,29 +1,25 @@
 pkgname=ladspa
-srcname=ladspa_sdk
 pkgver=1.15
 pkgbuild=1
-arch=('auto')
+arch="auto"
 
-shortdesc="LADSPA (Linux Audio Developer's Simple Plugin API)"
-longdesc=("There is a large number of synthesis packages in use or development on the Linux platform at this time. The Linux Audio Developer's Simple Plugin API (LADSPA) attempts to give programmers the ability to write simple plugin audio processors in C/C++ and link them dynamically against a range of host applications."
-"Homepage: http://www.ladspa.org/")
-source=("http://www.ladspa.org/download/${srcname}_${pkgver}.tgz")
+shortdesc=("Linux Audio Developer's Simple Plugin API (LADSPA)")
+longdesc=("There is a large number of synthesis packages in use or development on the Linux platform at this time. The Linux Audio Developer's Simple Plugin API (LADSPA) attempts to give programmers the ability to write simple plugin audio processors in C/C++ and link them dynamically against a range of host applications.")
+
+source=("https://ladspa.org/download/ladspa_sdk_${pkgver}.tgz")
+
 tags="libs media-libs"
-build_deps="gcc"
 
-build()
-{
+build_deps="gcc-libs"
+
+build(){
   go_src_dir
   burn_patches
-
+  sed -e "s#-O2#${CFLAGS} ${LDFLAGS}#" -i src/Makefile
   cd src
-
-#  sed -i -e 's/mkdirhier/mkdir -p/' makefile || return 1
-  LDFLAGS="$SLKLDFLAGS" \
-  CFLAGS="$SLKCFLAGS" \
-  CXXFLAGS="$SLKCFLAGS" \
   make targets || return 1
   make INSTALL_PLUGINS_DIR="${pkgdir}/usr/lib${LIBDIRSUFFIX}/ladspa/" \
   INSTALL_INCLUDE_DIR="${pkgdir}/usr/include/" \
   INSTALL_BINARY_DIR="${pkgdir}/usr/bin/" install || return 1
+  install -vDm 644 ../doc/*.{html,txt} -t "${pkgdir}/usr/share/doc/${pkgname}"
 }
