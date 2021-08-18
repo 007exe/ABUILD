@@ -1,16 +1,16 @@
 pkgname=shadow
-pkgver=4.8.1
-pkgbuild=3
+pkgver=4.9
+pkgbuild=1
 arch=("auto")
 
-shortdesc="Shadow (Password and account management tool suite with support for shadow files and PAM)"
-longdesc="This set of login related programs utilizes an alternate, non-readable file to contain the actual encrypted passwords. This is presumed to increase system security by increasing the difficulty with which system crackers obtain encrypted passwords. It was written by Julianne Frances Haugh and the Linux port is maintained by Tomasz Kloczko. This package provides 'login', which is needed to log into the system."
+shortdesc=("Utilities for managing shadow password files and user/group accounts")
+longdesc=("The shadow package includes the necessary programs for converting UNIX password files to the shadow password format, plus programs for managing user and group accounts.")
 
 tags=("base sys-auth")
 
 build_deps="make gcc binutils grep sed coreutils linux-pam acl libaudit automake autoconf gettext"
 
-source=("https://github.com/shadow-maint/shadow/releases/download/${pkgver}/shadow-${pkgver}.tar.xz")
+source=("https://github.com/shadow-maint/shadow/releases/download/v${pkgver}/shadow-${pkgver}.tar.xz")
 
 config_files="etc/pam.d/chage
 etc/pam.d/passwd
@@ -30,39 +30,38 @@ etc/default/useradd"
 build() {
   go_src_dir
   burn_patches
-
   autoreconf -fsiv
-  ./configure --prefix=/usr \
-              --bindir=/usr/bin \
-              --sbindir=/usr/sbin \
-              --libdir=/lib${LIBDIRSUFFIX} \
-              --mandir=/usr/share/man \
-              --sysconfdir=/etc \
-              --disable-account-tools-setuid \
-              --enable-static \
-              --with-libpam \
-              --without-selinux \
-              --without-tcb \
-              --with-audit \
-              --with-group-name-max-length=32
-
+  ./configure \
+    --prefix=/usr \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin \
+    --libdir=/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/share/man \
+    --sysconfdir=/etc \
+    --disable-account-tools-setuid \
+    --enable-static \
+    --with-libpam \
+    --without-selinux \
+    --without-tcb \
+    --with-audit \
+    --with-group-name-max-length=32 \
+    --disable-man
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
-
 
 # Remove utilities provided by util-linux
   rm -f "$pkgdir"/usr/bin/{login,su,sg,nologin} \
 
 # remove the existing files in util-linux-ng
-  for file in chfn chsh newgrp; do
-      rm -v "${pkgdir}/usr/bin/"${file}
-      find "${pkgdir}/usr/share/man" -name "$file.1" -exec rm -v {} \;
-  done
+#  for file in chfn chsh newgrp; do
+#      rm -v "${pkgdir}/usr/bin/"${file}
+#      find "${pkgdir}/usr/share/man" -name "$file.1" -exec rm -v {} \;
+#  done
 
-  for file in vigr vipw; do
-      rm -v "${pkgdir}/usr/sbin/"${file}
-      find "${pkgdir}/usr/share/man" -name "$file.8" -exec rm -v {} \;
-  done
+#  for file in vigr vipw; do
+#      rm -v "${pkgdir}/usr/sbin/"${file}
+#      find "${pkgdir}/usr/share/man" -name "$file.8" -exec rm -v {} \;
+#  done
 
 # Our custom adduser script - http://people.salixos.org/djemos/shadow/adduser
   install -D -m755 ${filedir}/adduser ${pkgdir}/usr/sbin/
@@ -91,18 +90,18 @@ build() {
   rm -f ${pkgdir}/{,usr}/lib${LIBDIRSUFFIX}/lib{misc,shadow}.{a,la}
 
 # ...and their many man pages
-  find "$pkgdir"/usr/share/man \
-      '(' -name 'chsh.1'    -o \
-          -name 'chfn.1'    -o \
-          -name 'su.1'      -o \
-          -name 'logoutd.8' -o \
-          -name 'login.1'   -o \
-          -name 'nologin.8' -o \
-          -name 'vipw.8'    -o \
-          -name 'vigr.8'    -o \
-          -name 'newgrp.1' ')' \
-      -delete
-  rmdir \
-      "$pkgdir"/usr/share/man/{fi,id,zh_TW}/man1 \
-      "$pkgdir"/usr/share/man/{fi,ko/man8}
+#  find "$pkgdir"/usr/share/man \
+#      '(' -name 'chsh.1'    -o \
+#          -name 'chfn.1'    -o \
+#          -name 'su.1'      -o \
+#          -name 'logoutd.8' -o \
+#          -name 'login.1'   -o \
+#          -name 'nologin.8' -o \
+#          -name 'vipw.8'    -o \
+#          -name 'vigr.8'    -o \
+#          -name 'newgrp.1' ')' \
+#      -delete
+#  rmdir \
+#      "$pkgdir"/usr/share/man/{fi,id,zh_TW}/man1 \
+#      "$pkgdir"/usr/share/man/{fi,ko/man8}
 }
