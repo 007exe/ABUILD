@@ -1,0 +1,22 @@
+pkgname=fribidi
+pkgver=1.0.10
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Library to support Bi-directional scripts")
+longdesc=("A library to handle bidirectional scripts (eg hebrew, arabic), so that the display is done in the proper way; while the text data itself is always written in logical order.")
+
+source=("https://github.com/fribidi/fribidi/releases/download/v${pkgver}/fribidi-${pkgver}.tar.xz")
+
+tags="media-libs libs"
+
+build_deps="meson"
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build -Dprefix=/usr \
+    -D docs=false
+  meson compile -C build
+  DESTDIR="$pkgdir" meson install -C build
+}
