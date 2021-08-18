@@ -1,20 +1,21 @@
 pkgname=openldap
-pkgver=2.4.58
+pkgver=2.4.59
 pkgbuild=1
 arch=("auto")
 
-shortdesc="LDAP servers and sample clients"
+shortdesc=("LDAP servers and sample clients")
 longdesc="OpenLDAP is an open source suite of LDAP (Lightweight Directory Access Protocol) applications and development tools.  The suite includes a stand-alone LDAP server (slapd) which is in the -servers package, libraries for implementing the LDAP protocol (in the lib packages), and utilities, tools, and sample clients (in the -clients package). The openldap binary package includes only configuration files used by the libraries."
 
 tags=("network net-misc compat32")
 
 source=("http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz")
+
 config_files="etc/openldap/ldap.conf
 etc/conf.d/slapd
 etc/openldap/slapd.ldif
 etc/openldap/slapd.conf"
-
-build_deps="groff libtool cyrus-sasl e2fsprogs util-linux-ng tcp_wrappers chrpath unixodbc"
+# libsasl libsodium
+build_deps="libtool e2fsprogs util-linux-ng chrpath unixodbc"
 
 before_build() {
   go_src_dir
