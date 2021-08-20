@@ -27,9 +27,6 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  mkdir -p ${pkgdir}/lib${LIBDIRSUFFIX}
-  mv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcryptsetup.so* ${pkgdir}/lib${LIBDIRSUFFIX}/
-
 # install docs
   install -D -m0644 -t "${pkgdir}"/usr/share/doc/cryptsetup/ FAQ docs/{Keyring,LUKS2-locking}.txt
 }
