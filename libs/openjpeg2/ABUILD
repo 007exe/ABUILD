@@ -1,0 +1,31 @@
+pkgname=openjpeg2
+pkgver=2.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An open-source JPEG 2000 codec")
+longdesc=("The OpenJPEG library is an open-source JPEG 2000 codec written in C language. It has been developed in order to promote the use of JPEG 2000, the new still-image compression standard from the Joint Photographic Experts Group (JPEG).")
+
+tags=("libs media-libs")
+# doxygen libtiff lcms2
+build_deps="cmake zlib libpng"
+
+source=("https://github.com/uclouvain/openjpeg/archive/refs/tags/v${pkgver}.tar.gz")
+
+build(){
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DOPENJPEG_INSTALL_LIB_DIR:PATH=lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_STATIC_LIBS=OFF \
+    -DBUILD_DOC=on
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -m755 -d "${pkgdir}/usr/share/licenses/openjpeg2"
+  mv "${pkgdir}"/usr/share/doc/openjpeg-*/LICENSE "${pkgdir}"/usr/share/licenses/openjpeg2
+}
