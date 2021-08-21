@@ -1,0 +1,31 @@
+pkgname=libxcb
+pkgver=1.14
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X protocol C-language Binding Library")
+longdesc=("The X protocol C-language Binding (XCB) is a replacement for Xlib  featuring a small footprint, latency hiding, direct access to the protocol, improved threading support, and extensibility.")
+
+tags=("x11-xcbs xserver compat32")
+
+source=("https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar.xz")
+
+build_deps="xcb-proto libxdmcp libxau libxslt python xorg-util-macros xorgproto"
+
+adddep="libpthread-stubs libXau libXdmcp"
+
+build() {
+  go_src_dir
+  burn_patches \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-xinput \
+    --enable-xkb \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
+  install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"
+}
