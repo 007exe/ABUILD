@@ -1,10 +1,10 @@
 pkgname=glibc
-pkgver=2.34
+pkgver=2.33
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("The GNU libc libraries")
-longdesc=("The glibc package contains standard libraries which are used by multiple programs on the system. In order to save disk space and memory, as well as to make upgrading easier, common system code is kept in one place and shared between programs. This particular package contains the most important sets of shared libraries: the standard C library and the standard math library. Without these two libraries, a Linux system will not function.")
+shortdesc=("glibc (GNU C libraries)")
+longdesc=("This package contains the GNU C libraries and header files. The GNU C library was written originally by Roland McGrath, and is currently maintained by Ulrich Drepper. Some parts of the library were contributed or worked on by other people. Your system ha.")
 
 tags=("base sys-base")
 
@@ -12,7 +12,9 @@ source=("http://ftp.gnu.org/gnu/glibc/glibc-${pkgver}.tar.xz")
 
 config_files="etc/nscd.conf"
 
-build_deps="gd python"
+build_deps="mkpkg"
+
+pkglist="glibc-solibs glibc-l18n"
 
 build() {
   go_src_dir
@@ -26,7 +28,7 @@ build() {
     --with-headers=/usr/include \
     --mandir=/usr/share/man \
     --infodir=/usr/share/info \
-    --enable-kernel=4.4 \
+    --enable-kernel=3.2 \
     --enable-add-ons \
     --disable-profile \
     --enable-bind-now \
@@ -42,4 +44,27 @@ build() {
   make localedata/install-locales install_root=${pkgdir} || exit 1
 
   install -m644 $srcdir/glibc-${pkgver}/nscd/nscd.conf ${pkgdir}/etc/nscd.conf || exit 1
+}
+
+
+glibc-solibs() {
+  pkgname=glibc-solibs
+  tags=("virtual sys-libs")
+  shortdesc=("glibc-solibs (GNU C libraries) - virtual package")
+  longdesc=("The glibc-solibs virtual package SHOULD be REMOVED moved to the glibc package !!!!")
+}
+
+glibc-solibs_prep() {
+	echo Make glibc-solibs package: done
+}
+
+glibc-l18n() {
+  pkgname=glibc-l18n
+  tags=("virtual sys-libs")
+  shortdesc=("glibc-l18n (GNU C libraries) - virtual package")
+  longdesc=("The glibc-l18n virtual package SHOULD be REMOVED moved to the glibc package !!!!")
+}
+
+glibc-l18n_prep() {
+	echo Make glibc-l18n package: done
 }
