@@ -1,0 +1,25 @@
+pkgname=cairo
+pkgver=1.17.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Cairo - multi-platform 2D graphics library")
+longdesc=("Cairo provides anti-aliased vector-based rendering for X. Paths consist of line segments and cubic splines and can be rendered at any width with various join and cap styles. All colors may be specified with optional translucence (opacity/alpha) and combined using the extended Porter/Duff compositing algebra as found in the X Render Extension.")
+
+tags=('libs x11-libs compat32')
+
+source=("https://www.cairographics.org/releases/cairo-$pkgver.tar.xz")
+
+#build_deps="lzo zlib libpng fontconfig freetype2 libx11 libxext libxrender libxcb glib2 pixman"
+build_deps=" "
+adddep="libpthread-stubs damageproto fixesproto xf86vidmodeproto kbproto renderproto"
+
+build(){
+ls
+  meson cairo-$pkgver build \
+    -D spectre=disabled \
+    -D tee=enabled \
+    -D tests=disabled
+  meson compile -C build
+  DESTDIR="$pkgdir" meson install -C build
+}
