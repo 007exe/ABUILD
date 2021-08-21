@@ -1,5 +1,5 @@
 pkgname=openssh
-pkgver=8.6p1
+pkgver=8.7p1
 pkgbuild=1
 arch=('auto')
 
@@ -80,4 +80,3 @@ after_build() {
 # Fix sshd defaults
   sed -i 's/^#PermitRootLogin yes/PermitRootLogin no/g' ${pkgdir}/etc/ssh/sshd_config
 }
-
