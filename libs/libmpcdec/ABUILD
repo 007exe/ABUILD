@@ -1,0 +1,25 @@
+pkgname=libmpcdec
+pkgver=1.2.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Portable Musepack decoder library")
+longdesc=("Dynamic libraries from libmpcdec")
+
+tags=("media-libs libs")
+source=("http://files.musepack.net/source/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/libmpcdec/COPYING
+}
