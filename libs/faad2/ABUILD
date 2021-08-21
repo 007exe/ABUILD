@@ -1,0 +1,29 @@
+pkgname=faad2
+pkgver=2.10.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Freeware Advanced Audio Decoder version 2")
+longdesc=("FAAD 2 is a LC, MAIN and LTP profile, MPEG2 and MPEG-4 AAC decoder, completely written from scratch. FAAD 2 is licensed under the GPL.")
+
+source=("https://github.com/knik0/faad2/archive/${pkgver//./_}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --enable-shared
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+install -vDm 644 {AUTHORS,ChangeLog,NEWS,README*,TODO} \
+    -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
