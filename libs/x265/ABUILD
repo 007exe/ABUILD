@@ -1,61 +1,22 @@
 pkgname=x265
-pkgver=3.3
-pkgbuild=2
+pkgver=3.5
+pkgbuild=1
 arch=('auto')
 
+shortdesc=("Open Source H265/HEVC video encoder")
+longdesc=("x265 is an open-source project and free application library for encoding video streams into the H.265/High Efficiency Video Coding (HEVC) format.")
 
-shortdesc="free H265/HEVC video encoder"
-
-source=("https://bitbucket.org/multicoreware/x265/downloads/${pkgname}_${pkgver}.tar.gz")
+source=("https://bitbucket.org/multicoreware/x265_git/downloads/x265_${pkgver}.tar.gz")
 
 tags="libs media-video"
 
-build_deps="gcc cmake"
-
-adddep=""
+build_deps="cmake nasm ninja"
 
 build(){
- go_src_dir
- mkdir build-8
- mkdir build-10
- mkdir build-12
- cd build-12
-
-  cmake ../source \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DHIGH_BIT_DEPTH=TRUE \
-    -DMAIN12=TRUE \
-    -DEXPORT_C_API=FALSE \
-    -DENABLE_CLI=FALSE \
-    -DENABLE_SHARED=FALSE
-  make
-
- cd ../build-10
-
-  cmake ../source \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DHIGH_BIT_DEPTH=TRUE \
-    -DEXPORT_C_API=FALSE \
-    -DENABLE_CLI=FALSE \
-    -DENABLE_SHARED=FALSE
-  make
-
- cd ../build-8
-
-  ln -s ../build-10/libx265.a libx265_main10.a
-  ln -s ../build-12/libx265.a libx265_main12.a
-
-   cmake ../source \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DENABLE_SHARED=TRUE \
-    -DENABLE_HDR10_PLUS=TRUE \
-    -DEXTRA_LIB='x265_main10.a;x265_main12.a' \
-    -DEXTRA_LINK_FLAGS='-L .' \
-    -DLINKED_10BIT=TRUE \
-    -DLINKED_12BIT=TRUE
-  make
-
-make
-    make DESTDIR="${pkgdir}" install  
-
+  go_src_dir
+  burn_patches
+  cd build/linux
+  ./make-Makefiles.bash
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
 }
