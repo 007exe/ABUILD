@@ -1,6 +1,6 @@
 pkgname=aria2
-pkgver=1.35.0
-pkgbuild=2
+pkgver=1.36.0
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("Download utility with resuming and segmented downloading")
