@@ -1,52 +1,34 @@
 pkgname=fontconfig
-pkgver=2.12.4
+pkgver=2.13.94
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("fontconfig (Font library and tools)")
-longdesc=("Fontconfig is a library and tools designed to provide system-wide font configuration, customization, and application access. Fontconfig is written and maintained by Keith Packard.")
+shortdesc=("Font configuration library")
+longdesc=("Fontconfig is designed to locate fonts within the system and select them according to requirements specified by applications.")
 
 tags=("xserver x11-utils")
 
 source=("http://www.fontconfig.org/release/$pkgname-$pkgver.tar.gz")
+# docbook-utils docbook-sgml
+build_deps="expat freetype meson gperf perl-sgmls"
 
-build_deps="make gcc binutils bzip2 expat freetype pkg-config grep kernel-headers sed"
+config_files="etc/fonts/fonts.conf"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-	--libdir=/usr/lib$LIBDIRSUFFIX \
-	--mandir=/usr/man \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--disable-docs \
-	--with-add-fonts=/usr/share/fonts \
-	--with-templatedir=/etc/fonts/conf.avail \
-	--with-xmldir=/etc/fonts \
-	--with-default-fonts=/usr/share/fonts"
+build() {
+  meson fontconfig-$pkgver build \
+    -Dprefix=/usr \
+    -D doc-txt=disabled \
+    -D doc-pdf=disabled \
+    -D doc-html=disabled
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
 
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+# Handle conf.d using the hook to avoid overwriting the symlinks on upgrade
+  mkdir -p "$pkgdir/usr/share/fontconfig/conf.default"
+  for _f in "$pkgdir"/etc/fonts/conf.d/*.conf; do
+    ln -sr "$pkgdir"/usr/share/fontconfig/conf.{avail,default}/"${_f##*/}"
+    rm "$_f"
+  done
 
-
-after_build() {
-	rm -rf ${pkgdir}/usr/share/doc
-	( cd ${pkgdir}/etc/fonts/conf.d
-	
-	# FIXME: Maybe we should leave these settings to user?
-	for fontconf in \
-		20-unhint-small-vera.conf \
-		30-urw-aliases.conf \
-		30-metric-aliases.conf \
-		40-nonlatin.conf \
-		45-latin.conf \
-		49-sansserif.conf \
-		50-user.conf \
-		51-local.conf \
-		60-latin.conf \
-		65-fonts-persian.conf \
-		65-nonlatin.conf \
-		69-unifont.conf \
-		80-delicious.conf \
-		90-synthetic.conf ; do
-	    ln -sf ../conf.avail/$fontconf . || exit 1
-	done )
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 fontconfig-$pkgver/COPYING
 }
