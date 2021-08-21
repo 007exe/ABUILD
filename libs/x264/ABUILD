@@ -1,0 +1,28 @@
+pkgname=x264
+pkgver=20210409
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Open Source H264/AVC video encoder")
+longdesc=("x264 is a free library for encoding H264/AVC video streams. The code is written by Laurent Aimar, Eric Petit(OS X), Min Chen (vfw/nasm), Justin Clay(vfw), Mans Rullgard and Loren Merritt from scratch. It is released under the terms of the GPL license.")
+
+source=("https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable-$pkgver.tar.bz2")
+
+tags="libs media-libs"
+
+build_deps="yasm nasm"
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-shared \
+    --enable-static \
+    --enable-strip \
+    --enable-pic \
+    --enable-lto \
+    --disable-avs
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install-cli install-lib-shared
+}
