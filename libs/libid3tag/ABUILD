@@ -1,0 +1,26 @@
+pkgname=libid3tag
+pkgver=0.15.1b
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for reading and writing ID3v1 and ID3v2 tags")
+longdesc=("A library for reading and (eventually) writing ID3 tags, both ID3v1 and the various versions of ID3v2.")
+
+tags=("libs media-libs")
+
+source=("https://sourceforge.net/projects/mad/files/libid3tag/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="glibc zlib gperf"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -vDm 644 {CHANGES,CREDITS,README} \
+    -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
