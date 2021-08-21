@@ -1,0 +1,28 @@
+pkgname=speex
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An open-source, patent-free speech codec")
+longdesc=("Speex is a patent-free audio codec designed especially for voice (unlike Vorbis which targets general audio) signals and providing good narrowband and wideband quality. This project aims to be complementary to the Vorbis codec.")
+
+tags=("libs media-libs")
+
+source=("http://downloads.us.xiph.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+# speexdsp
+build_deps="libogg"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
