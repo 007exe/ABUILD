@@ -1,0 +1,32 @@
+pkgname=libssh
+pkgver=0.9.5
+pkgbuild=1
+arch="auto"
+
+shortdesc=("C library to authenticate in a simple manner to one or more SSH servers")
+longdesc=("The ssh library was designed to be used by programmers needing a working SSH implementation by the mean of a library. The complete control of the client is made by the programmer.")
+
+source=("https://www.libssh.org/files/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
+
+tags="libs net-libs"
+# doxygen
+build_deps="zlib openssl cmocka cmake python openssh"
+
+before_build(){
+  # disable the test. It is confused by our clean container setup.
+  # 'extra-x86-build' uses user 'nobody' that has a record in /etc/passwd file
+  # but $HOME envvar is set to '/build'. The test expects that $HOME corresponds to passwd file.
+  sed 's/cmocka_unit_test(torture_path_expand_tilde_unix),//' -i libssh-${pkgver}/tests/unittests/torture_misc.c
+}
+build() {
+  mkdir build
+  cd build
+  cmake ../$pkgname-$pkgver \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DWITH_GSSAPI=OFF \
+    -DUNIT_TESTING=ON
+  make -j${numjobs}
+#  make docs
+  make DESTDIR="$pkgdir" install
+}
