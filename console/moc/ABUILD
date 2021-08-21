@@ -1,34 +1,41 @@
-#ABUILD created by/создан: agr3ss0r, agr3ss0r86 at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=moc
 pkgver=2.5.2
 pkgbuild=1
-arch=('auto')
+arch="auto"
 
-shortdesc="MOC (music on console)"
-longdesc=("MOC is a console audio player for LINUX/UNIX designed to be powerful and easy to use."
-	  ""
-	  "Homepage: http://moc.daper.net"
-)
+shortdesc=("An ncurses console audio player designed to be powerful and easy to use")
+longdesc=("MOC is a console audio player with ncurses interface")
 
 source=("http://ftp.daper.net/pub/soft/moc/stable/${pkgname}-${pkgver}.tar.bz2")
-tags="console media-sound"
-build_deps=" "
 
-before_build()
-{
-	go_src_dir
-	burn_patches
-}
+tags="console media-sound"
+# jack libltdl
+build_deps="curl file speex ffmpeg libmodplug flac libmad libid3tag faad2 wavpack libmpcdec taglib"
 
 build() {
-	go_src_dir
-  ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --without-rcc \
-    --with-oss --with-alsa --with-jack --with-aac --with-mp3 \
-    --with-musepack --with-vorbis --with-flac --with-wavpack \
-    --with-sndfile --with-modplug --with-ffmpeg --with-speex \
-    --with-samplerate --with-curl  --disable-cache --disable-debug
-  make
-  make DESTDIR="${pkgdir}" install
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-samplerate \
+    --with-musepack \
+    --with-wavpack \
+    --with-sndfile \
+    --with-modplug \
+    --with-vorbis \
+    --without-rcc \
+    --with-ffmpeg \
+    --with-speex \
+    --with-alsa \
+    --with-jack \
+    --with-flac \
+    --with-curl \
+    --with-aac \
+    --with-mp3 \
+    --with-oss \
+    --disable-cache \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
