@@ -1,18 +1,18 @@
 pkgname=glib2
-pkgver=2.68.2
+pkgver=2.68.4
 pkgtree=${pkgver%.*}
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Low level core library"
-longdesc="Glib is a handy library of utility functions. This C library is designed to solve some portability problems and provide other useful functionality which most programs require."
+shortdesc=("Low level core library")
+longdesc=("Glib is a handy library of utility functions. This C library is designed to solve some portability problems and provide other useful functionality which most programs require.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgtree}/glib-${pkgver}.tar.xz")
 
 tags="libs dev-libs compat32"
 
-#libelf sysprof gtk-doc
-build_deps="gettext shared-mime-info python git util-linux-ng meson dbus"
+#libelf gtk-doc
+build_deps="gettext shared-mime-info python git util-linux-ng meson dbus pcre libffi zlib"
 
 build() {
   go_src_dir
