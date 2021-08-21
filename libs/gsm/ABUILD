@@ -1,0 +1,31 @@
+pkgname=gsm
+pkgver=1.0.19
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Shared libraries for GSM speech compressor")
+longdesc=("Contains runtime shared libraries for libgsm, an implementation of the European GSM 06.10 provisional standard for full-rate speech transcoding, prI-ETS 300 036, which uses RPE/LTP (residual pulse excitation/long term prediction) coding at 13 kbit/s.")
+
+tags=("libs media-libs")
+
+source=("http://www.quut.com/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs} CCFLAGS="-c ${CFLAGS} -fPIC"
+
+# Prepare directories
+  install -m755 -d "$pkgdir"/usr/{bin,lib${LIBDIRSUFFIX},include/gsm,share/{licenses/$pkgname,man/man{1,3}}}
+
+  make -j1 INSTALL_ROOT="$pkgdir"/usr \
+    GSM_INSTALL_LIB="${pkgdir}/usr/lib${LIBDIRSUFFIX}" \
+    GSM_INSTALL_INC="$pkgdir"/usr/include/gsm \
+    GSM_INSTALL_MAN="$pkgdir"/usr/share/man/man3 \
+    TOAST_INSTALL_MAN="$pkgdir"/usr/share/man/man1 \
+    install
+# Install license
+  install -m644 COPYRIGHT "$pkgdir"/usr/share/licenses/$pkgname/license.txt
+}
