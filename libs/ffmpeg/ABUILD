@@ -1,82 +1,86 @@
 pkgname=ffmpeg
-pkgver=4.2.2
+pkgver=4.4
 pkgbuild=1
-arch=('auto')
+arch="auto"
 
-conflicts="libav"
+shortdesc=("Complete solution to record, convert and stream audio and video")
+longdesc=("ffmpeg is a hyper fast realtime audio/video encoder, a streaming server and a generic audio and video file converter.")
 
-shortdesc="Multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play pretty much anything."
-
-source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.bz2")
+source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
 
 tags="libs media-video"
 
-build_deps=("yasm alsa-lib bzip2 fontconfig gsm lame libass libbluray libmodplug
-      libtheora libva libvorbis libvpx opencore-amr openjpeg rtmpdump
-      schroedinger sdl x265  speex v4l-utils x264 xvidcore zlib libvdpau")
+# avisynthplus --enable-avisynth
+# aom          --enable-libaom
+# dav1d        --enable-libdav1d
+# libmfx       --enable-libmfx
+# libpulse     --enable-libpulse (Требуется pulseaudio)
+# rav1e        --enable-librav1e
+# librsvg      --enable-librsvg
+# libsoxr      --enable-libsoxr
+# svt-av1      --enable-libsvtav1
+# v4l-utils    --enable-libv4l2
+# vmaf         --enable-libvmaf
+# libvpx       --enable-libvpx
+# jack         --enable-libjack
+# libxcb       --enable-libxcb
+# amf-headers  --enable-amf
+#              --enable-nvdec
+#              --enable-nvenc
+#              --enable-libxvid
+#              --enable-libzimg
+#              --enable-libvidstab
+# sdl2
+# libxv
+# libxext
+# libx11
+# libvdpau
+# ffnvcodec-headers
+build_deps=("fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883")
 
 build(){
   go_src_dir
   burn_patches
-
-  LDFLAGS="$SLKLDFLAGS" \
-	CFLAGS="$SLKCFLAGS" \
-	CXXFLAGS="$SLKCFLAGS" \
-	./configure \
-	--prefix=/usr \
-    	--libdir=/usr/lib${LIBDIRSUFFIX} \
-    	--shlibdir=/usr/lib${LIBDIRSUFFIX} \
-	--enable-version3 \
-    	--enable-shared \
-	--disable-debug \
-    	--disable-static \
-    	--disable-stripping \
-    	--enable-fontconfig \
-    	--enable-gnutls \
-    	--enable-gpl \
-    	--enable-libass \
-    	--enable-libbluray \
-    	--enable-libfreetype \
-	--enable-libgsm \
-    	--enable-libiec61883 \
-    	--enable-libjack \
-	--enable-libmp3lame \
-	--enable-libmodplug \
-    	--enable-libopencore_amrnb \
-    	--enable-libopencore_amrwb \
-    	--enable-libopus \
-    	--enable-libspeex \
-    	--enable-libssh \
-    	--enable-libtheora \
-    	--enable-libv4l2 \
-	--enable-libvorbis \
-    	--enable-libx264 \
-    	--enable-libxcb \
-    	--enable-libxml2
-#	--enable-libxvid
-#    --enable-nvdec \
-#    --enable-libx265 \
-#    --enable-omx \
-#    --enable-libvpx \
-#    --enable-libwebp \
-#    --enable-libsrt \      
-#    --enable-ladspa \
-#    --enable-libaom \
-#    --enable-libdav1d \
-#    --enable-gmp \
-#    --enable-libmfx
-#    --enable-libsoxr
-#    --enable-libpulse \
-#    --enable-libopenjpeg \
-#    --enable-libfribidi
-#    --enable-libdrm
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-debug \
+    --disable-static \
+    --disable-stripping \
+    --enable-libiec61883 \
+    --enable-libsrt \
+    --enable-cuda-llvm \
+    --enable-lto \
+    --enable-fontconfig \
+    --enable-gmp \
+    --enable-gnutls \
+    --enable-gpl \
+    --enable-ladspa \
+    --enable-libbluray \
+    --enable-libdrm \
+    --enable-libgsm \
+    --enable-libfreetype \
+    --enable-libfribidi \
+    --enable-libmodplug \
+    --enable-libmp3lame \
+    --enable-libopencore_amrnb \
+    --enable-libopencore_amrwb \
+    --enable-libopenjpeg \
+    --enable-libass \
+    --enable-libspeex \
+    --enable-libssh \
+    --enable-libtheora \
+    --enable-libopus \
+    --enable-libvorbis \
+    --enable-libwebp \
+    --enable-libx264 \
+    --enable-libx265 \
+    --enable-libxml2 \
+    --enable-shared \
+    --enable-version3
   make -j${numjobs}
   make tools/qt-faststart -j${numjobs}
   make doc/ff{mpeg,play}.1
-}
-
-after_build(){
-  go_src_dir
   make DESTDIR="${pkgdir}" install install-man
-  install -D -m755 tools/qt-faststart "${pkgdir}/usr/bin/qt-faststart"
+#  install -Dm 755 ffmpeg/tools/qt-faststart "${pkgdir}"/usr/bin/
 }
