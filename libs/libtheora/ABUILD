@@ -1,0 +1,28 @@
+pkgname=libtheora
+pkgver=1.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Theora video compression codec")
+longdesc=("Ogg Theora is a fully open, non-proprietary, patent-and-royalty-free, general-purpose compressed video format.")
+
+tags=("libs media-libs")
+
+source=("http://downloads.xiph.org/releases/theora/libtheora-${pkgver}.tar.bz2")
+
+build_deps="libogg libvorbis"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-shared \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 LICENSE COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
