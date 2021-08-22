@@ -1,8 +1,8 @@
 pkgname=mkinitrd
 pkgver=1.4.11
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
-busybox_ver=1.33.1
+busybox_ver=1.34.0
 
 shortdesc="Multi-call binary combining many common Unix tools into one executable"
 longdesc="BusyBox combines tiny versions of many common UNIX utilities into a single small executable. It provides minimalist replacements for most of the utilities you usually find in GNU coreutils, shellutils, etc. The utilities in BusyBox generally have fewer options than their full-featured GNU cousins; however, the options that are included provide the expected functionality and behave very much like their GNU counterparts. BusyBox provides a fairly complete POSIX environment for any small or embedded system."
@@ -25,6 +25,8 @@ build() {
         echo "The version of this package ($pkgver) is not equal to the version of the mkinitrd script ($MKINITRD_VERSION)."
         exit 1
     fi
+# reproducible build
+  export KCONFIG_NOTIMESTAMP=1
 
   sed -e 's#^CONFIG_PREFIX=.*#CONFIG_PREFIX="'$pkgdir'/usr/share/mkinitrd/initrd-tree"#' $filedir/busybox-dot-config > .config
   make oldconfig
