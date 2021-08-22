@@ -1,23 +1,25 @@
 pkgname=taglib
-pkgver=1.7.2
-pkgbuild=4
+pkgver=1.12
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Audio meta-data library")
+shortdesc=("A Library for reading and editing the meta-data of several popular audio formats")
+longdesc=("TagLib, is well, a library for reading and editing audio meta data, commonly know as tags.")
 
-build_deps="cmake gcc zlib librcc"
+build_deps="cmake zlib"
 
 tags=("libs media-libs")
 
-source=("http://developer.kde.org/~wheeler/files/src/taglib-${pkgver}.tar.gz")
+source=("https://taglib.github.io/releases/$pkgname-$pkgver.tar.gz")
 
-BUILD_SYSTEM="cmake"
-
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
--DWITH_ASF=ON -DWITH_MP4=ON \
--DCMAKE_BUILD_TYPE=Release"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+  cmake --build build
+  DESTDIR="$pkgdir" cmake --install build
+}
