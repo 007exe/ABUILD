@@ -1,6 +1,6 @@
 pkgname=python
-pkgver=3.9.5
-pkgbuild=2
+pkgver=3.9.6
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("An interpreted, interactive object-oriented programming language")
@@ -13,8 +13,8 @@ pkglist="python-tests"
 lover=${pkgver%.*}
 
 tags="develop dev-python"
-
-build_deps="make gcc grep sqlite coreutils valgrind"
+# xorg-server-xvfb ttf-font libxcrypt tk bluez-libs mpdecimal
+build_deps="bzip2 expat gdbm libffi libnsl openssl zlib sqlite llvm gdb"
 
 shopt -s extglob
 
