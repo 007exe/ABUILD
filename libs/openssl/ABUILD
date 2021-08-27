@@ -1,6 +1,6 @@
 pkgname=openssl
-pkgver=1.1.1k
-pkgbuild=2
+pkgver=1.1.1l
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("The OpenSSL cryptography and TLS library.")
@@ -10,14 +10,11 @@ tags=('dev-libs network compat32')
 
 source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz")
 
-build_deps='make gcc glibc perl kernel-headers diffutils ca-certificates'
-
-pkglist="solibs"
+build_deps="perl ca-certificates"
 
 build() {
   go_src_dir
   burn_patches
-
   ./Configure \
     --prefix=/usr \
     --openssldir=/etc/ssl \
@@ -26,21 +23,12 @@ build() {
   make
   make DESTDIR=$pkgdir MANDIR=/usr/share/man MANSUFFIX=ssl install_sw install_ssldirs install_man_docs
 
+  install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
 # I create links to libssl.so and libcrypto.so for compatibility. When building mpkg, the latter persistently refers to libssl.so.0 and libcrypto.so.0 in the future, you need to remove it
   ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so.0
   ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so.0
 
   ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so.1.0.0
   ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so.1.0.0
-}
-
-solibs() {
-  pkgname=openssl-solibs
-  tags="sys-base base"
-  shortdesc="This is a virtual package serving for compatibility, it should be removed."
-  longdesc="This is a virtual package serving for compatibility, it should be removed."
-}
-
-solibs_prep() {
-  echo Make runtime package: done
 }
