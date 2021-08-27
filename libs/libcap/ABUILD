@@ -1,5 +1,5 @@
 pkgname=libcap
-pkgver=2.51
+pkgver=2.53
 pkgbuild=1
 arch=("auto")
 
@@ -15,13 +15,9 @@ build_deps="glibc linux-pam kernel-headers"
 build() {
   go_src_dir
   burn_patches
-
-# Prevent installation of static library
-  sed -i '/install.*STALIBNAME/d' libcap/Makefile
-
   make KERNEL_HEADERS='/usr/include' lib=lib${LIBDIRSUFFIX} prefix='/usr'
   make DESTDIR=${pkgdir} RAISE_SETFCAP='no' lib=lib${LIBDIRSUFFIX} prefix='/usr' install
-
+# docs
   install -vDm 644 {CHANGELOG,README} -t "${pkgdir}/usr/share/doc/${pkgname}/"
   install -vDm 644 pam_cap/capability.conf -t "$pkgdir/usr/share/doc/$pkgname/examples/"
 }
