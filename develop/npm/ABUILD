@@ -1,7 +1,7 @@
 pkgname=npm
-pkgver=7.17.0
+pkgver=7.21.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A package manager for javascript")
 longdesc=("A package manager for javascript")
@@ -9,17 +9,15 @@ longdesc=("A package manager for javascript")
 source=("https://github.com/npm/cli/archive/v$pkgver.tar.gz")
 
 tags="develop dev-java"
-# libgl libxi
-build_deps="npm procps python nodejs node-gyp nodejs-nopt semver marked marked-man"
+# libgl
+build_deps="npm procps python nodejs node-gyp nodejs-nopt semver marked marked-man libxi"
 
 adddep="nodejs node-gyp nodejs-nopt semver"
 
 before_build()
 {
   go_src_dir
-
   mkdir -p node_modules/.bin
-
   ln -sf /usr/bin/marked{,-man} node_modules/.bin/
 
 # Use local marked/marked-man
