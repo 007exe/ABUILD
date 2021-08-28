@@ -1,0 +1,33 @@
+pkgname=spirv-llvm-translator
+pkgver=12.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tool and a library for bi-directional translation between SPIR-V and LLVM IR")
+longdesc=("Tool and a library for bi-directional translation between SPIR-V and LLVM IR")
+
+source=("https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="develop dev-libs compat32"
+
+build_deps="llvm-libs cmake llvm spirv-tools python python-setuptools clang"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build  \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DLLVM_INCLUDE_TESTS=ON \
+    -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+    -DLLVM_BUILD_TOOLS=ON \
+    -Wno-dev
+  make -C build
+
+  make -C build DESTDIR="${pkgdir}" install
+
+  install -Dm644 LICENSE.TXT -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+}
