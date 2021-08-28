@@ -1,0 +1,25 @@
+pkgname=vulkan-headers
+pkgver=1.2.187
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Vulkan Header files and API registry")
+longdesc=("Vulkan Header files and API registry.")
+
+tags=("dev-util develop")
+
+source=("https://github.com/KhronosGroup/Vulkan-Headers/archive/v${pkgver}.tar.gz")
+
+build_deps="cmake git"
+
+build() {
+  go_src_dir
+  rm -rf build
+  mkdir build
+  cd build
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+  ..
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
