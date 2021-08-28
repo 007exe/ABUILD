@@ -23,7 +23,6 @@ tags="libs media-video"
 # vmaf         --enable-libvmaf
 # libvpx       --enable-libvpx
 # jack         --enable-libjack
-# libxcb       --enable-libxcb
 # amf-headers  --enable-amf
 #              --enable-nvdec
 #              --enable-nvenc
@@ -31,12 +30,9 @@ tags="libs media-video"
 #              --enable-libzimg
 #              --enable-libvidstab
 # sdl2
-# libxv
-# libxext
-# libx11
-# libvdpau
+
 # ffnvcodec-headers
-build_deps=("fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883")
+build_deps=("fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883 libvdpau libx11 libxext libxv libxcb")
 
 build(){
   go_src_dir
@@ -48,6 +44,7 @@ build(){
     --disable-static \
     --disable-stripping \
     --enable-libiec61883 \
+    --enable-libxcb \
     --enable-libsrt \
     --enable-cuda-llvm \
     --enable-lto \
