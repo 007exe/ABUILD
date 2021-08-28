@@ -1,0 +1,28 @@
+pkgname=xorg-util-macros
+pkgver=1.19.3
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Macro used for X.org development")
+longdesc=("Macro used for X.org development")
+
+tags=('x11-utils xserver')
+
+build_deps="make"
+
+source=("http://xorg.freedesktop.org/releases/individual/util/util-macros-${pkgver}.tar.bz2")
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/lib${LIBDIRSUFFIX}"
+  mv "${pkgdir}/usr/share/pkgconfig" "${pkgdir}/usr/lib${LIBDIRSUFFIX}/"
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
