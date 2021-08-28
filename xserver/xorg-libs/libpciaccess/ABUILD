@@ -1,0 +1,26 @@
+pkgname=libpciaccess
+pkgver=0.16
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Generic PCI access library (from X.org)")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+tags=('x11-libs xserver compat32')
+
+source=("http://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+# xorg-util-macross
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
