@@ -1,0 +1,27 @@
+pkgname=wayland
+pkgver=1.19.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A computer display server protocol")
+longdesc=("Wayland is a project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol.")
+
+source=("http://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
+
+tags="x11-misc xapps"
+# graphviz doxygen
+build_deps="pkg-config glibc libffi expat libxml2 libxslt xmlto docbook-xsl"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-documentation
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
