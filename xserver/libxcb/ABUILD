@@ -4,19 +4,19 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("X protocol C-language Binding Library")
-longdesc=("The X protocol C-language Binding (XCB) is a replacement for Xlib  featuring a small footprint, latency hiding, direct access to the protocol, improved threading support, and extensibility.")
+longdesc=("The libxcb package provides an interface to the X Window System protocol, which replaces the current Xlib interface. Xlib can also use XCB as a transport layer, allowing software to make requests and receive responses with both.")
 
 tags=("x11-xcbs xserver compat32")
 
 source=("https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar.xz")
 
-build_deps="xcb-proto libxdmcp libxau libxslt python xorg-util-macros xorgproto"
+build_deps="xorgproto xorg-util-macros python libxslt xcb-proto libxdmcp libxau"
 
-adddep="libpthread-stubs libXau libXdmcp"
+adddep="xcb-proto"
 
 build() {
   go_src_dir
-  burn_patches \
+  burn_patches
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
