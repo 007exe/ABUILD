@@ -1,0 +1,38 @@
+pkgname=xorgproto
+pkgver=2021.4
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("combined X.Org X11 Protocol headers")
+longdesc=("The xorgproto package provides the header files required to build the X Window system, and to allow other applications to build against the installed X Window system.")
+
+tags=('x11-utils xserver')
+
+build_deps="meson xorg-util-macros libxslt xmlto asciidoc"
+
+source=("https://xorg.freedesktop.org/archive/individual/proto/$pkgname-$pkgver.tar.bz2")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  meson --prefix=/usr build
+  ninja -C build
+  DESTDIR="$pkgdir" ninja -C build install
+
+# missing docs
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 PM_spec "${pkgdir}/usr/share/doc/${pkgname}/"
+
+# licenses
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING* "${pkgdir}/usr/share/licenses/${pkgname}/"
+
+# remove licences of legacy stuff we don't ship anymore
+  rm -f "${pkgdir}"/usr/share/licenses/${pkgname}/COPYING-{evieproto,fontcacheproto,lg3dproto,printproto,xcalibrateproto,xf86rushproto
+
+# cleanup
+  rm -f "${pkgdir}"/usr/include/X11/extensions/apple*
+  rm -f "${pkgdir}"/usr/share/licenses/${pkgname}/COPYING-{apple,windows}wmproto
+  rm -f "${pkgdir}"/usr/share/pkgconfig/applewmproto.pc
+}
