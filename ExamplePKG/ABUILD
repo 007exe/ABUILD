@@ -53,10 +53,12 @@ before_build(){
 #В данноой функции описывается процесс компиляции
 build() {
   go_src_dir
+  burn_patches
   ./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX}
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
   make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
 
 #Данная функция вызывается последней полезна если необходимо создать символические ссылки переместить или удалить файлы в пакете
