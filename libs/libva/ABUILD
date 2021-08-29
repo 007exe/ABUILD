@@ -9,16 +9,15 @@ longdesc=("Libva is a library providing the VA API video acceleration API.")
 source=("https://github.com/intel/libva/releases/download/${pkgver}/libva-${pkgver}.tar.bz2")
 
 tags="libs media-video"
-# libgl libglvnd mesa
+# libva libglvnd mesa
 build_deps="libdrm libx11 libxext libxfixes wayland meson"
 
 config_files="etc/libva.conf"
 
 build() {
   go_src_dir
-  ./autogen.sh
   CFLAGS+=" -DENABLE_VA_MESSAGING"  # Option missing
-  meson libva build
+  meson build --prefix=/usr
   ninja -C build
   DESTDIR="${pkgdir}" meson install -C build
 
