@@ -1,0 +1,27 @@
+pkgname=xorg-xinput
+pkgver=1.6.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Small commandline tool to configure devices")
+longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
+
+tags=('x11-apps xserver')
+
+source=("http://xorg.freedesktop.org/archive/individual/app/xinput-${pkgver}.tar.bz2")
+
+build_deps="libx11 libxi>=1.5.99.2 xorg-xrandr libxinerama xorg-util-macros xorgproto libxfixes"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

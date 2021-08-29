@@ -1,0 +1,28 @@
+pkgname=xorg-xrandr
+pkgver=1.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Primitive command line interface to RandR extension")
+longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
+
+tags=('x11-apps xserver')
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xrandr-${pkgver}.tar.xz")
+
+build_deps="libxrandr libx11 xorg-util-macros"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  rm -f "${pkgdir}/usr/bin/xkeystone"
+}

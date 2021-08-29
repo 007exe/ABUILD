@@ -1,0 +1,27 @@
+pkgname=xorg-xrdb
+pkgver=1.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X server resource database utility")
+longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
+
+tags=('x11-apps xserver')
+
+source=("http://xorg.freedesktop.org/archive/individual/app/xrdb-${pkgver}.tar.bz2")
+
+build_deps="libx11 libxmu xorg-util-macros"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-cpp=/usr/bin/cpp,/usr/bin/mcpp \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+}

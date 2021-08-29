@@ -1,0 +1,27 @@
+pkgname=xorg-xdpyinfo
+pkgver=1.3.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Display information utility for X")
+longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
+
+tags=('x11-apps xserver')
+
+source=("http://xorg.freedesktop.org/archive/individual/app/xdpyinfo-${pkgver}.tar.bz2")
+
+build_deps="libx11 libxext libxtst libxxf86vm libxrender libxcomposite libxinerama xorg-util-macros xorgproto"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

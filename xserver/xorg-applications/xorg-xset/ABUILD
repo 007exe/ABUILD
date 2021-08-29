@@ -1,0 +1,29 @@
+pkgname=xorg-xset
+pkgver=1.2.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("User preference utility for X")
+longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
+
+tags=('x11-apps xserver')
+
+source=("http://xorg.freedesktop.org/archive/individual/app/xset-${pkgver}.tar.bz2")
+
+build_deps="libxmu xorg-util-macros"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --without-fontcache \
+    --without-xf86misc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
