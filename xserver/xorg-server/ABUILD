@@ -1,0 +1,159 @@
+pkgname=xorg-server
+pkgver=1.20.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Xorg server, the core of the X Window System")
+longdesc=("Xorg is a full featured X server that was originally designed for UNIX and UNIX-like operating systems running on Intel x86 hardware. It now runs on a wider range of hardware and OS platforms. This work was derived by the X.Org Foundation from the XFree86 Projects XFree86 4.4rc2 release. The XFree86 release was originally derived from X386 1.2 by Thomas Roell which was contributed to X11R5 by Snitily Graphics Consulting Service. The home page for the X project is: http://www.x.org")
+
+source=("https://xorg.freedesktop.org/releases/individual/xserver/xorg-server-${pkgver}.tar.xz")
+
+tags="xserver x11-base"
+
+build_deps=("xorgproto pixman libx11 mesa xtrans libxkbfile libxfont2 libpciaccess libxv libxmu libxrender libxi libxaw libxtst libxres xorg-xkbcomp xorg-util-macros xorg-font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil xcb-util-wm xcb-util-keysyms libxshmfence libunwind meson  wayland-protocols egl-wayland")
+# xf86-input-libinput
+adddep="xorg-server-common=${pkgver}"
+
+pkglist="xorg-server-xephyr xorg-server-xvfb xorg-server-xnest xorg-server-common xorg-server-devel"
+
+xorg-server-xephyr() {
+  pkgname=xorg-server-xephyr
+
+  shortdesc=("A nested X server that runs as an X application")
+  longdesc=("Xephyr is a nested X-Client like Xnest, but with some additional features like XRender support.")
+
+  adddep="xorg-server-common=${pkgver} libunwind  libxv"
+}
+
+xorg-server-xvfb() {
+  pkgname=xorg-server-xvfb
+
+  shortdesc=("Virtual framebuffer X server")
+  longdesc=("Xvfb is an X server that can run on machines with no display hardware and no physical input devices. It emulates a dumb framebuffer using virtual memory. The primary use of this server is intended to be server testing. The mfb or cfb code for any depth can be exercised with this server without the need for real hardware that supports the desired depths. A secondary use is testing clients against unusual depths and screen configurations.")
+
+  adddep="xorg-server-common=${pkgver} xkeyboard-config xorg-xkbcomp xorg-setxkbmap libunwind xorg-xauth"
+}
+
+xorg-server-xnest() {
+  pkgname=xorg-server-xnest
+
+  shortdesc=("A nested X server that runs as an X application")
+  longdesc=("Xnest is an experimental nested server for X that acts as both a client and a server. Xnest is a client of the real server which manages windows and graphics requests on its behalf. Xnest is a server to its own clients. Xnest manages windows and graphics requests on their behalf. To these clients Xnest appears to be a conventional server.")
+
+  adddep="xorg-server-common=${pkgver}"
+}
+
+
+xorg-server-common() {
+  pkgname=xorg-server-common
+
+  shortdesc=("Xorg server common files")
+  longdesc=("Xorg server common files")
+
+  adddep="xkeyboard-config xorg-xkbcomp xorg-setxkbmap"
+}
+
+xorg-server-devel() {
+  pkgname=xorg-server-devel
+
+  shortdesc=("Development files for the X.Org X server")
+  longdesc=("Development files for the X.Org X server")
+# not technically required but almost every Xorg pkg needs it to build
+  adddep="xorgproto mesa libpciaccess xorg-util-macros"
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS=${CFLAGS/-fno-plt}
+  export CXXFLAGS=${CXXFLAGS/-fno-plt}
+  export LDFLAGS=${LDFLAGS/,-z,now}
+
+  meson build \
+    -D prefix=/usr \
+    -D ipv6=true \
+    -D xvfb=true \
+    -D xnest=true \
+    -D xcsecurity=true \
+    -D xorg=true \
+    -D xephyr=true \
+    -D xwayland=true \
+    -D xwayland_eglstream=true \
+    -D glamor=true \
+    -D udev=true \
+    -D systemd_logind=true \
+    -D suid_wrapper=true \
+    -D xkb_dir=/usr/share/X11/xkb \
+    -D xkb_output_dir=/var/lib/xkb
+
+  # Print config
+  meson configure build
+  ninja -C build
+
+  DESTDIR=${pkgdir} ninja -C build install
+  
+  ln -s /usr/bin/Xorg "${pkgdir}/usr/bin/X"
+  
+# distro specific files must be installed in /usr/share/X11/xorg.conf.d
+  install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"
+
+# license
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" COPYING
+}
+
+xorg-server-xephyr_prep() {
+  mkdir -p ${pkgdir}/usr/bin
+  mv ${p_pkgdir}/usr/bin/Xephyr ${pkgdir}/usr/bin/
+  mkdir -p ${pkgdir}/usr/share/man/man1
+  mv ${p_pkgdir}/usr/share/man/man1/Xephyr.1 ${pkgdir}/usr/share/man/man1/
+
+# license
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+xorg-server-xvfb_prep() {
+  mkdir -p ${pkgdir}/usr/bin
+  mv ${p_pkgdir}/usr/bin/Xvfb ${pkgdir}/usr/bin/
+  mkdir -p ${pkgdir}/usr/share/man/man1
+  mv ${p_pkgdir}/usr/share/man/man1/Xvfb.1 ${pkgdir}/usr/share/man/man1
+
+  install -m755 "${filedir}/xvfb-run" "${pkgdir}/usr/bin/"
+  install -m644 "${filedir}/xvfb-run.1" "${pkgdir}/usr/share/man/man1/" # outda
+
+# license
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+xorg-server-xnest_prep() {
+  mkdir -p ${pkgdir}/usr/bin
+  mv ${p_pkgdir}/usr/bin/Xnest ${pkgdir}/usr/bin/
+  mkdir -p ${pkgdir}/usr/share/man/man1
+  mv ${p_pkgdir}/usr/share/man/man1/Xnest.1 ${pkgdir}/usr/share/man/man1/
+
+# license
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+xorg-server-common_prep() {
+  mkdir -p ${pkgdir}/usr/lib$LIBDIRSUFFIX/xorg
+  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/xorg/protocol.txt ${pkgdir}/usr/lib${LIBDIRSUFFIX}/xorg/
+  mkdir -p ${pkgdir}/usr/share/man/man1
+  mv ${p_pkgdir}/usr/share/man/man1/Xserver.1 ${pkgdir}/usr/share/man/man1/
+
+  install -m644 -Dt ${pkgdir}/var/lib/xkb/ ${srcdir}/xorg-server-${pkgver}/xkb/README.compiled
+
+# license
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+xorg-server-devel_prep() {
+  mkdir -p ${pkgdir}/usr/include/xorg/
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/
+  mkdir -p ${pkgdir}/usr/share/aclocal/
+  mv ${p_pkgdir}/usr/include/xorg/* ${pkgdir}/usr/include/xorg/
+  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/xorg-server.pc ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/
+  mv ${p_pkgdir}/usr/share/aclocal/xorg-server.m4 ${pkgdir}/usr/share/aclocal/
+
+# license
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
