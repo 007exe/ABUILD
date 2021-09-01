@@ -1,0 +1,27 @@
+pkgname=xf86-input-keyboard
+pkgver=1.9.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Xorg driver input keyboard")
+longdesc=("This package provide Xorg input driver for keyboards. The keyboard driver is the standard OS-provided keyboard interface.  It is is built-in to the core X server, and multiple instances are not supported. A loadable driver, kbd, is available, and is planned to replace the keyboard driver in a future release of the Xorg server.")
+
+tags=('x11-drivers xserver')
+
+source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-input-keyboard-${pkgver}.tar.bz2")
+
+build_deps="xorgproto xorg-server-devel xorg-util-macros xorg-server"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
