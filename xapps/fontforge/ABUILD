@@ -1,0 +1,31 @@
+pkgname=fontforge
+pkgver=20201107
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Outline and bitmap font editor")
+longdesc=("The FontForge package contains an outline font editor that lets you create your own postscript, truetype, opentype, cid-keyed, multi-master, cff, svg and bitmap (bdf, FON, NFNT) fonts, or edit existing ones.")
+
+source=("https://github.com/${pkgname}/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags="xapps media-gfx"
+#gtk3 giflib libtiff libspiro potrace woff2 libuninameslist
+build_deps="cmake python-sphinx libtool pango libxml2 python"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DENABLE_MAINTAINER_TOOLS=TRUE \
+    -DENABLE_FONTFORGE_EXTRAS=TRUE \
+    -DUNIX=TRUE \
+    ..
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 ../LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
