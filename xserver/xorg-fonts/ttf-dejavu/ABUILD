@@ -1,0 +1,30 @@
+pkgname=ttf-dejavu
+pkgver=2.37
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Font family based on the Bitstream Vera Fonts with a wider range of characters")
+longdesc=("The DejaVu fonts are modifications of the Bitstream Vera fonts designed to extend this original for greater coverage of Unicode.")
+
+source=("http://sourceforge.net/projects/dejavu/files/dejavu/${pkgver}/dejavu-fonts-${pkgver}.tar.bz2")
+
+tags="media-fonts xserver"
+
+build_deps="perl-font-ttf fontforge"
+
+build()
+{
+  go_src_dir
+  burn_patches
+echo "12121"
+  make full-ttf
+echo "======"
+  install -Dt "$pkgdir/usr/share/fonts/TTF" -m644 build/*.ttf
+  install -Dt "$pkgdir/usr/share/fontconfig/conf.avail" -m644 fontconfig/*.conf
+
+  mkdir "$pkgdir/usr/share/fontconfig/conf.default"
+  ln -srt "$pkgdir/usr/share/fontconfig/conf.default" \
+    "$pkgdir"/usr/share/fontconfig/conf.avail/*
+
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 LICENSE
+}
