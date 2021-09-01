@@ -1,0 +1,28 @@
+pkgname=mtdev
+pkgver=1.1.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A stand-alone library which transforms all variants of kernel MT events to the slotted type B protocol")
+longdesc=("The mtdev package contains Multitouch Protocol Translation Library which is used to transform all variants of kernel MT (Multitouch) events to the slotted type B protocol.")
+
+tags=("x11-misc xserver")
+
+source=("http://bitmath.org/code/mtdev/mtdev-$pkgver.tar.bz2")
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# license
+  install -Dm644 COPYING \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
