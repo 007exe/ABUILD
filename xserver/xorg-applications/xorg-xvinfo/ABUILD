@@ -1,4 +1,4 @@
-pkgname=-xorgxvinfo
+pkgname=xorg-xvinfo
 pkgver=1.1.4
 pkgbuild=1
 arch=("auto")
