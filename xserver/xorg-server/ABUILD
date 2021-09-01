@@ -91,9 +91,9 @@ build() {
   ninja -C build
 
   DESTDIR=${pkgdir} ninja -C build install
-  
+
   ln -s /usr/bin/Xorg "${pkgdir}/usr/bin/X"
-  
+
 # distro specific files must be installed in /usr/share/X11/xorg.conf.d
   install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"
 
