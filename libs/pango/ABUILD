@@ -1,0 +1,22 @@
+pkgname=pango
+pkgver=1.49.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc="A library for layout and rendering of text"
+
+source=("https://download.gnome.org/sources/pango/${pkgver%.*}/pango-${pkgver}.tar.xz")
+
+tags="libs x11-libs"
+# libthai cairo gobject-introspection gi-docgen
+build_deps="libxft harfbuzz fribidi help2man git meson"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+  -D prefix=/usr \
+  -D gtk_doc=false
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
