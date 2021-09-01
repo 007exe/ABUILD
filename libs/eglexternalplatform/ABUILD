@@ -1,0 +1,20 @@
+pkgname=eglexternalplatform
+pkgver=1.1
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("EGL External Platform interface")
+longdesc=("EGL External Platform Interface headers")
+
+source=("https://github.com/NVIDIA/eglexternalplatform/archive/refs/tags/${pkgver}.tar.gz")
+
+tags="dev-libs libs"
+
+build_deps="mkpkg"
+
+build() {
+  go_src_dir
+  install -Dt "$pkgdir/usr/include/EGL" -m644 interface/*
+  install -Dt "$pkgdir/usr/share/pkgconfig" -m644 *.pc
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+}
