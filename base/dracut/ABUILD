@@ -1,18 +1,18 @@
 pkgname=dracut
 pkgver=055
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc="Generic, modular, cross-distribution initramfs generation tool"
-longdesc="Dracut contains tools to create a bootable initramfs for 2.6 Linux kernels. Unlike existing implementations, dracut does hard-code as little as possible into the initramfs. Dracut contains various modules which are driven by the event-based udev. Having root on MD, DM, LVM2, LUKS is supported as well as NFS, iSCSI, NBD, FCoE with the dracut-network package."
+shortdesc=("An event driven initramfs infrastructure")
+longdesc=("Dracut contains tools to create a bootable initramfs for 2.6 Linux kernels. Unlike existing implementations, dracut does hard-code as little as possible into the initramfs. Dracut contains various modules which are driven by the event-based udev. Having root on MD, DM, LVM2, LUKS is supported as well as NFS, iSCSI, NBD, FCoE with the dracut-network package.")
 
 source=("http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-$pkgver.tar.xz")
 
 tags="base sys-kernel"
 
-adddep="kernel fakeroot fakechroot gzip cpio bash util-linux-ng"
-
 build_deps="git mkpkg"
+
+adddep="bash coreutils cpio findutils grep gzip procps sed util-linux-ng xz"
 
 config_files="etc/dracut.conf"
 
@@ -22,8 +22,8 @@ build() {
   set -e
   ./configure \
     --sysconfdir=/etc \
-    --prefix=/usr
-
+    --prefix=/usr \
+    --bashcompletiondir=$(pkg-config --variable=completionsdir bash-completion)
   make -j${numjobs}
   make DESTDIR=$pkgdir install
 

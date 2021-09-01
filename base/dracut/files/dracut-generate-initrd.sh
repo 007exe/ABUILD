@@ -40,4 +40,3 @@ for KERNEL_VER in $ALL_KERNELS ; do
 	chroot . dracut --gzip --force boot/initrd-$KERNEL_VER.img $KERNEL_VER
 	( cd boot ; ln -sf initrd-$KERNEL_VER.img initrd.gz )
 done
-
