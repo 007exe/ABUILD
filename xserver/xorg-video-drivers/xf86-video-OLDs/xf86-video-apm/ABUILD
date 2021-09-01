@@ -1,0 +1,27 @@
+pkgname=xf86-video-apm
+pkgver=1.3.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Xorg driver for Alliance Promotion")
+longdesc=("Is the Xorg driver for Alliance Promotion.")
+
+tags=('x11-drivers xserver')
+
+source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-apm-${pkgver}.tar.bz2")
+
+build_deps="xorg-server-devel mesa"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

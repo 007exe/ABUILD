@@ -1,0 +1,34 @@
+pkgname=xf86-video-intel
+pkgver=2.99.917
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X.org Intel 8xx, 9xx, Gxx, Qxx, HD, Iris, and Iris Pro video drivers")
+longdesc=("The Xorg Intel Driver package contains the X.Org Video Driver for Intel integrated video chips including 8xx, 9xx, Gxx, Qxx, HD, Iris, and Iris Pro graphics processors.")
+
+tags=('x11-drivers xserver')
+
+source=("git:https://anongit.freedesktop.org/git/xorg/driver/xf86-video-intel")
+#source=("http://xorg.freedesktop.org/releases/individual/driver/xf86-video-intel-${pkgver}.tar.bz2")
+# libxss
+build_deps="mesa libxvmc pixman xcb-util xorg-server-devel libx11 libxrender libxv libxrandr libxinerama libxcursor libxtst"
+
+build() {
+  go_src_dir
+  burn_patches
+NOCONFIGURE=1 ./autogen.sh
+  export CFLAGS=${CFLAGS/-fno-plt}
+  export CXXFLAGS=${CXXFLAGS/-fno-plt}
+  export LDFLAGS=${LDFLAGS/,-z,now}
+
+
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-default-dri=3
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
