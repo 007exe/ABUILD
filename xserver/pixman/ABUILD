@@ -1,0 +1,30 @@
+pkgname=pixman
+pkgver=0.40.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The pixel-manipulation library for X and cairo")
+longdesc=("The Pixman package contains a library that provides low-level pixel manipulation features such as image compositing and trapezoid rasterization.")
+
+tags=('x11-libs xserver compat32')
+
+build_deps="meson libpng"
+
+source=("http://cairographics.org/releases/pixman-${pkgver}.tar.gz")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D loongson-mmi=disabled \
+    -D vmx=disabled \
+    -D arm-simd=disabled \
+    -D neon=disabled \
+    -D iwmmxt=disabled \
+    -D mips-dspr2=disabled \
+    -D gtk=disabled
+  ninja -C build
+  DESTDIR="$pkgdir" meson install -C build
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+}
