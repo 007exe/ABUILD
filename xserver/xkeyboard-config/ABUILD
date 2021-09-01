@@ -1,0 +1,32 @@
+pkgname=xkeyboard-config
+pkgver=2.33
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X keyboard configuration files")
+longdesc=("The XKeyboardConfig package contains the keyboard configuration database for the X Window System.")
+
+tags=('x11-datas xserver')
+
+source=("http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-${pkgver}.tar.bz2")
+
+build_deps="intltool xorg-xkbcomp libxslt python"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-xkb-base=/usr/share/X11/xkb \
+    --with-xkb-rules-symlink=xorg \
+    --enable-compat-rules=yes
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -f "${pkgdir}/usr/share/X11/xkb/compiled"
+
+  install -m755 -d "${pkgdir}/var/lib/xkb"
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
