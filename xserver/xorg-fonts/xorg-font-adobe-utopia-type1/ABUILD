@@ -1,0 +1,26 @@
+pkgname=xorg-font-adobe-utopia-type1
+pkgver=1.0.4
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Xorg X11 font adobe-utopia-type1")
+longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
+
+tags=("x11-fonts xserver")
+
+source=("http://xorg.freedesktop.org/archive/individual/font/font-adobe-utopia-type1-${pkgver}.tar.bz2")
+
+build_deps="xorg-util-macros"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-fontrootdir=/usr/share/fonts
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+}

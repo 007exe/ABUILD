@@ -1,0 +1,62 @@
+pkgname=xorg-fonts-alias-misc
+pkgver=1.0.4
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X.org font alias files - misc font familiy")
+longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
+
+tags=("x11-fonts xserver")
+
+source=("http://xorg.freedesktop.org/archive/individual/font/font-alias-${pkgver}.tar.bz2")
+
+build_deps="xorg-util-macros"
+
+pkglist="xorg-fonts-alias-100dpi xorg-fonts-alias-75dpi xorg-fonts-alias-cyrillic"
+
+xorg-fonts-alias-100dpi() {
+  pkgname=xorg-fonts-alias-100dpi
+  shortdesc=("xorg-fonts-alias")
+  longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
+}
+
+xorg-fonts-alias-75dpi() {
+  pkgname=xorg-fonts-alias-75dpi
+  shortdesc=("xorg-fonts-alias")
+  longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
+}
+
+xorg-fonts-alias-cyrillic() {
+  pkgname=xorg-fonts-alias-cyrillic
+  shortdesc=("xorg-fonts-alias")
+  longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-fontrootdir=/usr/share/fonts \
+    --disable-static
+  make -j${numjobs}
+
+  make -C misc DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+}
+
+xorg-fonts-alias-100dpi_prep() {
+  make -C 100dpi DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+}
+
+xorg-fonts-alias-75dpi_prep() {
+  make -C 75dpi DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+}
+
+xorg-fonts-alias-cyrillic_prep() {
+  make -C cyrillic DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+}

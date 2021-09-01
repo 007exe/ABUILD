@@ -1,0 +1,32 @@
+pkgname=xorg-fonts-encodings
+pkgver=1.0.5
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X.org font encoding files")
+longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
+
+tags=('x11-fonts xserver')
+
+build_deps="xorg-mkfontscale xorg-util-macros xorg-font-util"
+
+source=("http://xorg.freedesktop.org/archive/individual/font/encodings-${pkgver}.tar.bz2")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+
+  # regenerate encodngs file not to include non-compressed versions
+  cd "$pkgdir"/usr/share/fonts/encodings/large
+  mkfontscale -b -s -l -n -r -p /usr/share/fonts/encodings/large -e . .
+  cd "$pkgdir"/usr/share/fonts/encodings/
+  mkfontscale -b -s -l -n -r -p /usr/share/fonts/encodings -e . -e large .
+}

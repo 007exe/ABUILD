@@ -1,0 +1,57 @@
+pkgname=xorg-fonts-misc
+pkgver=1.0.3
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X.org misc fonts")
+longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
+
+tags=("x11-fonts xserver")
+
+build_deps="xorg-fonts-alias-misc xorg-util-macros xorg-mkfontscale xorg-font-util xorg-bdftopcf"
+
+url="https://xorg.freedesktop.org/"
+
+source=("${url}/releases/individual/font/font-arabic-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-cursor-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-daewoo-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-dec-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-isas-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-jis-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-micro-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-misc-ethiopic-1.0.4.tar.bz2"
+        "${url}/releases/individual/font/font-misc-meltho-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-misc-misc-1.1.2.tar.bz2"
+        "${url}/releases/individual/font/font-mutt-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-schumacher-misc-1.1.2.tar.bz2"
+        "${url}/releases/individual/font/font-sony-misc-${pkgver}.tar.bz2"
+        "${url}/releases/individual/font/font-sun-misc-${pkgver}.tar.bz2")
+
+adddep="xorg-fonts-alias-misc"
+
+build() {
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      ./configure --prefix=/usr \
+          --libdir=/usr/lib${LIBDIRSUFFIX} \
+          --with-fontdir=/usr/share/fonts/misc
+      make -j${numjobs}
+      popd
+    fi
+  done
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      make DESTDIR="${pkgdir}" install
+      install -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.${dir%-*}
+      popd
+    fi
+  done
+  rm -f "${pkgdir}"/usr/share/fonts/*/fonts.*
+
+  # move .otf files to proper directory - FS#44250
+  mv "${pkgdir}"/usr/share/fonts/misc/*.otf "${pkgdir}"/usr/share/fonts/OTF/
+}
