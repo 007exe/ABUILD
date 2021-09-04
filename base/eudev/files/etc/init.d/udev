@@ -1,5 +1,6 @@
 #!/sbin/openrc-run
 # Copyright 1999-2013 Gentoo Foundation
+# AgiliaLinux 20021
 # Distributed under the terms of the GNU General Public License v2
 
 command_args="--daemon ${udev_opts}"
@@ -55,7 +56,7 @@ start_pre()
 		command_args="${command_args} --debug 2> /run/udevdebug.log"
 	fi
 
-	bins="/sbin/udevd /lib/systemd/systemd-udevd /usr/lib/systemd/systemd-udevd"
+	bins="/usr/bin/udevd /lib/systemd/systemd-udevd /usr/lib/systemd/systemd-udevd"
 	for f in ${bins}; do
 		if [ -x "$f" -a ! -L "$f" ]; then
 			command="$f"
@@ -97,7 +98,7 @@ populate_dev()
 {
 	if yesno ${rc_dev_root_symlink:-yes}; then
 		ebegin "Generating a rule to create a /dev/root symlink"
-		/lib/udev/dev-root-link.sh
+		/usr/lib/udev/dev-root-link.sh
 		eend $?
 	fi
 
@@ -163,7 +164,7 @@ stop()
 	if [ $rc -ne 0 ]; then
 		eend $rc "Failed to stop $RC_SVCNAME using udevadm"
 		ebegin "Trying with start-stop-daemon"
-		start-stop-daemon --stop --exec /sbin/udevd
+		start-stop-daemon --stop --exec /usr/bin/udevd
 		rc=$?
 	fi
 	eend $rc "Failed to stop $RC_SVCNAME"
