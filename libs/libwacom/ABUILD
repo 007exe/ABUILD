@@ -1,0 +1,26 @@
+pkgname=libwacom
+pkgver=1.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library to identify Wacom tablets and their features")
+longdesc=("The libwacom package contains a library used to identify wacom tablets and their model-specific features.")
+
+source=("https://github.com/linuxwacom/libwacom/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="dev-libs libs"
+
+build_deps="glib2 libgudev eudev libxml2 meson"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D tests=disabled
+  ninja -C build
+  DESTDIR="$pkgdir" ninja install -C build
+
+  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
