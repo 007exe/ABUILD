@@ -1,5 +1,5 @@
 pkgname=e2fsprogs
-pkgver=1.46.3
+pkgver=1.46.4
 pkgbuild=1
 arch=("auto")
 
@@ -21,6 +21,7 @@ build() {
     --bindir=/usr/bin \
     --sbindir=/sbin \
     --libdir=/lib${LIBDIRSUFFIX} \
+    --with-udev-rules-dir=/usr/lib/udev//rules.d \
     --with-root-prefix="" \
     --enable-elf-shlibs \
     --disable-libblkid \
