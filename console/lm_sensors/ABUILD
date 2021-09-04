@@ -1,13 +1,12 @@
 pkgname=lm_sensors
 pkgver=3.6.0
-pkgverd=3-6-0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Collection of user space tools for general SMBus access and hardware monitoring")
 longdesc=("This package contains a collection of user space tools for general SMBus access and hardware monitoring. SMBus, also known as System Management Bus, is a protocol for communicating through a I2C ('I squared C') bus. Many modern mainboards have a System Management Bus. There are a lot of devices which can be connected to a SMBus; the most notable are modern memory chips with EEPROM memories and chips for hardware monitoring.")
 
-source=("https://github.com/lm-sensors/lm-sensors/archive/refs/tags/V$pkgverd.tar.gz")
+source=("https://github.com/lm-sensors/lm-sensors/archive/refs/tags/V${pkgver//./-}.tar.gz")
 
 tags="console sys-apps"
 
