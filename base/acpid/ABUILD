@@ -1,16 +1,16 @@
 pkgname=acpid
 pkgver=2.0.32
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc="ACPI kernel daemon and control utility"
-longdesc="The ACPI specification defines power and system management functions for each computer, in a generic manner. The ACPI daemon coordinates the management of power and system functions when ACPI kernel support is enabled (kernel 2.3.x or later)."
+shortdesc=("A daemon for delivering ACPI power management events with netlink support")
+longdesc=("The acpid (Advanced Configuration and Power Interface event daemon) is a completely flexible, totally extensible daemon for delivering ACPI events. It listens on netlink interface and when an event occurs, executes programs to handle the event. The programs it executes are configured through a set of configuration files, which can be dropped into place by packages or by the user.")
 
 tags=('base sys-power')
 
 source=("http://downloads.sourceforge.net/sourceforge/acpid2/$pkgname-$pkgver.tar.xz")
 
-build_deps='glibc'
+build_deps="glibc"
 config_files="etc/acpi/acpi_handler.sh
 etc/conf.d/acpid
 etc/acpi/events/default"
@@ -18,7 +18,8 @@ etc/acpi/events/default"
 build() {
   go_src_dir
   ./configure \
-    --prefix=/usr
+    --prefix=/usr \
+    --sbindir=/usr/bin
   make -j${numjobs}
   make DESTDIR="$pkgdir" install
 }
