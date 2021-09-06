@@ -1,59 +1,43 @@
 pkgname=kernel
-# Kernel version may contain '-' symbol, so let's protect from it by using kernel_ver everywhere.
-pkgver=5.12.12
-
-kernel_ver=`echo ${pkgver} | sed -e s/_/-/g`
-if [ "${kernel_ver}" = "`echo ${kernel_ver} | sed 's/\.0$//g'`" ] ; then
-   srcver=${kernel_ver}
-else
-   srcver=`echo ${kernel_ver} | sed 's/\.0$//g'`
-fi
-kernel_base=`echo ${kernel_ver} | cut -d . -f 1-2`
-ver_group=`echo ${kernel_ver} | cut -d . -f 1-1`
-pkgbuild=2
+pkgver=5.14.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Linux kernel")
+shortdesc=("The Linux kernel and modules")
 longdesc=("This is a Linux kernel with built-in support for most disk controllers and filesystems.")
 
 tags=("base sys-kernel")
-adddep="linux-firmware"
-conflicts="kernel-modules"
 
-source=("https://cdn.kernel.org/pub/linux/kernel/v${ver_group}.x/linux-${srcver}.tar.xz")
+source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${pkgver}.tar.xz")
+
 custom_opts="skip_gendeps no_strip skip_validate"
 
 skip_gendeps=1
 
-# Explicitly specify gcc as build_deps, since the order matters
-build_deps="make gcc bc diffutils git rsync"
+build_deps="bc kmod cpio perl tar xz xmlto rsync"
 
-pkglist=("headers sources")
+adddep="coreutils kmod"
+
+pkglist=("headers")
 
 headers() {
   pkgname=kernel-headers
   arch=("auto")
-  shortdesc=('Linux kernel include files')
-  longdesc=('These are the include files from the Linux kernel. You will need these to compile most system software for Linux.')
+
+  shortdesc=("Headers and scripts for building modules for the linux kernel")
+  longdesc=("These are the include files from the Linux kernel. You will need these to compile most system software for Linux.")
 
   tags=('develop sys-kernel')
+
+  conflicts="kernel-source"
 }
 
-sources() {
-  pkgname=kernel-source
-  arch=('auto')
-  shortdesc=('Linux kernel source')
-  longdesc=('Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.')
-
-  tags=('develop sys-kernel')
-}
-
-
-build() {
+before_build() {
   go_src_dir
   burn_patches
-echo "Copying the current kernel configuration..."
-zcat /proc/config.gz > .config
+  echo "Copying kernel configuration..."
+  #zcat /proc/config.gz > .config
+  cat ${filedir}/defconfig-x86_64 > .config
 
 clear
 echo ""
@@ -108,59 +92,57 @@ elif [[ "$KERNEL_CONFIG_MENU" == 0 ]]; then
 echo ""
 fi
 
-  make -j${numjobs}
+echo "Save new config file..."
+cp .config  ${filedir}/${pkgver}-defconfig-x86_64
 }
 
-modules() {
-   make modules_install INSTALL_MOD_PATH=${pkgdir}
-  rm -rf ${pkgdir}/lib/firmware
-  rm ${pkgdir}/lib/modules/${kernel_ver}/{source,build}
-  ln -sf /usr/src/linux-${kernel_ver} ${pkgdir}/lib/modules/${kernel_ver}/source
-  ln -sf /usr/src/linux-${kernel_ver} ${pkgdir}/lib/modules/${kernel_ver}/build
+build() {
+  go_src_dir
+  make -j${numjobs}
+echo "Installing the Kernel..."
+  mkdir -p ${pkgdir}/boot
+  cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-${pkgver}
 
+echo "Installing Kernel Modules..."
+  make modules_install INSTALL_MOD_PATH=${pkgdir}
+  rm -rf ${pkgdir}/lib/firmware
+  rm ${pkgdir}/lib/modules/${pkgver}/{source,build}
+  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/lib/modules/${pkgver}/source
+  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/lib/modules/${pkgver}/build
+
+# First installation script
+echo "First installation script..."
   mkdir -p ${pkgdir}/install
+
   cat << EOF > ${pkgdir}/install/doinst.sh
 
 echo " A good idea whenever kernel modules are added or changed: "
 if [ -x sbin/depmod ]; then
-  chroot . /sbin/depmod -a ${kernel_ver} 1> /dev/null 2> /dev/null
+  chroot . /sbin/depmod -a ${pkgver} 1> /dev/null 2> /dev/null
 fi
 
 EOF
 }
 
-after_build() {
-  go_src_dir
-  mkdir -p ${pkgdir}/boot
-  cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-${kernel_ver}
-  ln -s vmlinuz-${kernel_ver} ${pkgdir}/boot/vmlinuz
-  cp System.map ${pkgdir}/boot/System.map-${kernel_ver}
-  ln -s System.map-${kernel_ver} ${pkgdir}/boot/System.map
-  cp .config ${pkgdir}/boot/config-${kernel_ver}
-  ln -s config-${kernel_ver} ${pkgdir}/boot/config
-  modules
-}
-
 headers_prep() {
   go_src_dir
+echo "Installing kernel headers..."
   make headers_check
   make headers_install INSTALL_HDR_PATH=${pkgdir}/usr
 
 # Copy aufs-tree manually, since we removed dirty hacks
   if [ -f include/linux/aufs_type.h ]; then
+echo "Copy aufs-tree manually, since we removed dirty hacks"
      install -m644 include/linux/aufs_type.h ${pkgdir}/usr/include/linux/
   fi
-}
 
-sources_prep() {
-  go_src_dir
-  mkdir -p ${pkgdir}/usr/src/linux-${kernel_ver}
 echo "Copying the kernel source tree. This may take about 10 minutes..."
-  cp -rd ./* ${pkgdir}/usr/src/linux-${kernel_ver}/
-  ( cd ${pkgdir}/usr/src/linux-${kernel_ver} && make mrproper )
-  cat .config > ${pkgdir}/usr/src/linux-${kernel_ver}/.config
-  ( cd ${pkgdir}/usr/src/linux-${kernel_ver} && make prepare && make modules_prepare )
-  ( cd ${pkgdir}/usr/src ; ln -s linux-${kernel_ver} linux )
+  mkdir -p ${pkgdir}/usr/src/linux-${pkgver}
+  cp -rd ./* ${pkgdir}/usr/src/linux-${pkgver}/
+  ( cd ${pkgdir}/usr/src/linux-${pkgver} && make mrproper )
+  cat .config > ${pkgdir}/usr/src/linux-${pkgver}/.config
+  ( cd ${pkgdir}/usr/src/linux-${pkgver} && make prepare && make modules_prepare )
+  ( cd ${pkgdir}/usr/src ; ln -s linux-${pkgver} linux )
 # recreate config. I forgot why it was needed, but it takes no time, so let it be.
-  cat .config > ${pkgdir}/usr/src/linux-${kernel_ver}/.config
+  cat .config > ${pkgdir}/usr/src/linux-${pkgver}/.config
 }
