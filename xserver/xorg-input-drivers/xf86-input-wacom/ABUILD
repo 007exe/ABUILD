@@ -18,7 +18,10 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-systemd-unit-dir=no \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+# fix udev
+  mv -f ${pkgdir}/usr/lib${LIBDIRSUFFIX}/udev ${pkgdir}/lib
 }
