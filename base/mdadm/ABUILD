@@ -1,6 +1,6 @@
 pkgname=mdadm
 pkgver=4.1
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("A tool for managing Soft RAID under Linux.")
@@ -18,8 +18,8 @@ build() {
   go_src_dir
   burn_patches
   sed -i "s,-Werror,," Makefile
-  make CXFLAGS="$CFLAGS" BINDIR=/usr/bin UDEVDIR=/usr/lib/udev MANDIR=/usr/share/man
-  make INSTALL=/usr/bin/install BINDIR=/usr/bin DESTDIR=${pkgdir} UDEVDIR=/usr/lib/udev install
+  make CXFLAGS="$CFLAGS" BINDIR=/sbin UDEVDIR=/lib/udev MANDIR=/usr/share/man
+  make BINDIR=/sbin DESTDIR=${pkgdir} UDEVDIR=/lib/udev install
 
   install -Dm0644 mdadm.conf-example ${pkgdir}/etc/mdadm.conf
   mkdir ${pkgdir}/etc/init.d/
