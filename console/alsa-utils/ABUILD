@@ -20,7 +20,7 @@ build() {
     --prefix=/usr \
     --sbindir=/usr/bin \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-udev-rules-dir=/usr/lib/udev/rules.d \
+    --with-udev-rules-dir=/lib/udev/rules.d \
     --disable-alsaconf
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
