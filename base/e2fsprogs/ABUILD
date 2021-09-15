@@ -1,6 +1,6 @@
 pkgname=e2fsprogs
 pkgver=1.46.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Utilities used for ext2/ext3/ext4 filesystems")
@@ -10,18 +10,19 @@ tags="base sys-fs"
 
 source=("https://www.kernel.org/pub/linux/kernel/people/tytso/${pkgname}/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="bc util-linux-ng pkg-config"
+build_deps="util-linux-ng pkg-config"
 
 config_files="etc/mke2fs.conf"
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
     --bindir=/usr/bin \
     --sbindir=/sbin \
     --libdir=/lib${LIBDIRSUFFIX} \
-    --with-udev-rules-dir=/usr/lib/udev//rules.d \
+    --with-udev-rules-dir=/lib/udev/rules.d \
     --with-root-prefix="" \
     --enable-elf-shlibs \
     --disable-libblkid \
