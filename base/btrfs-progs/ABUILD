@@ -1,6 +1,6 @@
 pkgname=btrfs-progs
 pkgver=5.13.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("Userspace programs for btrfs")
@@ -19,12 +19,11 @@ build()
   ./autogen.sh
   ./configure \
     --prefix=/usr \
+    --bindir=/sbin \
     --libdir=/usr/lib$LIBDIRSUFFIX \
     --with-crypto=libgcrypt
   make -j${numjobs}
   make DESTDIR="$pkgdir" install install_python
-
-  mv -v ${pkgdir}/lib ${pkgdir}/usr/
 
 # install bash completion (FS#44618)
   install -Dm644 btrfs-completion "$pkgdir/usr/share/bash-completion/completions/btrfs"
