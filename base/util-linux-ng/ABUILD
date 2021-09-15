@@ -1,14 +1,14 @@
 pkgname=util-linux-ng
-pkgver=2.37
-pkgbuild=2
-arch=('auto')
+pkgver=2.37.2
+pkgbuild=1
+arch=("auto")
 
 shortdesc=("A collection of basic system utilities")
 longdesc=("The util-linux package contains a large variety of low-level system utilities that are necessary for a Linux system to function. Among others, Util-linux-ng contains the fdisk configuration tool and the login program.")
 
 tags=('base sys-apps')
 
-source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${pkgver}/util-linux-${pkgver}.tar.xz")
+source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-${pkgver}.tar.xz")
 conflicts="eject"
 
 config_files="etc/pam.d/chfn
@@ -24,22 +24,24 @@ build_deps="eudev linux-pam acl shadow coreutils asciidoctor"
 build() {
   go_src_dir
   ./configure \
+  --prefix=/usr \
   --bindir=/bin \
   --sbindir=/sbin \
   --libdir=/lib${LIBDIRSUFFIX} \
-  --enable-fs-paths-default=/usr/bin:/usr/local/bin \
   --sysconfdir=/etc \
   --localstatedir=/var \
+  --enable-fs-paths-default=/usr/bin:/usr/local/bin \
   --enable-usrdir-path \
-  --enable-raw \
   --enable-vipw \
   --enable-newgrp \
   --enable-chfn-chsh \
   --enable-write \
   --enable-mesg \
+  --disable-raw \
+  --disable-static \
   --disable-hardlink \
-  --without-systemd \
   --with-python=3
+
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
@@ -84,5 +86,5 @@ after_build() {
   install -m0644 "${filedir}/pam.d/su" "${pkgdir}/etc/pam.d/su"
   install -m0644 "${filedir}/pam.d/su-l" "${pkgdir}/etc/pam.d/su-l"
 
-  install -Dm0644 "${filedir}/udev/60-rfkill.rules" "${pkgdir}/usr/lib/udev/rules.d/60-rfkill.rules"
+  install -Dm0644 "${filedir}/udev/60-rfkill.rules" "${pkgdir}/lib/udev/rules.d/60-rfkill.rules"
 }
