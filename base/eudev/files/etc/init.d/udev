@@ -56,7 +56,7 @@ start_pre()
 		command_args="${command_args} --debug 2> /run/udevdebug.log"
 	fi
 
-	bins="/usr/bin/udevd /lib/systemd/systemd-udevd /usr/lib/systemd/systemd-udevd"
+	bins="/sbin/udevd /lib/systemd/systemd-udevd /usr/lib/systemd/systemd-udevd"
 	for f in ${bins}; do
 		if [ -x "$f" -a ! -L "$f" ]; then
 			command="$f"
@@ -98,7 +98,7 @@ populate_dev()
 {
 	if yesno ${rc_dev_root_symlink:-yes}; then
 		ebegin "Generating a rule to create a /dev/root symlink"
-		/usr/lib/udev/dev-root-link.sh
+		/lib/udev/dev-root-link.sh
 		eend $?
 	fi
 
@@ -164,7 +164,7 @@ stop()
 	if [ $rc -ne 0 ]; then
 		eend $rc "Failed to stop $RC_SVCNAME using udevadm"
 		ebegin "Trying with start-stop-daemon"
-		start-stop-daemon --stop --exec /usr/bin/udevd
+		start-stop-daemon --stop --exec /sbin/udevd
 		rc=$?
 	fi
 	eend $rc "Failed to stop $RC_SVCNAME"

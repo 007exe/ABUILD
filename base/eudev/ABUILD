@@ -1,6 +1,6 @@
 pkgname=eudev
 pkgver=3.2.10
-pkgbuild=3
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The userspace dev tools (udev) forked by Gentoo")
@@ -17,17 +17,23 @@ build(){
   ./configure \
     --prefix=/usr \
     --with-rootprefix=/ \
-    --bindir=/usr/bin \
-    --sbindir=/usr/bin \
+    --bindir=/sbin \
+    --sbindir=/sbin \
     --sysconfdir=/etc \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --disable-static \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-rootlibdir=/lib${LIBDIRSUFFIX} \
     --config-cache \
-    --with-rootlibexecdir=/usr/lib/udev \
-    --enable-gudev \
-    --disable-introspection \
+    --with-rootlibexecdir=/lib/udev \
+    --libexecdir=/lib \
     --enable-split-usr \
-    --enable-kmod
+    --with-rootrundir=/run \
+    --enable-hwdb \
+    --enable-manpages \
+    --enable-rule_generator \
+    --enable-kmod \
+    --disable-introspection \
+    --disable-static
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
 
@@ -36,21 +42,21 @@ after_build() {
 # prune_libtool_files
   find "${pkgdir}" -name '*.la' -delete
 
-  mkdir -p ${pkgdir}/etc/{udev/rules.d/,init.d}
+  mkdir -p ${pkgdir}/etc/{firmware,modprobe.d,udev/rules.d/,init.d}
   install -Dm755 ${filedir}/etc/init.d/* ${pkgdir}/etc/init.d
   cp -r ${filedir}/etc/conf.d ${pkgdir}/etc
-  install -Dm755 ${filedir}/helpers/* ${pkgdir}/usr/lib/udev/
+  install -Dm755 ${filedir}/helpers/* ${pkgdir}/lib/udev/
 
 # make a place for udev to store the socket
   mkdir -p ${pkgdir}/run/udev/
 
-# remove docs
-  rm -rf ${pkgdir}/usr/share/gtk-doc
-  rm -rf ${pkgdir}/etc/udev/hwdb.d
-
 # Copy additional rules
-  cp -v ${filedir}/rules.d/*.rules ${pkgdir}/usr/lib/udev/rules.d/
+  cp -v ${filedir}/rules.d/*.rules ${pkgdir}/lib/udev/rules.d/
 
 # Нормальные имена сетевых интерфейсов
-  rm -f  ${pkgdir}/usr/lib/udev/rules.d/80-net-name-slot.rules
+  rm -f  ${pkgdir}/lib/udev/rules.d/80-net-name-slot.rules
+
+# Временный фикс библиотек
+  cd ${pkgdir}/lib$LIBDIRSUFFIX
+  ln -s libudev.so.1.6.3 ../usr/lib$LIBDIRSUFFIX/libudev.so.1.6.3
 }
