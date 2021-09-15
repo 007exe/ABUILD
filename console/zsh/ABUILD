@@ -58,6 +58,7 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
+
 after_build() {
     mkdir -p $pkgdir/etc/
     echo "# This is the zsh profile file. It is set to call /etc/profile by default." > $pkgdir/etc/zprofile
