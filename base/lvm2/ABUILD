@@ -1,6 +1,6 @@
 pkgname=lvm2
-pkgver=2.03.12
-pkgbuild=2
+pkgver=2.03.13
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Logical Volume Manager version 2")
@@ -26,8 +26,6 @@ build() {
     scripts/lvm2_monitoring_systemd_red_hat.service.in
 
   ./configure \
-    --prefix=/usr \
-    --sbindir=/usr/bin \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --with-usrlibdir=/usr/lib${LIBDIRSUFFIX} \
     --sysconfdir=/etc \
@@ -50,7 +48,7 @@ build() {
     --with-default-pid-dir=/run \
     --with-default-run-dir=/run/lvm \
     --with-thin=internal \
-    --with-udev-prefix=/usr
+    --with-udev-prefix=""
 
   make -j${numjobs}
   make DESTDIR=${pkgdir} install_lvm2
