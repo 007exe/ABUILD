@@ -10,7 +10,7 @@ source=("https://xorg.freedesktop.org/releases/individual/xserver/xorg-server-${
 
 tags="xserver x11-base"
 
-build_deps=("xorgproto pixman libx11 mesa xtrans libxkbfile libxfont2 libpciaccess libxv libxmu libxrender libxi libxaw libxtst libxres xorg-xkbcomp xorg-util-macros xorg-font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil xcb-util-wm xcb-util-keysyms libxshmfence libunwind meson  wayland-protocols egl-wayland")
+build_deps=("xorgproto pixman libx11 mesa xtrans libxkbfile libxfont2 libpciaccess libxv libxmu libxrender libxi libxaw libxtst libxres xorg-xkbcomp xorg-util-macros xorg-font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil xcb-util-wm xcb-util-keysyms libxshmfence libunwind wayland-protocols egl-wayland")
 
 adddep="xorg-server-common=${pkgver} xf86-input-libinput"
 
@@ -65,38 +65,38 @@ xorg-server-devel() {
 build() {
   go_src_dir
   burn_patches
+#  autoreconf -vif
   export CFLAGS=${CFLAGS/-fno-plt}
   export CXXFLAGS=${CXXFLAGS/-fno-plt}
   export LDFLAGS=${LDFLAGS/,-z,now}
 
-  meson build \
-    -D prefix=/usr \
-    -D ipv6=true \
-    -D xvfb=true \
-    -D xnest=true \
-    -D xcsecurity=true \
-    -D xorg=true \
-    -D xephyr=true \
-    -D xwayland=true \
-    -D xwayland_eglstream=true \
-    -D glamor=true \
-    -D udev=true \
-    -D systemd_logind=false \
-    -D suid_wrapper=true \
-    -D xkb_dir=/usr/share/X11/xkb \
-    -D xkb_output_dir=/var/lib/xkb \
-    -D with-module-dir=/usr/lib${LIBDIRSUFFIX}/xorg/modules \
-    -D with-dri-driver-path=/usr/lib${LIBDIRSUFFIX}/xorg/modules/dri \
-    -D with-os-name="AgiliaLinux" \
-    -D localstatedir=/var
-
-  # Print config
-  meson configure build
-  ninja -C build
-
-  DESTDIR=${pkgdir} ninja -C build install
-
-  ln -s /usr/bin/Xorg "${pkgdir}/usr/bin/X"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --with-pic \
+    --with-int10=x86emu \
+    --with-xkb-path=/usr/share/X11/xkb \
+    --with-os-name="AgiliaLinux" \
+    --with-xkb-output=/var/lib/xkb \
+    --with-os-vendor="AgiliaLinux Project" \
+    --with-module-dir=/usr/lib${LIBDIRSUFFIX}/xorg/modules \
+    --enable-glamor \
+    --enable-xorg \
+    --enable-dmx \
+    --enable-xvfb \
+    --enable-xnest \
+    --enable-kdrive \
+    --enable-xephyr \
+    --enable-xwayland \
+    --enable-config-udev \
+    --enable-suid-wrapper \
+    --disable-static \
+    --disable-config-hal \
+    --disable-systemd-logind
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
 # distro specific files must be installed in /usr/share/X11/xorg.conf.d
   install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"
