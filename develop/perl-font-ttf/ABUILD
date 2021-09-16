@@ -12,7 +12,7 @@ source=("https://www.cpan.org/modules/by-module/Font/Font-TTF-${pkgver}.tar.gz")
 
 build_deps="perl-io-string"
 
-addep="perl-io-string"
+adddep="perl-io-string"
 
 build() {
   go_src_dir
