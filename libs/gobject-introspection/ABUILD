@@ -1,22 +1,27 @@
 pkgname=gobject-introspection
 pkgver=1.68.0
+_glibver=2.68.4
 pkgbuild=1
 arch=('auto')
 
-shortdesc="GObject Introspection"
+shortdesc=("The GObject Introspection is used to describe the program APIs and collect them in a uniform, machine readable format.")
 longdesc=("The goal of the project is to describe the APIs and  collect them in a uniform, machine readable format.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="glib2 python python-mako libffi libpthread-stubs renderproto kbproto"
+build_deps="cairo python-sphinx meson glib2=$_glibver python-mako python-markdown"
+
+addep="python-mako python-markdown"
+
 tags="libs dev-libs"
 
-BUILD_SYSTEM="autotools"
-
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--enable-doctool"
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D buildtype=release
+  meson compile -C build
+  DESTDIR="$pkgdir" meson install -C build
+}
