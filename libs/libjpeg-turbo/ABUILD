@@ -1,31 +1,38 @@
-#ABUILD created by: Drakmail, coder at dps.ru 
 pkgname=libjpeg-turbo
-pkgver=6b_1.5.3
-srcver=1.5.3
+pkgver=2.1.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc="JPEG image codec with accelerated baseline compression and decompression."
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${srcver}.tar.gz")
+shortdesc=("JPEG image codec with accelerated baseline compression and decompression.")
+longdesc=("libjpeg-turbo is a fork of the original IJG libjpeg which uses SIMD to accelerate baseline JPEG compression and decompression. libjpeg is a library that implements JPEG image encoding, decoding and transcoding.")
+
+source=("https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-${pkgver}.tar.gz")
+
 tags="media-libs libs compat32"
-build_deps="nasm m4 autoconf automake"
 
-provides="libjpeg"
+build_deps="cmake nasm"
 
+build() {
+  go_src_dir
+  burn_patches
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+        -DCMAKE_BUILD_TYPE=RELEASE \
+        -DENABLE_STATIC=FALSE \
+        -DWITH_JPEG8=ON \
+        -W no-dev \
+        -B build \
+        -S .
+  make VERBOSE=1 -C build
+  make VERBOSE=1 DESTDIR="${pkgdir}" \
+    docdir="/usr/share/doc/${pkgname}" \
+    exampledir="/usr/share/doc/${pkgname}" \
+    install -C build
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---datadir=/usr/doc/$pkgname-$pkgver \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-INSTALL_KEYS="DESTDIR=$pkgdir"
+  install -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  ln -s ../../doc/${pkgname}/LICENSE.md "${pkgdir}/usr/share/licenses/${pkgname}"
 
-after_build()
-{
-    install -m644 jpegint.h ${pkgdir}/usr/include/
+# header required by some dependants
+# https://bugs.archlinux.org/task/24787
+  install -m 644 jpegint.h "${pkgdir}/usr/include"
 }
