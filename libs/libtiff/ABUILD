@@ -1,0 +1,27 @@
+pkgname=libtiff
+pkgver=4.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("libtiff (a library for reading and writing TIFF files)")
+longdesc=("This package provides support for the Tag Image File Format (TIFF), a widely used format for storing image data. Included is the libtiff library (for reading and writing TIFF files), and a collection of tools for working with TIFF images.")
+
+tags=("libs media-libs compat32")
+
+source=("https://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
+# freeglut glu mesa jbigkit
+build_deps="glibc libjpeg-turbo zlib xz zstd"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm 644 COPYRIGHT -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}
