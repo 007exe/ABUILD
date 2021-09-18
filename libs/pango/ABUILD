@@ -1,15 +1,16 @@
 pkgname=pango
-pkgver=1.49.0
+pkgver=1.49.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc="A library for layout and rendering of text"
+shortdesc=("A library for layout and rendering of text")
+longdesc=("A library to handle unicode strings as well as complex bidirectional or context dependent shaped strings.")
 
 source=("https://download.gnome.org/sources/pango/${pkgver%.*}/pango-${pkgver}.tar.xz")
 
 tags="libs x11-libs"
-# libthai cairo gobject-introspection gi-docgen
-build_deps="libxft harfbuzz fribidi help2man git meson"
+# libthai
+build_deps="cairo libxft harfbuzz fribidi gobject-introspection help2man meson gi-docgen"
 
 build() {
   go_src_dir
