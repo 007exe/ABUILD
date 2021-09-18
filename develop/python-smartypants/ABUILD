@@ -1,0 +1,20 @@
+pkgname=python-smartypants
+pkgver=2.0.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Python with the SmartyPants")
+longdesc=("Python with the SmartyPants")
+
+source=("https://github.com/leohemsted/smartypants.py/archive/v${pkgver}.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python"
+
+build()
+{
+  go_src_dir
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+}
