@@ -1,10 +1,10 @@
 pkgname=libnghttp2
-pkgver=1.43.0
+pkgver=1.44.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Experimental HTTP/2 client, server and proxy"
-longdesc="This package contains the HTTP/2 client, server and proxy programs."
+shortdesc=("Framing layer of HTTP/2 is implemented as a reusable C library")
+longdesc=("nghttp2 is an implementation of HTTP/2 and its header compression algorithm, HPACK.")
 
 tags=("libs net-libs")
 
@@ -21,6 +21,7 @@ build() {
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --disable-examples \
     --disable-python-bindings \
+    --disable-static \
     --enable-lib-only
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
