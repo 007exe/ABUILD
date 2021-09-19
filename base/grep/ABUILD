@@ -1,33 +1,22 @@
 pkgname=grep
-pkgver=3.6
+pkgver=3.7
 pkgbuild=1
 arch=("auto")
 
-shortdesc="A string search utility"
-longdesc=("This is GNU grep, the 'fastest grep in the west' (we hope). Grep searches through textual input for lines which contain a match to a specified pattern and then prints the matching lines.")
+shortdesc=("A string search utility")
+longdesc=("The Grep package contains programs for searching through the contents of files.")
 
 tags=("base sys-apps")
 
-source=("ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+source=("https://ftp.gnu.org/gnu/grep/grep-${pkgver}.tar.xz")
 
-build_deps="texinfo"
+build_deps="texinfo pcre"
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
-    --prefix=/usr \
-    --bindir=/bin \
-    --without-included-regex
-  make
-  make DESTDIR="$pkgdir" install
-}
-
-
-after_build() {
-  mkdir -p ${pkgdir}/usr/bin
-  ( cd ${pkgdir}/usr/bin
-       ln -sf ../../bin/grep .
-       ln -sf ../../bin/egrep .
-       ln -sf ../../bin/fgrep .
-  )
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
