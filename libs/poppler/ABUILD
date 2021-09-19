@@ -1,0 +1,27 @@
+pkgname=poppler
+pkgver=21.09.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("PDF rendering library based on xpdf 3.0")
+longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+
+tags=('app-text libs')
+
+source=("http://poppler.freedesktop.org/poppler-${pkgver}.tar.xz")
+# gtk3 qt5-base qt6-base nss
+build_deps="libjpeg-turbo gcc-libs cairo fontconfig openjpeg2 pkg-config lcms2 gobject-introspection icu gtk-doc curl cmake python boost"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
+    -DENABLE_GTK_DOC=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
