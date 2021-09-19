@@ -1,10 +1,10 @@
 pkgname=libgcrypt
-pkgver=1.9.3
+pkgver=1.9.4
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("GNU Cryptographic library")
-longdesc=("Libgcrypt is a general purpose cryptographic library based on the code from GNU Privacy Guard. It provides functions for all cryptograhic building blocks: symmetric ciphers (AES,DES,Blowfish,CAST5,Twofish,Arcfour), hash algorithms (MD5, RIPE-MD160, SHA-1, TIGER-192), MACs (HMAC for all hash algorithms), public key algorithms (RSA, ElGamal, DSA), large integer functions, random numbers and a lot of supporting functions.")
+shortdesc=("General purpose cryptographic library based on the code from GnuPG")
+longdesc=("The libgcrypt package contains a general purpose crypto library based on the code used in GnuPG. The library provides a high level interface to cryptographic building blocks using an extendable and flexible API.")
 
 tags=("dev-libs network")
 
