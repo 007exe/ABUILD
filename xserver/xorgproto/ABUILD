@@ -1,5 +1,5 @@
 pkgname=xorgproto
-pkgver=2021.4
+pkgver=2021.5
 pkgbuild=1
 arch=("noarch")
 
