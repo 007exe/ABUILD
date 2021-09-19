@@ -1,6 +1,6 @@
 pkgname=usbutils
 pkgver=014
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Linux USB utilities")
@@ -14,6 +14,7 @@ build_deps="glibc libusb coreutils python"
 
 build() {
   go_src_dir
+  burn_patches
   autoreconf -vfi
   ./configure \
     --prefix=/usr \
