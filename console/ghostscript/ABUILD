@@ -1,0 +1,37 @@
+pkgname=ghostscript
+pkgver=9.54.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An interpreter for the PostScript language")
+longdesc=("Ghostscript is a versatile processor for PostScript data with the ability to render PostScript to different targets. It is a mandatory part of the cups printing stack.")
+
+tags=("app-text console")
+
+source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${pkgver//./}/ghostpdl-${pkgver}.tar.xz")
+# gtk3 glu freeglut
+# jbig2dec --with-jbig2dec
+build_deps="libxt libcups fontconfig zlib libpng libjpeg-turbo libtiff lcms2 dbus openjpeg2 libidn gnutls"
+
+before_build() {
+  go_src_dir
+  rm -rf freetype lcms2mt jpeg libpng openjpeg
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --with-ijs \
+    --disable-compile-inits \
+    --enable-dynamic \
+    --enable-cups \
+    --with-system-libtiff
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dt "${pkgdir}"/usr/share/licenses/${pkgname} -m644 LICENSE
+}
