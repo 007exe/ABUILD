@@ -1,6 +1,6 @@
 pkgname=libinput
-pkgver=1.18.1
-pkgbuild=2
+pkgver=1.19.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Input device management and event handling library")
