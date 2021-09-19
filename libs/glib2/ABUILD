@@ -1,5 +1,5 @@
 pkgname=glib2
-pkgver=2.68.4
+pkgver=2.70.0
 pkgtree=${pkgver%.*}
 pkgbuild=1
 arch=('auto')
@@ -11,8 +11,9 @@ source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgtree}/glib-${pkgver}.t
 
 tags="libs dev-libs compat32"
 
-#libelf gtk-doc
-build_deps="gettext shared-mime-info python git util-linux-ng meson dbus pcre libffi zlib"
+build_deps="gettext shared-mime-info python git util-linux-ng meson dbus pcre libffi zlib elfutils gtk-doc"
+
+#pkglist="glib2-docs"
 
 build() {
   go_src_dir
@@ -20,6 +21,7 @@ build() {
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
   meson build \
     --prefix=/usr \
+    --buildtype=release \
     -D glib_debug=disabled \
     -D selinux=disabled \
     -D man=true
@@ -47,3 +49,17 @@ after_build() {
   mkdir -p $pkgdir/install
   zcat $filedir/doinst.sh.gz > $pkgdir/install/doinst.sh
 }
+
+#glib2-docs() {
+#  pkgname=glib2-docs
+#  shortdesc=("Documentation for the Rust programming language")
+#  longdesc=("The Rust programming language is designed to be a safe, concurrent, practical language.")
+#}
+
+#glib2-docs_prep() {
+#  cd "${srcdir}/glib-$pkgver"
+#  install -d "$pkgdir"/usr/share/doc
+#  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share/doc
+
+#  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 glib/docs/reference/COPYING
+#}
