@@ -1,5 +1,6 @@
 pkgname=sudo
-pkgver=1.9.8
+_sudover=1.9.8p1
+pkgver=${_sudover/p/.p}
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +9,7 @@ longdesc=("Sudo (superuser do) allows a system administrator to give certain use
 
 tags=("console sys-auth")
 
-source=("http://www.sudo.ws/sudo/dist/$pkgname-$pkgver.tar.gz")
+source=("http://www.sudo.ws/sudo/dist/sudo-$_sudover.tar.gz")
 
 build_deps="glibc linux-pam libaudit zlib"
 
@@ -29,7 +30,6 @@ build() {
     --with-all-insults \
     --with-rundir=/run/sudo \
     --with-vardir=/var/db/sudo \
-    --enable-tmpfiles.d \
     --with-sssd \
     --with-ldap \
     --with-passprompt="[sudo] password for %p: "
