@@ -1,5 +1,5 @@
 pkgname=wayland-protocols
-pkgver=1.21
+pkgver=1.23
 pkgbuild=1
 arch=("noarch")
 
@@ -10,16 +10,16 @@ source=("https://wayland.freedesktop.org/releases/$pkgname-$pkgver.tar.xz")
 
 tags="x11-misc libs"
 
-build_deps="wayland"
+build_deps="wayland meson ninja"
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
+  meson build \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+    --buildtype=release
+  ninja -C build
+  DESTDIR="$pkgdir" ninja -C build install
 
   install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m 644 COPYING
 }
