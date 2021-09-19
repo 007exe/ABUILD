@@ -1,140 +1,122 @@
 pkgname=cups
-pkgver=1.7.7
+pkgver=2.3.3op2
 pkgbuild=1
 arch=('auto')
 
-shortdesc=('CUPS (Common UNIX Printing System)')
-longdesc=('The Common UNIX Printing System provides a portable printing layer for UNIX(R)-like operating systems. It has been developed by Easy Software Products to promote a standard printing solution for all UNIX vendors and users. CUPS uses the Internet Printing Protocol ("IPP") as the basis for managing print jobs and queues. The CUPS package includes System V and Berkeley command-line interfaces, a PostScript RIP package for supporting non-PostScript printer drivers, and tools for creating additional printer drivers and other CUPS services.')
+shortdesc=("The CUPS Printing System - daemon package")
+longdesc=("The Common Unix Printing System (CUPS) is a print spooler and associated utilities. It is based on the Internet Printing Protocol and provides printing services to most PostScript and raster printers.")
 
 tags=('base net-print')
 
-source=("http://www.cups.org/software/${pkgver}/${pkgname}-${pkgver}-source.tar.bz2")
+source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz")
 
-build_deps="make gcc autoconf pkg-config bc libusb gnutls linux-pam krb5 binutils gzip coreutils sed kernel-headers automake coreutils grep"
+build_deps="gnutls libtiff libpng krb5 libusb acl linux-pam bc dbus hicolor-icon-theme gzip autoconf inetutils valgrind xdg-utils cups-filters"
 
-before_build() {
+adddep="hicolor-icon-theme libcups>=${pkgver} cups-filters"
+
+config_files="etc/cups/cupsd.conf
+etc/cups/snmp.conf
+etc/cups/cups-files.conf
+etc/logrotate.d/cups
+etc/pam.d/cups
+etc/cups/printers.conf
+etc/cups/classes.conf
+etc/cups/subscriptions.conf"
+
+pkglist="libcups"
+
+build() {
   go_src_dir
+  burn_patches
 
+# Rebuild configure script for not zipping man-pages.
   aclocal -I config-scripts
   autoconf -I config-scripts
 
-  # Fix libdir
-  sed -i.orig -e 's#$exec_prefix/lib/cups#$libdir/cups#g' configure
+# The build system uses only DSOFLAGS but not LDFLAGS to build some libraries.
+  export DSOFLAGS=${LDFLAGS}
+
+# Fix libdir
+ sed -i.orig -e 's#$exec_prefix/lib/cups#$libdir/cups#g' configure
+
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-systemd \
+    --enable-pam=yes \
+    --enable-raw-printing \
+    --enable-dbus=yes \
+    --enable-ssl=yes \
+    --enable-relro \
+    --enable-threads \
+    --disable-avahi\
+    --enable-libpaper \
+    --with-logdir=/var/log/cups \
+    --with-docdir=/usr/share/cups/doc \
+    --with-exe-file-perm=0755 \
+    --with-rcdir=/tmp/cupsinit \
+    --with-max-log-size=0 \
+    --with-dbusdir=/usr/share/dbus-1 \
+    --disable-dnssd
+  make -j${numjobs}
+  make BUILDROOT="${pkgdir}" install-data install-exec
 }
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--enable-ssl=yes \
-	--enable-openssl=no \
-	--enable-gnutls=yes \
-	--enable-cdsassl=no \
-	--docdir=/usr/share/doc/${pkgname}-${pkgver} \
-	--mandir=/usr/man \
-	--with-php=/usr/bin/php\
-	--enable-pam=yes \
-	--with-dbusdir=/etc/dbus-1 \
-	--enable-raw-printing \
-	--with-logdir=/var/log/cups \
-	--disable-avahi \
-	--enable-threads \
-	--with-optim='$SLKCFLAGS'"
-
-INSTALL_KEYS="BUILDROOT=${pkgdir}"
-
 after_build() {
-  mkdir -p $pkgdir/etc/cups
-  mkdir -p $pkgdir/var/spool
+  go_src_dir
 
-  # Why do we need this?
-  #mv $pkgdir/etc/dbus-1/system.d/cups.conf $pkgdir/etc/dbus-1/system.d/cups.conf.new
+ rm -R ${pkgdir}/tmp
 
-  # Remove preformatted manpages
-  ( cd $pkgdir/usr/man
-  find . -type d -name "cat*" | xargs rm -rf
-  )
+# Logrotate
+  install -D -m644 ${filedir}/cups.logrotate "${pkgdir}"/etc/logrotate.d/cups
 
-  # I'm sorry, but PDF files are almost as bloated and annoying as
-  # MS Word documents.  We'll retain the HTML files in /usr/doc.
-  ( cd $pkgdir/usr/share/doc
-  find . -name "*.pdf" -exec rm -f {} \; )
+# PAM
+  install -D -m644 ${filedir}/cups.pam "${pkgdir}"/etc/pam.d/cups
 
-  # Apply no-clobber fix to conffiles:
-  ( cd $pkgdir/etc/cups
-  for file in * ; do
-      if [ -f $file ]; then
-         mv $file $file.new
-      fi
-  done )
+# OpenRC init
+  install -D -m755 ${filedir}/cupsd.init ${pkgdir}/etc/init.d/cupsd
 
-  # For full CUPS SMB support, you'll need to install the cups-samba
-  # package from the source in this directory.  There's no easy way
-  # to add that to a package build, and the requests aren't pouring in,
-  # so you'll have to install it yourself.  It's easy to do.
+  # install some more configuration files that will get filled by cupsd
+  touch "${pkgdir}"/etc/cups/printers.conf
+  touch "${pkgdir}"/etc/cups/classes.conf
+  touch "${pkgdir}"/etc/cups/subscriptions.conf
+  chgrp -R 209 "${pkgdir}"/etc/cups
 
-  # However, this will get you the most useful SMB support for free.
-  # Thanks to Boris Kurktchiev for the tip.  :-)
-  ( cd $pkgdir/usr/lib${LIBDIRSUFFIX}/cups/backend
-       if [ ! -e smb ]; then
-          ln -sf /usr/bin/smbspool smb
-       fi
-  )
+# fix .desktop file
+  sed -i 's|^Exec=htmlview http://localhost:631/|Exec=xdg-open http://localhost:631/|g' "${pkgdir}"/usr/share/applications/cups.desktop
 
-  # Use symlinks to certain binaries so that CUPS and LPRng can coexist:
-  SUFFIX=cups
-  for file in \
-      usr/bin/cancel \
-      usr/bin/lp \
-      usr/bin/lpq \
-      usr/bin/lpr \
-      usr/bin/lprm \
-      usr/bin/lpstat \
-      usr/sbin/lpc ; do
-      ( cd $pkgdir
-           mv ${file} ${file}-${SUFFIX}
-           ( cd `dirname ${file}` ; ln -sf `basename ${file}`-${SUFFIX} `basename ${file}` )
-      )
-  done
+# compress some driver files, adopted from Fedora
+  find "${pkgdir}"/usr/share/cups/model -name "*.ppd" | xargs gzip -n9f
 
-  # Now fix the associated man pages:
-  mv ${pkgdir}/usr/man/man1/cancel.1 ${pkgdir}/usr/man/man1/cancel-${SUFFIX}.1
-  mv ${pkgdir}/usr/man/man1/lp.1 ${pkgdir}/usr/man/man1/lp-${SUFFIX}.1
-  mv ${pkgdir}/usr/man/man1/lpq.1 $pkgdir/usr/man/man1/lpq-${SUFFIX}.1
-  mv ${pkgdir}/usr/man/man1/lpr.1 $pkgdir/usr/man/man1/lpr-${SUFFIX}.1
-  mv ${pkgdir}/usr/man/man1/lprm.1 $pkgdir/usr/man/man1/lprm-${SUFFIX}.1
-  mv ${pkgdir}/usr/man/man1/lpstat.1 $pkgdir/usr/man/man1/lpstat-${SUFFIX}.1
-  mv ${pkgdir}/usr/man/man8/lpc.8 $pkgdir/usr/man/man8/lpc-${SUFFIX}.8
-  ( cd ${pkgdir}/usr/man/man1
-    ln -sf cancel-${SUFFIX}.1.gz cancel.1.gz
-    ln -sf lp-${SUFFIX}.1.gz lp.1.gz
-    ln -sf lpq-${SUFFIX}.1.gz lpq.1.gz
-    ln -sf lpr-${SUFFIX}.1.gz lpr.1.gz
-    ln -sf lprm-${SUFFIX}.1.gz lprm.1.gz
-    ln -sf lpstat-${SUFFIX}.1.gz lpstat.1.gz
-  )
-  ( cd ${pkgdir}/usr/man/man8
-    ln -sf lpc-${SUFFIX}.8.gz lpc.8.gz
-  )
+# remove client.conf man page
+  rm -f "${pkgdir}"/usr/share/man/man5/client.conf.5
 
-  chmod 755 ${pkgdir}/var/spool
-  chmod 755 ${pkgdir}/etc
+# remove directory from package, it will be recreated at each server start
+  rm -rf "${pkgdir}"/run
 
-  # Remove dirty stuff from default init scripts
-  rm -rf ${pkgdir}/etc/init.d
-  rm -rf ${pkgdir}/etc/rc*.d
+# comment out removed filters that are now part of cups-filters
+  perl -p -i -e 's:^(.*\s+bannertops\s*)$:#\1:' "$pkgdir"/usr/share/cups/mime/mime.convs
 
-  # PAM
-  mkdir -p ${pkgdir}/etc/pam.d
-  install -m644 ${filedir}/cups.pam ${pkgdir}/etc/pam.d/cups
+# comment out unnecessary PageLogFormat entry
+  sed -i -e 's:PageLogFormat:#PageLogFormat:' "$pkgdir"/etc/cups/cupsd.conf*
+}
 
-  # OpenRC init
-  mkdir -p ${pkgdir}/etc/init.d
-  install -m755 ${filedir}/cupsd.init ${pkgdir}/etc/init.d/cupsd
+libcups() {
+  pkgname=libcups
+  shortdesc=("The CUPS Printing System - client libraries and headers")
+  longdesc=("The Common Unix Printing System (CUPS) is a print spooler and associated utilities. It is based on the Internet Printing Protocol and provides printing services to most PostScript and raster printers.")
+  removedep="cups-filters"
+}
 
-  # Logrotate
-  mkdir -p ${pkgdir}/etc/logrotate.d
-  install -m644 ${filedir}/cups.logrotate ${pkgdir}/etc/logrotate.d/cups
+libcups_prep() {
+  go_src_dir
+  make BUILDROOT="${pkgdir}" install-headers install-libs
+  # put this into the libs pkg to make other software find the libs(no pkg-config file included)
+  mkdir -p "${pkgdir}"/usr/bin
+  mv "${p_pkgdir}"/usr/bin/cups-config "${pkgdir}"/usr/bin/cups-config
 
-  # usplp: this module causes lots of problems to our users. Let's blacklist it by default
-  install -d ${pkgdir}/etc/modprobe.d
-  echo "blacklist usblp" > ${pkgdir}/etc/modprobe.d/cups.conf
+  # add license + exception
+  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" {LICENSE,NOTICE}
 }
