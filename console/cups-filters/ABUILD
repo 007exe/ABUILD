@@ -1,0 +1,43 @@
+pkgname=cups-filters
+pkgver=1.28.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("OpenPrinting CUPS Filters")
+longdesc=("The CUPS Filters package contains backends, filters and other software that was once part of the core CUPS distribution but is no longer maintained by Apple Inc.")
+
+source=("https://www.openprinting.org/download/cups-filters/cups-filters-$pkgver.tar.xz")
+
+tags="console net-print"
+# mupdf --enable-mutool
+build_deps="glib2 python lcms2 ghostscript poppler libcups>=2.2.6 qpdf ttf-dejavu"
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS="$SLKCFLAGS"
+  CXXFLAGS="$SLKCFLAGS -std=c++11 -fpermissive"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --without-php \
+    --disable-avahi \
+    --disable-mutool \
+    --disable-static \
+    --enable-auto-setup-driverless \
+    --with-rcdir=no \
+    --with-browseremoteprotocols=cups
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# use cups group from cups pkg FS#56818
+  chgrp -R 209 "${pkgdir}"/etc/cups
+  
+  install -Dm755 ${filedir}/cups-browsed.init ${pkgdir}/etc/init.d/cups-browsed
+
+# license
+  mkdir -p "${pkgdir}"/usr/share/licenses/${pkgname}
+  install -m644 "${srcdir}"/${pkgname}-${pkgver}/COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/
+}
