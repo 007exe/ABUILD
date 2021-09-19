@@ -1,0 +1,32 @@
+pkgname=colord
+pkgver=1.4.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("System daemon for managing color devices")
+longdesc=("Colord is a system service that makes it easy to manage, install, and generate color profiles. It is used mainly by GNOME Color Manager for system integration and use when no users are logged in.")
+
+source=("http://www.freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
+
+tags="xapps media-gfx"
+
+build_deps="lcms2 dbus glib2 sqlite gobject-introspection vala bash-completion meson gtk-doc docbook-xsl"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --buildtype=release \
+    -Ddaemon_user=colord \
+    -Dvapi=true \
+    -Dsystemd=false \
+    -Dlibcolordcompat=true \
+    -Dargyllcms_sensor=false \
+    -Dbash_completion=false \
+    -Ddocs=false \
+    -Dman=false
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
