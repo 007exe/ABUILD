@@ -1,10 +1,10 @@
 pkgname=kmod
-pkgver=28
+pkgver=29
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Utilities to load modules into the kernel"
-longdesc="kmod is a set of tools to handle common tasks with Linux kernel modules like insert, remove, list, check properties, resolve dependencies and aliases."
+shortdesc=("Linux kernel module management tools and library")
+longdesc=("The Kmod package contains libraries and utilities for loading kernel modules")
 
 source="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz"
 
@@ -25,9 +25,7 @@ build() {
     --with-xz \
     --with-zstd \
     --with-openssl
-
-
-  make
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
 
