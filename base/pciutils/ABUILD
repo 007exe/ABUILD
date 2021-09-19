@@ -1,16 +1,16 @@
 pkgname=pciutils
 pkgver=3.7.0
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
-shortdesc=("PCI bus related utilities")
-longdesc=("This package contains various utilities for inspecting and setting devices connected to the PCI bus.")
+shortdesc=("PCI bus configuration space access library and tools")
+longdesc=("The PCI Utils package contains a set of programs for listing PCI devices, inspecting their status and setting their configuration registers.")
 
 tags=("base sys-apps compat32")
 
 source=("https://mj.ucw.cz/download/linux/pci/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="kmod glibc"
+build_deps="kmod glibc eudev"
 
 build() {
   go_src_dir
