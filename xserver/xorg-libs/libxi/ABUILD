@@ -1,5 +1,5 @@
 pkgname=libxi
-pkgver=1.7.10
+pkgver=1.8
 pkgbuild=1
 arch=("auto")
 
