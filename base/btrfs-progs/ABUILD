@@ -1,6 +1,6 @@
 pkgname=btrfs-progs
-pkgver=5.13.1
-pkgbuild=2
+pkgver=5.14
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("Userspace programs for btrfs")
