@@ -1,0 +1,48 @@
+pkgname=libxkbcommon
+pkgver=1.3.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Keymap handling library for toolkits and window systems")
+longdesc=("libxkbcommon is a keymap compiler and support library which processes a reduced subset of keymaps as defined by the XKB specification.")
+
+source=("http://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
+
+tags="x11-apps xserver"
+# doxygen
+build_deps="xkeyboard-config libxml2 libxcb wayland wayland-protocols git meson xorgproto"
+
+pkglist="x11"
+
+x11(){
+  pkgname=libxkbcommon-x11
+  shortdesc="Keyboard handling library using XKB data for X11 XCB clients"
+  adddep="libxkbcommon libxcb"
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    --prefix=/usr \
+    --buildtype=release \
+    -Denable-docs=false
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 LICENSE
+}
+
+after_build(){
+  go_src_dir
+  ### Split libxkbcommon-x11
+  install -m 755 -d "${srcdir}"/x11/usr/{lib${LIBDIRSUFFIX}/pkgconfig,include/xkbcommon,/share/man/man1}
+  mv "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/*x11* "${srcdir}/x11/usr/lib${LIBDIRSUFFIX}"
+  mv "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/pkgconfig/*x11* "${srcdir}/x11/usr/lib${LIBDIRSUFFIX}/pkgconfig"
+  mv "${pkgdir}"/usr/include/xkbcommon/*x11* "${srcdir}/x11/usr/include/xkbcommon"
+  mv "${pkgdir}"/usr/share/man/man1/*x11* "${srcdir}/x11/usr/share/man/man1"
+}
+
+x11_prep(){
+  mv "${srcdir}"/x11/* "${pkgdir}"
+}
