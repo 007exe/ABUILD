@@ -1,0 +1,85 @@
+pkgname=rust
+pkgver=1.55.0
+_llvm_ver=12.0.1
+pkgbuild=2
+arch=('auto')
+
+shortdesc=("Systems programming language focused on safety, speed and concurrency")
+longdesc=("The Rust programming language is designed to be a safe, concurrent, practical language.")
+
+source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz"
+"https://github.com/llvm/llvm-project/releases/download/llvmorg-$_llvm_ver/compiler-rt-$_llvm_ver.src.tar.xz")
+
+tags="develop dev-lang"
+# musl lib32-gcc-libs
+build_deps="rust llvm=$_llvm_ver libffi perl python curl cmake ninja"
+
+pkglist="rust-docs"
+
+build() {
+  cd "${srcdir}/rustc-$pkgver-src"
+  burn_patches
+
+# Config rust
+cat >config.toml <<END
+changelog-seen = 2
+profile = "user"
+
+[llvm]
+link-shared = true
+
+[build]
+target = ["x86_64-unknown-linux-gnu"]
+cargo = "/usr/bin/cargo"
+rustc = "/usr/bin/rustc"
+rustfmt = "/usr/bin/rustfmt"
+vendor = true
+tools = ["cargo", "rls", "clippy", "rustfmt", "analysis", "src", "rust-demangler"]
+sanitizers = true
+profiler = true
+
+[install]
+prefix = "/usr"
+libdir = "lib$LIBDIRSUFFIX"
+
+[rust]
+# LLVM crashes when passing an object through ThinLTO twice.  This is triggered
+# when using rust code in cross-language LTO if libstd was built using ThinLTO.
+# http://blog.llvm.org/2019/09/closing-gap-cross-language-lto-between.html
+# https://github.com/rust-lang/rust/issues/54872
+codegen-units-std = 1
+
+debuginfo-level-std = 2
+channel = "stable"
+rpath = false
+
+[target.x86_64-unknown-linux-gnu]
+llvm-config = "/usr/bin/llvm-config"
+END
+
+  export RUST_BACKTRACE=1
+  export RUST_COMPILER_RT_ROOT="$srcdir/compiler-rt-$_llvm_ver.src"
+  [[ -d $RUST_COMPILER_RT_ROOT ]]
+  export LIBGIT2_NO_PKG_CONFIG=1 #749381
+  export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
+
+  DESTDIR=${pkgdir} python ./x.py install -j "$(nproc)"
+
+  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" LICENSE*
+
+  install -d "$pkgdir"/usr/share/bash-completion/
+  mv "$pkgdir"/etc/bash_completion.d "$pkgdir"/usr/share/bash-completion/completions
+}
+
+rust-docs() {
+  pkgname=rust-docs
+  shortdesc=("Documentation for the Rust programming language")
+  longdesc=("The Rust programming language is designed to be a safe, concurrent, practical language.")
+}
+
+rust-docs_prep() {
+  cd "${srcdir}/rustc-$pkgver-src"
+  install -d "$pkgdir"/usr/share/doc
+  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share/doc
+  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" LICENSE*
+}
