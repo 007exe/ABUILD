@@ -1,10 +1,10 @@
 pkgname=krb5
-pkgver=1.19.1
+pkgver=1.19.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc="The Kerberos network authentication system"
-longdesc="Kerberos V5 is a trusted-third-party network authentication system, which can improve your network's security by eliminating the insecure practice of cleartext passwords."
+shortdesc=("The Kerberos network authentication system")
+longdesc=("Kerberos V5 is a trusted-third-party network authentication system, which can improve your network's security by eliminating the insecure practice of cleartext passwords.")
 
 tags=("libs net-libs compat32")
 
