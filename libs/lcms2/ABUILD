@@ -1,0 +1,26 @@
+pkgname=lcms2
+pkgver=2.12
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Small-footprint color management engine, version 2")
+longdesc=("The Little Color Management System is a small-footprint color management engine, with special focus on accuracy and performance. It uses the International Color Consortium standard (ICC), which is the modern standard for color management.")
+
+source=("https://downloads.sourceforge.net/lcms/lcms2-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="libtiff libjpeg-turbo"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
