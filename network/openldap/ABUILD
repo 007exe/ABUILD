@@ -1,5 +1,5 @@
 pkgname=openldap
-pkgver=2.4.59
+pkgver=2.5.7
 pkgbuild=1
 arch=("auto")
 
@@ -15,12 +15,13 @@ etc/conf.d/slapd
 etc/openldap/slapd.ldif
 etc/openldap/slapd.conf"
 # libsasl libsodium
-build_deps="libtool e2fsprogs util-linux-ng chrpath unixodbc"
+# wiredtiger --disable-wt
+build_deps="libtool e2fsprogs util-linux-ng chrpath unixodbc e2fsprogs"
 
 before_build() {
   go_src_dir
   burn_patches
-  sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap,libldap_r}/Makefile.in
+#  sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap,libldap_r}/Makefile.in
   sed -i 's|#define LDAPI_SOCK LDAP_RUNDIR LDAP_DIRSEP "run" LDAP_DIRSEP "ldapi"|#define LDAPI_SOCK LDAP_DIRSEP "run" LDAP_DIRSEP "openldap" LDAP_DIRSEP "ldapi"|' include/ldap_defaults.h
   sed -i 's|%LOCALSTATEDIR%/run|/run/openldap|' servers/slapd/slapd.{conf,ldif}
   sed -i 's|-$(MKDIR) $(DESTDIR)$(localstatedir)/run|-$(MKDIR) $(DESTDIR)/run/openldap|' servers/slapd/Makefile.in
@@ -64,6 +65,7 @@ build() {
     --enable-overlays=mod \
     --with-tls \
     --with-cyrus-sasl \
+    --disable-wt \
     --with-threads
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
