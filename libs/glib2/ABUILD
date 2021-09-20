@@ -59,7 +59,7 @@ after_build() {
 #glib2-docs_prep() {
 #  cd "${srcdir}/glib-$pkgver"
 #  install -d "$pkgdir"/usr/share/doc
-#  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share/doc
+#  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share
 
 #  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 glib/docs/reference/COPYING
 #}
