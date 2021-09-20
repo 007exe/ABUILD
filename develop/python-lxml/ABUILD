@@ -9,8 +9,8 @@ longdesc=("lxml provides a Python binding to the libxslt and libxml2 libraries. 
 source=("https://github.com/lxml/lxml/archive/lxml-$pkgver.tar.gz")
 
 tags="develop dev-python"
-# python-sphinx_rtd_theme
-build_deps="python libxslt python-html5lib python-cssselect python-setuptools python-pygments python-sphinx"
+
+build_deps="python libxslt python-html5lib python-cssselect python-setuptools python-pygments python-sphinx python-sphinx_rtd_theme"
 
 build()
 {
