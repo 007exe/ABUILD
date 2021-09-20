@@ -1,0 +1,25 @@
+pkgname=obconf
+pkgver=2.0.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A GTK+ based configuration tool for the Openbox windowmanager"
+
+source=("http://openbox.org/dist/$pkgname/$pkgname-$pkgver.tar.gz")
+
+tags="x11-wm xapps"
+
+build_deps="gtk3"
+
+adddep="openbox"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
