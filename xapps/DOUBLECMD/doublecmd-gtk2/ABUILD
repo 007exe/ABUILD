@@ -1,7 +1,7 @@
 #ABUILD created by/создан: khvalera, khvalera at narod.ru 
 
 pkgname=doublecmd-gtk2
-pkgver=0.9.8
+pkgver=0.9.10
 pkgbuild=1
 arch=('auto')
 helpver=0.6.0
@@ -13,7 +13,7 @@ source=("http://sourceforge.net/projects/doublecmd/files/Double%20Commander%20So
 
 tags="app-misc xapps"
 
-build_deps="fpc>=3.0.0 lazarus-gtk2>=1.6.4 gtk+2"
+build_deps="fpc>=3.0.0 lazarus-gtk2>=1.6.4 gtk2"
 
 conflicts="doublecmd-qt doublecmd-qt4 doublecmd-qt5 doublecmd"
 

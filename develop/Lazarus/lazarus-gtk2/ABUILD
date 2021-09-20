@@ -1,17 +1,17 @@
 #ABUILD created by: medved, medved55rus at gmail.org
 #pkgname=lazarus-svn
 pkgname=lazarus-gtk2
-pkgver=2.0.6
+pkgver=2.0.12
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Delphi-like IDE for FreePascal"
 #source=("svn:http://svn.freepascal.org/svn/lazarus/trunk")
-source=("ftp://ftp.freepascal.org/pub/lazarus/releases/Lazarus%20Zip%20_%20GZip/Lazarus%20${pkgver}/lazarus-${pkgver}.tar.gz")
+source=("https://downloads.sourceforge.net/project/lazarus/Lazarus%20Zip%20_%20GZip/Lazarus%20${pkgver}/lazarus-$pkgver.tar.gz")
 
 tags="develop dev-util"
-
-build_deps="subversion fpc"
+# subversion
+build_deps="fpc"
 
 conflicts="lazarus lazarus-svn lazarus-qt"
 
