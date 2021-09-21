@@ -75,11 +75,13 @@ rust-docs() {
   pkgname=rust-docs
   shortdesc=("Documentation for the Rust programming language")
   longdesc=("The Rust programming language is designed to be a safe, concurrent, practical language.")
+  arch="noarch"
+  custom_opts=no_strip
 }
 
 rust-docs_prep() {
   cd "${srcdir}/rustc-$pkgver-src"
   install -d "$pkgdir"/usr/share/doc
-  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share/doc
+  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share/
   install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" LICENSE*
 }
