@@ -1,6 +1,6 @@
 pkgname=zsh
 pkgver=5.8
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("A shell with lots of features")
