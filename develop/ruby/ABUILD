@@ -1,18 +1,20 @@
 pkgname=ruby
-pkgver=3.0.1
+pkgver=3.0.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Object Oriented Script Language"
-longdesc="Ruby is the interpreted scripting language for quick and easy object-oriented programming.  It has many features to process text files and to do system management tasks (as in Perl).  It is simple, straight-forward, and extensible."
+shortdesc=("An object-oriented language for quick and easy programming")
+longdesc=("The Ruby package contains the Ruby development environment. This is useful for object-oriented scripting.")
 
 tags=("develop dev-ruby")
 
 source=("https://cache.ruby-lang.org/pub/ruby/${pkgver:0:3}/ruby-${pkgver}.tar.xz")
 
 pkglist="rubydocs"
+# doxygen graphviz libyaml tk
+build_deps="gdbm openssl libffi ttf-dejavu valgrind"
 
-build_deps="gdbm openssl libffi"
+adddep="zlib"
 
 build() {
   go_src_dir
@@ -25,24 +27,24 @@ build() {
     --disable-rpath \
     --with-dbm-type=gdbm_compat
   make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  make DESTDIR="${pkgdir}" install-nodoc
+
+  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/ruby/LICENSE"
+  install -D -m644 BSDL "${pkgdir}/usr/share/licenses/ruby/BSDL"
 }
 
 rubydocs() {
-pkgname=ruby-docs
-shortdesc="Ruby documentation"
-longdesc="Ruby documentation"
-arch="noarch"
+  pkgname=ruby-docs
+  shortdesc=("Documentation files for ruby")
+  longdesc=("The Ruby package contains the Ruby development environment. This is useful for object-oriented scripting.")
+  arch="noarch"
+  custom_opts=no_strip
 }
 
 rubydocs_prep() {
-  set -e
-  mkdir -p ${pkgdir}/usr
-  mv ${p_pkgdir}/usr/share/doc ${pkgdir}/usr/
+  go_src_dir
+  make DESTDIR="${pkgdir}" install-doc install-capi
 
-  if [ -d ${p_pkgdir}/usr/share/doc ] ; then
-          mkdir -p ${pkgdir}/usr/share
-          mv ${p_pkgdir}/usr/share/doc ${pkgdir}/usr/share/
-  fi
-  set +e
+  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/ruby-docs/LICENSE"
+  install -D -m644 BSDL "${pkgdir}/usr/share/licenses/ruby-docs/BSDL"
 }
