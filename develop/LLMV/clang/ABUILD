@@ -14,7 +14,7 @@ source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/
 
 build_deps="llvm cmake ninja python-sphinx python"
 
-adddep="gcc"
+adddep="gcc compiler-rt"
 
 before_build(){
   go_src_dir
