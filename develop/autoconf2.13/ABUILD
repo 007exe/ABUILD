@@ -1,0 +1,28 @@
+pkgname=autoconf2.13
+pkgver=2.13
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A GNU tool for automatically configuring source code (Legacy 2.1x version)")
+longdesc=("Autoconf2.13 is an old version of Autoconf . This old version accepts switches which are not valid in more recent versions. Now that firefox has started to use python2 for configuring, this old version is required even if configure files have not been changed.")
+
+tags=("develop sys-devel")
+
+source=("https://ftp.gnu.org/gnu/autoconf/autoconf-${pkgver}.tar.gz")
+
+build_deps="perl"
+
+adddep="gawk m4 diffutils bash"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --infodir=/usr/share/info \
+    --program-suffix=-2.13
+  make -j${numjobs}
+  make prefix="${pkgdir}/usr" infodir="${pkgdir}/usr/share/info" install
+  mv "${pkgdir}"/usr/share/info/autoconf{,-2.13}.info
+  mv "${pkgdir}"/usr/share/info/standards{,-2.13}.info
+}
