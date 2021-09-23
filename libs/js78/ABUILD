@@ -1,0 +1,55 @@
+pkgname=js78
+pkgver=78.14.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("JavaScript interpreter and libraries - Version 78")
+longdesc=("JS is Mozilla's JavaScript engine written in C. JS78 is taken from Firefox.")
+
+source=("https://archive.mozilla.org/pub/firefox/releases/${pkgver}esr/source/firefox-${pkgver}esr.source.tar.xz")
+
+tags="libs sys-libs"
+
+build_deps="autoconf2.13 rust which icu gcc-libs readline zlib python-setuptools python-psutil rust llvm clang lld compiler-rt"
+
+before_build() {
+  go_src_dir
+  burn_patches
+  mkdir obj
+}
+
+build() {
+  cd ${srcdir}
+  export CC=clang
+  export CXX=clang++
+  export AR=llvm-ar
+  export NM=llvm-nm
+  export RANLIB=llvm-ranlib
+
+  cd firefox-$pkgver/obj
+
+  sh ../js/src/configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-intl-api \
+    --with-system-zlib \
+    --with-system-icu \
+    --disable-jemalloc \
+    --disable-debug-symbols \
+    --disable-debug \
+    --disable-jemalloc \
+    --disable-strip \
+    --enable-readline \
+    --enable-hardening \
+    --enable-linker=lld \
+    --enable-optimize \
+    --enable-release \
+    --enable-rust-simd \
+    --enable-shared-js \
+    --enable-profile-generate=cross
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*.ajs
+  find "$pkgdir"/usr/{lib${LIBDIRSUFFIX}/pkgconfig,include} -type f -exec chmod -c a-x {} +
+}
