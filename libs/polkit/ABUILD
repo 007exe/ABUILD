@@ -1,0 +1,39 @@
+pkgname=polkit
+pkgver=0.119
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Application development toolkit for controlling system-wide privileges")
+longdesc=("Polkit is a toolkit for defining and handling authorizations. It is used for allowing unprivileged processes to communicate with privileged processes.")
+
+source=("https://www.freedesktop.org/software/polkit/releases/polkit-${pkgver}.tar.gz")
+
+tags="libs sys-auth"
+
+build_deps="glib2 linux-pam expat intltool gtk-doc gobject-introspection git autoconf js78 elogind"
+
+config_files="etc/pam.d/polkit-1"
+
+build(){
+  go_src_dir
+  burn_patches
+  autoreconf -fv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-man-pages \
+    --enable-gtk-doc \
+    --disable-gtk-doc-html \
+    --disable-static \
+    --enable-introspection \
+    --with-os-type=AgiliaLinux \
+    --disable-libsystemd-login
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m644 "${filedir}"/polkit.pam "${pkgdir}"/etc/pam.d/polkit-1
+  mkdir -p "${pkgdir}"/etc/polkit-1/rules.d
+}
+
