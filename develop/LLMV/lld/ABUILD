@@ -1,0 +1,47 @@
+pkgname=lld
+pkgver=12.0.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Linker from the LLVM project")
+longdesc=("Linker from the LLVM project")
+
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz"
+"https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-$pkgver.src.tar.xz"
+"https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libunwind-$pkgver.src.tar.xz")
+
+tags=("develop sys-devel")
+
+build_deps="llvm-libs llvm cmake ninja python-sphinx"
+
+before_build(){
+  # https://bugs.llvm.org/show_bug.cgi?id=49228
+  mv libunwind{-$pkgver.src,}
+
+  cd "$srcdir/$pkgname-$pkgver.src"
+  mkdir build
+}
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver.src/build"
+  cmake .. -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLLVM_LINK_LLVM_DYLIB=ON \
+    -DLLVM_INCLUDE_TESTS=ON \
+    -DLLVM_BUILD_TESTS=ON \
+    -DLLVM_BUILD_DOCS=ON \
+    -DLLVM_ENABLE_SPHINX=ON \
+    -DSPHINX_WARNINGS_AS_ERRORS=OFF \
+    -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+    -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-$pkgver.src"
+  ninja
+  DESTDIR="$pkgdir" ninja install
+  install -Dm644 ../LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+# https://bugs.llvm.org/show_bug.cgi?id=42455
+  install -Dm644 -t "$pkgdir/usr/share/man/man1" ../docs/ld.lld.1
+
+# Remove documentation sources
+  rm -r "$pkgdir"/usr/share/doc/$pkgname/html/{_sources,.buildinfo}
+}
