@@ -1,0 +1,25 @@
+pkgname=sound-theme-freedesktop
+pkgver=0.8
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("Freedesktop Sound theme")
+longdesc=("The Sound Theme Freedesktop package contains sound themes for the desktop.")
+
+source=("http://people.freedesktop.org/~mccann/dist/${pkgname}-${pkgver}.tar.bz2")
+
+tags="x11-themes themes"
+
+build_deps="intltool"
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 CREDITS "${pkgdir}/usr/share/licenses/${pkgname}/CREDITS"
+}
