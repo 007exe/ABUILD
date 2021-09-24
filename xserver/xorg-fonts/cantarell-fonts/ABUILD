@@ -1,0 +1,24 @@
+pkgname=cantarell-fonts
+pkgver=0.303
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("Humanist sans serif font")
+longdesc=("The Cantarell font family is a contemporary Humanist sans serif designed for on-screen reading.")
+
+source=("https://gitlab.gnome.org/GNOME/$pkgname/-/jobs/1515398/artifacts/raw/build/meson-dist/$pkgname-$pkgver.tar.xz")
+
+tags="media-fonts xserver"
+
+build_deps="meson"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D useprebuilt=true
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+}
