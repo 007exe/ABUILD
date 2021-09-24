@@ -1,0 +1,41 @@
+pkgname=libcanberra
+pkgver=0.30
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A small and lightweight implementation of the XDG Sound Theme Specification")
+longdesc=("libcanberra is an implementation of the XDG Sound Theme and Name Specifications, for generating event sounds on free desktops, such as GNOME.")
+
+source=("http://0pointer.de/lennart/projects/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags="libs media-sound"
+# libpulse tdb libltdl
+build_deps="libvorbis alsa-lib gtk-doc gtk2 sound-theme-freedesktop gtk3"
+
+adddep="sound-theme-freedesktop"
+
+#Удалить из зависимостей gtk2 и gtk3
+removedep="gtk2 gtk3"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static \
+    --with-builtin=dso \
+    --enable-null \
+    --disable-oss
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# FS#52370: Remove login, logout and system-ready sounds.
+# We have no sound themes that include these so do not play them.
+  rm -r "$pkgdir"/usr/share/{gnome,gdm}
+
+  install -Dt "$pkgdir/etc/X11/xinit/xinitrc.d" ${filedir}/40-libcanberra-gtk-module.sh
+}
