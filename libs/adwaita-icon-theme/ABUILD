@@ -1,0 +1,25 @@
+pkgname=adwaita-icon-theme
+pkgver=41.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("GNOME standard icons")
+longdesc=("The adwaita-cursor-theme package contains a modern set of cursors originally designed for the GNOME desktop.")
+
+tags=("libs x11-themes")
+
+source=("https://download.gnome.org/sources/adwaita-icon-theme/${pkgver%.*}/adwaita-icon-theme-${pkgver}.tar.xz")
+
+build_deps="hicolor-icon-theme gtk-update-icon-cache librsvg"
+
+adddep="hicolor-icon-theme gtk-update-icon-cache librsvg"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
