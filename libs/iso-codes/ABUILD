@@ -1,0 +1,24 @@
+pkgname=iso-codes
+pkgver=4.7.0
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("Lists of the country, language, and currency names")
+longdesc=("The ISO Codes package contains a list of country, language and currency names and it is used as a central database for accessing this data.")
+
+source=("http://ftp.debian.org/debian/pool/main/i/iso-codes/iso-codes_${pkgver}.orig.tar.xz")
+
+tags="libs app-text"
+
+build_deps="python"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
