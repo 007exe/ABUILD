@@ -1,0 +1,52 @@
+pkgname=lxdm
+pkgver=0.5.3
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Display manager from LXDE project")
+longdesc=("LXDM is the lightweight display manager aimed to replace gdm in LXDE distros. The UI is implemented with GTK+. LXDM was started by 'dgod' from China and is developed by the LXDE community. For some time it only worked smoothly with Fedora while on Ubuntu and others, there might have been some issues.")
+
+source=("https://downloads.sourceforge.net/lxde/lxdm-$pkgver.tar.xz")
+
+tags="xapps x11-misc"
+
+build_deps="gtk3 xorg-server intltool iso-codes"
+
+config_files="etc/lxdm/lxdm.conf
+etc/pam.d/lxdm
+etc/lxdm/Xsession
+etc/lxdm/PreLogin
+etc/lxdm/LoginReady
+etc/lxdm/PostLogin
+etc/lxdm/PostLogout
+etc/lxdm/PreReboot
+etc/lxdm/PreShutdown"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libexecdir=/usr/lib${LIBDIRSUFFIX}/lxdm \
+    --enable-gtk3
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
+after_build() {
+  install -d ${pkgdir}/var/{lib,run}/lxdm
+  mkdir -p ${pkgdir}/etc/init.d
+  cat ${filedir}/lxdm.init > ${pkgdir}/etc/init.d/lxdm
+  chmod 755 ${pkgdir}/etc/init.d/lxdm
+  cat ${filedir}/Xsession > ${pkgdir}/etc/lxdm/Xsession
+  chmod 755 ${pkgdir}/etc/lxdm/Xsession
+  sed -i "s/local\/libexec/lib$LIBDIRSUFFIX\/lxdm/g" $pkgdir/etc/lxdm/lxdm.conf
+  cat ${filedir}/lxdm.pam > ${pkgdir}/etc/pam.d/lxdm
+}
+
