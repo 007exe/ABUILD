@@ -1,6 +1,6 @@
 pkgname=m4
-pkgver=1.4.18
-pkgbuild=2
+pkgver=1.4.19
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An implementation of the UNIX macro processor")
