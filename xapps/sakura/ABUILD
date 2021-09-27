@@ -1,0 +1,27 @@
+pkgname=sakura
+pkgver=3.8.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A terminal emulator based on GTK and VTE")
+longdesc=("It's a terminal emulator with few dependencies, so you don't need a full GNOME desktop installed to have a decent terminal emulator. Current terminal emulators based on VTE are  gnome-terminal, XFCE Terminal, TermIt and a small sample program included in the vte sources.")
+
+source=("https://launchpad.net/sakura/trunk/${pkgver}/+download/sakura-${pkgver}.tar.bz2")
+
+tags="x11-terms xapps"
+
+build_deps="vte libxft cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+# Set default font size a bit smaller
+  sed -i 's|#define DEFAULT_FONT "Bitstream Vera Sans Mono 14"|#define DEFAULT_FONT "Bitstream Vera Sans Mono 10"|g' src/sakura.c
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=RELEASE ..
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
