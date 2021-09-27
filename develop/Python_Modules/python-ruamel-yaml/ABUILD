@@ -1,0 +1,23 @@
+pkgname=python-ruamel-yaml
+pkgver=0.17.16
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order.")
+longdesc=("YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order.")
+
+source="https://files.pythonhosted.org/packages/source/r/ruamel.yaml/ruamel.yaml-${pkgver}.tar.gz"
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+adddep="python-ruamel.yaml.clib"
+
+build() {
+  go_src_dir
+  python setup.py build
+# https://bitbucket.org/ruamel/yaml/issues/114/setuppy-requirement-for-pip-prevents
+  RUAMEL_NO_PIP_INSTALL_CHECK=1 python setup.py install --skip-build --root="${pkgdir}" --optimize=1
+  install -Dm644 LICENSE -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+}
