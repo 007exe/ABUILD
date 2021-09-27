@@ -1,5 +1,5 @@
 pkgname=inetutils
-pkgver=2.1
+pkgver=2.2
 pkgbuild=1
 arch=("auto")
 
