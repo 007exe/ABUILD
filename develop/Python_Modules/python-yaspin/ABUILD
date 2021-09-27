@@ -1,0 +1,28 @@
+pkgname=python-yaspin
+pkgver=2.1.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Yet Another Terminal Spinner")
+longdesc=("Yaspin provides a full-featured terminal spinner to show the progress during long-hanging operations.")
+
+source=("https://files.pythonhosted.org/packages/6a/b2/144d100c915784ab551e0f7809aaecdd103786a227b0f30db341ffe649be/yaspin-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-dephell"
+
+adddep="python-termcolor"
+
+build(){
+  go_src_dir
+# poetry-generated setup.py is badly broken in several ways, including
+# distribution of tests in the built package as well as using distutils for
+# bad metadata. See https://github.com/sdispater/poetry/issues/866
+  dephell deps convert --from pyproject.toml --to setup.py
+
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
