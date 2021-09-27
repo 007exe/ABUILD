@@ -1,0 +1,43 @@
+pkgname=vte
+pkgver=0.64.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Virtual Terminal Emulator widget")
+longdesc=("The VTE library inserts terminal capability strings into a trie, and then uses it to determine if data received from a pseudo-terminal is a control sequence  or just random data. The sample program interpret illustrates more or less what the widget sees after it filters incoming data.")
+
+source=("http://ftp.gnome.org/pub/GNOME/sources/vte/${pkgver%.*}/vte-${pkgver}.tar.xz")
+
+tags="libs x11-libs"
+
+build_deps="gtk3 pcre2 gnutls fribidi gobject-introspection vala git gtk-doc gperf meson"
+
+adddep="python vte-common"
+
+pkglist="vte-common"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    --prefix=/usr \
+    --buildtype=release \
+    -D b_lto=false \
+    -D_systemd=false \
+    -D docs=false
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
+
+vte-common(){
+  pkgname=vte-common
+  shortdesc=("Files shared by VTE libraries")
+  longdesc=("The VTE library inserts terminal capability strings into a trie, and then uses it to determine if data received from a pseudo-terminal is a control sequence  or just random data. The sample program interpret illustrates more or less what the widget sees after it filters incoming data.")
+}
+
+vte-common_prep(){
+  go_src_dir
+  mkdir -p $pkgdir/usr
+  mv ${p_pkgdir}/etc "$pkgdir"
+  mv ${p_pkgdir}/usr/libexec "$pkgdir"/usr
+}
