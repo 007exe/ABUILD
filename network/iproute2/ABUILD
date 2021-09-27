@@ -1,10 +1,10 @@
 pkgname=iproute2
-pkgver=5.12.0
+pkgver=5.14.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Advanced IP routing and network device configuration tools"
-longdesc="These are tools used to administer many advanced IP routing features in the kernel. See Configure.help in the kernel documentation (search for iproute2) for more information on which kernel options these tools are used with. These utilities were written by Alexey Kuznetsov. The current maintainer of iproute2 is Stephen Hemminger."
+shortdesc=("Advanced IP routing and network device configuration tools")
+longdesc=("These are tools used to administer many advanced IP routing features in the kernel. See Configure.help in the kernel documentation (search for iproute2) for more information on which kernel options these tools are used with. These utilities were written by Alexey Kuznetsov. The current maintainer of iproute2 is Stephen Hemminger.")
 
 tags=("sys-apps network")
 
@@ -22,12 +22,13 @@ etc/iproute2/rt_tables"
 build() {
   go_src_dir
   burn_patches
+
 # do not treat warnings as errors
   sed -i 's/-Werror//' Makefile
 
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+  ./configure
+#    --prefix=/usr \
+#    --libdir=/usr/lib$LIBDIRSUFFIX
   make -j${numjobs}
   make DESTDIR="${pkgdir}" LIBDIR=/usr/lib$LIBDIRSUFFIX SBINDIR="/usr/bin" install
 
