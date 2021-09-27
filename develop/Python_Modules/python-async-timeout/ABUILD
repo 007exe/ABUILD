@@ -1,0 +1,20 @@
+pkgname=python-async-timeout
+pkgver=3.0.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Asyncio-compatible timeout class")
+longdesc=("An asyncio-compatible timeout context manager.")
+
+source=("https://github.com/aio-libs/async-timeout/archive/v${pkgver}.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+build(){
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root="${pkgdir}" -O1 --skip-build
+}
