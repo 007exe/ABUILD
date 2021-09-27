@@ -1,0 +1,21 @@
+pkgname=python-typing_extensions
+pkgver=3.10.0.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Backported and Experimental Type Hints for Python 3.5+")
+longdesc=("The typing module was added to the standard library in Python 3.5 on a provisional basis and will no longer be provisional in Python 3.7. However, this means users of Python 3.5 - 3.6 who are unable to upgrade will not be able to take advantage of new types added to the typing module, such as typing.Text or typing.Coroutine.")
+
+source="https://github.com/python/typing/archive/refs/tags/$pkgver.tar.gz"
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools"
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/python-typing_extensions/
+}
