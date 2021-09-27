@@ -1,16 +1,16 @@
 pkgname=wget
-pkgver=1.21.1
+pkgver=1.21.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc="A utility for retrieving files using the HTTP or FTP protocols"
-longdesc="GNU Wget is a file retrieval utility which can use either the HTTP or FTP protocols. Wget features include the ability to work in the background while you're logged out, recursive retrieval of directories, file name wildcard matching, remote file timestamp storage and comparison, use of Rest with FTP servers and Range with HTTP servers to retrieve files over slow or unstable connections, support for Proxy servers, and configurability."
+shortdesc=("Network utility to retrieve files from the Web")
+longdesc=("The Wget package contains a utility useful for non-interactive downloading of files from the Web.")
 
 tags=("network net-misc")
 
 source=("http://ftp.gnu.org/gnu/wget/wget-${pkgver}.tar.gz")
 
-build_deps="glibc openssl libidn pcre2 util-linux-ng"
+build_deps="glibc zlib gnutls libidn2 util-linux-ng ca-certificates"
 
 adddep="ca-certificates"
 
