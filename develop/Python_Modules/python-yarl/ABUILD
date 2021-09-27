@@ -1,0 +1,24 @@
+pkgname=python-yarl
+pkgver=1.6.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Yet another URL library")
+longdesc=("The module provides handy URL class for URL parsing and changing.")
+
+source=("https://github.com/aio-libs/yarl/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+adddep="python-multidict python-idna python-typing_extensions"
+
+build(){
+  go_src_dir
+  burn_patches
+  sed 's| .install-cython ||g' -i Makefile
+  make cythonize
+  LANG=en_US.UTF-8 python setup.py build
+  LANG=en_US.UTF-8 python setup.py install --root="${pkgdir}" -O1 --skip-build
+}
