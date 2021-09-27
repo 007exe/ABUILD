@@ -1,7 +1,6 @@
 pkgname=python-py
 pkgver=1.10.0
 pkgbuild=1
-url="https://pypi.org/project/py/"
 arch=('auto')
 
 shortdesc=("Python development support library")

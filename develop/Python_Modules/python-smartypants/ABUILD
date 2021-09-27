@@ -12,8 +12,7 @@ tags="develop dev-python"
 
 build_deps="python"
 
-build()
-{
+build(){
   go_src_dir
   python setup.py install --root="$pkgdir" --optimize=1
   install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"

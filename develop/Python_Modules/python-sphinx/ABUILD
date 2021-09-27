@@ -1,5 +1,5 @@
 pkgname=python-sphinx
-pkgver=4.1.1
+pkgver=4.2.0
 pkgbuild=1
 arch=('auto')
 
@@ -10,7 +10,7 @@ source=("https://pypi.org/packages/source/S/Sphinx/Sphinx-$pkgver.tar.gz")
 
 tags="utils dev-python"
 
-build_deps="python python-setuptools python-docutils python-babel python-imagesize python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml"
+build_deps="python python-setuptools"
 
 adddep="python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml"
 
@@ -18,9 +18,6 @@ build() {
   go_src_dir
   burn_patches
   make build
-
-#  LC_ALL="en_US.UTF-8" make test
-
   export PYTHONHASHSEED=0
   python setup.py install --root="$pkgdir" --optimize=1 --skip-build
   install -Dm644 -t "$pkgdir"/usr/share/licenses/$pkgname LICENSE

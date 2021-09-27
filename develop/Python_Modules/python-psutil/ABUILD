@@ -3,8 +3,8 @@ pkgver=5.8.0
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Interface for retrieving information on all running processes"
-longdesc="psutil is a module providing an interface for retrieving information on all running processes and system utilization (CPU, memory, disks, network, users) in a portable way by using Python, implementing many functionalities offered by command line tools."
+shortdesc=("Interface for retrieving information on all running processes")
+longdesc=("psutil is a module providing an interface for retrieving information on all running processes and system utilization (CPU, memory, disks, network, users) in a portable way by using Python, implementing many functionalities offered by command line tools.")
 
 build_deps="python python-setuptools"
 
@@ -17,7 +17,6 @@ source="https://github.com/giampaolo/psutil/archive/release-$pkgver.tar.gz"
 build() {
   go_src_dir
   python setup.py build --build-lib=build/python
-  python setup.py build --build-lib=build/python \
-                  install --root="$pkgdir" --optimize=1
+  python setup.py build --build-lib=build/python install --root="$pkgdir" --optimize=1
   install -D -m 644 LICENSE "$pkgdir/"usr/share/licenses/$pkgname/LICENSE
 }

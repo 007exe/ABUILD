@@ -9,20 +9,19 @@ longdesc=("CommonMark-py is a pure Python port of jgms commonmark.js, a Markdown
 source=("https://github.com/readthedocs/commonmark.py/archive/${pkgver}.tar.gz")
 
 tags="develop dev-python"
-# python-sphinx_rtd_theme
-build_deps="python python-setuptools python-sphinx python-hypothesis"
 
-adddep="python python-hypothesis"
+build_deps="python python-setuptools python-sphinx python-sphinx_rtd_theme"
 
-build()
-{
+adddep="python python-docutils python-future"
+
+build() {
   go_src_dir
   python setup.py build
-#  make -C docs man text SPHINXBUILD=sphinx-build
+  make -C docs man text SPHINXBUILD=sphinx-build
   python setup.py install --root="${pkgdir}" -O1 --skip-build
   install -Dm 644 README.rst CHANGELOG.md -t "${pkgdir}/usr/share/doc/${pkgname}"
   install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
-#  install -Dm 644 docs/_build/text/* -t "${pkgdir}/usr/share/doc/${pkgname}"
-#  install -Dm 644 docs/_build/man/commonmark-py.1 "${pkgdir}/usr/share/man/man1/${pkgname}.1"
+  install -Dm 644 docs/_build/text/* -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -Dm 644 docs/_build/man/commonmark-py.1 "${pkgdir}/usr/share/man/man1/${pkgname}.1"
   mv "${pkgdir}/usr/bin/cmark"{,-py3}
 }

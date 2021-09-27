@@ -1,7 +1,7 @@
 pkgname=python-imagesize
 pkgver=1.2.0
 pkgbuild=2
-arch='auto'
+arch=('auto')
 
 shortdesc=("Python library for determining image sizes")
 longdesc=("Python library for determining image sizes")
@@ -11,8 +11,6 @@ source=("https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-$p
 tags="develop dev-python"
 
 build_deps="python python-setuptools"
-
-adddeps="python"
 
 build() {
   go_src_dir

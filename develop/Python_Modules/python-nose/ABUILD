@@ -14,8 +14,7 @@ build_deps="python python-setuptools"
 
 adddep="python-setuptools"
 
-build()
-{
+build() {
   go_src_dir
   sed -i -e "s:man/man1:share/man/man1:g" setup.py
 

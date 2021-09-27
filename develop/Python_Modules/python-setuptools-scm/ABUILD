@@ -1,5 +1,5 @@
 pkgname=python-setuptools-scm
-pkgver=6.0.1
+pkgver=6.3.2
 pkgbuild=1
 arch=('auto')
 
@@ -12,10 +12,9 @@ tags="develop dev-python"
 
 build_deps="python python-setuptools"
 
-adddep="python-setuptools"
+adddep="python-setuptools python-packaging python-tomli"
 
-build()
-{
+build() {
   go_src_dir
   python setup.py build
   python setup.py egg_info

@@ -1,7 +1,7 @@
 pkgname=python-packaging
-pkgver=20.9
-pkgbuild=2
-arch=("auto")
+pkgver=21.0
+pkgbuild=1
+arch=('auto')
 
 shortdesc="Core utilities for Python packages"
 longdesc="python-packaging provides core utilities for Python packages like utilities for dealing with versions, specifiers, markers etc."
@@ -9,10 +9,10 @@ longdesc="python-packaging provides core utilities for Python packages like util
 tags=("dev-python develop")
 
 source=("https://github.com/pypa/packaging/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
-# python-pytest
-build_deps="python-setuptools python-pyparsing python-six"
 
-adddep="python python-pyparsing python-six"
+build_deps="python python-setuptools python-pyparsing"
+
+adddep="python-pyparsing python-six"
 
 build() {
   go_src_dir

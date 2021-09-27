@@ -3,7 +3,7 @@ pkgver=3.11
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Python Lex-Yacc")
+shortdesc=("Implementation of lex and yacc parsing tools")
 longdesc=("PLY is an implementation of lex and yacc parsing tools for Python.")
 
 source=("https://pypi.io/packages/source/p/ply/ply-$pkgver.tar.gz")

@@ -1,10 +1,10 @@
 pkgname=python-html5lib
 pkgver=1.1
 pkgbuild=1
-arch='auto'
+arch=('auto')
 
-shortdesc="A python based HTML parser/tokenizer based on the WHATWG HTML5 specification"
-longdesc="A python based HTML parser/tokenizer based on the WHATWG HTML5 specification for maximum compatibility with major desktop web browsers."
+shortdesc=("A python based HTML parser/tokenizer based on the WHATWG HTML5 specification")
+longdesc=("A python based HTML parser/tokenizer based on the WHATWG HTML5 specification for maximum compatibility with major desktop web browsers.")
 
 source="https://github.com/html5lib/html5lib-python/archive/${pkgver}.tar.gz"
 
@@ -12,7 +12,7 @@ tags="develop dev-python"
 
 build_deps="python python-setuptools"
 
-adddeps="python python-six"
+adddeps="python python-six python-webencodings"
 
 build() {
   go_src_dir

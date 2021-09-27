@@ -1,19 +1,18 @@
 pkgname=python-fonttools
-pkgver=4.27.0
+pkgver=4.27.1
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("A library to manipulate font files from Python")
-longdesc=("A library to manipulate font files from Python")
+longdesc=("fontTools is a library for manipulating fonts, written in Python.")
 
-source=("https://github.com/fonttools/fonttools/archive/$pkgver/fonttools-$pkgver.zip")
+source=("https://files.pythonhosted.org/packages/37/8b/867cdac69d5212b3eee781e40cfe539c4d9d7b2d4c9290bcdecd2d218176/fonttools-$pkgver.zip")
 
 tags="develop dev-python"
 
-build_deps="unzip python python-setuptools cython"
+build_deps="python python-setuptools python-cython"
 
-build()
-{
+build(){
   go_src_dir
   python setup.py build_ext --inplace
   python setup.py build

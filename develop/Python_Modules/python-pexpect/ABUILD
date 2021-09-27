@@ -10,12 +10,11 @@ source=("https://github.com/pexpect/pexpect/archive/${pkgver}.tar.gz")
 
 tags="develop dev-python"
 
-build_deps="python python-ptyprocess"
+build_deps="python"
 
 adddep="python-ptyprocess"
 
-build()
-{
+build(){
   go_src_dir
   python setup.py install --root="$pkgdir"
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

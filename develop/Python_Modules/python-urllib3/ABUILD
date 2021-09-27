@@ -1,5 +1,5 @@
 pkgname=python-urllib3
-pkgver=1.26.5
+pkgver=1.26.6
 pkgbuild=1
 arch=('auto')
 

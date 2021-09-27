@@ -1,7 +1,7 @@
 pkgname=python-cssselect
 pkgver=1.1.0
 pkgbuild=1
-arch=("auto")
+arch=('auto')
 
 shortdesc=("A Python3 library that parses CSS3 Selectors and translates them to XPath 1.0")
 longdesc=("Cssselect parses CSS3 Selectors and translate them to XPath 1.0 expressions. Such expressions can be used in lxml or another XPath engine to find the matching elements in an XML or HTML document.")
@@ -12,8 +12,7 @@ tags="develop dev-python"
 
 build_deps="python python-setuptools"
 
-build()
-{
+build(){
   go_src_dir
   python setup.py build
   python setup.py install --root="$pkgdir" --optimize=1

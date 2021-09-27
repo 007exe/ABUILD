@@ -12,8 +12,7 @@ tags="develop dev-python"
 
 build_deps="python python-setuptools"
 
-build()
-{
+build(){
   rm -r idna-$pkgver/*.egg-info
   go_src_dir
   python setup.py build

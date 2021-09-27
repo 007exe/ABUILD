@@ -10,10 +10,11 @@ source=("https://files.pythonhosted.org/packages/1c/00/3dd2bdc4184b0ce754b5b4463
 
 tags="develop dev-python"
 
-build_deps="python python-docutils python-commonmark python-setuptools python-sphinx"
+build_deps="python python-setuptools"
 
-build()
-{
+adddep="python-docutils python-commonmark python-sphinx"
+
+build(){
   go_src_dir
   python setup.py build
   python setup.py install --root="$pkgdir"

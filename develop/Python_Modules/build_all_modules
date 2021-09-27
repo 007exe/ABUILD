@@ -1,11 +1,114 @@
 #!/bin/sh
-MODULES=""
 
-BUILD=${BUILD:-1}
+MODULES="
+python-setuptools
+python-appdirs
+python-more-itertools
+python-ordered-set
+python-pyparsing
+python-packaging
+python-cython
+python-apipkg
+python-ptyprocess
+python-pexpect
+python-argcomplete
+python-attrs
+python-pytz
+python-babel
+python-beaker
+python-cerberus
+python-certifi
+python-ply
+python-pycparser
+python-cffi
+python-chardet
+python-docutils
+python-imagesize
+python-markupsafe
+python-jinja
+python-webencodings
+python-html5lib
+python-sphinx
+python-pygments
+python-pbr
+python-mock
+python-pyasn1
+python-urllib3
+python-idna
+python-requests
+python-snowballstemmer
+python-sphinx-alabaster-theme
+python-sphinxcontrib-applehelp
+python-sphinxcontrib-devhelp
+python-sphinxcontrib-htmlhelp
+python-sphinxcontrib-jsmath
+python-sphinxcontrib-qthelp
+python-sphinxcontrib-serializinghtml
+python-sortedcontainers
+python-hypothesis
+python-future
+python-sphinx_rtd_theme
+python-lxml
+python-commonmark
+python-cssselect
+python-multidict
+python-async-timeout
+python-typing_extensions
+python-yarl
+python-aiohttp
+python-click
+python-fissix
+python-sh
+python-bowler
+python-colorama
+python-ruamel.yaml.clib
+python-ruamel-yaml
+python-tabulate
+python-dephell
+python-yaspin
+python-dephell-argparse
+python-fonttools
+python-setuptools-scm
+python-tomli
+python-toml
+python-zipp
+python-wheel
+python-importlib-metadata
+python-iniconfig
+python-mako
+python-markdown
+python-nose
+python-pluggy
+python-psutil
+python-py
+python-recommonmark
+python-semantic-version
+python-six
+python-smartypants
+python-termcolor
+python-tomlkit
+python-typogrify
+python-pygments
+python-pip"
 
+#####pip install yaspin
+#####pip install dephell
+#####pip install tomli
+
+#####pip uninstall
+
+
+##mkpkg --help
+#-ba   : Авто установка пакетов из списка builddeps
+#-ib   : Автоматически увеличить номер билда на единицу.
+#-si   : Установить пакет после сборки (необходимо настроить sudo)
+#-nc   : Не очищать временные директории после сборки.
+#-wd   : Имя директории, где будет проходить сборка пакета.
+#-pod  : Имя директории, куда будет помещён готовый пакет.
+###
 set -e
 for i in $MODULES ; do
-	( cd $i && mkpkg -si -bb ${BUILD} )
+	( cd $i && mkpkg -si -ba ${BUILD} )
 done
 set +e
 

@@ -7,7 +7,7 @@ arch=('auto')
 shortdesc=("Rolling backport of unittest.mock for all Pythons")
 longdesc=("mock is a library for testing in Python. It allows you to replace parts of your system under test with mock objects and make assertions about how they have been used.mock is now part of the Python standard library, available as unittest.mock < in Python 3.3 This package contains a rolling backport of the standard library mock code compatible with Python 3.6 and up.Please see the standard...")
 
-source=("https://files.pythonhosted.org/packages/e2/be/3ea39a8fd4ed3f9a25aae18a1bff2df7a610bca93c8ede7475e32d8b73a0/mock-${pkgver}.tar.gz")
+source=("https://github.com/testing-cabal/mock/archive/$pkgver.tar.gz")
 
 tags="develop dev-python"
 
@@ -15,14 +15,12 @@ build_deps="python python-six python-pbr"
 
 adddep="python-six python-pbr"
 
-build()
-{
+build(){
   go_src_dir
-  export PYTHONHASHSEED=0
-  python3 setup.py build
-
-  python -m unittest discover
-
-  python3 setup.py install --optimize=1 --root="$pkgdir"
+# use unittest instead of unittest2 as they are the same on recent python*
+  sed -i 's/unittest2/unittest/g' mock/tests/*.py
+  python setup.py build
+#  python -m unittest discover
+  python setup.py install --optimize=1 --root="$pkgdir"
   install -Dm644 LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }

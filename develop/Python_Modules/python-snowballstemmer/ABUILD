@@ -1,7 +1,7 @@
 pkgname=python-snowballstemmer
 pkgver=2.1.0
 pkgbuild=1
-arch='auto'
+arch=('auto')
 
 shortdesc=("python-snowballstemmer")
 longdesc=("This package provides 16 stemmer algorithms (15 + Poerter English stemmer) generated from Snowball algorithms.")

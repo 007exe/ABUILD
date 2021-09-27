@@ -9,13 +9,10 @@ longdesc=("Foreign Function Interface for Python calling C code. The aim of this
 source=("https://foss.heptapod.net/pypy/cffi/-/archive/v$pkgver/cffi-v$pkgver.tar.bz2")
 
 tags="develop dev-python"
-#python-pycparser
-build_deps="python python-setuptools"
 
-adddep="python-pycparser"
+build_deps="python python-setuptools python-pycparser"
 
-build()
-{
+build() {
   go_src_dir
   python setup.py build
   python setup.py install --root="$pkgdir" --optimize=1 --skip-build

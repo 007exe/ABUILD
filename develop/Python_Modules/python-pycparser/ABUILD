@@ -14,8 +14,7 @@ build_deps="python python-ply python-setuptools"
 
 adddep="python-ply"
 
-build()
-{
+build() {
   go_src_dir
   python setup.py build
   cd pycparser

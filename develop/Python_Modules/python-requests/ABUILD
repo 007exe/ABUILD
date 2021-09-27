@@ -1,6 +1,6 @@
 pkgname=python-requests
-pkgver=2.25.1
-pkgbuild=2
+pkgver=2.26.0
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("Python HTTP for Humans")
@@ -21,13 +21,9 @@ before_build(){
       -i setup.py
 }
 
-build()
-{
+build() {
   go_src_dir
   burn_patches
   python setup.py build
-
-#  pytest tests --deselect tests/test_requests.py::TestRequests::test_https_warnings
-
   python setup.py install --skip-build -O1 --root="$pkgdir"
 }

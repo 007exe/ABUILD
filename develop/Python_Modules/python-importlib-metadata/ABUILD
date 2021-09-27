@@ -1,5 +1,5 @@
 pkgname=python-importlib-metadata
-pkgver=4.5.0
+pkgver=4.8.1
 pkgbuild=1
 arch=('auto')
 
@@ -10,7 +10,7 @@ source=("https://github.com/python/importlib_metadata/archive/v$pkgver/$pkgname-
 
 tags="develop dev-python"
 
-build_deps="python python-setuptools-scm python-toml python-wheel python-zipp"
+build_deps="python python-setuptools-scm python-toml python-wheel"
 
 adddep="python-zipp"
 
@@ -18,6 +18,8 @@ build()
 {
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
   go_src_dir
+# remove pytest-perf warmup to be able to drop its dependency
+  rm exercises.py
   python setup.py build
   python setup.py install --root="$pkgdir" --optimize=1
 }

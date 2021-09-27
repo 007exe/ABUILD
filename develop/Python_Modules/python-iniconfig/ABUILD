@@ -12,8 +12,7 @@ tags="develop dev-python"
 
 build_deps="python python-setuptools python-setuptools-scm"
 
-build()
-{
+build() {
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
   go_src_dir
   python setup.py build

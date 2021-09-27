@@ -1,7 +1,7 @@
 pkgname=python-pyparsing
 pkgver=2.4.7
 pkgbuild=2
-arch=("auto")
+arch=('auto')
 
 shortdesc=("General parsing module for Python")
 longdesc=("General parsing module for Python")
@@ -11,8 +11,6 @@ tags=("dev-python develop")
 source=("https://github.com/pyparsing/pyparsing/archive/pyparsing_$pkgver.tar.gz")
 
 build_deps="python-setuptools"
-
-adddep="python"
 
 build() {
   go_src_dir

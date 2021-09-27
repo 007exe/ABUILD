@@ -13,8 +13,9 @@ tags="develop dev-python"
 
 build_deps="python"
 
-build()
-{
+adddep="python-aiohttp python-appdirs python-attrs python-bowler python-cerberus python-colorama python-html5lib python-jinja python-packaging python-pip python-pygments python-requests python-ruamel-yaml python-tabulate python-tomlkit python-yaspin"
+
+build(){
   go_src_dir
   burn_patches
 # don't lock pip version to below pip 20:

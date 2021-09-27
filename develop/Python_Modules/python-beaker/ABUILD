@@ -1,7 +1,7 @@
 pkgname=python-beaker
 pkgver=1.11.0
 pkgbuild=2
-arch='auto'
+arch=('auto')
 
 shortdesc=("WSGI middleware layer to provide sessions")
 longdesc=("Beaker is a caching library that includes Session and Cache objects built on Myghty's Container API used in MyghtyUtils. WSGI middleware is also included to manage Session objects and signed cookies.")
@@ -12,7 +12,7 @@ tags="libs dev-python"
 
 build_deps="python python-setuptools"
 
-build(){
+build() {
   go_src_dir
   python3 setup.py build
   python setup.py install --root="$pkgdir" --optimize=1

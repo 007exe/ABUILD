@@ -10,7 +10,7 @@ longdesc=("Babel is a Python library that provides an integrated collection of u
 source=("https://github.com/python-babel/babel/archive/v$pkgver.tar.gz"
         "http://unicode.org/Public/cldr/$_core/core.zip")
 #python-pytest
-build_deps="python python-setuptools python-pytz"
+build_deps="python python-setuptools"
 
 adddep="python python-pytz"
 

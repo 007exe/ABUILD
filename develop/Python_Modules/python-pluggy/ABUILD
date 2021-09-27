@@ -1,5 +1,5 @@
 pkgname=python-pluggy
-pkgver=0.13.1
+pkgver=1.0.0
 pkgbuild=1
 arch=('auto')
 
@@ -14,8 +14,7 @@ build_deps="python python-setuptools-scm python-importlib-metadata"
 
 adddep="python-importlib-metadata"
 
-build()
-{
+build() {
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
   go_src_dir
   python setup.py build

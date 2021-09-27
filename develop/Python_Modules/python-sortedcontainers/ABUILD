@@ -6,20 +6,16 @@ arch=('auto')
 shortdesc=("Sorted container data types")
 longdesc=("SortedContainers is an Apache2 licensed containers library, written in pure-Python, and fast as C-extensions.")
 
-source=("https://github.com/grantjenks/python-sortedcontainers/archive/v$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/s/sortedcontainers/sortedcontainers-$pkgver.tar.gz")
 
 tags="develop dev-python"
 
 build_deps="python python-setuptools"
 
-build()
-{
-# Don't use tox
-  sed -i '/tests_require/d' python-sortedcontainers-$pkgver/setup.py
+build(){
   go_src_dir
+# Don't use tox
+  sed -i '/tests_require/d' ./setup.py
   python setup.py build
-
-#  python setup.py pytest
-
   python setup.py install --root="$pkgdir" --optimize=1
 }
