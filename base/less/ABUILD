@@ -1,10 +1,10 @@
 pkgname=less
-pkgver=581.2
+pkgver=590
 pkgbuild=1
 arch=("auto")
 
-shortdesc="A text file browser similar to more, but better"
-longdesc="The less utility is a text file browser that resembles more, but has more capabilities.  Less allows you to move backwards in the file as well as forwards.  Since less doesn't have to read the entire input file before it starts, less starts up more quickly than text editors"
+shortdesc=("A text file browser similar to more, but better")
+longdesc=("The less utility is a text file browser that resembles more, but has more capabilities.  Less allows you to move backwards in the file as well as forwards.  Since less doesn't have to read the entire input file before it starts, less starts up more quickly than text editors")
 
 tags=("base sys-base")
 
