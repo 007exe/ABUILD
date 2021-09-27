@@ -1,0 +1,27 @@
+pkgname=confuse
+pkgver=3.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C-library for parsing configuration files")
+longdesc=("libConfuse is a configuration file parser library, licensed under the terms of the ISC license, and written in C. It supports sections and (lists of) values (strings, integers, floats, booleans or other sections), as well as some other features (such as single/double-quoted strings, environment variable expansion, functions and nested include statements). It makes it very easy to add configuration file capability to a program using a simple API.")
+
+source=("https://github.com/libconfuse/libconfuse/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="libs dev-libs"
+
+build_deps="glibc"
+
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-shared
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m 644 -t "${pkgdir}/usr/share/licenses/${pkgname}/" LICENSE
+}
