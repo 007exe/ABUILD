@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=5.14.1
+pkgver=5.14.7
 pkgbuild=1
 arch=("auto")
 
@@ -18,7 +18,7 @@ build_deps="bc kmod cpio perl tar xz xmlto rsync"
 
 adddep="coreutils kmod"
 
-pkglist=("headers")
+pkglist=("headers sources")
 
 headers() {
   pkgname=kernel-headers
@@ -28,8 +28,15 @@ headers() {
   longdesc=("These are the include files from the Linux kernel. You will need these to compile most system software for Linux.")
 
   tags=('develop sys-kernel')
+}
 
-  conflicts="kernel-source"
+sources() {
+  pkgname=kernel-source
+  arch=('auto')
+  shortdesc=('Linux kernel source')
+  longdesc=('Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.')
+
+  tags=('develop sys-kernel')
 }
 
 before_build() {
@@ -131,13 +138,16 @@ echo "Installing kernel headers..."
   make headers_install INSTALL_HDR_PATH=${pkgdir}/usr
 
 # Copy aufs-tree manually, since we removed dirty hacks
-  if [ -f include/linux/aufs_type.h ]; then
-echo "Copy aufs-tree manually, since we removed dirty hacks"
-     install -m644 include/linux/aufs_type.h ${pkgdir}/usr/include/linux/
-  fi
+#  if [ -f include/linux/aufs_type.h ]; then
+#echo "Copy aufs-tree manually, since we removed dirty hacks"
+#     install -m644 include/linux/aufs_type.h ${pkgdir}/usr/include/linux/
+#  fi
+}
 
-echo "Copying the kernel source tree. This may take about 10 minutes..."
+sources_prep() {
+  go_src_dir
   mkdir -p ${pkgdir}/usr/src/linux-${pkgver}
+echo "Copying the kernel source tree. This may take about 10 minutes..."
   cp -rd ./* ${pkgdir}/usr/src/linux-${pkgver}/
   ( cd ${pkgdir}/usr/src/linux-${pkgver} && make mrproper )
   cat .config > ${pkgdir}/usr/src/linux-${pkgver}/.config
