@@ -1,10 +1,10 @@
 pkgname=diffutils
-pkgver=3.7
-pkgbuild=2
+pkgver=3.8
+pkgbuild=1
 arch=("auto")
 
-shortdesc="Utility programs used for creating patch files"
-longdesc="The GNU diff utilities finds differences between files. A major use for this package is to make source code patches."
+shortdesc=("Utility programs used for creating patch files")
+longdesc=("The GNU diff utilities finds differences between files. A major use for this package is to make source code patches.")
 
 tags=("console sys-devel")
 
