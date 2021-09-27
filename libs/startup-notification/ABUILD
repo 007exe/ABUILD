@@ -1,0 +1,28 @@
+pkgname=startup-notification
+pkgver=0.12
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Monitor and display application startup")
+longdesc=("The startup-notification package contains startup-notification libraries. These are useful for building a consistent manner to notify the user through the cursor that the application is loading.")
+
+source=("http://www.freedesktop.org/software/startup-notification/releases/startup-notification-${pkgver}.tar.gz")
+
+tags="x11-libs libs"
+
+build_deps="libx11 xcb-util"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e '/AC_PATH_XTRA/d' configure.in
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --localstatedir=/var \
+    --sysconfdir=/etc
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
