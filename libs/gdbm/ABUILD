@@ -1,5 +1,5 @@
 pkgname=gdbm
-pkgver=1.20
+pkgver=1.21
 pkgbuild=1
 arch=('auto')
 
