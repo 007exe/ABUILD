@@ -1,10 +1,10 @@
 pkgname=expat
-pkgver=2.3.0
+pkgver=2.4.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc="XML parser written in C"
-longdesc="Expat is an XML 1.0 parser written in C by James Clark.  It aims to be fully conforming. It is currently not a validating XML parser."
+shortdesc=("XML parser written in C")
+longdesc=("Expat is an XML 1.0 parser written in C by James Clark.  It aims to be fully conforming. It is currently not a validating XML parser.")
 
 tags=("libs dev-libs")
 
