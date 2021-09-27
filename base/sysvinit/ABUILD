@@ -1,10 +1,10 @@
 pkgname=sysvinit
-pkgver=2.99
+pkgver=3.00
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Classical init system"
-longdesc="System V style init programs by Miquel van Smoorenburg that control the booting and shutdown of your system. These support a number of system runlevels, each with a specific set of utilities spawned. For example, the normal system runlevel is 3, which starts agetty on virtual consoles tty1 - tty6. Runlevel 4 starts xdm. Runlevel 0 shuts the system down."
+shortdesc=("Classical init system")
+longdesc=("The Sysvinit package contains programs for controlling the startup, running, and shutdown of the system.")
 
 tags=("base sys-apps")
 
