@@ -1,0 +1,30 @@
+pkgname=dmenu
+pkgver=5.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Generic menu for X")
+longdesc=("dmenu is a dynamic menu for X, originally designed for dwm. It manages large numbers of user-defined menu items efficiently.")
+
+source=("https://dl.suckless.org/tools/dmenu-${pkgver}.tar.gz")
+
+tags="utils x11-misc"
+
+build_deps="coreutils libx11 libxinerama libxft freetype fontconfig"
+
+build(){
+  go_src_dir
+  burn_patches
+  echo "CPPFLAGS+=${CPPFLAGS}" >> config.mk
+  echo "CFLAGS+=${CFLAGS}" >> config.mk
+  echo "LDFLAGS+=${LDFLAGS}" >> config.mk
+
+  make \
+  X11INC=/usr/include/X11 \
+  X11LIB=/usr/lib/X11 \
+  FREETYPEINC=/usr/include/freetype2 \
+  X11LIB=/usr/lib${LIBDIRSUFFIX}/X11
+  make PREFIX=/usr LIBDIR=/usr/lib${LIBDIRSUFFIX} DESTDIR="${pkgdir}" install
+
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}
