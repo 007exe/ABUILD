@@ -1,10 +1,10 @@
 pkgname=bc
-pkgver=4.0.1
+pkgver=5.0.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc="An arbitrary precision calculator language"
-longdesc="This is an implementation of the POSIX bc calculator that implements GNU bc extensions, as well as the period."
+shortdesc=("An arbitrary precision calculator language")
+longdesc=("The Bc package contains an arbitrary precision numeric processing language.")
 
 tags=("console sys-devel")
 
@@ -17,7 +17,7 @@ build() {
 
   PREFIX=/usr CC=gcc CFLAGS="-std=c99" ./configure.sh -G -O3
   make
-  make test
+#  make test
   make DESTDIR="$pkgdir" install
 }
 
