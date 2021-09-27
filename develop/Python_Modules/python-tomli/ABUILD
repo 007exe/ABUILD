@@ -1,0 +1,28 @@
+pkgname=python-tomli
+pkgver=1.2.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A lil' TOML parser")
+longdesc=("Tomli is a Python library for parsing TOML. Tomli is fully compatible with TOML v1.0.0.")
+
+source=("https://github.com/hukkin/tomli/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-dephell python-setuptools python-tomlkit"
+
+adddep="python-setuptools"
+
+build()
+{
+  go_src_dir
+# flit is not needed at runtime
+  sed -i '/flit_core/d' pyproject.toml
+  dephell deps convert --from pyproject.toml --to setup.py
+
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
