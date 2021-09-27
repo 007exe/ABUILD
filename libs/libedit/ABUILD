@@ -1,10 +1,10 @@
 pkgname=libedit
-pkgver=20210522_3.1
+pkgver=20210910_3.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Provides generic line editing functions similar to those found in GNU Readline"
-longdesc="This is an autotool- and libtoolized port of the NetBSD Editline library (libedit). This Berkeley-style licensed command line editor library provides generic line editing, history, and tokenization functions, similar to those found in GNU Readline."
+shortdesc=("Command line editor library providing generic line editing, history, and tokenization functions")
+longdesc=("This is an autotool- and libtoolized port of the NetBSD Editline library (libedit). This Berkeley-style licensed command line editor library provides generic line editing, history, and tokenization functions, similar to those found in GNU Readline.")
 
 tags=("libs dev-libs")
 
