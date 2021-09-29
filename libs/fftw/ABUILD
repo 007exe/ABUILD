@@ -1,0 +1,56 @@
+pkgname=fftw
+pkgver=3.3.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for computing the discrete Fourier transform (DFT)")
+longdesc=("FFTW is a C subroutine library for computing the discrete Fourier transform (DFT) in one or more dimensions, of arbitrary input size, and of both real and complex data (as well as of even/odd data, i.e. the discrete cosine/sine transforms or DCT/DST).")
+
+tags=("dev-libs libs")
+
+source=("http://www.fftw.org/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="gcc-fortran"
+
+build() {
+  cd ${srcdir}
+
+  cp -a ${pkgname}-${pkgver} ${pkgname}-${pkgver}-double
+  cp -a ${pkgname}-${pkgver} ${pkgname}-${pkgver}-long-double
+  mv ${pkgname}-${pkgver} ${pkgname}-${pkgver}-single
+
+# use upstream default CFLAGS while keeping our -march/-mtune
+  CFLAGS+=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+
+  CONFIGURE="./configure F77=gfortran \
+                 --prefix=/usr \
+                 --libdir=/usr/lib$LIBDIRSUFFIX \
+                 --enable-shared \
+                 --enable-threads"
+
+# build double precision
+  cd ${srcdir}/${pkgname}-${pkgver}-double
+  $CONFIGURE --enable-sse2
+  make -j${numjobs}
+
+# build & install long double precission
+  cd ${srcdir}/${pkgname}-${pkgver}-long-double
+  $CONFIGURE --enable-long-double
+  make -j${numjobs}
+
+# build & install single precision
+  cd ${srcdir}/${pkgname}-${pkgver}-single
+  $CONFIGURE --enable-float --enable-sse
+  make -j${numjobs}
+}
+
+after_build() {
+  cd ${srcdir}/${pkgname}-${pkgver}-double
+  make DESTDIR=${pkgdir} install
+
+  cd ${srcdir}/${pkgname}-${pkgver}-long-double
+  make DESTDIR=${pkgdir} install
+
+  cd ${srcdir}/${pkgname}-${pkgver}-single
+  make DESTDIR=${pkgdir} install
+}
