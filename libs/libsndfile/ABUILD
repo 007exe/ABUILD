@@ -1,0 +1,35 @@
+pkgname=libsndfile
+pkgver=1.0.31
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C library for reading and writing files containing sampled audio data")
+longdesc=("libsndfile is a C library for reading and writing sound files such as AIFF, AU and WAV files through one standard interface. It can currently read/write 8, 16, 24 and 32-bit PCM files as well as 32-bit floating point WAV files and a number of compressed formats.")
+
+tags=("libs media-libs compat32")
+
+source=("https://github.com/${pkgname}/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps="alsa-lib cmake flac libogg libvorbis python sqlite"
+
+build() {
+  go_src_dir
+  burn_patches
+# tests can only be built with static libs
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE='None' \
+        -Wno-dev \
+        -B build-test \
+        -S .
+  make VERBOSE=1 -C build-test
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE='None' \
+        -DBUILD_SHARED_LIBS=ON \
+        -Wno-dev \
+        -B build \
+        -S .
+  make VERBOSE=1 -C build
+  make DESTDIR="$pkgdir" install -C build
+  install -vDm 644 {AUTHORS,ChangeLog,NEWS,README} -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
