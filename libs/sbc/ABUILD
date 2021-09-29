@@ -1,0 +1,25 @@
+pkgname=sbc
+pkgver=1.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Bluetooth Subband Codec (SBC) library.")
+longdesc=("Bluetooth Subband Codec (SBC) library.")
+
+source=("https://www.kernel.org/pub/linux/bluetooth/sbc-${pkgver}.tar.xz")
+
+tags="libs dev-libs compat32"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-tester
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
