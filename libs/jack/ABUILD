@@ -1,0 +1,44 @@
+pkgname=jack
+pkgver=1.9.19
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("The JACK2 low-latency audio server")
+longdesc=("Jack has been developed with one main goal: ripping CDs without having to worry. There is nearly no way that an incomplete rip goes unnoticed, e.g. jack compares WAV and MP3/Vorbis filesizes when continuing from a previous run. Jack also checks your HD space before doing anything (even keeps some MB free).")
+
+source=("https://github.com/jackaudio/jack2/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags="libs media-sound"
+#celt zita-alsa-pcmi zita-resampler libffado libsamplerate
+build_deps="waf alsa-lib dbus expat libsndfile readline"
+
+before_build() {
+  go_src_dir
+# copying relevant custom waf scripts and loading them specifically using
+# wscript
+  (
+    touch __init__.py
+    mkdir -vp tools
+    cp -v waflib/extras/xcode*.py tools
+    rm -rv waflib
+    sed -e "s/load('xcode'/load('xcode', tooldir='tools'/g" \
+        -e "s/load('xcode6'/load('xcode6', tooldir='tools'/g" \
+        -i wscript
+  )
+}
+
+build() {
+  go_src_dir
+  export LINKFLAGS="$LDFLAGS"
+  export PYTHONPATH="${PWD}:${PYTHONPATH}"
+  waf configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --htmldir="/usr/share/doc/${pkgbase}/" \
+    --classic \
+    --dbus \
+    --alsa
+
+  waf build
+  waf install --destdir=${pkgdir}
+}
