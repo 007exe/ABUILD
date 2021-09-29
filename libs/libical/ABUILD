@@ -1,0 +1,27 @@
+pkgname=libical
+pkgver=3.0.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("An open source reference implementation of the icalendar data type and serialization format")
+longdesc=("The libical package contains an implementation of the iCalendar protocols and data formats.")
+
+tags=('libs dev-libs')
+
+source=("https://github.com/libical/libical/releases/download/v${pkgver}/libical-${pkgver}.tar.gz")
+
+build_deps="cmake gtk-doc doxygen vala gobject-introspection"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cmake -Bbuild \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DSHARED_ONLY=yes \
+    -DGOBJECT_INTROSPECTION=true \
+    -DICAL_GLIB_VAPI=true
+  cmake --build build
+  DESTDIR="${pkgdir}" cmake --build build --target install
+}
