@@ -1,0 +1,23 @@
+pkgname=libusb-compat
+pkgver=0.1.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library to enable user space application programs to communicate with USB devices")
+longdesc=("This is libusb, a library which allows userspace application access to USB devices. It is used to connect to USB devices like scanners.")
+
+tags=("libs sys-libs")
+
+source=("https://github.com/libusb/libusb-compat-0.1/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+build_deps="libusb pkg-config"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
