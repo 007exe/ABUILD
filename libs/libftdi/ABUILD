@@ -1,0 +1,34 @@
+pkgname=libftdi
+pkgver=1.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A library to talk to FTDI chips, optional python bindings.")
+longdesc=("A library (using libusb) to talk to FTDI FT2232C, FT232BM and FT245BM type chips including the popular bitbang mode.")
+
+source=("https://www.intra2net.com/en/developer/libftdi/download/${pkgname}1-$pkgver.tar.bz2")
+
+tags="libs dev-embedded"
+
+build_deps="libusb confuse boost cmake python swig"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_SKIP_BUILD_RPATH=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DEXAMPLES=OFF -DFTDI_EEPROM=ON \
+    -DFTDIPP=ON -DPYTHON_BINDINGS=ON \
+    -DLINK_PYTHON_LIBRARY=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 "../packages/99-libftdi.rules" "$pkgdir/usr/lib/udev/rules.d/69-libftdi.rules"
+# FS#45053
+  install -d "$pkgdir/usr/share/libftdi/examples"
+  cp -r ../examples/* "$pkgdir/usr/share/libftdi/examples"
+}
