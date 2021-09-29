@@ -1,0 +1,41 @@
+pkgname=bluez
+pkgver=5.61
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Daemons for the bluetooth protocol stack")
+longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
+
+source=("http://www.kernel.org/pub/linux/bluetooth/bluez-${pkgver}.tar.gz")
+
+tags="network net-wireless"
+# ell
+build_deps="dbus alsa-lib json-c python-docutils libical"
+
+config_files="etc/bluetooth/main.conf"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-tools \
+    --disable-systemd \
+    --enable-cups \
+    --with-udevdir=/etc/udev \
+    --enable-library
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# ship upstream main config file
+  install -dm755 "${pkgdir}"/etc/bluetooth
+  install -Dm644 src/main.conf "${pkgdir}"/etc/bluetooth/main.conf
+
+# Patch default bluetooth group from lp to netdev
+  cat ${filedir}/bluetooth.conf > ${pkgdir}/etc/dbus-1/system.d/bluetooth.conf
+  install -Dm755 ${filedir}/bluetooth.init ${pkgdir}/etc/init.d/bluetooth
+  install -Dm644 ${filedir}/bluetooth-conf.d ${pkgdir}/etc/conf.d/bluetooth.new
+}
