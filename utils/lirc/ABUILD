@@ -1,0 +1,35 @@
+pkgname=lirc
+pkgver=0.10.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Linux Infrared Remote Control utilities")
+longdesc=("LIRC is a package that allows you to decode and send infra-red signals of many (but not all) commonly used remote controls.")
+
+source=("http://prdownloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="utils app-misc"
+
+build_deps="help2man libxslt alsa-lib libx11 python python-setuptools libftdi libusb-compat alsa-lib"
+
+config_files="etc/lirc/lirc_options.conf
+etc/lirc/lircd.conf
+etc/lirc/lircmd.conf"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  automake -ac
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm0755 ${filedir}/lirc.init "${pkgdir}/etc/init.d/lirc"
+}
