@@ -1,0 +1,54 @@
+pkgname=avahi
+pkgver=0.8
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Service Discovery for Linux using mDNS/DNS-SD -- compatible with Bonjour")
+longdesc=("The Avahi package is a system which facilitates service discovery on a local network.")
+
+source=("https://github.com/lathiat/avahi/releases/download/v${pkgver}/avahi-${pkgver}.tar.gz")
+
+tags="network net-dns"
+# qt5-base --enable-qt5
+build_deps="gobject-introspection gtk3 doxygen libevent libdaemon"
+# Let's not drag these heavy libraries with us
+removedep="gtk3 qt5-base"
+
+config_files='etc/avahi/hosts
+etc/avahi/avahi-daemon.conf
+etc/avahi/services/ssh.service
+etc/avahi/services/sftp-ssh.service'
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-libevent \
+    --disable-mono \
+    --disable-monodoc \
+    --disable-python \
+    --disable-qt3 \
+    --disable-qt4 \
+    --disable-qt5 \
+    --enable-core-docs \
+    --with-distro=none \
+    --with-systemdsystemunitdir=no \
+    --with-avahi-user=avahi \
+    --with-avahi-group=avahi \
+    --with-autoipd-user=avahi-autoipd \
+    --with-autoipd-group=avahi-autoipd
+
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+
+  mkdir -p ${pkgdir}/var/run/avahi-daemon
+  mkdir -p ${pkgdir}/var/run/avahi-autoipd
+
+# OpenRC init
+  install -D -m755 ${filedir}/avahi.init ${pkgdir}/etc/init.d/avahi
+}
