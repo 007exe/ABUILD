@@ -1,0 +1,49 @@
+pkgname=waf
+pkgver=2.0.22
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("General-purpose build system modelled after Scons")
+longdesc=("General-purpose build system modelled after Scons")
+
+tags=("develop sys-devel")
+
+source=("https://waf.io/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps="unzip"
+
+build() {
+  local _py_ver=$(python3 -c "import sys; print(str(sys.version_info.major)+'.'+str(sys.version_info.minor))")
+  go_src_dir
+  burn_patches
+# make waf find its waflib
+  sed -e "/test(i/ s|dirname|'python${_py_ver}/site-packages/waf'|" -i waf-light
+# license needs to be extracted:
+# https://gitlab.com/ita1024/waf/issues/2251
+  head -n 30 waf | tail -n 28 | sed -e 's/# //g; s/"""//g' > LICENSE
+
+  ./waf-light \
+    configure --prefix=/usr \
+    build --make-waf
+
+# removing compiled in vendored library from executable
+  sed -i '/^#==>$/,/^#<==$/d' waf
+
+  install -vDm 755 waf -t "$pkgdir/usr/bin"
+  install -vDm 644 wscript -t "$pkgdir/usr/share/$pkgname"
+
+# installing, byte-compiling waflib and stripping pkgdir from it
+  install -vDm 644 waflib/*.py \
+    -t "${pkgdir}/usr/lib/python${_py_ver}/site-packages/waf/waflib"
+  install -vDm 644 waflib/Tools/*.py \
+    -t "${pkgdir}/usr/lib/python${_py_ver}/site-packages/waf/waflib/Tools"
+  install -vDm 644 waflib/extras/*.py \
+    -t "${pkgdir}/usr/lib/python${_py_ver}/site-packages/waf/waflib/extras"
+  python -m compileall -d "/usr/lib/python${_py_ver}" \
+    "${pkgdir}/usr/lib/python${_py_ver}"
+  python -O -m compileall -d "/usr/lib/python${_py_ver}" \
+    "${pkgdir}/usr/lib/python${_py_ver}"
+  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -vDm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -vDm 644 ${filedir}/building-waf.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
