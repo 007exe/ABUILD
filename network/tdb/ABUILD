@@ -1,0 +1,27 @@
+pkgname=tdb
+pkgver=1.4.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Trivial Database similar to GDBM but allows simultaneous commits")
+longdesc=("Library implementing Sambas embedded database and utilities for backing up, restoring and manipulating the database.")
+
+source=("http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags="network sys-libs"
+
+build_deps="python libxslt docbook-xsl"
+
+adddep="python"
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --localstatedir=/var \
+    --sysconfdir=/etc/samba
+  make -j${numjobs}
+  make DESTDIR=$pkgdir install
+}
