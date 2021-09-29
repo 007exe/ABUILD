@@ -1,0 +1,26 @@
+pkgname=imlib2
+pkgver=1.7.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support")
+longdesc=("imlib2 is a graphics library for fast file loading, saving, rendering and manipulation.")
+
+source=("http://downloads.sourceforge.net/enlightenment/$pkgname-$pkgver.tar.bz2")
+
+tags="libs media-libs"
+# libid3tag giflib
+build_deps="libtiff bzip2 freetype libxext libpng libjpeg-turbo libwebp"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc/imlib2 \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --enable-amd64
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
