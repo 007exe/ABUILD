@@ -1,0 +1,27 @@
+pkgname=lxpanel
+pkgver=0.10.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Lightweight X11 desktop panel for LXDE")
+longdesc=("The LXPanel package contains a lightweight X11 desktop panel.")
+
+source=("https://downloads.sourceforge.net/lxde/$pkgname-$pkgver.tar.xz")
+
+tags="lxde lxde-base"
+
+build_deps="intltool docbook-xml docbook-xsl wireless_tools alsa-lib curl menu-cache lxmenu-data libwnck libfm-gtk2 libkeybinder2"
+
+adddep="menu-cache lxmenu-data"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+#https://bugzilla.gnome.org/show_bug.cgi?id=656231
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
