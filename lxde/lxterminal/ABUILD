@@ -1,0 +1,24 @@
+pkgname=lxterminal
+pkgver=0.4.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("VTE-based terminal emulator (part of LXDE)")
+longdesc=("The LXTerminal package contains a VTE-based terminal emulator for LXDE with support for multiple tabs.")
+
+source=("https://downloads.sourceforge.net/lxde/${pkgname}-${pkgver}.tar.xz")
+
+tags="lxde lxde-base"
+
+build_deps="vte intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-gtk3
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
