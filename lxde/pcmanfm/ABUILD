@@ -1,0 +1,27 @@
+pkgname=pcmanfm
+pkgver=1.3.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Extremely fast and lightweight file manager")
+longdesc=("The PCManFM package contains an extremely fast, lightweight, yet feature-rich file manager with tabbed browsing.")
+
+source=("https://downloads.sourceforge.net/pcmanfm/pcmanfm-${pkgver}.tar.xz")
+
+tags="xapps app-misc"
+
+build_deps="libfm-gtk2 lxmenu-data"
+
+adddep="lxmenu-data"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
