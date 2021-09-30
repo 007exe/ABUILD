@@ -10,7 +10,7 @@ source=("https://downloads.sourceforge.net/pcmanfm/pcmanfm-${pkgver}.tar.xz")
 
 tags="xapps app-misc"
 
-build_deps="libfm-gtk2 lxmenu-data"
+build_deps="libfm-gtk3 lxmenu-data"
 
 adddep="lxmenu-data"
 
@@ -21,6 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-gtk=3 \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
