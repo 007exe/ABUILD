@@ -1,0 +1,130 @@
+pkgname=libfm
+pkgver=1.3.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library for file management")
+longdesc=("LibFM is a GIO-based library used to develop file manager-like programs. It is developed as the core of next generation PCManFM and takes care of all file-related operations such as copy & paste, drag & drop, file associations or thumbnails support. By utilizing glib/gio and gvfs, libfm can access remote filesystems supported by gvfs.")
+
+source=("https://downloads.sourceforge.net/pcmanfm/libfm-$pkgver.tar.xz")
+
+tags="libs lxde-base"
+
+build_deps="intltool gtk-doc gtk2 gtk3 menu-cache libexif vala"
+
+pkglist="libfm-extra libfm-gtk2 libfm-gtk3"
+
+libfm-extra() {
+  pkgname=libfm-extra
+  shortdesc=("Extra library for file management")
+  longdesc=("The libfm-extra package contains a library and other files required by menu-cache-gen libexec of menu-cache.")
+}
+
+libfm-gtk2() {
+  pkgname=libfm-gtk2
+  shortdesc=("GTK+ 2 library for file management")
+  longdesc=("LibFM is a GIO-based library used to develop file manager-like programs. It is developed as the core of next generation PCManFM and takes care of all file-related operations such as copy & paste, drag & drop, file associations or thumbnails support. By utilizing glib/gio and gvfs, libfm can access remote filesystems supported by gvfs.")
+  adddep="libfm=$pkgver"
+}
+
+libfm-gtk3() {
+  pkgname=libfm-gtk3
+  shortdesc=("GTK+ 3 library for file management")
+  longdesc=("LibFM is a GIO-based library used to develop file manager-like programs. It is developed as the core of next generation PCManFM and takes care of all file-related operations such as copy & paste, drag & drop, file associations or thumbnails support. By utilizing glib/gio and gvfs, libfm can access remote filesystems supported by gvfs.")
+  adddep="libfm=$pkgver"
+}
+
+before_build(){
+  go_src_dir
+  burn_patches
+# Update xarchiver option
+# https://github.com/lxde/libfm/issues/35
+  sed -i 's/create=xarchiver --add-to %F/create=xarchiver --compress %F/' data/archivers.list
+  autoreconf -fi
+  cd ..
+  cp -r libfm-$pkgver gtk2
+  cp -r libfm-$pkgver gtk3
+}
+
+build() {
+  cd ${srcdir}/gtk2
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-gnu-ld \
+    --enable-gtk-doc \
+    --disable-static
+#https://bugzilla.gnome.org/show_bug.cgi?id=656231
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+
+  cd ${srcdir}/gtk3
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-gnu-ld \
+    --with-gtk=3 \
+    --disable-static
+#https://bugzilla.gnome.org/show_bug.cgi?id=656231
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR="$srcdir"/libfm-gtk3 install
+}
+
+after_build(){
+  cd ${srcdir}/gtk2
+  make DESTDIR=${pkgdir} install
+
+# Temporary fix to FS#32361
+  rm -rf "$pkgdir"/usr/include/libfm
+  mv "$pkgdir"/usr/include/libfm-1.0/ "$pkgdir"/usr/include/libfm
+
+# Split libfm-extra
+  mkdir "$srcdir"/libfm-extra
+  mv "$pkgdir"/usr/include/libfm/fm-{extra,version,xml-file}.h \
+     "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libfm-extra.* \
+     "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/libfm-extra.pc \
+     "$srcdir/libfm-extra/"
+
+# Split libfm-gtk2
+  mkdir "$srcdir"/libfm-gtk2
+  mv "$pkgdir/usr/bin" \
+     "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libfm-gtk.* \
+     "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libfm/modules/gtk-* \
+     "$pkgdir/usr/lib${LIBDIRSUFFIX}/pkgconfig/libfm-gtk.pc" \
+     "$pkgdir/usr/share/applications" \
+     "$pkgdir/usr/share/man" \
+     "$srcdir/libfm-gtk2/"
+}
+
+libfm-extra_prep() {
+  cd "$srcdir"/libfm-extra
+  mkdir -p "$pkgdir"/usr/{include/libfm,lib${LIBDIRSUFFIX}/pkgconfig}
+  mv *.h "$pkgdir/usr/include/libfm"
+  mv libfm-extra.so* "$pkgdir/usr/lib${LIBDIRSUFFIX}"
+  mv libfm-extra.pc "$pkgdir/usr/lib${LIBDIRSUFFIX}/pkgconfig"
+}
+
+libfm-gtk2_prep() {
+  cd "$srcdir"/libfm-gtk2
+  mkdir -p "$pkgdir"/usr/{lib${LIBDIRSUFFIX}/{libfm/modules,pkgconfig},share}
+  mv bin "$pkgdir/usr"
+  mv libfm-gtk.so* "$pkgdir"/usr/lib${LIBDIRSUFFIX}
+  mv gtk-* "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libfm/modules
+  mv libfm-gtk.pc "$pkgdir/usr/lib${LIBDIRSUFFIX}/pkgconfig"
+  mv applications "$pkgdir/usr/share"
+  mv man "$pkgdir/usr/share"
+}
+
+libfm-gtk3_prep() {
+  cd "$srcdir"/libfm-gtk3
+  mkdir -p "$pkgdir"/usr/{lib${LIBDIRSUFFIX}/{libfm/modules,pkgconfig},share}
+  mv usr/bin "$pkgdir/usr"
+  mv usr/lib${LIBDIRSUFFIX}/libfm-gtk3.so* "$pkgdir"/usr/lib${LIBDIRSUFFIX}
+  mv usr/lib${LIBDIRSUFFIX}/libfm/modules/gtk-* "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libfm/modules
+  mv usr/lib${LIBDIRSUFFIX}/pkgconfig/libfm-gtk3.pc "$pkgdir/usr/lib${LIBDIRSUFFIX}/pkgconfig"
+  mv usr/share/applications "$pkgdir/usr/share"
+  mv usr/share/man "$pkgdir/usr/share"
+}
