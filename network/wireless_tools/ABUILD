@@ -1,0 +1,32 @@
+pkgname=wireless_tools
+pkgver=30.pre9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tools allowing to manipulate the Wireless Extensions")
+longdesc=("The Wireless Tools (WT) package is a set of tools allowing manipulation of the Wireless Extensions. They use a textual interface to support the full Wireless Extension.")
+
+tags=("network net-wireless")
+
+source=("https://hewlettpackard.github.io/wireless-tools/${pkgname}.${pkgver}.tar.gz")
+
+build_deps="gcc"
+
+config_files="etc/rc.d/rc.wireless.conf
+etc/rc.d/rc.wireless"
+
+build() {
+  go_src_dir
+  burn_patches
+  make CFLAGS="${CFLAGS} -I." LDFLAGS="${LDFLAGS}"
+  make \
+    INSTALL_DIR="${pkgdir}/sbin" \
+    INSTALL_LIB="${pkgdir}/usr/lib${LIBDIRSUFFIX}" \
+    INSTALL_INC="${pkgdir}/usr/include" \
+    INSTALL_MAN="${pkgdir}/usr/man" \
+    install
+
+  mkdir -p ${pkgdir}/etc/rc.d
+  cp $filedir/rc.wireless* ${pkgdir}/etc/rc.d
+}
+
