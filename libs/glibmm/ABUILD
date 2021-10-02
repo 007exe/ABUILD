@@ -1,0 +1,39 @@
+pkgname=glibmm
+pkgver=2.66.1
+pkgbuild=1
+arch="auto"
+
+shortdesc=("C++ bindings for GLib")
+longdesc=("The GLibmm package is a set of C++ bindings for GLib.")
+
+source=("http://ftp.gnome.org/pub/GNOME/sources/glibmm/${pkgver%.*}/glibmm-${pkgver}.tar.xz")
+
+tags="dev-cpp libs"
+
+build_deps="meson perl-xml-parser clang mm-common libsigc++"
+
+pkglist="glibmm-docs"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D maintainer-mode=true
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
+
+glibmm-docs() {
+  pkgname=glibmm-docs
+  shortdesc=("glibmm-docs Documentation")
+  longdesc=("The GLibmm package is a set of C++ bindings for GLib.")
+  arch="noarch"
+}
+
+glibmm-docs_prep() {
+  go_src_dir
+  mkdir -p "$pkgdir"/usr/share
+  mv ${p_pkgdir}/usr/share/{devhelp,doc} "$pkgdir"/usr/share
+  rm -r ${p_pkgdir}/usr/share
+}
