@@ -1,0 +1,29 @@
+pkgname=lxappearance-obconf
+pkgver=0.2.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Plugin for LXAppearance to configure Openbox")
+longdesc=("The LXAppearance OBconf package contains a plugin for LXAppearance to configure OpenBox.")
+
+source=("https://downloads.sourceforge.net/lxde/$pkgname-$pkgver.tar.xz")
+
+tags="lxde lxde-base"
+
+build_deps="intltool lxappearance openbox gtk3"
+
+build() {
+  go_src_dir
+  burn_patches
+# Hide theme preview as it's broken with GTK+ 3
+# https://sourceforge.net/p/lxde/bugs/768/
+  sed -i /frame1/,+19d src/obconf.glade
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-gtk3
+#https://bugzilla.gnome.org/show_bug.cgi?id=656231
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
