@@ -3,7 +3,7 @@ pkgver=1.3.2
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Extra library for file management (This is a temporary package)")
+shortdesc=("Extra library for file management")
 longdesc=("The libfm-extra package contains a library and other files required by menu-cache-gen libexec of menu-cache.")
 
 source=("https://downloads.sourceforge.net/pcmanfm/libfm-$pkgver.tar.xz")
