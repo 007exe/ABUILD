@@ -1,0 +1,32 @@
+pkgname=lxde
+pkgver=0.99.2
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("Meta-package for instal LXDE")
+longdesc=("Installs: lxmenu-data libfm-extra menu-cache libfm pcmanfm lxpanel lxsession lxde-common")
+
+#source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="virtual lxde-base"
+
+pkglist="lxde-applications"
+
+build_deps=" "
+
+adddep="lxmenu-data libfm-extra menu-cache libfm pcmanfm lxpanel lxsession lxde-common"
+
+build() {
+echo "lxde done"
+}
+
+lxde-applications() {
+  pkgname=lxde-applications
+  shortdesc=("Meta-package for instal LXDE-Applications")
+  longdesc=("Installs: gpicview lxappearance-obconf lxinput lxrandr lxtask lxterminal")
+  adddep="gpicview lxappearance-obconf lxinput lxrandr lxtask lxterminal"
+}
+
+lxde-applications_prep() {
+echo "lxde-applications done"
+}
