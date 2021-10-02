@@ -10,7 +10,7 @@ source=("https://downloads.sourceforge.net/pcmanfm/pcmanfm-${pkgver}.tar.xz")
 
 tags="xapps app-misc"
 
-build_deps="libfm-gtk3 lxmenu-data"
+build_deps="libfm lxmenu-data gtk3"
 
 adddep="lxmenu-data"
 
