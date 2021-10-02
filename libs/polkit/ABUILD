@@ -1,6 +1,6 @@
 pkgname=polkit
 pkgver=0.119
-pkgbuild=1
+pkgbuild=2
 arch="auto"
 
 shortdesc=("Application development toolkit for controlling system-wide privileges")
