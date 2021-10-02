@@ -10,16 +10,24 @@ source=("https://downloads.sourceforge.net/lxde/$pkgname-$pkgver.tar.xz")
 
 tags="lxde lxde-base"
 
-build_deps="intltool docbook-xml docbook-xsl wireless_tools alsa-lib curl menu-cache lxmenu-data libwnck libfm-gtk2 libkeybinder2"
+build_deps="intltool docbook-xml docbook-xsl alsa-lib curl menu-cache lxmenu-data libfm libkeybinder3 wireless_tools"
 
 adddep="menu-cache lxmenu-data"
 
 build() {
   go_src_dir
   burn_patches
+# Disable pager plugin as it breaks panel layout with GTK+ 3
+# https://sourceforge.net/p/lxde/bugs/773/
+  sed -i '/pager.c/d' plugins/Makefile.am
+  sed -i '/STATIC_PAGER/d' src/private.h
+  sed -i 's/libwnck-3.0//' configure.ac
+  autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --enable-gtk3
 #https://bugzilla.gnome.org/show_bug.cgi?id=656231
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
