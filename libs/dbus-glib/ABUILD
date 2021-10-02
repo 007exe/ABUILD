@@ -1,0 +1,27 @@
+pkgname=dbus-glib
+pkgver=0.112
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("GLib bindings for DBUS")
+longdesc=("The D-Bus GLib package contains GLib interfaces to the D-Bus API.")
+
+tags="libs dev-libs compat32"
+
+build_deps="dbus glib2 python gtk-doc"
+
+source=("https://dbus.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --enable-gtk-doc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install completiondir=/usr/share/bash-completion/completions
+  mv "$pkgdir/usr/share/bash-completion/completions"/{dbus-bash-completion.sh,dbus-send}
+}
