@@ -11,13 +11,11 @@ tags=('libs x11-libs')
 _pkgfqn="qt-everywhere-opensource-src-${pkgver}"
 source=("https://ftp.desolve.ru/ftp/viktor/qt4/${_pkgfqn}.tar.gz")
 
-pkglist="qtdoc"
-
 gendeps_blacklist="usr/lib$LIBDIRSUFFIX/qt/plugins/"
 
 removedep="mysql postgresql"
-# postgresql-libs mariadb-libs cups gtk2 libfbclient xdg-utils hicolor-icon-theme desktop-file-utils libmng
-build_deps=("unixodbc mesa sqlite ca-certificates fontconfig libglvnd libxrandr libxv libxi alsa-lib dbus")
+
+build_deps=("unixodbc mesa sqlite ca-certificates fontconfig libglvnd libxrandr libxv libxi alsa-lib dbus cups gtk2 xdg-utils hicolor-icon-theme desktop-file-utils")
 
 build() {
   go_src_dir
@@ -27,38 +25,51 @@ build() {
   export QT4DIR="${srcdir}"/${_pkgfqn}
   export LD_LIBRARY_PATH=${QT4DIR}/lib:${LD_LIBRARY_PATH}
 
-  ./configure -confirm-license -opensource \
+  ./configure \
     -prefix /usr \
-    -bindir /usr/lib/qt4/bin \
-    -headerdir /usr/include/qt4 \
-    -docdir /usr/share/doc/qt4 \
+    -bindir /usr/lib${LIBDIRSUFFIX}/qt4/bin \
+    -libdir /usr/lib$LIBDIRSUFFIX \
     -plugindir /usr/lib${LIBDIRSUFFIX}/qt4/plugins \
     -importdir /usr/lib${LIBDIRSUFFIX}/qt4/imports \
+    -headerdir /usr/include/qt4 \
     -datadir /usr/share/qt4 \
+    -docdir /usr/share/doc/qt4 \
     -translationdir /usr/share/qt4/translations \
-    -sysconfdir /etc/xdg \
-    -examplesdir /usr/share/doc/qt4/examples \
     -demosdir /usr/share/doc/qt4/demos \
-    -plugin-sql-{psql,mysql,sqlite,odbc,ibase} \
+    -examplesdir /usr/share/doc/qt4/examples \
+    -sysconfdir /etc/xdg \
+    -confirm-license \
+    -opensource \
+    -release \
+    -dbus-linked \
+    -openssl-linked \
     -system-sqlite \
     -no-phonon \
     -no-phonon-backend \
     -no-webkit \
-    -graphicssystem raster \
-    -openssl-linked \
+    -no-openvg \
+    -no-rpath \
+    -no-reduce-relocations \
     -nomake demos \
     -nomake examples \
     -nomake docs \
+    -optimized-qmake \
+    -graphicssystem raster \
     -xmlpatterns \
     -silent \
-    -no-rpath \
-    -optimized-qmake \
-    -no-reduce-relocations \
-    -dbus-linked \
-    -no-openvg \
-    -little-endian -host-little-endian
+    -little-endian \
+    -host-little-endian
+
   make -j${numjobs}
   make INSTALL_ROOT="${pkgdir}" install
+
+# Add profile scripts
+  mkdir -p ${pkgdir}/etc/profile.d
+  sed -e "s#usr/lib/#usr/lib${LIBDIRSUFFIX}/#g" ${filedir}/profile.d/qt4.sh \
+    > ${pkgdir}/etc/profile.d/qt4.sh
+  sed -e "s#usr/lib/#usr/lib${LIBDIRSUFFIX}/#g" ${filedir}/profile.d/qt4.csh \
+    > ${pkgdir}/etc/profile.d/qt4.csh
+  chmod 0755 ${pkgdir}/etc/profile.d/*
 
 # install missing icons and desktop files
   install -D -m644 src/gui/dialogs/images/qtlogo-64.png \
@@ -80,44 +91,31 @@ build() {
     "${pkgdir}"/usr/share/icons/hicolor/128x128/apps/qdbusviewer-qt4.png
 
   install -d "${pkgdir}"/usr/share/applications
-  install -m644 "${srcdir}"/{assistant,designer,linguist,qtconfig,qdbusviewer}-qt4.desktop \
+  install -m644 "${filedir}"/{assistant,designer,linguist,qtconfig,qdbusviewer}-qt4.desktop \
     "${pkgdir}"/usr/share/applications/
 
 # Useful symlinks for cmake and configure scripts
-  install -d "${pkgdir}"/usr/bin
-  for b in "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/qt4/bin/*; do
-    ln -s /usr/lib${LIBDIRSUFFIX}/qt4/bin/$(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt4
-  done
+    install -d "${pkgdir}"/usr/bin
+    for b in "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/qt4/bin/*; do
+      ln -s /usr/lib${LIBDIRSUFFIX}/qt4/bin/$(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt4
+    done
+
+# Fix wrong libs path in pkgconfig files
+    find "${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig" -type f -name '*.pc' \
+      -exec perl -pi -e "s, -L${srcdir}/?\S+,,g" {} \;
+
+# Fix wrong bins path in pkgconfig files
+    find "${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig" -type f -name '*.pc' \
+      -exec sed -i 's|/usr/bin/|/usr/lib${LIBDIRSUFFIX}/qt4/bin/|g' {} \;
+
+# Fix wrong path in prl files
+    find "${pkgdir}/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' \
+      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
+
+# The TGA plugin is broken (FS#33568)
+    rm "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/qt4/plugins/imageformats/libqtga.so
 
 # install license addition
   install -D -m644 LGPL_EXCEPTION.txt \
     ${pkgdir}/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
-
-# Fix wrong libs path in pkgconfig files
-  find "${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig" -type f -name '*.pc' \
-    -exec perl -pi -e "s, -L${srcdir}/?\S+,,g" {} \;
-
-# Fix wrong bins path in pkgconfig files
-  find "${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig" -type f -name '*.pc' \
-    -exec sed -i 's|/usr/bin/|/usr/lib${LIBDIRSUFFIX}/qt4/bin/|g' {} \;
-
-# Fix wrong path in prl files
-  find "${pkgdir}/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' \
-    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
-
-# The TGA plugin is broken (FS#33568)
-  rm "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/qt4/plugins/imageformats/libqtga.so
-}
-
-qtdoc() {
-  pkgname=qt4-doc
-  arch=('noarch')
-  shortdesc=("Qt4 Documentation")
-  longdesc=("This package contains complete Qt programming reference. If you wish to browse documentation using assisant, you need this package.")
-}
-
-qtdoc_prep() {
-  # Move documentation to separate package:
-  mkdir -p ${pkgdir}/usr/doc
-  mv ${p_pkgdir}/usr/doc/qt-${pkgver} ${pkgdir}/usr/doc/qt-${pkgver}
 }
