@@ -1,0 +1,23 @@
+pkgname=mm-common
+pkgver=1.0.3
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("Common build files of the C++ bindings")
+
+source=("http://download.gnome.org/sources/mm-common/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags="gnome-base gnome"
+
+build_deps="meson"
+
+adddep="doxygen gtk-doc perl-xml-parser graphviz libsigc++-docs"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
