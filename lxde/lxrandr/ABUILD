@@ -1,0 +1,26 @@
+pkgname=lxrandr
+pkgver=0.3.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Monitor configuration tool (part of LXDE)")
+longdesc=("The LXRandR package contains a monitor configuration tool for LXDE.")
+
+source=("https://downloads.sourceforge.net/lxde/lxrandr-$pkgver.tar.xz")
+
+tags="lxde lxde-base"
+
+build_deps="intltool gtk3 xorg-xrandr"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-gtk3
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+# Ignore package by AppStream to avoid duplicated IDs
+  echo 'X-AppStream-Ignore=true' >> "$pkgdir/usr/share/applications/$pkgbase.desktop"
+}
