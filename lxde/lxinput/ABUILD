@@ -1,0 +1,24 @@
+pkgname=lxinput
+pkgver=0.3.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Small program to configure keyboard and mouse for LXDE")
+longdesc=("The LXInput package contains a small program used to configure keyboard and mouse for LXDE.")
+
+source=("https://downloads.sourceforge.net/lxde/lxinput-$pkgver.tar.xz")
+
+tags="lxde lxde-base"
+
+build_deps="gtk3 intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-gtk3
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
