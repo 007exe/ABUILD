@@ -1,0 +1,37 @@
+pkgname=clutter
+pkgver=1.26.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A toolkit for creating fast, portable, compelling dynamic UIs")
+longdesc=("Clutter is an Open GL based interactive canvas library, designed for creating fast, mainly 2D single window applications such as media box UIs, presentations, kiosk style applications and so on.")
+
+source=("https://gitlab.gnome.org/GNOME/clutter/-/archive/${pkgver}/clutter-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="gobject-introspection gtk-doc gtk3 libinput cogl"
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC=gcc
+  export CXX=g++
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --enable-introspection \
+    --enable-egl-backend \
+    --enable-gdk-backend \
+    --enable-wayland-backend \
+    --enable-x11-backend \
+    --enable-evdev-input \
+    --enable-wayland-compositor \
+    --enable-gtk-doc
+# https://bugzilla.gnome.org/show_bug.cgi?id=655517
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
