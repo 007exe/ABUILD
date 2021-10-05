@@ -1,0 +1,25 @@
+pkgname=sdl2
+pkgver=2.0.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)")
+longdesc=("The Simple DirectMedia Layer Version 2 (SDL2 for short) is a cross-platform library designed to make it easy to write multimedia software, such as games and emulators.")
+
+tags=("media-libs libs")
+
+source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
+# pipewire ibus fcitx libdecor libxss
+build_deps="alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake jack ninja"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
