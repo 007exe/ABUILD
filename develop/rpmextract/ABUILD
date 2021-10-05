@@ -1,0 +1,23 @@
+pkgname=rpmextract
+pkgver=1.0
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("Script to convert or extract RPM archives (contains rpm2cpio).")
+longdesc=("Script to convert or extract RPM archives (contains rpm2cpio).")
+
+source=("")
+
+tags="develop dev-util"
+
+build_deps="mkpkg"
+
+adddep="bash cpio"
+
+build() {
+go_src_dir
+# thanks goes to Archlinux
+  install -d ${pkgdir}/usr/bin
+  install -m755 ${filedir}/rpmextract.sh ${pkgdir}/usr/bin/rpmextract
+  install -m755 ${filedir}/rpm2cpio ${pkgdir}/usr/bin/
+}
