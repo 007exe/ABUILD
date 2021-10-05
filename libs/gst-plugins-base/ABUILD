@@ -1,0 +1,47 @@
+pkgname=gst-plugins-base
+pkgver=1.18.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Multimedia graph framework - base plugins")
+longdesc=("The GStreamer Base Plug-ins is a well-groomed and well-maintained collection of GStreamer plug-ins and elements, spanning the range of possible types of elements one would want to write for GStreamer. You will need at least one of Good, Bad, Ugly or Libav plugins for GStreamer applications to function properly.")
+
+tags=('libs media-libs')
+
+source=("http://gstreamer.freedesktop.org/src/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+# qt5-{base,tools,x11extras}
+build_deps="gstreamer alsa-lib libvorbis libtheora pango libpng libjpeg-turbo gobject-introspection git meson gtk3 wayland-protocols libogg iso-codes libgudev cdparanoia  libvisual clutter sdl sdl2 glu opus graphene"
+
+adddep="gst-plugins-base-libs"
+
+pkglist="gst-plugins-base-libs"
+
+gst-plugins-base-libs() {
+  pkgname=gst-plugins-base-libs
+  shortdesc=("Multimedia graph framework - base libraries")
+  longdesc=("The GStreamer Base Plug-ins is a well-groomed and well-maintained collection of GStreamer plug-ins and elements, spanning the range of possible types of elements one would want to write for GStreamer. You will need at least one of Good, Bad, Ugly or Libav plugins for GStreamer applications to function properly.")
+  adddep=""
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D doc=disabled \
+    -D tremor=disabled \
+    -D gobject-cast-checks=disabled \
+    -D package-name="GStreamer Base Plugins (AgiliaLinux)"
+  meson compile -C build
+  meson install -C build --destdir ${srcdir}/gst-plugins-base-libs
+
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0
+  for _x in alsa cdparanoia libvisual ogg opengl opus pango theora vorbis; do
+    _x="lib${LIBDIRSUFFIX}/gstreamer-1.0/libgst${_x}.so"
+    mv "${srcdir}/gst-plugins-base-libs/usr/$_x" ${pkgdir}/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0
+  done
+}
+
+gst-plugins-base-libs_prep(){
+  mv "$srcdir"/gst-plugins-base-libs/* ${pkgdir}
+}
