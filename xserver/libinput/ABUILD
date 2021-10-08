@@ -1,5 +1,5 @@
 pkgname=libinput
-pkgver=1.19.0
+pkgver=1.19.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,8 @@ longdesc=("libinput is a library to handle input devices in Wayland compositors 
 source=("https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz")
 
 tags=("libs dev-libs")
-# gtk3 -Ddebug-gui=true
-build_deps="meson mtdev libevdev libwacom"
+
+build_deps="meson mtdev libevdev libwacom gtk3"
 
 build() {
   go_src_dir
@@ -22,7 +22,8 @@ build() {
     -D udev-dir=/lib/udev \
     -D tests=false \
     -D documentation=false \
-    -D debug-gui=false
+    -D debug-gui=false \
+    -Ddebug-gui=true
   meson compile -C build
 
   DESTDIR="$pkgdir" meson install -C build
