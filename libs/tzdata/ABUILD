@@ -1,6 +1,6 @@
 pkgname=tzdata
-pkgver=2021a
-pkgbuild=2
+pkgver=2021c
+pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Sources for time zone and daylight saving time data")
