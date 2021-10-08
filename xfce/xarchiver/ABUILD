@@ -1,0 +1,25 @@
+pkgname=xarchiver
+pkgver=0.5.4.17
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("GTK+ frontend to various command line archivers")
+longdesc=("XArchiver is a GTK+ archive manager with support for tar, xz, bzip2, gzip, zip, 7z, rar, lzo and many other archive formats.")
+
+source=("https://github.com/ib/xarchiver/archive/$pkgver/xarchiver-$pkgver.tar.gz")
+
+tags="xfce app-arch"
+
+build_deps="gtk3 docbook-xsl intltool xmlto"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libexecdir=/usr/lib${LIBDIRSUFFIX}/xfce4
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ${filedir}/xarchiver.appdata.xml "$pkgdir/usr/share/metainfo/$pkgname.appdata.xml"
+}
