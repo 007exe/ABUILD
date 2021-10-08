@@ -1,12 +1,13 @@
 pkgname=vte
-pkgver=0.64.2
+pkgver=0.66.0
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("Virtual Terminal Emulator widget")
 longdesc=("The VTE library inserts terminal capability strings into a trie, and then uses it to determine if data received from a pseudo-terminal is a control sequence  or just random data. The sample program interpret illustrates more or less what the widget sees after it filters incoming data.")
 
-source=("http://ftp.gnome.org/pub/GNOME/sources/vte/${pkgver%.*}/vte-${pkgver}.tar.xz")
+#source=("http://ftp.gnome.org/pub/GNOME/sources/vte/${pkgver%.*}/vte-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/vte/-/archive/${pkgver}/vte-${pkgver}.tar.gz")
 
 tags="libs x11-libs"
 
