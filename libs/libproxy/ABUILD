@@ -1,0 +1,30 @@
+pkgname=libproxy
+pkgver=0.4.17
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that provides automatic proxy configuration management")
+longdesc=("libproxy is a library that provides automatic proxy configuration management. libproxy has an extremely small core footprint, and allows dynamic adjustment to changing network topology in a standard way of dealing with proxy settings across all scenarios.")
+
+tags=("libs net-libs")
+
+source=("https://github.com/libproxy/libproxy/releases/download/${pkgver}/libproxy-${pkgver}.tar.xz")
+# webkit2gtk
+build_deps="cmake python perl gcc-libs glib2 dbus"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DBIPR=0 \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DLIBEXEC_INSTALL_DIR=/usr/lib \
+    -DPERL_VENDORINSTALL=yes \
+    -DWITH_WEBKIT3=ON
+  cmake --build build
+  DESTDIR="$pkgdir" cmake --install build
+}
