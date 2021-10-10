@@ -1,0 +1,25 @@
+pkgname=libsoup
+pkgver=2.74.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("HTTP client/server library for GNOME")
+longdesc=("The libsoup is a HTTP client/server library for GNOME. It uses GObject and the GLib main loop to integrate with GNOME applications and it also has an asynchronous API for use in threaded applications.")
+
+source=("https://gitlab.gnome.org/GNOME/libsoup/-/archive/${pkgver}/libsoup-${pkgver}.tar.gz")
+#source=("https://download-fallback.gnome.org/sources/libsoup/${pkgver%.*}/libsoup-${pkgver}.tar.xz")
+
+tags="libs net-libs"
+#brotli
+build_deps="gobject-introspection glib-networking python vala git gtk-doc meson glib2 libxml2 sqlite krb5 libpsl"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D gtk_doc=true \
+    -D sysprof=disabled
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
