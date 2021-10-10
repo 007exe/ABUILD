@@ -1,0 +1,60 @@
+pkgname=brotli
+pkgver=1.0.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Generic-purpose lossless compression algorithm")
+longdesc=("Brotli provides a general-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling. Its libraries are particularly used for WOFF2 fonts on webpages.")
+
+tags=("develop dev-ruby")
+
+source=("https://github.com/google/brotli/archive/refs/tags/v${pkgver}.tar.gz")
+
+pkglist="python-brotli brotli-testdata"
+
+build_deps="git glibc gcc-libs cmake python-setuptools"
+
+adddep="gcc-libs"
+
+build() {
+  go_src_dir
+  python setup.py build
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS=True
+  make -C build VERBOSE=1
+  make -C build DESTDIR="$pkgdir" install
+
+  local man;
+  for man in docs/*.?; do
+    install -Dm 644 "$man" "$pkgdir/usr/share/man/man${man##*.}/${man##*/}"
+  done
+  install -Dm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
+}
+
+python-brotli() {
+  pkgname=python-brotli
+  shortdesc=("Generic-purpose lossless compression algorithm - python library")
+  longdesc=("Brotli provides a general-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling. Its libraries are particularly used for WOFF2 fonts on webpages.")
+}
+
+python-brotli_prep() {
+  go_src_dir
+  python setup.py install --skip-build -O1 --root="$pkgdir"
+  install -Dm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
+}
+
+brotli-testdata() {
+  pkgname=brotli-testdata
+  shortdesc=("Generic-purpose lossless compression algorithm - test data")
+  longdesc=("Brotli provides a general-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling. Its libraries are particularly used for WOFF2 fonts on webpages.")
+}
+
+brotli-testdata_prep() {
+  go_src_dir
+  install -dm755 "$pkgdir"/usr/share/brotli
+  cp -a tests/testdata "$pkgdir"/usr/share/brotli/
+  install -Dm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
+}
