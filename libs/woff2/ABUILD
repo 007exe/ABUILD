@@ -1,0 +1,27 @@
+pkgname=woff2
+pkgver=1.0.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Web Open Font Format 2 reference implementation")
+longdesc=("WOFF2 is a library for converting fonts from the TTF format to the WOFF 2.0 format. It also allows decompression from WOFF 2.0 to TTF. The WOFF 2.0 format uses the Brotli compression algorithm to compress fonts suitable for downloading in CSS @font-face rules.")
+
+source=("https://github.com/google/woff2/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="cmake brotli"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+    -DCMAKE_BUILD_TYPE=Release ..
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 ../LICENSE
+}
