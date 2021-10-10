@@ -1,0 +1,24 @@
+pkgname=libsecret
+pkgver=0.20.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library for storing and retrieving passwords and other secrets")
+longdesc=("The libsecret package contains a GObject based library for accessing the Secret Service API.")
+
+source=("https://gitlab.gnome.org/GNOME/libsecret/-/archive/${pkgver}/libsecret-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="docbook-xsl gobject-introspection vala git gtk-doc meson valgrind dbus-glib"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D gtk_doc=false \
+    --buildtype=release
+  meson compile -C build
+  DESTDIR="$pkgdir" meson install -C build
+}
