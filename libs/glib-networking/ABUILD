@@ -1,0 +1,36 @@
+pkgname=glib-networking
+pkgver=2.70.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Network extensions for GLib")
+longdesc=("The GLib Networking package contains Network related gio modules for GLib.")
+
+source=("https://gitlab.gnome.org/GNOME/glib-networking/-/archive/${pkgver}/glib-networking-${pkgver}.tar.gz")
+
+tags="net-libs libs"
+
+build_deps="meson glib2 gnutls gsettings-desktop-schemas libproxy"
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS="-O2 -fPIC"
+  export CXXFLAGS="-O2 -fPIC"
+# Don't build tests unconditionally
+# This is a hack to avoid needing gnutls[pkcs11] when USE=-test
+# It may become a real runtime dependency in future
+# Please check!
+# bug #777462
+  sed -i "/^subdir('tls\/tests')/d" meson.build || die
+  mkdir build
+  cd build
+  meson setup .. \
+    --prefix=/usr \
+    --libdir=lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --buildtype=release
+  meson compile
+  meson install --destdir "$pkgdir"
+}
