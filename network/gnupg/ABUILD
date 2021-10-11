@@ -1,0 +1,29 @@
+pkgname=gnupg
+pkgver=2.2.29
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Complete and free implementation of the OpenPGP standard")
+longdesc=("The GnuPG package is GNU's tool for secure communication and data storage. It can be used to encrypt data and to create digital signatures. It includes an advanced key management facility and is compliant with the proposed OpenPGP Internet standard as described in RFC2440 and the S/MIME standard as described by several RFCs. GnuPG 2 is the stable version of GnuPG integrating support for OpenPGP and S/MIME.")
+
+tags=("app-crypt network")
+
+source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+# libldap pcsclite pinentry
+build_deps="libusb-compat libgpg-error libgcrypt bzip2 readline gnutls sqlite zlib glibc libassuan libksba npth"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  ln -s gpg "${pkgdir}"/usr/bin/gpg2
+  ln -s gpgv "${pkgdir}"/usr/bin/gpgv2
+
+  install -Dm 644 doc/examples/systemd-user/*.* -t "${pkgdir}/usr/lib/systemd/user"
+}
