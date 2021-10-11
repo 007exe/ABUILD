@@ -1,0 +1,32 @@
+pkgname=webkit2gtk
+pkgver=2.32.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Web content engine for GTK")
+longdesc=("The WebKitGTK package is a port of the portable web rendering engine WebKit to the GTK+ 3 and GTK+ 2 platforms.")
+
+source="https://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz"
+
+tags="develop dev-libs"
+
+build_deps="cmake ninja gtk-doc python ruby gobject-introspection wayland-protocols gst-plugins-bad gperf libwpe libjpeg-turbo wpebackend-fdo libmanette libsecret enchant libnotify hyphen woff2 bubblewrap libseccomp xdg-dbus-proxy"
+
+adddep="zlib at-spi2-core libxext libice bubblewrap xdg-dbus-proxy"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DPORT=GTK \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib${LIBDIRSUFFIX} \
+    -DUSE_SYSTEMD=OFF \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DENABLE_GTKDOC=ON \
+    -DENABLE_MINIBROWSER=ON
+  cmake --build build
+  DESTDIR="$pkgdir" cmake --install build
+}
