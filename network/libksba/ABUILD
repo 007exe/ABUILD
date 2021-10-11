@@ -1,0 +1,23 @@
+pkgname=libksba
+pkgver=1.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for working with X.509 certificates, CMS data and related objects")
+longdesc=("The Libksba package contains a library used to make X.509 certificates as well as making the CMS (Cryptographic Message Syntax) easily accessible by other applications. Both specifications are building blocks of S/MIME and TLS. The library does not rely on another cryptographic library but provides hooks for easy integration with Libgcrypt.")
+
+tags=("dev-libs network")
+
+source=("https://www.gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps="glibc libgpg-error"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
