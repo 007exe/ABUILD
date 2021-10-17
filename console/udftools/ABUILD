@@ -1,0 +1,27 @@
+pkgname=udftools
+pkgver=2.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Linux tools for UDF filesystems and DVD/CD-R(W) drives")
+longdesc=("These are tools for UDF file systems as used, e.g., on DVD-RAM, DVD+RW, CD-RW. They are also used for managing Packet-CD/DVD devices and media.")
+
+source=("https://github.com/pali/$pkgname/releases/download/$pkgver/$pkgname-${pkgver}.tar.gz")
+
+tags="console sys-kernel"
+
+build_deps="ncurses readline"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|/lib/|$(libdir)/|' pktsetup/Makefile.am
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/share/man \
+    --sbindir=/usr/bin
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
