@@ -1,0 +1,25 @@
+pkgname=yelp-tools
+pkgver=41.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Collection of tools for building and converting documentation")
+longdesc=("yelp-tools is a collection of scripts and build utilities to help create, manage, and publish documentation for Yelp and the web. Most of the heavy lifting is done by packages like yelp-xsl and itstool. This package just wraps things up in a developer-friendly way.")
+
+source=("https://gitlab.gnome.org/GNOME/yelp-tools/-/archive/${pkgver}/yelp-tools-${pkgver}.tar.gz")
+
+tags="base app-text"
+
+build_deps="meson python-lxml itstool libxml2 docbook-xsl yelp-xsl"
+# mallard-ducktype
+adddep="yelp-xsl python-lxml itstool libxml2 docbook-xsl"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D help=true
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
