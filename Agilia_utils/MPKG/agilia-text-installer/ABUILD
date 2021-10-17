@@ -14,7 +14,9 @@ source=("git:git://github.com/007exe/mpkg.git")
 # Tags
 tags="xapps sys-apps"
 
-build_deps="libagiliasetup mpkg-parted"
+build_deps="libagiliasetup gcc-libs mpkg-parted mpkg-core mpkgsupport nwidgets"
+
+adddep="xdg-su"
 
 # Build system
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr"

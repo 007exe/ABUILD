@@ -12,7 +12,8 @@ source=("git:git://github.com/007exe/mpkg.git")
 
 # Tags
 tags="console dev-util"
-build_deps="mpkgsupport parted cmake"
+
+build_deps="mpkgsupport parted cmake gcc-libs"
 
 # Build system
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr"
