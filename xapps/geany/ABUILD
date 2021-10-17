@@ -1,0 +1,25 @@
+pkgname=geany
+pkgver=1.38
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Fast and lightweight IDE")
+longdesc=("Geany is a small C editor using GTK2 with basic features of an integrated development environment. It features syntax highlighting, code completion, call tips, many supported filetypes (including C, Java, PHP, HTML, DocBook, Perl, LateX, and Bash), and symbol lists.")
+
+source=("https://download.geany.org/$pkgname-$pkgver.tar.bz2")
+
+tags="xapps dev-util"
+
+build_deps="doxygen intltool python-lxml gtk3 vte"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-gtk3 \
+    --enable-gtkdoc-header
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
