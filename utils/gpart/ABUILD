@@ -1,0 +1,23 @@
+pkgname=gpart
+pkgver=0.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Partition table rescue/guessing tool")
+longdesc=("A tool which tries to guess the primary partition table of a PC-type hard disk in case the primary partition table in sector 0 is damaged, incorrect or deleted. The guessed table can be written to a file or device. Supported (guessable) filesystem or partition types: DOS/Windows FAT, Linux ext2 and swap, OS/2 HPFS, Windows NTFS, FreeBSD and Solaris/x86 disklabels, Minix FS, QNX 4 FS, Reiser FS, LVM physical volumes, BeOS FS, SGI XFS.")
+
+source=("https://github.com/baruch/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags="sys-fs utils"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+ ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make prefix="${pkgdir}"/usr sbindir="${pkgdir}"/usr/bin install
+}
