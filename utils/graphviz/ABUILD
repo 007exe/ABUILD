@@ -1,5 +1,5 @@
 pkgname=graphviz
-pkgver=2.49.1
+pkgver=2.49.2
 pkgbuild=1
 arch=('auto')
 
@@ -9,10 +9,12 @@ longdesc=("The Graphviz package contains graph visualization software. Graph vis
 source=("https://gitlab.com/graphviz/graphviz/-/archive/$pkgver/$pkgname-$pkgver.tar.gz")
 
 tags="utils media-gfx"
-# mono guile lua r tk qt5-base
-build_deps="swig ocaml>=4.12.0 perl python gtk2 ghostscript"
+# mono guile r tk
+build_deps="swig lua ocaml>=4.12.0 perl python gtk2 ghostscript qt5-base"
 
 adddep="ghostscript"
+# Removing optional dependencies
+removedep="mono guile lua lua51 lua52 lua53 ocaml perl python r tcl qt5-base gtk2"
 
 build() {
   go_src_dir
@@ -24,7 +26,8 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --enable-python3=yes \
-    --disable-python
+    --disable-python \
+    --disable-static
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool # Fix overlinking
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
