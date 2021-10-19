@@ -9,8 +9,8 @@ longdesc=("The Avahi package is a system which facilitates service discovery on 
 source=("https://github.com/lathiat/avahi/releases/download/v${pkgver}/avahi-${pkgver}.tar.gz")
 
 tags="network net-dns"
-# qt5-base --enable-qt5
-build_deps="gobject-introspection gtk3 doxygen libevent libdaemon"
+
+build_deps="gobject-introspection gtk3 doxygen libevent libdaemon qt5-base"
 # Let's not drag these heavy libraries with us
 removedep="gtk3 qt5-base"
 
@@ -34,7 +34,7 @@ build() {
     --disable-python \
     --disable-qt3 \
     --disable-qt4 \
-    --disable-qt5 \
+    --enable-qt5 \
     --enable-core-docs \
     --with-distro=none \
     --with-systemdsystemunitdir=no \
