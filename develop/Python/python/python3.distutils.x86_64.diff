@@ -1,0 +1,11 @@
+--- ./Lib/distutils/sysconfig.py.orig	2021-10-04 12:40:46.000000000 -0500
++++ ./Lib/distutils/sysconfig.py	2021-10-06 15:09:26.238070828 -0500
+@@ -333,7 +333,7 @@
+             libdir = sys.platlibdir
+         else:
+             # Pure Python
+-            libdir = "lib"
++            libdir = "lib64"
+         libpython = os.path.join(prefix, libdir,
+                                  "python" + get_python_version())
+         if standard_lib:
