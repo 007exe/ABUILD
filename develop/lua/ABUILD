@@ -1,0 +1,43 @@
+pkgname=lua
+pkgver=5.4.3
+_majorver=${pkgver%.*}
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Powerful lightweight programming language designed for extending applications.")
+longdesc=("Lua is a powerful light-weight programming language designed for extending applications. It is also frequently used as a general-purpose, stand-alone language. Lua is implemented as a small library of C functions, written in ANSI C, and compiles unmodified in all known platforms. The implementation goals are simplicity, efficiency, portability, and low embedding cost. The result is a fast language engine with small footprint, making it ideal in embedded systems too.")
+
+source=("http://www.lua.org/ftp/lua-${pkgver}.tar.gz")
+
+tags="develop dev-lang"
+
+build_deps="readline "
+
+before_build() {
+  go_src_dir
+  burn_patches
+  sed "s/%VER%/$_majorver/g;s/%REL%/$pkgver/g" ${filedir}/lua.pc > lua.pc
+}
+
+build() {
+  go_src_dir
+  make MYCFLAGS="$CFLAGS -fPIC" MYLDFLAGS="$LDFLAGS" linux-readline
+  make \
+    TO_LIB="liblua.a liblua.so liblua.so.$_majorver liblua.so.$pkgver" \
+    INSTALL_DATA='cp -d' \
+    INSTALL_TOP="$pkgdir"/usr \
+    INSTALL_LIB="${pkgdir}"/usr/lib${LIBDIRSUFFIX} \
+    INSTALL_CMOD="${pkgdir}"/usr/lib${LIBDIRSUFFIX}/lua/${pkgver%.*} \
+    INSTALL_MAN="$pkgdir"/usr/share/man/man1 \
+    install
+  ln -sf /usr/bin/lua "$pkgdir"/usr/bin/lua$_majorver
+  ln -sf /usr/bin/luac "$pkgdir"/usr/bin/luac$_majorver
+  ln -sf /usr/lib${LIBDIRSUFFIX}/liblua.so.$pkgver "$pkgdir"/usr/lib${LIBDIRSUFFIX}/liblua$_majorver.so
+  install -Dm644 lua.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lua54.pc
+  ln -sf lua54.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lua.pc
+  ln -sf lua54.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lua5.4.pc
+  ln -sf lua54.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lua-5.4.pc
+
+  install -d "$pkgdir"/usr/share/doc/$pkgname
+  install -m644 doc/*.{gif,png,css,html} "$pkgdir"/usr/share/doc/$pkgname
+}
