@@ -1,0 +1,40 @@
+pkgname=efivar
+pkgver=37
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Tools and libraries to work with EFI variables")
+longdesc=("The efivar package provides tools and libraries to manipulate EFI variables.")
+
+source=("https://github.com/rhboot/efivar/releases/download/${pkgver}/efivar-${pkgver}.tar.bz2")
+
+tags="sys-boot libs"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+# -Werror, not even once
+  sed -e 's/-Werror//g' -i gcc.specs
+# remove insecure rpath in efivar-tester
+  sed 's|-rpath,$(TOPDIR)/src|-rpath,$(libdir)|g' -i src/test/Makefile
+  make libdir="/usr/lib${LIBDIRSUFFIX}/" \
+       bindir="/usr/bin/" \
+       mandir="/usr/share/man/" \
+       includedir="/usr/include/"
+# build efivar-tester
+  make libdir="/usr/lib${LIBDIRSUFFIX}/" \
+       bindir="/usr/bin/" \
+       mandir="/usr/share/man/" \
+       includedir="/usr/include/" \
+       -C src/test
+  make DESTDIR="${pkgdir}/" \
+       libdir="/usr/lib${LIBDIRSUFFIX}/" \
+       bindir="/usr/bin/" \
+       mandir="/usr/share/man/" \
+       includedir="/usr/include/" install -j1 V=1
+  install -vDm 755 "src/test/tester" "${pkgdir}/usr/bin/efivar-tester"
+  install -vDm 644 {README.md,TODO} -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
+
