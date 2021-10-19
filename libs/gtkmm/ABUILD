@@ -1,0 +1,25 @@
+pkgname=gtkmm
+pkgver=2.24.5
+pkgbuild=1
+arch="auto"
+
+shortdesc=("C++ interface for GTK+2")
+longdesc=("Gtkmm provides a C++ interface to the GTK+ GUI library. Gtkmm2 wraps GTK+ 2. Highlights include typesafe callbacks, widgets extensible via inheritance and a comprehensive set of widget classes that can be freely combined to quickly create complex user interfaces.")
+
+source=("http://ftp.gnome.org/pub/GNOME/sources/gtkmm/${pkgver%.*}/gtkmm-$pkgver.tar.xz")
+
+tags="libs dev-cpp"
+
+build_deps="gtk2 pangomm atkmm"
+
+build() {
+  go_src_dir
+  burn_patches
+# glibmm 2.46 uses C++11 features
+  CXXFLAGS+=' -std=c++11'
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
