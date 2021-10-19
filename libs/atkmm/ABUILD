@@ -1,0 +1,39 @@
+pkgname=atkmm
+pkgver=2.28.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ bindings for ATK")
+longdesc=("Atkmm is the official C++ interface for the ATK accessibility toolkit library.")
+
+tags=("libs dev-cpp")
+
+build_deps="meson mm-common glibmm-docs atk glibmm"
+
+source=("https://download.gnome.org/sources/atkmm/${pkgver%.*}/atkmm-${pkgver}.tar.xz")
+
+#pkglist="atkmm-docs"
+# -D maintainer-mode=true \
+build() {
+  go_src_dir
+  burn_patches
+  meson setup build \
+    -D prefix=/usr \
+    --buildtype=release
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
+
+#atkmm-docs() {
+#  pkgname=atkmm-docs
+#  shortdesc=("atkmm-docs Documentation")
+#  longdesc=("Atkmm is the official C++ interface for the ATK accessibility toolkit library.")
+#  arch="noarch"
+#}
+
+#atkmm-docs_prep() {
+#  go_src_dir
+#  mkdir -p "$pkgdir"/usr/share
+#  mv ${p_pkgdir}/usr/share/{devhelp,doc} "$pkgdir"/usr/share
+#  rm -r ${p_pkgdir}/usr/share
+#}
