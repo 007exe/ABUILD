@@ -1,6 +1,6 @@
 pkgname=libcanberra
 pkgver=0.30
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("A small and lightweight implementation of the XDG Sound Theme Specification")
