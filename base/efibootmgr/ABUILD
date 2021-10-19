@@ -1,0 +1,28 @@
+pkgname=efibootmgr
+pkgver=17
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Linux user-space application to modify the EFI Boot Manager")
+longdesc=("The efibootmgr package provides tools and libraries to manipulate EFI variables.")
+
+source=("https://github.com/rhboot/efibootmgr/releases/download/${pkgver}/efibootmgr-${pkgver}.tar.bz2")
+
+tags="base sys-boot"
+
+build_deps="efivar glibc popt"
+
+build() {
+  go_src_dir
+  burn_patches
+# Set default EFI System Partition directory:
+  export EFIDIR=/boot/efi
+# Build:
+  export CFLAGS="$SLKCFLAGS -Wno-pointer-sign"
+  make sbindir='/usr/bin' EFIDIR='agilialinux'
+# libdir='/usr/lib'
+  make install DESTDIR=${pkgdir} \
+    sbindir='/usr/bin' \
+    EFIDIR='agilialinux'
+#    libdir='/usr/lib'
+}
