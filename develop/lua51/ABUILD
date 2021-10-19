@@ -15,7 +15,7 @@ build_deps="readline "
 before_build() {
   go_src_dir
   burn_patches
-  sed -i "s|lib/lua|lib${LIBDIRSUFFIX}/lua|" src/luaconf.h
+  sed -i "s|lib${LIBDIRSUFFIX}/lua|lib${LIBDIRSUFFIX}/lua|" src/luaconf.h
   sed -e 's:llua:llua5.1:' -e 's:/include:/include/lua5.1:' -i etc/lua.pc
   sed -r -e '/^LUA_(SO|A|T)=/ s/lua/lua5.1/' -e '/^LUAC_T=/ s/luac/luac5.1/' -i src/Makefile
 }
@@ -30,6 +30,7 @@ build() {
   INSTALL_DATA='cp -d' \
   INSTALL_LIB="${pkgdir}"/usr/lib${LIBDIRSUFFIX} \
   INSTALL_TOP="$pkgdir"/usr \
+  INSTALL_CMOD="${pkgdir}"/usr/lib${LIBDIRSUFFIX}/lua/${pkgver%.*} \
   INSTALL_INC="$pkgdir"/usr/include/lua5.1 \
   INSTALL_MAN="$pkgdir"/usr/share/man/man1 \
   install
