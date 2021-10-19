@@ -1,26 +1,32 @@
 pkgname=gparted
-# Для версий выше (1.0.0. и 1.1.0) требуется GTK3
-pkgver=0.33.0 
+pkgver=1.3.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Partition table editor, frontend to GNU Parted"
-longdesc="Partition table editor similar to PartitionMagic, frontend to GNU Parted."
+shortdesc=("A Partition Magic clone, frontend to GNU Parted")
+longdesc=("Gparted is the Gnome Partition Editor, a Gtk 3 GUI for other command line tools that can create, reorganise or delete disk partitions.")
 
 tags=("sys-fs xapps")
-														#.tar.bz2
-source=(http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz)
 
-build_deps="atk atkmm cairo cairomm gcc gtk+2 gdk-pixbuf gtkmm glib2 glibmm pango pangomm parted perl-xml-parser"
-#build_deps="atk atkmm cairo cairomm gcc-libs gtk+2 gdk-pixbuf gtkmm glib2 glibmm pango pangomm parted perl-xml-parser"
-adddep=("e2fsprogs dosfstools jfsutils ntfsprogs reiserfsprogs xfsprogs xdg-utils")
+source=("https://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --disable-doc \
---enable-online-resize \
- --disable-scrollkeeper"
+build_deps="gtkmm3 intltool itstool pkg-config yelp-tools polkit parted  dosfstools jfsutils f2fs-tools btrfs-progs exfatprogs ntfs-3g reiserfsprogs udftools xfsprogs nilfs-utils polkit gpart mtools xorg-xhost e2fsprogs"
 
-after_build() {
- sed -i "/^Exec=/s|=.*|=xdg-su -c /usr/sbin/gparted %f|" \
-	 ${pkgdir}/usr/share/applications/gparted.desktop || exit 1
+adddep="e2fsprogs dosfstools jfsutils f2fs-tools btrfs-progs exfatprogs ntfs-3g reiserfsprogs udftools xfsprogs nilfs-utils polkit gpart mtools xorg-xhost"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-online-resize \
+    --enable-libparted-dmraid \
+    --enable-xhost-root
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+ # Install policy file
+  install -D -m0644 org.gnome.gparted.policy "${pkgdir}"/usr/share/polkit-1/actions/org.gnome.gparted.policy
 }
