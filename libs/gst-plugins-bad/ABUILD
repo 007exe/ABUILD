@@ -1,6 +1,6 @@
 pkgname=gst-plugins-bad
 pkgver=1.18.5
-pkgbuild=1
+pkgbuild=2
 arch="auto"
 
 shortdesc=("Multimedia graph framework - bad plugins")
