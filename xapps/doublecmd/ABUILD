@@ -1,0 +1,46 @@
+pkgname=doublecmd-gtk2
+pkgver=1.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("twin-panel (commander-style) file manager (GTK2)")
+longdesc=("Double Commander is a cross platform open source file manager with two panels side by side.")
+
+source=("http://sourceforge.net/projects/doublecmd/files/Double%20Commander%20Source/doublecmd-${pkgver}-src.tar.gz")
+
+tags="app-misc xapps"
+# qt5pas
+build_deps="lazarus gtk2"
+
+adddep="desktop-file-utils hicolor-icon-theme shared-mime-info"
+
+conflicts="doublecmd-qt5"
+
+pkglist="doublecmd-qt"
+
+before_build(){
+  cd ${srcdir}
+  cp -r doublecmd-$pkgver doublecmd-gtk
+  cp -r doublecmd-$pkgver doublecmd-qt
+}
+
+build(){
+  cd ${srcdir}/doublecmd-gtk
+  ./build.sh beta gtk2
+  install/linux/install.sh --install-prefix=${pkgdir}
+
+  cd ${srcdir}/doublecmd-qt
+#  ./build.sh beta qt5
+}
+
+doublecmd-qt() {
+  pkgname=doublecmd-qt5
+  shortdesc=("twin-panel (commander-style) file manager (Qt5)")
+  longdesc=("Double Commander is a cross platform open source file manager with two panels side by side.")
+  conflicts="doublecmd-gtk2"
+}
+
+doublecmd-qt_prep() {
+  cd ${srcdir}/doublecmd-qt
+#  ./install/linux/install.sh --install-prefix="$pkgdir"
+}
