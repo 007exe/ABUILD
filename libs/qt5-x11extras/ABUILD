@@ -1,0 +1,31 @@
+pkgname=qt5-x11extras
+pkgver=5.15.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Provides platform-specific APIs for X11")
+longdesc=("Must only be used by packages that are known to use private parts of the Qt API.")
+
+#Ссылка на исходники могут скачиватся из нескольких источников
+source=("https://download.qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtx11extras-everywhere-src-${pkgver}.tar.xz")
+
+tags="libs dev-libs"
+
+build_deps="qt5-base"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT="$pkgdir" install
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d "$pkgdir"/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+}
