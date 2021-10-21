@@ -1,0 +1,23 @@
+pkgname=libwnck3
+pkgver=40.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library to manage X windows and workspaces (via pagers, tasklists, etc.")
+longdesc=("The libwnck package contains a Window Navigator Construction Kit.")
+
+source=("https://gitlab.gnome.org/GNOME/libwnck/-/archive/${pkgver}/libwnck-${pkgver}.tar.gz")
+
+tags=("libs x11-libs")
+
+build_deps="gtk3 startup-notification libxres gobject-introspection gtk-doc meson"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D gtk_doc=false
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
