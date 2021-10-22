@@ -1,0 +1,53 @@
+pkgname=lua52
+pkgver=5.2.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Powerful lightweight programming language designed for extending applications.")
+longdesc=("Lua is a powerful light-weight programming language designed for extending applications. It is also frequently used as a general-purpose, stand-alone language. Lua is implemented as a small library of C functions, written in ANSI C, and compiles unmodified in all known platforms. The implementation goals are simplicity, efficiency, portability, and low embedding cost. The result is a fast language engine with small footprint, making it ideal in embedded systems too.")
+
+source=("http://www.lua.org/ftp/lua-${pkgver}.tar.gz")
+
+tags="develop dev-lang"
+
+build_deps="readline "
+
+before_build() {
+  go_src_dir
+  burn_patches
+
+  sed -i "s|lib${LIBDIRSUFFIX}/lua|lib${LIBDIRSUFFIX}/lua|" src/luaconf.h
+
+  sed "s/%VER%/${pkgver%.*}/g;s/%REL%/$pkgver/g" ${filedir}/lua.pc > lua.pc
+  sed -e 's:llua:llua5.2:' -e 's:/include:/include/lua5.2:' -i lua.pc
+  sed -r -e '/^LUA_(SO|A|T)=/ s/lua/lua5.2/' -e '/^LUAC_T=/ s/luac/luac5.2/' -i src/Makefile
+}
+
+build() {
+  go_src_dir
+  make MYCFLAGS="$CFLAGS -fPIC" MYLDFLAGS="$LDFLAGS" linux
+  make \
+    TO_BIN='lua5.2 luac5.2' \
+    TO_LIB="liblua5.2.a liblua5.2.so liblua5.2.so.5.2 liblua5.2.so.$pkgver" \
+    INSTALL_DATA='cp -d' \
+    INSTALL_TOP="$pkgdir"/usr \
+    INSTALL_LIB="${pkgdir}"/usr/lib${LIBDIRSUFFIX} \
+    INSTALL_CMOD="${pkgdir}"/usr/lib${LIBDIRSUFFIX}/lua/${pkgver%.*} \
+    INSTALL_INC="$pkgdir"/usr/include/lua5.2 \
+    INSTALL_MAN="$pkgdir"/usr/share/man/man1 \
+    install
+
+  install -Dm644 lua.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lua52.pc
+  ln -sf lua52.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lua5.2.pc
+  ln -sf lua52.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lua-5.2.pc
+
+  install -d "$pkgdir"/usr/share/doc/$pkgname
+  install -m644 doc/*.{gif,png,css,html} "$pkgdir"/usr/share/doc/$pkgname
+
+  ln -s liblua5.2.so "$pkgdir"/usr/lib${LIBDIRSUFFIX}/liblua.so.5.2
+  ln -s liblua5.2.so "$pkgdir"/usr/lib${LIBDIRSUFFIX}/liblua.so.$pkgver
+
+  cd "$pkgdir"/usr/share/man/man1
+  mv lua.1 lua5.2.1
+  mv luac.1 luac5.2.1
+}
