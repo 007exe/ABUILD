@@ -1,0 +1,25 @@
+pkgname=libdvdread
+pkgver=6.1.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Provides a simple foundation for reading DVD video disks")
+longdesc=("libdvdread is a library which provides a simple foundation for reading DVDs.")
+
+source=("https://code.videolan.org/videolan/libdvdread/-/archive/${pkgver}/libdvdread-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="libdvdcss"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
