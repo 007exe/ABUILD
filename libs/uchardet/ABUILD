@@ -1,0 +1,26 @@
+pkgname=uchardet
+pkgver=0.0.7
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Encoding detector library ported from Mozilla")
+longdesc=("uchardet uchardet is a C language binding of the original C++ implementation of the universal charset detection library by Mozilla. uchardet is an encoding detector library, which takes a sequence of bytes in an unknown character encoding without any additional information, and attempts to determine the encoding of the text. Returned encoding names are iconv-compatible.")
+
+source=("https://www.freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
+
+tags="libs dev-libs"
+
+build_deps="cmake"
+
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_BUILD_TYPE=Release
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
