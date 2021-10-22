@@ -1,10 +1,10 @@
 pkgname=srt
-pkgver=1.4.3
+pkgver=1.4.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Secure Reliable Transport library")
-longdesc=("Secure Reliable Transport library")
+longdesc=("Secure Reliable Transport (SRT) is an open source transport technology that optimizes streaming performance across unpredictable networks, such as the Internet.")
 
 source=("https://github.com/Haivision/srt/archive/refs/tags/v${pkgver}.tar.gz")
 
