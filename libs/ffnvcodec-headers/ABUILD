@@ -1,0 +1,24 @@
+pkgname=ffnvcodec-headers
+pkgver=11.1.5.0
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("FFmpeg version of headers required to interface with Nvidias codec APIs")
+longdesc=("FFmpeg version of headers required to interface with Nvidia codec APIs (NVENC)")
+
+source=("https://github.com/FFmpeg/nv-codec-headers/releases/download/n${pkgver}/nv-codec-headers-${pkgver}.tar.gz")
+
+tags="media-sound libs"
+
+build_deps="git"
+
+build() {
+  go_src_dir
+  burn_patches
+  make PREFIX=/usr LIBDIR=lib${LIBDIRSUFFIX}
+  sed -n '4,25p' include/ffnvcodec/nvEncodeAPI.h > LICENSE # Extract license
+  sed -i '1,22s/^.\{,3\}//' LICENSE # Delete C comments
+  make PREFIX=/usr LIBDIR=lib${LIBDIRSUFFIX} DESTDIR="${pkgdir}" install
+  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/ffnvcodec-headers/
+}
+
