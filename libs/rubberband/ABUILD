@@ -1,0 +1,30 @@
+pkgname=rubberband
+pkgver=1.9.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Time-stretching and pitch-shifting audio library and utility")
+longdesc=("Rubber Band is a library and utility program that permits you to change the tempo and pitch of an audio recording independently of one another.")
+
+source=("https://github.com/breakfastquay/rubberband/archive/v$pkgver.tar.gz")
+
+tags="libs media-libs"
+# java-environment vamp-plugin-sdk
+build_deps="fftw ladspa meson libsndfile libsamplerate"
+
+build() {
+#  local java_major=$(java --version 2>/dev/null |grep 'openjdk'| cut -d ' ' -f2| cut -d '.' -f1)
+#  export JAVA_HOME="/usr/lib${LIBDIRSUFFIX}/jvm/java-${java_major}-openjdk"
+  go_src_dir
+  burn_patches
+  meson \
+    -Dprefix=/usr \
+    -Dfft=fftw \
+    -Dresampler=libsamplerate build
+#    -Dextra_include_dirs="/usr/lib${LIBDIRSUFFIX}/jvm/java-${java_major}-openjdk/include,/usr/lib/jvm/java-${java_major}-openjdk/include/linux" \
+#    build
+  ninja -C build
+  DESTDIR="${pkgdir}" meson install -C build
+# docs
+  install -vDm 644 {CHANGELOG,README.md} -t "${pkgdir}/usr/share/doc/${pkgname}/"
+}
