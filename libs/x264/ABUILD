@@ -1,10 +1,10 @@
 pkgname=x264
-pkgver=20210409
+pkgver=20211022
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("Open Source H264/AVC video encoder")
-longdesc=("x264 is a free library for encoding H264/AVC video streams. The code is written by Laurent Aimar, Eric Petit(OS X), Min Chen (vfw/nasm), Justin Clay(vfw), Mans Rullgard and Loren Merritt from scratch. It is released under the terms of the GPL license.")
+longdesc=("x264 package provides a library for encoding video streams into the H.264/MPEG-4 AVC format.")
 
 source=("https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable-$pkgver.tar.bz2")
 
