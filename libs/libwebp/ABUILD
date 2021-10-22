@@ -1,22 +1,20 @@
 pkgname=libwebp
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("Library and tools for the WebP graphics format")
-longdesc=("WebP is an image format that does lossy compression of digital photographic images. WebP consists of a codec based on VP8, and a container based on RIFF. Webmasters, web developers and browser developers can use WebP to compress, archive and distribute digital images more efficiently.")
+longdesc=("The libwebp package contains a library and support programs to encode and decode images in WebP format.")
 
-source=("https://chromium.googlesource.com/webm/libwebp/+archive/${pkgver}.tar.gz")
+source=("http://downloads.webmproject.org/releases/webp/libwebp-${pkgver}.tar.gz")
 
 tags="media-libs libs"
 
-build_deps="libpng"
+build_deps="libpng libjpeg-turbo libtiff"
 
 build() {
   go_src_dir
-  cd ..
   burn_patches
-  NOCONFIGURE=1 ./autogen.sh
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
