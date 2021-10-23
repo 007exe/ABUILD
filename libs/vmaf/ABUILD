@@ -1,0 +1,23 @@
+pkgname=vmaf
+pkgver=1.5.3
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Perceptual video quality assessment algorithm based on multi-method fusion")
+longdesc=("VMAF is a perceptual video quality assessment algorithm.")
+
+source=("https://github.com/Netflix/${pkgname}/archive/v${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="meson gcc-libs nasm"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson -Dprefix=/usr libvmaf/build libvmaf
+    ninja -v -C libvmaf/build
+  DESTDIR="$pkgdir" ninja -v -C libvmaf/build install
+  install -D -m755 libvmaf/build/tools/vmaf_{feature,rc} -t "${pkgdir}/usr/bin"
+  install -D -m644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}
