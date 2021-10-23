@@ -1,0 +1,26 @@
+pkgname=devil
+pkgver=1.8.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library for reading several different image formats")
+longdesc=("DevIL is an Open Source image library whose distribution is done under the terms of the GNU LGPL license. DevIL offers you a simple way to implement loading, manipulating, filtering, converting, displaying, saving from/to several different image formats in your own project.")
+
+source=("https://downloads.sourceforge.net/openil/DevIL-$pkgver.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="cmake libpng jasper lcms2 libjpeg-turbo"
+
+build() {
+  go_src_dir
+  burn_patches
+  cd DevIL
+  rm -rf build && mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
