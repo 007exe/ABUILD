@@ -1,7 +1,7 @@
 pkgname=ffmpeg
 pkgver=4.4
-pkgbuild=1
-arch="auto"
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Complete solution to record, convert and stream audio and video")
 longdesc=("ffmpeg is a hyper fast realtime audio/video encoder, a streaming server and a generic audio and video file converter.")
@@ -11,28 +11,7 @@ source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
 tags="libs media-video"
 
 # avisynthplus --enable-avisynth
-# aom          --enable-libaom
-# dav1d        --enable-libdav1d
-# libmfx       --enable-libmfx
-# libpulse     --enable-libpulse (Требуется pulseaudio)
-# rav1e        --enable-librav1e
-# librsvg      --enable-librsvg
-# libsoxr      --enable-libsoxr
-# svt-av1      --enable-libsvtav1
-# v4l-utils    --enable-libv4l2
-# vmaf         --enable-libvmaf
-# libvpx       --enable-libvpx
-# jack         --enable-libjack
-# amf-headers  --enable-amf
-#              --enable-nvdec
-#              --enable-nvenc
-#              --enable-libxvid
-#              --enable-libzimg
-#              --enable-libvidstab
-# sdl2
-
-# ffnvcodec-headers
-build_deps=("fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883 libvdpau libx11 libxext libxv libxcb")
+build_deps=("libmfx libsoxr vmaf rav1e dav1d aom svt-av1 amf-headers zimg vidstab v4l-utils libvpx ffnvcodec-headers jack librsvg libpulse sdl2 fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883 libvdpau libx11 libxext libxv libxcb")
 
 build(){
   go_src_dir
@@ -43,9 +22,12 @@ build(){
     --disable-debug \
     --disable-static \
     --disable-stripping \
+    --enable-libpulse \
+    --enable-librsvg \
     --enable-libiec61883 \
     --enable-libxcb \
     --enable-libsrt \
+    --enable-libjack \
     --enable-cuda-llvm \
     --enable-lto \
     --enable-fontconfig \
@@ -74,10 +56,28 @@ build(){
     --enable-libx265 \
     --enable-libxml2 \
     --enable-shared \
-    --enable-version3
+    --enable-version3 \
+    --enable-nvdec \
+    --enable-nvenc \
+    --enable-libxvid \
+    --enable-libvpx \
+    --enable-libv4l2 \
+    --enable-libvidstab \
+    --enable-libzimg \
+    --enable-amf \
+    --enable-libsvtav1 \
+    --enable-libaom \
+    --enable-libdav1d \
+    --enable-librav1e \
+    --enable-libvmaf \
+    --enable-libmfx \
+    --enable-nonfree \
+    --enable-avresample
+# --enable-libsoxr \
   make -j${numjobs}
   make tools/qt-faststart -j${numjobs}
   make doc/ff{mpeg,play}.1
   make DESTDIR="${pkgdir}" install install-man
-#  install -Dm 755 ffmpeg/tools/qt-faststart "${pkgdir}"/usr/bin/
+
+  install -Dm 755 tools/qt-faststart "${pkgdir}"/usr/bin/
 }
