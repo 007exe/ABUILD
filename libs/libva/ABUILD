@@ -1,5 +1,5 @@
 pkgname=libva
-pkgver=2.12.0
+pkgver=2.13.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,8 @@ longdesc=("Libva is a library providing the VA API video acceleration API.")
 source=("https://github.com/intel/libva/releases/download/${pkgver}/libva-${pkgver}.tar.bz2")
 
 tags="libs media-video"
-# libva libglvnd mesa
-build_deps="libdrm libx11 libxext libxfixes wayland meson"
+
+build_deps="libdrm libglvnd libx11 libxext libxfixes wayland libglvnd mesa meson"
 
 config_files="etc/libva.conf"
 
