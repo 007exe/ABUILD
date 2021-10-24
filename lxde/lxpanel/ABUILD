@@ -17,21 +17,17 @@ adddep="lxmenu-data"
 build() {
   go_src_dir
   burn_patches
-# Disable pager plugin as it breaks panel layout with GTK+ 3
-# https://sourceforge.net/p/lxde/bugs/773/
-  sed -i '/pager.c/d' plugins/Makefile.am
-  sed -i '/STATIC_PAGER/d' src/private.h
-  sed -i 's/libwnck-3.0//' configure.ac
   autoreconf -fi
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --sysconfdir=/etc \
     --enable-gtk3 \
+    --with-x \
     --with-plugins=all \
     --disable-silent-rules
 #https://bugzilla.gnome.org/show_bug.cgi?id=656231
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+#  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
