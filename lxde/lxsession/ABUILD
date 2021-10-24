@@ -22,11 +22,9 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --sysconfdir=/etc \
-    --enable-gtk3
+    --enable-gtk3 \
+    --enable-buildin-clipboard \
+    --enable-buildin-polki
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-# Ignore package by AppStream to avoid duplicated IDs
-  echo 'X-AppStream-Ignore=true' >> "$pkgdir/usr/share/applications/lxsession-default-apps.desktop"
-  echo 'X-AppStream-Ignore=true' >> "$pkgdir/usr/share/applications/lxsession-edit.desktop"
 }
