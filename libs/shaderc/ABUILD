@@ -1,0 +1,43 @@
+pkgname=shaderc
+pkgver=2021.2
+# You must manually specify the version of spirv-tools and glslang!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Collection of tools, libraries and tests for shader compilation")
+longdesc=("A collection of tools, libraries and tests for shader compilation.")
+
+source=("https://github.com/google/shaderc/archive/v${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="glibc gcc-libs glslang spirv-tools asciidoctor cmake ninja python spirv-headers"
+
+build() {
+  go_src_dir
+  burn_patches
+# de-vendor libs and disable git versioning
+  sed '/examples/d;/third_party/d' -i CMakeLists.txt
+# Disable git versioning
+  sed '/build-version/d' -i glslc/CMakeLists.txt
+# You must manually specify the version of spirv-tools and glslang!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Manually create build-version.inc as we disabled git versioning
+echo \"${pkgver}\\n\" >> glslc/src/build-version.inc
+echo \"spirv-tools 2021.3\\n\" >> glslc/src/build-version.inc
+echo \"glslang 11.0.0\\n\" >> glslc/src/build-version.inc
+
+  cmake \
+    -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DSHADERC_SKIP_TESTS=ON \
+    -Dglslang_SOURCE_DIR=/usr/include/glslang \
+    -GNinja
+  ninja -C build
+  cd glslc
+  asciidoctor -b manpage README.asciidoc -o glslc.1
+  cd ..
+  DESTDIR="${pkgdir}" ninja -C build install
+  install -Dm 644 glslc/glslc.1 -t "${pkgdir}/usr/share/man/man1"
+}
