@@ -1,0 +1,22 @@
+pkgname=spirv-headers
+pkgver=1.5.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("SPIR-V Headers")
+longdesc=("SPIR-V is a binary intermediate language for representing graphical-shader stages and compute kernels for multiple Khronos APIs, including OpenCL, OpenGL, and Vulkan. SPIR-V defines a new language and is a successor to the original Khronos SPIR, which supported only OpenCL device programs.")
+
+source=("https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/${pkgver}.raytracing.fixed.tar.gz")
+
+tags=("develop dev-util")
+
+build_deps="cmake git"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -DCMAKE_INSTALL_PREFIX=/usr .
+  make -j${numjobs} -C build
+  make -C build DESTDIR="${pkgdir}" install
+  install -Dm644 LICENSE -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+}
