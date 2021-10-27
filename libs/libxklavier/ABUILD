@@ -1,0 +1,30 @@
+pkgname=libxklavier
+pkgver=5.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("High-level API for X Keyboard Extension")
+longdesc=("The libxklavier package contains a utility library for X keyboard.")
+
+source=("https://people.freedesktop.org/~svu/libxklavier-${pkgver}.tar.bz2")
+
+tags="libs x11-libs"
+
+build_deps="glib2 libxkbfile libxml2 xkeyboard-config libxi iso-codes gobject-introspection intltool gtk-doc libxfixes"
+
+adddep="xkeyboard-config"
+
+build() {
+  go_src_dir
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --with-xkb-base=/usr/share/X11/xkb \
+    --enable-gtk-doc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
