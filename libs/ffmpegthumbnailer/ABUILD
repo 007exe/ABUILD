@@ -1,0 +1,26 @@
+pkgname=ffmpegthumbnailer
+pkgver=2.2.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Lightweight video thumbnailer that can be used by file managers.")
+longdesc=("FFmpegthumbnailer is a lightweight video thumbnailer that can be used by file managers to create thumbnails for your video files. The thumbnailer uses ffmpeg to decode frames from the video files, so supported videoformats depend on the configuration flags of ffmpeg.")
+
+source=("https://github.com/dirkvdb/$pkgname/archive/$pkgver.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="ffmpeg libjpeg-turbo libpng cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DENABLE_GIO=ON \
+    -DENABLE_THUMBNAILER=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
