@@ -1,0 +1,29 @@
+pkgname=polkit-gnome
+pkgver=0.105
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Legacy polkit authentication agent for GNOME")
+longdesc=("The Polkit GNOME package provides an Authentication Agent for Polkit that integrates well with the GNOME Desktop environment.")
+
+source=("https://download.gnome.org/sources/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz")
+
+tags="libs sys-auth"
+
+build_deps="gtk3 polkit intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  mkdir -p ${pkgdir}/etc/xdg/autostart
+  cat ${filedir}/polkit-gnome-authentication-agent-1.desktop | sed -e "s/lib/lib${LIBDIRSUFFIX}/g" > ${pkgdir}/etc/xdg/autostart/polkit-gnome-authentication-agent-1.desktop
+}
