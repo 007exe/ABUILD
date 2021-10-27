@@ -1,0 +1,43 @@
+pkgname=distcc
+pkgver=3.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Distributed compilation service for C, C++ and Objective-C")
+longdesc=("Distcc is a program to distribute compilation of C or C++ code across several machines on a network. distcc should always generate the same results as a local compile, is simple to install and use, and is often two or more times faster than a local compile.")
+
+tags=('develop sys-devel')
+
+source=("https://github.com/distcc/distcc/releases/download/v${pkgver}/distcc-${pkgver}.tar.gz")
+
+build_deps="gtk3"
+
+removedep="gtk3"
+
+gendeps_blacklist="usr/bin/distccmon-gnome"
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS+=' -fcommon'
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --with-gtk \
+    --without-gnome \
+    --enable-rfc2553 \
+    --mandir=/usr/share/man
+  make WERROR_CFLAGS= INCLUDESERVER_PYTHON=/usr/bin/python
+  make DESTDIR="$pkgdir" INCLUDESERVER_PYTHON=/usr/bin/python install
+
+  mkdir -p ${pkgdir}/etc/{init.d,conf.d}
+  install -m755 ${filedir}/distccd.init ${pkgdir}/etc/init.d/distccd
+  install -m644 ${filedir}/distccd.conf.d ${pkgdir}/etc/conf.d/distccd
+
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/distcc/bin
+  for i in ${filedir}/bin/* ; do
+      install -m755 $i ${pkgdir}/usr/lib${LIBDIRSUFFIX}/distcc/bin/`basename $i`
+  done
+}
+
