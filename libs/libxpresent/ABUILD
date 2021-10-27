@@ -1,0 +1,28 @@
+pkgname=libxpresent
+pkgver=1.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("X Present Extension library")
+longdesc=("An Xlib compatible API for the Present extension.")
+
+source=("https://gitlab.freedesktop.org/xorg/lib/${pkgname}/-/archive/libXpresent-${pkgver}/${pkgname}-libXpresent-${pkgver}.tar.gz")
+
+tags="libs xfce-base"
+
+build_deps="libxfixes libxrandr xorg-util-macros xorgproto"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-dependency-tracking
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m 0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
