@@ -1,0 +1,26 @@
+pkgname=gnome-themes-extra
+pkgver=3.28
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Extra Themes for GNOME Applications")
+longdesc=("The gnome-themes-extra package contains the standard theme for the GNOME desktop, which provides default appearance for cursors, desktop background, window borders and GTK+ applications.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-themes-extra/-/archive/$pkgver/gnome-themes-extra-$pkgver.tar.gz")
+
+tags="x11-themes themes"
+
+build_deps="intltool gtk2 gtk3"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir m4
+  intltoolize
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
