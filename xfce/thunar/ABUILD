@@ -1,0 +1,35 @@
+pkgname=thunar
+pkgver=4.16.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Modern file manager for Xfce")
+longdesc=("Thunar is the Xfce file manager, a GTK+ 3 GUI to organise the files on your computer.")
+
+source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-base"
+
+build_deps="desktop-file-utils libexif hicolor-icon-theme libnotify libgudev exo libxfce4util libxfce4ui libpng intltool gobject-introspection xfce4-panel"
+
+addep="hicolor-icon-theme"
+
+removedep="xfce4-panel"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --sysconfdir=/etc \
+    --enable-gio-unix \
+    --enable-gudev \
+    --enable-notifications \
+    --enable-exif \
+    --enable-pcre \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
