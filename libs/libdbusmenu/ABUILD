@@ -1,0 +1,49 @@
+pkgname=libdbusmenu-glib
+pkgver=16.04.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library for passing menus over DBus")
+longdesc=("A small little library that was created by pulling out some comon code out of indicator-applet. It passes a menu structure across DBus so that a program can create a menu simply without worrying about how it is displayed on the other side of the bus.")
+
+source=("https://launchpad.net/libdbusmenu/${pkgver%.?}/${pkgver}/+download/libdbusmenu-${pkgver}.tar.gz")
+
+tags="libs sys-libs"
+
+build_deps="gtk3 intltool vala valgrind gobject-introspection"
+
+pkglist="libdbusmenu-gtk3"
+
+build() {
+  go_src_dir
+  burn_patches
+# don't treat warnings as errors
+  sed -i 's/-Werror//' libdbusmenu-*/Makefile.{am,in}
+  export HAVE_VALGRIND_TRUE='#'
+  export HAVE_VALGRIND_FALSE=''
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-{dumper,static,tests} \
+    --with-gtk=3
+  make -j${numjobs}
+  make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" install
+}
+
+libdbusmenu-gtk3() {
+  pkgname=libdbusmenu-gtk3
+  shortdesc=("Library for passing menus over DBus GTK+ 3 library")
+  longdesc=("A small little library that was created by pulling out some comon code out of indicator-applet. It passes a menu structure across DBus so that a program can create a menu simply without worrying about how it is displayed on the other side of the bus.")
+  adddep="libdbusmenu-glib=${pkgver}"
+}
+
+libdbusmenu-gtk3_prep() {
+  go_src_dir
+  make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" install
+  make -j1 -C libdbusmenu-gtk DESTDIR="${pkgdir}" install
+  make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" uninstall
+# Remove unnecessary empty directory
+  rm -r ${pkgdir}/usr/include/libdbusmenu-glib-0.4
+}
