@@ -1,0 +1,23 @@
+pkgname=libopenraw
+pkgver=0.1.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library for decoding RAW files")
+
+source=("https://libopenraw.freedesktop.org/download/${pkgname}-${pkgver}.tar.bz2")
+
+tags="media-libs libs"
+
+build_deps="gdk-pixbuf boost libxml2"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
