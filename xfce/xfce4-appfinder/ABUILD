@@ -1,0 +1,29 @@
+pkgname=xfce4-appfinder
+pkgver=4.16.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("An application finder for Xfce")
+longdesc=("Xfce4 Appfinder is a tool to find and launch installed applications by searching the .desktop files installed on your system.")
+
+source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-base"
+
+build_deps="libxfce4ui garcon xfconf intltool"
+
+adddep="hicolor-icon-theme"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
