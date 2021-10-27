@@ -1,0 +1,42 @@
+pkgname=qt5-webengine
+pkgver=5.15.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides support for web applications using the Chromium browser project")
+longdesc=("QtWebEngine integrates chromium's web capabilities into Qt. It ships with its own copy of ninja which it uses for the build if it cannot find a system copy, and various copies of libraries from ffmpeg, icu, libvpx, and zlib (including libminizip) which have been forked by the chromium developers.")
+
+tags=('libs x11-libs')
+
+source=("https://anduin.linuxfromscratch.org/BLFS/qtwebengine/qtwebengine-${pkgver}.tar.xz")
+
+# qt5-tools libpipewire02
+build_deps=("python2 python nodejs nss qt5-base ffmpeg icu libxml2 libwebp libxslt opus gperf jsoncpp ninja poppler libevent")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -pv .git src/3rdparty/chromium/.git
+  sed -e '/^MODULE_VERSION/s/5.*/5.15.2/' -i .qmake.conf
+# Next, allow the pulseaudio library to be linked at build time, instead of run time. This also prevents an issue with newer pulseaudio:
+  sed -e '/link_pulseaudio/s/false/true/' \
+    -i src/3rdparty/chromium/media/media_options.gni
+# Finally, fix a change in the build system which allows its developers to pass e.g. -j20 to make (for quick tests of some areas)
+# but breaks the build with LFS's use of the NINJAJOBS environment variable:
+  sed -i 's/NINJAJOBS/NINJA_JOBS/' src/core/gn_run.pro
+  mkdir build
+  cd build
+  qmake .. -- \
+    -proprietary-codecs \
+    -system-ffmpeg \
+    -webp \
+    -spellchecker \
+    -webengine-icu \
+    -webengine-kerberos
+  make -j${numjobs}
+  make INSTALL_ROOT="$pkgdir" install
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+}
