@@ -38,8 +38,8 @@ numjobs=1
 
 #additional files should be copied into /usr/docs/${pkgname} dir from sources
 docs=
-
-gendeps_blacklist=
+# Список файлов для которых не будут генерироваться зависимости
+gendeps_blacklist="usr/bin/filename"
 
 #Файл конфигурации программы перед упаковкой к нему добавится префикс nev
 config_files="etc/pkgname/pkgname.config"
