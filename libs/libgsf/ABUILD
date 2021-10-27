@@ -1,0 +1,28 @@
+pkgname=libgsf
+pkgver=1.14.47
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("An extensible I/O abstraction library for dealing with structured file formats")
+longdesc=("A library for reading and writing structured files (eg MS OLE and Zip).")
+
+source=("https://download.gnome.org/sources/libgsf/${pkgver%.*}/libgsf-${pkgver}.tar.xz")
+
+tags="libs gnome-extra"
+
+build_deps="libxml2 gdk-pixbuf bzip2 gobject-introspection gtk-doc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --enable-shared \
+    --with-gio
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
