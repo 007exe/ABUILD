@@ -1,0 +1,27 @@
+pkgname=xfconf
+pkgver=4.16.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Flexible, easy-to-use configuration management system")
+longdesc=("Xfconf is the configuration storage system for Xfce.")
+
+source=("http://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="xfce xfce-base"
+
+build_deps="libxfce4util intltool gobject-introspection vala"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
