@@ -1,0 +1,29 @@
+pkgname=thunar-volman
+pkgver=4.16.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Automatic management of removeable devices in Thunar")
+longdesc=("The Thunar Volume Manager is an extension for the Thunar file manager, which enables automatic management of removable drives and media.")
+
+source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-base"
+
+build_deps="libxfce4ui intltool"
+
+adddep="thunar hicolor-icon-theme"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
