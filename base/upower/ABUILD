@@ -1,24 +1,23 @@
 pkgname=upower
-pkgver=0.99.11
+pkgver=0.99.13
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("Abstraction for enumerating power devices, listening to device events and querying history and statistics")
-longdesc=("Power Management Service provides a daemon, API and command line tools for managing power devices attached to the system.")
+longdesc=("The UPower package provides an interface to enumerating power devices, listening to device events and querying history and statistics. Any application or service on the system can access the org.freedesktop.UPower service via the system message bus.")
 
-source=("https://upower.freedesktop.org/releases/upower-${pkgver}.tar.xz")
+source=("https://gitlab.freedesktop.org/upower/upower/-/archive/UPOWER_${pkgver//./_}/upower-UPOWER_${pkgver//./_}.tar.gz")
 
 tags="base sys-power"
 
-build_deps="docbook-xsl python libgudev"
-
-#adddep="libusb polkit dbus-glib libimobiledevice"
+build_deps="docbook-xsl gobject-introspection python git gtk-doc libgudev"
 
 config_files="/etc/UPower/UPower.conf"
 
 build() {
   go_src_dir
   burn_patches
+  ./autogen.sh
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
