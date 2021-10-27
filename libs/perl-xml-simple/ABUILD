@@ -1,0 +1,23 @@
+pkgname=perl-xml-simple
+pkgver=2.25
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple XML parser for Perl")
+longdesc=("XML::Simple provides an easy API to read and write XML (especially config files). It is deprecated and its use is discouraged.")
+
+tags=("dev-perl libs")
+
+source=("https://www.cpan.org/authors/id/G/GR/GRANTM/XML-Simple-${pkgver}.tar.gz")
+
+build_deps="perl"
+
+adddep="perl-xml-parser"
+
+build() {
+  go_src_dir
+  burn_patches
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
