@@ -1,0 +1,27 @@
+pkgname=exo
+pkgver=4.16.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Application library for Xfce")
+longdesc=("Exo is a support library used in the Xfce desktop. It also has some helper applications that are used throughout Xfce.")
+
+source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-base"
+
+build_deps="libxfce4ui intltool hicolor-icon-theme"
+
+adddep="hicolor-icon-theme"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
