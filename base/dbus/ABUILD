@@ -1,14 +1,14 @@
 pkgname=dbus
 pkgver=1.12.20
-pkgbuild=2
+pkgbuild=3
 arch=('auto')
 
-shortdesc="D-Bus message bus"
-longdesc="D-Bus is a system for sending messages between applications. It is used both for the systemwide message bus service, and as a per-user-login-session messaging facility."
+shortdesc=("Freedesktop.org message bus system")
+longdesc=("D-Bus is a message bus system, a simple way for applications to talk to one another. D-Bus supplies both a system daemon and a per-user-login-session daemon. Also, the message bus is built on top of a general one-to-one message passing framework, which can be used by any two applications to communicate directly.")
 
 tags=('base sys-apps')
 
-build_deps="make gcc expat coreutils kernel-headers grep binutils sed python"
+build_deps="libaudit libcap-ng expat libaudit xmlto docbook-xsl python yelp-tools doxygen elogind"
 
 source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz")
 
@@ -23,26 +23,30 @@ build() {
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --enable-shared=yes \
-    --enable-static=no \
-    --with-system-pid-file=/var/run/dbus/dbus.pid \
-    --with-system-socket=/var/run/dbus/system_bus_socket \
-    --with-console-auth-dir=/var/run/console \
+    --enable-user-session \
+    --enable-x11-autolaunch \
+    --disable-doxygen-docs \
+    --disable-xml-docs \
+    --disable-static \
+    --with-systemduserunitdir=no \
+    --with-systemdsystemunitdir=no \
+    --with-console-auth-dir=/run/console \
+    --with-system-pid-file=/run/dbus/pid \
     --with-init-scripts=openrc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
-  go_src_dir
-
-  # Fix some directory ownership
+# Fix some directory ownership
   chown messagebus ${pkgdir}/var/lib/dbus
-
-  # Add OpenRC scripts
+# Add OpenRC scripts
   mkdir -p ${pkgdir}/etc/init.d
   install -m755 $filedir/dbus.init ${pkgdir}/etc/init.d/dbus
-
-  # Add socket dir. DBus cannot do it and keep silent about
+# Add socket dir. DBus cannot do it and keep silent about
   mkdir -p ${pkgdir}/var/run/dbus
+
+  chown -v root:messagebus ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
+  chmod -v      4750       ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
+
+  cd ${pkgdir}/etc
+  ln -sv /var/lib/dbus/machine-id
 }
