@@ -1,0 +1,51 @@
+pkgname=gst-plugins-good
+pkgver=1.18.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Multimedia graph framework - good plugins")
+longdesc=("The GStreamer Good Plug-ins is a set of plug-ins considered by the GStreamer developers to have good quality code, correct functionality, and the preferred license (LGPL for the plug-in code, LGPL or LGPL-compatible for the supporting library). A wide range of video and audio decoders, encoders, and filters are included.")
+
+source=("https://gitlab.freedesktop.org/gstreamer/gst-plugins-good/-/archive/${pkgver}/gst-plugins-good-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+# qt5-tools qt5-declarative qt5-x11extras qt5-wayland wavpack aalib taglib libdv libshout libcaca mpg123 twolame
+build_deps="libpulse libsoup gst-plugins-base-libs libvpx gdk-pixbuf libavc1394 libiec61883 libxdamage v4l-utils cairo libgudev speex flac libraw1394 lame python git meson jack gtk3 nasm"
+
+pkglist="gst-plugin-gtk gst-plugin-qmlgl"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D doc=disabled \
+    -D rpicamsrc=disabled \
+    -D gobject-cast-checks=disabled \
+    -D package-name="GStreamer Good Plugins (AgiliaLinux)" \
+    -D package-origin="https://www.archlinux.org/"
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
+
+gst-plugin-gtk() {
+  pkgname=gst-plugin-gtk
+  shortdesc=("Multimedia graph framework - good plugins - gtk plugin")
+  longdesc=("The GStreamer Good Plug-ins is a set of plug-ins considered by the GStreamer developers to have good quality code, correct functionality, and the preferred license (LGPL for the plug-in code, LGPL or LGPL-compatible for the supporting library). A wide range of video and audio decoders, encoders, and filters are included.")
+}
+
+gst-plugin-gtk_prep() {
+  mkdir -p $pkgdir/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0
+  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0/libgstgtk.so $pkgdir/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0/
+}
+
+gst-plugin-qmlgl() {
+  pkgname=gst-plugin-qmlgl
+  shortdesc=("Multimedia graph framework - good plugins - qmlgl plugin")
+  longdesc=("The GStreamer Good Plug-ins is a set of plug-ins considered by the GStreamer developers to have good quality code, correct functionality, and the preferred license (LGPL for the plug-in code, LGPL or LGPL-compatible for the supporting library). A wide range of video and audio decoders, encoders, and filters are included.")
+}
+
+gst-plugin-qmlgl_prep() {
+  mkdir -p $pkgdir/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0
+  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0/libgstqmlgl.so $pkgdir/usr/lib${LIBDIRSUFFIX}/gstreamer-1.0/
+}
