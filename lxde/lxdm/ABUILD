@@ -28,12 +28,11 @@ build() {
   autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --bindir=/usr/bin \
-    --sbindir=/usr/sbin \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX}/lxdm \
+    --with-systemdsystemunitdir=no \
+    --with-pam \
     --enable-gtk3
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
@@ -46,7 +45,11 @@ after_build() {
   chmod 755 ${pkgdir}/etc/init.d/lxdm
   cat ${filedir}/Xsession > ${pkgdir}/etc/lxdm/Xsession
   chmod 755 ${pkgdir}/etc/lxdm/Xsession
-  sed -i "s/local\/libexec/lib$LIBDIRSUFFIX\/lxdm/g" $pkgdir/etc/lxdm/lxdm.conf
+#  sed -i "s/local\/libexec/lib$LIBDIRSUFFIX\/lxdm/g" $pkgdir/etc/lxdm/lxdm.conf
   cat ${filedir}/lxdm.pam > ${pkgdir}/etc/pam.d/lxdm
+
+# change default non-existent background image to a newly added one
+  sed -i -e "s|^# bg=.*|bg=/usr/share/wallpapers/stripes-lxdm.jpg|" $pkgdir/etc/lxdm/lxdm.conf
+  install -m 0644 -D ${filedir}/stripes-lxdm.jpg $pkgdir/usr/share/wallpapers/stripes-lxdm.jpg
 }
 
