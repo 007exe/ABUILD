@@ -1,0 +1,20 @@
+pkgname=qt5pas
+pkgver=2.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Free Pascal Qt5 binding library updated by lazarus IDE")
+longdesc=("Free Pascal Qt5 binding library updated by lazarus IDE")
+
+source=("http://users.telenet.be/Jan.Van.hijfte/qtforfpc/V${pkgver}/splitbuild-qt5pas-V${pkgver}Alpha_Qt5.1.1.tar.gz")
+
+tags="libs x11-libs"
+
+build_deps="qt5-base qt5-x11extras"
+
+build(){
+  go_src_dir
+  qmake-qt5 "QT += x11extras"
+  make
+  make INSTALL_ROOT=${pkgdir} install
+}
