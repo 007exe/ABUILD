@@ -1,0 +1,32 @@
+pkgname=qt5-webkit
+pkgver=5.212.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Classes for a WebKit2 based implementation and a new QML API")
+longdesc=("Qt WebKit library is an open source web browser engine.")
+
+source=("https://github.com/qtwebkit/qtwebkit/archive/refs/tags/qtwebkit-${pkgver}-alpha4.tar.gz")
+
+tags="libs x11-libs"
+
+build_deps="cmake ruby gperf python qt5-doc qt5-tools qt5-location qt5-sensors qt5-webchannel libwebp libxslt libxcomposite gst-plugins-base hyphen woff2"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS} -DNDEBUG" \
+    -DPORT=Qt \
+    -DQt5_DIR=/usr/lib$LIBDIRSUFFIX/qt \
+    -DENABLE_TOOLS=OFF
+  cmake --build build
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  DESTDIR="$pkgdir" cmake --install build
+
+  install -d "$pkgdir"/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+}
