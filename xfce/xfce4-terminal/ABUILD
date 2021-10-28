@@ -1,0 +1,29 @@
+pkgname=xfce4-terminal
+pkgver=0.8.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A modern terminal emulator primarily for the Xfce desktop environment")
+longdesc=("Xfce4 Terminal is a GTK+3 terminal emulator. This is useful for running commands or programs in the comfort of an Xorg window; you can drag and drop files into the Xfce4 Terminal or copy and paste text with your mouse.")
+
+source=("https://archive.xfce.org/src/apps/$pkgname/0.8/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce x11-terms"
+
+build_deps="libxfce4ui vte intltool"
+
+adddep="hicolor-icon-theme"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
