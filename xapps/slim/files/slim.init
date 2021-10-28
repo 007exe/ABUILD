@@ -1,0 +1,17 @@
+#!/sbin/openrc-run
+
+depend() {
+	use logger acpid
+	after coldplug dns nscd consolefont keymaps
+	provide xdm
+}
+
+start() {
+	ebegin "Starting X11 login with Slim..."
+	start-stop-daemon --start -q --exec '/usr/bin/slim' -nodaemon
+}
+
+stop() {
+	ebegin "Stopping X11 login with Slim..."
+	start-stop-daemon --stop -q --pidfile /var/run/slim.pid 
+}

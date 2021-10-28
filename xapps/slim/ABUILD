@@ -1,0 +1,38 @@
+pkgname=slim
+pkgver=1.3.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Desktop-independent graphical login manager for X11")
+longdesc=("SLiM (Simple Login Manager) is a Desktop-independent graphical login manager for X11.")
+
+source=("https://downloads.sourceforge.net/project/slim.berlios/slim-$pkgver.tar.gz")
+
+tags="xapps x11-apps"
+
+build_deps="linux-pam libxmu libpng libjpeg-turbo libxft libxrandr xorg-xauth cmake freeglut cmake"
+
+config_files="etc/slim.conf
+etc/pam.d/slim"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DUSE_CONSOLEKIT=no \
+    -DUSE_PAM=yes \
+    -DCMAKE_BUILD_TYPE=Release ..
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  mkdir -p $pkgdir/etc/{pam.d,init.d}
+# Openrc
+  install -m 755 $filedir/slim.init $pkgdir/etc/init.d/slim
+  install -m 755 $filedir/Xsession $pkgdir/usr/share/slim/Xsession
+# pam
+  install -Dm644 $filedir/slim.pam $pkgdir/etc/pam.d/slim
+}
