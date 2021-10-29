@@ -1,0 +1,24 @@
+pkgname=libmpd
+pkgver=11.8.17
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Signal based wrapper around libmpdclient")
+longdesc=("Libmpd is an a library to easily connect to a mpd server. It's wraps around libmpdclient and provides a higher level api.")
+
+source=("https://download.sarine.nl/Programs/gmpc/${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="glib2"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
