@@ -1,0 +1,27 @@
+pkgname=xfce4-clipman-plugin
+pkgver=1.6.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A clipboard plugin for the Xfce panel")
+longdesc=("A clipboard plugin for the Xfce panel")
+
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel libxtst qrencode intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
