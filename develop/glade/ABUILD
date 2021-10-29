@@ -1,0 +1,23 @@
+pkgname=glade
+pkgver=3.38.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("User Interface Builder for GTK+ applications")
+longdesc=("Glade is a RAD tool to enable quick & easy development of user interfaces for the Gtk+ toolkit and the GNOME desktop environment. The user interfaces designed in Glade are stored in XML format, enabling easy integration with external tools.")
+
+source=("https://gitlab.gnome.org/GNOME/glade/-/archive/GLADE_${pkgver//./_}/glade-GLADE_${pkgver//./_}.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="gtk-doc gobject-introspection itstool docbook-xsl webkit2gtk meson gtk3 libxml2"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D gtk_doc=false
+  meson compile -C build
+  DESTDIR="$pkgdir" meson install -C build
+}
