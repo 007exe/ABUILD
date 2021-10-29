@@ -1,0 +1,29 @@
+pkgname=thunar-archive-plugin
+pkgver=0.4.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Create and deflate archives in thunar")
+longdesc=("The thunar-archive-plugin is a plugin for the Thunar File Manager, which adds archive operations to the file context menus. Using this plugin you will be able to extract and create archive files from within Thunar using a single click.")
+
+source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-base"
+
+build_deps="intltool xfce4-dev-tools"
+
+adddep="thunar hicolor-icon-theme"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
