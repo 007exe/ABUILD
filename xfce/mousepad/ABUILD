@@ -10,7 +10,7 @@ source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${p
 
 tags="xfce xfce-base"
 
-build_deps="gtksourceview4 intltool desktop-file-utils hicolor-icon-theme"
+build_deps="gtksourceview4 intltool desktop-file-utils"
 
 adddep="hicolor-icon-theme"
 
@@ -19,9 +19,12 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --sysconfdir=/etc \
     --localstatedir=/var \
+    --enable-dbus \
+    --enable-keyfile-settings \
+    --enable-gtksourceview4 \
     --disable-static \
     --disable-debug
   make -j${numjobs}
