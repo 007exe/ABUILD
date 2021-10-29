@@ -1,0 +1,27 @@
+pkgname=xfce4-mailwatch-plugin
+pkgver=1.3.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Multi-protocol, multi-mailbox mail watcher for the Xfce4 panel")
+longdesc=("Mailwatch is a mail watcher plugin for the Xfce4 panel.")
+
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel gnutls intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
