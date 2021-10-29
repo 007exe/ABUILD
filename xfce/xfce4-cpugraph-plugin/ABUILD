@@ -1,0 +1,27 @@
+pkgname=xfce4-cpugraph-plugin
+pkgver=1.2.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Graphical representation of the CPU load")
+longdesc=("xfce4-cpugraph-plugin is a panel plugin for Xfce panel. It shows a graph of your latest system load.")
+
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
