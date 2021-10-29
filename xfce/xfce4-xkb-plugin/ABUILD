@@ -1,0 +1,29 @@
+pkgname=xfce4-xkb-plugin
+pkgver=0.8.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Plugin to switch keyboard layouts for the Xfce4 panel")
+longdesc=("Plugin to switch keyboard layouts for the Xfce4 panel")
+
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel libxklavier librsvg libwnck3 intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
