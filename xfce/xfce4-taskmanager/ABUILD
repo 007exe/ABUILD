@@ -1,0 +1,26 @@
+pkgname=xfce4-taskmanager
+pkgver=1.4.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Easy to use task manager")
+longdesc=("Easy to use task manager")
+
+source=("https://archive.xfce.org/src/apps/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags='xfce xfce-extra'
+
+build_deps="libwnck3 libxmu intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
