@@ -1,0 +1,26 @@
+pkgname=xfce4-verve-plugin
+pkgver=2.0.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Command line plugin for the Xfce panel")
+longdesc=("This plugin is like the (quite old) xfce4-minicmd-plugin, except that it feature more cool features, like autocompletion and command history.")
+
+source=("http://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
