@@ -1,0 +1,24 @@
+pkgname=qrencode
+pkgver=4.1.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C library for encoding data in a QR Code symbol.")
+longdesc=("Qrencode is a fast and compact library for encoding data in a QR Code symbol, a 2D symbology that can be scanned by handheld terminals such as a mobile phone with a CCD sensor.")
+
+source=("https://fukuchi.org/works/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="libs media-libs"
+
+build_deps="sdl2 libpng"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
