@@ -1,0 +1,32 @@
+pkgname=xfce4-sensors-plugin
+pkgver=1.4.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Sensors plugin for the Xfce panel")
+longdesc=("A Xfce panel plugin which reads your hardware sensor values and displays them in your panel.")
+
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-extra"
+# netcat
+build_deps="xfce4-panel lm_sensors libnotify intltool hddtemp"
+
+adddep="hicolor-icon-theme hddtemp"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --datadir=/usr/share \
+    --datarootdir=/usr/share \
+    --disable-static \
+    --disable-debug \
+    --disable-pathchecks
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
