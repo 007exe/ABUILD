@@ -1,0 +1,25 @@
+pkgname=libgdata
+pkgver=0.18.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("GLib-based library for accessing online service APIs using the GData protocol")
+longdesc=("The libgdata package is a GLib-based library for accessing online service APIs using the GData protocol, most notably, Google's services. It provides APIs to access the common Google services and has full asynchronous support.")
+
+source=("https://gitlab.gnome.org/GNOME/libgdata/-/archive/${pkgver}/libgdata-${pkgver}.tar.bz2")
+
+tags="develop dev-libs"
+
+build_deps="gobject-introspection vala gtk-doc meson libsoup gcr gnome-online-accounts"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D man=true \
+    -D gtk_doc=true \
+    -D always_build_tests=false
+  meson compile -C build
+  DESTDIR="$pkgdir" meson install -C build
+}
