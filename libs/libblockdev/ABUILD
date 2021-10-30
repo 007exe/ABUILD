@@ -1,0 +1,31 @@
+pkgname=libblockdev
+pkgver=2.26
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A library for manipulating block devices")
+longdesc=("libblockdev is a C library supporting GObject Introspection for manipulation of block devices. It has a plugin-based architecture where each technology (like LVM, Btrfs, MD RAID, Swap,...) is implemented in a separate plugin, possibly with multiple implementations (e.g. using LVM CLI or the new LVM DBus API).")
+
+#source=("https://github.com/rhinstaller/libblockdev/archive/$pkgver-1.tar.gz")
+source=("https://github.com/storaged-project/libblockdev/releases/download/$pkgver-1/libblockdev-$pkgver.tar.gz")
+
+tags="libs sys-libs"
+
+build_deps="autoconf gobject-introspection python btrfs-progs dosfstools lvm2 mdadm parted xfsprogs kmod libbytesize libyaml volume_key"
+
+build() {
+  go_src_dir
+  burn_patches
+#  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --with-python3 \
+    --without-gtk-doc \
+    --without-nvdimm \
+    --without-dm \
+    --without-lvm_dbus
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
