@@ -1,0 +1,26 @@
+pkgname=lmdb
+pkgver=0.9.29
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Symas Lightning Memory-Mapped Database")
+longdesc=("The lmdb package is a fast, compact, key-value embedded data store. It uses memory-mapped files, so it has the read performance of a pure in-memory database while still offering the persistence of standard disk-based databases, and is only limited to the size of the virtual address space.")
+
+source=("https://git.openldap.org/openldap/openldap/-/archive/LMDB_$pkgver/openldap-LMDB_$pkgver.tar.gz")
+
+tags="libs sys-libs"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  cd libraries/liblmdb
+  make prefix=/usr \
+    libdir=/usr/lib${LIBDIRSUFFIX}
+  install -dm755 "$pkgdir"/usr/{bin,lib${LIBDIRSUFFIX},include,man/man1,share}
+  make DESTDIR="$pkgdir" prefix=/usr libdir=/usr/lib${LIBDIRSUFFIX} install
+  mv "$pkgdir"/usr/man "$pkgdir"/usr/share/man
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 ${filedir}/lmdb.pc "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/lmdb.pc
+}
