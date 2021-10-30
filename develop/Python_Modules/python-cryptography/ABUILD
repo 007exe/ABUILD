@@ -1,0 +1,21 @@
+pkgname=python-cryptography
+pkgver=35.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A package designed to expose cryptographic recipes and primitives to Python developers")
+longdesc=("cryptography includes both high level recipes and low level interfaces to common cryptographic algorithms such as symmetric ciphers, message digests, and key derivation functions.")
+
+source=("https://pypi.io/packages/source/c/cryptography/cryptography-$pkgver.tar.gz")
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools-rust"
+
+adddep="python-cffi"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+}
