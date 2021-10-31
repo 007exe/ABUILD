@@ -12,7 +12,7 @@ tags="libs media-sound"
 
 pkglist="libpulse pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf"
 
-build_deps="libcap attr dbus openssl orc check meson valgrind tdb libsndfile doxygen libxtst libsm gtk3 libxcb libasyncns sbc fftw lirc avahi bluez jack"
+build_deps="libcap attr dbus openssl orc check meson valgrind tdb libsndfile doxygen libxtst libsm gtk3 libxcb libasyncns sbc fftw lirc avahi bluez jack speexdsp"
 
 config_files="etc/pulse/daemon.conf
 etc/pulse/default.pa
@@ -20,72 +20,24 @@ etc/pulse/system.pa"
 
 adddep="libpulse=$pkgver"
 
-libpulse(){
-  pkgname=libpulse
-  shortdesc=("PulseAudio sound server libraries.")
-  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
-  config_files="etc/pulse/client.conf"
-}
-
-pulseaudio-bluetooth() {
-  pkgname=pulseaudio-bluetooth
-  shortdesc=("Bluetooth support for PulseAudio.")
-  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
-  adddep="pulseaudio=$pkgver"
-}
-
-pulseaudio-equalizer() {
-  pkgname=pulseaudio-equalizer
-  shortdesc=("Graphical equalizer for PulseAudio.")
-  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
-  adddep="pulseaudio=$pkgver"
-}
-
-pulseaudio-jack() {
-  pkgname=pulseaudio-jack
-  shortdesc=("Jack support for PulseAudio.")
-  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
-  adddep="pulseaudio=$pkgver"
-}
-
-pulseaudio-lirc() {
-  pkgname=pulseaudio-lirc
-  shortdesc=("IR (lirc) support for PulseAudio.")
-  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
-  adddep="pulseaudio=$pkgver"
-}
-
-pulseaudio-rtp() {
-  pkgname=pulseaudio-rtp
-  shortdesc=("RTP and RAOP support for PulseAudio.")
-  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
-  adddep="pulseaudio=$pkgver"
-}
-
-pulseaudio-zeroconf() {
-  pkgname=pulseaudio-zeroconf
-  shortdesc=("Zeroconf support for PulseAudio.")
-  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
-  adddep="pulseaudio=$pkgver"
-}
-
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D stream-restore-clear-old-devices=true \
-    -D pulsedsp-location='/usr/\$LIB/pulseaudio' \
-    -D udevrulesdir=/usr/lib/udev/rules.d \
-    -D bluez5-gstreamer=disabled \
-    -D elogind=disabled \
-    -D tcpwrap=disabled
+    -D systemd=disabled \
+    -D speex=enabled \
+    -D udev=enabled \
+    -D gstreamer=enabled
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
 
 after_build(){
   cd "$pkgdir"
+
+  install -Dm755 ${filedir}/pulseaudio.initd ${pkgdir}/etc/init.d/pulseaudio
+  install -Dm644 ${filedir}/$pkgname.confd ${pkgdir}/etc/conf.d/$pkgname
 
   # Superseded by socket activation
   sed -e '/autospawn/iautospawn = no' \
@@ -101,6 +53,13 @@ after_build(){
       -i etc/pulse/default.pa
 
   rm -r etc/dbus-1
+}
+
+libpulse(){
+  pkgname=libpulse
+  shortdesc=("PulseAudio sound server libraries.")
+  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
+  config_files="etc/pulse/client.conf"
 }
 
 libpulse_prep() {
@@ -119,11 +78,25 @@ libpulse_prep() {
   mv ${p_pkgdir}/usr/share/zsh $pkgdir/usr/share/zsh
 }
 
+pulseaudio-bluetooth() {
+  pkgname=pulseaudio-bluetooth
+  shortdesc=("Bluetooth support for PulseAudio.")
+  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
+  adddep="pulseaudio=$pkgver"
+}
+
 pulseaudio-bluetooth_prep() {
   mkdir -p $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/libbluez5-util.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/module-bluetooth-{discover,policy}.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/module-bluez5-{discover,device}.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
+}
+
+pulseaudio-equalizer() {
+  pkgname=pulseaudio-equalizer
+  shortdesc=("Graphical equalizer for PulseAudio.")
+  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
+  adddep="pulseaudio=$pkgver"
 }
 
 pulseaudio-equalizer_prep() {
@@ -132,21 +105,50 @@ pulseaudio-equalizer_prep() {
   mv ${p_pkgdir}/usr/bin/qpaeq $pkgdir/usr/bin
 }
 
+pulseaudio-jack() {
+  pkgname=pulseaudio-jack
+  shortdesc=("Jack support for PulseAudio.")
+  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
+  adddep="pulseaudio=$pkgver"
+}
+
 pulseaudio-jack_prep() {
   mkdir -p $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/module-jack-{sink,source}.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/module-jackdbus-detect.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
 }
 
+pulseaudio-lirc() {
+  pkgname=pulseaudio-lirc
+  shortdesc=("IR (lirc) support for PulseAudio.")
+  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
+  adddep="pulseaudio=$pkgver"
+}
+
 pulseaudio-lirc_prep() {
   mkdir -p $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/module-lirc.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
 }
+
+pulseaudio-rtp() {
+  pkgname=pulseaudio-rtp
+  shortdesc=("RTP and RAOP support for PulseAudio.")
+  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
+  adddep="pulseaudio=$pkgver"
+}
+
 pulseaudio-rtp_prep() {
   mkdir -p $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/lib{rtp,raop}.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/module-rtp-{send,recv}.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules/module-raop-sink.so $pkgdir/usr/lib${LIBDIRSUFFIX}/pulse-${pkgver}/modules
+}
+
+pulseaudio-zeroconf() {
+  pkgname=pulseaudio-zeroconf
+  shortdesc=("Zeroconf support for PulseAudio.")
+  longdesc=("Pulseaudio is a sound server for Linux and other Unix like operating systems. It is intended to be an improved drop-in replacement for the Enlightened Sound Daemon (EsounD).")
+  adddep="pulseaudio=$pkgver"
 }
 
 pulseaudio-zeroconf_prep() {
