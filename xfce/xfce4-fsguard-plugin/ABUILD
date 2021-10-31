@@ -1,0 +1,28 @@
+pkgname=xfce4-fsguard-plugin
+pkgver=1.1.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("File system usage monitor plugin for the Xfce4 panel")
+longdesc=("Disk space panel plugin for the Xfce Desktop Environment.")
+
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
