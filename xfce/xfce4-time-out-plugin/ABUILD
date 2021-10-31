@@ -1,0 +1,28 @@
+pkgname=xfce4-time-out-plugin
+pkgver=1.1.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Take a break from your computer with this plugin for Xfce4")
+longdesc=("A time-out plugin for the Xfce panel.")
+
+source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
