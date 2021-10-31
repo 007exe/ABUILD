@@ -1,6 +1,6 @@
 pkgname=dbus
 pkgver=1.12.20
-pkgbuild=3
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("Freedesktop.org message bus system")
@@ -32,17 +32,19 @@ build() {
     --with-systemdsystemunitdir=no \
     --with-console-auth-dir=/run/console \
     --with-system-pid-file=/run/dbus/pid \
+    --with-system-socket=/run/dbus/system_bus_socket \
     --with-init-scripts=openrc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
 # Fix some directory ownership
   chown messagebus ${pkgdir}/var/lib/dbus
+
 # Add OpenRC scripts
-  mkdir -p ${pkgdir}/etc/init.d
-  install -m755 $filedir/dbus.init ${pkgdir}/etc/init.d/dbus
+  install -Dm755 $filedir/dbus.init ${pkgdir}/etc/init.d/dbus
+
 # Add socket dir. DBus cannot do it and keep silent about
-  mkdir -p ${pkgdir}/var/run/dbus
+  mkdir -p ${pkgdir}/run/dbus
 
   chown -v root:messagebus ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
   chmod -v      4750       ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
