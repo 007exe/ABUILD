@@ -10,9 +10,7 @@ source=("https://archive.xfce.org/src/apps/$pkgname/${pkgver%.*}/$pkgname-$pkgve
 
 tags="xfce xfce-extra"
 
-build_deps="xfce4-panel libsoup intltool python"
-
-adddep="hicolor-icon-theme"
+build_deps="libxss libxklavier libwnck3 garcon dbus-glib python python-gobject intltool"
 
 build() {
   go_src_dir
@@ -23,7 +21,8 @@ build() {
     --localstatedir=/var \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --disable-static \
-    --disable-debug
+    --disable-debug \
+    --enable-xfixes
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
