@@ -1,16 +1,16 @@
 pkgname=alsa-utils
 pkgver=1.2.5.1
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
-shortdesc=("Advanced Linux Sound Architecture (ALSA) utilities")
-longdesc=("Advanced Linux Sound Architecture (ALSA) utilities. Modularized architecture with support for a large range of ISA and PCI cards. Fully compatible with OSS/Lite (kernel sound drivers), but contains many enhanced features.")
+shortdesc=("Advanced Linux Sound Architecture - Utilities")
+longdesc=("The ALSA Utilities package contains various utilities which are useful for controlling your sound card.")
 
 tags=('console media-sound')
 
 source=("ftp://ftp.alsa-project.org/pub/utils/${pkgname}-${pkgver}.tar.bz2")
-# fftw libsamplerate
-build_deps="alsa-lib docbook-xsl ncurses python-docutils xmlto"
+
+build_deps="alsa-lib docbook-xsl ncurses python-docutils xmlto fftw libsamplerate"
 
 build() {
   go_src_dir
@@ -24,14 +24,10 @@ build() {
     --disable-alsaconf
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
 # Add OpenRC scripts
-  mkdir -p ${pkgdir}/etc/conf.d
-  install -m644 ${filedir}/alsasound ${pkgdir}/etc/conf.d/alsasound
-  mkdir -p ${pkgdir}/etc/init.d
-  install -m755 ${filedir}/alsasound.init ${pkgdir}/etc/init.d/alsasound
+  install -D -m644 ${filedir}/alsa.confd ${pkgdir}/etc/conf.d/alsa
+  install -D -m755 ${filedir}/alsa.initd ${pkgdir}/etc/init.d/alsa
 
 # Create alsascr directory (OpenRC scripts wants this, dunno why)
   mkdir -p ${pkgdir}/etc/alsa.d
