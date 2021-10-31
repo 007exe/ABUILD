@@ -1,0 +1,25 @@
+pkgname=pavucontrol
+pkgver=5.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("PulseAudio Volume Control")
+longdesc=("PulseAudio Volume Control (pavucontrol) is a simple GTK based volume control tool (mixer) for the PulseAudio sound server. In contrast to classic mixer tools, this one allows you to control both the volume of hardware devices and of each playback stream separately.")
+
+source=("https://gitlab.freedesktop.org/pulseaudio/pavucontrol/-/archive/v${pkgver}/pavucontrol-v${pkgver}.tar.gz")
+
+tags="xapps media-sound"
+
+build_deps="libpulse gtkmm3 libsigc++ json-glib intltool lynx"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./bootstrap.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-gtk3
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
