@@ -26,15 +26,13 @@ build() {
   make DESTDIR=${pkgdir} install
 
 # Add OpenRC scripts
-  install -D -m644 ${filedir}/alsa.confd ${pkgdir}/etc/conf.d/alsa
-  install -D -m755 ${filedir}/alsa.initd ${pkgdir}/etc/init.d/alsa
+  install -D -m755 ${filedir}/alsasound.initd ${pkgdir}/etc/init.d/alsasound
 
-# Create alsascr directory (OpenRC scripts wants this, dunno why)
-  mkdir -p ${pkgdir}/etc/alsa.d
-
-  install -vDm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -D -m644 ${filedir}/alsasound.confd ${pkgdir}/etc/conf.d/alsasound
 
 # dir where to save ALSA state
   install -d "${pkgdir}/var/lib/alsa"
+  
+  install -vDm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
 }
 
