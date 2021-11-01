@@ -8,7 +8,7 @@ longdesc=("The Qpdf package contains command-line programs and a library that do
 
 source=("https://github.com/qpdf/qpdf/releases/download/release-qpdf-${pkgver}/qpdf-${pkgver}.tar.gz")
 
-tags="base app-doc"
+tags="console app-doc"
 
 build_deps="libjpeg-turbo zlib gnutls"
 
