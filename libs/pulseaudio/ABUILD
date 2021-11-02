@@ -12,13 +12,13 @@ tags="libs media-sound"
 
 pkglist="libpulse pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf"
 
-build_deps="libcap attr dbus openssl orc check meson valgrind tdb libsndfile doxygen libxtst libsm gtk3 libxcb libasyncns sbc fftw lirc avahi bluez jack speexdsp"
+build_deps="libcap attr dbus openssl orc check meson valgrind tdb libsndfile doxygen libxtst libsm gtk3 libxcb libasyncns sbc fftw lirc avahi bluez jack speexdsp libnsl"
 
 config_files="etc/pulse/daemon.conf
 etc/pulse/default.pa
 etc/pulse/system.pa"
 
-adddep="libpulse=$pkgver"
+adddep="libpulse=$pkgver alsa-utils libnsl"
 
 build() {
   go_src_dir
@@ -26,8 +26,23 @@ build() {
   meson build \
     -D prefix=/usr \
     -D systemd=disabled \
+    -D samplerate=disabled \
+    -D alsa=enabled \
     -D speex=enabled \
     -D udev=enabled \
+    -D asyncns=enabled \
+    -D avahi=enabled \
+    -D dbus=enabled \
+    -D x11=enabled \
+    -D soxr=enabled \
+    -D speex=enabled \
+    -D openssl=enabled \
+    -D orc=enabled \
+    -D hal-compat=false \
+    -D ipv6=true \
+    -D jack=enabled \
+    -D fftw=enabled \
+    -D glib=enabled \
     -D gstreamer=enabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
