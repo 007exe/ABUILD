@@ -12,7 +12,7 @@ tags="xfce xfce-extra"
 
 build_deps="xfce4-panel libpulse libkeybinder3 libnotify intltool dbus-glib xfce4-dev-tools"
 
-adddep="pulseaudio"
+adddep="pulseaudio pavucontrol"
 
 build() {
   go_src_dir
