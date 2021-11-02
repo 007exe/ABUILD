@@ -27,5 +27,11 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-install -Dm0755 ${filedir}/iptables.init ${pkgdir}/etc/init.d/iptables
+  install -Dm0755 ${filedir}/iptables.init ${pkgdir}/etc/init.d/iptables
+  install -Dm644 ${filedir}/iptables.confd ${pkgdir}/etc/conf.d/iptables
+
+  install -Dm755 ${filedir}/ebtables.initd ${pkgdir}/etc/init.d/ebtables
+  install -D -m644 ${filedir}/ebtables.confd ${pkgdir}/etc/conf.d/ebtables
+
+  install -Dm644 ${filedir}/ip6tables.confd ${pkgdir}/etc/conf.d/ip6tables
 }
