@@ -1,5 +1,0 @@
-#!/bin/sh
-
-
-#/sbin/route del default
-#/sbin/route add default gw 172.XX.XXX.1
