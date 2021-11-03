@@ -20,6 +20,7 @@ build() {
     --sysconfdir=/etc \
     --localstatedir=/var \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libexecdir=/usr/lib${LIBDIRSUFFIX}/$pkgname \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
