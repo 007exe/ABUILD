@@ -8,7 +8,7 @@ longdesc=("yelp-xsl is a collection of documentation utilities for the Gnome pro
 
 source=("https://gitlab.gnome.org/GNOME/yelp-xsl/-/archive/${pkgver}/yelp-xsl-${pkgver}.tar.gz")
 
-tags="gnome app-doc"
+tags="gnome-extra gnome"
 
 build_deps="itstool"
 

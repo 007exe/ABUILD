@@ -7,7 +7,7 @@ shortdesc=("Common build files of the C++ bindings")
 
 source=("http://download.gnome.org/sources/mm-common/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-tags="gnome-base gnome"
+tags="dev-libs develop"
 
 build_deps="meson"
 
