@@ -1,0 +1,42 @@
+pkgname=abiword
+pkgver=3.0.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Fully-featured word processor")
+longdesc=("AbiWord is a word processor which is useful for writing reports, letters and other formatted documents.")
+
+source=("https://www.abisource.com/downloads/$pkgname/$pkgver/source/$pkgname-$pkgver.tar.gz")
+
+tags="xapps app-office"
+
+build_deps="pkg-config boost gobject-introspection libwpd libwps python-gobject autoconf fribidi wv goffice librsvg enchant desktop-file-utils redland libical gtk-update-icon-cache loudmouth libwpg libwps libwmf link-grammar gtkmathview aiksaurus libxslt libsoup libots libgsf psiconv"
+
+removedep=" mesa  libgl  udev libdrm fontconfig freetype "
+
+build()
+{
+
+go_src_dir
+
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--with-gtk2 \
+--enable-clipart \
+--enable-templates \
+--enable-plugins \
+--docdir=/usr/doc/${pkgname}-${pkgver} 
+
+make
+
+make DESTDIR=$pkgdir install
+
+}
+
+after_build()
+{
+find  ${pkgdir} -name \*.la -exec rm -f {} \;
+}
