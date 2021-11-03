@@ -1,0 +1,54 @@
+pkgname=samba
+pkgver=4.15.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("SMB file and print server")
+longdesc=("The Samba package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients. Samba can also be configured as a Windows Domain Controller replacement, a file/print server acting as a member of a Windows Active Directory domain and a NetBIOS (rfc1001/1002) nameserver (which among other things provides LAN browsing support).")
+
+tags=('net-fs network')
+
+source=("https://us1.samba.org/samba/ftp/stable/samba-${pkgver}.tar.gz")
+# python-dateutils nor python-iso8601
+build_deps="python python-markdown python-dnspython python-pyasn1 python-cryptography python-iso8601 python-dephell-argparse python-py python-hypothesis python-pbr rpcsvc-proto perl-parse-yapp jansson liburing docbook-xsl pkg-config libunwind db popt libcups readline acl libcap krb5 cmocka linux-pam gnutls tdb dbus libaio libnsl libtirpc talloc tevent ldb"
+
+pkglist="smbclient"
+
+adddep="smbclient"
+
+config_files="etc/conf.d/samba
+etc/logrotate.d/samba
+etc/pam.d/samba"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX/ \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --with-piddir=/run/samba \
+    --with-pammodulesdir=/usr/lib${LIBDIRSUFFIX}/security \
+    --enable-fhs \
+    --without-ad-dc \
+    --without-systemd \
+    --enable-selftest
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m755 ${filedir}/samba.init ${pkgdir}/etc/init.d/samba
+  install -D -m644 ${filedir}/samba.conf.d ${pkgdir}/etc/conf.d/samba
+  install -D -m644 ${filedir}/samba.logrotate ${pkgdir}/etc/logrotate.d/samba
+  install -D -m644 ${filedir}/samba.pam ${pkgdir}/etc/pam.d/samba
+}
+
+smbclient() {
+  pkgname=smbclient
+  shortdesc=("Tools to access a server's filespace and printers via SMB")
+  longdesc=("The Samba package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients. Samba can also be configured as a Windows Domain Controller replacement, a file/print server acting as a member of a Windows Active Directory domain and a NetBIOS (rfc1001/1002) nameserver (which among other things provides LAN browsing support).")
+}
+
+smbclient_prep() {
+  mkdir -p ${pkgdir}/usr/bin ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+}
