@@ -10,7 +10,7 @@ source=("https://github.com/qtwebkit/qtwebkit/archive/refs/tags/qtwebkit-${pkgve
 
 tags="libs x11-libs"
 
-build_deps="cmake ruby gperf python qt5-doc qt5-tools qt5-location qt5-sensors qt5-webchannel libwebp libxslt libxcomposite gst-plugins-base hyphen woff2"
+build_deps="cmake python qt5-base gst-plugins-base icu libjpeg-turbo libjpeg-turbo libpng libwebp libxslt ruby sqlite"
 
 build() {
   go_src_dir

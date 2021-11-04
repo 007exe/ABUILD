@@ -8,7 +8,7 @@ longdesc=("FFmpeg version of headers required to interface with Nvidia codec API
 
 source=("https://github.com/FFmpeg/nv-codec-headers/releases/download/n${pkgver}/nv-codec-headers-${pkgver}.tar.gz")
 
-tags="media-sound libs"
+tags="media-video libs"
 
 build_deps="git"
 
