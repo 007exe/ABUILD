@@ -1,0 +1,28 @@
+pkgname=xfce4-kbdleds-plugin
+pkgver=0.2.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("This is a keyboard leds plugin (based on sample plugin) for the Xfce panel")
+longdesc=("This is a keyboard leds plugin (based on sample plugin) for the Xfce panel.")
+
+source=("https://github.com/oco2000/xfce4-kbdleds-plugin/archive/refs/tags/xfce4-kbdleds-plugin-${pkgver}.tar.gz")
+
+tags="xfce xfce-extra"
+
+build_deps="xfce4-panel libxfce4util libxfce4ui intltool"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
