@@ -9,7 +9,11 @@ longdesc=("Midori is a lightweight GTK+ 3 web browser based on WebKitGtk. It fea
 source=("https://github.com/midori-browser/core/releases/download/v${pkgver}/midori-v${pkgver}.tar.gz")
 
 tags="www-client xapps"
-
+# glib-networking aria2 libxss zeitgeist
+#### opdeps
+# gst-plugins-base: HTML5 OGG videos support
+# gst-plugins-good: HTML5 H264 and WebM videos support
+# gst-libav: HTML5 H264 videos support
 build_deps="cmake git gobject-introspection intltool ninja vala libsoup webkit2gtk gcr libpeas"
 
 build() {
