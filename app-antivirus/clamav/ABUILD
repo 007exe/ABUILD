@@ -1,0 +1,49 @@
+pkgname=clamav
+pkgver=0.104.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("nti-virus toolkit for Unix")
+longdesc=("Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of this software is the integration with mail seversions (attachment scanning). The package provides a flexible and scalable multi-threaded daemon, a command-line scanner, and a tool for automatic updating via Internet. The programs are based on a shared library distributed with the Clam AntiVirus package, which you can use in your own software.")
+
+source=("https://www.clamav.net/downloads/production/${pkgname}-${pkgver}.tar.gz")
+
+tags="utils app-misc"
+
+build_deps="bzip2 libltdl libxml2 curl pcre2 json-c libmspack ncurses libmilter cmake ninja python"
+
+config_files="etc/clamav/clamd.conf
+etc/clamav/freshclam.conf
+etc/clamav/clamav-milter.conf
+etc/logrotate.d/clamav"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake \
+    -DCMAKE_BUILD_TYPE='None' \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SBINDIR=bin \
+    -DAPP_CONFIG_DIRECTORY=/etc/clamav \
+    -DDATABASE_DIRECTORY=/var/lib/clamav \
+    -DENABLE_EXTERNAL_MSPACK=ON \
+    -Wno-dev \
+    -B build \
+    -G Ninja \
+    -S .
+  ninja -C build
+  DESTDIR="${pkgdir}" ninja -C build install
+
+  mv ${pkgdir}/etc/clamav/freshclam.conf{.sample,}
+  mv ${pkgdir}/etc/clamav/clamd.conf{.sample,}
+  mv ${pkgdir}/etc/clamav/clamav-milter.conf{.sample,}
+
+  install -D -m644 "${filedir}/clamav.logrotate" "${pkgdir}/etc/logrotate.d/clamav"
+  install -D -m755 "${filedir}/clamav.initd" "${pkgdir}/etc/init.d/clamav"
+  install -D -m644 "${filedir}/clamav.confd" "${pkgdir}/etc/conf.d/clamav"
+  install -d -o 64 -g 64 ${pkgdir}/var/{clamav,log/clamav,lib/clamav,run/clamav}
+  chown clamav:clamav ${pkgdir}/var/clamav \
+                      ${pkgdir}/var/run/clamav \
+                      ${pkgdir}/var/log/clamav \
+                      ${pkgdir}/var/lib/clamav
+}
