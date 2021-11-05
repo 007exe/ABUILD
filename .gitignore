@@ -1,5 +1,7 @@
-*~                                                                                                                                                                                           
-*.swp                                                                                                                                                                                        
-kde-*-build.log                                                                                                                                                                              
-*.build_tree.tar.xz                                                                                                                                                                          
-*.spkg 
+*~                                                                                                                                                                                     
+*.swp                                                                                                                                                                          
+kde-*-build.log                                                                                                                                                                         
+*.build_tree.tar.xz                                                                                                                                                                        
+*.spkg
+*.ABUILD.kate-swp
+*.kate-swp
