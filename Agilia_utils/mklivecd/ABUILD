@@ -1,33 +1,28 @@
-# Package metadata
 pkgname=mklivecd
 pkgver=1.1
 pkgbuild=1
 arch=("noarch")
 
-# Package description
 shortdesc=("AgiliaLinux LiveCD build scripts")
 longdesc=("This package contains mkpkg-like scripts to build LiveCDs from ISOBUILD specifications. For more info, see wiki page.")
 
-# Source URL
 source=("git:git://github.com/007exe/mpkg.git")
 
-# Tags
 tags="xapps sys-apps"
 
-# Many additional dependencies which are used indirectly during setup process.
-adddep="bash>=4.0 wget rsync syslinux>=4.0 cdrtools fakeroot fakechroot mpkg-console>=0.16_svn290 squashfs-tools>=4.1"
+adddep="bash wget rsync syslinux cdrtools fakeroot fakechroot mpkg-console squashfs-tools"
 
-# Build system
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr"
+BUILD_KEYS=""
 build_deps="cmake"
 
 build() {
-	go_src_dir
-	burn_patches
-	mkdir build
-	cd build
-	cmake $BUILD_KEYS ../chroot_installer
-	make -j${numjobs}
-	make install DESTDIR=${pkgdir}
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake ../chroot_installer \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
 }
 

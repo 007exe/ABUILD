@@ -1,0 +1,26 @@
+pkgname=mpkg-parted
+pkgver=0.17
+pkgbuild=1
+arch="auto"
+
+shortdesc=("mpkg parted libs")
+longdesc=("Parted bindings for mpkg, mainly used by system installers such as agilia-gui-installer.")
+
+source=("git:git://github.com/007exe/mpkg.git")
+
+tags="console dev-util"
+
+build_deps="mpkgsupport parted cmake gcc-libs"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    ../mpkg-parted
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+}
+

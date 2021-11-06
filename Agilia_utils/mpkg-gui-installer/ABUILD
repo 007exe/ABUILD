@@ -1,0 +1,26 @@
+pkgname=mpkg-gui-installer
+pkgver=0.15
+pkgbuild=1
+arch="auto"
+
+shortdesc=("MPKG package system: GUI integration")
+longdesc=("GUI integration tools for mpkg")
+
+source=("git:git://github.com/007exe/mpkg.git")
+
+tags="xapps sys-pkgtools"
+
+build_deps="cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=$LIBDIRSUFFIX \
+    ../mpkg-gui-installer
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+}

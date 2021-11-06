@@ -1,0 +1,29 @@
+pkgname=mpkg-core
+pkgver=0.17.1
+pkgbuild=1
+arch="auto"
+
+shortdesc=("MPKG package system: core libraries")
+longdesc=("The core of mpkg.")
+
+source=("git:git://github.com/007exe/mpkg.git")
+
+tags="base sys-pkgtools"
+
+adddep="mpkg-i18n tar xz gzip sed wget which"
+
+build_deps="nwidgets mpkgsupport cmake gcc"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    ../lib
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+}
+

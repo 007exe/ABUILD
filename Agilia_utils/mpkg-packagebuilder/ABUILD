@@ -1,0 +1,27 @@
+pkgname=mpkg-packagebuilder
+pkgver=0.16
+pkgbuild=1
+arch="auto"
+
+shortdesc=("MPKG package system: utility for creating and editing packages")
+longdesc=("Graphic utility for creating and editing packages, both binary and SPKG.")
+
+source=("git:git://github.com/007exe/mpkg.git")
+
+tags="xapps x11-apps"
+
+build_deps="cmake"
+
+adddep="mkpkg"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    ../packagebuilder
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+}
