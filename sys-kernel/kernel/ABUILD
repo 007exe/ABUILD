@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=5.14.7
+pkgver=5.15.0
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,14 @@ longdesc=("This is a Linux kernel with built-in support for most disk controller
 
 tags=("base sys-kernel")
 
-source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${pkgver}.tar.xz")
+kernel_ver=`echo $pkgver | sed -e s/_/-/g`
+if [ "$kernel_ver" = "`echo $kernel_ver | sed 's/\.0$//g'` | sed -e s/lts//g" ] ; then
+    srcver=$kernel_ver
+else
+    srcver=`echo $kernel_ver | sed 's/\.0$//g' | sed 's/lts//g'`
+fi
+
+source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${srcver}.tar.xz")
 
 custom_opts="skip_gendeps no_strip skip_validate"
 
@@ -23,10 +30,8 @@ pkglist=("headers sources")
 headers() {
   pkgname=kernel-headers
   arch=("auto")
-
   shortdesc=("Headers and scripts for building modules for the linux kernel")
   longdesc=("These are the include files from the Linux kernel. You will need these to compile most system software for Linux.")
-
   tags=('develop sys-kernel')
 }
 
@@ -35,7 +40,6 @@ sources() {
   arch=('auto')
   shortdesc=('Linux kernel source')
   longdesc=('Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.')
-
   tags=('develop sys-kernel')
 }
 
@@ -43,7 +47,10 @@ before_build() {
   go_src_dir
   burn_patches
   echo "Copying kernel configuration..."
-  #zcat /proc/config.gz > .config
+## It is now built as a module to save some RAM. Try this first:
+## sudo modprobe configs
+## (or add configs to /etc/conf.d/modules if you always want it available).
+## zcat /proc/config.gz > .config
   cat ${filedir}/defconfig-x86_64 > .config
 
 clear
@@ -111,7 +118,7 @@ echo "Installing the Kernel..."
   cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-${pkgver}
 
 echo "Installing Kernel Modules..."
-  make modules_install INSTALL_MOD_PATH=${pkgdir}
+  make -j${numjobs} INSTALL_MOD_PATH=${pkgdir} INSTALL_MOD_STRIP=1 modules_install
   rm -rf ${pkgdir}/lib/firmware
   rm ${pkgdir}/lib/modules/${pkgver}/{source,build}
   ln -sf /usr/src/linux-${pkgver} ${pkgdir}/lib/modules/${pkgver}/source
@@ -136,12 +143,6 @@ headers_prep() {
 echo "Installing kernel headers..."
   make headers_check
   make headers_install INSTALL_HDR_PATH=${pkgdir}/usr
-
-# Copy aufs-tree manually, since we removed dirty hacks
-#  if [ -f include/linux/aufs_type.h ]; then
-#echo "Copy aufs-tree manually, since we removed dirty hacks"
-#     install -m644 include/linux/aufs_type.h ${pkgdir}/usr/include/linux/
-#  fi
 }
 
 sources_prep() {
