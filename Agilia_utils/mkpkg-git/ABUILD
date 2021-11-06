@@ -28,7 +28,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -Dm644 mkpkg.conf "${pkgdir}/etc/mkpkg.conf"
+  install -Dm644 ../mkpkg.conf "${pkgdir}/etc/mkpkg.conf"
   sed s,%MKPKG_VER%,${pkgver}, -i ${pkgdir}/usr/bin/mkpkg
   sed 's,MKPKG_INSTALL_PREFIX=.*,MKPKG_INSTALL_PREFIX=/usr,g' -i ${pkgdir}/usr/bin/mkpkg
 }
