@@ -1,0 +1,29 @@
+pkgname=libmbim
+pkgver=1.26.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("MBIM modem protocol helper library")
+longdesc=("The libmbim package contains a GLib-based library for talking to WWAN modems and devices which speak the Mobile Interface Broadband Model (MBIM) protocol.")
+
+source=("http://www.freedesktop.org/software/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags="network net-libs"
+
+build_deps="glib2 bash gtk-doc python git help2man gobject-introspection"
+
+adddep="bash"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-compile-warnings=yes
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
