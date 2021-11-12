@@ -1,0 +1,30 @@
+pkgname=libqmi
+pkgver=1.30.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("QMI modem protocol helper library")
+longdesc=("The libqmi package contains a GLib-based library for talking to WWAN modems and devices which speak the Qualcomm MSM Interface (QMI) protocol.")
+
+source=("http://www.freedesktop.org/software/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags="network net-libs"
+
+build_deps="gtk-doc python git help2man gobject-introspection libqrtr-glib"
+
+adddep="bash libqrtr-glib"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static \
+    --enable-gtk-doc \
+    --enable-compile-warnings=yes
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
