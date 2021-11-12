@@ -1,0 +1,26 @@
+pkgname=libndp
+pkgver=1.8
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library for Neighbor Discovery Protocol")
+longdesc=("The libndp package provides a wrapper for IPv6 Neighbor Discovery Protocol. It also provides a tool named ndptool for sending and receiving NDP messages.")
+
+source=("http://libndp.org/files/${pkgname}-${pkgver}.tar.gz")
+
+tags="libs net-misc"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
