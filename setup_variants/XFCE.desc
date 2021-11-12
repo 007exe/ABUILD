@@ -1,0 +1,8 @@
+desc: XFCE Desktop
+full: Desktop based on XFCE. Good lightweight environment.
+desc[ru]: XFCE десктоп
+full[ru]: Десктоп на базе XFCE. Хорошее легковесное окружение.
+hasDM
+hasX11
+hardware: 512Mb RAM, 1Ghz CPU
+hardware[ru]: 512Мб ОЗУ, 1ГГц ЦПУ

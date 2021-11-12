@@ -1,0 +1,8 @@
+desc: Openbox desktop
+full: Openbox is a lightweight, powerful and highly customizable window manager. The installation kit includes only the xterm terminal emulator and the menumaker menu generator. 
+desc[ru]: Openbox десктоп
+full[ru]: Openbox это легкий, мощный и легко настраиваемый оконный менеджер. В комплект установки входит только эмулятор терминала xterm и генератор меню menumaker.
+hasX11
+hasDM
+hardware: 256Mb RAM, any CPU
+hardware[ru]: 256Мб ОЗУ, любой процессор

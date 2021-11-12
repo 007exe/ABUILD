@@ -1,0 +1,8 @@
+desc: LXDE Desktop
+full: Full-featured desktop based on LXDE. It has very simple, lightweight, and at the same feature-rich interface. Good choice for old computers.
+desc[ru]: LXDE десктоп
+full[ru]: Полноценный десктоп на базе LXDE. Обладает очень простым, легковесным и в то же время достаточно функциональным интерфейсом. Неплохой выбор для слабых компьютеров.
+hasX11
+hasDM
+hardware: 256Mb RAM, any CPU
+hardware[ru]: 256Мб ОЗУ, любой процессор

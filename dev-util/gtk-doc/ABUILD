@@ -1,6 +1,6 @@
 pkgname=gtk-doc
 pkgver=1.33.2
-pkgbuild=1
+pkgbuild=2
 arch=('noarch')
 
 shortdesc=("Documentation tool for public library API")
@@ -10,7 +10,9 @@ source=("https://download.gnome.org/sources/gtk-doc/${pkgver%.*}/gtk-doc-${pkgve
 
 tags="dev-util develop"
 
-build_deps="docbook-xml docbook-xsl itstool libxslt"
+build_deps="yelp-tools docbook-xml docbook-xsl itstool libxslt glib2 python-lxml python-pygments python-anytree"
+
+adddep="docbook-xsl docbook-xml python-lxml python-pygments python-anytree"
 
 build() {
   go_src_dir

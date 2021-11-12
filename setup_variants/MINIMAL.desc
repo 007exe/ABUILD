@@ -1,0 +1,6 @@
+desc: Minimum system.
+full: A minimal system without DE with network support and a small set of programs for comfortable work in the console. To bring up a fast network, you need to start the DHCP service "# rc-update add dhcpcd default" 
+desc[ru]: Минимальная система.
+full[ru]: Минимальная система без DE с поддержкой сети и небольшим набором программ для комфортной работы в консоли .Для поднятия проворной сети необходимо запустить службу DHCP «# rc-update add dhcpcd default»
+hardware: any computer
+hardware[ru]: любой компьютер
