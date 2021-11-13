@@ -1,0 +1,57 @@
+pkgname=networkmanager
+pkgver=1.32.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Network connection manager and user applications")
+longdesc=("NetworkManager is a set of co-operative tools that make networking simple and straightforward. Whether you use WiFi, wired, 3G, or Bluetooth, NetworkManager allows you to quickly move from one network to another: Once a network has been configured and joined once, it can be detected and re-joined automatically the next time it's available.")
+
+source=("https://download.gnome.org/sources/NetworkManager/${pkgver:0:4}/NetworkManager-${pkgver}.tar.xz")
+
+tags=("network net-misc")
+
+build_deps="meson jansson curl gobject-introspection iptables nss polkit elogind upower vala bluez gnutls gtk-doc libpsl valgrind libndp modemmanager mobile-broadband-provider-info newt python-gobject dnsmasq libaudit"
+
+#adddep="ppp>=2.4.5 iptables dhcpcd wireless-tools wpa_supplicant rp-pppoe"
+
+adddep="mobile-broadband-provider-info"
+
+config_files="etc/NetworkManager/NetworkManager.conf"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D systemdsystemunitdir=no \
+    -D udev_dir=/lib/udev \
+    -D iptables=/sbin/iptables \
+    -D dnsmasq=/usr/sbin/dnsmasq \
+    -D modify_system=true \
+    -D selinux=false \
+    -D systemd_journal=false \
+    -D libaudit=no \
+    -D iwd=true \
+    -D pppd=/usr/sbin/pppd \
+    -D config_plugins_default=ifupdown \
+    -D ifupdown=true \
+    -D dhcpcd=true \
+    -D config_dhcp_default=internal \
+    -D vapi=true \
+    -D tests=no \
+    -D polkit=true \
+    -D session_tracking=no \
+    -D qt=false \
+    -D ofono=true \
+    -D crypto=nss \
+    -D dbus_conf_dir=/usr/share/dbus-1/system.d \
+    -D docs=true
+  meson compile -C build
+  meson install -C build --destdir $pkgdir
+
+  install -m755 -D $filedir/networkmanager.initd $pkgdir/etc/init.d/networkmanager
+  install -m644 -D $filedir/NetworkManager.conf $pkgdir/etc/NetworkManager/NetworkManager.conf
+# allow plugdev users to modify connections
+  install -m644 -D $filedir/networkmanager.rules  $pkgdir/usr/share/polkit-1/rules.d/01-org.freedesktop.NetworkManager.settings.modify.system.rules
+}
+
