@@ -1,0 +1,27 @@
+pkgname=newt
+pkgver=0.52.21
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Not Erik's Windowing Toolkit - text mode windowing with slang")
+longdesc=("Newt is a programming library for color text mode, widget based user interfaces. It can be used to add stacked windows, entry widgets, checkboxes, radio buttons, labels, plain text fields, scrollbars, etc., to text mode user interfaces. Newt is based on the S-Lang library.")
+
+source=("https://fedorahosted.org/releases/n/e/newt/newt-${pkgver}.tar.gz")
+
+tags="utils app-admin"
+
+build_deps="python gpm popt slang"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e 's:-lslang:-lslang -lncurses:g' \
+      -e 's:instroot:DESTDIR:g' Makefile.in
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-gpm-support \
+    --with-python=python3.9
+  make -j${numjobs}
+  make DESTDIR="$pkgdir" prefix="/usr" RPM_OPT_FLAGS="ERROR" install
+}
