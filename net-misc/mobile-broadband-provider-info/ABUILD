@@ -1,0 +1,24 @@
+pkgname=mobile-broadband-provider-info
+pkgver=20210805
+pkgbuild=1
+arch=('noarch')
+
+shortdesc=("Network Management daemon")
+longdesc=("Mobile broadband settings for various service providers")
+
+source=("https://download.gnome.org/sources/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz")
+
+tags="network net-wireless"
+
+build_deps="libxslt"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+}
