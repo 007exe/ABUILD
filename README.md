@@ -118,6 +118,7 @@ gnome-base           | Основные пакеты GNOME.
 gnome-extra          | Дополнительные неосновные пакеты GNOME.
 gui-libs             | Разные библиотеки, которые поддерживают различные оконные менеджеры.
 kde-apps             | Пакеты, выпущенные KDE как часть KDE Applications.
+kde-frameworks       | Основные пакеты KDE Frameworks.
 lxde-base            | Основные пакеты для LXDE, облегченной среды рабочего стола X11.
 media-fonts          | Шрифты.
 media-gfx            | Пакеты, связанные с графикой.
