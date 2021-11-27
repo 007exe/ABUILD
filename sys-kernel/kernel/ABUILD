@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=5.15.0
+pkgver=5.15.4
 pkgbuild=1
 arch=("auto")
 
@@ -53,7 +53,7 @@ before_build() {
 ## zcat /proc/config.gz > .config
   cat ${filedir}/defconfig-x86_64 > .config
 
-clear
+#clear
 echo ""
 echo "Kernel preconfiguration"
 while
@@ -83,7 +83,7 @@ y - enable, n - do not include, m - include as a module
   make oldconfig
 fi
 
-clear
+#clear
 echo ""
 echo "Manual kernel configuration"
 while
@@ -108,6 +108,7 @@ fi
 
 echo "Save new config file..."
 cp .config  ${filedir}/${pkgver}-defconfig-x86_64
+cp .config ${startdir}/${pkgver}-defconfig-x86_64
 }
 
 build() {
