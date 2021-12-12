@@ -1,0 +1,31 @@
+pkgname=wine
+pkgver=6.23
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A compatibility layer for running Windows programs")
+longdesc=("A compatibility layer for running Windows programs")
+
+source=("https://dl.winehq.org/wine/source/6.x/$pkgname-${pkgver}.tar.xz")
+
+tags="xapps app-emulation"
+# fontforge mingw-w64-gcc giflib libldap mpg123 openal opencl-icd-loader vkd3d sane samba opencl-headers faudio
+build_deps="autoconf bison perl flex libpng gnutls libxinerama libxcomposite libxmu libxxf86vm v4l-utils libpulse alsa-lib libxcomposite mesa libxslt gst-plugins-base-libs vulkan-icd-loader sdl2 libcups libgphoto2 gsm vulkan-headers
+fontconfig lcms2 libxml2 libxcursor libxrandr libxdamage libxi gettext freetype glu libsm gcc-libs libpcap desktop-file-utils"
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --disable-static \
+    --with-x \
+    --enable-win64
+  make -j${numjobs}
+  make  DESTDIR=$pkgdir install
+}
+
+
+
+
