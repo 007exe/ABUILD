@@ -1,0 +1,98 @@
+pkgname=wxgtk-common
+pkgver=3.0.5.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Common libraries and headers for wxgtk2 and wxgtk3")
+
+source=("https://github.com/wxWidgets/wxWidgets/releases/download/v$pkgver/wxWidgets-$pkgver.tar.bz2")
+
+tags="games games-board"
+
+build_deps="gst-plugins-base gst-plugins-base-libs glu webkit2gtk libnotify gtk2 gtk3 zlib gcc-libs expat libsm libxxf86vm"
+
+pkglist="wxgtk2 wxgtk3"
+
+before_build(){
+  go_src_dir
+  burn_patches
+  cd ..
+  cp -r wxWidgets-$pkgver wxWidgets-$pkgver-gtk3
+}
+
+build() {
+  cd wxWidgets-$pkgver
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-gtk=2 \
+    --with-opengl \
+    --enable-unicode \
+    --enable-graphics_ctx \
+    --enable-mediactrl \
+    --with-regex=builtin \
+    --with-libpng=sys \
+    --with-libxpm=sys \
+    --with-libjpeg=sys \
+    --with-libtiff=sys \
+    --disable-precomp-headers
+  make -j${numjobs}
+  make -C locale allmo
+
+  make DESTDIR="$pkgdir" install
+  rm -r "$pkgdir"/usr/{bin/wx-config,lib${LIBDIRSUFFIX}/{wx,libwx_gtk*}}
+
+  install -D -m644 docs/licence.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+  cd ../wxWidgets-$pkgver-gtk3
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-gtk=3 \
+    --with-opengl \
+    --enable-unicode \
+    --enable-graphics_ctx \
+    --enable-mediactrl \
+    --enable-webview \
+    --with-regex=builtin \
+    --with-libpng=sys \
+    --with-libxpm=sys \
+    --with-libjpeg=sys \
+    --with-libtiff=sys \
+    --disable-precomp-headers
+  make -j${numjobs}
+
+}
+
+wxgtk2() {
+  pkgname=wxgtk2
+  shortdesc=("GTK+2 implementation of wxWidgets API for GUI")
+  longdesc=("GTK+2 implementation of wxWidgets API for GUI")
+  arch=('auto')
+  adddep="wxgtk-common"
+}
+
+wxgtk2_prep() {
+  cd ${srcdir}/wxWidgets-$pkgver
+  make DESTDIR="$pkgdir" install
+  rm -r "$pkgdir"/usr/{include,share,lib${LIBDIRSUFFIX}/libwx_base*,bin/wxrc*}
+  
+  install -D -m644 docs/licence.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+wxgtk3() {
+  pkgname=wxgtk3
+  shortdesc=("GTK+3 implementation of wxWidgets API for GUI")
+  longdesc=("GTK+3 implementation of wxWidgets API for GUI")
+  arch=('auto')
+  adddep="wxgtk-common"
+}
+
+wxgtk3_prep() {
+  cd ${srcdir}/wxWidgets-$pkgver-gtk3
+  make DESTDIR="$pkgdir" install  
+  rm -r "$pkgdir"/usr/{include,share,lib${LIBDIRSUFFIX}/libwx_base*,bin/wxrc*}
+  mv "$pkgdir"/usr/bin/wx-config{,-gtk3}
+   
+  install -D -m644 docs/licence.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
