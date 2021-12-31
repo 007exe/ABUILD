@@ -1,0 +1,28 @@
+pkgname=glew
+pkgver=2.2.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("The OpenGL Extension Wrangler Library")
+longdesc=("The OpenGL Extension Wrangler Library (GLEW) is a cross-platform open-source"
+"C/C++ extension loading library. GLEW provides efficient run-time mechanisms for"
+"determining which OpenGL extensions are supported on the target platform. OpenGL"
+"core and extension functionality is exposed in a single header file"
+)
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tgz")
+
+tags="libs dev-libs compat32"
+
+build_deps="libxmu libxi glu"
+
+build() {
+  go_src_dir
+  burn_patches
+
+  make -j${numjobs} || exit 1
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
+  make install GLEW_DEST=${pkgdir} LIBDIR=$pkgdir/usr/lib${LIBDIRSUFFIX} INCDIR=/${pkgdir}/usr/include/GL || exit 1
+
+  install -D -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
