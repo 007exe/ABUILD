@@ -4,7 +4,7 @@ pkgbuild=1
 arch=('noarch')
 
 shortdesc=("C++ mathematics library for 3D software based on the OpenGL Shading Language (GLSL) specification")
-longdesc=("GLM is a C++ library for doing mathematics operations required in many OpenGL based applications. Its interface has been designed to resemble the built-in matrix and vector types of the OpenGL shading language.")
+longdesc=("OpenGL Mathematics (GLM) is a header-only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications. An extension system provides extended capabilities such as matrix transformations and quaternions.")
 
 source=("https://github.com/g-truc/glm/releases/download/${pkgver}/glm-${pkgver}.zip")
 
