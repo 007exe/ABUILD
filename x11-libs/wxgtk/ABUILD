@@ -7,7 +7,7 @@ shortdesc=("Common libraries and headers for wxgtk2 and wxgtk3")
 
 source=("https://github.com/wxWidgets/wxWidgets/releases/download/v$pkgver/wxWidgets-$pkgver.tar.bz2")
 
-tags="games games-board"
+tags="libs x11-libs"
 
 build_deps="gst-plugins-base gst-plugins-base-libs glu webkit2gtk libnotify gtk2 gtk3 zlib gcc-libs expat libsm libxxf86vm"
 
