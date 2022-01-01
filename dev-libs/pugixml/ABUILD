@@ -1,0 +1,25 @@
+pkgname=pugixml
+pkgver=1.11.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Light-weight, simple and fast XML parser for C++ with XPath support")
+longdesc=("pugixml is a light-weight C++ XML processing library.")
+
+source=("https://github.com/zeux/pugixml/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="libs dev-libs"
+
+build_deps="gcc-libs cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_SHARED_LIBS=ON
+  make -C build
+  make -C build DESTDIR="${pkgdir}" install
+
+  install -Dm644 readme.txt -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+}
