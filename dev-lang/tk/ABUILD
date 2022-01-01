@@ -1,5 +1,5 @@
 pkgname=tk
-pkgver=8.6.11.1
+pkgver=8.6.12
 pkgbuild=1
 arch=("auto")
 
@@ -15,6 +15,7 @@ build_deps="tcl libxss libxft"
 build() {
   go_src_dir
   burn_patches
+  cd unix
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib$LIBDIRSUFFIX \
