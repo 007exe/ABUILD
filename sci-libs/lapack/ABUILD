@@ -1,0 +1,94 @@
+pkgname=lapack
+pkgver=3.10.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linear Algebra PACKage.")
+longdesc=("LAPACK provides routines for solving systems of simultaneous linear equations, least-squares solutions of linear systems of equations, eigenvalue problems, and singular value problems.")
+
+source=("https://github.com/Reference-LAPACK/lapack/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags=("libs sci-mathematics")
+
+build_deps="gcc-fortran cmake python doxygen"
+
+pkglist="blas cblas lapacke lapack-doc"
+
+adddep="blas"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_TESTING=OFF \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_DIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_Fortran_COMPILER=gfortran \
+    -DLAPACKE_WITH_TMG=ON \
+    -DCBLAS=ON \
+    -DBUILD_DEPRECATED=ON
+  cmake --build build
+
+# Build man pages
+  doxygen DOCS/Doxyfile_man
+
+  DESTDIR="$pkgdir" cmake --install build
+
+  rm -r "$pkgdir"/usr/lib${LIBDIRSUFFIX}/{libblas.*,libcblas.*,liblapacke.*}
+  rm -r "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/{blas.*,cblas.*,lapacke.*}
+  rm -r "$pkgdir"/usr/lib${LIBDIRSUFFIX}/cmake/{cblas*,lapacke*}
+  rm -r "$pkgdir"/usr/include
+}
+
+blas() {
+  pkgname=blas
+  shortdesc=("Basic Linear Algebra Subprograms.")
+  longdesc=("LAPACK provides routines for solving systems of simultaneous linear equations, least-squares solutions of linear systems of equations, eigenvalue problems, and singular value problems.")
+}
+
+blas_prep() {
+  go_src_dir
+  DESTDIR="$pkgdir" cmake --install build/BLAS
+
+  install -Dm644 ${filedir}/LICENSE.blas -t "$pkgdir"/usr/share/licenses/blas/
+}
+
+cblas() {
+  pkgname=cblas
+  shortdesc=("C interface to BLAS.")
+  longdesc=("LAPACK provides routines for solving systems of simultaneous linear equations, least-squares solutions of linear systems of equations, eigenvalue problems, and singular value problems.")
+  adddep="blas"
+}
+
+cblas_prep() {
+  go_src_dir
+  DESTDIR="$pkgdir" cmake --install build/CBLAS
+}
+
+lapacke() {
+  pkgname=lapacke
+  shortdesc=("C interface to LAPACK.")
+  longdesc=("LAPACK provides routines for solving systems of simultaneous linear equations, least-squares solutions of linear systems of equations, eigenvalue problems, and singular value problems.")
+  adddep="lapack"
+}
+
+lapacke_prep() {
+  go_src_dir
+  DESTDIR="$pkgdir" cmake --install build/LAPACKE
+}
+
+lapack-doc() {
+  pkgname=lapack-doc
+  shortdesc=("Man pages for BLAS/LAPACK.")
+  longdesc=("LAPACK provides routines for solving systems of simultaneous linear equations, least-squares solutions of linear systems of equations, eigenvalue problems, and singular value problems.")
+}
+
+lapack-doc_prep() {
+  go_src_dir
+  mkdir -p "$pkgdir"/usr/share
+  cp -r DOCS/man "$pkgdir"/usr/share
+# conflict with man-pages
+  rm "$pkgdir"/usr/share/man/man3/{MIN,MAX}.3
+}
