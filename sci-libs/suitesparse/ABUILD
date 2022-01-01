@@ -1,0 +1,27 @@
+pkgname=suitesparse
+pkgver=5.10.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A collection of sparse matrix libraries.")
+longdesc=("suitesparse is a collection of libraries for computations involving sparse matrices.")
+
+source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags="libs sci-libs"
+
+build_deps="metis lapack mpfr gcc-fortran cmake chrpath"
+
+build() {
+  go_src_dir
+  burn_patches
+  BLAS=-lblas LAPACK=-llapack MY_METIS_LIB=/usr/lib${LIBDIRSUFFIX}/libmetis.so make -j${numjobs}
+
+  install -dm755 "${pkgdir}"/usr/{include,lib${LIBDIRSUFFIX}}
+
+  BLAS=-lblas LAPACK=-llapack MY_METIS_LIB=/usr/lib${LIBDIRSUFFIX}/libmetis.so \
+  make -j${numjobs} INSTALL_LIB="${pkgdir}"/usr/lib${LIBDIRSUFFIX} INSTALL_INCLUDE="${pkgdir}"/usr/include install
+
+# fix RPATH
+  chrpath -d "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*
+}
