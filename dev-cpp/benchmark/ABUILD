@@ -1,0 +1,31 @@
+pkgname=benchmark
+pkgver=1.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A microbenchmark support library.")
+longdesc=("A library to benchmark code snippets, similar to unit tests.")
+
+tags=("libs dev-cpp")
+
+source=("https://github.com/google/$pkgname/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+build_deps="cmake gcc-libs"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS} -DNDEBUG" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBENCHMARK_ENABLE_LTO=ON \
+    -DBENCHMARK_ENABLE_GTEST_TESTS=OFF \
+    ..
+  make -j${numjobs}
+  make DESTDIR="$pkgdir/" install
+}
