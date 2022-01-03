@@ -1,0 +1,25 @@
+pkgname=libgeotiff
+pkgver=1.7.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A TIFF based interchange format for georeferenced raster imagery")
+longdesc=("This library is designed to permit the extraction and parsing of the GeoTIFF Key directories, as well as definition and installation of GeoTIFF keys in new files.")
+
+source=("https://github.com/OSGeo/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags="dev-libs libs"
+
+build_deps="libtiff proj libjpeg-turbo"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/libgeotiff/LICENSE
+}
