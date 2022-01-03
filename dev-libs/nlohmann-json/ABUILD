@@ -1,0 +1,29 @@
+pkgname=nlohmann-json
+pkgver=3.10.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("JSON for Modern C++")
+longdesc=("There are myriads of JSON libraries out there, and each may even have its reason to exist.")
+
+source=("https://github.com/nlohmann/json/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags="libs dev-libs"
+
+build_deps="cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+        -DCMAKE_BUILD_TYPE='None' \
+        -DJSON_MultipleHeaders=ON \
+        -Wno-dev \
+        -B build
+  make -j${numjobs} -C build
+
+  make DESTDIR="${pkgdir}" install -C build
+  install -vDm 644 {CODE_OF_CONDUCT,README}.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -vDm 644 LICENSE.MIT -t "${pkgdir}/usr/share/licenses/${pkgname}"
+}
