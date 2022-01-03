@@ -1,0 +1,27 @@
+pkgname=libspatialite
+pkgver=5.0.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("SQLite extension to support spatial data types and operations")
+longdesc=("SpatiaLite is an open source library intended to extend the SQLite core to support fully fledged Spatial SQL capabilities.")
+
+source=("https://www.gaia-gis.it/gaia-sins/$pkgname-$pkgver.tar.gz")
+
+tags="libs dev-db"
+
+build_deps="geos libfreexl librttopo libxml2 minizip proj sqlite"
+
+# Косяк с либой librttopo поэтому её отключил, лень с ней разбираться
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-rttopo \
+    --disable-static \
+    --enable-epsg \
+    --enable-geocallbacks
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
+}
