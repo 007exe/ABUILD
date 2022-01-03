@@ -1,0 +1,27 @@
+pkgname=python-numpy
+pkgver=1.21.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Scientific tools for Python")
+longdesc=("NumPy is the fundamental package needed for scientific computing with Python.")
+
+source=("https://github.com/numpy/numpy/archive/v$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="cblas lapack python python-setuptools gcc-fortran python-nose python-cython"
+
+adddep="cblas lapack"
+
+build() {
+  go_src_dir
+# https://github.com/numpy/numpy/issues/17390
+  sed -i '/error/a \    ignore:Module already imported so cannot be rewritten' pytest.ini
+
+  python setup.py build
+  python setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/python-numpy"
+  install -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/python-numpy/"
+}
