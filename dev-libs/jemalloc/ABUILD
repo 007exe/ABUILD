@@ -1,0 +1,31 @@
+pkgname=jemalloc
+pkgver=5.2.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("General-purpose scalable concurrent malloc implementation")
+longdesc=("jemalloc is a general purpose malloc implementation that emphasizes fragmentation avoidance and scalable concurrency support.")
+
+source=("https://github.com/jemalloc/jemalloc/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="dev-db develop"
+
+build_deps="glibc clang"
+
+build() {
+  go_src_dir
+  burn_patches
+# FS#71745: GCC-built jemalloc causes telegram-desktop to crash a lot. The reason is still not clear.
+  export CC=clang
+  export CXX=clang++
+
+  ./configure \
+    --enable-autogen \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  chmod 644 "$pkgdir/usr/lib${LIBDIRSUFFIX}/libjemalloc_pic.a"
+}
