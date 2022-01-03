@@ -1,0 +1,31 @@
+pkgname=sz
+pkgver=2.1.12
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Modular parametrizable lossy compressor framework for scientific data")
+longdesc=("SZ is a modular parametrizable lossy compressor framework for scientific data (floating point and integers). It has applications in simulations, AI and instruments. It is a production quality software and a research platform for lossy compression. SZ is open and transparent. Open because all interested researchers and students can study or contribute to it. Transparent because all performance improvements are detailed in publications.")
+
+tags=('base app-arch')
+
+source=("https://github.com/szcompressor/SZ/releases/download/v${pkgver}/sz-${pkgver}.tar.gz")
+
+build_deps="glibc gcc-libs cmake gcc-fortran hdf5 netcdf python python-numpy swig"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DBUILD_FORTRAN=ON \
+    -DBUILD_HDF5_FILTER=ON \
+    -DBUILD_NETCDF_READER=ON \
+    -DBUILD_OPENMP=ON \
+    -DBUILD_PYTHON_WRAPPER=ON
+  make -C build
+
+  make -C build DESTDIR="${pkgdir}" install
+  install -Dm644 copyright-and-BSD-license.txt -t "${pkgdir}"/usr/share/licenses/${pkgname}
+  rm "${pkgdir}"/usr/bin/test*
+}
