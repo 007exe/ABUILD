@@ -1,0 +1,54 @@
+pkgname=zlib
+pkgver=1.2.11
+pkgbuild=3
+arch=('auto')
+
+shortdesc=("Compression library implementing the deflate compression method found in gzip and PKZIP.")
+longdesc=("zlib is designed to be a free, general-purpose lossless data-compression library for use on virtually any computer hardware and operating system.")
+
+source=("https://zlib.net/zlib-${pkgver}.tar.gz")
+
+tags="libs sys-libs"
+
+build_deps="glibc"
+
+pkglist="minizip"
+
+build() {
+  go_src_dir
+  grep -A 24 '^  Copyright' zlib.h > LICENSE
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --sharedlibdir=/lib${LIBDIRSUFFIX} \
+    --shared
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/zlib/LICENSE"
+}
+
+minizip() {
+  pkgname=minizip
+  shortdesc=("Mini zip and unzip based on zlib.")
+  longdesc=("zlib is designed to be a free, general-purpose lossless data-compression library for use on virtually any computer hardware and operating system.")
+  adddep="zlib"
+}
+
+minizip_prep() {
+  go_src_dir
+  cd contrib/minizip
+  cp Makefile Makefile.orig
+  cp ../README.contrib readme.txt
+  autoreconf --install
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --enable-static=no
+  make -j${numjobs}
+  make install DESTDIR="${pkgdir}"
+
+  install -D -m644 "${srcdir}/zlib-$pkgver/LICENSE" "${pkgdir}/usr/share/licenses/minizip/LICENSE"
+
+# https://github.com/madler/zlib/pull/229
+  rm "${pkgdir}/usr/include/minizip/crypt.h"
+}
