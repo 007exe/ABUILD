@@ -1,0 +1,24 @@
+pkgname=libltdl
+pkgver=2.4.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A generic library support script")
+longdesc=("GNU Libtool is a generic library support script that hides the complexity of using shared libraries behind a consistent, portable interface.")
+
+tags=("libs dev-libs")
+
+source=("https://ftpmirror.gnu.org/libtool/libtool-$pkgver.tar.gz")
+
+build_deps="tar glibc gcc help2man"
+
+build() {
+  go_src_dir
+  burn_patches
+#  ./bootstrap
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
