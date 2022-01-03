@@ -1,0 +1,20 @@
+pkgname=python-pymeta3
+pkgver=0.5.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A Pattern-Matching Language Based on Python.")
+longdesc=("A Pattern-Matching Language Based on Python.")
+
+build_deps="python python-setuptools"
+
+tags="libs dev-python"
+
+source=("https://github.com/wbond/pymeta3/archive/$pkgver.tar.gz")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
