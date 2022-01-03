@@ -1,0 +1,30 @@
+pkgname=python-pytest
+pkgver=6.2.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Simple powerful testing with Python")
+longdesc=("Simple powerful testing with Python")
+
+source=("https://files.pythonhosted.org/packages/source/p/pytest/pytest-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools python-attrs python-iniconfig python-packaging python-pluggy python-py python-toml"
+
+adddep="python-attrs python-iniconfig python-packaging python-pluggy python-py python-toml"
+
+build() {
+  go_src_dir
+# Remove dep on setuptools_scm and workaround test failures
+  sed -i "/^\[metadata\]/a version = $pkgver
+  /setuptools-scm/d" setup.cfg
+  sed -i '/setuptools-scm\|wheel/d
+  /\[tool.setuptools_scm\]/,/^$/d
+  /_pytest.warning_types.PytestUnknownMarkWarning/a \    "ignore:Creating a LegacyVersion has been deprecated and will be removed in the next major release:DeprecationWarning",' pyproject.toml
+
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+
+  install -D -m644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
