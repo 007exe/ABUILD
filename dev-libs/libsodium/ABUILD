@@ -1,0 +1,28 @@
+pkgname=libsodium
+pkgver=1.0.18
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("P(ortable|ackageable) NaCl-based crypto library")
+longdesc=("Sodium is a new, easy-to-use software library for encryption, decryption, signatures, password hashing and more.")
+
+source=("https://download.libsodium.org/libsodium/releases/libsodium-$pkgver.tar.gz")
+
+tags="libs dev-libs"
+#minisign
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+#  minisign -Vm $pkgname-$pkgver.tar.gz -P $_validminisignkey
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib$LIBDIRSUFFIX
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
+
+# install license
+  install -d -m 755 "$pkgdir/usr/share/licenses/$pkgname"
+  install -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
