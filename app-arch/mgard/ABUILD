@@ -1,0 +1,25 @@
+pkgname=mgard
+pkgver=0.1.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("MultiGrid Adaptive Reduction of Data")
+longdesc=("MGARD (MultiGrid Adaptive Reduction of Data) is a technique for multilevel lossy compression of scientific data based on the theory of multigrid methods. We encourage you to make a GitHub issue if you run into any problems using MGARD, have any questions or suggestions, etc.")
+
+tags=('base app-arch')
+
+source=("https://github.com/CODARcode/MGARD/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="glibc zlib zstd cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make -C build
+  make -C build DESTDIR="${pkgdir}" install
+
+# Uneeded file
+  rm "${pkgdir}"/usr/include/mgard/MGARDConfig.h.in
+}
