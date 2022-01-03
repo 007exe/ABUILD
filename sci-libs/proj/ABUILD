@@ -1,0 +1,30 @@
+pkgname=proj
+pkgver=8.2.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Cartographic Projections library")
+longdesc=("Library for working with map projections.")
+
+source=("https://github.com/OSGeo/PROJ/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags="libs sci-libs"
+
+build_deps="cmake gtest curl libtiff sqlite"
+
+build() {
+  go_src_dir
+  burn_patches
+#  cmake -B build \
+#    -DCMAKE_INSTALL_PREFIX='/usr' \
+#    -DUSE_EXTERNAL_GTEST=ON
+#  cmake --build build
+#  DESTDIR="$pkgdir" cmake --install build
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
+}
