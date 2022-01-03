@@ -1,0 +1,22 @@
+pkgname=python-kikit
+pkgver=1.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Automation tools for KiCAD")
+longdesc=("KiKit is a Python library, KiCAD plugin and a CLI tool to automate several tasks in a standard KiCAD workflow.")
+
+source=("https://github.com/yaqwsx/KiKit/releases/download/v$pkgver/KiKit-$pkgver.tar.gz")
+
+tags="libs dev-python"
+#python-solidpython
+build_deps="python-setuptools python-numpy python-shapely python-click python-markdown2 python-pybars3"
+#python-solidpython
+adddep="kicad python-numpy python-shapely python-click python-markdown2 python-pybars3"
+
+build() {
+  go_src_dir
+  sed -i '/versioneer/d' setup.py
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+}
