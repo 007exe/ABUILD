@@ -1,0 +1,20 @@
+pkgname=python-regex
+pkgver=2021.11.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Alternative python regular expression module.")
+longdesc=("Alternative python regular expression module.")
+
+build_deps="python python-setuptools"
+
+tags="develop sys-libs"
+
+source=("https://files.pythonhosted.org/packages/source/r/regex/regex-${pkgver}.tar.gz")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="${pkgdir}/" --optimize=1 --skip-build
+  install -Dm644 LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.txt
+}
