@@ -1,0 +1,23 @@
+pkgname=python-pypng
+pkgver=0.0.21
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Pure Python library for PNG image encoding/decoding.")
+longdesc=("PNG module for Python. PyPNG is written entirely in Python.")
+
+source=("https://github.com/drj11/pypng/archive/pypng-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+build() {
+  go_src_dir
+  echo -e 'import setuptools\nsetuptools.setup()' >setup.py
+
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+
+  install -Dm 644 LICENCE "$pkgdir"/usr/share/licenses/$pkgname/LICENCE
+}
