@@ -1,0 +1,23 @@
+pkgname=geos
+pkgver=3.9.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C++ port of the Java Topology Suite")
+longdesc=("GEOS is a C/C++ library for spatial computational geometry of the sort generally used by geographic information systems software. GEOS is a core dependency of PostGIS, QGIS, GDAL, and Shapely.")
+
+source=("https://download.osgeo.org/$pkgname/$pkgname-$pkgver.tar.bz2")
+
+tags="libs sci-libs"
+
+build_deps="gcc-libs bash"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
