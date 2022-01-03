@@ -1,0 +1,20 @@
+pkgname=python-markdown2
+pkgver=2.4.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A fast and complete implementation of Markdown in Python.")
+longdesc=("This (markdown2) is a fast and complete Python implementation of Markdown.")
+
+source=("https://github.com/trentm/python-markdown2/archive/$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python python-setuptools"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm 644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
