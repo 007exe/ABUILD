@@ -1,0 +1,23 @@
+pkgname=judy
+pkgver=1.0.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C library creating and accessing dynamic arrays")
+longdesc=("Judy is a C library that provides a state-of-the-art core technology that implements a sparse dynamic array. Judy arrays are declared simply with a null pointer. A Judy array consumes memory only when it is populated, yet can grow to take advantage of all available memory if desired.")
+
+source=("https://downloads.sourceforge.net/judy/Judy-${pkgver}.tar.gz")
+
+tags="libs dev-libs"
+
+build_deps="gcc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j1
+  make DESTDIR=${pkgdir} install
+}
