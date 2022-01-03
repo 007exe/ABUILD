@@ -8,7 +8,7 @@ longdesc=("libLAS is a C/C++ library for reading and writing the very common LAS
 
 source=("https://github.com/libLAS/libLAS/archive/refs/tags/${pkgver}.tar.gz")
 
-tags="utils sci-libs"
+tags="libs sci-libs"
 
 build_deps="cmake boost gdal laszip2 libgeotiff proj"
 
