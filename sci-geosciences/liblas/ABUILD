@@ -1,0 +1,32 @@
+pkgname=liblas
+pkgver=1.8.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C/C++ library for reading and writing the very common LAS LiDAR format")
+longdesc=("libLAS is a C/C++ library for reading and writing the very common LAS LiDAR format. The ASPRS LAS format is a sequential binary file format used to store data from LiDAR sensors and by LiDAR processing software for data interchange and archival.")
+
+source=("https://github.com/libLAS/libLAS/archive/refs/tags/${pkgver}.tar.gz")
+
+tags="utils sci-libs"
+
+build_deps="cmake boost gdal laszip2 libgeotiff proj"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -S libLAS \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DWITH_GDAL=True \
+    -DWITH_GEOTIFF=True \
+    -DWITH_LASZIP=True \
+    -DWITH_UTILITIES=True \
+    -DCMAKE_INSTALL_RPATH=/usr/lib${LIBDIRSUFFIX}/laszip2 \
+    -DLASZIP_INCLUDE_DIR=/usr/include \
+    -DLASZIP_LIBRARY=/usr/lib/laszip2/liblaszip.so \
+    -G "Unix Makefiles"
+  make -C build
+  make -C build DESTDIR="${pkgdir}" install
+#install -Dm644 libLAS-${pkgver}/LICENSE.txt -t "${pkgdir}"/usr/share/licenses/${pkgname}
+  install -Dm644 libLAS/LICENSE.txt -t "${pkgdir}"/usr/share/licenses/${pkgname}
+}
