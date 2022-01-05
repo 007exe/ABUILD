@@ -10,23 +10,20 @@ source=("https://github.com/libLAS/libLAS/archive/refs/tags/${pkgver}.tar.gz")
 
 tags="libs sci-libs"
 
-build_deps="cmake boost gdal laszip2 libgeotiff proj"
+build_deps="cmake boost gdal laszip libgeotiff proj"
 
 build() {
   go_src_dir
   burn_patches
-  cmake -B build -S libLAS \
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIBLAS_LIB_SUBDIR:PATH=lib${LIBDIRSUFFIX} \
     -DWITH_GDAL=True \
     -DWITH_GEOTIFF=True \
-    -DWITH_LASZIP=True \
     -DWITH_UTILITIES=True \
-    -DCMAKE_INSTALL_RPATH=/usr/lib${LIBDIRSUFFIX}/laszip2 \
     -DLASZIP_INCLUDE_DIR=/usr/include \
-    -DLASZIP_LIBRARY=/usr/lib/laszip2/liblaszip.so \
     -G "Unix Makefiles"
   make -C build
   make -C build DESTDIR="${pkgdir}" install
-#install -Dm644 libLAS-${pkgver}/LICENSE.txt -t "${pkgdir}"/usr/share/licenses/${pkgname}
-  install -Dm644 libLAS/LICENSE.txt -t "${pkgdir}"/usr/share/licenses/${pkgname}
+  install -Dm644 LICENSE.txt -t "${pkgdir}"/usr/share/licenses/${pkgname}
 }
