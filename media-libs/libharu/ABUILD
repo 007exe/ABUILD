@@ -1,0 +1,31 @@
+pkgname=libharu
+pkgver=2.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C library for generating PDF documents")
+longdesc=("HARU is a free, cross platform, open-sourced software library for generating PDF.")
+
+tags=("libs media-libs")
+
+source=("https://github.com/libharu/libharu/archive/RELEASE_${pkgver//./_}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="libpng zlib cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed 's|set(LIBHPDF_MINOR 2)|set(LIBHPDF_MINOR 3)|' -i CMakeLists.txt
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DLIBHPDF_STATIC=ON \
+    -DLIBHPDF_EXAMPLES=NO
+  make -j${numjobs} -C build
+  make -C build DESTDIR="${pkgdir}" install
+
+# License
+  install -d "${pkgdir}"/usr/share/licenses/${pkgname}
+  sed -n '102,120p' README > "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
