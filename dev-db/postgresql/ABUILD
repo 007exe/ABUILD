@@ -1,5 +1,5 @@
 pkgname=postgresql
-pkgver=13.4
+pkgver=14.1
 pkgbuild=1
 arch=("auto")
 
@@ -52,33 +52,35 @@ postgresql-libs_prep() {
   cd "${srcdir}/postgresql-${pkgver}"
 
 # install license
-  install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/postgresql-libs/LICENSE"
+  install -Dm 644 COPYRIGHT -t "${pkgdir}/usr/share/licenses/${pkgname}"
 
-# install libs
-  for dir in src/interfaces src/bin/pg_config src/bin/psql src/bin/pg_dump; do
+# install libs and non-server binaries
+  for dir in src/interfaces src/bin/pg_config src/bin/pg_dump src/bin/psql src/bin/scripts; do
     make -C ${dir} DESTDIR="${pkgdir}" install
   done
 
-  install -D -m644 doc/src/sgml/man1/pg_config.1 "${pkgdir}/usr/share/man/man1/pg_config.1"
-  install -D -m644 doc/src/sgml/man1/pg_dump.1 "${pkgdir}/usr/share/man/man1/pg_dump.1"
-  install -D -m644 doc/src/sgml/man1/pg_dumpall.1 "${pkgdir}/usr/share/man/man1/pg_dumpall.1"
-  install -D -m644 doc/src/sgml/man1/pg_restore.1 "${pkgdir}/usr/share/man/man1/pg_restore.1"
-  install -D -m644 doc/src/sgml/man1/psql.1 "${pkgdir}/usr/share/man/man1/psql.1"
+  for util in pg_config pg_dump pg_dumpall pg_restore psql \
+      clusterdb createdb createuser dropdb dropuser pg_isready reindexdb vacuumdb; do
+    install -Dm 644 doc/src/sgml/man1/${util}.1 "${pkgdir}"/usr/share/man/man1/${util}.1
+  done
+
   cd src/include
-  mkdir -p "${pkgdir}"/usr/include/{libpq,postgresql/internal/libpq}
+
+  install -d "${pkgdir}"/usr/include/{libpq,postgresql/internal/libpq}
 
 # these headers are needed by the public headers of the interfaces
-  install -m644 pg_config.h "${pkgdir}/usr/include/"
-  install -m644 pg_config_os.h "${pkgdir}/usr/include/"
-  install -m644 postgres_ext.h "${pkgdir}/usr/include/"
-  install -m644 libpq/libpq-fs.h "${pkgdir}/usr/include/libpq/"
-  install -m644 pg_config_manual.h "${pkgdir}/usr/include/"
+  install -m 644 pg_config.h "${pkgdir}/usr/include"
+  install -m 644 pg_config_os.h "${pkgdir}/usr/include"
+  install -m 644 pg_config_ext.h "${pkgdir}/usr/include"
+  install -m 644 postgres_ext.h "${pkgdir}/usr/include"
+  install -m 644 libpq/libpq-fs.h "${pkgdir}/usr/include/libpq"
+  install -m 644 pg_config_manual.h "${pkgdir}/usr/include"
 
-# these headers are needed by the not-so-public headers of the interfaces
-  install -m644 c.h "${pkgdir}/usr/include/postgresql/internal/"
-  install -m644 port.h "${pkgdir}/usr/include/postgresql/internal/"
-  install -m644 postgres_fe.h "${pkgdir}/usr/include/postgresql/internal/"
-  install -m644 libpq/pqcomm.h "${pkgdir}/usr/include/postgresql/internal/libpq/"
+# these he aders are needed by the not-so-public headers of the interfaces
+  install -m 644 c.h "${pkgdir}/usr/include/postgresql/internal"
+  install -m 644 port.h "${pkgdir}/usr/include/postgresql/internal"
+  install -m 644 postgres_fe.h "${pkgdir}/usr/include/postgresql/internal"
+  install -m 644 libpq/pqcomm.h "${pkgdir}/usr/include/postgresql/internal/libpq"
 }
 
 
