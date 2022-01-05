@@ -1,0 +1,31 @@
+pkgname=freeimage
+pkgver=3.18.0
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Library project for developers who would like to support popular graphics image formats.")
+longdesc=("FreeImage is an Open Source library project for developers who would like to support popular graphics image formats like PNG, BMP, JPEG, TIFF and others as needed by today's multimedia applications.")
+
+source=("https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/${pkgver}/FreeImage${pkgver//./}.zip")
+
+tags="libs media-libs"
+# jxrlib
+build_deps="libjpeg-turbo openexr openjpeg2 libwebp libraw mesa glu"
+
+adddep="libjpeg-turbo openexr openjpeg2 libwebp libraw"
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS="$SLKCFLAGS -fexceptions -fvisibility=hidden -DNO_LCMS" \
+  CXXFLAGS="$SLKCFLAGS -fexceptions -fvisibility=hidden -Wno-ctor-dtor-privacy -std=c++14" \
+  make -j${numjobs} INSTALLDIR=${pkgdir}/usr/lib${LIBDIRSUFFIX} DESTDIR=${pkgdir}
+  make install INSTALLDIR=${pkgdir}/usr/lib${LIBDIRSUFFIX} DESTDIR=${pkgdir}
+
+  CFLAGS="$SLKCFLAGS -fexceptions -fvisibility=hidden -DNO_LCMS" \
+  CXXFLAGS="$SLKCFLAGS -fexceptions -fvisibility=hidden -Wno-ctor-dtor-privacy" \
+  make -j${numjobs} -f Makefile.fip INSTALLDIR=${pkgdir}/usr/lib${LIBDIRSUFFIX} DESTDIR=${pkgdir}
+  make -j${numjobs} -f Makefile.fip install INSTALLDIR=${pkgdir}/usr/lib${LIBDIRSUFFIX} DESTDIR=${pkgdir}
+
+  install -D -m644 license-fi.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
