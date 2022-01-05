@@ -1,0 +1,73 @@
+pkgname=gdal
+pkgver=3.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A translator library for raster geospatial data formats")
+longdesc=("Gdal is a translator library for raster geospatial data formats that is released under an X/MIT style Open Source license. As a library, it presents a single abstract data model to the calling application for all supported formats.")
+
+source=("https://download.osgeo.org/gdal/${pkgver}/gdal-${pkgver}.tar.xz")
+
+tags=("libs sci-libs")
+
+build_deps="curl geos giflib hdf5 libgeotiff libjpeg-turbo libpng libspatialite libtiff netcdf openjpeg2 poppler cfitsio sqlite mariadb-libs postgresql-libs xerces-c json-c perl swig chrpath doxygen python-breathe python-numpy python-sphinx boost python-charset-normalizer"
+
+pkglist="python-gdal"
+
+build() {
+  go_src_dir
+  burn_patches
+
+  export CFLAGS="$SLKCFLAGS -fno-strict-aliasing"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-libz=/usr/lib${LIBDIRSUFFIX} \
+    --with-netcdf \
+    --with-libtiff \
+    --with-sqlite3 \
+    --with-geotiff \
+    --with-mysql \
+    --with-curl \
+    --with-hdf5 \
+    --with-perl \
+    --with-geos \
+    --with-png \
+    --with-poppler \
+    --with-spatialite \
+    --with-openjpeg
+  make -j${numjobs}
+  make man
+
+  make DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" install-man
+
+# install license
+  install -Dm644 LICENSE.TXT "${pkgdir}"/usr/share/licenses/$pkgbase/LICENSE
+
+# Remove RPATH
+  eval local $(perl -V:vendorarch)
+  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/OSR/OSR.so
+  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/OGR/OGR.so
+  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GDAL/GDAL.so
+  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GDAL/Const/Const.so
+  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GNM/GNM.so
+
+}
+
+python-gdal() {
+  pkgname=python-gdal
+  shortdesc=("Python bindings for GDAL")
+  longdesc=("GDAL is a translator library for raster and vector geospatial data formats that is released under an X/MIT style Open Source License by the Open Source Geospatial Foundation.")
+  adddep="gdal=$pkgver python-numpy"
+}
+
+python-gdal_prep() {
+  go_src_dir
+  cd swig/python
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+
+  install -dm755 "${pkgdir}"/usr/share/licenses
+  ln -s $pkgbase "${pkgdir}"/usr/share/licenses/$pkgname
+}
