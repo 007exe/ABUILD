@@ -1,0 +1,29 @@
+pkgname=imath
+pkgver=3.1.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A C++ and python library of 2D and 3D vector, matrix, and math operations for computer graphics")
+longdesc=("Imath is a basic, light-weight, and efficient C++ representation of 2D and 3D vectors and matrices and other simple but useful mathematical objects, functions, and data types common in computer graphics applications, including the 16-bit floating-point type.")
+
+source=("https://github.com/AcademySoftwareFoundation/Imath/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags="dev-libs libs"
+
+build_deps="gcc-libs cmake python boost"
+
+#provides="icu4c"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DPYTHON=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ../LICENSE.md -t "$pkgdir"/usr/share/licenses/$pkgname
+}
