@@ -1,0 +1,26 @@
+pkgname=laszip
+pkgver=3.4.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("ASPRS LAS lossless compression library.")
+longdesc=("LASzip - a free open source product of rapidlasso GmbH - quickly turns bulky LAS files into compact LAZ files without information loss.")
+
+source=("https://github.com/LASzip/LASzip/releases/download/${pkgver}/laszip-src-${pkgver}.tar.gz")
+
+tags="libs sci-libs"
+
+build_deps="cmake"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+      ..
+  make -j${numjobs}
+  make DESTDIR="$pkgdir" install
+}
