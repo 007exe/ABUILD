@@ -1,0 +1,24 @@
+pkgname=openexr
+pkgver=3.1.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A high dynamic-range image file format library")
+longdesc=("OpenEXR provides the specification and reference implementation of the EXR file format, the professional-grade image storage format of the motion picture industry.")
+
+tags=("libs media-libs")
+
+source=("https://github.com/openexr/openexr/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+build_deps="cmake zlib imath"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None
+  cmake --build build
+  DESTDIR="$pkgdir" cmake --install build
+  install -Dm644 $pkgname-$pkgver/LICENSE.md -t "$pkgdir"/usr/share/licenses/$pkgname
+}
