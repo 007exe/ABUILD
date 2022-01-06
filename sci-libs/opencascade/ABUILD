@@ -1,0 +1,42 @@
+pkgname=opencascade
+pkgver=7.5.3
+_pkgver=V7_5_3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Open CASCADE Technology, 3D modeling & numerical simulation")
+longdesc=("Open CASCADE Technology is software development platform freely available in open source. It includes components for 3D surface and solid modeling, visualization, data exchange and rapid application development.")
+
+source=("https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/${_pkgver};sf=tgz")
+
+tags="utils dev-scheme"
+# pdal openvr
+# -DUSE_VTK=ON -D3RDPARTY_VTK_INCLUDE_DIR=/usr/include/vtk | vtk
+build_deps="cmake qt5-base rapidjson eigen utf8cpp python pugixml glew adios2 gdal proj boost liblas libharu unixodbc python-mpi4py tk gl2ps ffmpeg freeimage tbb"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DINSTALL_DIR_LIB=${LIBDIRSUFFIX} \
+    -DBUILD_RELEASE_DISABLE_EXCEPTIONS=OFF \
+    -DUSE_GL2PS=ON \
+    -DUSE_FREEIMAGE=ON \
+    -DUSE_FFMPEG=ON \
+    -DUSE_VTK=OFF \
+    -DUSE_RAPIDJSON=ON \
+    -DUSE_TBB=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm755 ${filedir}/opencascade.sh "$pkgdir/etc/profile.d/opencascade.sh"
+  install -dm755 "$pkgdir/usr/share/licenses/$pkgname/"
+  mv "$pkgdir/usr/share/doc/opencascade/"* "$pkgdir/usr/share/licenses/$pkgname"
+  rm -r "$pkgdir/usr/share/doc"
+
+  rm "$pkgdir/usr/bin/"*.sh
+}
