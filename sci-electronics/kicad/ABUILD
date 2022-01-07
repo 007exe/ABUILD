@@ -1,0 +1,33 @@
+pkgname=kicad
+pkgver=6.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Electronic schematic and printed circuit board (PCB) design tools")
+longdesc=("Kicad is an open source (GPL) program for the creation of electronic schematic diagrams and printed circuit board artwork.")
+
+source=("https://gitlab.com/kicad/code/kicad/-/archive/$pkgver/kicad-$pkgver.tar.bz2")
+
+tags="develop dev-embedded"
+
+build_deps="cmake mesa boost swig wxgtk3 python glew curl glm ngspice opencascade python-wxpython"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DKICAD_USE_OCC=ON \
+    -DKICAD_SCRIPTING_WXPYTHON=ON \
+    -DwxWidgets_CONFIG_EXECUTABLE=/usr/bin/wx-config-gtk3 \
+    -DKICAD_BUILD_I18N=ON \
+    -DKICAD_I18N_UNIX_STRICT_PATH=ON \
+    -DKICAD_BUILD_QA_TESTS=OFF \
+    -Wno-dev
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
