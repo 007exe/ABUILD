@@ -3,7 +3,8 @@ pkgver=3.0.5.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Common libraries and headers for wxgtk2 and wxgtk3")
+shortdesc=("Common libraries and headers for wxgtk2 and wxgtk3.")
+longdesc=("Common libraries and headers for wxgtk2 and wxgtk3.")
 
 source=("https://github.com/wxWidgets/wxWidgets/releases/download/v$pkgver/wxWidgets-$pkgver.tar.bz2")
 
@@ -16,12 +17,13 @@ pkglist="wxgtk2 wxgtk3"
 before_build(){
   go_src_dir
   burn_patches
+  ./autogen.sh
   cd ..
   cp -r wxWidgets-$pkgver wxWidgets-$pkgver-gtk3
 }
 
 build() {
-  cd wxWidgets-$pkgver
+  cd ${srcdir}/wxWidgets-$pkgver
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -39,12 +41,7 @@ build() {
   make -j${numjobs}
   make -C locale allmo
 
-  make DESTDIR="$pkgdir" install
-  rm -r "$pkgdir"/usr/{bin/wx-config,lib${LIBDIRSUFFIX}/{wx,libwx_gtk*}}
-
-  install -D -m644 docs/licence.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
-
-  cd ../wxWidgets-$pkgver-gtk3
+  cd ${srcdir}/wxWidgets-$pkgver-gtk3
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -61,7 +58,13 @@ build() {
     --with-libtiff=sys \
     --disable-precomp-headers
   make -j${numjobs}
+}
 
+after_build(){
+  cd ${srcdir}/wxWidgets-$pkgver
+  make DESTDIR="$pkgdir" install
+  rm -r "$pkgdir"/usr/{bin/wx-config,lib${LIBDIRSUFFIX}/{wx,libwx_gtk*}}
+  install -D -m644 docs/licence.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }
 
 wxgtk2() {
@@ -76,7 +79,7 @@ wxgtk2_prep() {
   cd ${srcdir}/wxWidgets-$pkgver
   make DESTDIR="$pkgdir" install
   rm -r "$pkgdir"/usr/{include,share,lib${LIBDIRSUFFIX}/libwx_base*,bin/wxrc*}
-  
+
   install -D -m644 docs/licence.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }
 
@@ -90,9 +93,9 @@ wxgtk3() {
 
 wxgtk3_prep() {
   cd ${srcdir}/wxWidgets-$pkgver-gtk3
-  make DESTDIR="$pkgdir" install  
+  make DESTDIR="$pkgdir" install
   rm -r "$pkgdir"/usr/{include,share,lib${LIBDIRSUFFIX}/libwx_base*,bin/wxrc*}
   mv "$pkgdir"/usr/bin/wx-config{,-gtk3}
-   
+
   install -D -m644 docs/licence.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }
