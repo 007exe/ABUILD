@@ -1,0 +1,26 @@
+pkgname=gnome-online-accounts
+pkgver=3.40.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Single sign-on framework for GNOME")
+longdesc=("The GNOME Online Accounts package contains a framework used to access the user's online accounts.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-online-accounts/-/archive/${pkgver}/gnome-online-accounts-${pkgver}.tar.gz")
+
+tags="games net-libs"
+
+build_deps="gobject-introspection gtk-doc vala meson webkit2gtk json-glib libnotify libsecret krb5 gcr rest"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D media_server=true \
+    -D gtk_doc=true \
+    -D man=true
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
