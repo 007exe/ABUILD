@@ -1,0 +1,22 @@
+pkgname=samurai
+pkgver=1.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("ninja-compatible build tool written in C.")
+longdesc=("samurai is a ninja-compatible build tool written in C99 with a focus on simplicity, speed, and portability.")
+
+source=("https://github.com/michaelforney/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags="dev-util develop"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  make samu
+  make install PREFIX=/usr DESTDIR="${pkgdir}"
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
+
