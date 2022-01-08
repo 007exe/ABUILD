@@ -1,0 +1,33 @@
+pkgname=caribou
+pkgver=0.4.21
+_commit=8ad9883ace9b38905af9ff1dd1a8c19cdc560141
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A text entry and UI navigation application (on-screen keyboard).")
+longdesc=("A text entry and UI navigation application (on-screen keyboard).")
+
+#source=("https://gitlab.gnome.org/GNOME/caribou/-/archive/${pkgver}/caribou-${pkgver}.tar.gz")
+source=("git:https://gitlab.gnome.org/GNOME/caribou.git")
+
+tags="app-accessibility accessibility"
+
+build_deps="intltool docbook-xsl gtk2 gobject-introspection vala git gnome-common at-spi2-atk python-atspi python-gobject gtk3 libxklavier libgee clutter dconf"
+
+adddep="python-atspi"
+
+build() {
+  go_src_dir
+#  git checkout _commit
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-schemas-compile
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
