@@ -1,0 +1,27 @@
+pkgname=timezonemap
+pkgver=0.4.5.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Gtk3 timezone map widget, forked from gnome which forked from Ubiquity")
+longdesc=("Gtk3 timezone map widget, forked from gnome which forked from Ubiquity")
+
+source=("https://github.com/dashea/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags="dev-libs libs"
+
+build_deps="gobject-introspection gtk3 libsoup"
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+# https://bugzilla.gnome.org/show_bug.cgi?id=656231
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
