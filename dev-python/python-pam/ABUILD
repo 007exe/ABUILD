@@ -1,0 +1,20 @@
+pkgname=python-pam
+pkgver=1.8.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Pure Python interface to the Pluggable Authentication Modules system on Linux")
+longdesc=("Pure Python interface to the Pluggable Authentication Modules system on Linux")
+
+source="https://files.pythonhosted.org/packages/source/${pkgname:0:1}/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
