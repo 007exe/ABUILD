@@ -1,0 +1,30 @@
+pkgname=cinnamon-settings-daemon
+pkgver=5.0.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("The Cinnamon Settings daemon")
+longdesc=("The Cinnamon Settings daemon")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags="gnome gnome-extra"
+#                                         |
+build_deps="meson samurai xf86-input-wacom cinnamon-desktop colord dbus-glib libcanberra libcups libgnomekbd libgudev libnotify librsvg libwacom nss polkit pulseaudio-alsa upower"
+
+adddep="pulseaudio-alsa"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  meson \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --buildtype=plain \
+    -Dinstall_binfiles=false ..
+  samu
+  DESTDIR="${pkgdir}" samu install
+}
+
