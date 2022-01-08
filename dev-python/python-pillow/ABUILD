@@ -1,0 +1,23 @@
+pkgname=python-pillow
+pkgver=9.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Python Imaging Library (PIL) fork.")
+longdesc=("Python Imaging Library (PIL) fork.")
+
+source=("https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-$pkgver.tar.gz")
+
+tags="libs dev-python"
+# libraqm
+build_deps="python-setuptools libwebp tk python freetype lcms2 libtiff openjpeg2 libimagequant libxcb"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python3 setup.py install --root="$pkgdir/" --optimize=1
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+  install -dm755 "$pkgdir/usr/include/python$_py3basever/"
+  install -m644 -t "$pkgdir/usr/include/python$_py3basever/" src/libImaging/*.h
+}
