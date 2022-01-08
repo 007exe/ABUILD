@@ -1,0 +1,26 @@
+pkgname=exempi
+pkgver=2.5.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A library to parse XMP metadata.")
+longdesc=("Exempi is an implementation of XMP (Adobe's Extensible Metadata Platform).")
+
+source=("https://libopenraw.freedesktop.org/download/exempi-${pkgver}.tar.bz2")
+
+tags="libs media-libs"
+
+build_deps="boost git autoconf2.13 gcc-libs expat zlib"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR="$pkgdir" install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
