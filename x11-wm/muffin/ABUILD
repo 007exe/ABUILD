@@ -1,0 +1,40 @@
+pkgname=muffin
+pkgver=5.0.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Cinnamon window manager based on Mutter.")
+longdesc=("Cinnamon window manager based on Mutter.")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags="x11-wm xapps"
+# gobject-introspection-runtime
+build_deps="intltool gobject-introspection gtk-doc cinnamon-desktop libcanberra libinput libsm libxkbcommon-x11 startup-notification zenity"
+
+build() {
+  go_src_dir
+  burn_patches
+# thou shalt not -Werror
+  sed -i 's/--warn-error//g' src/Makefile.am
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-gtk-doc \
+    --disable-static \
+    --disable-schemas-compile \
+    --enable-compile-warnings=minimum
+#https://bugzilla.gnome.org/show_bug.cgi?id=656231
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool clutter/libtool cogl/libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+# Remove unused stuff
+  make -C src DESTDIR="${pkgdir}" uninstall-binPROGRAMS uninstall-desktopfilesDATA
+  make -C src/tools DESTDIR="${pkgdir}" uninstall
+  make -C src/compositor/plugins DESTDIR="${pkgdir}" uninstall
+  make -C doc/man DESTDIR="${pkgdir}" uninstall
+}
+
