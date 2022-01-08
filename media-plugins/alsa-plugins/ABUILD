@@ -1,5 +1,5 @@
 pkgname=alsa-plugins
-pkgver=1.2.5
+pkgver=1.2.6
 pkgbuild=1
 arch="auto"
 
@@ -9,8 +9,10 @@ longdesc=("Advanced Linux Sound Architecture (ALSA) utilities. Modularized archi
 source=("https://www.alsa-project.org/files/pub/plugins/$pkgname-$pkgver.tar.bz2")
 
 tags="libs media-sound"
+# libavtp
+build_deps="alsa-lib dbus dbus jack libpulse libsamplerate speexdsp ffmpeg"
 
-build_deps="alsa-lib dbus"
+pkglist="pulseaudio-alsa"
 
 build() {
   go_src_dir
@@ -31,4 +33,20 @@ build() {
 # until a better way is found to package default overrides:
 # https://bugs.archlinux.org/task/65440
   rm -v "${pkgdir}/etc/alsa/conf.d/98-maemo.conf"
+
+# make a proper off-by-default config template out of the example file
+  mv -v "${pkgdir}/etc/alsa/conf.d/99-pulseaudio-default.conf.example" \
+    "${pkgdir}/usr/share/alsa/alsa.conf.d/99-pulseaudio-default.conf"
+}
+
+pulseaudio-alsa() {
+  pkgname=pulseaudio-alsa
+  shortdesc=("ALSA Configuration for PulseAudio.")
+  longdesc=("ALSA Configuration for PulseAudio.")
+}
+
+pulseaudio-alsa_prep() {
+  mkdir -p "${pkgdir}/etc/alsa/conf.d"
+  ln -st "${pkgdir}/etc/alsa/conf.d" \
+    /usr/share/alsa/alsa.conf.d/99-pulseaudio-default.conf
 }
