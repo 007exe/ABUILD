@@ -1,0 +1,25 @@
+pkgname=libgee
+pkgver=0.20.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A collection library providing GObject-based interfaces and classes for commonly used data structures.")
+longdesc=("The libgee package is a collection library providing GObject based interfaces and classes for commonly used data structures.")
+
+source=("https://download.gnome.org/sources/libgee/${pkgver%.*}/libgee-${pkgver}.tar.xz")
+
+tags="dev-libs libs"
+
+build_deps="gobject-introspection vala autoconf2.13 glib2"
+
+build() {
+  go_src_dir
+  burn_patches
+#  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
