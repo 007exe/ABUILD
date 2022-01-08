@@ -1,0 +1,28 @@
+pkgname=cinnamon-desktop
+pkgver=5.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Library with common API for various Cinnamon modules.")
+longdesc=("Library with common API for various Cinnamon modules.")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="gnome gnome-extra"
+
+build_deps="meson samurai gobject-introspection intltool accountsservice gtk3 libxkbfile libpulse"
+
+adddep="gnome-themes-extra"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  meson \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} ..
+  samu
+  DESTDIR="${pkgdir}" samu install
+}
+
