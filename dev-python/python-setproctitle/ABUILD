@@ -1,0 +1,21 @@
+pkgname=python-setproctitle
+pkgver=1.2.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Allows a python process to change its process title.")
+longdesc=("Allows a python process to change its process title.")
+
+source=("https://files.pythonhosted.org/packages/source/s/setproctitle/setproctitle-$pkgver.tar.gz")
+
+tags="develop dev-python"
+
+build_deps="python"
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --skip-build -O1 --root="$pkgdir"
+  install -m0644 -D COPYRIGHT "$pkgdir/usr/share/licenses/$pkgname/COPYRIGHT"
+}
