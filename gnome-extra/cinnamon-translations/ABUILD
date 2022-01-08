@@ -1,0 +1,20 @@
+pkgname=cinnamon-translations
+pkgver=5.0.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Translations for Cinnamon and Nemo")
+longdesc=("Translations for Cinnamon and Nemo")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="gnome gnome-extra"
+
+build_deps="make"
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  cp -r usr/ "${pkgdir}"
+}
