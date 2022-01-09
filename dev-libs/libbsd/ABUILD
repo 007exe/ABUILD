@@ -1,0 +1,29 @@
+pkgname=libbsd
+pkgver=0.11.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Provides useful functions commonly found on BSD systems like strlcpy()")
+longdesc=("This library provides useful functions commonly found on BSD systems, and lacking on others like GNU systems, thus making it easier to port projects with strong BSD origins, without needing to embed the same code over and over again on each project.")
+
+source=("https://libbsd.freedesktop.org/releases/$pkgname-$pkgver.tar.xz")
+
+tags="libs dev-libs"
+
+build_deps="glibc libmd"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/libbsd.a
+  install -D -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+  # included now in man-pages, FS#53351
+  rm -f "${pkgdir}"/usr/share/man/man3/explicit_bzero.3
+}
