@@ -1,0 +1,23 @@
+pkgname=babl
+pkgver=0.1.88
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Dynamic, any to any, pixel format conversion library.")
+longdesc=("The Babl package is a dynamic, any to any, pixel format translation library.")
+
+source=("https://download.gimp.org/pub/babl/${pkgver%.*}/babl-${pkgver}.tar.xz")
+
+tags="libs media-libs"
+
+build_deps="meson gobject-introspection vala glibc lcms2"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX}
+  ninja -C build
+  DESTDIR="$pkgdir" meson install -C build
+}
