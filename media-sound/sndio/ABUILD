@@ -1,0 +1,34 @@
+pkgname=sndio
+pkgver=1.8.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A small audio and MIDI framework part of the OpenBSD project.")
+longdesc=("Sndio is a small audio and MIDI framework part of the OpenBSD project and ported to FreeBSD, Linux and NetBSD.")
+
+source=("https://sndio.org/sndio-$pkgver.tar.gz")
+
+tags="libs media-sound"
+
+build_deps="alsa-lib libbsd"
+
+config_files="etc/default/sndiod"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-alsa \
+    --with-libbsd
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m 644 contrib/default.sndiod "$pkgdir/etc/default/sndiod"
+
+  install -d "$pkgdir/usr/share/licenses/sndio"
+# this is the most up-to-date license outside of bsd-compat,
+# which isn't being used in this build
+  sed '/^ \*\//q' aucat/aucat.c > "$pkgdir/usr/share/licenses/sndio/LICENSE"
+}
