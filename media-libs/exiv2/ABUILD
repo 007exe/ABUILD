@@ -1,0 +1,32 @@
+pkgname=exiv2
+pkgver=0.27.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Exif, Iptc and XMP metadata manipulation library and tools")
+longdesc=("Exiv2 is a C++ library and a command line utility for managing image and video metadata.")
+
+source=("https://github.com/Exiv2/exiv2/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="cmake gtest ninja gcc-libs zlib expat gettext curl"
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+    -DEXIV2_ENABLE_VIDEO=yes \
+    -DEXIV2_ENABLE_WEBREADY=yes \
+    -DEXIV2_ENABLE_CURL=yes \
+    -DEXIV2_BUILD_SAMPLES=no \
+    -G "Unix Makefiles"
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
