@@ -1,0 +1,26 @@
+pkgname=libfdk-aac
+pkgver=2.0.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Fraunhofer FDK AAC codec library")
+longdesc=("fdk-aac package provides the Fraunhofer FDK AAC library, which is purported to be a high quality Advanced Audio Coding implementation.")
+
+source=("https://downloads.sourceforge.net/opencore-amr/fdk-aac-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm 644 NOTICE -t "${pkgdir}"/usr/share/licenses/libfdk-aac/
+}
