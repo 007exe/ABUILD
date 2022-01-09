@@ -1,0 +1,32 @@
+pkgname=qt5-svg
+pkgver=5.15.2+kde+r16
+_commit=728012f7762ecd5762d493f8796907c6456f31e7
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Classes for displaying the contents of SVG files.")
+longdesc=("Classes for displaying the contents of SVG files.")
+
+source=("git:https://invent.kde.org/qt/qt/qtsvg.git")
+
+tags="libs x11-libs"
+
+build_deps="git qt5-base"
+
+build() {
+  go_src_dir
+  burn_patches
+  git checkout $_commit
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT="$pkgdir" install
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d "$pkgdir"/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+}
