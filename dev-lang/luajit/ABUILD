@@ -1,0 +1,21 @@
+pkgname=luajit
+pkgver=2.0.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Just-in-time compiler and drop-in replacement for Lua 5.1.")
+longdesc=("LuaJIT - a Just-In-Time Compiler for Lua.")
+
+tags=("dev-lang develop")
+
+source=("https://luajit.org/download/LuaJIT-$pkgver.tar.gz")
+
+build_deps="gcc gcc-libs"
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs} amalg PREFIX=/usr LIBDIR=/usr/lib${LIBDIRSUFFIX}
+  make PREFIX=/usr LIBDIR=/usr/lib${LIBDIRSUFFIX} DESTDIR="${pkgdir}" install
+  install -Dm644 COPYRIGHT "$pkgdir/usr/share/licenses/$pkgname/COPYRIGHT"
+}
