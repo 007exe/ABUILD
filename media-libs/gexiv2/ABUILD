@@ -1,0 +1,23 @@
+pkgname=gexiv2
+pkgver=0.14.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GObject-based wrapper around the Exiv2 library.")
+longdesc=("gexiv2 is a GObject-based wrapper around the Exiv2 library.")
+
+tags=("libs media-libs")
+
+source=("https://gitlab.gnome.org/GNOME/gexiv2/-/archive/gexiv2-$pkgver/gexiv2-gexiv2-$pkgver.tar.bz2")
+
+build_deps="gobject-introspection meson python-gobject vala exiv2 glib2"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -Dprefix=/usr \
+    -Dlibdir=/usr/lib${LIBDIRSUFFIX} \
+    -D gtk_doc=true
+  meson install -C build --destdir "$pkgdir"
+}
