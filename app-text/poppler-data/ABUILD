@@ -1,0 +1,23 @@
+pkgname=poppler-data
+pkgver=0.4.11
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Encoding data for the poppler PDF rendering library.")
+longdesc=("Encoding data for the poppler PDF rendering library.")
+
+tags=("app-text libs")
+
+source=("https://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.gz")
+
+build_deps="mkpkg"
+
+build() {
+  go_src_dir
+  burn_patches
+  make prefix=/usr libdir=/usr/lib${LIBDIRSUFFIX} DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING COPYING.adobe "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
+
