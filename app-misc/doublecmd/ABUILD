@@ -1,5 +1,5 @@
 pkgname=doublecmd-gtk2
-pkgver=1.0.0
+pkgver=1.0.3
 pkgbuild=1
 arch=('auto')
 
@@ -9,8 +9,8 @@ longdesc=("Double Commander is a cross platform open source file manager with tw
 source=("http://sourceforge.net/projects/doublecmd/files/Double%20Commander%20Source/doublecmd-${pkgver}-src.tar.gz")
 
 tags="app-misc xapps"
-# qt5pas
-build_deps="lazarus gtk2"
+
+build_deps="lazarus gtk2 qt5pas"
 
 adddep="desktop-file-utils hicolor-icon-theme shared-mime-info"
 
@@ -20,6 +20,14 @@ pkglist="doublecmd-qt"
 
 before_build(){
   cd ${srcdir}
+  echo "Wait, copying Lazarus ..."
+  cp -r /usr/lib${LIBDIRSUFFIX}/lazarus ./
+
+  cd ${srcdir}/doublecmd-$pkgver
+#  sed -e 's/LIB_SUFFIX=.*/LIB_SUFFIX=/g' -i install/linux/install.sh
+  sed -e "s@=\$(which lazbuild)@=\"\$(which lazbuild) --lazarusdir=$srcdir/lazarus\"@" -i build.sh
+
+  cd ..
   cp -r doublecmd-$pkgver doublecmd-gtk
   cp -r doublecmd-$pkgver doublecmd-qt
 }
@@ -30,7 +38,7 @@ build(){
   install/linux/install.sh --install-prefix=${pkgdir}
 
   cd ${srcdir}/doublecmd-qt
-#  ./build.sh beta qt5
+  ./build.sh beta qt5
 }
 
 doublecmd-qt() {
@@ -42,5 +50,5 @@ doublecmd-qt() {
 
 doublecmd-qt_prep() {
   cd ${srcdir}/doublecmd-qt
-#  ./install/linux/install.sh --install-prefix="$pkgdir"
+  ./install/linux/install.sh --install-prefix="$pkgdir"
 }
