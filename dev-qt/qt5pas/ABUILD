@@ -1,12 +1,13 @@
+_lazarus_version=2.2.0
 pkgname=qt5pas
-pkgver=2.6
+pkgver=2.6.$_lazarus_version
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Free Pascal Qt5 binding library updated by lazarus IDE")
-longdesc=("Free Pascal Qt5 binding library updated by lazarus IDE")
+shortdesc=("Free Pascal Qt5 binding library updated by lazarus IDE.")
+longdesc=("Free Pascal Qt5 binding library updated by lazarus IDE.")
 
-source=("http://users.telenet.be/Jan.Van.hijfte/qtforfpc/V${pkgver}/splitbuild-qt5pas-V${pkgver}Alpha_Qt5.1.1.tar.gz")
+source=("https://gitlab.com/freepascal.org/lazarus/lazarus/-/archive/lazarus_${_lazarus_version//./_}/lazarus-lazarus_${_lazarus_version//./_}.tar.bz2")
 
 tags="libs x11-libs"
 
@@ -14,7 +15,8 @@ build_deps="qt5-base qt5-x11extras"
 
 build(){
   go_src_dir
+  cd lcl/interfaces/qt5/cbindings
   qmake-qt5 "QT += x11extras"
-  make
+  make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
 }
