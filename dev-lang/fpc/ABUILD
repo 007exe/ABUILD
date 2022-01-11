@@ -1,116 +1,72 @@
 pkgname=fpc
 pkgver=3.2.2
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
-gdbver=10.2
 
-shortdesc="Free Pascal Compiler"
-
+shortdesc=("Free Pascal Compiler, Turbo Pascal 7.0 and Delphi compatible.")
 longdesc=("The Free Pascal Compiler is a Turbo Pascal 7.0 and Delphi compatible 32bit Pascal Compiler. It comes with fully TP 7.0 compatible run-time library. Some extensions are added to the language, like function overloading. Shared libraries can be linked. Basic Delphi support is already implemented (classes, exceptions,ansistrings,RTTI). This package contains commandline compiler and utils. Provided units are the runtime library (RTL), free component library (FCL), gtk, ncurses, zlib, mysql, postgres, ibase bindings.")
 
-source=("ftp://ftp.freepascal.org/pub/fpc/dist/${pkgver}/source/fpcbuild-${pkgver}.tar.gz"
-        "ftp://ftp.freepascal.org/pub/fpc/dist/${pkgver}/docs/doc-html.tar.gz"
-        "http://ftp.gnu.org/gnu/gdb/gdb-${gdbver}.tar.xz")
+source=("https://downloads.sourceforge.net/project/freepascal/Source/$pkgver/fpcbuild-$pkgver.tar.gz")
 
-tags="develop dev-util"
+tags="develop dev-lang"
 
-build_deps="fpc gdb"
+build_deps="fpc ncurses zlib expat binutils make"
 
-config_files='/etc/fpc.cfg
-/etc/fppkg.cfg'
+config_files="etc/fpc.cfg"
 
-pkglist="fpcdemo fpcsrc fpcdocs"
-
-fpcdemo(){
-  pkgname=fpc-demo
-  arch=('noarch')
-  shortdesc="FPC demo package"
-  adddep="fpc"
-  custom_opts=no_strip
-}
-
-fpcdocs(){
-  pkgname=fpc-docs
-  arch=('noarch')
-  shortdesc="Free Pascal documentation package"
-  adddep="fpc=${pkgver}"
-  custom_opts=no_strip
-}
+pkglist="fpcsrc"
 
 fpcsrc() {
   pkgname=fpc-src
   arch=('noarch')
-  shortdesc="Sources for the FreePascal compiler (required by the Lazarus IDE)"
-  custom_opts=no_strip
-}
-
-fpcdemo_prep(){
-  cd ${srcdir}/fpcbuild-${pkgver}
-  install -m 775 -d ${pkgdir}/usr/share/fpc/${pkgver}
-  cp -a demo ${pkgdir}/usr/share/fpc/${pkgver}/
-  echo "End fpcdemo"
-}
-
-fpcsrc_prep() {
-  cd ${srcdir}/fpcbuild-${pkgver}
-  install -m 775 -d ${pkgdir}/usr/share/fpc/${pkgver}/src/
-  cp -R src/* ${pkgdir}/usr/share/fpc/${pkgver}/src/
-  find src -name *.bat -type f -exec rm {} \;
-  echo "End fpcsrc"
-}
-
-fpcdocs_prep() {
-  cd ${srcdir}
-  install -m 775 -d ${pkgdir}/usr/share/fpc/${pkgver}/docs/
-  cp -R doc/* ${pkgdir}/usr/share/fpc/${pkgver}/docs/
-  echo "End fpcdocs"
+  shortdesc=("Sources for the FreePascal compiler (required by the Lazarus IDE)")
+  longdesc=("Sources for the FreePascal compiler (required by the Lazarus IDE)")
+  custom_opts="skip_gendeps"
 }
 
 before_build(){
-  cd ${srcdir}/fpcbuild-${pkgver}
+  go_src_dir
   burn_patches
-  install -d src
-  cp -R fpcsrc/* src/
-  echo "End before_build"
+# Может лучше применять make clean для очистки исходников вместо копирования
+  cp -r fpcsrc ..
 }
 
 build() {
-  cd ${srcdir}/fpcbuild-${pkgver}
-  export GDBLIBDIR=${srcdir}/gdb-${gdbver}/gdb
-  export LIBGDBFILE=$GDBLIBDIR/libgdb.a
+  go_src_dir
   pushd fpcsrc/compiler
   fpcmake -r -Tall
   popd
-  export HOME=${srcdir}
-  make NOGDB=1 \
-  INSTALL_PREFIX=${pkgdir}/usr \
-  INSTALL_DOCDIR=${pkgdir}/usr/share/doc/${pkgname}-${pkgver} install
+  make NOGDB=1
+
+# Install FPC
+  export HOME="$srcdir"
+
+  make -j1 PREFIX="$pkgdir"/usr install NOGDB=1
+
+  export PATH="$pkgdir"/usr/bin:$PATH
+
+  mv ${pkgdir}/usr/lib ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+
+  ln -s /usr/lib${LIBDIRSUFFIX}/fpc/${pkgver}/ppcx64 ${pkgdir}/usr/bin/
+
+  mkdir -p "$pkgdir"/etc
+  "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/${pkgver}/samplecfg "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/${pkgver} "$pkgdir"/etc
+
+# use -fPIC by default
+  echo -e "#ifdef cpux86_64\n# for x86_64 use -fPIC by default\n-Cg\n#endif" >> "$pkgdir/etc/fpc.cfg"
+
   mv "$pkgdir"/usr/man "$pkgdir"/usr/share/
-  echo "End build"
+
+  find "$pkgdir"/etc/ -type f -exec sed -i "s|"$pkgdir"||g" {} \;
+
+  install -Dm0644 fpcsrc/rtl/COPYING.FPC "$pkgdir"/usr/share/licenses/${pkgname}/COPYING.FPC
 }
 
-
-after_build(){
-  cd ${srcdir}/fpcbuild-${pkgver}
-
-  [ "${LIBDIRSUFFIX}" = "64" ] && mv ${pkgdir}/usr/lib ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-
-  if [ "${LIBDIRSUFFIX}" = "64" ]; then
-     ln -s /usr/lib${LIBDIRSUFFIX}/fpc/${pkgver}/ppcx64 ${pkgdir}/usr/bin/
-  else
-     ln -s /usr/lib${LIBDIRSUFFIX}/fpc/${pkgver}/ppc386 ${pkgdir}/usr/bin/
-  fi
-  install -m 755 -d ${pkgdir}/etc
-  ${pkgdir}/usr/lib${LIBDIRSUFFIX}/fpc/${pkgver}/samplecfg \
-  ${pkgdir}/usr/lib${LIBDIRSUFFIX}/fpc/${pkgver} \
-  ${pkgdir}/etc
-
-  sed -i -e "s:${pkgdir}::g" ${pkgdir}/etc/fpc.cfg
-
-  sed -i -e "s|GlobalPrefix=.*|GlobalPrefix=/usr/lib${LIBDIRSUFFIX}/fpc/../../|g" ${pkgdir}/etc/fppkg/default
-  sed -i -e "s|CompilerConfigDir=.*|CompilerConfigDir=/etc/fppkg|g" ${pkgdir}/etc/fppkg.cfg
-# use -fPIC by default
-  echo -e "#ifdef cpux86_64\n# for x86_64 use -fPIC by default\n-Cg\n#endif" >> "${pkgdir}/etc/fpc.cfg"
-
-  echo "End after_build"
+fpcsrc_prep() {
+#  go_src_dir
+#  cd fpcsrc
+#  make clean
+  cd ${srcdir}/fpcsrc
+  mkdir -p "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/src
+  cp -R . "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/src
 }
