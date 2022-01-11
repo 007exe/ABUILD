@@ -1,13 +1,12 @@
 pkgname=glib2
-pkgver=2.70.0
-pkgtree=${pkgver%.*}
+pkgver=2.70.2
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("Low level core library")
-longdesc=("Glib is a handy library of utility functions. This C library is designed to solve some portability problems and provide other useful functionality which most programs require.")
+longdesc=("The GLib package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system.")
 
-source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgtree}/glib-${pkgver}.tar.xz")
+source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}.tar.xz")
 
 tags="libs dev-libs compat32"
 
@@ -21,18 +20,22 @@ build() {
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
   meson build \
     --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --buildtype=release \
     -D glib_debug=disabled \
     -D selinux=disabled \
     -D man=true
 #    -D gtk_doc=true
   meson compile -C build
-#  meson test -C build --no-suite flaky --no-suite slow --print-errorlogs
-  meson install -C build --destdir "$pkgdir"
-}
 
-after_build() {
-  # Install profile scripts:
+  meson install -C build --destdir "$pkgdir"
+
+  python -m compileall -d /usr/share/glib-2.0/codegen \
+    "$pkgdir/usr/share/glib-2.0/codegen"
+  python -O -m compileall -d /usr/share/glib-2.0/codegen \
+    "$pkgdir/usr/share/glib-2.0/codegen"
+
+# Install profile scripts:
   mkdir -p $pkgdir/etc/profile.d/
   cp -a $filedir/libglib2.{csh,sh} $pkgdir/etc/profile.d/
   chown root:root $pkgdir/etc/profile.d/*
@@ -40,14 +43,10 @@ after_build() {
   mv $pkgdir/etc/profile.d/libglib2.csh $pkgdir/etc/profile.d/libglib2.csh.new
   mv $pkgdir/etc/profile.d/libglib2.sh $pkgdir/etc/profile.d/libglib2.sh.new
 
-  # bash-completion
+# bash-completion
   for _i in "$pkgdir/usr/share/bash-completion/completions/"*; do
     chmod -x "$_i"
   done
-
-  # doinst.sh manages permissions in /etc/profile.d, we need some methods to not to use this
-  mkdir -p $pkgdir/install
-  zcat $filedir/doinst.sh.gz > $pkgdir/install/doinst.sh
 }
 
 #glib2-docs() {
