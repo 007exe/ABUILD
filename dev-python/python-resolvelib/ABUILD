@@ -1,0 +1,20 @@
+pkgname=python-resolvelib
+pkgver=0.5.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Resolve abstract dependencies into concrete ones")
+longdesc=("Resolve abstract dependencies into concrete ones")
+
+source=("https://github.com/sarugaku/resolvelib/archive/$pkgver.tar.gz")
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
