@@ -24,26 +24,24 @@ fpcsrc() {
   custom_opts="skip_gendeps"
 }
 
-before_build(){
-  go_src_dir
-  burn_patches
-# Может лучше применять make clean для очистки исходников вместо копирования
-  cp -r fpcsrc ..
-}
-
 build() {
-  go_src_dir
+  cd ${srcdir}/fpcbuild-$pkgver
   pushd fpcsrc/compiler
   fpcmake -r -Tall
   popd
-  make NOGDB=1
+  make build NOGDB=1
+}
 
-# Install FPC
+after_build() {
+  cd ${srcdir}/fpcbuild-$pkgver
+
   export HOME="$srcdir"
 
   make -j1 PREFIX="$pkgdir"/usr install NOGDB=1
 
   export PATH="$pkgdir"/usr/bin:$PATH
+
+  install -Dm0644 fpcsrc/rtl/COPYING.FPC "$pkgdir"/usr/share/licenses/${pkgname}/COPYING.FPC
 
   mv ${pkgdir}/usr/lib ${pkgdir}/usr/lib${LIBDIRSUFFIX}
 
@@ -58,15 +56,11 @@ build() {
   mv "$pkgdir"/usr/man "$pkgdir"/usr/share/
 
   find "$pkgdir"/etc/ -type f -exec sed -i "s|"$pkgdir"||g" {} \;
-
-  install -Dm0644 fpcsrc/rtl/COPYING.FPC "$pkgdir"/usr/share/licenses/${pkgname}/COPYING.FPC
 }
 
 fpcsrc_prep() {
-#  go_src_dir
-#  cd fpcsrc
-#  make clean
-  cd ${srcdir}/fpcsrc
+  cd ${srcdir}/fpcbuild-$pkgver/fpcsrc
+  make clean
   mkdir -p "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/src
-  cp -R . "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/src
+  cp -R --verbose . "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/src
 }
