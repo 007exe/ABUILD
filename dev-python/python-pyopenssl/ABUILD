@@ -1,0 +1,22 @@
+pkgname=python-pyopenssl
+pkgver=21.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Python3 wrapper module around the OpenSSL library.")
+longdesc=("Python3 wrapper module around the OpenSSL library.")
+
+source=("https://github.com/pyca/pyopenssl/archive/${pkgver}.tar.gz")
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools openssl python-six python-cryptography"
+
+adddep="python-six python-cryptography"
+
+build() {
+  go_src_dir
+  export LC_CTYPE=en_US.UTF-8
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+}
