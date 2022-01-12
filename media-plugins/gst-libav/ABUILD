@@ -1,0 +1,25 @@
+pkgname=gst-libav
+pkgver=1.18.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Multimedia graph framework - libav plugin")
+longdesc=("The GStreamer Libav package contains GStreamer plugins for Libav (a fork of FFmpeg).")
+
+source=("https://gitlab.freedesktop.org/gstreamer/gst-libav/-/archive/${pkgver}/gst-libav-${pkgver}.tar.gz")
+
+tags="libs media-plugins"
+
+build_deps="python meson gst-plugins-base-libs bzip2 ffmpeg"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D doc=disabled \
+    -D package-name="GStreamer FFmpeg Plugin (AgiliaLinux)"
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
