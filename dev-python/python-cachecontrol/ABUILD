@@ -1,0 +1,21 @@
+pkgname=python-cachecontrol
+pkgver=0.12.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("httplib2 caching for requests.")
+longdesc=("CacheControl is a port of the caching algorithms in httplib2 for use with requests session object.")
+
+source=("https://github.com/ionrock/cachecontrol/archive/v${pkgver}.tar.gz")
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools python-msgpack python-requests"
+
+adddep="python-msgpack python-requests"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+}
