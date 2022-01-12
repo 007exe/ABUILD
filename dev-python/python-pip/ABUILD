@@ -1,5 +1,5 @@
 pkgname=python-pip
-pkgver=21.2.3
+pkgver=21.3.1
 pkgbuild=1
 arch=('auto')
 
@@ -10,10 +10,9 @@ source=("https://github.com/pypa/pip/archive/refs/tags/${pkgver}.tar.gz")
 
 tags="develop dev-python"
 
-build_deps="python python-setuptools"
-# Эти зависимости нужно добавить хотя кажется и без них рботает
-# python-cachecontrol python-distlib python-distro python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl
-adddep="python-appdirs python-colorama python-html5lib python-packaging python-requests python-setuptools python-six python-toml"
+build_deps="python python-setuptools python-appdirs python-colorama python-html5lib python-packaging python-requests python-setuptools python-six python-toml python-cachecontrol python-distlib python-distro python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl"
+
+adddep="python-appdirs python-colorama python-html5lib python-packaging python-requests python-setuptools python-six python-toml python-cachecontrol python-distlib python-distro python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl"
 
 build(){
   go_src_dir
