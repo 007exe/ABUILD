@@ -1,5 +1,5 @@
 pkgname=python-attrs
-pkgver=21.2.0
+pkgver=21.4.0
 pkgbuild=1
 arch=('auto')
 
