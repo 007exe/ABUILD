@@ -1,0 +1,31 @@
+pkgname=neon
+pkgver=0.32.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("HTTP and WebDAV client library with a C interface.")
+longdesc=("neon is an HTTP and WebDAV client library, with a C interface.")
+
+tags=("libs net-libs")
+
+source=("https://notroj.github.io/neon/$pkgname-$pkgver.tar.gz")
+
+build_deps="xmlto docbook-xsl krb5 expat ca-certificates zlib"
+
+adddep="ca-certificates"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-expat \
+    --enable-shared \
+    --disable-static \
+    --with-ssl=openssl \
+    --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
