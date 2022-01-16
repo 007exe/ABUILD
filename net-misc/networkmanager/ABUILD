@@ -1,5 +1,5 @@
 pkgname=networkmanager
-pkgver=1.32.12
+pkgver=1.34.0
 pkgbuild=1
 arch=("auto")
 
@@ -12,8 +12,6 @@ tags=("network net-misc")
 
 build_deps="meson jansson curl gobject-introspection iptables nss polkit elogind upower vala bluez gnutls gtk-doc libpsl valgrind libndp modemmanager mobile-broadband-provider-info newt python-gobject dnsmasq libaudit"
 
-#adddep="ppp>=2.4.5 iptables dhcpcd wireless-tools wpa_supplicant rp-pppoe"
-
 adddep="mobile-broadband-provider-info"
 
 config_files="etc/NetworkManager/NetworkManager.conf"
@@ -25,6 +23,9 @@ build() {
     -D prefix=/usr \
     -D systemdsystemunitdir=no \
     -D udev_dir=/lib/udev \
+    -D nmtui=true \
+    -D ppp=false \
+    -D modem_manager=false \
     -D iptables=/sbin/iptables \
     -D dnsmasq=/usr/sbin/dnsmasq \
     -D modify_system=true \
@@ -40,7 +41,7 @@ build() {
     -D vapi=true \
     -D tests=no \
     -D polkit=true \
-    -D session_tracking=no \
+    -D session_tracking=elogind \
     -D qt=false \
     -D ofono=true \
     -D crypto=nss \
