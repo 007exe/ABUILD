@@ -1,0 +1,28 @@
+pkgname=far2l
+pkgver=2.4.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Linux fork of FAR Manager v2.")
+longdesc=("Linux fork of FAR Manager v2.")
+
+tags=('console app-misc')
+
+source=("https://github.com/elfmz/far2l/archive/refs/tags/v_${pkgver}.tar.gz")
+# smbclient
+build_deps="cmake wxgtk3 gtkmm3 openssl gvfs spdlog xerces-c fmt uchardet libssh libnfs neon pcre libarchive"
+
+build() {
+  go_src_dir
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DUSEWX=yes \
+    -DwxWidgets_CONFIG_EXECUTABLE=/usr/bin/wx-config-gtk3
+  make -j${numjobs} || make
+  make DESTDIR=$pkgdir install
+}
