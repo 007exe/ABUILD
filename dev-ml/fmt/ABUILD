@@ -1,0 +1,27 @@
+pkgname=fmt
+pkgver=8.1.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Open-source formatting library for C++.")
+longdesc=("fmt is an open-source formatting library providing a fast and safe alternative to C stdio and C++ iostreams.")
+
+source=("https://github.com/fmtlib/fmt/archive/refs/tags/${pkgver}.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="cmake doxygen ninja npm python-pip python-virtualenv"
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build
+#  cmake --build build --target doc
+  DESTDIR="${pkgdir}" cmake --build build --target install
+  install -Dm 644 LICENSE.rst -t "${pkgdir}"/usr/share/licenses/fmt/
+}
