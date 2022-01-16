@@ -1,5 +1,5 @@
 pkgname=sysvinit
-pkgver=3.00
+pkgver=3.01
 pkgbuild=1
 arch=("auto")
 
@@ -16,15 +16,16 @@ adddep="coreutils util-linux-ng gawk"
 
 build() {
   go_src_dir
+#  sysvinit-3.01-consolidated-1 LSF Patch removes several programs installed by other packages, clarifying the message and fixing the compiler warning.
   burn_patches
   make -j${numjobs}
   make install ROOT=${pkgdir}
   mv ${pkgdir}/sbin/init ${pkgdir}/sbin/init.new
 
+# All this removes the patch.
 # provided by util-linux
-  cd "${pkgdir}"
-  rm usr/bin/{mesg,utmpdump,wall}
-  rm usr/share/man/man1/{mesg,utmpdump,wall}.1
-  rm sbin/sulogin
-  rm usr/share/man/man8/sulogin.8
+# rm "${pkgdir}"/usr/bin/{mesg,utmpdump,wall}
+# rm "${pkgdir}"/usr/share/man/man1/{mesg,utmpdump,wall}.1
+# rm "${pkgdir}"/sbin/sulogin
+# rm "${pkgdir}"/usr/share/man/man8/sulogin.8
 }
