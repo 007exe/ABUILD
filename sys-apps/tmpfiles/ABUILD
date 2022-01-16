@@ -1,0 +1,114 @@
+pkgname=tmpfiles
+pkgver=248.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A standalone utility for handling tmpfiles.d settings from systemd.")
+longdesc=("A standalone utility for handling tmpfiles.d settings from systemd.")
+
+source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags="base sys-apps"
+
+build_deps="glibc acl libcap meson"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D adm-group=false \
+    -D analyze=false \
+    -D apparmor=false \
+    -D audit=false \
+    -D backlight=false \
+    -D binfmt=false \
+    -D blkid=false \
+    -D bzip2=false \
+    -D coredump=false \
+    -D dbus=false \
+    -D efi=false \
+    -D elfutils=false \
+    -D environment-d=false \
+    -D fdisk=false \
+    -D gcrypt=false \
+    -D glib=false \
+    -D gshadow=false \
+    -D gnutls=false \
+    -D hibernate=false \
+    -D hostnamed=false \
+    -D hwdb=false \
+    -D idn=false \
+    -D ima=false \
+    -D initrd=false \
+    -D firstboot=false \
+    -D kernel-install=false \
+    -D kmod=false \
+    -D ldconfig=false \
+    -D libcryptsetup=false \
+    -D libcurl=false \
+    -D libfido2=false \
+    -D libidn=false \
+    -D libidn2=false \
+    -D libiptc=false \
+    -D link-networkd-shared=false \
+    -D link-systemctl-shared=false \
+    -D link-timesyncd-shared=false \
+    -D link-udev-shared=false \
+    -D localed=false \
+    -D logind=false \
+    -D lz4=false \
+    -D machined=false \
+    -D microhttpd=false \
+    -D networkd=false \
+    -D nscd=false \
+    -D nss-myhostname=false \
+    -D nss-resolve=false \
+    -D nss-systemd=false \
+    -D oomd=false \
+    -D openssl=false \
+    -D p11kit=false \
+    -D pam=false \
+    -D pcre2=false \
+    -D polkit=false \
+    -D portabled=false \
+    -D pstore=false \
+    -D pwquality=false \
+    -D randomseed=false \
+    -D resolve=false \
+    -D rfkill=false \
+    -D seccomp=false \
+    -D smack=false \
+    -D sysext=false \
+    -D sysusers=false \
+    -D timedated=false \
+    -D timesyncd=false \
+    -D tpm=false \
+    -D qrencode=false \
+    -D quotacheck=false \
+    -D userdb=false \
+    -D utmp=false \
+    -D vconsole=false \
+    -D wheel-group=false \
+    -D xdg-autostart=false \
+    -D xkbcommon=false \
+    -D xz=false \
+    -D zlib=false \
+    -D zstd=false \
+    -D rootprefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D acl=true \
+    -D tmpfiles=true \
+    -D standalone-binaries=true \
+    -D static-libsystemd=true \
+    -D sysvinit-path=''
+  ninja -C build
+  DESTDIR=${srcdir}/tempinstall meson install -C build
+
+  install -Dm755 ${srcdir}/tempinstall/usr/bin/systemd-tmpfiles.standalone $pkgdir/usr/bin/systemd-tmpfiles
+
+  install -Dm755 ${filedir}/stmpfiles-dev.initd $pkgdir/etc/init.d/stmpfiles-dev
+  install -Dm755 ${filedir}/stmpfiles-setup.initd $pkgdir/etc/init.d/stmpfiles-setup
+
+  install -Dm644 $filedir/stmpfiles.confd $pkgdir/etc/conf.d/stmpfiles-dev
+  install -Dm644 $filedir/stmpfiles.confd $pkgdir/etc/conf.d/stmpfiles-setup
+}
