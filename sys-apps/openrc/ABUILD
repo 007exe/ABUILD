@@ -1,16 +1,17 @@
 pkgname=openrc
-pkgver=0.43.3
+pkgver=0.44.10
 pkgbuild=1
 arch=('auto')
 
-shortdesc="OpenRC - universal init system"
-longdesc="OpenRC is a dependency based init system that works with the system provided init program, normally /sbin/init. It is not a replacement for /sbin/init. OpenRC is 100% compatible with  Gentoo init scripts, which means you can probably find one for the daemons you want to start in the  Gentoo Portage Tree. OpenRC also provides an init script that runs BSD rc.d style scripts too, making it easy to port your BSD system to OpenRC"
+shortdesc=("OpenRC is a dependency-based init system that works with the system-provided init program, normally.")
+longdesc=("OpenRC is a dependency-based init system that works with the system-provided init program, normally.")
 
 source=("https://github.com/OpenRC/openrc/archive/${pkgver}.tar.gz")
 
-tags="base sys-base"
+tags="base sys-apps"
 
 adddep="etc>=16.0 sed grep sysvinit"
+
 build_deps="glibc kernel-headers"
 
 config_files="etc/rc.conf
@@ -35,17 +36,8 @@ build() {
   export BRANDING="AgiliaLinux"
   make  LIBNAME=lib$LIBDIRSUFFIX LIBEXECDIR=/lib$LIBDIRSUFFIX/rc -j${numjobs} OS=Linux || exit 1
   make install DESTDIR=${pkgdir} LIBNAME=lib$LIBDIRSUFFIX LIBEXECDIR=/lib$LIBDIRSUFFIX/rc OS=Linux || exit 1
-}
 
-after_build() {
-  go_src_dir
-  set -e
-# Copy modified scripts
-  for i in ${filedir}/init.d/* ; do
-      install -m755  $i ${pkgdir}/etc/init.d/$(basename $i)
-  done
-
-#install -m644 ${filedir}/gpm.conf.d ${pkgdir}/etc/conf.d/gpm
+  install -m755 ${filedir}/consolefont ${pkgdir}/etc/init.d/consolefont
 
 # Fix defaults in configuration file
   sed -i 's/#rc_parallel=.*$/rc_parallel="YES"/g' ${pkgdir}/etc/rc.conf
@@ -71,6 +63,4 @@ after_build() {
 
 # Fix default console font
   sed -i 's/default8x16/cyr-sun16/g' ${pkgdir}/etc/conf.d/consolefont
-  set +e
 }
-
