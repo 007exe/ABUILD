@@ -12,6 +12,8 @@ tags="develop dev-embedded"
 
 build_deps="cmake mesa boost swig wxgtk3 python glew curl glm ngspice opencascade python-wxpython"
 
+adddep="python-wxpython"
+
 build() {
   go_src_dir
   burn_patches
@@ -27,6 +29,9 @@ build() {
     -DKICAD_BUILD_I18N=ON \
     -DKICAD_I18N_UNIX_STRICT_PATH=ON \
     -DKICAD_BUILD_QA_TESTS=OFF \
+    -DKICAD_DOCS=/usr/share/doc \
+    -DKICAD_SCRIPTING_WXPYTHON=ON \
+    -DKICAD_STABLE_VERSION=ON \
     -Wno-dev
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
