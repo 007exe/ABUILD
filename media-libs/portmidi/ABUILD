@@ -1,0 +1,28 @@
+pkgname=portmidi
+pkgver=236
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for real time MIDI input and output")
+longdesc=("Cross platform library for interfacing with OS MIDI I/O APIs")
+
+tags=("libs media-libs")
+
+source=("https://github.com/mixxxdj/portmidi/archive/refs/tags/${pkgver}.tar.gz")
+
+build_deps="alsa-lib cmake glibc"
+
+build() {
+  go_src_dir
+  cmake -B build -S .\
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DCMAKE_BUILD_TYPE='None' \
+    -DBUILD_TESTING=ON \
+    -Wno-dev
+  make -j${numjobs} VERBOSE=1 -C build
+  make DESTDIR="${pkgdir}" install -C build
+  install -vDm 644 license.txt -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -vDm 644 {CHANGELOG,README}.txt -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
