@@ -1,0 +1,22 @@
+pkgname=python-configobj
+pkgver=5.0.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Simple config file reader and writer.")
+longdesc=("Simple config file reader and writer.")
+
+source=("https://github.com/DiffSK/configobj/archive/refs/tags/v$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps="python-setuptools python-six"
+
+adddep="python-six"
+
+build() {
+  go_src_dir
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  python setup_validate.py install --root="$pkgdir" --optimize=1
+}
