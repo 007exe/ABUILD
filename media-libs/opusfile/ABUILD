@@ -1,0 +1,24 @@
+pkgname=opusfile
+pkgver=0.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for opening, seeking, and decoding .opus files.")
+longdesc=("A high-level decoding and seeking API for .opus files")
+
+tags=("libs media-libs")
+
+source=("https://downloads.xiph.org/releases/opus/$pkgname-$pkgver.tar.gz")
+
+build_deps="libogg openssl opus"
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/opusfile/LICENSE"
+}
