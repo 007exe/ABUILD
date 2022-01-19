@@ -1,5 +1,5 @@
 pkgname=avisynthplus
-pkgver=3.7.0
+pkgver=3.7.1
 pkgbuild=1
 arch=('auto')
 
@@ -19,6 +19,6 @@ build(){
     -DCMAKE_BUILD_TYPE:STRING='None' \
     -DCMAKE_INSTALL_PREFIX:PATH=/usr \
     -Wno-dev
-  make -C build
+  make -j${numjobs} -C build
   make -C build DESTDIR="$pkgdir" install
 }
