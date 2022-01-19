@@ -1,0 +1,20 @@
+pkgname=python-constantly
+pkgver=15.1.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Symbolic constants in Python.")
+longdesc=("Symbolic constants in Python.")
+
+source=("https://github.com/twisted/constantly/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags="dev-python libs"
+
+build_deps="python python-setuptools"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
