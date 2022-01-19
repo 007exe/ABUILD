@@ -1,0 +1,21 @@
+pkgname=python-bcrypt
+pkgver=3.2.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Modern password hashing for your software and your servers.")
+longdesc=("Modern password hashing for your software and your servers.")
+
+source=("https://github.com/pyca/bcrypt/archive/$pkgver.tar.gz")
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools python-cffi python-six"
+
+adddep="python-cffi python-six"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root="$pkgdir"
+}
