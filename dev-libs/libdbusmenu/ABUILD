@@ -1,6 +1,6 @@
 pkgname=libdbusmenu-glib
 pkgver=16.04.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("Library for passing menus over DBus")
@@ -8,17 +8,22 @@ longdesc=("A small little library that was created by pulling out some comon cod
 
 source=("https://launchpad.net/libdbusmenu/${pkgver%.?}/${pkgver}/+download/libdbusmenu-${pkgver}.tar.gz")
 
-tags="libs sys-libs"
+tags="libs dev-libs"
 
 build_deps="gtk3 intltool vala valgrind gobject-introspection"
 
-pkglist="libdbusmenu-gtk3"
+pkglist="libdbusmenu-gtk3 libdbusmenu-gtk2"
 
-build() {
+before_build(){
   go_src_dir
   burn_patches
 # don't treat warnings as errors
   sed -i 's/-Werror//' libdbusmenu-*/Makefile.{am,in}
+  cp -r ${srcdir}/libdbusmenu-${pkgver} ${srcdir}/libdbusmenu-gtk2
+}
+
+build() {
+  cd ${srcdir}/libdbusmenu-${pkgver}
   export HAVE_VALGRIND_TRUE='#'
   export HAVE_VALGRIND_FALSE=''
   ./configure \
@@ -30,6 +35,16 @@ build() {
     --with-gtk=3
   make -j${numjobs}
   make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" install
+
+  cd ${srcdir}/libdbusmenu-gtk2
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-{dumper,static,tests} \
+    --with-gtk=2
+  make -j${numjobs}
 }
 
 libdbusmenu-gtk3() {
@@ -40,7 +55,23 @@ libdbusmenu-gtk3() {
 }
 
 libdbusmenu-gtk3_prep() {
-  go_src_dir
+  cd ${srcdir}/libdbusmenu-${pkgver}
+  make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" install
+  make -j1 -C libdbusmenu-gtk DESTDIR="${pkgdir}" install
+  make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" uninstall
+# Remove unnecessary empty directory
+  rm -r ${pkgdir}/usr/include/libdbusmenu-glib-0.4
+}
+
+libdbusmenu-gtk2() {
+  pkgname=libdbusmenu-gtk2
+  shortdesc=("Library for passing menus over DBus GTK+ 2 library")
+  longdesc=("A small little library that was created by pulling out some comon code out of indicator-applet. It passes a menu structure across DBus so that a program can create a menu simply without worrying about how it is displayed on the other side of the bus.")
+  adddep="libdbusmenu-glib=${pkgver}"
+}
+
+libdbusmenu-gtk2_prep() {
+  cd ${srcdir}/libdbusmenu-gtk2
   make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" install
   make -j1 -C libdbusmenu-gtk DESTDIR="${pkgdir}" install
   make -j1 -C libdbusmenu-glib DESTDIR="${pkgdir}" uninstall
