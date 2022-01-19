@@ -1,31 +1,29 @@
-#ABUILD created by: NK, nk-man at yandex.ru 
 pkgname=mpg123
-pkgver=1.25.10
+pkgver=1.29.3
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Fast console MPEG Audio Player and decoder library"
-source=("http://downloads.sourceforge.net/project/mpg123/mpg123/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+shortdesc=("Console based real time MPEG Audio Player for Layer 1, 2 and 3")
+longdesc=("The mpg123 package contains a console-based MP3 player. It claims to be the fastest MP3 decoder for Unix.")
+
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
 tags="media-sound libs"
-build_deps="alsa-lib sdl"
 
+build_deps="sdl jack libpulse libltdl alsa-lib"
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure" # --help"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---docdir=/usr/doc/${pkgname}-${pkgver} \
---with-module-suffix=.so \
---with-audio='alsa oss sdl' \
---enable-int-quality \
---enable-debug=no \
---enable-static=no"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-int-quality \
+    --with-audio="alsa oss sdl jack pulse"
+# https://bugzilla.gnome.org/show_bug.cgi?id=655517
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+  install -Dm 755 scripts/conplay "${pkgdir}/usr/bin/conplay"
+}
