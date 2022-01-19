@@ -1,0 +1,64 @@
+pkgname=libindicator-gtk3
+pkgver=12.10.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Set of symbols and convenience functions for Ayatana indicators GTK+ 3 library")
+longdesc=("A set of symbols and convience functions that all indicators would like to use")
+
+source=("https://launchpad.net/libindicator/${pkgver%.*}/$pkgver/+download/libindicator-$pkgver.tar.gz")
+
+tags="dev-libs libs"
+
+build_deps="gtk2 gtk3 python"
+
+pkglist="libindicator-gtk2"
+
+before_build(){
+  go_src_dir
+  burn_patches
+  sed -i 's/-Werror//' {libindicator,tools}/Makefile.am
+  autoreconf -fi
+  cp -r ${srcdir}/libindicator-$pkgver ${srcdir}/libindicator-gtk2
+}
+
+build() {
+  cd ${srcdir}/libindicator-$pkgver
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --localstatedir=/var \
+    --sysconfdir=/etc \
+    --with-gtk=3 \
+    --disable-static \
+    --disable-tests
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/usr/share
+
+  cd ${srcdir}/libindicator-gtk2
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --localstatedir=/var \
+    --sysconfdir=/etc \
+    --with-gtk=2 \
+    --disable-static \
+    --disable-tests
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+}
+
+libindicator-gtk2() {
+  pkgname=libindicator-gtk2
+  shortdesc=("Set of symbols and convenience functions for Ayatana indicators GTK+ 2 library")
+  longdesc=("A set of symbols and convience functions that all indicators would like to use")
+}
+
+libindicator-gtk2_prep() {
+  go_src_dir
+  cd ${srcdir}/libindicator-gtk2
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/usr/share
+}
