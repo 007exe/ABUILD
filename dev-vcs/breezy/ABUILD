@@ -1,0 +1,24 @@
+pkgname=breezy
+pkgver=3.2.1
+pkgbuild=1
+arch="auto"
+
+shortdesc=("A decentralized revision control system with support for Bazaar and Git file formats")
+longdesc=("Distributed Version Control System with a Friendly UI")
+
+source=("https://github.com/breezy-team/breezy/archive/refs/tags/${pkgver}+bzr7568-1.tar.gz")
+
+tags="develop dev-util"
+
+build_deps="python-cython python-dulwich python-fastimport python-gpgme python-paramiko python-setuptools python-configobj python-patiencediff python-six"
+
+adddep="python-configobj python-patiencediff python-six"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --install-data=usr/share --optimize=1 --skip-build
+  ln -s brz "${pkgdir}"/usr/bin/bzr # backwards compatibility
+}
+
+
