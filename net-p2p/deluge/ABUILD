@@ -1,0 +1,22 @@
+pkgname=deluge
+pkgver=2.0.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("BitTorrent client with a client/server model")
+longdesc=("BitTorrent client with multiple user interfaces in a client/server model")
+
+source=("https://github.com/deluge-torrent/deluge/archive/refs/tags/deluge-${pkgver}.tar.gz")
+
+tags="xapps net-p2p"
+
+build_deps="python-setuptools python-wheel intltool gtk3 python-gobject python-cairo librsvg xdg-utils libnotify python-idna openssl>=1.0.1 python-pyopenssl python-six python-chardet python-setproctitle python-pillow python-distro python-mako python-rjsmin python-pygame python-twisted python-service-identity python-rencode python-xdg python-zope-interface dbus-python libtorrent-rasterbar python-geoip libappindicator-gtk3"
+
+adddep="python-idna openssl python-pyopenssl python-six python-chardet python-setproctitle python-pillow python-distro python-mako python-twisted python-service-identity python-rencode python-xdg python-zope-interface dbus-python libtorrent-rasterbar python-geoip libappindicator-gtk3"
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+}
