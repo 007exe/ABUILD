@@ -1,0 +1,22 @@
+pkgname=python-pyasn1-modules
+pkgver=0.2.8
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A collection of ASN.1-based protocols modules")
+longdesc=("A collection of ASN.1-based protocols modules")
+
+source=("https://pypi.io/packages/source/p/pyasn1-modules/pyasn1-modules-$pkgver.tar.gz")
+
+tags="libs dev-python"
+
+build_deps="python python-setuptools python-pyasn1"
+
+adddep="python-pyasn1"
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm644 LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
