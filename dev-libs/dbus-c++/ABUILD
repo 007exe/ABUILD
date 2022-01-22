@@ -1,0 +1,30 @@
+pkgname=dbus-c++
+pkgver=0.9.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A C++ API for D-BUS.")
+longdesc=("A C++ API for D-BUS.")
+
+source=("https://sourceforge.net/projects/dbus-cplusplus/files/dbus-c++/${pkgver}/libdbus-c++-${pkgver}.tar.gz")
+
+tags="dev-libs libs"
+
+build_deps=("dbus gcc-libs glib2 glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  # -lpthread needed
+  export LDFLAGS+=" -lpthread"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --disable-ecore \
+    --enable-glib
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
+  install -vDm 644 {AUTHORS,ChangeLog,NEWS,README,TODO} -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
