@@ -1,0 +1,38 @@
+pkgname=cunit
+pkgver=2.1.3
+_pkgver='2.1-3'
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C Unit Test Framework.")
+longdesc=("A Unit Testing Framework for C.")
+
+tags=("develop dev-util")
+
+source=("https://downloads.sourceforge.net/project/cunit/CUnit/$_pkgver/CUnit-$_pkgver.tar.bz2")
+
+build_deps=("glibc libtool automake")
+
+build() {
+  go_src_dir
+  burn_patches
+  libtoolize --force --copy
+  aclocal
+  autoheader
+  automake --add-missing --include-deps --copy
+  autoconf
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-automated \
+    --enable-basic \
+    --enable-console \
+    --enable-test \
+    --enable-shared \
+    --enable-static
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}/" install
+
+  rm -r "${pkgdir}/usr/share/CUnit"
+  mv "${pkgdir}/usr/doc" "${pkgdir}/usr/share/"
+}
