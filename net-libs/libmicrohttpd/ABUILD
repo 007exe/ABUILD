@@ -1,19 +1,20 @@
 pkgname=libmicrohttpd
-pkgver=0.9.73
+pkgver=0.9.75
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Small C library to run an HTTP server")
-longdesc=("libmicrohttpd is a small C library that is supposed to make it easy to run an HTTP server as part of another application.")
+shortdesc=("Small C library to run an HTTP server as part of another application.")
+longdesc=("A small C library that is supposed to make it easy to run an HTTP server as part of another application.")
 
 source=("http://ftp.gnu.org.ua/gnu/libmicrohttpd/libmicrohttpd-$pkgver.tar.gz")
 
-tags="server www-servers"
+tags="libs net-libs"
 
 build_deps="gnutls curl"
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
