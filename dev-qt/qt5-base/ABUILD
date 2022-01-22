@@ -1,7 +1,7 @@
 pkgname=qt5-base
 pkgver=5.15.2
 _pkgfqn=qtbase
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework")
@@ -10,8 +10,8 @@ longdesc=("Qt5 is a cross-platform application framework that is widely used for
 tags=('libs x11-libs')
 
 source=("https://download.qt.io/archive/qt/${pkgver%.*}/${pkgver}/single/qt-everywhere-src-${pkgver}.tar.xz")
-# libfbclient mariadb-libs freetds make-ca jasper
-build_deps=("unixodbc postgresql-libs alsa-lib gtk3 libpulse cups vulkan-headers cups glib2 harfbuzz icu libjpeg-turbo libpng libtiff libwebp libxkbcommon mesa mtdev pcre2 sqlite egl-wayland wayland wayland-protocols xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm gst-plugins-base-libs")
+# libfbclient freetds
+build_deps=("unixodbc postgresql-libs alsa-lib gtk3 libpulse cups vulkan-headers cups glib2 harfbuzz icu libjpeg-turbo libpng libtiff libwebp libxkbcommon mesa mtdev pcre2 sqlite egl-wayland wayland wayland-protocols xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm gst-plugins-base-libs mariadb-libs jasper")
 
 pkglist="qt5-xcb-private-headers"
 
@@ -23,7 +23,9 @@ build() {
   sed -i '/string/a #include <limits>'      qtbase/src/corelib/global/qfloat16.h        &&
   sed -i '/qbytearray/a #include <limits>'  qtbase/src/corelib/text/qbytearraymatcher.h &&
   sed -i '/type_traits/a #include <limits>' qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
-  ./configure -confirm-license -opensource -v \
+  ./configure \
+    -confirm-license \
+    -opensource -v \
     -prefix /usr \
     -docdir /usr/share/doc/qt \
     -headerdir /usr/include/qt \
@@ -44,7 +46,6 @@ build() {
     -reduce-relocations \
     -no-strip
 #-plugin-sql-{psql,mysql,sqlite,odbc,ibase}
-#-journald
   make -j${numjobs}
   make INSTALL_ROOT="${pkgdir}" install
 
