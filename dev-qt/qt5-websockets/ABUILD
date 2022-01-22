@@ -1,0 +1,28 @@
+pkgname=qt5-websockets
+pkgver=5.15.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides WebSocket communication compliant with RFC 6455.")
+longdesc=("Implementation of the WebSocket protocol for the Qt5 framework.")
+
+tags=("libs x11-libs")
+
+source=("https://download.qt.io/archive/qt/${pkgver%.*}/${pkgver}/submodules/qtwebsockets-everywhere-src-${pkgver}.tar.xz")
+
+build_deps=("qt5-declarative qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT="$pkgdir" install
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d "$pkgdir"/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+}
