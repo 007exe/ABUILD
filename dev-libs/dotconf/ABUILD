@@ -1,0 +1,24 @@
+pkgname=dotconf
+pkgver=1.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A C library for parsing configuration files.")
+longdesc=("dot.conf configuration file parser.")
+
+source=("https://github.com/williamh/${pkgname}/tarball/v${pkgver}")
+
+tags="libs dev-libs"
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
