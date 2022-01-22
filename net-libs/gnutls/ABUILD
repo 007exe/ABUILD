@@ -1,16 +1,18 @@
 pkgname=gnutls
-pkgver=3.7.2
+pkgver=3.7.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library providing a secure layer (SSL)")
 longdesc=("GnuTLS is a project that aims to develop a library which provides a secure layer, over a reliable transport layer.")
 
-build_deps="gcc gcc-libs libtasn1 readline zlib nettle pkg-config libidn2 libunistring p11-kit"
-
 tags=("net-libs network")
 
 source=("https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/${pkgname}-${pkgver}.tar.xz")
+
+build_deps="gcc gcc-libs libtasn1 readline zlib nettle pkg-config libidn2 libunistring p11-kit"
+
+adddep="libunistring"
 
 build() {
   go_src_dir
