@@ -1,5 +1,5 @@
 pkgname=ffnvcodec-headers
-pkgver=11.1.5.0
+pkgver=11.1.5.1
 pkgbuild=1
 arch=('noarch')
 
