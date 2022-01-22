@@ -1,0 +1,29 @@
+pkgname=qt5-multimedia
+pkgver=5.15.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Classes for audio, video, radio and camera functionality.")
+longdesc=("Multimedia (audio, video, radio, camera) library for the Qt5 framework.")
+
+tags=('libs x11-libs')
+
+source=("https://download.qt.io/archive/qt/${pkgver%.*}/${pkgver}/submodules/qtserialport-everywhere-src-${pkgver}.tar.xz")
+
+build_deps=("qt5-declarative gst-plugins-bad qt5-base gst-plugins-base libpulse openal")
+# Optional dependencies.
+removedep=("qt5-declarative gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT="$pkgdir" install
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+  install -d "$pkgdir"/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+}
