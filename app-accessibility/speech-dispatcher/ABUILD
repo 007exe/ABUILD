@@ -1,0 +1,62 @@
+pkgname=speech-dispatcher
+pkgver=0.11.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Speech synthesis interface.")
+longdesc=("High-level device independent layer for speech synthesis interface.")
+
+source=("https://github.com/brailcom/speechd/releases/download/${pkgver}/speech-dispatcher-${pkgver}.tar.gz")
+
+tags="libs app-accessibility"
+
+pkglist=("libspeechd")
+
+build_deps=("glib2 intltool espeak-ng libtool python-pyxdg dotconf libpulse libao")
+
+adddep=("libspeechd=$pkgver-$pkgrel python-pyxdg")
+# Optional dependencies.
+removedep=("festival espeak-ng pulseaudio")
+
+config_files=("etc/speech-dispatcher/clients/emacs.conf
+etc/speech-dispatcher/modules/dtk-generic.conf
+etc/speech-dispatcher/modules/epos-generic.conf
+etc/speech-dispatcher/modules/espeak-ng.conf
+etc/speech-dispatcher/modules/espeak-ng-mbrola.conf
+etc/speech-dispatcher/modules/espeak-ng-mbrola-generic.conf
+etc/speech-dispatcher/modules/festival.conf
+etc/speech-dispatcher/modules/llia_phon-generic.conf
+etc/speech-dispatcher/modules/mary-generic.conf
+etc/speech-dispatcher/modules/swift-generic.conf
+etc/speech-dispatcher/speechd.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --disable-static \
+    --with-ibmtts=no \
+    --with-kali=no \
+    --with-baratinoo=no \
+    --with-voxin=no \
+    --without-flite
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  sed -i 's|includedir=.*|includedir=${prefix}/include/speech-dispatcher|g' "${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/speech-dispatcher.pc"
+}
+
+libspeechd() {
+  pkgname=libspeechd
+  shortdesc=("Speech synthesis interface.")
+  longdesc=("High-level device independent layer for speech synthesis interface.")
+}
+
+libspeechd_prep() {
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  mv ${p_pkgdir}/usr/include ${pkgdir}/usr
+  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/* "${pkgdir}"/usr/lib${LIBDIRSUFFIX}
+}
