@@ -1,18 +1,18 @@
 pkgname=sqlite
-pkgver=3.36.0
+pkgver=3.37.2
 pkgbuild=1
 arch=('auto')
-_amalgamationver=3360000
+_amalgamationver=3370200
 
-shortdesc=("C library that implements an embeddable SQL database engine")
+shortdesc=("A C library that implements an SQL database engine")
 longdesc=("SQLite is a C library that implements an embeddable SQL database engine. Programs that link with the SQLite library can have SQL database access without running a separate RDBMS process. The distribution comes with a standalone command-line access program (sqlite) that can be used to administer an SQLite database and which serves as an example of how to use the SQLite library.")
 
-tags=('console dev-db')
+tags=('libs dev-db')
 
 build_deps="tcl readline zlib"
 
-source=("http://sqlite.org/2021/sqlite-autoconf-${_amalgamationver}.tar.gz"
-        "http://www.sqlite.org/2021/sqlite-doc-${_amalgamationver}.zip")
+source=("http://sqlite.org/2022/sqlite-autoconf-${_amalgamationver}.tar.gz"
+        "http://www.sqlite.org/2022/sqlite-doc-${_amalgamationver}.zip")
 
 pkglist="sqlite-doc"
 
@@ -43,7 +43,6 @@ build() {
   make -j${numjobs}
 
   make DESTDIR=${pkgdir} install
-
 
 # install manpage
   install -m755 -d "${pkgdir}"/usr/share/man/man1
