@@ -1,0 +1,27 @@
+pkgname=assimp
+pkgver=5.1.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Importer library to import assets from 3D files")
+longdesc=("Library to import various well-known 3D model formats in an uniform manner")
+
+source=("https://github.com/assimp/assimp/archive/v${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps=("cmake ninja zlib gcc-libs")
+
+build(){
+  go_src_dir
+  burn_patches
+  cmake -Bbuild \
+    -GNinja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DASSIMP_BUILD_SAMPLES=OFF
+    ninja -C build
+  DESTDIR="$pkgdir" ninja -C build install
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
