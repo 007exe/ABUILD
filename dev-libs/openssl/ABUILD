@@ -1,12 +1,12 @@
 pkgname=openssl
-pkgver=1.1.1l
+pkgver=1.1.1m
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("The OpenSSL cryptography and TLS library.")
-longdesc=("The Open Source toolkit for Secure Sockets Layer and Transport Layer Security")
+shortdesc=("The Open Source toolkit for Secure Sockets Layer and Transport Layer Security.")
+longdesc=("The OpenSSL package contains management tools and libraries relating to cryptography. These are useful for providing cryptographic functions to other packages, such as OpenSSH, email applications, and web browsers (for accessing HTTPS sites).")
 
-tags=('dev-libs network compat32')
+tags=('dev-libs libs')
 
 source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz")
 
@@ -17,10 +17,11 @@ build() {
   burn_patches
   ./Configure \
     --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --openssldir=/etc/ssl \
     --libdir=lib${LIBDIRSUFFIX} shared no-ssl3-method enable-ec_nistp_64_gcc_128 linux-x86_64 "-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
   make depend
-  make
+  make -j${numjobs}
   make DESTDIR=$pkgdir MANDIR=/usr/share/man MANSUFFIX=ssl install_sw install_ssldirs install_man_docs
 
   install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
