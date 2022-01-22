@@ -1,0 +1,24 @@
+pkgname=libxml++
+pkgver=3.2.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C++ bindings to libxml2")
+longdesc=("libxml++ is a C++ API for the popular libxml XML parser, written in C")
+
+source=("https://github.com/libxmlplusplus/libxmlplusplus/archive/refs/tags/$pkgver.tar.gz")
+
+tags="libs dev-libs"
+
+build_deps=("meson mm-common glibmm-docs libxml2 glibmm")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D maintainer-mode=true
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
