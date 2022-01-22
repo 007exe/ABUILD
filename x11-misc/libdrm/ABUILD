@@ -1,10 +1,10 @@
 pkgname=libdrm
-pkgver=2.4.107
+pkgver=2.4.109
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Userspace interface to kernel DRM services")
-longdesc=("Userspace interface to kernel DRM services.")
+shortdesc=("Userspace interface to kernel DRM services.")
+longdesc=("Libdrm provides a user space library for accessing the DRM, direct rendering manager, on operating systems that support the ioctl interface. libdrm is a low-level library, typically used by graphics drivers such as the Mesa DRI drivers, the X drivers, libva and similar projects.")
 
 tags=('libs x11-libs')
 
@@ -13,9 +13,11 @@ source=("https://dri.freedesktop.org/$pkgname/$pkgname-$pkgver.tar.xz")
 build_deps="python-docutils meson libpciaccess"
 
 build(){
-  meson $pkgname-$pkgver build \
-    --prefix=/usr \
-    -Dudev=false
+  go_src_dir
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D udev=false
   ninja -C build
   DESTDIR="$pkgdir" meson install -C build
 }
