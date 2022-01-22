@@ -1,10 +1,10 @@
 pkgname=elfutils
-pkgver=0.185
+pkgver=0.186
 pkgbuild=1
 arch=('auto')
 
-shortdesc="A collection of utilities and DSOs to handle compiled objects"
-longdesc="Elfutils is a collection of utilities, including stack (to show backtraces), nm (for listing symbols from object files), size (for listing the section sizes of an object or archive file), strip (for discarding symbols), readelf (to see the raw ELF file structures), and elflint (to check for well-formed ELF files)."
+shortdesc=("A collection of utilities and DSOs to handle compiled objects")
+longdesc=("Elfutils is a collection of utilities, including stack (to show backtraces), nm (for listing symbols from object files), size (for listing the section sizes of an object or archive file), strip (for discarding symbols), readelf (to see the raw ELF file structures), and elflint (to check for well-formed ELF files).")
 
 source=("https://sourceware.org/ftp/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2")
 
@@ -17,14 +17,13 @@ build() {
   burn_patches
 # required for test-suite success
   CFLAGS+=" -g"
-
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --program-prefix="eu-" \
     --enable-deterministic-archives
-  make
+  make -j${numjobs}
 
 # Some tests fail due to limited capabilities of build chroot
   make check || echo "Known problem: The build environment might lack enough resources."
