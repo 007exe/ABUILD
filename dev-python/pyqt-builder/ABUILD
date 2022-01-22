@@ -1,0 +1,19 @@
+pkgname=pyqt-builder
+pkgver=1.12.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The PEP 517 compliant PyQt build system.")
+longdesc=("The PEP 517 compliant PyQt build system.")
+
+source=("https://pypi.io/packages/source/P/PyQt-builder/PyQt-builder-$pkgver.tar.gz")
+
+tags=("dev-python libs")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir"
+}
