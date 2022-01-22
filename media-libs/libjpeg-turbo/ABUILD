@@ -1,5 +1,5 @@
 pkgname=libjpeg-turbo
-pkgver=2.1.1
+pkgver=2.1.2
 pkgbuild=1
 arch=('auto')
 
@@ -15,16 +15,15 @@ build_deps="cmake nasm"
 build() {
   go_src_dir
   burn_patches
-  cmake -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
-        -DCMAKE_BUILD_TYPE=RELEASE \
-        -DENABLE_STATIC=FALSE \
-        -DWITH_JPEG8=ON \
-        -W no-dev \
-        -B build \
-        -S .
-  make VERBOSE=1 -C build
-  make VERBOSE=1 DESTDIR="${pkgdir}" \
+  cmake -S . -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DENABLE_STATIC=FALSE \
+    -DWITH_JPEG8=ON \
+    -W no-dev
+  make -j${numjobs} VERBOSE=1 -C build
+  make -j${numjobs} VERBOSE=1 DESTDIR="${pkgdir}" \
     docdir="/usr/share/doc/${pkgname}" \
     exampledir="/usr/share/doc/${pkgname}" \
     install -C build
