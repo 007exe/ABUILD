@@ -17,9 +17,8 @@ build() {
   burn_patches
   mkdir build
   cd build
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    ../mpkg-parted
+  cmake ../mpkg-parted \
+    -DCMAKE_INSTALL_PREFIX=/usr
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }

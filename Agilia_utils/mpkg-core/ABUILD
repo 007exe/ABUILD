@@ -10,19 +10,18 @@ source=("git:git://github.com/007exe/mpkg.git")
 
 tags="base sys-pkgtools"
 
-adddep="mpkg-i18n tar xz gzip sed wget which"
+build_deps="nwidgets mpkgsupport cmake gcc gcc-libs curl sqlite libxml2 mpkg-i18n"
 
-build_deps="nwidgets mpkgsupport cmake gcc"
+adddep="mpkg-i18n tar xz gzip sed wget which"
 
 build() {
   go_src_dir
   burn_patches
   mkdir build
   cd build
-  cmake \
+  cmake ../lib \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
-    ../lib
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }

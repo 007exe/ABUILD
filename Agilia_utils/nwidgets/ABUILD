@@ -10,20 +10,18 @@ source=("git:git://github.com/007exe/mpkg.git")
 
 tags="base sys-libs"
 
-build_deps="mpkgsupport ncurses cmake"
-
+build_deps="mpkgsupport ncurses cmake gcc-libs"
 
 build() {
   go_src_dir
   burn_patches
   mkdir build
   cd build
-  cmake \
-  -DCMAKE_INSTALL_PREFIX=/usr \
-  -DSYSCONF_INSTALL_DIR=/etc \
-  -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
-  -DMAN_INSTALL_DIR=/usr/share/man \
-  ../nwidgets
+  cmake ../nwidgets \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DMAN_INSTALL_DIR=/usr/share/man
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }

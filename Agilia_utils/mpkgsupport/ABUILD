@@ -17,12 +17,11 @@ build() {
   burn_patches
   mkdir build
   cd build
-  cmake \
+  cmake ../mpkgsupport \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONF_INSTALL_DIR=/etc \
     -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
-    -DMAN_INSTALL_DIR=/usr/share/man \
-    ../mpkgsupport
+    -DMAN_INSTALL_DIR=/usr/share/man
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }

@@ -10,23 +10,21 @@ source=("git:git://github.com/007exe/mpkg.git")
 
 tags="base sys-pkgtools"
 
-build_deps="mpkg-core cmake"
+build_deps="mpkg-core cmake gcc-libs mpkgsupport nwidgets"
 
 build() {
   go_src_dir
   burn_patches
   mkdir build
   cd build
-  cmake \
+  cmake ../console \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
-    ../console
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
-}
 
-after_build() {
-  ( cd ${pkgdir}/usr/bin ; ln -s mpkg buildpkg )
-  ( cd ${pkgdir}/usr/bin ; ln -s mpkg buildsrcpkg )
+  cd ${pkgdir}/usr/bin 
+  ln -s mpkg buildpkg
+  ln -s mpkg buildsrcpkg
 }
 

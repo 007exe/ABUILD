@@ -19,15 +19,11 @@ build() {
   burn_patches
   mkdir build
   cd build
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    ../i18n
+  cmake ../i18n \
+    -DCMAKE_INSTALL_PREFIX=/usr
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 
-}
-after_build() {
-  go_src_dir
   mkdir -p ${pkgdir}/usr/share/man/ru/man1/
   cd i18n/man_ru
   for i in `find . -name '*.1'` ; do
