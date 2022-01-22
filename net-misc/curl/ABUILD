@@ -1,16 +1,16 @@
 pkgname=curl
-pkgver=7.79.0
+pkgver=7.81.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Gets a file from a FTP, GOPHER or HTTP server")
-longdesc=("Curl is a client to get documents/files from servers, using any of the supported protocols. The command is designed to work without user interaction or any kind of interactivity.")
+shortdesc=("An URL retrieval utility and library")
+longdesc=("The cURL package contains an utility and a library used for transferring files with URL syntax to any of the following protocols: FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT, LDAP, LDAPS and FILE. Its ability to both download and upload files can be incorporated into other programs to support functions like streaming media.")
 
 tags=("network net-misc")
 
 source=("http://curl.haxx.se/download/${pkgname}-${pkgver}.tar.xz")
-# brotli libpsl
-build_deps="krb5 libidn2 libnghttp2 libssh2 openssl zlib zstd"
+
+build_deps="krb5 libidn2 libnghttp2 libssh2 openssl zlib zstd libpsl brotli ca-certificates"
 
 adddep="ca-certificates"
 
