@@ -1,0 +1,21 @@
+pkgname=sip
+pkgver=6.5.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python bindings generator for C/C++ libraries.")
+longdesc=("A tool that makes it easy to create Python bindings for C and C++ libraries.")
+
+source=("https://pypi.python.org/packages/source/s/sip/$pkgname-$pkgver.tar.gz")
+
+tags=("dev-python libs")
+
+build_deps=("python python-toml python-packaging python-setuptools")
+
+adddep=("python-toml python-packaging python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --skip-build --root="$pkgdir" --optimize=1
+}
