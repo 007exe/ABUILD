@@ -1,5 +1,5 @@
 pkgname=intel-media-sdk
-pkgver=21.3.2
+pkgver=21.3.5
 pkgbuild=1
 arch=("auto")
 
@@ -11,6 +11,8 @@ source=("https://github.com/Intel-Media-SDK/MediaSDK/archive/intel-mediasdk-${pk
 tags="libs media-libs"
 
 build_deps="intel-media-driver libdrm libva wayland cmake libpciaccess libx11 libxcb python"
+
+adddep="libmfx=${pkgver}"
 
 pkglist="libmfx"
 
