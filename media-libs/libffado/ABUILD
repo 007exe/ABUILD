@@ -1,0 +1,43 @@
+pkgname=libffado
+pkgver=2.4.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Driver for FireWire audio devices")
+longdesc=("Driver for IEEE1394 (Firewire) audio interfaces")
+
+source=("http://www.ffado.org/files/${pkgname}-${pkgver}.tgz")
+
+tags=("libs media-libs compat32")
+
+build_deps=("alsa-lib dbus-c++ jack libconfig python-pyqt5 scons gcc-libs glibmm hicolor-icon-theme libavc1394 libiec61883 libxml++ dbus-python")
+
+adddep=("dbus-python hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+# fix icon name, so it's coherent with XDG desktop file name
+  sed -e 's/hi64-apps-ffado/ffado-mixer/g' -i support/xdg/ffado.org-ffadomixer.desktop
+# fix id, so it's coherent with XDG desktop file name
+  sed -e 's/ffado.org-ffadomixer.desktop/ffado-mixer.desktop/g' -i support/xdg/ffado-mixer.appdata.xml
+
+  local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+
+  scons PREFIX=/usr \
+        LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+        DEBUG=no \
+        CUSTOM_ENV=True \
+        MANDIR='/usr/share/man' \
+        PYTHON_INTERPRETER='/usr/bin/python3' \
+        PYPKGDIR="/usr/lib/python${python_version}/site-packages" \
+        UDEVDIR='/usr/lib/udev/rules.d'
+  scons DESTDIR="${pkgdir}" WILL_DEAL_WITH_XDG_MYSELF="True" install
+
+# XDG
+  install -vDm 644 support/xdg/ffado.org-ffadomixer.desktop "${pkgdir}/usr/share/applications/ffado-mixer.desktop"
+  install -vDm 644 support/xdg/hi64-apps-ffado.png "${pkgdir}/usr/share/icons/hicolor/64x64/apps/ffado-mixer.png"
+
+# docs
+  install -t "${pkgdir}/usr/share/doc/${pkgname}" -vDm 644 {AUTHORS,README}
+}
