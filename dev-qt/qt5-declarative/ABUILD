@@ -1,0 +1,33 @@
+pkgname=qt5-declarative
+pkgver=5.15.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Classes for QML and JavaScript languages.")
+longdesc=("The QML and Quick modules for the Qt5 framework.")
+
+tags=("libs x11-libs")
+
+source=("https://download.qt.io/archive/qt/${pkgver%.*}/${pkgver}/submodules/qtdeclarative-everywhere-src-${pkgver}.tar.xz")
+
+build_deps=("qt5-base python vulkan-headers")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT="$pkgdir" install
+# Symlinks for backwards compatibility
+  for b in "$pkgdir"/usr/bin/*; do
+    ln -s $(basename $b) "$pkgdir"/usr/bin/$(basename $b)-qt5
+  done
+
+# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
+  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d "$pkgdir"/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+}
