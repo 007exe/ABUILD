@@ -1,0 +1,28 @@
+pkgname=libao
+pkgver=1.2.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cross-platform audio output library and plugins")
+longdesc=("The libao package contains a cross-platform audio library. This is useful to output audio on a wide variety of platforms. It currently supports WAV files, OSS (Open Sound System), ESD (Enlighten Sound Daemon), ALSA (Advanced Linux Sound Architecture), NAS (Network Audio system), aRTS (analog Real-Time Synthesizer), and PulseAudio (next generation GNOME sound architecture).")
+
+tags=("libs media-libs")
+
+source=("https://gitlab.xiph.org/xiph/libao/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("alsa-lib libpulse gcc-libs glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-alsa-mmap
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+# default config
+  install -vDm 644 ${filedir}/libao.conf -t ${pkgdir}/etc/
+  install -vDm 644 {AUTHORS,CHANGES,HACKING,README,TODO} -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
