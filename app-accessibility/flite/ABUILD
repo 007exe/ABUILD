@@ -1,0 +1,32 @@
+pkgname=flite
+pkgver=2.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A lightweight speech synthesis engine.")
+longdesc=("Flite text to speech engine.")
+
+tags=("app-accessibility libs")
+
+source=("https://github.com/festvox/flite/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+build_deps=("chrpath alsa-lib")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed 's|cp -pd|cp|' -i main/Makefile
+  autoreconf -vif
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-shared \
+    --with-audio=alsa \
+    --with-vox=cmu_us_kal16
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+# Fix rpath
+  chrpath -d "$pkgdir"/usr/bin/*
+}
