@@ -1,6 +1,6 @@
 pkgname=libxml2
 pkgver=2.9.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc="Library providing XML and HTML support"
