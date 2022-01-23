@@ -1,27 +1,23 @@
-#ABUILD created by: Unnamed_Hero, sorry at email.hide 
 pkgname=liblqr
 pkgver=0.4.2
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Liquid Rescale Library"
+shortdesc=("A seam-carving C/C++ library called Liquid Rescale")
+longdesc=("Easy to use C/C++ seam carving library")
+
 source=("http://liblqr.wdfiles.com/local--files/en%3Adownload-page/${pkgname}-1-${pkgver}.tar.bz2")
-tags="libs media-libs"
-build_deps="glib2 pkg-config"
-conflicts="liblqr-1"
 
+tags=("libs media-libs")
 
-BUILD_SYSTEM="autotools"
+build_deps=("glib2")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
