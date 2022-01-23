@@ -1,0 +1,23 @@
+pkgname=liburcu
+pkgver=0.13.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("LGPLv2.1 userspace RCU (read-copy-update) library.")
+longdesc=("liburcu-cds provides efficient data structures based on RCU and lock-free algorithms.")
+
+source=("https://lttng.org/files/urcu/userspace-rcu-${pkgver}.tar.bz2")
+
+tags=("libs sys-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
