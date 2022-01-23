@@ -1,0 +1,27 @@
+pkgname=extra-cmake-modules
+pkgver=5.90.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Extra modules and scripts for CMake.")
+longdesc=("Extra modules and scripts for CMake.")
+
+tags=("kde-misc kde4")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
+
+build_deps=("python-sphinx python-requests qt5-tools cmake")
+
+adddep=("cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DBUILD_HTML_DOCS=ON \
+    -DBUILD_QTHELP_DOCS=ON
+  cmake --build build
+  DESTDIR="$pkgdir" cmake --install build
+}
