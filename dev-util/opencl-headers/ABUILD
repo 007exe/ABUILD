@@ -1,0 +1,25 @@
+pkgname=opencl-headers
+pkgver=1.2
+pkgbuild=1
+arch=('noarch')
+
+shortdesc="OpenCL (Open Computing Language) header files"
+_url="http://www.khronos.org/registry/cl/api/${pkgver}"
+source=("${_url}/cl_ext.h"
+        "${_url}/cl_gl_ext.h"
+        "${_url}/cl_gl.h"
+        "${_url}/cl.h"
+        "${_url}/cl.hpp"
+        "${_url}/cl_platform.h"
+        "${_url}/opencl.h")
+tags="libs dev-libs"
+build_deps="mkpkg"
+
+build()
+{
+    install -dm755 "${pkgdir}/usr/include/CL"
+    for hdr in ${loc_source_arr[*]}; do
+        install -m 644 "${srcache}/${hdr}" "${pkgdir}/usr/include/CL/"
+    done
+    install -D -m644 ${filedir}/LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
