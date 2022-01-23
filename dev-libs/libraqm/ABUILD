@@ -1,0 +1,26 @@
+pkgname=libraqm
+pkgver=0.8.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("A library that encapsulates the logic for complex text layout")
+longdesc=("Raqm is a small library that encapsulates the logic for complex text layout and provides a convenient API.")
+
+source=("https://github.com/HOST-Oman/libraqm/releases/download/v$pkgver/raqm-$pkgver.tar.xz")
+
+tags=("dev-libs libs")
+
+build_deps=("meson gtk-doc freetype fribidi")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D docs=true
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+
+  install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
