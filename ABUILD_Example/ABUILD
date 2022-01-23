@@ -10,6 +10,9 @@ longdesc=("Полное описание пакета")
 source=("http://downloads/.../../${pkgname}-${pkgver}.tar.bz2"
 "git:https://github.com/.../${pkgname}.git")
 
+#Если значение приниманет 1 то при использовании систем контроля версии не добавляет префикс _git_date
+strict_version=1
+
 patch_opts=("")
 
 #Длинный и короткий тег.
