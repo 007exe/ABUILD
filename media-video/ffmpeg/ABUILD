@@ -1,17 +1,19 @@
 pkgname=ffmpeg
-pkgver=4.4
-pkgbuild=2
+pkgver=5.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Complete solution to record, convert and stream audio and video")
+shortdesc=("Complete solution to record, convert and stream audio and video.")
 longdesc=("ffmpeg is a hyper fast realtime audio/video encoder, a streaming server and a generic audio and video file converter.")
 
 source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
 
 tags="libs media-video"
 
-# avisynthplus --enable-avisynth
-build_deps=("libmfx libsoxr vmaf rav1e dav1d aom svt-av1 amf-headers zimg vidstab v4l-utils libvpx ffnvcodec-headers jack librsvg libpulse sdl2 fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883 libvdpau libx11 libxext libxv libxcb")
+build_deps=("avisynthplus libmfx libsoxr vmaf rav1e dav1d aom svt-av1 amf-headers zimg vidstab v4l-utils
+libvpx ffnvcodec-headers jack librsvg libpulse sdl2 fontconfig fribidi libraw1394 libssh libxml2 libwebp
+alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr
+openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883 libvdpau libx11 libxext libxv libxcb")
 
 build(){
   go_src_dir
@@ -72,8 +74,8 @@ build(){
     --enable-libvmaf \
     --enable-libmfx \
     --enable-nonfree \
-    --enable-avresample
-# --enable-libsoxr \
+    --enable-libsoxr \
+    --enable-avisynth
   make -j${numjobs}
   make tools/qt-faststart -j${numjobs}
   make doc/ff{mpeg,play}.1
