@@ -1,5 +1,5 @@
 pkgname=jack
-pkgver=1.9.19
+pkgver=1.9.20
 pkgbuild=1
 arch=('auto')
 
@@ -8,9 +8,9 @@ longdesc=("Jack has been developed with one main goal: ripping CDs without havin
 
 source=("https://github.com/jackaudio/jack2/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="libs media-sound"
-#celt zita-alsa-pcmi zita-resampler libffado libsamplerate
-build_deps="waf alsa-lib dbus expat libsndfile readline"
+tags=("libs media-sound")
+
+build_deps=("waf alsa-lib dbus expat libsndfile readline libsamplerate celt libffado zita-alsa-pcmi zita-resampler")
 
 before_build() {
   go_src_dir
