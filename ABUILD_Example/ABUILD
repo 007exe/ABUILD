@@ -75,7 +75,7 @@ after_build(){
 multipkgname1() {
   pkgname=multi_pkgname1
   shortdesc=("")
-  longdesc=("")                                                                                                                                                               
+  longdesc=("")
 }
 
 #Функция сборки мультипакета в ней происходит сборка дополнительного пакета. Имя функции соответствует значению из pkglist с префиксом _prep.
