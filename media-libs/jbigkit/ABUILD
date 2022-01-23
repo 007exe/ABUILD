@@ -1,0 +1,37 @@
+pkgname=jbigkit
+pkgver=2.1
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Data compression library/utilities for bi-level high-resolution images")
+longdesc=("data compression algorithm for bi-level high-resolution images")
+
+source=("http://www.cl.cam.ac.uk/~mgk25/download/jbigkit-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("gcc")
+
+build() {
+  go_src_dir
+  unset CFLAGS CPPFLAGS LDFLAGS
+  [ "${ARCH}" == "x86_64" ] && export CFLAGS="$CFLAGS -fPIC"
+  make CFLAGS="$CFLAGS"
+
+  install -D -m644 libjbig/libjbig.a "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libjbig.a
+  install -D -m644 libjbig/libjbig85.a "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libjbig85.a
+  install -D -m644 libjbig/jbig.h "$pkgdir"/usr/include/jbig.h
+  install -D -m644 libjbig/jbig_ar.h "$pkgdir"/usr/include/jbig_ar.h
+  install -D -m644 libjbig/jbig85.h "$pkgdir"/usr/include/jbig85.h
+
+  install -d -m755 "$pkgdir"/usr/share/man/man1
+
+  install -m644 pbmtools/*.1* "$pkgdir"/usr/share/man/man1
+
+  install -D -m755 pbmtools/jbgtopbm "$pkgdir"/usr/bin/jbgtopbm
+  install -D -m755 pbmtools/pbmtojbg "$pkgdir"/usr/bin/pbmtojbg
+  install -D -m755 pbmtools/jbgtopbm85 "$pkgdir"/usr/bin/jbgtopbm85
+  install -D -m755 pbmtools/pbmtojbg85 "$pkgdir"/usr/bin/pbmtojbg85
+
+  rm -f "$pkgdir"/usr/share/man/man5/p{b,g}m.5*
+}
