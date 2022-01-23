@@ -10,7 +10,9 @@ source=("https://github.com/caolanm/libwmf/archive/v$pkgver.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("libxt libx11 libjpeg gsfonts freetype expat")
+build_deps=("libxt libx11 libjpeg-turbo freetype expat gsfonts")
+
+adddep=("gsfonts")
 
 build() {
   go_src_dir
