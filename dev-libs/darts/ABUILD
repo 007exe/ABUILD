@@ -1,0 +1,25 @@
+pkgname=darts
+pkgver=0.32
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("C++ Template Library for implementation of Double-Array.")
+longdesc=("A C++ template library that implements Double-Array.")
+
+source=("http://chasen.org/~taku/software/darts/src/darts-$pkgver.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING BSD -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
