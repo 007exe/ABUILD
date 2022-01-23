@@ -1,0 +1,26 @@
+pkgname=gsfonts
+pkgver=20200910
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("(URW)++ base 35 font set")
+longdesc=("These fonts are used by the GhostScript interpreter.")
+
+tags=("console media-fonts")
+
+source=("https://github.com/ArtifexSoftware/urw-base35-fonts/archive/refs/tags/${pkgver}.tar.gz")
+
+build_deps=("mkpkg")
+
+build() {
+  go_src_dir
+  install -vDm 644 fonts/*.otf -t "${pkgdir}/usr/share/fonts/${pkgname}"
+  install -vDm 644 appstream/*.xml -t "${pkgdir}/usr/share/metainfo"
+
+  install -vdm 755 "${pkgdir}/usr/share/fontconfig/conf.default/"
+  for _config in fontconfig/*.conf; do
+    _config_path="${pkgdir}/usr/share/fontconfig/conf.avail/69-${_config##*/}"
+    install -vDm 644 "${_config}" "${_config_path}"
+    ln -srt "${pkgdir}/usr/share/fontconfig/conf.default/" "${_config_path}"
+  done
+}
