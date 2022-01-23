@@ -1,0 +1,36 @@
+pkgname=opencc
+pkgver=1.1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for Open Chinese Convert.")
+longdesc=("Library for Open Chinese Convert.")
+
+source=("https://github.com/BYVoid/OpenCC/archive/ver.$pkgver/$pkgbase-$pkgver.tar.gz")
+
+tags=("libs app-i18n")
+
+build_deps=("chrpath cmake doxygen pybind11 python-setuptools python-wheel rapidjson marisa darts tclap")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DBUILD_DOCUMENTATION:BOOL=ON \
+    -DBUILD_PYTHON:BOOL=ON \
+    -DUSE_SYSTEM_MARISA:BOOL=ON \
+    -DUSE_SYSTEM_PYBIND11:BOOL=ON \
+    -DUSE_SYSTEM_RAPIDJSON:BOOL=ON \
+    -DUSE_SYSTEM_TCLAP:BOOL=ON \
+    -DUSE_SYSTEM_DARTS:BOOL=ON
+  make -j${numjobs}
+  make DESTDIR="$pkgdir" install
+
+  mkdir python/opencc/clib
+  cp opencc_clib.*.so python/opencc/clib/
+  touch python/opencc/clib/__init__.py
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+}
