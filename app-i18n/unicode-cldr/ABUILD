@@ -1,0 +1,43 @@
+pkgname=unicode-cldr
+pkgver=40.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Unicode Common Locale Data Repository.")
+longdesc=("The Unicode CLDR provides key building blocks for software to support the world's languages, with the largest and most extensive standard repository of locale data available.")
+
+source=("https://unicode.org/Public/cldr/${pkgver%.*}/cldr-common-$pkgver.zip")
+
+tags=("base app-i18n")
+
+pkglist=("annotations")
+
+build_deps=("unzip")
+
+adddep=("unicode-cldr-annotations")
+
+custom_opts="skip_gendeps"
+
+build() {
+  go_src_dir
+  burn_patches
+  install -dm755 "$pkgdir"/usr/share/unicode/cldr/common
+  cp -r * "$pkgdir"/usr/share/unicode/cldr/common/
+  rm -r "$pkgdir"/usr/share/unicode/cldr/common/annotations
+  install -Dm644 ../LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
+annotations() {
+  pkgname=unicode-cldr-annotations
+  shortdesc=("Unicode Common Locale Data Repository (annotations only)")
+  longdesc=("The Unicode CLDR provides key building blocks for software to support the world's languages, with the largest and most extensive standard repository of locale data available.")                                                                                                                                                              
+  arch=("noarch")
+  custom_opts="skip_gendeps"
+}
+
+annotations_prep() {
+  go_src_dir
+  install -dm755 "$pkgdir"/usr/share/unicode/cldr/common
+  cp -r annotations "$pkgdir"/usr/share/unicode/cldr/common/
+  install -Dm644 ../LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
