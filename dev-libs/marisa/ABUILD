@@ -1,0 +1,120 @@
+pkgname=marisa
+pkgver=0.2.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Static and space-efficient trie data structure library.")
+longdesc=("Matching Algorithm with Recursively Implemented StorAge.")
+
+source=("https://github.com/s-yata/marisa-trie/archive/v$pkgver.tar.gz")
+
+pkglist=("perl-marisa python-marisa ruby-marisa")
+
+tags=("dev-libs libs")
+
+build_deps=("python ruby perl swig")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static \
+    --enable-sse2
+  make -j${numjobs}
+
+# Regenerate swig bindings
+# remove ruby because it's broken for now
+  make -C bindings -j1 swig-perl swig-python
+
+# Perl bindings
+  cd "$srcdir"/marisa-trie-$pkgver/bindings/perl
+  perl Makefile.PL \
+    INC=-I"$srcdir"/marisa-trie-$pkgver/include \
+    LIBS=-L"$srcdir"/marisa-trie-$pkgver/lib/marisa/.libs \
+    INSTALLDIRS=vendor
+  make
+
+# Python bindings
+  cd "$srcdir"/marisa-trie-$pkgver/bindings/python
+  python setup.py build_ext \
+    --include-dirs="$srcdir"/marisa-trie-$pkgver/include \
+    --library-dirs="$srcdir"/marisa-trie-$pkgver/lib/marisa/.libs
+  python setup.py build
+
+# Ruby bindings
+  cd "$srcdir"/marisa-trie-$pkgver/bindings/ruby
+  ruby extconf.rb \
+    --with-opt-include="$srcdir"/marisa-trie-$pkgver/include \
+    --with-opt-lib="$srcdir"/marisa-trie-$pkgver/lib/marisa/.libs \
+    --vendor
+  make
+
+# install marisa
+  cd "$srcdir"/marisa-trie-$pkgver
+  make DESTDIR="$pkgdir" install
+
+  install -d "$pkgdir"/usr/share/doc/$pkgbase-$pkgver
+  install -m 644 docs/* "$pkgdir"/usr/share/doc/$pkgbase-$pkgver/
+
+  install -d "$pkgdir"/usr/share/licenses/$pkgname
+  install -m 644 AUTHORS COPYING.md "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
+perl-marisa() {
+  pkgname=perl-marisa
+  shortdesc=("Perl language binding for marisa.")
+  longdesc=("Matching Algorithm with Recursively Implemented StorAge.")
+  adddep=("marisa")
+}
+
+perl-marisa_prep() {
+  cd "$srcdir"/marisa-trie-$pkgver/bindings/perl
+  make DESTDIR="$pkgdir" install
+
+  cd ../..
+  install -d "$pkgdir"/usr/share/licenses/$pkgname
+  install -m 644 AUTHORS COPYING.md "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
+python-marisa() {
+  pkgname=python-marisa
+  shortdesc=("Python language binding for marisa")
+  longdesc=("Matching Algorithm with Recursively Implemented StorAge.")
+  adddep=("marisa")
+}
+
+python-marisa_prep() {
+  cd "$srcdir"/marisa-trie-$pkgver/bindings/python
+  python setup.py install -O1 --root="$pkgdir"
+
+  cd ../..
+  install -d "$pkgdir"/usr/share/licenses/$pkgname
+  install -m 644 AUTHORS COPYING.md "$pkgdir"/usr/share/licenses/$pkgname/
+}
+
+ruby-marisa() {
+  pkgname=ruby-marisa
+  shortdesc=("Ruby language binding for marisa")
+  longdesc=("Matching Algorithm with Recursively Implemented StorAge.")
+  adddep=("marisa")
+}
+
+ruby-marisa_prep() {
+# ruby version without the patch number, e.g. 2.4
+  local _rubyver=$(ruby -e"puts Gem.ruby_version.to_s.split('.')[0..1].join('.')")
+
+  cd "$srcdir"/marisa-trie-$pkgver/bindings/ruby
+    _hdrdir=$(pkg-config --variable=rubyhdrdir ruby-$_rubyver)
+    _arch=$(pkg-config --variable=arch ruby-$_rubyver)
+  make DESTDIR="$pkgdir" install \
+    hdrdir="$_hdrdir" \
+    arch_hdrdir="${_hdrdir}/${_arch}" \
+    rubyhdrdir="$_hdrdir"
+
+  cd ../..
+  install -d "$pkgdir"/usr/share/licenses/$pkgname
+  install -m 644 AUTHORS COPYING.md "$pkgdir"/usr/share/licenses/$pkgname/
+}
