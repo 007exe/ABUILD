@@ -1,5 +1,5 @@
 pkgname=sdl2
-pkgver=2.0.16
+pkgver=2.0.20
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,10 @@ longdesc=("The Simple DirectMedia Layer Version 2 (SDL2 for short) is a cross-pl
 tags=("media-libs libs")
 
 source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
-# pipewire ibus fcitx libdecor libxss
-build_deps="alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake jack ninja"
+# pipewire
+build_deps=("alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake jack ninja libxss ibus fcitx libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb")
+
+adddep=("libxext libxrender libx11 libxcursor libibus hidapi libusb")
 
 build() {
   go_src_dir
