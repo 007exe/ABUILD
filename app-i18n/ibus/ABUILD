@@ -1,0 +1,56 @@
+pkgname=ibus
+pkgver=1.5.25
+pkgbuild=1
+arch=('auto')
+
+shortdesc=("Next Generation Input Bus for Linux")
+longdesc=("Intelligent Input Bus for Linux / Unix OS")
+
+source=("https://github.com/ibus/ibus/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("base app-i18n")
+
+build_deps=("gobject-introspection vala intltool gnome-common gtk-doc gtk4 gtk2 qt5-base unicode-cldr unicode-character-database unicode-emoj dconf gtk3 hicolor-icon-theme libnotify dbus-python python-gobject iso-codes librsvg")
+
+adddep=("hicolor-icon-theme dbus-python python-gobject")
+
+pkglist="lib"
+
+lib(){
+  pkgname=libibus
+  shortdesc=("IBus support library")
+  longdesc=("Intelligent Input Bus for Linux / Unix OS")
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|$(libibus) $(libibus_emoji_dialog)|$(libibus_emoji_dialog) $(libibus)|' ui/gtk3/Makefile.am
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --enable-dconf \
+    --enable-wayland \
+    --enable-gtk-doc \
+    --enable-gtk4 \
+    --disable-memconf \
+    --enable-ui \
+    --disable-python2 \
+    --with-python=python3 \
+    --with-ucd-dir=/usr/share/unicode/
+  sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR="$pkgdir" install
+  make -C src DESTDIR="$pkgdir" uninstall
+  make -C bindings DESTDIR="$pkgdir" uninstall
+  make DESTDIR="$pkgdir" uninstall-pkgconfigDATA
+}
+
+lib_prep(){
+  go_src_dir
+  make -C src DESTDIR="$pkgdir" install
+  make -C bindings DESTDIR="$pkgdir" install
+  make DESTDIR="$pkgdir" install-pkgconfigDATA
+}
