@@ -1,5 +1,5 @@
 pkgname=libical
-pkgver=3.0.10
+pkgver=3.0.13
 pkgbuild=1
 arch=('auto')
 
@@ -10,7 +10,7 @@ tags=('libs dev-libs')
 
 source=("https://github.com/libical/libical/releases/download/v${pkgver}/libical-${pkgver}.tar.gz")
 
-build_deps="cmake gtk-doc doxygen vala gobject-introspection"
+build_deps=("cmake gtk-doc doxygen vala gobject-introspection")
 
 build() {
   go_src_dir
