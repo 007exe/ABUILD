@@ -1,15 +1,21 @@
 pkgname=openbox
 pkgver=3.6.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Highly configurable and lightweight X11 window manager")
+longdesc=("Standards compliant, fast, light-weight, extensible window manager")
 
 source=("http://openbox.org/dist/openbox/$pkgname-$pkgver.tar.gz")
 
-tags="xapps x11-wm"
-# startup-notification imlib2 librsvg
-build_deps="python libxcursor pango libsm libxml2 libxinerama libxrandr"
+tags=("xapps x11-wm")
+
+build_deps=("python libxcursor pango libsm libxml2 libxinerama libxrandr librsvg imlib2 startup-notification")
+
+config_files=("etc/xdg/openbox/menu.xml
+etc/xdg/openbox/rc.xml
+etc/xdg/openbox/autostart
+etc/xdg/openbox/environment")
 
 build() {
   go_src_dir
