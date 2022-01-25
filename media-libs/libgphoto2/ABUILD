@@ -1,7 +1,7 @@
 pkgname=libgphoto2
-pkgver=2.5.27
+pkgver=2.5.28
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Digital camera access library")
 longdesc=("The gPhoto2 project is a universal, free application and library framework that lets you download images from several different digital camera models, including the newer models with USB connections.")
@@ -9,8 +9,8 @@ longdesc=("The gPhoto2 project is a universal, free application and library fram
 source=("https://github.com/gphoto/libgphoto2/releases/download/v${pkgver}/libgphoto2-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
-# libltdl
-build_deps="libexif libjpeg-turbo gd libusb libxml2 curl autoconf"
+
+build_deps=("libexif libjpeg-turbo gd libusb libxml2 curl autoconf libltdl")
 
 build() {
   go_src_dir
