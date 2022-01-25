@@ -1,6 +1,6 @@
 pkgname=xfce4-screenshooter
 pkgver=1.9.9
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("An application to take screenshots")
@@ -8,9 +8,9 @@ longdesc=("This application allows you to capture the entire screen, the active 
 
 source=("https://archive.xfce.org/src/apps/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="libxss libxklavier libwnck3 garcon dbus-glib python python-gobject intltool"
+build_deps=("libxss libxklavier libwnck3 garcon dbus-glib python python-gobject intltool")
 
 build() {
   go_src_dir
