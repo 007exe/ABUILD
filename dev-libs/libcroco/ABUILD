@@ -1,10 +1,10 @@
 pkgname=libcroco
 pkgver=0.6.13
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A CSS parsing library")
-longdesc=(" ")
+longdesc=("Libcroco is a standalone css2 parsing and manipulation library.")
 
 tags=("dev-libs libs")
 
