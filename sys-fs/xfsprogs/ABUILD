@@ -1,16 +1,18 @@
 pkgname=xfsprogs
-pkgver=5.12.0
+pkgver=5.14.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Utilities for managing the XFS filesystem"
-longdesc="XFS is a high performance journaling filesystem which originated on the SGI IRIX platform.  It is completely multi-threaded, can support large files and large filesystems, extended attributes, variable block sizes, is extent based, and makes extensive use of Btrees (directories, extents, free space) to aid both performance and scalability."
+shortdesc=("Utilities for managing the XFS filesystem.")
+longdesc=("The xfsprogs package contains administration and debugging tools for the XFS file system.")
 
 tags=("base sys-fs")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-${pkgver}.tar.gz")
 
-build_deps="util-linux-ng libinih device-mapper icu"
+build_deps=("util-linux-ng libinih device-mapper icu liburcu")
+
+adddep=("device-mapper")
 
 build() {
   go_src_dir
@@ -19,8 +21,7 @@ build() {
     --libdir=/usr/lib$LIBDIRSUFFIX \
     --sbindir=/usr/bin \
     --bindir=/usr/bin \
-    --enable-shared=yes \
-    --enable-gettext=yes
+    --enable-shared=yes
   make -j${numjobs}
   make DIST_ROOT="${pkgdir}" PKG_ROOT_SBIN_DIR="/usr/bin" install install-dev
   chown -R root "$pkgdir"
