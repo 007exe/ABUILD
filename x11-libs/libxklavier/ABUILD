@@ -1,6 +1,6 @@
 pkgname=libxklavier
 pkgver=5.4
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("High-level API for X Keyboard Extension")
@@ -8,11 +8,11 @@ longdesc=("The libxklavier package contains a utility library for X keyboard.")
 
 source=("https://people.freedesktop.org/~svu/libxklavier-${pkgver}.tar.bz2")
 
-tags="libs x11-libs"
+tags=("libs x11-libs")
 
-build_deps="glib2 libxkbfile libxml2 xkeyboard-config libxi iso-codes gobject-introspection intltool gtk-doc libxfixes"
+build_deps=("glib2 libxkbfile libxml2 xkeyboard-config libxi iso-codes gobject-introspection intltool gtk-doc libxfixes")
 
-adddep="xkeyboard-config"
+adddep=("xkeyboard-config")
 
 build() {
   go_src_dir
