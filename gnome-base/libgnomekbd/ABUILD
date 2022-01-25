@@ -1,21 +1,23 @@
 pkgname=libgnomekbd
-pkgver=3.26.1
+pkgver=3.26.1+2+g8d02ebd
+strict_version=1
+_commit=8d02ebd17b75ff3be59d9d57674d50e069bb551b
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("Keyboard management library.")
 longdesc=("libgnomekbd offers an API to manage the keyboard in GNOME applications.")
 
-#source=("https://gitlab.gnome.org/GNOME/libgnomekbd/-/archive/${pkgver}/libgnomekbd-${pkgver}.tar.gz")
 source=("git:https://gitlab.gnome.org/GNOME/libgnomekbd.git")
 
-tags="libs gnome-base"
+tags=("libs gnome-base")
 
-build_deps="gobject-introspection libxklavier gtk3 dconf"
+build_deps=("gobject-introspection libxklavier gtk3 dconf")
 
 build() {
   go_src_dir
   burn_patches
+  git checkout $_commit
   ./autogen.sh
   ./configure \
     --prefix=/usr \
