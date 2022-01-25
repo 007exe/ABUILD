@@ -8,11 +8,11 @@ longdesc=("The LXPanel package contains a lightweight X11 desktop panel.")
 
 source=("https://downloads.sourceforge.net/lxde/$pkgname-$pkgver.tar.xz")
 
-tags="lxde lxde-base"
+tags=("lxde lxde-base")
 
-build_deps="intltool docbook-xml docbook-xsl alsa-lib curl menu-cache lxmenu-data libfm libkeybinder3 wireless_tools"
+build_deps=("intltool docbook-xml docbook-xsl alsa-lib curl menu-cache lxmenu-data libfm libkeybinder3 wireless_tools")
 
-adddep="lxmenu-data"
+adddep=("lxmenu-data")
 
 build() {
   go_src_dir
@@ -27,7 +27,7 @@ build() {
     --with-plugins=all \
     --disable-silent-rules
 #https://bugzilla.gnome.org/show_bug.cgi?id=656231
-#  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
