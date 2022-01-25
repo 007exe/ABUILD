@@ -1,16 +1,16 @@
 pkgname=libbluray
 pkgver=1.3.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Blu-Ray Disc playback library for media players")
 longdesc=("libbluray is an open-source library designed for Blu-Ray Discs playback for media players, like VLC or MPlayer.")
 
 source=("http://ftp.videolan.org/pub/videolan/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="libs media-video"
+tags=("libs media-libs")
 # ant --enable-bdjava-jar
-build_deps="fontconfig freetype libxml2"
+build_deps=("fontconfig freetype libxml2")
 
 build() {
   go_src_dir
