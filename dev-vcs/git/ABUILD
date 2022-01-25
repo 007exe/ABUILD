@@ -1,18 +1,18 @@
 pkgname=git
-pkgver=2.33.0
+pkgver=2.35.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Global Information Tracker")
-longdesc=("This is a stupid (but extremely fast) directory content manager. It doesn't do a whole lot, but what it _does_ do is track directory contents efficiently. It is intended to be the base of an efficient, distributed source code management system. This package includes rudimentary tools that can be used as a SCM, but you should look elsewhere for tools for ordinary humans layered on top of this.")
+longdesc=("Git is a free and open source, distributed version control system designed to handle everything from small to very large projects with speed and efficiency.")
 
 tags=("dev-util develop")
 
 source=("https://mirrors.edge.kernel.org/pub/software/scm/git/git-$pkgver.tar.xz")
 
-config_files="etc/conf.d/git-daemon"
+config_files=("etc/conf.d/git-daemon")
 
-build_deps="python curl expat perl openssl pcre2 grep shadow zlib xmlto asciidoc"
+build_deps=("curl expat perl openssl pcre2 grep shadow zlib")
 
 build() {
   go_src_dir
@@ -30,8 +30,6 @@ build() {
        NO_CROSS_DIRECTORY_HARDLINKS=1 \
        INSTALLDIRS=vendor \
        install DESTDIR=${pkgdir}
-
-
 
 # Bash completion
   mkdir -p $pkgdir/usr/share/bash-completion/completions/
