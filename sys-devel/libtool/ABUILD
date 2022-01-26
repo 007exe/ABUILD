@@ -1,25 +1,27 @@
 pkgname=libtool
 pkgver=2.4.6
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc="A generic library support script"
-longdesc="This is GNU Libtool, a generic library support script. Libtool hides the complexity of using shared libraries behind a consistent, portable interface. To use libtool, add the new generic library building commands to your Makefile, Makefile.in, or Makefile.am. See the documentation for details. You must install the "m4" package to be able to use libtool."
+shortdesc=("A generic library support script")
+longdesc=("The Libtool package contains the GNU generic library support script. It wraps the complexity of using shared libraries in a consistent, portable interface.")
 
 tags=("develop sys-devel compat32")
 
-source=("ftp://ftp.gnu.org/pub/gnu/libtool/${pkgname}-${pkgver}.tar.xz")
+source=("https://ftp.gnu.org/gnu/libtool/libtool-${pkgver}.tar.xz")
 
-adddep="m4"
+adddep=("m4 tar")
 
 # NOTE: Needs to be rebuilt after each gcc update
-build_deps="gcc"
+build_deps=("gcc help2man")
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
-  make
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
