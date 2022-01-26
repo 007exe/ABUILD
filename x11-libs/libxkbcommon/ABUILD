@@ -1,23 +1,26 @@
 pkgname=libxkbcommon
-pkgver=1.3.0
+pkgver=1.3.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Keymap handling library for toolkits and window systems")
 longdesc=("libxkbcommon is a keymap compiler and support library which processes a reduced subset of keymaps as defined by the XKB specification.")
 
 source=("http://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
 
-tags="x11-apps xserver"
-# doxygen
-build_deps="xkeyboard-config libxml2 libxcb wayland wayland-protocols git meson xorgproto"
+tags=("x11-apps xserver")
 
-pkglist="x11"
+build_deps=("xkeyboard-config libxml2 libxcb wayland wayland-protocols git meson xorgproto doxygen")
+
+#These are optional dependencies.
+removedep=("wayland libxkbcommon-x11")
+
+pkglist=("x11")
 
 x11(){
   pkgname=libxkbcommon-x11
-  shortdesc="Keyboard handling library using XKB data for X11 XCB clients"
-  adddep="libxkbcommon libxcb"
+  shortdesc=("Keyboard handling library using XKB data for X11 XCB clients")
+  adddep=("libxkbcommon")
 }
 
 build() {
