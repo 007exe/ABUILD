@@ -1,19 +1,29 @@
 pkgname=boost
-pkgver=1.76.0
+pkgver=1.78.0
 _srcname=${pkgver//./_}
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Portable C++ libraries")
-longdesc=(Boost is a collection of free peer-reviewed portable C++ source libraries. The emphasis is on libraries which work well with the C++ Standard Library. This package contains only the shared libraries needed for running programs using Boost.)
+shortdesc=("Free peer-reviewed portable C++ source libraries runtime libraries")
+longdesc=("Boost provides a set of free peer-reviewed portable C++ source libraries. It includes libraries for linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions and unit testing.")
 
-tags="develop dev-libs"
+tags=("develop dev-libs")
 
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${_srcname}.tar.bz2")
 
-build_deps="gcc python bzip2 zlib icu zstd"
+build_deps=("icu python python-numpy bzip2 zlib openmpi zstd")
+
+before_build(){
+  go_src_dir
+  # https://github.com/bfgroup/b2/issues/104
+  patch -Np1 -d tools/build <$startdir/patches/$pkgname-b2-fix-lib-install.patch
+
+  # https://github.com/boostorg/ublas/pull/97
+  patch -Np2 -i $startdir/patches/$pkgname-ublas-c++20-iterator.patch
+}
 
 build() {
+  cd ${srcdir}
   local JOBS="$(sed 's/.*\(-j *[0-9]\+\).*/\1/' <<<$MAKEFLAGS)"
 
   pushd boost_$_srcname/tools/build
@@ -34,21 +44,21 @@ build() {
   cp -a tools/boostbook/{xsl,dtd} "$pkgdir"/usr/share/boostbook/
 
   ./b2 install \
-  variant=release \
-  debug-symbols=off \
-  threading=multi \
-  runtime-link=shared \
-  link=shared,static \
-  toolset=gcc \
-  python=3.9 \
-  cflags="$CPPFLAGS $CFLAGS -fPIC -O3" \
-  cxxflags="$CPPFLAGS $CXXFLAGS -fPIC -O3" \
-  --layout=system \
-  --without-mpi \
-  $JOBS \
-  \
-  --prefix="$pkgdir"/usr \
-  --libdir="$pkgdir"/usr/lib$LIBDIRSUFFIX
+    variant=release \
+    debug-symbols=off \
+    threading=multi \
+    runtime-link=shared \
+    link=shared,static \
+    toolset=gcc \
+    python=3.9 \
+    cflags="$CPPFLAGS $CFLAGS -fPIC -O3 -ffat-lto-objects" \
+    cxxflags="$CPPFLAGS $CXXFLAGS -fPIC -O3 -ffat-lto-objects" \
+    linkflags="$LDFLAGS" \
+    --layout=system \
+    $JOBS \
+    \
+    --prefix="$pkgdir"/usr/ \
+    --libdir="$pkgdir"/usr/lib$LIBDIRSUFFIX
 
 # https://github.com/boostorg/mpi/issues/112
   install -d "$pkgdir"/usr/lib$LIBDIRSUFFIX/python3.9/site-packages/boost
@@ -60,5 +70,5 @@ build() {
     ln -srL "$pkgdir"/usr/lib$LIBDIRSUFFIX/libboost_${_lib}3{9,}.so
   done
 
-  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" "$srcdir"/boost_$_srcname/LICENSE_1_0.txt
+  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" ${srcdir}/boost_$_srcname/LICENSE_1_0.txt
 }
