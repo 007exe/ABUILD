@@ -1,5 +1,5 @@
 pkgname=js78
-pkgver=78.14.0
+pkgver=78.15.0
 pkgbuild=1
 arch=('auto')
 
@@ -8,9 +8,9 @@ longdesc=("JS is Mozilla's JavaScript engine written in C. JS78 is taken from Fi
 
 source=("https://archive.mozilla.org/pub/firefox/releases/${pkgver}esr/source/firefox-${pkgver}esr.source.tar.xz")
 
-tags="libs sys-libs"
+tags=("libs sys-libs")
 
-build_deps="autoconf2.13 rust which icu gcc-libs readline zlib python-setuptools python-psutil rust llvm clang lld compiler-rt"
+build_deps=("autoconf2.13 rust which icu gcc-libs readline zlib python-setuptools python-psutil rust llvm clang lld compiler-rt")
 
 before_build() {
   go_src_dir
