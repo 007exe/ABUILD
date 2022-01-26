@@ -1,6 +1,6 @@
 pkgname=gdk-pixbuf
 pkgver=2.42.6
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("An image loading library")
@@ -8,9 +8,11 @@ longdesc=("The Gdk Pixbuf package is a toolkit for image loading and pixel buffe
 
 source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-${pkgver}.tar.xz")
 
-tags="libs x11-libs compat32"
+tags=("libs x11-libs compat32")
 
-build_deps="glib2 libpng libjpeg-turbo libtiff shared-mime-info gobject-introspection meson docbook-xsl gi-docgen"
+build_deps=("glib2 libpng libjpeg-turbo libtiff shared-mime-info gobject-introspection meson docbook-xsl gi-docgen")
+
+adddep=("shared-mime-info")
 
 build() {
   go_src_dir
