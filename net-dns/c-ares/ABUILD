@@ -1,27 +1,25 @@
 pkgname=c-ares
-pkgver=1.17.1
+pkgver=1.18.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A library that performs asynchronous DNS operations")
-longdesc=("c-ares is a C library that performs DNS requests and name resolves asynchronously. c-ares is a fork of the library named 'ares', written by Greg Hudson at MIT.")
+shortdesc=("A library that performs asynchronous DNS operations.")
+longdesc=("c-ares is a C library for asynchronous DNS requests.")
 
 source=("https://github.com/${pkgname}/${pkgname}/releases/download/${pkgname//-}-${pkgver//./_}/${pkgname}-${pkgver}.tar.gz")
 
-tags="network net-dns"
+tags=("network net-dns")
 
-build_deps="cmake"
+build_deps=("cmake")
 
 build() {
   go_src_dir
-  cmake -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE='None' \
-        -Wno-dev \
-        -B build \
-        -S .
+  cmake -B build -S .\
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE='None' \
+    -Wno-dev
   make VERBOSE=1 -C build
   make DESTDIR="${pkgdir}" install -C build
   install -vDm 644 "LICENSE.md" -t "${pkgdir}/usr/share/licenses/${pkgname}/"
-  install -vDm 644 {AUTHORS,CHANGES,{CONTRIBUTING,README}.md,RELEASE-NOTES} \
-    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+  install -vDm 644 {AUTHORS,CHANGES,{CONTRIBUTING,README}.md,RELEASE-NOTES} -t "${pkgdir}/usr/share/doc/${pkgname}/"
 }
