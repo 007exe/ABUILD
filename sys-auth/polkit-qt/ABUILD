@@ -1,0 +1,24 @@
+pkgname=polkit-qt
+pkgver=0.114.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that allows developers to access PolicyKit API with a nice Qt-style API")
+longdesc=("Polkit-Qt provides an API to PolicyKit in the Qt environment.")
+
+source=("https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-$pkgver.tar.xz")
+
+tags=("libs sys-auth")
+
+build_deps=("polkit qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX}
+  cmake --build build
+  DESTDIR="$pkgdir" cmake --install build
+}
