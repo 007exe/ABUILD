@@ -1,23 +1,24 @@
 pkgname=libuv
-pkgver=1.41.0
+pkgver=1.43.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Platform layer for node.js and neovim"
-longdesc="libuv is a new platform layer for Node providing a cross-platform event loop."
+shortdesc=("Platform layer for node.js and neovim.")
+longdesc=("The libuv package is a multi-platform support library with a focus on asynchronous I/O.")
 
 tags=("libs net-libs")
 
 source=("https://dist.libuv.org/dist/v$pkgver/libuv-v$pkgver.tar.gz")
 
-build_deps="python-sphinx"
+build_deps=("python-sphinx")
 
 build() {
   go_src_dir
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --disable-static
   make -j${numjobs}
 #  make man -C docs
   make DESTDIR="$pkgdir" install
