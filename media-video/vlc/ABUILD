@@ -1,152 +1,118 @@
 pkgname=vlc
-pkgver=3.0.9.2
+pkgver=3.0.16
 buildver=1
-pkgbuild=${buildver}
-arch=('auto')
+arch=("auto")
 
-shortdesc="VLC (VideoLAN Client multimedia player)"
+shortdesc=("Multi-platform MPEG, VCD/DVD, and DivX player")
+longdesc=("VLC is a media player, streamer, and encoder. It can play from many inputs, such as files, network streams, capture devices, desktops, or DVD, SVCD, VCD, and audio CD. It can use most audio and video codecs (MPEG 1/2/4, H264, VC-1, DivX, WMV, Vorbis, AC3, AAC, etc.), and it can also convert to different formats and/or send streams through the network.")
 
-source=("http://download.videolan.org/pub/videolan/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://download.videolan.org/vlc/${pkgver}/vlc-${pkgver}.tar.xz")
 
+tags=("xapps media-video")
+# live-media libdc1394 libcaca libgme xosd twolame aalib libmicrodns smbclient vcdimager protobuf libshout zvbi libkate libtiger sdl_image libgoom2 projectm chromaprint aribb24 aribb25 pcsclite a52dec libdvbpsi libdca libmatroska libmpeg2 libta libupnp
+build_deps=("gst-plugins-base-libs libnotify libbluray flac libavc1394 gtk3 librsvg avahi libmtp libdvdcss libssh2 mesa libnfs mpg123 libdvdread libdvdnav libogg libmodplug libvpx libvorbis speex opus libtheora libpng libjpeg-turbo libass libpulse alsa-lib jack libsamplerate libsoxr lirc aom srt dav1d libxpm libproxy lua52 libidn taglib libmpcdec ffmpeg faad2 libmad xcb-util-keysyms libxinerama libsecret libarchive qt5-base qt5-x11extras qt5-svg freetype fribidi harfbuzz fontconfig libxml2 gnutls libplacebo wayland-protocols")
 
-tags="xapps media-video"
-
-custom_opts="no_ccache"
-
-build_deps="a52dec lua  libvorbis libogg libtheora speex flac   faad2 faac libvdpau ffmpeg libmad \
-orc x264 x265 lame libdvbpsi schroedinger libdca  libass libebml libmatroska  libmodplug gettext \
- libdvdcss libdvdread libdvdnav libcddb libcdio  libgpg-error libgcrypt \
-libdvbpsi gnutls libxml2 libpng libjpeg libtiff sdl freetype taglib  libcaca  libupnp \
-expat sqlite qt4 yasm libbluray fluidsynth  gcc-g++ git opus "
-
-pkglist="vlc-plugins-ext"
-
-removedep="mesa  libgl  udev libdrm fontconfig freetype xulrunner  util-linux-ng clang  libdrm-nouveau-dev"
-
-adddep="xset ffmpeg"
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-libfreerdp \
---disable-svg \
---docdir=/usr/doc/${pkgname}-${pkgver}"
-#--enable-x265 \
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-vlc-plugins-ext() {
-	pkgname=vlc-plugins-ext
-	shortdesc="Ext plugin pask for vlc"
-	adddep="vlc==${p_pkgver}"
-	pkgver=${p_pkgver}
-	pkgbuild=${buildver}
-
-}
-
-vlc-plugins-ext_prep() 
-{
-
-dest=/usr/lib${LIBDIRSUFFIX}/vlc/plugins
-
-main_dest=${dest}/audio_filter
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libcompressor_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libkaraoke_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libsamplerate_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libspeex_resampler_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/audio_mixer
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libfixed32_mixer_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/audio_output
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libadummy_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libamem_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libaout_sdl_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libjack_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libpulse_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libportaudio_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/video_output
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libvout_sdl_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libout_sdl_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libxcb_glx_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/access_output
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libaccess_output_shout_plugin.so ${pkgdir}${main_dest} || echo "no"
-#mv ${p_pkgdir}${main_dest}/libaccess_dv_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libdc1394_plugin.so ${pkgdir}${main_dest} || echo "no"
-#mv ${p_pkgdir}${main_dest}/libaccess_jack_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/access
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libaccess_jack_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libaccess_dv_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/demux
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libgme_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libflacsys_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libdemux_stl_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libimage_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libmod_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libmpc_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/codec
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libcrystalhd_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libddummy_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libedummy_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libstl_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libschroedinger_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libtwolame_plugin.so* ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libspeex_plugin.so* ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libflac_plugin.so* ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libfluidsynth_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libzvbi_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libkate_plugin.so ${pkgdir}${main_dest}	|| echo "no"
-mv ${p_pkgdir}${main_dest}/liblibass_plugin.so ${pkgdir}${main_dest}	|| echo "no"
-mv ${p_pkgdir}${main_dest}/libsdl_image_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libtheora_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libopus_plugin.so  ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/control
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libdummy_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/liblirc_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/visualization
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libgoom_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libprojectm_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/misc
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libgnutls_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libmemcpy_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libxosd_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/services_discovery
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libbonjour_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libupnp_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
-main_dest=${dest}/notify
-mkdir -p ${pkgdir}${main_dest}
-mv ${p_pkgdir}${main_dest}/libnotify_plugin.so ${pkgdir}${main_dest} || echo "no"
-mv ${p_pkgdir}${main_dest}/libtelepathy_plugin.so ${pkgdir}${main_dest} || echo "no"
-#
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --sysconfdir=/etc \
+    --with-kde-solid=/usr/share/solid/actions/ \
+    --disable-rpath \
+    --enable-nls \
+    --enable-archive \
+    --enable-live555 \
+    --enable-dc1394 \
+    --enable-dv1394 \
+    --enable-dvdread \
+    --enable-dvdnav \
+    --enable-bluray \
+    --disable-opencv \
+    --enable-smbclient \
+    --enable-sftp \
+    --enable-nfs \
+    --enable-realrtsp \
+    --enable-dvbpsi \
+    --enable-gme \
+    --enable-ogg \
+    --enable-shout \
+    --enable-matroska \
+    --enable-mod \
+    --enable-mpc \
+    --enable-mad \
+    --enable-mpg123 \
+    --enable-gst-decode \
+    --enable-avcodec \
+    --enable-libva \
+    --enable-avformat \
+    --enable-postproc \
+    --enable-faad \
+    --enable-vpx \
+    --enable-twolame \
+    --disable-fdkaac \
+    --enable-a52 \
+    --enable-dca \
+    --enable-flac \
+    --enable-libmpeg2 \
+    --enable-vorbis \
+    --enable-speex \
+    --enable-opus \
+    --enable-oggspots \
+    --disable-schroedinger \
+    --enable-png \
+    --enable-jpeg \
+    --enable-x264 \
+    --enable-x265 \
+    --enable-zvbi \
+    --enable-libass \
+    --enable-kate \
+    --enable-tiger \
+    --enable-vdpau \
+    --enable-wayland \
+    --enable-sdl-image \
+    --enable-freetype \
+    --enable-fribidi \
+    --enable-harfbuzz \
+    --enable-fontconfig \
+    --enable-svg \
+    --enable-svgdec \
+    --enable-aa \
+    --enable-caca \
+    --enable-pulse \
+    --enable-alsa \
+    --enable-jack \
+    --enable-samplerate \
+    --enable-soxr \
+    --enable-chromaprint \
+    --enable-chromecast \
+    --enable-qt \
+    --enable-skins2 \
+    --enable-libtar \
+    --enable-ncurses \
+    --enable-lirc \
+    --enable-goom \
+    --enable-projectm \
+    --enable-avahi \
+    --enable-mtp \
+    --enable-upnp \
+    --enable-microdns \
+    --enable-libxml2 \
+    --disable-libgcrypt \
+    --enable-gnutls \
+    --enable-taglib \
+    --enable-secret \
+    --enable-kwallet \
+    --disable-update-check \
+    --enable-notify \
+    --enable-libplacebo \
+    --enable-vlc \
+    --enable-aribsub \
+    --enable-aribcam \
+    --enable-aom \
+    --enable-srt \
+    --enable-dav1d
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
