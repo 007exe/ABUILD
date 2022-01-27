@@ -1,0 +1,23 @@
+pkgname=baobab
+pkgver=41.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A graphical directory tree analyzer")
+longdesc=("The Baobab package contains a graphical directory tree analyzer.")
+
+source=("https://download.gnome.org/sources/baobab/${pkgver%.*}/baobab-${pkgver}.tar.xz")
+
+tags=("xapps sys-apps")
+
+build_deps=("itstool libhandy vala gtk3 ")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -Dprefix=/usr \
+    -Dlibdir=/usr/lib${LIBDIRSUFFIX}
+  meson compile -C build
+  meson install -C build --destdir "$pkgdir"
+}
