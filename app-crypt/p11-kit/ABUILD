@@ -1,28 +1,32 @@
 pkgname=p11-kit
-pkgver=0.24.0
+pkgver=0.24.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Load and enumerate PKCS#11 modules")
-longdesc=("Provides a way to load and enumerate PKCS#11 modules. Provides a standard configuration setup for installing PKCS#11 modules in such a way that they're discoverable.")
+shortdesc=("Load and enumerate PKCS#11 modules.")
+longdesc=("The p11-kit package provides a way to load and enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules.")
 
 source=("https://github.com/p11-glue/p11-kit/releases/download/$pkgver/p11-kit-$pkgver.tar.xz")
 
-tags="sys-libs libs"
-#gtk-doc
-build_deps="meson ninja libtasn1 libffi bash-completion"
+tags=("sys-libs libs")
+
+build_deps=("meson ninja libtasn1 libffi bash-completion gtk-doc")
 
 build() {
-  meson p11-kit-$pkgver build \
+  go_src_dir
+  burn_patches
+  meson build \
     --buildtype debugoptimized \
     --prefix=/usr \
     -D man=true \
-    -D trust_paths=/etc/ca-certificates/trust-source:/usr/share/ca-certificates/trust-source
-# -D gtk_doc=true \
+    -D trust_paths=/etc/ca-certificates/trust-source:/usr/share/ca-certificates/trust-source:/etc/pki/anchors:/etc/ssl/certs/ca-certificates.crt \
+    -D gtk_doc=true
 
   meson compile -C build
 
   meson install -C build --destdir "$pkgdir"
 
-#  ln -srf "$pkgdir/usr/bin/update-ca-trust" "$pkgdir/usr/lib${LIBDIRSUFFIX}/p11-kit/trust-extract-compat"
+  ln -srf "$pkgdir/usr/bin/update-ca-trust" "$pkgdir/usr/libexec/p11-kit/trust-extract-compat"
+
+  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
 }
