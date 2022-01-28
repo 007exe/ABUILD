@@ -1,70 +1,70 @@
 pkgname=mesa
-pkgver=21.2.2
+pkgver=21.3.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Mesa is an OpenGL compatible 3D graphics library.")
 longdesc=("Mesa is an OpenGL compatible 3D graphics library.")
 
-tags=('x11-libs xserver')
+tags=("media-libs libs")
 
-build_deps="python-mako libxml2 libx11 xorgproto libdrm libxshmfence libxxf86vm libxdamage zstd elfutils llvm clang valgrind cmake meson libvdpau vulkan-icd-loader wayland glslang libva libclc libglvnd libunwind wayland-protocols lm_sensors llvm-libs libxcb python expat elfutils"
+build_deps=("python-mako libxml2 libx11 xorgproto libdrm libxshmfence libxxf86vm libxdamage zstd elfutils llvm clang valgrind cmake meson libvdpau vulkan-icd-loader wayland glslang libva libclc libglvnd libunwind wayland-protocols lm_sensors llvm-libs libxcb python expat elfutils")
 
-pkglist="vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau"
+pkglist=("vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau")
 
 source=("https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz")
 
-adddep="libxdamage libunwind"
+adddep=("libxdamage libunwind")
 
 vulkan-mesa-layers() {
   pkgname=vulkan-mesa-layers
-  shortdesc="Mesa Vulkan layers"
-  longdesc="Mesa Vulkan layers."
-
-  adddep="python"
+  shortdesc=("Mesa Vulkan layers.")
+  longdesc=("Mesa Vulkan layers.")
+  adddep=("python")
 }
 
 opencl-mesa() {
   pkgname=opencl-mesa
-  shortdesc="OpenCL support for AMD/ATI Radeon mesa drivers"
-  longdesc="OpenCL support for AMD/ATI Radeon mesa drivers."
-
-  adddep="libclc"
+  shortdesc=("OpenCL support for AMD/ATI Radeon mesa drivers.")
+  longdesc=("OpenCL support for AMD/ATI Radeon mesa drivers.")
+  adddep=("libclc")
 }
 
 vulkan-intel() {
   pkgname=vulkan-intel
-  shortdesc="Intel Vulkan mesa driver"
-  longdesc="Intel Vulkan mesa driver."
+  shortdesc=("Intel Vulkan mesa driver.")
+  longdesc=("Intel Vulkan mesa driver.")
 }
 
 vulkan-radeon() {
   pkgname=vulkan-radeon
-  shortdesc="Radeon Vulkan mesa driver"
-  longdesc="Radeon Vulkan mesa driver."
+  shortdesc=("Radeon Vulkan mesa driver.")
+  longdesc=("Radeon Vulkan mesa driver.")
 }
 
 vulkan-swrast() {
   pkgname=vulkan-swrast
-  shortdesc="Vulkan software rasteriser driver"
-  longdesc="Vulkan software rasteriser driver."
+  shortdesc=("Vulkan software rasteriser driver.")
+  longdesc=("Vulkan software rasteriser driver.")
 }
 
 libva-mesa-driver() {
   pkgname=libva-mesa-driver
-  shortdesc="VA-API implementation for gallium"
-  longdesc="VA-API implementation for gallium."
+  shortdesc=("VA-API implementation for gallium.")
+  longdesc=("VA-API implementation for gallium.")
 }
 
 mesa-vdpau() {
   pkgname=mesa-vdpau
-  shortdesc="Mesa VDPAU drivers"
-  longdesc="Mesa VDPAU drivers."
+  shortdesc=("Mesa VDPAU drivers.")
+  longdesc=("Mesa VDPAU drivers.")
 }
 
 #libomxil-bellagio    -D gallium-omx=bellagio \
 build() {
-  meson mesa-$pkgver build \
+  go_src_dir
+  burn_patches
+  meson build \
     -D prefix=/usr \
     -D libdir=lib${LIBDIRSUFFIX} \
     -D b_lto=true \
@@ -104,7 +104,7 @@ build() {
   ninja -C build
   meson compile -C build
 
-  DESTDIR="${pkgdir}" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
 
 
