@@ -1,18 +1,18 @@
 pkgname=automake
-pkgver=1.16.4
+pkgver=1.16.5
 pkgbuild=1
 arch=('noarch')
 
-shortdesc=("A GNU tool for automatically creating Makefiles")
-longdesc=("Automake is a tool for automatically generating Makefiles compliant with the GNU Coding Standards. You should install Automake if you are developing software and would like to use its capabilities of automatically generating GNU standard Makefiles. If you install Automake, you will also need to install GNU's Autoconf package.")
+shortdesc=("A GNU tool for automatically creating Makefiles.")
+longdesc=("The Automake package contains programs for generating Makefiles for use with Autoconf.")
 
-source=("ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-tags="develop sys-devel"
+tags=("develop sys-devel")
 
-build_deps="make grep binutils autoconf"
+build_deps=("make grep binutils autoconf")
 
-adddep="bash perl"
+adddep=("bash perl")
 
 build() {
   go_src_dir
