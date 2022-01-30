@@ -1,5 +1,5 @@
 pkgname=ghostscript
-pkgver=9.54.0
+pkgver=9.55.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,17 +9,12 @@ longdesc=("Ghostscript is a versatile processor for PostScript data with the abi
 tags=("app-text console")
 
 source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${pkgver//./}/ghostpdl-${pkgver}.tar.xz")
-# gtk3 glu freeglut
-# jbig2dec --with-jbig2dec
-build_deps="libxt libcups fontconfig zlib libpng libjpeg-turbo libtiff lcms2 dbus openjpeg2 libidn gnutls"
 
-before_build() {
-  go_src_dir
-  rm -rf freetype lcms2mt jpeg libpng openjpeg
-}
+build_deps=("libxt libcups fontconfig zlib libpng libjpeg-turbo libtiff lcms2 dbus openjpeg2 libidn gnutls gtk3 glu freeglut jbig2dec")
 
 build() {
   go_src_dir
+  rm -rf freetype lcms2mt jpeg libpng openjpeg
   burn_patches
   ./configure \
     --prefix=/usr \
@@ -29,6 +24,7 @@ build() {
     --disable-compile-inits \
     --enable-dynamic \
     --enable-cups \
+    --with-jbig2dec \
     --with-system-libtiff
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
