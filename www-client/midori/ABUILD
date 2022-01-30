@@ -1,6 +1,6 @@
 pkgname=midori
 pkgver=9.0
-pkgbuild=2
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("Lightweight web browser")
@@ -10,7 +10,7 @@ source=("https://github.com/midori-browser/core/releases/download/v${pkgver}/mid
 
 tags="www-client xapps"
 # zeitgeist
-build_deps="cmake gobject-introspection intltool ninja vala libsoup webkit2gtk gcr libpeas gst-libav gst-plugins-good gst-plugins-base glib-networking libxss"
+build_deps=("cmake gobject-introspection intltool ninja vala libsoup webkit2gtk gcr libpeas gst-libav gst-plugins-good gst-plugins-base glib-networking libxss")
 
 build() {
   go_src_dir
