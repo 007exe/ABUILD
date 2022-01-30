@@ -1,16 +1,16 @@
 pkgname=libcap
-pkgver=2.53
+pkgver=2.63
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for getting and setting POSIX.1e capabilities")
-longdesc=("libcap is a library for getting and setting POSIX.1e (formerly POSIX 6) draft 15 capabilities.")
+longdesc=("The libcap package was installed in LFS, but if Linux-PAM support is desired, the PAM module must be built (after installation of Linux-PAM).")
 
 tags=("libs sys-libs compat32")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc linux-pam kernel-headers"
+build_deps=("glibc linux-pam kernel-headers")
 
 build() {
   go_src_dir
