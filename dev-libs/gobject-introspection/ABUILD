@@ -1,19 +1,19 @@
 pkgname=gobject-introspection
-pkgver=1.68.0
-_glibver=2.68.4
+pkgver=1.70.0
+_glibver=2.70.2
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("The GObject Introspection is used to describe the program APIs and collect them in a uniform, machine readable format.")
-longdesc=("The goal of the project is to describe the APIs and  collect them in a uniform, machine readable format.")
+shortdesc=("Introspection system for GObject-based libraries.")
+longdesc=("The GObject Introspection is used to describe the program APIs and collect them in a uniform, machine readable format.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="cairo python-sphinx meson glib2=$_glibver python-mako python-markdown"
+build_deps=("cairo python-sphinx meson glib2=$_glibver python-mako python-markdown")
 
-addep="python-mako python-markdown"
+addep=("python-mako python-markdown")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
 build() {
   go_src_dir
