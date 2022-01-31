@@ -1,19 +1,21 @@
 pkgname=gvfs
 pkgver=1.48.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Virtual filesystem implementation for GIO")
 longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
 
 source=("https://gitlab.gnome.org/GNOME/gvfs/-/archive/${pkgver}/gvfs-${pkgver}.tar.gz")
 
-tags="gnome gnome-base"
+tags=("gnome gnome-base")
 # -D smb=false gvfs-smb для сборки требуется smbclient (samba)
 # -D goa=false -D google=false gvfs-goa gvfs-google для сборки требуется libgdata и gnome-online-accounts
-pkglist="gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs"
+pkglist=("gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs")
 
-build_deps="dbus glib2 libusb libsecret libsoup gcr gtk3 libcdio libgudev elogind meson avahi fuse3 dbus udisks gtk-doc libarchive libgcrypt libxml2 libxslt openssh libbluray libimobiledevice libgphoto2 libmtp libnfs"
+build_deps=("dbus glib2 libusb libsecret libsoup gcr gtk3 libcdio libgudev elogind meson avahi fuse3 dbus udisks gtk-doc libarchive libgcrypt libxml2 libxslt openssh libbluray libimobiledevice libgphoto2 libmtp libnfs dconf psmisc gsettings-desktop-schemas")
+
+adddep=("dconf psmisc gsettings-desktop-schemas")
 
 build() {
   go_src_dir
@@ -40,7 +42,7 @@ gvfs-afc() {
   pkgname=gvfs-afc
   shortdesc=("Virtual filesystem implementation for GIO (AFC backend; Apple mobile devices)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep="gvfs=$pkgver"
+  adddep=("gvfs=$pkgver")
 }
 
 gvfs-afc_prep() {
@@ -55,7 +57,7 @@ gvfs-goa() {
   pkgname=gvfs-goa
   shortdesc=("Virtual filesystem implementation for GIO (Gnome Online Accounts backend; cloud storage)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep="gvfs=$pkgver"
+  adddep=("gvfs=$pkgver")
 }
 
 gvfs-goa_prep() {
@@ -69,7 +71,7 @@ gvfs-google() {
   pkgname=gvfs-google
   shortdesc=("Virtual filesystem implementation for GIO (Google Drive backend)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep="gvfs=$pkgver"
+  adddep=("gvfs=$pkgver")
 }
 
 gvfs-google_prep() {
@@ -82,7 +84,7 @@ gvfs-gphoto2() {
   pkgname=gvfs-gphoto2
   shortdesc=("Virtual filesystem implementation for GIO (gphoto2 backend; PTP camera, MTP media player)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep="gvfs=$pkgver"
+  adddep=("gvfs=$pkgver")
 }
 
 gvfs-gphoto2_prep() {
@@ -97,7 +99,7 @@ gvfs-mtp() {
   pkgname=gvfs-mtp
   shortdesc=("Virtual filesystem implementation for GIO (MTP backend; Android, media player)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep="gvfs=$pkgver"
+  adddep=("gvfs=$pkgver")
 }
 
 gvfs-mtp_prep() {
@@ -112,7 +114,7 @@ gvfs-nfs() {
   pkgname=gvfs-nfs
   shortdesc=("Virtual filesystem implementation for GIO (NFS backend)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep="gvfs=$pkgver"
+  adddep=("gvfs=$pkgver")
 }
 
 gvfs-nfs_prep() {
@@ -125,7 +127,7 @@ gvfs-smb() {
   pkgname=gvfs-smb
   shortdesc=("Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep="gvfs=$pkgver"
+  adddep=("gvfs=$pkgver")
 }
 
 gvfs-smb_prep() {
