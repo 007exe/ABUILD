@@ -1,18 +1,18 @@
 pkgname=mpkg-core
 pkgver=0.17.1
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
 shortdesc=("MPKG package system: core libraries")
 longdesc=("The core of mpkg.")
 
 source=("git:git://github.com/007exe/mpkg.git")
 
-tags="base sys-pkgtools"
+tags=("base sys-pkgtools")
 
-build_deps="nwidgets mpkgsupport cmake gcc gcc-libs curl sqlite libxml2 mpkg-i18n"
+build_deps=("nwidgets mpkgsupport cmake gcc gcc-libs curl sqlite libxml2 mpkg-i18n")
 
-adddep="mpkg-i18n tar xz gzip sed wget which"
+adddep=("mpkg-i18n tar xz gzip sed wget which")
 
 build() {
   go_src_dir

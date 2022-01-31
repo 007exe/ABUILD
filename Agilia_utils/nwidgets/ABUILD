@@ -1,16 +1,16 @@
 pkgname=nwidgets
 pkgver=0.17.1
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
 shortdesc=("NCurses widgets framework")
 longdesc=("NCurses widgets framework.")
 
 source=("git:git://github.com/007exe/mpkg.git")
 
-tags="base sys-libs"
+tags=("base sys-libs")
 
-build_deps="mpkgsupport ncurses cmake gcc-libs"
+build_deps=("mpkgsupport ncurses cmake gcc-libs")
 
 build() {
   go_src_dir

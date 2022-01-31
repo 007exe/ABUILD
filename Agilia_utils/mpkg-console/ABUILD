@@ -1,16 +1,16 @@
 pkgname=mpkg-console
 pkgver=0.17.1
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
 shortdesc=("MPKG package system: console utilities")
 longdesc=("Console tools related to mpkg. A must-have package.")
 
 source=("git:git://github.com/007exe/mpkg.git")
 
-tags="base sys-pkgtools"
+tags=("base sys-pkgtools")
 
-build_deps="mpkg-core cmake gcc-libs mpkgsupport nwidgets"
+build_deps=("mpkg-core cmake gcc-libs mpkgsupport nwidgets")
 
 build() {
   go_src_dir
@@ -23,7 +23,7 @@ build() {
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 
-  cd ${pkgdir}/usr/bin 
+  cd ${pkgdir}/usr/bin
   ln -s mpkg buildpkg
   ln -s mpkg buildsrcpkg
 }

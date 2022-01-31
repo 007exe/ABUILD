@@ -1,16 +1,16 @@
 pkgname=mpkg-parted
 pkgver=0.17
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
 shortdesc=("mpkg parted libs")
 longdesc=("Parted bindings for mpkg, mainly used by system installers such as agilia-gui-installer.")
 
 source=("git:git://github.com/007exe/mpkg.git")
 
-tags="console dev-util"
+tags=("console dev-util")
 
-build_deps="mpkgsupport parted cmake gcc-libs"
+build_deps=("mpkgsupport parted cmake gcc-libs")
 
 build() {
   go_src_dir

@@ -5,7 +5,7 @@ BUILD=${BUILD:-1}
 
 set -e
 for i in $MODULES ; do
-    ( cd $i && mkpkg -si -bb ${BUILD} )
+    ( cd $i && mkpkg -si ${BUILD} )
 done
 set +e
 
