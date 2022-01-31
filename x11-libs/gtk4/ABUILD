@@ -1,6 +1,6 @@
 pkgname=gtk4
-pkgver=4.4.0
-pkgbuild=2
+pkgver=4.6.0
+pkgbuild=1
 arch=('auto')
 
 shortdesc=("GObject-based multi-platform GUI toolkit")
@@ -8,13 +8,13 @@ longdesc=("The gtk+ package contains the GIMP ToolKit (GTK+), a library for crea
 
 source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.tar.gz")
 
-tags="libs x11-libs"
-# rest shaderc
-build_deps=("git gdk-pixbuf sassc colord libcloudproviders gi-docgen meson gobject-introspection docbook-xsl glib2 cairo pango fribidi libepoxy harfbuzz libxkbcommon graphene iso-codes wayland wayland-protocols libxrandr libx11 libxrender libxi libxext libxcursor libxdamage libxfixes fontconfig libxinerama libcups json-glib gst-plugins-bad librsvg dconf shared-mime-info desktop-file-utils adwaita-icon-theme cantarell-fonts")
+tags=("libs x11-libs")
 
-adddep="gtk-update-icon-cache adwaita-icon-theme mesa shared-mime-info desktop-file-utils librsvg cantarell-fonts iso-codes dconf json-glib"
+build_deps=("git gdk-pixbuf sassc colord libcloudproviders gi-docgen meson gobject-introspection docbook-xsl glib2 cairo pango fribidi libepoxy harfbuzz libxkbcommon graphene iso-codes wayland wayland-protocols libxrandr libx11 libxrender libxi libxext libxcursor libxdamage libxfixes fontconfig libxinerama libcups json-glib gst-plugins-bad librsvg dconf shared-mime-info desktop-file-utils adwaita-icon-theme cantarell-fonts rest shaderc")
 
-pkglist="gtk-update-icon-cache gtk4-docs gtk4-demos"
+adddep=("gtk-update-icon-cache adwaita-icon-theme mesa shared-mime-info desktop-file-utils librsvg cantarell-fonts iso-codes dconf json-glib")
+
+pkglist=("gtk-update-icon-cache gtk4-docs gtk4-demos")
 
 build() {
   go_src_dir
