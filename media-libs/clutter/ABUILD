@@ -1,27 +1,31 @@
 pkgname=clutter
 pkgver=1.26.4
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("A toolkit for creating fast, portable, compelling dynamic UIs")
-longdesc=("Clutter is an Open GL based interactive canvas library, designed for creating fast, mainly 2D single window applications such as media box UIs, presentations, kiosk style applications and so on.")
+longdesc=("The Clutter package contains an open source software library used for creating fast, visually rich and animated graphical user interfaces.")
 
 source=("https://gitlab.gnome.org/GNOME/clutter/-/archive/${pkgver}/clutter-${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="gobject-introspection gtk-doc gtk3 libinput cogl"
+build_deps=("gobject-introspection gtk-doc gtk3 libinput cogl libgudev libinput libxkbcommon wayland")
 
 build() {
   go_src_dir
   burn_patches
-  export CC=gcc
-  export CXX=g++
   autoreconf -fi
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --disable-static \
+    --disable-maintainer-flags \
+    --disable-mir-backend \
+    --disable-gcov \
+    --disable-cex100-backend \
+    --disable-win32-backend \
+    --disable-tslib-input \
     --enable-introspection \
     --enable-egl-backend \
     --enable-gdk-backend \
