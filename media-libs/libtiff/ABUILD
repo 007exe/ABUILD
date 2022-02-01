@@ -1,16 +1,16 @@
 pkgname=libtiff
 pkgver=4.3.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("libtiff (a library for reading and writing TIFF files)")
-longdesc=("This package provides support for the Tag Image File Format (TIFF), a widely used format for storing image data. Included is the libtiff library (for reading and writing TIFF files), and a collection of tools for working with TIFF images.")
+longdesc=("The libtiff package contains the TIFF libraries and associated utilities. The libraries are used by many programs for reading and writing TIFF files and the utilities are used for general work with TIFF files.")
 
 tags=("libs media-libs compat32")
 
 source=("https://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
-# freeglut glu mesa jbigkit
-build_deps="glibc libjpeg-turbo zlib xz zstd"
+
+build_deps=("glibc libjpeg-turbo zlib xz zstd freeglut glu mesa jbigkit")
 
 build() {
   go_src_dir
