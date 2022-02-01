@@ -1,5 +1,5 @@
 pkgname=egl-wayland
-pkgver=1.1.7
+pkgver=1.1.9
 pkgbuild=1
 arch=("auto")
 
@@ -8,9 +8,11 @@ longdesc=("Wayland EGL External Platform library development package.")
 
 source=("https://github.com/NVIDIA/egl-wayland/archive/refs/tags/${pkgver}.tar.gz")
 
-tags="x11-misc libs"
+tags=("x11-misc libs")
 
-build_deps="wayland meson eglexternalplatform"
+build_deps=("wayland meson eglexternalplatform")
+
+adddep=("eglexternalplatform")
 
 build() {
   go_src_dir
