@@ -1,16 +1,16 @@
 pkgname=cogl
 pkgver=1.22.8
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("An object oriented GL/GLES Abstraction/Utility Layer")
 longdesc=("Cogl is a modern 3D graphics API with associated utility APIs designed to expose the features of 3D graphics hardware using a direct state access API design, as opposed to the state-machine style of OpenGL.")
 
 source=("https://download.gnome.org/sources/cogl/${pkgver%.*}/cogl-${pkgver}.tar.xz")
 
-tags="libs media-libs"
-# gdk-pixbuf2
-build_deps="gobject-introspection git gtk-doc mesa libdrm libxext libxdamage libxcomposite pango libxrandr"
+tags=("libs media-libs")
+
+build_deps=("gobject-introspection git gtk-doc mesa libdrm libxext libxdamage libxcomposite pango libxrandr gdk-pixbuf")
 
 build() {
   go_src_dir
