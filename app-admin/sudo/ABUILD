@@ -1,19 +1,19 @@
 pkgname=sudo
-_sudover=1.9.8p2
+_sudover=1.9.9
 pkgver=${_sudover/p/.p}
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Allows command execution as root for specified users")
-longdesc=("Sudo (superuser do) allows a system administrator to give certain users (or groups of users) the ability to run some (or all) commands as root while logging all commands and arguments. Sudo operates on a per-command basis.")
+shortdesc=("Give certain users the ability to run some commands as root.")
+longdesc=("The Sudo package allows a system administrator to give certain users (or groups of users) the ability to run some (or all) commands as root or another user while logging the commands and arguments.")
 
 tags=("console sys-auth")
 
 source=("http://www.sudo.ws/sudo/dist/sudo-$_sudover.tar.gz")
 
-build_deps="glibc linux-pam libaudit zlib"
+build_deps=("glibc linux-pam libaudit zlib")
 
-config_files="etc/sudoers"
+config_files=("etc/sudoers")
 
 build() {
   go_src_dir
@@ -38,4 +38,6 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -Dm0644 ${filedir}/sudo.pam ${pkgdir}/etc/pam.d/sudo
+
+  install -Dm644 LICENSE.md -t "$pkgdir/usr/share/licenses/sudo"
 }
