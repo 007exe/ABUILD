@@ -1,18 +1,17 @@
 pkgname=vala
-pkgver=0.54.0
+pkgver=0.54.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Compiler for the GObject type system")
+shortdesc=("Compiler for the GObject type system.")
 longdesc=("Vala is a new programming language that aims to bring modern programming language features to GNOME developers without imposing any additional runtime requirements and without using a different ABI compared to applications and libraries written in C.")
 
 source=("https://download.gnome.org/sources/vala/${pkgver%.*}/vala-${pkgver}.tar.xz")
 
-tags="develop sys-devel"
-# graphviz --enable-valadoc #Required for valadoc
-# ttf-font
-build_deps="glib2 help2man pkg-config gcc"
-# ttf-font
+tags=("develop sys-devel")
+
+build_deps=("glib2 help2man pkg-config gcc graphviz")
+
 adddep="gtk-doc pkg-config gcc"
 
 build() {
@@ -21,7 +20,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --disable-valadoc \
+    --enable-valadoc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
