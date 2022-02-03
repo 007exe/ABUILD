@@ -47,7 +47,7 @@ pkg4/ABUILD
 pkgname=alsa-lib
 pkgver=1.2.5.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Config files for Advanced Linux Sound Architecture (ALSA)")
 longdesc=("Advanced Linux Sound Architecture (ALSA) is a modularized architecture which supports quite a large range of ISA and PCI cards.")
@@ -56,7 +56,7 @@ tags=("libs media-libs")
 
 source=("ftp://ftp.alsa-project.org/pub/lib/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build(){
   go_src_dir
@@ -71,14 +71,16 @@ build(){
   install -vDm 644 {MEMORY-LEAK,TODO,NOTES,ChangeLog,doc/asoundrc.txt} -t "${pkgdir}/usr/share/doc/${pkgname}"
 }
 ```
-Стандартные переменные и макпрсы
+Стандартные переменные, макпрсы и опции
 
 Переменные | Краткое описание.
 :----------| :--------------------
-${srcache} | Каталог кеша исходников
-${srcdir}  | Рабочий каталог
-${filedir} | Каталог с дополнительными файлами files
-go_src_dir | Макрос означающий перейти в ${srcdir}/Распаковынный архив исходников
+${srcache} | Каталог кеша исходников.
+${srcdir}  | Рабочий каталог.
+${filedir} | Каталог с дополнительными файлами files.
+go_src_dir | Макрос означающий перейти в ${srcdir}/Распаковынный архив исходников.
+remove_libtool_files=OFF | По умолчанию равен ON (Включён). Удалить файлы libtool (*.la) из пакета 
+strict_version=1 | По умолчанию выключен, равен 0 (Выключено). Опция задаёт жёсткую версию из pkgver в противном случае при использовании системы контроля версии (git, sun...) к версии пакета будит добавлена префикс с датой сборки 1.5_git20220110.
 
 ***
 
