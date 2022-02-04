@@ -28,7 +28,6 @@ grub
 os-prober
 openrc
 mpkg-console
-mkpkg-git
 kernel
 ntfs-3g
 sysvinit
