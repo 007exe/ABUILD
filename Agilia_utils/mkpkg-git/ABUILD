@@ -6,19 +6,19 @@ arch=('noarch')
 shortdesc=("AgiliaLinux package building tool")
 longdesc=("This utility is intended for building packages, the package building script is described in the files ABUILD.")
 
-source="git:https://github.com/007exe/mkpkg.git"
+source=("git:https://github.com/007exe/mkpkg.git")
 
-tags="dev-util develop"
+tags=("dev-util develop")
 
-build_deps="cmake sed"
+build_deps=("cmake sed")
 
-adddep="mpkg-console fakeroot python bash sed grep tar wget"
+adddep=("mpkg-console fakeroot python bash sed grep tar wget")
 
-conflicts="mkpkg"
+conflicts=("mkpkg")
 
-provides="mkpkg"
+provides=("mkpkg")
 
-config_files="etc/mkpkg.conf"
+config_files=("etc/mkpkg.conf")
 
 build() {
   go_src_dir
