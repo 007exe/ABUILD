@@ -3,14 +3,16 @@ pkgver=1.0.8
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Open h.265 video codec implementation")
-longdesc=("Open h.265 video codec implementation")
+shortdesc=("Open h.265 video codec implementation.")
+longdesc=("Open h.265 video codec implementation.")
 
 tags=("libs media-libs")
 
 source=("https://github.com/strukturag/libde265/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
 
 build_deps=("ffmpeg sdl qt5-base gcc-libs")
+# Remove optional dependencies.
+removedep=("ffmpeg sdl qt5-base")
 
 build() {
   go_src_dir
