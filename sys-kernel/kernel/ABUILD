@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=5.15.12
+pkgver=5.16.9
 pkgbuild=1
 arch=("auto")
 
@@ -17,13 +17,13 @@ fi
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${srcver}.tar.xz")
 
-custom_opts="skip_gendeps no_strip skip_validate"
+custom_opts=("skip_gendeps no_strip skip_validate")
 
 skip_gendeps=1
 
-build_deps="bc kmod cpio perl tar xz xmlto rsync"
+build_deps=("bc kmod cpio perl tar xz xmlto rsync diffutils")
 
-adddep="coreutils kmod"
+adddep=("coreutils kmod")
 
 pkglist=("headers sources")
 
@@ -32,15 +32,15 @@ headers() {
   arch=("auto")
   shortdesc=("Headers and scripts for building modules for the linux kernel")
   longdesc=("These are the include files from the Linux kernel. You will need these to compile most system software for Linux.")
-  tags=('develop sys-kernel')
+  tags=("develop sys-kernel")
 }
 
 sources() {
   pkgname=kernel-source
-  arch=('auto')
-  shortdesc=('Linux kernel source')
-  longdesc=('Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.')
-  tags=('develop sys-kernel')
+  arch=("auto")
+  shortdesc=("Linux kernel source")
+  longdesc=("Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.")
+  tags=("develop sys-kernel")
 }
 
 before_build() {

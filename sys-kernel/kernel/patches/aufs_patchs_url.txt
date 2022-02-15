@@ -1,2 +1,0 @@
-http://aufs.sourceforge.net
-https://gitlab.com/sirlucjan/kernel-patches/-/tree/master/KERNEL_VER/aufs-patches
