@@ -1,14 +1,14 @@
 pkgname=scons
 pkgver=4.3.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Extensible Python-based build utility.")
 longdesc=("Extensible Python-based build utility.")
 
 source=("https://github.com/${pkgname}/${pkgname}/archive/${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("develop dev-util")
 # rst2pdf
 build_deps=("python-setuptools python-sphinx python-sphinx_rtd_theme")
 
