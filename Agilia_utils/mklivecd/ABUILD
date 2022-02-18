@@ -4,16 +4,17 @@ pkgbuild=1
 arch=("noarch")
 
 shortdesc=("AgiliaLinux LiveCD build scripts")
-longdesc=("This package contains mkpkg-like scripts to build LiveCDs from ISOBUILD specifications. For more info, see wiki page.")
+longdesc=("This package contains mkpkg-like scripts to build LiveCDs from ISOBUILD specifications.")
 
 source=("git:git://github.com/007exe/mpkg.git")
 
-tags="xapps sys-apps"
+tags=("xapps sys-apps")
 
-adddep="bash wget rsync syslinux cdrtools fakeroot fakechroot mpkg-console squashfs-tools"
+adddep=("bash wget rsync syslinux cdrtools fakeroot fakechroot mpkg-console squashfs-tools")
 
-BUILD_KEYS=""
-build_deps="cmake"
+build_deps=("cmake")
+
+config_files=("etc/mklivecd.conf")
 
 build() {
   go_src_dir
