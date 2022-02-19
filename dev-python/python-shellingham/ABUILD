@@ -1,0 +1,22 @@
+pkgname=python-shellingham
+pkgver=1.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Detect what shell the current Python executable is running in.")
+longdesc=("Detect what shell the current Python executable is running in.")
+
+source=("https://github.com/sarugaku/shellingham/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-pytest-runner python-pytest-mock")
+
+adddep=("python-pytest-runner python-pytest-mock")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
