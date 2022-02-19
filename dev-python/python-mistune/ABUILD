@@ -1,0 +1,21 @@
+pkgname=python-mistune
+pkgver=2.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A fast yet powerful Python Markdown parser with renderers and plugins")
+longdesc=("A fast yet powerful Python Markdown parser with renderers and plugins")
+
+source=("https://github.com/lepture/mistune/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python-build python-install python-setuptools python-wheel")
+
+build() {
+  go_src_dir
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m install --optimize=1 --destdir="$pkgdir" dist/*.whl
+  install -vDm 644 README.md -t "$pkgdir/usr/share/doc/${pkgname}/"
+  install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/${pkgname}/"
+}
