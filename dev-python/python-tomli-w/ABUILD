@@ -1,0 +1,20 @@
+pkgname=python-tomli-w
+pkgver=1.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A lil' TOML writer.")
+longdesc=("A lil' TOML writer.")
+
+source=("https://github.com/hukkin/tomli-w/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+# python-poetry
+build_deps=("python python-pip python-flit")
+
+build() {
+  go_src_dir
+  python -m flit build --format wheel
+  PIP_CONFIG_FILE=/dev/null pip install --isolated --root="${pkgdir}" --ignore-installed --no-deps dist/*.whl
+  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/python-tomli-w/
+}
