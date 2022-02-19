@@ -1,0 +1,21 @@
+pkgname=python-beautifulsoup4
+pkgver=4.10.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python HTML/XML parser designed for quick turnaround projects like screen-scraping.")
+longdesc=("A Python HTML/XML parser designed for quick turnaround projects like screen-scraping.")
+
+source=("https://pypi.io/packages/source/b/beautifulsoup4/beautifulsoup4-$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-soupsieve")
+
+adddep=("python-soupsieve")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+}
