@@ -1,0 +1,23 @@
+pkgname=python-sphinx-argparse-cli
+pkgver=1.8.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Render CLI arguments (sub-commands friendly) defined by argparse module.")
+longdesc=("Render CLI arguments (sub-commands friendly) defined by argparse module.")
+
+source=("https://github.com/tox-dev/sphinx-argparse-cli/archive/$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools-scm python-toml python-sphinx python-docutils-stubs")
+
+adddep=("python-sphinx python-docutils-stubs")
+
+build() {
+  go_src_dir
+  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm 644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
