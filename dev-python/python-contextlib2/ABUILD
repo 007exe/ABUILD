@@ -1,0 +1,20 @@
+pkgname=python-contextlib2
+pkgver=0.6.0.post1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Backport of the standard library's contextlib module to earlier Python versions.")
+longdesc=("contextlib2 is a backport of the standard library's contextlib module to earlier Python versions.")
+
+source=("https://github.com/jazzband/contextlib2/archive/v$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  install -Dm 644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
