@@ -1,0 +1,20 @@
+pkgname=python-moreorless
+pkgver=0.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python diff wrapper.")
+longdesc=("Python diff wrapper.")
+
+_pkgname=moreorless
+source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools-scm")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+}
