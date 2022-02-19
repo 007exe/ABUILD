@@ -1,0 +1,30 @@
+pkgname=python-build
+pkgver=0.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A simple, correct PEP517 package builder.")
+longdesc=("A simple, correct PEP517 package builder.")
+
+_pkgname=build
+source=("https://github.com/pypa/build/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-sphinx-furo python-wheel python-sphinx python-sphinx-argparse-cli python-sphinx-autodoc-typehints python-tomli python-pep517 python-packaging")
+
+adddep=("python-tomli python-pep517 python-packaging")
+
+build() {
+  go_src_dir
+  python setup.py build
+  PYTHONPATH=src sphinx-build -b dirhtml -v docs docs/build/html
+  python setup.py install --root="$pkgdir" --skip-build
+  python -m compileall --invalidation-mode=checked-hash "$pkgdir"
+
+  install -dm 755 "$pkgdir"/usr/share/doc/$pkgname
+  cp -r -a --no-preserve=ownership docs/build/html "$pkgdir"/usr/share/doc/$pkgname
+  rm -rf "$pkgdir"/usr/share/doc/$pkgname/html/.doctrees
+
+  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
