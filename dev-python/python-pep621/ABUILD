@@ -1,0 +1,28 @@
+pkgname=python-pep621
+pkgver=0.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("PEP 621 metadata parsing.")
+longdesc=("PEP 621 metadata parsing.")
+
+source=("https://github.com/FFY00/python-pep621/archive/refs/tags/$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python git python-setuptools python-sphinx python-sphinx-autodoc-typehints python-sphinx-furo python-packaging")
+
+adddep=("python-packaging")
+
+build() {
+  go_src_dir
+  echo 'from setuptools import setup; setup()' >setup.py
+  python setup.py build
+  PYTHONPATH=. sphinx-build -b dirhtml -v docs docs/build/html
+  python setup.py install --root="$pkgdir" --skip-build
+  python -m compileall --invalidation-mode=checked-hash "$pkgdir"
+  install -dm 755 "$pkgdir"/usr/share/doc/$pkgname
+  cp -r -a --no-preserve=ownership docs/build/html "$pkgdir"/usr/share/doc/$pkgname
+  rm -rf "$pkgdir"/usr/share/doc/$pkgname/html/.doctrees
+  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
