@@ -1,0 +1,23 @@
+pkgname=python-pytest-runner
+pkgver=5.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Invoke py.test as distutils command with dependency resolution")
+longdesc=("Invoke py.test as distutils command with dependency resolution")
+
+#source=("https://github.com/pytest-dev/pytest-runner/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/2a/04/c3223812b3427ffa95110c5781eae7fe8bc3e9e1fe4e2328bee17b9e5820/pytest-runner-$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools-scm python-toml python-pytest python-setuptools")
+
+adddep=("python-pytest python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
