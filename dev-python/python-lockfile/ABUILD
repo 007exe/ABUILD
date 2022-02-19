@@ -1,0 +1,20 @@
+pkgname=python-lockfile
+pkgver=0.12.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Platform-independent file locking module.")
+longdesc=("Platform-independent file locking module.")
+
+source=("https://files.pythonhosted.org/packages/source/l/lockfile/lockfile-$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-pbr")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
