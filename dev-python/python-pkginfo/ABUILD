@@ -1,0 +1,19 @@
+pkgname=python-pkginfo
+pkgver=1.7.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Query metadatdata from sdists / bdists / installed packages.")
+longdesc=("Query metadatdata from sdists / bdists / installed packages.")
+
+source=("https://pypi.io/packages/source/p/pkginfo/pkginfo-$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+}
