@@ -1,27 +1,27 @@
 pkgname=python-dephell
-_pkgname=dephell
 pkgver=0.8.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Universal Python project management: convert between formats, build, manage venvs")
 longdesc=("Universal Python project management: convert between formats, build, manage venvs")
 
+_pkgname=dephell
 source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python"
+build_deps=("python python-aiohttp python-appdirs python-attrs python-bowler python-cerberus python-colorama python-html5lib python-jinja python-packaging python-pip python-pygments python-requests python-ruamel-yaml python-tabulate python-tomlkit python-yaspin python-dephell-archive python-dephell-argparse python-dephell-changelogs python-dephell-discover python-dephell-licenses python-dephell-links python-dephell-markers python-dephell-pythons python-dephell-setuptools python-dephell-shells python-dephell-specifier python-dephell-venvs python-dephell-versioning")
 
-adddep="python-aiohttp python-appdirs python-attrs python-bowler python-cerberus python-colorama python-html5lib python-jinja python-packaging python-pip python-pygments python-requests python-ruamel-yaml python-tabulate python-tomlkit python-yaspin"
+adddep=("python-aiohttp python-appdirs python-attrs python-bowler python-cerberus python-colorama python-html5lib python-jinja python-packaging python-pip python-pygments python-requests python-ruamel-yaml python-tabulate python-tomlkit python-yaspin python-dephell-archive python-dephell-argparse python-dephell-changelogs python-dephell-discover python-dephell-licenses python-dephell-links python-dephell-markers python-dephell-pythons python-dephell-setuptools python-dephell-shells python-dephell-specifier python-dephell-venvs python-dephell-versioning")
 
 build(){
   go_src_dir
   burn_patches
-# don't lock pip version to below pip 20:
+# не блокировать версию pip ниже 20:
 # https://github.com/dephell/dephell/pull/363#issuecomment-606150965
-# because https://github.com/pypa/pip/issues/7629 seems insufficient
-# to hold up non-PyPY platforms :/
+# поскольку https://github.com/pypa/pip/issues/7629 недостаточно
+# для поддержки платформ, не поддерживающих PyPY
   sed -i 's/pip<=19.3.1,>=18.0/pip/' setup.py
 
   python setup.py build
