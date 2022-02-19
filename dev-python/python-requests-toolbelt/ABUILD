@@ -1,0 +1,21 @@
+pkgname=python-requests-toolbelt
+pkgver=0.9.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A toolbelt of useful classes and functions to be used with python-requests.")
+longdesc=("A toolbelt of useful classes and functions to be used with python-requests.")
+
+source=("https://github.com/requests/toolbelt/archive/$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-requests python-requests")
+
+adddep=("python-requests")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1
+}
