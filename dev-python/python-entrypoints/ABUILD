@@ -1,0 +1,20 @@
+pkgname=python-entrypoints
+pkgver=0.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Discover and load entry points from installed packages.")
+longdesc=("Discover and load entry points from installed packages.")
+
+source=("https://github.com/takluyver/entrypoints/archive/$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python")
+
+build() {
+  go_src_dir
+  _pyver=$(python --version | cut -c 8-10)
+  install -Dm644 entrypoints.py "$pkgdir/usr/lib/python$_pyver/site-packages/entrypoints.py"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
