@@ -1,16 +1,16 @@
 pkgname=python-smartypants
 pkgver=2.0.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Python with the SmartyPants")
-longdesc=("Python with the SmartyPants")
+shortdesc=("Python with the SmartyPants.")
+longdesc=("Python with the SmartyPants.")
 
 source=("https://github.com/leohemsted/smartypants.py/archive/v${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python"
+build_deps=("python")
 
 build(){
   go_src_dir
