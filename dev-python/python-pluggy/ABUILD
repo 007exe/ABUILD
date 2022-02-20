@@ -3,16 +3,16 @@ pkgver=1.0.0
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("A minimalist production ready plugin system")
+shortdesc=("A minimalist production ready plugin system.")
 longdesc=("Pluggy is the core framework used by the pytest, tox, and devpi projects.")
 
 source=("https://github.com/pytest-dev/pluggy/archive/$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("develop dev-python")
 
-build_deps="python python-setuptools-scm python-importlib-metadata"
+build_deps=("python python-setuptools-scm python-importlib-metadata")
 
-adddep="python-importlib-metadata"
+adddep=("python-importlib-metadata")
 
 build() {
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
