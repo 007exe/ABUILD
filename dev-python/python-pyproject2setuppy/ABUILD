@@ -1,18 +1,18 @@
 pkgname=python-pyproject2setuppy
 pkgver=21
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Cheap builder for pyproject-based build systems.")
 longdesc=("Cheap builder for pyproject-based build systems.")
 
 source=("https://github.com/mgorny/pyproject2setuppy/archive/v$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-toml"
+build_deps=("python python-setuptools python-toml")
 
-adddep="python-setuptools python-toml"
+adddep=("python-setuptools python-toml")
 
 build() {
   go_src_dir
