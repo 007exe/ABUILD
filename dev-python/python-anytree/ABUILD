@@ -1,16 +1,18 @@
 pkgname=python-anytree
 pkgver=2.8.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Powerful and Lightweight Python Tree Data Structure")
 longdesc=("Simple, lightweight and extensible Tree data structure.")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
 source=("https://github.com/c0fec0de/anytree/archive/refs/tags/${pkgver}.tar.gz")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools python-six")
+
+adddep=("python-six")
 
 build() {
   go_src_dir
