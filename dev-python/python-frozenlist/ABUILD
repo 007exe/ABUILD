@@ -1,0 +1,23 @@
+pkgname=python-frozenlist
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("FrozenList is a list-like structure which can be made immutable.")
+longdesc=("A list-like structure which implements collections.abc.MutableSequence.")
+
+source=("https://github.com/aio-libs/frozenlist/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-cython")
+
+build() {
+  go_src_dir
+  sed 's|.install-cython ||' -i Makefile
+  make cythonize
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm 644 CHANGES.rst README.rst -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
