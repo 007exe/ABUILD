@@ -1,18 +1,18 @@
 pkgname=python-yarl
-pkgver=1.6.3
+pkgver=1.7.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Yet another URL library")
+shortdesc=("Yet another URL library.")
 longdesc=("The module provides handy URL class for URL parsing and changing.")
 
 source=("https://github.com/aio-libs/yarl/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
-adddep="python-multidict python-idna python-typing_extensions"
+adddep=("python-multidict python-idna python-typing_extensions")
 
 build(){
   go_src_dir
