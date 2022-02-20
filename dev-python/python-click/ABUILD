@@ -1,16 +1,16 @@
 pkgname=python-click
-pkgver=8.0.1
+pkgver=8.0.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A simple wrapper around optparse for powerful command line utilities")
-longdesc=("Click is a Python package for creating beautiful command line interfaces in a composable way with as little amount of code as necessary. It's the "Command Line Interface Creation Kit".  It's highly configurable but comes with good defaults out of the box.")
+shortdesc=("A simple wrapper around optparse for powerful command line utilities.")
+longdesc=("A Python package for creating beautiful command line interfaces.")
 
 source="https://github.com/pallets/click/archive/${pkgver}/$pkgname-$pkgver.tar.gz"
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
