@@ -1,16 +1,20 @@
 pkgname=python-cython
-pkgver=0.29.24
+pkgver=0.29.28
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("C-Extensions for Python")
 longdesc=("Cython is a language that facilitates the writing of C extensions for the Python language. It is based on Pyrex, but provides more cutting edge functionality and optimizations.")
 
 source=("https://github.com/cython/cython/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python-setuptools"
+build_deps=("python-setuptools")
+
+provides=("cython")
+
+conflicts=("cython")
 
 build() {
   go_src_dir
