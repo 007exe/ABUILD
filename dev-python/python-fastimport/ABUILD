@@ -1,16 +1,16 @@
 pkgname=python-fastimport
 pkgver=0.9.14
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("VCS fastimport/fastexport parser.")
 longdesc=("Library for parsing the fastimport VCS serialization format")
 
 source=("https://github.com/jelmer/python-fastimport/archive/refs/tags/upstream/$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
