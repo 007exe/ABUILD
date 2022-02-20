@@ -9,10 +9,10 @@ longdesc=("A clean customizable documentation theme for Sphinx.")
 source=("https://github.com/pradyunsg/furo/archive/$pkgver.tar.gz")
 
 tags=("libs dev-python")
-# python-sphinx-theme-builder python-flit-core nodejs-lts-gallium expac python-beautifulsoup4
-build_deps=("python python-build python-pip npm python-sphinx python-pygments")
-# python-beautifulsoup4
-adddep=("python-sphinx python-pygments")
+# nodejs-lts-gallium expac
+build_deps=("python python-build python-pip npm python-sphinx python-pygments python-beautifulsoup4 python-sphinx-theme-builder python-flit-core")
+
+adddep=("python-sphinx python-pygments python-beautifulsoup4")
 
 build() {
   go_src_dir
