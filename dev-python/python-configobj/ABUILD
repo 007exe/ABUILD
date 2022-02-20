@@ -1,7 +1,7 @@
 pkgname=python-configobj
 pkgver=5.0.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Simple config file reader and writer.")
 longdesc=("Simple config file reader and writer.")
@@ -10,9 +10,9 @@ source=("https://github.com/DiffSK/configobj/archive/refs/tags/v$pkgver.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps="python-setuptools python-six"
+build_deps=("python-setuptools python-six")
 
-adddep="python-six"
+adddep=("python-six")
 
 build() {
   go_src_dir
