@@ -1,16 +1,16 @@
 pkgname=python-resolvelib
 pkgver=0.5.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Resolve abstract dependencies into concrete ones")
-longdesc=("Resolve abstract dependencies into concrete ones")
+shortdesc=("Resolve abstract dependencies into concrete ones.")
+longdesc=("Resolve abstract dependencies into concrete ones.")
 
 source=("https://github.com/sarugaku/resolvelib/archive/$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
