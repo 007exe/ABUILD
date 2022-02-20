@@ -1,18 +1,18 @@
 pkgname=python-msgpack
 pkgver=1.0.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("MessagePack serializer implementation for Python.")
 longdesc=("MessagePack serializer implementation for Python.")
 
 source=("https://github.com/msgpack/msgpack-python/archive/v$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-cython python-setuptools python-pytest python-six"
+build_deps=("python python-cython python-setuptools python-pytest python-six")
 
-adddep="python-pytest python-six"
+adddep=("python-pytest python-six")
 
 build() {
   go_src_dir
