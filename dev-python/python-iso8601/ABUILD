@@ -1,19 +1,17 @@
 pkgname=python-iso8601
-_libname=iso8601
-pkgver=0.1.16
+pkgver=1.0.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Simple module to parse ISO 8601 dates")
+shortdesc=("Simple module to parse ISO 8601 dates.")
 longdesc=("Simple module to parse ISO 8601 dates. This module parses the most common forms of ISO 8601 date strings (e.g. 2007-01-14T20:34:22+00:00) into datetime objects.")
 
+_libname=iso8601
 source=("https://files.pythonhosted.org/packages/source/${_libname:0:1}/$_libname/$_libname-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
-
-adddep="python-cffi"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
