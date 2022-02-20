@@ -1,18 +1,18 @@
 pkgname=python-setuptools-scm
-pkgver=6.3.2
+pkgver=6.4.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Tool to manage python package versions by scm tags")
-longdesc=("Tool to manage python package versions by scm tags")
+shortdesc=("Tool to manage python package versions by scm tags.")
+longdesc=("Tool to manage python package versions by scm tags.")
 
 source=("https://pypi.io/packages/source/s/setuptools_scm/setuptools_scm-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
-adddep="python-setuptools python-packaging python-tomli"
+adddep=("python-setuptools python-packaging python-tomli")
 
 build() {
   go_src_dir
