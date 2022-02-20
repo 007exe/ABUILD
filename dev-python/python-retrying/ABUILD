@@ -1,18 +1,18 @@
 pkgname=python-retrying
 pkgver=1.3.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A general purpose Python retyring library")
-longdesc=("A general purpose Python retyring library")
+shortdesc=("A general purpose Python retyring library.")
+longdesc=("A general purpose Python retyring library.")
 
 source=("https://github.com/rholder/retrying/archive/v$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-six"
+build_deps=("python python-setuptools python-six")
 
-adddep="python-six"
+adddep=("python-six")
 
 build() {
   go_src_dir
