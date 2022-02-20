@@ -1,18 +1,18 @@
 pkgname=python-hyperlink
 pkgver=21.0.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A featureful, correct URL for Python.")
 longdesc=("A featureful, correct URL for Python.")
 
 source=("https://github.com/python-hyper/hyperlink/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-idna"
+build_deps=("python python-setuptools python-idna")
 
-adddep="python-idna"
+adddep=("python-idna")
 
 build() {
   go_src_dir
