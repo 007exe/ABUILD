@@ -1,16 +1,16 @@
 pkgname=python-pytz
-pkgver=2021.1
+pkgver=2021.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="World timezone definitions for Python"
-longdesc="pytz brings the Olson tz database into Python. This library allows accurate and cross platform timezone calculations using Python 2.3 or higher. It also solves the issue of ambiguous times at the end of daylight savings, which you can read more about in the Python Library Reference (datetime.tzinfo)."
-
-tags="develop dev-python"
+shortdesc=("World timezone definitions for Python")
+longdesc=("pytz brings the Olson tz database into Python. This library allows accurate and cross platform timezone calculations using Python 2.3 or higher. It also solves the issue of ambiguous times at the end of daylight savings, which you can read more about in the Python Library Reference (datetime.tzinfo).")
 
 source=("https://pypi.io/packages/source/p/pytz/pytz-${pkgver}.tar.gz")
 
-build_deps="python"
+tags=("libs dev-python")
+
+build_deps=("python")
 
 build() {
   go_src_dir
