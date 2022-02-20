@@ -1,18 +1,18 @@
 pkgname=python-paramiko
 pkgver=2.9.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Python module that implements the SSH2 protocol.")
-longdesc=("SSH2 protocol library.")
+shortdesc=("SSH2 protocol library.")
+longdesc=("Python module that implements the SSH2 protocol.")
 
 source=("https://github.com/paramiko/paramiko/archive/$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-bcrypt python-cryptography python-pynacl python-bcrypt python-cryptography python-pynacl"
+build_deps=("python python-setuptools python-bcrypt python-cryptography python-pynacl python-bcrypt python-cryptography python-pynacl")
 
-adddep="python-bcrypt python-cryptography python-pynacl"
+adddep=("python-bcrypt python-cryptography python-pynacl")
 
 build() {
   go_src_dir
