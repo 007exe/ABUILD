@@ -1,16 +1,16 @@
 pkgname=python-sortedcontainers
 pkgver=2.4.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Sorted container data types")
-longdesc=("SortedContainers is an Apache2 licensed containers library, written in pure-Python, and fast as C-extensions.")
+shortdesc=("Python library to sort collections and containers.")
+longdesc=("Python Sorted Container Types: SortedList, SortedDict, and SortedSet.")
 
 source=("https://pypi.python.org/packages/source/s/sortedcontainers/sortedcontainers-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build(){
   go_src_dir
