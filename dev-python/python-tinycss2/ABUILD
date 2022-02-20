@@ -1,18 +1,18 @@
 pkgname=python-tinycss2
 pkgver=1.1.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Low-level CSS parser for Python")
-longdesc=("Low-level CSS parser for Python")
+shortdesc=("Low-level CSS parser for Python.")
+longdesc=("Low-level CSS parser for Python.")
 
 source=("https://pypi.io/packages/source/t/tinycss2/tinycss2-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-pyproject2setuppy python-webencodings"
+build_deps=("python python-pyproject2setuppy python-webencodings")
 
-adddep="python-webencodings"
+adddep=("python-webencodings")
 
 build() {
   go_src_dir
