@@ -1,16 +1,16 @@
 pkgname=python-sh
 pkgver=1.14.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Subprocess interface that allows you to call any program as if it were a function")
-longdesc=("sh is a full-fledged subprocess replacement for Python 2.6 - 3.6, PyPy and PyPy3")
+shortdesc=("Subprocess interface that allows you to call any program as if it were a function.")
+longdesc=("sh is a full-fledged subprocess replacement for Python 2.6 - 3.6, PyPy and PyPy3.")
 
-source="https://pypi.io/packages/source/s/sh/sh-$pkgver.tar.gz"
+source=("https://pypi.io/packages/source/s/sh/sh-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("develop dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
