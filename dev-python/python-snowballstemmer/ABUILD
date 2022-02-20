@@ -1,16 +1,16 @@
 pkgname=python-snowballstemmer
 pkgver=2.1.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("python-snowballstemmer")
-longdesc=("This package provides 16 stemmer algorithms (15 + Poerter English stemmer) generated from Snowball algorithms.")
+shortdesc=("Snowball stemming library collection for Python.")
+longdesc=("Stemmer algorithms generated from Snowball algorithms.")
 
-source="https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-$pkgver.tar.gz"
+source=("https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
