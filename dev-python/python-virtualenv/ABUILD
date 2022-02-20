@@ -1,18 +1,18 @@
 pkgname=python-virtualenv
 pkgver=20.13.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Virtual Python Environment builder.")
 longdesc=("Virtual Python Environment builder.")
 
 source=("https://github.com/pypa/virtualenv/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-platformdirs python-distlib python-filelock python-six python-setuptools-scm python-sphinx python-sphinx_rtd_theme python-sphinx-argparse towncrier python-importlib-metadata"
+build_deps=("python python-setuptools python-platformdirs python-distlib python-filelock python-six python-setuptools-scm python-sphinx python-sphinx_rtd_theme python-sphinx-argparse towncrier python-importlib-metadata")
 
-adddep="python-platformdirs python-distlib python-filelock python-six python-importlib-metadata"
+adddep=("python-platformdirs python-distlib python-filelock python-six python-importlib-metadata")
 
 build() {
   go_src_dir
