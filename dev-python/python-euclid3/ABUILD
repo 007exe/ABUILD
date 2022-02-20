@@ -9,9 +9,9 @@ longdesc=("2D and 3D vector, matrix, quaternion and geometry module.")
 
 source=("https://pypi.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
