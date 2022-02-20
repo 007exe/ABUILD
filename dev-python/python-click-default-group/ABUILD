@@ -1,18 +1,18 @@
 pkgname=python-click-default-group
 pkgver=1.2.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Extends click.Group to invoke a command without explicit subcommand name.")
 longdesc=("Extends click.Group to invoke a command without explicit subcommand name.")
 
 source=("https://github.com/click-contrib/click-default-group/archive/v$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-click"
+build_deps=("python python-setuptools python-click")
 
-adddep="python-click"
+adddep=("python-click")
 
 build() {
   go_src_dir
