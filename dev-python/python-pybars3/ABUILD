@@ -1,18 +1,18 @@
 pkgname=python-pybars3
 pkgver=0.9.7
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Template system for Python which is compatible with Handlebars.js.")
 longdesc=("Pybars3 provides a template system for Python which is compatible with Handlebars.js. It is a fork of the pybars project that adds Python 3 compatibility and numerous features from Handlebars.js 2.0.")
 
 source=("https://github.com/wbond/pybars3/archive/$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-pymeta3"
+build_deps=("python python-setuptools python-pymeta3")
 
-adddep="python-pymeta3"
+adddep=("python-pymeta3")
 
 build() {
   go_src_dir
