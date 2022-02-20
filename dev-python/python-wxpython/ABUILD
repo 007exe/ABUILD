@@ -1,22 +1,20 @@
 pkgname=python-wxpython
 pkgver=4.0.7.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Cross-platform GUI toolkit.")
 longdesc=("A blending of the wxWindows C++ class library with Python.")
 
 _pkgver="${pkgver%.*}"
 _post="${pkgver##*.}"
-
 source=("https://files.pythonhosted.org/packages/source/w/wxPython/wxPython-$_pkgver.post$_post.tar.gz")
-#source=("https://files.pythonhosted.org/packages/source/w/wxPython/wxPython-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
 build_deps=('wxgtk3 python-six mesa glu webkit2gtk python-requests python-setuptools')
 
-adddep="python-six wxgtk3"
+adddep=("python-six wxgtk3")
 
 build() {
   go_src_dir
