@@ -1,16 +1,16 @@
 pkgname=python-distlib
 pkgver=0.3.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Low-level components of distutils2/packaging")
 longdesc=("Low-level components of distutils2/packaging")
 
 source=("https://files.pythonhosted.org/packages/source/d/distlib/distlib-${pkgver}.zip")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python unzip"
+build_deps=("python unzip")
 
 build() {
   go_src_dir
