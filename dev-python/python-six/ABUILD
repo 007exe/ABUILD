@@ -1,18 +1,16 @@
 pkgname=python-six
 pkgver=1.16.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Python 3 compatibility utilities")
+shortdesc=("Python 3 compatibility utilities.")
 longdesc=("Six is a Python compatibility library. It provides utility functions for smoothing over the differences between the Python versions with the goal of writing Python code that is compatible on both Python versions.  See the documentation for more information on what is provided.")
 
-source="https://pypi.io/packages/source/s/six/six-$pkgver.tar.gz"
+source=("https://pypi.io/packages/source/s/six/six-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
-
-adddep="python"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
