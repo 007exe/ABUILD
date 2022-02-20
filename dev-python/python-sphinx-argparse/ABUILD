@@ -1,18 +1,18 @@
 pkgname=python-sphinx-argparse
 pkgver=0.3.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Sphinx extension that automatically documents argparse commands and options.")
 longdesc=("Sphinx extension that automatically documents argparse commands and options.")
 
 source=("https://files.pythonhosted.org/packages/source/s/sphinx-argparse/sphinx-argparse-${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-sphinx"
+build_deps=("python python-setuptools python-sphinx")
 
-adddep="python-sphinx"
+adddep=("python-sphinx")
 
 build() {
   go_src_dir
