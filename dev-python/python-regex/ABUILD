@@ -1,16 +1,16 @@
 pkgname=python-regex
 pkgver=2021.11.10
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Alternative python regular expression module.")
 longdesc=("Alternative python regular expression module.")
 
-build_deps="python python-setuptools"
-
-tags="develop sys-libs"
-
 source=("https://files.pythonhosted.org/packages/source/r/regex/regex-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
