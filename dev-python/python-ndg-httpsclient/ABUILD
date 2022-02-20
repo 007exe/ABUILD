@@ -1,0 +1,24 @@
+pkgname=python-ndg-httpsclient
+pkgver=0.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL.")
+longdesc=("Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL.")
+
+source=("https://files.pythonhosted.org/packages/source/n/ndg-httpsclient/ndg_httpsclient-$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-pyopenssl python-pyasn1")
+
+adddep=("python-pyopenssl python-pyasn1")
+
+build(){
+  go_src_dir
+  rm -rf ../buildpy3; mkdir ../buildpy3
+  python setup.py build -b ../buildpy3
+  rm -rf build; ln -s ../buildpy3 build
+  python setup.py install --skip-build -O1 --root="$pkgdir"
+  install -Dm0644 ndg/httpsclient/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
