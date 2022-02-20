@@ -1,16 +1,16 @@
 pkgname=pybind11
-pkgver=2.9.0
-pkgbuild=2
-arch=('auto')
+pkgver=2.9.1
+pkgbuild=1
+arch=("auto")
 
 shortdesc=("A lightweight header-only library that exposes C++ types in Python and vice versa")
 longdesc=("pybind11 is a lightweight header-only library that exposes C++ types in Python and vice versa, mainly to create Python bindings of existing C++ code.")
 
 source=("https://github.com/pybind/pybind11/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="cmake boost eigen python python-setuptools python-pytest"
+build_deps=("cmake boost eigen python python-setuptools python-pytest")
 
 build() {
   go_src_dir
