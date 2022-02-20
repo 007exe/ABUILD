@@ -1,7 +1,7 @@
 pkgname=python-rjsmin
 pkgver=1.2.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Fast javascript minifier for Python")
 longdesc=("Javascript minifier written in python")
@@ -9,9 +9,9 @@ longdesc=("Javascript minifier written in python")
 _name=rjsmin
 source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python-setuptools"
+build_deps=("python-setuptools")
 
 build() {
   go_src_dir
