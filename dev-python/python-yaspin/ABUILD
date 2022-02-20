@@ -1,18 +1,18 @@
 pkgname=python-yaspin
 pkgver=2.1.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Yet Another Terminal Spinner")
+shortdesc=("Yet Another Terminal Spinner.")
 longdesc=("Yaspin provides a full-featured terminal spinner to show the progress during long-hanging operations.")
 
-source=("https://files.pythonhosted.org/packages/6a/b2/144d100c915784ab551e0f7809aaecdd103786a227b0f30db341ffe649be/yaspin-$pkgver.tar.gz")
+source=("https://github.com/pavdmyt/yaspin/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-dephell"
+build_deps=("python python-dephell python-termcolor")
 
-adddep="python-termcolor"
+adddep=("python-termcolor")
 
 build(){
   go_src_dir
