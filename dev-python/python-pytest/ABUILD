@@ -1,18 +1,18 @@
 pkgname=python-pytest
 pkgver=6.2.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Simple powerful testing with Python")
-longdesc=("Simple powerful testing with Python")
+shortdesc=("Simple powerful testing with Python.")
+longdesc=("Simple powerful testing with Python.")
 
 source=("https://files.pythonhosted.org/packages/source/p/pytest/pytest-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-attrs python-iniconfig python-packaging python-pluggy python-py python-toml"
+build_deps=("python python-setuptools python-attrs python-iniconfig python-packaging python-pluggy python-py python-toml")
 
-adddep="python-attrs python-iniconfig python-packaging python-pluggy python-py python-toml"
+adddep=("python-attrs python-iniconfig python-packaging python-pluggy python-py python-toml")
 
 build() {
   go_src_dir
