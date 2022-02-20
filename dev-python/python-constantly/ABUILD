@@ -1,16 +1,16 @@
 pkgname=python-constantly
 pkgver=15.1.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Symbolic constants in Python.")
 longdesc=("Symbolic constants in Python.")
 
 source=("https://github.com/twisted/constantly/archive/$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="dev-python libs"
+tags=("dev-python libs")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
