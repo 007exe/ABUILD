@@ -6,13 +6,13 @@ arch=("auto")
 shortdesc=("Compile and distribute Python extensions written in rust as easily as if they were written in C.")
 longdesc=("setuptools-rust is a plugin for setuptools to build Rust Python extensions implemented with PyO3 or rust-cpython.")
 
-tags=("dev-python develop")
-
-build_deps="python-setuptools-scm python-wheel rust python-setuptools python-semantic-version python-toml"
-
-adddep="rust python-setuptools python-semantic-version python-toml"
-
 source=("https://github.com/PyO3/setuptools-rust/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+
+tags=("dev-python libs")
+
+build_deps=("python-setuptools-scm python-wheel rust python-setuptools python-semantic-version python-toml")
+
+adddep=("rust python-setuptools python-semantic-version python-toml")
 
 build() {
   go_src_dir
