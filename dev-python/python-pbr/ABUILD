@@ -1,21 +1,26 @@
 pkgname=python-pbr
-pkgver=5.6.0
+pkgver=5.8.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Python Build Reasonableness")
+shortdesc=("Python Build Reasonableness.")
 longdesc=("PBR is a library that injects some useful and sensible default behaviors into your setuptools run. It started off life as the chunks of code that were copied between all of the OpenStack projects. Around the time that OpenStack hit 18 different projects each with at least 3 active branches, it seems like a good time to make that code into a proper re-usable library.")
 
-source=("https://files.pythonhosted.org/packages/35/8c/69ed04ae31ad498c9bdea55766ed4c0c72de596e75ac0d70b58aa25e0acf/pbr-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/p/pbr/pbr-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
-adddep="python-setuptools"
+adddep=("python-setuptools")
 
 build() {
   go_src_dir
+  export PBR_VERSION=$pkgver
+  export SKIP_PIP_INSTALL=1
+  export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
+# drop bundled egg-info
+rm -rf *.egg-info
   python setup.py build
   python setup.py install -O1 --root="$pkgdir"
   install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
