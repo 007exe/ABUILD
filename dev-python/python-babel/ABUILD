@@ -2,19 +2,19 @@ pkgname=python-babel
 pkgver=2.9.1
 _core=37
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Internationalization utilities for Python")
+shortdesc=("Internationalization utilities for Python.")
 longdesc=("Babel is a Python library that provides an integrated collection of utilities that assist with internationalizing and localizing Python applications (in particular web-based applications.)")
 
 source=("https://github.com/python-babel/babel/archive/v$pkgver.tar.gz"
         "http://unicode.org/Public/cldr/$_core/core.zip")
-#python-pytest
-build_deps="python python-setuptools"
 
-adddep="python python-pytz"
+tags=("libs dev-python")
 
-tags="develop dev-python"
+build_deps=("python python-setuptools python-pytz")
+
+adddep=("python python-pytz")
 
 build() {
   cp "$srcache"/core.zip babel-$pkgver/cldr/cldr-core-$_core.zip
