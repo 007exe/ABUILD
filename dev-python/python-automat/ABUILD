@@ -1,18 +1,18 @@
 pkgname=python-automat
 pkgver=20.2.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Self-service finite-state machines for the programmer on the go.")
 longdesc=("Self-service finite-state machines for the programmer on the go.")
 
 source=("https://github.com/glyph/automat/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools-scm python-m2r python-attrs"
+build_deps=("python python-setuptools-scm python-m2r python-attrs")
 
-adddep="python-attrs"
+adddep=("python-attrs")
 
 build() {
   go_src_dir
