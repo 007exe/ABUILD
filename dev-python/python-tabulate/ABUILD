@@ -1,16 +1,17 @@
 pkgname=python-tabulate
 pkgver=0.8.9
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Pretty-print tabular data in Python, a library and a command-line utility.")
 longdesc=("C version of reader, parser and emitter for ruamel.yaml derived from libyaml.")
 
-source="https://files.pythonhosted.org/packages/ae/3d/9d7576d94007eaf3bb685acbaaec66ff4cdeb0b18f1bf1f17edbeebffb0a/tabulate-${pkgver}.tar.gz"
+_name=tabulate
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
