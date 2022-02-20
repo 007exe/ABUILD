@@ -1,0 +1,22 @@
+pkgname=python-crashtest
+pkgver=0.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Supposedly makes exceptions handling and inspection easier.")
+longdesc=("Python library that makes exceptions handling and inspection easier.")
+
+_pkgname=crashtest
+source=("https://github.com/sdispater/${_pkgname}/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-dephell python-setuptools python-chardet")
+
+build() {
+  go_src_dir
+  dephell deps convert --from pyproject.toml --to setup.py
+  python setup.py build
+  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
