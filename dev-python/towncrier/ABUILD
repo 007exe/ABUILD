@@ -1,18 +1,18 @@
 pkgname=towncrier
 pkgver=21.3.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Utility to produce useful, summarised news files for your project.")
 longdesc=("Utility to produce useful, summarised news files for your project.")
 
 source=("https://pypi.io/packages/source/t/towncrier/towncrier-$pkgver.tar.gz")
 
-tags="utils dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-click python-click-default-group python-incremental python-jinja python-toml"
+build_deps=("python python-setuptools python-click python-click-default-group python-incremental python-jinja python-toml")
 
-adddep="python-setuptools python-click python-click-default-group python-incremental python-jinja python-toml"
+adddep=("python-setuptools python-click python-click-default-group python-incremental python-jinja python-toml")
 
 build() {
   go_src_dir
