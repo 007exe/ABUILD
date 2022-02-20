@@ -1,18 +1,18 @@
 pkgname=python-pexpect
 pkgver=4.8.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("An efficient, pure Python replacement for Expect")
+shortdesc=("An efficient, pure Python replacement for Expect.")
 longdesc=("Pexpect is a pure Python module for spawning child applications, controlling them, and responding to expected patterns in their output. Pexpect works like Don Libes' Expect. Pexpect allows your script to spawn a child application and control it as if a human were typing commands.")
 
 source=("https://github.com/pexpect/pexpect/archive/${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python"
+build_deps=("python python-ptyprocess")
 
-adddep="python-ptyprocess"
+adddep=("python-ptyprocess")
 
 build(){
   go_src_dir
