@@ -1,16 +1,16 @@
 pkgname=python-colorama
 pkgver=0.4.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python API for cross-platform colored terminal text.")
 longdesc=("ANSI escape character sequences have long been used to produce colored terminal text and cursor positioning on Unix and Macs. Colorama makes this work on Windows, too. It also provides some shortcuts to help generate ANSI sequences, and works fine in conjunction with any other ANSI sequence generation library, such as Termcolor.")
 
-source="https://github.com/tartley/colorama/archive/$pkgver.tar.gz"
+source=("https://github.com/tartley/colorama/archive/$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
