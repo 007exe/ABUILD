@@ -1,18 +1,18 @@
 pkgname=python-xapp
 pkgver=2.2.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python Xapp Library.")
-longdesc=("Python Xapp Library.")
+longdesc=("Python bindings for x11-libs/xapp.")
 
 source="https://github.com/linuxmint/python3-xapp/archive/${pkgver}.tar.gz"
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-psutil"
+build_deps=("python python-setuptools python-psutil")
 
-adddep="python-psutil"
+adddep=("python-psutil")
 
 build() {
   go_src_dir
