@@ -1,16 +1,16 @@
 pkgname=python-pypng
 pkgver=0.0.21
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Pure Python library for PNG image encoding/decoding.")
 longdesc=("PNG module for Python. PyPNG is written entirely in Python.")
 
 source=("https://github.com/drj11/pypng/archive/pypng-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
