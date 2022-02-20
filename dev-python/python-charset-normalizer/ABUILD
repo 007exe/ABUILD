@@ -1,16 +1,16 @@
 pkgname=python-charset-normalizer
 pkgver=2.0.10
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Encoding and language detection alternative to chardet.")
 longdesc=("A library that helps you read text from an unknown charset encoding.")
 
 source=("https://github.com/Ousret/charset_normalizer/archive/refs/tags/${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
