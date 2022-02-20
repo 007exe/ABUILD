@@ -1,18 +1,18 @@
 pkgname=python-sphinx_rtd_theme
 pkgver=1.0.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Sphinx theme for readthedocs.org")
-longdesc=("This is a prototype mobile-friendly sphinx theme for readthedocs.org. Its currently in development and includes some rtd variable checks that can be ignored if you're just trying to use it on your project outside of that site.")
+shortdesc=("Read the Docs theme for Sphinx.")
+longdesc=("ReadTheDocs.org theme for Sphinx.")
 
 source=("https://github.com/readthedocs/sphinx_rtd_theme/archive/$pkgver/sphinx_rtd_theme-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
-adddep="python-sphinx"
+adddep=("python-sphinx")
 
 build(){
   go_src_dir
