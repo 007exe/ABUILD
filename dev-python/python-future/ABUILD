@@ -1,16 +1,16 @@
 pkgname=python-future
 pkgver=0.18.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Clean single-source support for Python 3 and 2")
 longdesc=("Download, build, install, upgrade, and uninstall Python packages -- easily! Homepage: http://pypi.python.org/pypi/setuptools")
 
-tags=("dev-python develop")
+tags=("dev-python libs")
 
 source=("https://pypi.io/packages/source/f/future/future-$pkgver.tar.gz")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
