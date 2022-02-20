@@ -1,16 +1,16 @@
 pkgname=python-sphinx-alabaster-theme
 pkgver=0.7.12
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Sphinx default theme")
-longdesc=("Sphinx default theme")
+shortdesc=("Sphinx default theme.")
+longdesc=("A configurable sidebar-enabled Sphinx theme.")
 
-source="https://pypi.org/packages/source/a/alabaster/alabaster-$pkgver.tar.gz"
+source=("https://pypi.org/packages/source/a/alabaster/alabaster-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
