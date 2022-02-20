@@ -1,5 +1,5 @@
 pkgname=python-pyqt5-sip
-pkgver=12.9.0
+pkgver=12.9.1
 pkgbuild=1
 arch=("auto")
 
