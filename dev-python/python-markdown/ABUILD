@@ -1,19 +1,20 @@
 pkgname=python-markdown
-pkgver=3.3.4
+pkgver=3.3.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python implementation of John Gruber's Markdown.")
-longdesc=("This is a Python implementation of John Gruber's Markdown. It is almost completely compliant with the reference implementation, though there are a few known issues")
+longdesc=("This is a Python implementation of John Gruber's Markdown. It is almost completely compliant with the reference implementation, though there are a few known issues.")
 
 source=("https://files.pythonhosted.org/packages/source/M/Markdown/Markdown-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python-setuptools"
+build_deps=("python python-setuptools python-importlib-metadata")
 
-build()
-{
+adddep=("python-importlib-metadata")
+
+build(){
   go_src_dir
   python setup.py build
   python3 setup.py install --root="$pkgdir" --optimize=0
