@@ -1,16 +1,18 @@
 pkgname=python-incremental
 pkgver=21.3.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A small library that versions your Python projects.")
 longdesc=("A small library that versions your Python projects.")
 
 source=("https://github.com/hawkowl/incremental/archive/incremental-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-setuptools-scm"
+build_deps=("python python-setuptools python-setuptools-scm python-click python-twisted")
+
+adddep=("python-click python-twisted")
 
 build() {
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
