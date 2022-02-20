@@ -1,16 +1,16 @@
 pkgname=python-wcwidth
 pkgver=0.2.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Measures number of Terminal column cells of wide-character codes")
-longdesc=("Measures number of Terminal column cells of wide-character codes")
-
-build_deps="python python-setuptools"
-
-tags="develop sys-libs"
+shortdesc=("Measures number of Terminal column cells of wide-character codes.")
+longdesc=("Measures number of Terminal column cells of wide-character codes.")
 
 source=(https://files.pythonhosted.org/packages/source/w/wcwidth/wcwidth-$pkgver.tar.gz)
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
