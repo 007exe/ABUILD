@@ -1,7 +1,7 @@
 pkgname=python-dulwich
-pkgver=0.20.30
+pkgver=0.20.32
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Pure-Python implementation of the Git file formats and protocols.")
 longdesc=("Pure-Python implementation of the Git file formats and protocols")
@@ -9,11 +9,11 @@ longdesc=("Pure-Python implementation of the Git file formats and protocols")
 _name=dulwich
 source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-certifi python-urllib3"
+build_deps=("python python-setuptools python-certifi python-urllib3")
 
-adddep="python-certifi python-urllib3"
+adddep=("python-certifi python-urllib3")
 
 build() {
   go_src_dir
