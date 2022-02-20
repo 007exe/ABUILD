@@ -1,16 +1,16 @@
 pkgname=python-platformdirs
 pkgver=2.4.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A small Python module for determining appropriate platform-specific dirs, e.g. a user data dir.")
 longdesc=("A small Python module for determining appropriate platform-specific dirs, e.g. a user data dir.")
 
 source=("https://pypi.io/packages/source/p/platformdirs/platformdirs-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools-scm"
+build_deps=("python python-setuptools-scm")
 
 build() {
   go_src_dir
