@@ -1,0 +1,20 @@
+pkgname=python-pysocks
+pkgver=1.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SOCKS4, SOCKS5 or HTTP proxy (Anorov fork PySocks replaces socksipy)")
+longdesc=("SOCKS4, SOCKS5 or HTTP proxy (Anorov fork PySocks replaces socksipy)")
+
+source=("https://github.com/Anorov/PySocks/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+}
