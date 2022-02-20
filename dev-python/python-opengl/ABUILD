@@ -1,14 +1,14 @@
 pkgname=python-opengl
 pkgver=3.1.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Python OpenGL bindings")
-longdesc=("The cross platform Python binding to OpenGL and related APIs")
+shortdesc=("Python OpenGL bindings.")
+longdesc=("The cross platform Python binding to OpenGL and related APIs.")
 
 source=("https://pypi.python.org/packages/source/P/PyOpenGL/PyOpenGL-${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
 build_deps=("python-setuptools python freeglut")
 
