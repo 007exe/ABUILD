@@ -1,19 +1,18 @@
 pkgname=python-mock
 pkgver=4.0.3
 pkgbuild=1
-url="https://pypi.org/project/mock/"
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Rolling backport of unittest.mock for all Pythons")
 longdesc=("mock is a library for testing in Python. It allows you to replace parts of your system under test with mock objects and make assertions about how they have been used.mock is now part of the Python standard library, available as unittest.mock < in Python 3.3 This package contains a rolling backport of the standard library mock code compatible with Python 3.6 and up.Please see the standard...")
 
 source=("https://github.com/testing-cabal/mock/archive/$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-six python-pbr"
+build_deps=("python python-six python-pbr")
 
-adddep="python-six python-pbr"
+adddep=("python-six python-pbr")
 
 build(){
   go_src_dir
