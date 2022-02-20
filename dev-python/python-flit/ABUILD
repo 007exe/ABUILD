@@ -9,8 +9,8 @@ longdesc=("Simplified packaging of Python modules (core module).")
 source=("https://github.com/takluyver/flit/archive/$pkgver.tar.gz")
 
 tags=("libs dev-python")
-# python-poetry
-build_deps=("python python-pip python-requests python-docutils python-tomli python-tomli-w")
+
+build_deps=("python python-pip python-requests python-docutils python-tomli python-tomli-w python-poetry")
 
 adddep=("python-tomli python-tomli-w")
 
