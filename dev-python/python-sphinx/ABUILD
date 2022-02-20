@@ -1,18 +1,18 @@
 pkgname=python-sphinx
-pkgver=4.2.0
+pkgver=4.4.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Python documentation generator")
+shortdesc=("Python documentation generator.")
 longdesc=("Sphinx is a tool that facilitates the creation of beautiful documentation for Python projects from reStructuredText sources. It was originally created to format the new documentation for Python, but has since been cleaned up in the hope that it will be useful in many other projects.")
 
 source=("https://pypi.org/packages/source/S/Sphinx/Sphinx-$pkgver.tar.gz")
 
-tags="utils dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
 
-adddep="python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml"
+adddep=("python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
 
 build() {
   go_src_dir
