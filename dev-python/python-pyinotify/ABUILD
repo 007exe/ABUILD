@@ -1,16 +1,16 @@
 pkgname=python-pyinotify
 pkgver=0.9.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python module used for monitoring filesystems events on Linux platforms with inotify.")
 longdesc=("Python module used for monitoring filesystems events on Linux platforms with inotify.")
 
 source=("https://github.com/seb-m/pyinotify/archive/${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python"
+build_deps=("python")
 
 build() {
   go_src_dir
