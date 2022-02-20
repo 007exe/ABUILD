@@ -1,16 +1,16 @@
 pkgname=python-zipp
-pkgver=3.5.0
+pkgver=3.7.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Backport of pathlib-compatible object wrapper for zip files")
+shortdesc=("Backport of pathlib-compatible object wrapper for zip files.")
 longdesc=("A pathlib-compatible Zipfile object wrapper. A backport of the Path object.")
 
 source=("https://github.com/jaraco/zipp/archive/v$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools-scm python-toml"
+build_deps=("python python-setuptools-scm python-toml")
 
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
 
