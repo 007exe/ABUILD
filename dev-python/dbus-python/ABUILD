@@ -1,16 +1,16 @@
 pkgname=dbus-python
 pkgver=1.2.18
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python bindings for DBUS.")
 longdesc=("Python bindings for DBUS.")
 
-source="https://dbus.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+source=("https://dbus.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python autoconf2.13 python-sphinx_rtd_theme python-sphinx"
+build_deps=("python autoconf2.13 python-sphinx_rtd_theme python-sphinx dbus glib2")
 
 build() {
   go_src_dir
