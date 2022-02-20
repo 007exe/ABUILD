@@ -16,6 +16,7 @@ adddep=("python-requests")
 
 build() {
   go_src_dir
+  burn_patches
   python setup.py build
   python setup.py install --root="$pkgdir" --optimize=1
 }
