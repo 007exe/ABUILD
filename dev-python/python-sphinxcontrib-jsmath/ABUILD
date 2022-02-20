@@ -1,17 +1,17 @@
 pkgname=python-sphinxcontrib-jsmath
-_name=sphinxcontrib-jsmath
 pkgver=1.0.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("JavaScript Math rendering support for the Sphinx documentation generator")
-longdesc=("JavaScript Math rendering support for the Sphinx documentation generator")
+shortdesc=("JavaScript Math rendering support for the Sphinx documentation generator.")
+longdesc=("JavaScript Math rendering support for the Sphinx documentation generator.")
 
-source="https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz"
+_name=sphinxcontrib-jsmath
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
