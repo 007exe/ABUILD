@@ -1,18 +1,18 @@
 pkgname=python-jinja
-pkgver=3.0.1
-pkgbuild=2
-arch=('auto')
+pkgver=3.0.3
+pkgbuild=1
+arch=("auto")
 
 shortdesc=("A simple pythonic template language written in Python")
 longdesc=("A simple pythonic template language written in Python")
 
-source="https://files.pythonhosted.org/packages/source/J/Jinja2/Jinja2-$pkgver.tar.gz"
+source=("https://files.pythonhosted.org/packages/source/J/Jinja2/Jinja2-$pkgver.tar.gz")
 
-tags="dev-python develop"
+tags=("dev-python libs")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools python-markupsafe")
 
-adddep="python-setuptools python-markupsafe"
+adddep=("python-setuptools python-markupsafe")
 
 build() {
   go_src_dir
