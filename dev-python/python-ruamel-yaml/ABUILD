@@ -1,18 +1,18 @@
 pkgname=python-ruamel-yaml
-pkgver=0.17.16
+pkgver=0.17.21
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order.")
 longdesc=("YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order.")
 
-source="https://files.pythonhosted.org/packages/source/r/ruamel.yaml/ruamel.yaml-${pkgver}.tar.gz"
+source=("https://files.pythonhosted.org/packages/source/r/ruamel.yaml/ruamel.yaml-${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
-adddep="python-ruamel.yaml.clib"
+adddep=("python-ruamel.yaml.clib")
 
 build() {
   go_src_dir
