@@ -1,16 +1,16 @@
 pkgname=python-markupsafe
 pkgver=2.0.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("XML/HTML/XHTML markup safe string package for Python")
+shortdesc=("XML/HTML/XHTML markup safe string package for Python.")
 longdesc=("This package implements a XML/HTML/XHTML markup safe string for Python.")
 
 source=("https://github.com/pallets/markupsafe/archive/$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
