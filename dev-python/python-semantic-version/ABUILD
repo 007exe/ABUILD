@@ -1,16 +1,16 @@
 pkgname=python-semantic-version
-pkgver=2.8.5
+pkgver=2.9.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Library implementing the SemVer scheme")
-longdesc=("Library implementing the SemVer scheme")
+shortdesc=("Library implementing the SemVer scheme.")
+longdesc=("Library implementing the SemVer scheme.")
 
-source=("https://files.pythonhosted.org/packages/d4/52/3be868c7ed1f408cb822bc92ce17ffe4e97d11c42caafce0589f05844dd0/semantic_version-$pkgver.tar.gz")
+source=("https://github.com/rbarrois/python-semanticversion/archive/$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build(){
   go_src_dir
