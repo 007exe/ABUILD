@@ -1,18 +1,18 @@
 pkgname=python-atspi
 pkgver=2.38.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python bindings for D-Bus AT-SPI.")
 longdesc=("Python bindings for D-Bus AT-SPI.")
 
 source=("https://gitlab.gnome.org/GNOME/pyatspi2/-/archive/PYATSPI_${pkgver//./_}/pyatspi2-PYATSPI_${pkgver//./_}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python-gobject at-spi2-core"
+build_deps=("python-gobject at-spi2-core")
 
-adddep="python-gobject at-spi2-core"
+adddep=("python-gobject at-spi2-core")
 
 build() {
   go_src_dir
