@@ -10,10 +10,10 @@ _pkgname=clikit
 source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
-# python-crashtest python-pastel
-build_deps=("python python-dephell python-pylev python-typing_extensions")
-# python-crashtest python-pastel
-adddep=("python-pylev python-typing_extensions")
+
+build_deps=("python python-dephell python-pylev python-typing_extensions python-crashtest python-pastel")
+
+adddep=("python-pylev python-typing_extensions python-crashtest python-pastel")
 
 build() {
   go_src_dir
