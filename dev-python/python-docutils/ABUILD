@@ -1,19 +1,16 @@
 pkgname=python-docutils
 pkgver=0.17.1
 pkgbuild=2
-url="https://pypi.org/project/docutils/#files"
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python Documentation Utilities")
 longdesc=("The purpose of the Docutils project is to create a set of tools for processing plaintext documentation into useful formats, such as HTML, XML, and LaTeX.")
 
 source=("https://files.pythonhosted.org/packages/4c/17/559b4d020f4b46e0287a2eddf2d8ebf76318fd3bd495f1625414b052fdc9/docutils-$pkgver.tar.gz")
 
-tags="dev-python develop"
+tags=("dev-python libs")
 
-build_deps="python python-setuptools"
-
-adddep="python"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
