@@ -1,7 +1,7 @@
 pkgname=python-pyxdg
 pkgver=0.27
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Python library to access freedesktop.org standards.")
 longdesc=("Python library to access freedesktop.org standards.")
@@ -9,7 +9,7 @@ longdesc=("Python library to access freedesktop.org standards.")
 pkgbase=pyxdg
 source=("https://files.pythonhosted.org/packages/source/${pkgbase::1}/${pkgbase}/${pkgbase}-${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
 build_deps=("python python-setuptools")
 
