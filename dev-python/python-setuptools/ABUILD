@@ -1,20 +1,18 @@
 pkgname=python-setuptools
-pkgver=58.1.0
+pkgver=58.3.0
 pkgbuild=1
-url="https://pypi.org/project/setuptools/"
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Easily build and distribute Python packages.")
 longdesc=("Download, build, install, upgrade, and uninstall Python packages -- easily! Homepage: http://pypi.python.org/pypi/setuptools")
 
-tags=("dev-python develop")
+source=("https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-$pkgver.tar.gz")
 
-#source=("https://github.com/pypa/setuptools/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
-source=("https://files.pythonhosted.org/packages/59/b8/adeb445fa6c636f78c532f0dd6f847f0f90e709afa7d41396181d438be5a/setuptools-$pkgver.tar.gz")
+tags=("dev-python libs")
 
-build_deps="python"
+build_deps=("python")
 
-adddep="python-appdirs python-more-itertools python-ordered-set python-packaging python-pyparsing"
+adddep=("python-appdirs python-more-itertools python-ordered-set python-packaging python-pyparsing")
 
  export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
 
