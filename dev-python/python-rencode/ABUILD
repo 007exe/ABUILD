@@ -1,16 +1,16 @@
 pkgname=python-rencode
 pkgver=1.0.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A Module similar to bencode from the BitTorrent project")
-longdesc=("Similar to bencode from the BitTorrent project")
+shortdesc=("A Module similar to bencode from the BitTorrent project.")
+longdesc=("Similar to bencode from the BitTorrent project.")
 
 source=("https://github.com/aresch/rencode/archive/v$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python-cython python-setuptools"
+build_deps=("python-cython python-setuptools")
 
 build() {
   go_src_dir
