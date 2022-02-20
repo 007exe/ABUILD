@@ -1,18 +1,18 @@
 pkgname=python-twisted
 pkgver=21.7.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Asynchronous networking framework written in Python.")
 longdesc=("Asynchronous networking framework written in Python.")
 
 source=("https://github.com/twisted/twisted/archive/twisted-$pkgver.tar.gz")
 
-tags="dev-python network"
+tags=("dev-python libs")
 
-build_deps="python-setuptools python-zope-interface python-constantly python-incremental python-automat python-hyperlink python-attrs python-typing_extensions"
+build_deps=("python-setuptools python-zope-interface python-constantly python-incremental python-automat python-hyperlink python-attrs python-typing_extensions")
 
-adddep="python-zope-interface python-constantly python-incremental python-automat python-hyperlink python-attrs python-typing_extensions"
+adddep=("python-zope-interface python-constantly python-incremental python-automat python-hyperlink python-attrs python-typing_extensions")
 
 build() {
   go_src_dir
