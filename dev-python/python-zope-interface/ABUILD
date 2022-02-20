@@ -1,16 +1,16 @@
 pkgname=python-zope-interface
 pkgver=5.4.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Zope Interfaces for Python 3.x")
 longdesc=("Zope Interfaces for Python 3.x")
 
 source=("https://pypi.io/packages/source/z/zope.interface/zope.interface-$pkgver.tar.gz")
 
-tags="dev-python libs"
+tags=("dev-python libs")
 
-build_deps="python python-pip"
+build_deps=("python python-pip")
 
 build() {
   go_src_dir
