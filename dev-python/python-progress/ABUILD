@@ -1,16 +1,16 @@
 pkgname=python-progress
 pkgver=1.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Easy to use progress bars for Python")
-longdesc=("Easy to use progress bars for Python")
+shortdesc=("Easy to use progress bars for Python.")
+longdesc=("Easy to use progress bars for Python.")
 
 source=("https://github.com/verigak/progress/archive/${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
