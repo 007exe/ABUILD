@@ -1,22 +1,23 @@
 pkgname=python-aiohttp
-pkgver=3.7.4
+pkgver=3.8.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("HTTP client/server for asyncio")
 longdesc=("Python HTTP client/server for asyncio which supports both the client and the server side of the HTTP protocol, client and server websocket, and webservers with middlewares and pluggable routing.")
 
-source="https://github.com/aio-libs/aiohttp/archive/refs/tags/v$pkgver.tar.gz"
+source=("https://files.pythonhosted.org/packages/source/a/aiohttp/aiohttp-${pkgver}.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-cython python-setuptools"
+build_deps=("git python python-cython python-setuptools python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer python-aiosignal python-frozenlist")
 
-adddep="python-chardet python-attrs python-multidict python-async-timeout python-yarl"
+adddep=("python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer python-aiosignal python-frozenlist")
 
 build() {
   go_src_dir
-  burn_patches
+  sed -i '/http_parser\.c/d' -i setup.py
+  sed -i '/http_parser\.h/s/".*\//"/' -i aiohttp/_cparser.pxd
 #  make cythonize
   python setup.py build
   python setup.py install --root="${pkgdir}" -O1 --skip-build
