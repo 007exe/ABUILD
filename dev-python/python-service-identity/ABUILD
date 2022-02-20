@@ -1,18 +1,18 @@
 pkgname=python-service-identity
 pkgver=21.1.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Service identity verification for pyOpenSSL")
-longdesc=("Service identity verification for pyOpenSSL")
+shortdesc=("Service identity verification for pyOpenSSL.")
+longdesc=("Service identity verification for pyOpenSSL.")
 
 source=("https://github.com/pyca/service-identity/archive/$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="libs dev-python"
+tags=("libs dev-python")
 
-build_deps="python-setuptools python-idna python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six"
+build_deps=("python-setuptools python-idna python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six")
 
-adddep="python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six"
+adddep=("python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six")
 
 build() {
   go_src_dir
