@@ -1,17 +1,17 @@
 pkgname=python-certifi
-pkgver=2020.12.5
-_libname=${pkgname/python-/}
+pkgver=2021.10.8
 pkgbuild=1
 arch=('auto')
 
 shortdesc=("Mozillas SSL Certs")
 longdesc=("This package may or may not become a dependency of Requests. Mozillas CA bundle for SSL is MPL / GPL licensed. This will allow for that.")
 
+_libname=${pkgname/python-/}
 source=("https://pypi.io/packages/source/${_libname:0:1}/$_libname/$_libname-$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools"
+build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
