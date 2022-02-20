@@ -1,22 +1,26 @@
 pkgname=python-py
-pkgver=1.10.0
+pkgver=1.11.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Python development support library")
+shortdesc=("Python development support library.")
 longdesc=("The py lib is a development support library featuring these tools and APIs: py.path py.apipkg py.iniconfig py.code py.path")
 
-source=("https://files.pythonhosted.org/packages/0d/8c/50e9f3999419bb7d9639c37e83fa9cdcf0f601a9d407162d6c37ad60be71/py-$pkgver.tar.gz")
+source=("https://github.com/pytest-dev/py/archive/$pkgver.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-setuptools-scm python-iniconfig python-apipkg"
+build_deps=("python python-setuptools python-setuptools-scm python-iniconfig python-apipkg")
 
-adddep="python-iniconfig python-apipkg"
+adddep=("python-iniconfig python-apipkg")
 
-build()
-{
+build(){
   go_src_dir
+  rm -r py/_vendored_packages
+
+  export LC_CTYPE=en_US.UTF-8
+  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+
   python setup.py build
   python setup.py install --root="$pkgdir" --optimize=1
   install -D -m644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
