@@ -1,18 +1,18 @@
 pkgname=python-breathe
-pkgver=4.31.0
+pkgver=4.33.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("An extension to reStructuredText and Sphinx to be able to read and render Doxygen xml output")
 longdesc=("Breathe provides a bridge between the Sphinx and Doxygen documentation systems.")
 
 source=("https://github.com/michaeljones/breathe/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-sphinx python-docutils python-six"
+build_deps=("python python-setuptools python-sphinx python-docutils python-six")
 
-adddep="python-sphinx python-docutils python-six"
+adddep=("python-sphinx python-docutils python-six")
 
 build() {
   go_src_dir
