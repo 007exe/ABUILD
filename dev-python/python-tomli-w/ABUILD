@@ -9,8 +9,8 @@ longdesc=("A lil' TOML writer.")
 source=("https://github.com/hukkin/tomli-w/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
-# python-poetry
-build_deps=("python python-pip python-flit")
+
+build_deps=("python python-pip python-flit python-poetry")
 
 build() {
   go_src_dir
