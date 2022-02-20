@@ -1,16 +1,18 @@
 pkgname=python-cffi
-pkgver=1.14.5
+pkgver=1.15.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Foreign Function Interface for Python calling C code")
 longdesc=("Foreign Function Interface for Python calling C code. The aim of this project is to provide a convenient and reliable way of calling C code from Python. The interface is based on LuaJITs FFI")
 
 source=("https://foss.heptapod.net/pypy/cffi/-/archive/v$pkgver/cffi-v$pkgver.tar.bz2")
 
-tags="develop dev-python"
+tags=("libs dev-python")
 
-build_deps="python python-setuptools python-pycparser"
+build_deps=("python python-setuptools python-pycparser")
+
+adddep=("python-pycparser")
 
 build() {
   go_src_dir
