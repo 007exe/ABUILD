@@ -1,57 +1,27 @@
 pkgname=qmmp-plugin-pack
-pkgver=0.12.2
+pkgver=1.5.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Plugin pack is a set of extra plugins for Qmmp"
-#longdesc=(""#)
+shortdesc=("Qmmp Plugin Pack")
+longdesc=("A set of extra plugins for Qmmp")
 
-source=("http://qmmp.ylsoftware.com/files/plugins/${pkgname}-${pkgver}.tar.bz2")
+source=("http://qmmp.ylsoftware.com/files/qmmp-plugin-pack/1.5/qmmp-plugin-pack-${pkgver}.tar.bz2")
 
-patch_opts=("")
+tags=("xapps media-plugins")
+# libxmp
+build_deps=("cmake yasm qt5-tools taglib mpg123 qmmp")
 
-tags="xapps media-sound"
-
-#dependencies only needed to build package
-build_deps="qmmp mpg123 yasm cmake"
-
-provides=""
-conflicts=""
-
-adddep="qmmp taglib>=1.10.0 libxmp>=4.2.0 libsamplerate>=0.1.2 ffmpeg>=3.2 youtube-dl "
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-
-BUILD_SYSTEM="qmake"
-BUILD_KEYS="*.pro PREFIX=/usr LIB_DIR=/usr/lib${LIBDIRSUFFIX}"
-
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-#
-#}
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DUSE_FFAP:BOOL=TRUE
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
