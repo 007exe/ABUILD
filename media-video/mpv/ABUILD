@@ -1,18 +1,18 @@
 pkgname=mpv
-pkgver=0.33.1
+pkgver=0.34.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("a free, open source, and cross-platform media player")
+shortdesc=("A free, open source, and cross-platform media player")
 longdesc=("Mpv is a movie player based on MPlayer and mplayer2. It supports a wide variety of video file formats, audio and video codecs, and subtitle types. Special input URL types are available to read input from a variety of sources other than disk files. Depending on platform, a variety of different video and audio output methods are supported.")
 
-#source=("https://github.com/mpv-player/mpv/archive/refs/tags/v${pkgver}.tar.gz")
-source=("git:https://github.com/mpv-player/mpv.git")
-tags="xapps media-video"
+source=("https://github.com/mpv-player/mpv/archive/refs/tags/v${pkgver}.tar.gz")
 
-build_deps="libplacebo shaderc uchardet mujs rubberband libdvdnav ffnvcodec-headers lua52 libcdio libcdio-paranoia libdvdread python-docutils ladspa wayland-protocols vulkan-headers waf alsa-lib desktop-file-utils ffmpeg jack lcms2 libarchive libass libbluray libdrm libjpeg-turbo libglvnd libpulse libva libvdpau libx11 libxext libxinerama libxkbcommon libxrandr libxv mesa vulkan-icd-loader wayland xdg-utils zlib"
+tags=("xapps media-video")
 
-adddep="hicolor-icon-theme"
+build_deps=("libplacebo shaderc uchardet mujs rubberband libdvdnav ffnvcodec-headers lua52 libcdio libcdio-paranoia libdvdread python-docutils ladspa wayland-protocols vulkan-headers waf alsa-lib desktop-file-utils ffmpeg jack lcms2 libarchive libass libbluray libdrm libjpeg-turbo libglvnd libpulse libva libvdpau libx11 libxext libxinerama libxkbcommon libxrandr libxv mesa vulkan-icd-loader wayland xdg-utils zlib")
+
+adddep=("hicolor-icon-theme")
 
 build(){
   go_src_dir
@@ -36,7 +36,6 @@ build(){
     --enable-wayland \
     --enable-gl-wayland \
     --enable-egl \
-    --enable-egl-drm \
     --enable-vaapi \
     --disable-build-date \
     --disable-caca \
@@ -57,6 +56,7 @@ build(){
     --disable-optimize \
     --disable-static-build \
     --disable-libmpv-static \
+    --disable-egl-drm \
     --disable-debug
 # --enable-openal
 # --enable-egl-x11
