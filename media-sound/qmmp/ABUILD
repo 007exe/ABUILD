@@ -1,20 +1,26 @@
 pkgname=qmmp
-pkgver=0.12.7
+pkgver=1.5.3
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Qt-based Multimedia Player"
+shortdesc=("Qt-based Multimedia Player")
+longdesc=("Qt5-based audio player with winamp/xmms skins support")
 
-source=("http://qmmp.ylsoftware.com/files/${pkgname}-${pkgver}.tar.bz2")
+source=("http://qmmp.ylsoftware.com/files/qmmp/1.5/qmmp-${pkgver}.tar.bz2")
 
-build_deps="cmake libcdio-paranoia "
-tags="xapps media-sound"
+tags=("xapps media-sound")
+# pipewire libmms projectm libgme libsidplayfp wildmidi
+build_deps=("cmake flac jack libmpcdec pulseaudio ffmpeg libcdio-paranoia libcddb libsamplerate libmodplug libsndfile wavpack mpg123 mesa faad2 opusfile qt5-tools qt5-base alsa-lib curl desktop-file-utils hicolor-icon-theme libmad libvorbis libogg libxkbcommon-x11 taglib xdg-utils")
 
+adddep=("hicolor-icon-theme")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
-
+build() {
+  go_src_dir
+  burn_patches
+  cmake . \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DUSE_HAL:BOOL=FALSE
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
