@@ -1,27 +1,23 @@
 pkgname=sed
 pkgver=4.8
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
-shortdesc="GNU stream editor"
-longdesc="This is the GNU version of sed, a stream editor. A stream editor is used to perform basic text transformations on an input stream (a file or input from a pipeline). It is sed's ability to filter text in a pipeline which distinguishes it from other types of editors. sed is a required package (it is needed by many system scripts)."
+shortdesc=("GNU stream editor")
+longdesc=("The Sed package contains a stream editor.")
 
-tags=("base sys-base")
+tags=("base sys-apps")
 
-source=("ftp://ftp.gnu.org/pub/gnu/sed/${pkgname}-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/pub/gnu/sed/$pkgname-$pkgver.tar.xz")
 
-build_deps="acl gettext"
-adddep="bash"
+build_deps=("glibc acl attr gettext")
 
 build() {
   go_src_dir
-  ./configure --prefix=/usr --bindir=/bin
-  make
-  make DESTDIR="$pkgdir" install
-}
+  ./configure --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-after_build() {
-# This symlink is required by some programs
-  mkdir -p ${pkgdir}/usr/bin
-  ln -s ../../bin/sed ${pkgdir}/usr/bin/sed
+  mkdir -p ${pkgdir}/bin
+  cp ${pkgdir}/usr/bin/sed ${pkgdir}/bin/sed
 }
