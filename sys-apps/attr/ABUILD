@@ -1,34 +1,34 @@
 pkgname=attr
 pkgver=2.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Tools for using extended attributes on filesystems")
-longdesc=("This package contains a set of tools for manipulating extended attributes (name:value pairs associated permanently with files and directories) on filesystem objects, and the library and header files needed to develop programs which make use of extended attributes. Extended attributes are used to provide additional functionality to a filesystem. For example, Access Control Lists (ACLs) are implemented using extended attributes.")
-
-tags=("base sys-apps compat32")
-build_deps="glibc-solibs autoconf"
+shortdesc=("Extended attribute support library for ACL support.")
+longdesc=("The attr package contains utilities to administer the extended attributes on filesystem objects.")
 
 source=("http://download.savannah.gnu.org/releases/attr/attr-$pkgver.tar.xz")
 
-config_files="etc/xattr.conf"
+tags=("base sys-apps")
+
+build_deps=("glibc gettext")
+
+config_files=("etc/xattr.conf")
 
 build() {
   go_src_dir
-  ./configure --prefix=/usr \
+  burn_patches
+  ./configure \
+    --prefix=/usr \
     --sysconfdir=/etc \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --disable-static \
+    --enable-shared \
     --enable-lib64
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
-# tidy up
-  cd "${pkgdir}"
-  install -dm755 lib${LIBDIRSUFFIX}
-
-  ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so
-  ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so.1 ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so.1
-  ln -sv ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libattr.so.1.1.0 ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.so.1.1.0
-  rm -rvf usr/libexec${LIBDIRSUFFIX}
+# Обратная совместимость
+  mkdir -p ${pkgdir}/lib${LIBDIRSUFFIX}
+  cp -r ${pkgdir}/usr/lib${LIBDIRSUFFIX} ${pkgdir}
+  rm -r ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig
+  rm ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.a
 }
