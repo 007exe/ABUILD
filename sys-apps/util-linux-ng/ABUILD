@@ -1,32 +1,33 @@
 pkgname=util-linux-ng
 pkgver=2.37.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A collection of basic system utilities")
-longdesc=("The util-linux package contains a large variety of low-level system utilities that are necessary for a Linux system to function. Among others, Util-linux-ng contains the fdisk configuration tool and the login program.")
+shortdesc=("Miscellaneous system utilities for Linux.")
+longdesc=("The Util-linux package contains miscellaneous utility programs. Among them are utilities for handling file systems, consoles, partitions, and messages.")
 
-tags=('base sys-apps')
+tags=("base sys-apps")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-${pkgver}.tar.xz")
-conflicts="eject"
 
-config_files="etc/pam.d/chfn
+config_files=("etc/pam.d/chfn
 etc/pam.d/chsh
 etc/pam.d/login
 etc/pam.d/runuser
 etc/pam.d/runuser-l
 etc/pam.d/su
-etc/pam.d/su-l"
+etc/pam.d/su-l")
 
-build_deps="eudev linux-pam acl shadow coreutils asciidoctor"
+build_deps=("eudev linux-pam acl shadow coreutils asciidoctor")
+
+adddep=("coreutils")
 
 build() {
   go_src_dir
   ./configure \
   --prefix=/usr \
-  --bindir=/bin \
-  --sbindir=/sbin \
+  --bindir=/usr/bin \
+  --sbindir=/usr/bin \
   --libdir=/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
@@ -44,40 +45,21 @@ build() {
 
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
-  # Moving things around that have been in the same place
-  # for 15 years is, IMHO, not a wise idea AT ALL.
-  # If this had to be moved, some place out of /usr might
-  # have shown a grain of insight...
-  if [ -r ${pkgdir}/sbin/fdformat ]; then
-    mkdir -p ${pkgdir}/bin
-    mv ${pkgdir}/sbin/fdformat ${pkgdir}/bin/fdformat
-    # Now since stuff will start looking in this new place,
-    # we have no choice but to link these:
-    ( cd ${pkgdir}/sbin
-      ln -sf ../bin/fdformat .
-    )
-  fi
-
-  # setuid chfn and chsh
+  mv ${pkgdir}/usr/sbin/* ${pkgdir}/usr/bin
+# setuid chfn and chsh
   chmod 4755 "$pkgdir"/usr/bin/{newgrp,ch{sh,fn}}
 
-  # Now let's add some important symlinks :)
-  ( cd ${pkgdir}/sbin
-    ln -s ../bin/mount .
-    ln -s ../bin/umount .
-    ln -s hwclock clock
-    cd ${pkgdir}/bin
-    ln -s ../sbin/readprofile .
-    ln -s ../sbin/tunelp .
-    ln -s ../sbin/raw .
-    cd ${pkgdir}/usr/share/man/man8
-    ln -s hwclock.8 clock.8
-  )
+  cd ${pkgdir}/usr/bin
+  ln -s hwclock clock
+# NOTE: Обратная совместимость
+  mkdir -p ${pkgdir}/usr/sbin
+  mkdir -p ${pkgdir}/{bin,sbin}
+  cp ${pkgdir}/usr/bin/{dmesg,findmnt,kill,login,lsblk,more,mount,mountpoint,readprofile,su,umount,wdctl} ${pkgdir}/bin
+  cp ${pkgdir}/usr/bin/{agetty,blkdiscard,blkid,blkzone,blockdev,cfdisk,chcpu,clock,ctrlaltdel,fdisk,findfs,fsck,fsck.cramfs,fsck.minix,fsfreeze,fstrim,hwclock,losetup,mkfs,mkfs.bfs,mkfs.cramfs,mkfs.minix,mkswap,mount,nologin,pivot_root,runuser,sfdisk,sulogin,swaplabel,swapoff,swapon,switch_root,umount,wipefs,zramctl} ${pkgdir}/sbin
+  cp ${pkgdir}/usr/bin/{addpart,delpart,ldattach,partx,readprofile,resizepart,rfkill,rtcwake,uuidd,vigr,vipw} ${pkgdir}/usr/sbin
 
-  # install PAM files for login-utils
+# PAM-файлы для login-utils
   install -Dm0644 "${filedir}/pam.d/chfn" "${pkgdir}/etc/pam.d/chfn"
   install -m0644 "${filedir}/pam.d/chsh" "${pkgdir}/etc/pam.d/chsh"
   install -m0644 "${filedir}/pam.d/login" "${pkgdir}/etc/pam.d/login"
