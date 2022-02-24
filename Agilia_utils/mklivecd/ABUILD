@@ -10,7 +10,7 @@ source=("git:git://github.com/007exe/mpkg.git")
 
 tags=("xapps sys-apps")
 
-adddep=("bash wget rsync syslinux cdrtools fakeroot fakechroot mpkg-console squashfs-tools")
+adddep=("bash wget rsync syslinux cdrtools fakeroot fakechroot mpkg-console squashfs-tools grub")
 
 build_deps=("cmake")
 
