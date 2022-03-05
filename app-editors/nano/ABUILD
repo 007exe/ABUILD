@@ -1,24 +1,25 @@
 pkgname=nano
-pkgver=6.0
+pkgver=6.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Tiny console text editor that aims to emulate Pico")
-longdesc=("nano (Nano's ANOther editor) is the editor formerly known as TIP (TIP Isn't Pico). It aims to emulate Pico as closely as possible while also offering a few enhancements.")
+shortdesc=("Pico editor clone with enhancements.")
+longdesc=("The Nano package contains a small, simple text editor which aims to replace Pico, the default editor in the Pine package.")
 
 source=("http://www.nano-editor.org/dist/v6/${pkgname}-${pkgver}.tar.gz")
 
-tags="console app-text"
+tags=("console app-editors")
 
-config_files="etc/nanorc"
-build_deps="ncurses"
+build_deps=("ncurses file")
+
+config_files=("etc/nanorc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-utf8 \
     --enable-color \
     --enable-nanorc \
     --enable-multibuffer
