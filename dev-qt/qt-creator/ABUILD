@@ -1,0 +1,32 @@
+pkgname=qt-creator
+pkgver=6.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Lightweight, cross-platform integrated development environment.")
+longdesc=("Lightweight IDE for C++/QML development centering around Qt.")
+
+source=("https://download.qt.io/official_releases/qtcreator/${pkgver%.*}/$pkgver/qt-creator-opensource-src-$pkgver.tar.xz")
+
+tags=("dev-qt develop")
+
+build_deps=("cmake llvm python")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DWITH_DOCS=ON \
+    -DBUILD_DEVELOPER_DOCS=ON \
+    -DBUILD_QBS=OFF \
+    -DQTC_CLANG_BUILDMODE_MATCH=ON
+  cmake --build build
+  cmake --build build --target docs
+  DESTDIR="$pkgdir" cmake --install build
+# Установка документации
+  cp -r build/share/doc "$pkgdir"/usr/share
+
+  install -Dm644 LICENSE.GPL3-EXCEPT "$pkgdir"/usr/share/licenses/qtcreator/LICENSE.GPL3-EXCEPT
+}
