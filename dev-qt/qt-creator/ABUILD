@@ -9,8 +9,8 @@ longdesc=("Lightweight IDE for C++/QML development centering around Qt.")
 source=("https://download.qt.io/official_releases/qtcreator/${pkgver%.*}/$pkgver/qt-creator-opensource-src-$pkgver.tar.xz")
 
 tags=("dev-qt develop")
-
-build_deps=("cmake llvm python")
+# qt6-webengine
+build_deps=("cmake llvm python qt6-tools qt6-svg qt6-quick3d qt6-serialport qt6-shadertools qt6-5compat clang clazy yaml-cpp")
 
 build() {
   go_src_dir
