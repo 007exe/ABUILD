@@ -1,10 +1,10 @@
 pkgname=zstd
-pkgver=1.5.1
+pkgver=1.5.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Zstandard - Fast real-time compression algorithm")
-longdesc=("Zstandard is a real-time compression algorithm, providing high compression ratios. It offers a very wide range of compression / speed trade-offs, while being backed by a very fast decoder.")
+shortdesc=("Zstandard - Fast real-time compression algorithm.")
+longdesc=("Zstandard is a real-time compression algorithm, providing high compression ratios. It offers a very wide range of compression / speed trade-offs, while being backed by a very fast decoder..")
 
 tags=("base app-arch")
 
@@ -15,19 +15,12 @@ build_deps="mkpkg cmake"
 build() {
   go_src_dir
   burn_patches
-  mkdir builds
-  cd builds
-  cmake -DZSTD_BUILD_CONTRIB:BOOL=ON \
-    -DZSTD_LZMA_SUPPORT:BOOL=ON \
-    -DZSTD_PROGRAMS_LINK_SHARED:BOOL=ON \
-    -DZSTD_ZLIB_SUPPORT:BOOL=ON \
-    -DZSTD_MULTITHREAD_SUPPORT:BOOL=ON \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
-    ../build/cmake
   make -j${numjobs}
-  make DESTDIR=${pkgdir} install
-  ln -sf /usr/bin/zstd "$pkgdir/usr/bin/zstdmt"
-  install -Dm755 contrib/pzstd/pzstd "$pkgdir/usr/bin/pzstd"
-  install -Dm644 ../LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  make -C contrib/pzstd
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+  ln -sf /usr/bin/zstd ${pkgdir}/usr/bin/zstdmt
+  install -Dm 755 contrib/pzstd/pzstd -t ${pkgdir}/usr/bin
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+# Удаляем не нужную статическую библиотеку
+  rm -v ${pkgdir}/usr/lib/libzstd.a
 }
