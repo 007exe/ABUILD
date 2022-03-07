@@ -1,24 +1,23 @@
 pkgname=bc
-pkgver=5.0.0
+pkgver=5.2.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An arbitrary precision calculator language")
+shortdesc=("An arbitrary precision calculator language.")
 longdesc=("The Bc package contains an arbitrary precision numeric processing language.")
 
 tags=("console sys-devel")
 
 source=("https://github.com/gavinhoward/bc/releases/download/${pkgver}/bc-${pkgver}.tar.xz")
 
-build_deps="readline"
+build_deps=("readline")
 
 build() {
   go_src_dir
-
+  burn_patches
   PREFIX=/usr CC=gcc CFLAGS="-std=c99" ./configure.sh -G -O3
-  make
-#  make test
-  make DESTDIR="$pkgdir" install
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
 
 
