@@ -1,0 +1,21 @@
+diff -p -up file-4.24/magic/Magdir/policy.selinux file-4.24/magic/Magdir/policy
+--- file-4.24/magic/Magdir/policy.selinux	2008-04-08 08:53:45.000000000 +0200
++++ file-4.24/magic/Magdir/policy	2008-04-08 08:53:45.000000000 +0200
+@@ -0,0 +1,6 @@
++# SE Linux policy database
++0       lelong  0xf97cff8c      SE Linux policy
++>16     lelong  x               v%d
++>20     lelong  1 		MLS
++>24     lelong  x       	%d symbols
++>28     lelong  x       	%d ocons
+diff -p -up file-5.38/magic/Makefile.am file-5.38/magic/Makefile.am.selinux
+--- file-5.38/magic/Makefile.am 2019-11-02 19:37:58.000000000 +0100
++++ file-5.38/magic/Makefile.am.selinux 2019-12-18 13:57:27.404603654 +0100
+@@ -228,6 +228,7 @@ $(MAGIC_FRAGMENT_DIR)/pkgadd \
+ $(MAGIC_FRAGMENT_DIR)/plan9 \
+ $(MAGIC_FRAGMENT_DIR)/plus5 \
+ $(MAGIC_FRAGMENT_DIR)/pmem \
++$(MAGIC_FRAGMENT_DIR)/policy \
+ $(MAGIC_FRAGMENT_DIR)/polyml \
+ $(MAGIC_FRAGMENT_DIR)/printer \
+ $(MAGIC_FRAGMENT_DIR)/project \

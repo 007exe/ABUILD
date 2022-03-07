@@ -1,28 +1,30 @@
 pkgname=file
-pkgver=5.40
+pkgver=5.41
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A utility to determine file type"
+shortdesc=("File type identification utility.")
+longdesc=("The File package contains a utility for determining the type of a given file or files.")
+
 source=("https://astron.com/pub/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
 tags="sys-apps base"
 
-build_deps="zlib"
+build_deps=("glibc zlib xz bzip2 libseccomp")
 
 build() {
   go_src_dir
-# Fix linking libmagic (vfork needs libpthread)
-  CFLAGS+=" -pthread"
-
+  burn_patches
+#  autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --datadir=/usr/share/file \
     --enable-fsect-man5 \
     --enable-libseccomp
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make DESTDIR="$pkgdir" install
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/$pkgname/COPYING
 }
 
