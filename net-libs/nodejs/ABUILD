@@ -1,20 +1,20 @@
 pkgname=nodejs
-pkgver=16.3.0
+pkgver=17.3.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("JavaScript server-side network application development")
 longdesc=("Node.js use V8 engine (JavaScript engine used for Webkit) and let you create application on server-side. It handles HTTP server, Socket server, clients and a lot of modules to ease your projects creation.")
 
 source=("https://github.com/nodejs/node/archive/v$pkgver/nodejs-$pkgver.tar.gz")
 
-tags="develop dev-util"
+tags=("develop dev-util")
 
-build_deps="openssl zlib icu libuv libnghttp2 c-ares python procps"
+build_deps=("openssl zlib icu libuv libnghttp2 c-ares python procps")
 
-build()
-{
+build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
     --with-intl=system-icu \
@@ -24,10 +24,10 @@ build()
     --shared-libuv \
     --experimental-http-parser \
     --shared-nghttp2 \
-    --shared-cares
+    --shared-cares \
+    --shared-brotli
   make -j${numjobs}
   make DESTDIR="$pkgdir" install
 
-  install -D -m644 LICENSE \
-    "$pkgdir"/usr/share/licenses/nodejs/LICENSE
+  install -D -m644 LICENSE "$pkgdir"/usr/share/licenses/nodejs/LICENSE
 }
