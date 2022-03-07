@@ -21,8 +21,4 @@ build() {
     ../guiinstaller-qt5
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
-
-  mkdir -p ${pkgdir}/usr/share/setup/help/{ru_RU,en_US}
-  cp -v ../guiinstaller-qt5/helpfiles/ru_RU/*.html ${pkgdir}/usr/share/setup/help/ru_RU/
-  cp -v ../guiinstaller-qt5/helpfiles/en_EN/*.html ${pkgdir}/usr/share/setup/help/en_US/
 }
