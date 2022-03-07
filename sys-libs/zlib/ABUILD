@@ -1,37 +1,37 @@
 pkgname=zlib
 pkgver=1.2.11
-pkgbuild=3
-arch=('auto')
+pkgbuild=4
+arch=("auto")
 
 shortdesc=("Compression library implementing the deflate compression method found in gzip and PKZIP.")
-longdesc=("zlib is designed to be a free, general-purpose lossless data-compression library for use on virtually any computer hardware and operating system.")
+longdesc=("The Zlib package contains compression and decompression routines used by some programs.")
 
 source=("https://zlib.net/zlib-${pkgver}.tar.gz")
 
-tags="libs sys-libs"
+tags=("libs sys-libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
-pkglist="minizip"
+pkglist=("minizip")
 
 build() {
   go_src_dir
   grep -A 24 '^  Copyright' zlib.h > LICENSE
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --sharedlibdir=/lib${LIBDIRSUFFIX} \
-    --shared
+    --prefix=/usr
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
+# Удаляем ненужную статическую библиотеку
+  rm -fv ${pkgdir}/usr/lib/libz.a
+
   install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/zlib/LICENSE"
 }
 
 minizip() {
   pkgname=minizip
   shortdesc=("Mini zip and unzip based on zlib.")
-  longdesc=("zlib is designed to be a free, general-purpose lossless data-compression library for use on virtually any computer hardware and operating system.")
-  adddep="zlib"
+  longdesc=("The Zlib package contains compression and decompression routines used by some programs.")
+  adddep=("zlib")
 }
 
 minizip_prep() {
@@ -42,13 +42,12 @@ minizip_prep() {
   autoreconf --install
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
     --enable-static=no
   make -j${numjobs}
-  make install DESTDIR="${pkgdir}"
+  make install DESTDIR=${pkgdir}
 
-  install -D -m644 "${srcdir}/zlib-$pkgver/LICENSE" "${pkgdir}/usr/share/licenses/minizip/LICENSE"
+  install -D -m644 ${srcdir}/zlib-$pkgver/LICENSE ${pkgdir}/usr/share/licenses/minizip/LICENSE
 
 # https://github.com/madler/zlib/pull/229
-  rm "${pkgdir}/usr/include/minizip/crypt.h"
+  rm ${pkgdir}/usr/include/minizip/crypt.h
 }
