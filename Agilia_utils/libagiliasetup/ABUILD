@@ -19,9 +19,9 @@ build() {
   burn_patches
   mkdir build
   cd build
-  cmake \
+  cmake ../libagiliasetup \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    ../libagiliasetup
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }
