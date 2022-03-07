@@ -1,50 +1,47 @@
 pkgname=bzip2
 pkgver=1.0.8
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc="A block-sorting file compressor"
-longdesc="bzip2 is a free open source, free, open source data compression utility, an implementation of the Burrows-Wheeler algorithm."
+shortdesc=("A high-quality data compression program.")
+longdesc=("The Bzip2 package contains programs for compressing and decompressing files. Compressing text files with bzip2 yields a much better compression percentage than with the traditional gzip.")
 
-tags="base app-arch"
+tags=("base app-arch")
 
 source=("https://www.sourceware.org/pub/bzip2/bzip2-${pkgver}.tar.gz")
 
-build_deps="glibc"
-
-adddep="bash"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
-# add large-file support
-  sed -e 's/^CFLAGS=\(.*\)$/CFLAGS=\1 \$(BIGFILES)/' -i ./Makefile-libbz2_so
 
-  make -f Makefile-libbz2_so CC="gcc $CFLAGS $CPPFLAGS $LDFLAGS" -j${numjobs}
-  make bzip2 bzip2recover libbz2.a CC="gcc $CFLAGS $CPPFLAGS $LDFLAGS" -j${numjobs}
-}
+  sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
+  sed -i "s@(PREFIX)/man@(PREFIX)/share/man@g" Makefile
 
-after_build() {
-  go_src_dir
-  install -dm755 ${pkgdir}/usr/{bin,lib${LIBDIRSUFFIX},include,share/man/man1}
+  make -f Makefile-libbz2_so
+  make clean
+  make -j${numjobs}
+
+  install -dm755 ${pkgdir}/usr/{bin,lib,include,share/man/man1}
 
   install -m755 bzip2-shared ${pkgdir}/usr/bin/bzip2
   install -m755 bzip2recover bzdiff bzgrep bzmore ${pkgdir}/usr/bin
   ln -sf bzip2 ${pkgdir}/usr/bin/bunzip2
   ln -sf bzip2 ${pkgdir}/usr/bin/bzcat
+#NOTE: послольку есть проблемы с coreutils-9.0 убрал опцию -a
+  cp libbz2.so* ${pkgdir}/usr/lib
+  ln -s libbz2.so.${pkgver} ${pkgdir}/usr/lib/libbz2.so
+# Для совместимости со старыми программами
+  ln -s libbz2.so.${pkgver} ${pkgdir}/usr/lib/libbz2.so.1
 
-  cp -a libbz2.so* "$pkgdir"/usr/lib${LIBDIRSUFFIX}
-  ln -s libbz2.so.$pkgver "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libbz2.so
-  ln -s libbz2.so.$pkgver "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libbz2.so.1 # For compatibility with some other distros
+  install -m644 bzlib.h ${pkgdir}/usr/include/
 
-  install -m644 bzlib.h "$pkgdir"/usr/include/
+  install -m644 bzip2.1 ${pkgdir}/usr/share/man/man1/
+  ln -sf bzip2.1 ${pkgdir}/usr/share/man/man1/bunzip2.1
+  ln -sf bzip2.1 ${pkgdir}/usr/share/man/man1/bzcat.1
+  ln -sf bzip2.1 ${pkgdir}/usr/share/man/man1/bzip2recover.1
 
-  install -m644 bzip2.1 "$pkgdir"/usr/share/man/man1/
-  ln -sf bzip2.1 "$pkgdir"/usr/share/man/man1/bunzip2.1
-  ln -sf bzip2.1 "$pkgdir"/usr/share/man/man1/bzcat.1
-  ln -sf bzip2.1 "$pkgdir"/usr/share/man/man1/bzip2recover.1
-
-  install -Dm644 ${filedir}/bzip2.pc -t "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig
+  install -Dm644 ${filedir}/bzip2.pc -t "$pkgdir"/usr/lib/pkgconfig
   install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE
 }
-
