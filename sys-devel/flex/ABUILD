@@ -1,26 +1,31 @@
 pkgname=flex
 pkgver=2.6.4
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc="A tool for generating text-scanning programs"
-longdesc="flex is a tool for generating programs that perform pattern matching on text. flex is a rewrite of the AT&T Unix lex tool (the two implementations do not share any code, though), with some extensions (and incompatibilities)."
+shortdesc=("A tool for generating text-scanning programs.")
+longdesc=("The Flex package contains a utility for generating programs that recognize patterns in text.")
 
 tags=("develop sys-devel")
 
 source=("https://github.com/westes/flex/releases/download/v$pkgver/flex-$pkgver.tar.gz")
 
-build_deps="glibc"
+build_deps=("glibc help2man")
 
-adddep="bash m4 bash"
+adddep=("m4")
 
 build() {
   go_src_dir
+  burn_patches
+  autoreconf
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
-  make
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm0755 ${filedir}/lex.sh ${pkgdir}/usr/bin/lex
+  ln -s flex ${pkgdir}/usr/bin/lex
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
 }
