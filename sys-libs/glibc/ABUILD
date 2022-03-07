@@ -1,70 +1,60 @@
+# NOTE: порядок сборки инструментов: linux-api-headers->glibc->binutils->gcc->binutils->glibc
+# NOTE: valgrind необходимо пересобрать при обновлениии glibc
 pkgname=glibc
-pkgver=2.33
+pkgver=2.35
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("glibc (GNU C libraries)")
-longdesc=("This package contains the GNU C libraries and header files. The GNU C library was written originally by Roland McGrath, and is currently maintained by Ulrich Drepper. Some parts of the library were contributed or worked on by other people. Your system ha.")
+shortdesc=("GNU C Library")
+longdesc=("The Glibc package contains the main C library. This library provides the basic routines for allocating memory, searching directories, opening and closing files, reading and writing files, string handling, pattern matching, arithmetic, and so on.")
 
 tags=("base sys-base")
 
 source=("http://ftp.gnu.org/gnu/glibc/glibc-${pkgver}.tar.xz")
 
-config_files="etc/nscd.conf"
+config_files=("etc/nscd.conf")
 
-build_deps="mkpkg"
+build_deps=("gd python tzdata kernel-headers etc")
 
-pkglist="glibc-solibs glibc-l18n"
+adddep=("tzdata kernel-headers etc")
 
 build() {
   go_src_dir
+# Исправление обнаруженных проблем безопасности.
+  sed -e '/NOTIFY_REMOVED)/s/)/ \&\& data.attr != NULL)/' -i sysdeps/unix/sysv/linux/mq_notify.c
   burn_patches
-  mkdir glibc_build
-  cd glibc_build
+  mkdir build
+  cd build
+
+  echo "slibdir=/usr/lib" >> configparms
+  echo "rtlddir=/usr/lib" >> configparms
+  echo "sbindir=/usr/bin" >> configparms
+  echo "rootsbindir=/usr/bin" >> configparms
 
   ../configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --with-headers=/usr/include \
-    --mandir=/usr/share/man \
-    --infodir=/usr/share/info \
+    --without-cvs \
+    --with-__thread \
+    --without-gd \
+    --with-tls \
+    --enable-stack-protector=strong \
     --enable-kernel=3.2 \
     --enable-add-ons \
-    --disable-profile \
     --enable-bind-now \
-    --without-gd \
-    --enable-multi-arch \
-    --with-tls \
-    --with-__thread \
-    --without-cvs
+    --disable-profile \
+    --disable-werror \
+    --enable-multi-arch
+  make -j${numjobs}
+  make install install_root=${pkgdir}
 
-  make -j${numjobs} || make || exit 1
-  make install install_root=${pkgdir} || exit 1
-  mkdir -p ${startdir}/localepkg
-  make localedata/install-locales install_root=${pkgdir} || exit 1
+# Установка файла конфигурации для демона nscd.
+  install -m644 ${srcdir}/glibc-${pkgver}/nscd/nscd.conf ${pkgdir}/etc/nscd.conf
 
-  install -m644 $srcdir/glibc-${pkgver}/nscd/nscd.conf ${pkgdir}/etc/nscd.conf || exit 1
-}
+# Установка локали
+  make localedata/install-locales install_root=${pkgdir} -j${numjobs}
+  mkdir -pv ${pkgdir}/var/cache/nscd
 
-
-glibc-solibs() {
-  pkgname=glibc-solibs
-  tags=("virtual sys-libs")
-  shortdesc=("glibc-solibs (GNU C libraries) - virtual package")
-  longdesc=("The glibc-solibs virtual package SHOULD be REMOVED moved to the glibc package !!!!")
-}
-
-glibc-solibs_prep() {
-	echo Make glibc-solibs package: done
-}
-
-glibc-l18n() {
-  pkgname=glibc-l18n
-  tags=("virtual sys-libs")
-  shortdesc=("glibc-l18n (GNU C libraries) - virtual package")
-  longdesc=("The glibc-l18n virtual package SHOULD be REMOVED moved to the glibc package !!!!")
-}
-
-glibc-l18n_prep() {
-	echo Make glibc-l18n package: done
 }
