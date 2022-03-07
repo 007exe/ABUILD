@@ -1,26 +1,29 @@
 pkgname=xz
 pkgver=5.2.5
-pkgbuild=4
-arch=('auto')
+pkgbuild=5
+arch=("auto")
 
-shortdesc="Library and command line tools for XZ and LZMA compressed files"
-longdesc="XZ Utils is free general-purpose data compression software with high compression ratio. XZ Utils were written for POSIX-like systems, but also work on some not-so-POSIX systems. XZ Utils are the successor to LZMA Utils."
+shortdesc=("Library and command line tools for XZ and LZMA compressed files.")
+longdesc=("The Xz package contains programs for compressing and decompressing files. It provides capabilities for the lzma and the newer xz compression formats. Compressing text files with xz yields a better compression percentage than with the traditional gzip or bzip2 commands.")
 
-tags=('base app-arch')
+tags=("base app-arch")
 
-source=(http://tukaani.org/xz/xz-${pkgver}.tar.gz)
+source=("http://tukaani.org/xz/xz-${pkgver}.tar.gz")
 
-build_deps="make gcc glibc gettext coreutils sed grep"
+build_deps=("make gcc glibc gettext coreutils sed grep")
 
 build() {
   go_src_dir
+  burn_patches
+  export CFLAGS="$CFLAGS -Wno-format-truncation"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --disable-rpath
-#    --enable-werror
-  make
-  make DESTDIR="${pkgdir}" install
+    --libdir=/usr/lib \
+    --disable-rpath \
+    --disable-static \
+    --enable-werror
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
   install -d -m755 "${pkgdir}/usr/share/licenses/xz/"
   ln -sf /usr/share/doc/xz/COPYING "${pkgdir}/usr/share/licenses/xz/"
   ln -sf /usr/share/licenses/common/GPL2/license.txt "${pkgdir}/usr/share/doc/xz/COPYING.GPLv2"
