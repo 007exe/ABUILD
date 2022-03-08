@@ -1,12 +1,12 @@
 pkgname=libcap
 pkgver=2.63
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Library for getting and setting POSIX.1e capabilities")
-longdesc=("The libcap package was installed in LFS, but if Linux-PAM support is desired, the PAM module must be built (after installation of Linux-PAM).")
+shortdesc=("POSIX 1003.1e capabilities.")
+longdesc=("The Libcap package implements the user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels. These capabilities are a partitioning of the all powerful root privilege into a set of distinct privileges.")
 
-tags=("libs sys-libs compat32")
+tags=("libs sys-libs")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${pkgname}-${pkgver}.tar.gz")
 
@@ -15,9 +15,12 @@ build_deps=("glibc linux-pam kernel-headers")
 build() {
   go_src_dir
   burn_patches
-  make KERNEL_HEADERS='/usr/include' lib=lib${LIBDIRSUFFIX} prefix='/usr'
-  make DESTDIR=${pkgdir} RAISE_SETFCAP='no' lib=lib${LIBDIRSUFFIX} prefix='/usr' install
-# docs
-  install -vDm 644 {CHANGELOG,README} -t "${pkgdir}/usr/share/doc/${pkgname}/"
-  install -vDm 644 pam_cap/capability.conf -t "$pkgdir/usr/share/doc/$pkgname/examples/"
+# Отключение установку статических библиотек
+  sed -i '/install -m.*STA/d' libcap/Makefile
+  make KERNEL_HEADERS=/usr/include lib=lib prefix=/usr sbindir=bin
+  make DESTDIR=${pkgdir} RAISE_SETFCAP=no lib=lib prefix=/usr sbindir=bin install
+# Установка корректных права для библиотек
+  chmod -v 755 ${pkgdir}/usr/lib/lib{cap,psx}.so.2
+  install -vDm 644 {CHANGELOG,README} -t ${pkgdir}/usr/share/doc/${pkgname}/
+  install -vDm 644 pam_cap/capability.conf -t ${pkgdir}/usr/share/doc/${pkgname}/examples/
 }
