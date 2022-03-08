@@ -1,0 +1,22 @@
+pkgname=dejagnu
+pkgver=1.6.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Framework for testing other programs.")
+longdesc=("The DejaGnu package contains a framework for running test suites on GNU tools. It is written in expect, which itself uses Tcl (Tool Command Language).")
+
+source=("https://ftp.gnu.org/gnu/dejagnu/${pkgname}-${pkgver}.tar.gz")
+
+tags=("develop dev-util")
+
+build_deps=("expect")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
