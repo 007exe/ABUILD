@@ -1,25 +1,25 @@
 pkgname=mpfr
 pkgver=4.1.0
-pkgbuild=4
+pkgbuild=5
 arch=("auto")
 
-shortdesc=("Multiple-precision floating-point computations with correct rounding")
-longdesc=("The MPFR library is a C library for multiple-precision floating-point computations with correct rounding.")
+shortdesc=("Multiple-precision floating-point library.")
+longdesc=("The MPFR package contains functions for multiple precision math.")
 
 tags=("dev-libs libs")
 
-build_deps="gmp"
+build_deps=("glibc gmp")
 
 source=("https://ftp.gnu.org/gnu/mpfr/mpfr-${pkgver}.tar.xz")
 
 build() {
   go_src_dir
   burn_patches
-#  autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-thread-safe \
-    --enable-shared
-  make DESTDIR="$pkgdir" install
+    --enable-shared \
+    --disable-static
+  make DESTDIR=${pkgdir} install
 }
