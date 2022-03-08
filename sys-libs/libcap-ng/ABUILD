@@ -1,25 +1,30 @@
 pkgname=libcap-ng
 pkgver=0.8.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc="An alternate posix capabilities library"
+shortdesc=("A library for Linux that makes using posix capabilities easy")
 longdesc=("Libcap-ng is a library that makes using posix capabilities easier.")
 
 source=("http://people.redhat.com/sgrubb/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="sys-libs libs"
+tags=("sys-libs libs")
 
-build_deps="gcc"
+build_deps=("glibc python swig")
 
 build() {
   go_src_dir
   burn_patches
+  autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-static=no \
-    --with-python
+    --with-python \
+    --with-python3
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+#FIXME: Удалить после пересборки python
+  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib
+  rm -r ${pkgdir}/usr/lib64
 }
