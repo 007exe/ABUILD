@@ -1,0 +1,24 @@
+pkgname=expect
+pkgver=5.45.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A tool for automating interactive applications.")
+longdesc=("The Expect package contains tools for automating, via scripted dialogues, interactive applications such as telnet, ftp, passwd, fsck, rlogin, and tip. Expect is also useful for testing these same applications as well as easing all sorts of tasks that are prohibitively difficult with anything else. The DejaGnu framework is written in Expect.")
+
+source=("https://downloads.sourceforge.net/project/expect/Expect/$pkgver/expect${pkgver}.tar.gz")
+
+tags=("dev-tcltk develop")
+
+build_deps=("tcl")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 README ${pkgdir}/usr/share/licenses/${pkgname}/README
+}
