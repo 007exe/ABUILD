@@ -1,6 +1,6 @@
 pkgname=attr
 pkgver=2.5.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Extended attribute support library for ACL support.")
@@ -20,15 +20,11 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --enable-shared \
-    --enable-lib64
+    --enable-lib64 \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-# Обратная совместимость
-  mkdir -p ${pkgdir}/lib${LIBDIRSUFFIX}
-  cp -r ${pkgdir}/usr/lib${LIBDIRSUFFIX} ${pkgdir}
-  rm -r ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig
-  rm ${pkgdir}/lib${LIBDIRSUFFIX}/libattr.a
 }
