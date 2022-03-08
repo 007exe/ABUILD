@@ -1,34 +1,29 @@
 pkgname=binutils
-pkgver=2.37
+pkgver=2.38
 pkgbuild=1
 arch=("auto")
 
-shortdesc="GNU Binary Utility Development Utilities"
-longdesc="A set of programs to assemble and manipulate binary and object files"
+shortdesc=("A set of programs to assemble and manipulate binary and object files.")
+longdesc=("The Binutils package contains a linker, an assembler, and other tools for handling object files.")
 
-build_deps="glibc zlib gcc bison"
+tags=("develop sys-devel")
 
-tags="develop sys-devel"
+build_deps=("glibc elfutils flex gcc-libs")
 
 source=("http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2")
 
-build() {
+before_build(){
   go_src_dir
-  burn_patches
-
-# Turn off development mode (-Werror, gas run-time checks, date in sonames)
   sed -i '/^development=/s/true/false/' bfd/development.sh
+  burn_patches
+  mkdir -p ${srcdir}/binutils-build
+}
 
-# hack! - libiberty configure tests for header files using "$CPP $CPPFLAGS"
-  sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
-
-  CFLAGS="$SLKCFLAGS $CFLAGS" \
-  ./configure \
+build() {
+  cd ${srcdir}/binutils-build
+  ${srcdir}/binutils-${pkgver}/configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --mandir=/usr/share/man \
-    --infodir=/usr/share/info \
-    --with-docdir=/usr/share/doc \
+    --libdir=/usr/lib \
     --enable-shared \
     --enable-threads \
     --enable-ld=default \
@@ -38,24 +33,29 @@ build() {
     --enable-lto \
     --enable-plugins \
     --enable-relro \
-    --enable-targets=x86_64-pep \
+    --enable-targets=x86_64-pep,bpf-unknown-none \
+    --enable-cet \
+    --enable-deterministic-archives \
+    --enable-install-libiberty \
+    --enable-pgo-build=lto \
     --disable-gdb \
     --disable-werror \
-    --enable-multilib \
-    --with-system-zlib
-
-  make configure-host
-  make tooldir=/usr
-
-  # unset LDFLAGS as testsuite makes assumptions about which ones are active
-  # ignore failures in gold testsuite...
-  make -k LDFLAGS="" check || true
-}
-
-after_build() {
-  go_src_dir
+    --disable-gdbserver \
+    --disable-libdecnumber \
+    --disable-readline \
+    --disable-sim \
+    --with-system-zlib \
+    --with-lib-path=/usr/lib:/usr/local/lib \
+    --with-pic
+  make -O tooldir=/usr
   make DESTDIR=${pkgdir} install
+#FIXME: libiberty.a
+  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib/
+  rm -r ${pkgdir}/usr/lib64
 
-# Remove unwanted files
-  rm -f "$pkgdir"/usr/share/man/man1/{dlltool,nlmconv,windres,windmc}*
+# Удаляем ненужные файлы
+  rm -f ${pkgdir}/usr/share/man/man1/{dlltool,nlmconv,windres,windmc}*
+
+# Удаляем бесполезные статические библиотеки
+  rm -f ${pkgdir}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a
 }
