@@ -1,21 +1,23 @@
 pkgname=python
-pkgver=3.9.7
+pkgver=3.10.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("An interpreted, interactive object-oriented programming language")
-longdesc=("Python is an interpreted, interactive, object-oriented programming language often compared to Tcl, Perl, Scheme or Java. Python includes modules, classes, exceptions, very high level dynamic data types and dynamic typing. Python supports interfaces to many system calls and libraries, as well as to various windowing systems (X11, Motif, Tk, Mac and MFC).")
+shortdesc=("Next generation of the python high-level scripting language.")
+longdesc=("The Python 3 package contains the Python development environment. It is useful for object-oriented programming, writing scripts, prototyping large programs, or developing entire applications.")
 
-source=("http://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz")
+source=("https://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz")
 
-pkglist="python-tests"
+tags=("develop dev-lang")
 
-lover=${pkgver%.*}
+pkglist=("python-tests")
+# mpdecimal
+build_deps=("tk sqlite llvm gdb bzip2 expat gdbm libffi libnsl openssl zlib")
 
-tags="develop dev-python"
-# xorg-server-xvfb ttf-font libxcrypt tk bluez-libs mpdecimal
-build_deps="bzip2 expat gdbm libffi libnsl openssl zlib sqlite llvm gdb"
+# Следующие зависимости являются опциональными python-setuptools python-pip sqlite mpdecimal xz tk
+removedep=("ncurses libx11 tcl readline util-linux-ng libtirpc sqlite mpdecimal xz tk")
 
+# Настройка bash
 shopt -s extglob
 
 before_build(){
@@ -23,113 +25,77 @@ before_build(){
   burn_patches
 # FS#23997
   sed -i -e "s|^#.* /usr/local/bin/python|#!/usr/bin/python|" Lib/cgi.py
-
-# Speed up LTO
   sed -i -e "s|-flto |-flto=4 |g" configure configure.ac
 
-# Ensure that we are using the system copy of various libraries (expat, zlib, libffi, and libmpdec),
-# rather than copies shipped in the tarball
+# Использовать системные библиотеки
   rm -r Modules/expat
   rm -r Modules/_ctypes/{darwin,libffi}*
-  rm -r Modules/_decimal/libmpdec
+# Необходим пакет mpdecimal
+# rm -r Modules/_decimal/libmpdec
 }
-
 
 build() {
   go_src_dir
-
-# PGO should be done with -O3
-# Also included the -fno-semantic-interposition optimization:
-# https://fedoraproject.org/wiki/Changes/PythonNoSemanticInterpositionSpeedup
-  CFLAGS="${CFLAGS/-O2/-O3} -fno-semantic-interposition"
-  LDFLAGS="$LDFLAGS -fno-semantic-interposition"
-
-# Disable bundled pip & setuptools
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --enable-shared \
-    --with-computed-gotos \
-    --enable-optimizations \
-    --with-lto \
-    --mandir=/usr/share/man \
-    --docdir=/usr/share/doc/python-${pkgver} \
     --enable-ipv6 \
-    --with-system-expat \
-    --with-dbmliborder=gdbm:ndbm \
-    --with-system-ffi \
-    --with-system-libmpdec \
+    --enable-shared \
+    --enable-optimizations \
     --enable-loadable-sqlite-extensions \
+    --with-lto \
+    --with-system-ffi \
+    --with-system-expat \
     --without-ensurepip \
-    --with-platlibdir=lib${LIBDIRSUFFIX} \
+    --with-computed-gotos \
+    --with-dbmliborder=gdbm:ndbm \
     --with-tzpath=/usr/share/zoneinfo
-  make -j5
-
-# Obtain next free server number for xvfb-run; this even works in a chroot environment.
-#  export servernum=99
-#  while ! xvfb-run -a -n "$servernum" /bin/true 2>/dev/null; do servernum=$((servernum+1)); done
-#  LC_CTYPE=en_US.UTF-8 xvfb-run -s "-screen 0 1920x1080x16 -ac +extension GLX" -a -n "$servernum" make EXTRA_CFLAGS="$CFLAGS"
-}
-
-after_build(){
-  go_src_dir
-
-# Hack to avoid building again
+# Необходим пакет mpdecimal --with-system-libmpdec
+  make -j${numjobs}
   sed -i 's/^all:.*$/all: build_all/' Makefile
 
-# PGO should be done with -O3
-  CFLAGS="${CFLAGS/-O2/-O3}"
+  make DESTDIR=${pkgdir} install
 
-  make DESTDIR="${pkgdir}" EXTRA_CFLAGS="$CFLAGS" install
+# Сплит-тесты
+  rm -r ${pkgdir}/usr/lib/python*/{test,ctypes/test,distutils/tests,idlelib/idle_test,lib2to3/tests,sqlite3/test,tkinter/test,unittest/test}
 
-# Split tests
-  rm -r "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/{test,ctypes/test,distutils/tests,idlelib/idle_test,lib2to3/tests,sqlite3/test,tkinter/test,unittest/test}
+  ln -s python3              ${pkgdir}/usr/bin/python
+  ln -s python3-config       ${pkgdir}/usr/bin/python-config
+  ln -s idle3                ${pkgdir}/usr/bin/idle
+  ln -s pydoc3               ${pkgdir}/usr/bin/pydoc
+  ln -s python${pkgver%.*}.1 ${pkgdir}/usr/share/man/man1/python.1
 
-# Why are these not done by default...
-  ln -s python3               "${pkgdir}"/usr/bin/python
-  ln -s python3-config        "${pkgdir}"/usr/bin/python-config
-  ln -s idle3                 "${pkgdir}"/usr/bin/idle
-  ln -s pydoc3                "${pkgdir}"/usr/bin/pydoc
-  ln -s python${lover}.1 "${pkgdir}"/usr/share/man/man1/python.1
+# FS#46146
+  install -dm755 ${pkgdir}/usr/lib/python${pkgver%.*}/Tools/{i18n,scripts}
+  install -m755 Tools/i18n/{msgfmt,pygettext}.py ${pkgdir}/usr/lib/python${pkgver%.*}/Tools/i18n/
+  install -m755 Tools/scripts/{README,*py} ${pkgdir}/usr/lib/python${pkgver%.*}/Tools/scripts/
 
-# some useful "stuff" FS#46146
-  install -dm755 "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/python${_pybasever}/Tools/{i18n,scripts}
-  install -m755 Tools/i18n/{msgfmt,pygettext}.py "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/python${_pybasever}/Tools/i18n/
-  install -m755 Tools/scripts/{README,*py} "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/python${_pybasever}/Tools/scripts/
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
 python-tests() {
   pkgname=python-tests
   tags=("develop dev-python")
-  shortdesc="Regression tests packages for Python"
-  adddep="python"
+  shortdesc=("Regression tests packages for Python.")
+  longdesc=("The Python 3 package contains the Python development environment. It is useful for object-oriented programming, writing scripts, prototyping large programs, or developing entire applications.")
 }
 
 python-tests_prep() {
   go_src_dir
-  make DESTDIR="${pkgdir}" EXTRA_CFLAGS="$CFLAGS" libinstall
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/
+  make DESTDIR=${pkgdir} libinstall
+  cd ${pkgdir}/usr/lib/python*/
   rm -r !(test|ctypes|distutils|idlelib|lib2to3|sqlite3|tkinter|unittest)
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/ctypes
+  cd ${pkgdir}/usr/lib/python*/ctypes
   rm -r -f !(test)
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/distutils
+  cd ${pkgdir}/usr/lib/python*/distutils
   rm -r -f !(tests)
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/idlelib
+  cd ${pkgdir}/usr/lib/python*/idlelib
   rm -r -f !(idle_test)
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/lib2to3
+  cd ${pkgdir}/usr/lib/python*/lib2to3
   rm -r -f !(tests)
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/sqlite3
+  cd ${pkgdir}/usr/lib/python*/sqlite3
   rm -r -f !(test)
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/tkinter
+  cd ${pkgdir}/usr/lib/python*/tkinter
   rm -r -f !(test)
-
-  cd "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/unittest
+  cd ${pkgdir}/usr/lib/python*/unittest
   rm -r -f !(test)
 }
