@@ -1,6 +1,6 @@
 pkgname=libcap-ng
 pkgver=0.8.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A library for Linux that makes using posix capabilities easy")
@@ -24,7 +24,4 @@ build() {
     --with-python3
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-#FIXME: Удалить после пересборки python
-  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib
-  rm -r ${pkgdir}/usr/lib64
 }
