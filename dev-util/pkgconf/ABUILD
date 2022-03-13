@@ -1,0 +1,34 @@
+pkgname=pkgconf
+pkgver=1.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Package compiler and linker metadata toolkit.")
+longdesc=("pkg-config compatible replacement with no dependencies other than ANSI C89.")
+
+tags=("develop dev-util")
+
+source=("https://distfiles.dereferenced.org/pkgconf/pkgconf-${pkgver}.tar.xz")
+
+build_deps=("glibc")
+
+conflicts=("pkg-config")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  ln -s pkgconf ${pkgdir}/usr/bin/i686-pc-linux-gnu-pkg-config
+  ln -s pkgconf ${pkgdir}/usr/bin/x86_64-pc-linux-gnu-pkg-config
+  ln -s pkgconf ${pkgdir}/usr/bin/pkg-config
+
+  ln -s pkgconf.1 ${pkgdir}/usr/share/man/man1/pkg-config.1
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
