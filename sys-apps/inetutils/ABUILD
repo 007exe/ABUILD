@@ -1,30 +1,30 @@
 pkgname=inetutils
 pkgver=2.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A collection of common network programs")
-longdesc=("Inetutils is a collection of common network programs. It includes: An inetd meta-server. An ftp client and server. A telnet client and server. An rsh client and server. An rlogin client and server. A tftp client and server. A talk client and server. A syslogd daemon. Network tools: ping, ping6, traceroute, whois. Admin tools: hostname, dnsdomainname, ifconfig, logger And more... Most of them are improved versions of programs originally from BSD. Some others are original versions, written from scratch.")
+shortdesc=("A collection of common network programs.")
+longdesc=("The Inetutils package contains programs for basic networking.")
 
 tags=("network sys-apps")
 
 source=("http://ftp.gnu.org/gnu/inetutils/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="gcc linux-pam help2man"
+build_deps=("gcc linux-pam libcap readline ncurses help2man")
 
-config_files="etc/xinetd.d/telnet
+config_files=("etc/xinetd.d/telnet
 etc/xinetd.d/talk
 etc/xinetd.d/rlogin
 etc/xinetd.d/rsh
 etc/pam.d/rlogin
-etc/pam.d/rsh"
+etc/pam.d/rsh")
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
     --libexec=/usr/bin \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
     --localstatedir=/var \
     --sysconfdir=/etc \
     --without-wrap \
@@ -57,23 +57,19 @@ build() {
     --disable-traceroute
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build(){
-  go_src_dir
+  chmod -s ${pkgdir}/usr/bin/{rcp,rlogin,rsh}
 
-  chmod -s "${pkgdir}"/usr/bin/{rcp,rlogin,rsh}
+  install -D -m644 ${filedir}/xinetd.d/telnet.xinetd ${pkgdir}/etc/xinetd.d/telnet
+  install -D -m644 ${filedir}/xinetd.d/talk.xinetd ${pkgdir}/etc/xinetd.d/talk
+  install -D -m644 ${filedir}/xinetd.d/rlogin.xinetd ${pkgdir}/etc/xinetd.d/rlogin
+  install -D -m644 ${filedir}/xinetd.d/rsh.xinetd ${pkgdir}/etc/xinetd.d/rsh
 
-  install -D -m644 "${filedir}/xinetd.d/telnet.xinetd" "${pkgdir}/etc/xinetd.d/telnet"
-  install -D -m644 "${filedir}/xinetd.d/talk.xinetd" "${pkgdir}/etc/xinetd.d/talk"
-  install -D -m644 "${filedir}/xinetd.d/rlogin.xinetd" "${pkgdir}/etc/xinetd.d/rlogin"
-  install -D -m644 "${filedir}/xinetd.d/rsh.xinetd" "${pkgdir}/etc/xinetd.d/rsh"
+  install -D -m644 ${filedir}/pam/rlogin.pam ${pkgdir}/etc/pam.d/rlogin
+  install -D -m644 ${filedir}/pam/rsh.pam ${pkgdir}/etc/pam.d/rsh
 
-  install -D -m644 "${filedir}/pam/rlogin.pam" "${pkgdir}/etc/pam.d/rlogin"
-  install -D -m644 "${filedir}/pam/rsh.pam" "${pkgdir}/etc/pam.d/rsh"
-
-  install -D -m644 "${filedir}/init.d/ftpd" "${pkgdir}/etc/init.d/ftpd"
-  install -D -m644 "${filedir}/init.d/rlogind" "${pkgdir}/etc/init.d/rlogind"
-  install -D -m644 "${filedir}/init.d/rshd" "${pkgdir}/etc/init.d/rshd"
-  install -D -m644 "${filedir}/init.d/telnet" "${pkgdir}/etc/init.d/telnet"
+  install -D -m644 ${filedir}/init.d/ftpd ${pkgdir}/etc/init.d/ftpd
+  install -D -m644 ${filedir}/init.d/rlogind ${pkgdir}/etc/init.d/rlogind
+  install -D -m644 ${filedir}/init.d/rshd ${pkgdir}/etc/init.d/rshd
+  install -D -m644 ${filedir}/init.d/telnet ${pkgdir}/etc/init.d/telnet
 }

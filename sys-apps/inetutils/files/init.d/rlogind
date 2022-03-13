@@ -1,4 +1,4 @@
-#!/sbin/openrc-run
+#!/usr/bin/openrc-run
 
 command=-/usr/bin/rlogind
 command_args=""
