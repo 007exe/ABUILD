@@ -14,10 +14,8 @@ build_deps=("glibc acl attr gettext")
 
 build() {
   go_src_dir
-  ./configure --prefix=/usr
+  ./configure \
+    --prefix=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-  mkdir -p ${pkgdir}/bin
-  cp ${pkgdir}/usr/bin/sed ${pkgdir}/bin/sed
 }
