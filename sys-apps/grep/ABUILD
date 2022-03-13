@@ -10,7 +10,7 @@ tags=("base sys-apps")
 
 source=("https://ftp.gnu.org/gnu/grep/grep-${pkgver}.tar.xz")
 
-build_deps="texinfo pcre"
+build_deps=("glibc texinfo pcre")
 
 build() {
   go_src_dir
