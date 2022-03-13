@@ -1,9 +1,9 @@
 pkgname=bison
 pkgver=3.8.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Parser generator similar to yacc.")
+shortdesc=("The GNU general-purpose parser generator.")
 longdesc=("The Bison package contains a parser generator.")
 
 tags=("develop sys-devel")
@@ -12,15 +12,13 @@ source=("http://ftp.gnu.org/gnu/bison/bison-${pkgver}.tar.xz")
 
 build_deps=("glibc m4 bash gettext")
 
-adddep=("m4 bash gettext")
+adddep=("m4")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --datadir=/usr/share \
-    --sysconfdir=/etc
+    --datadir=/usr/share
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
