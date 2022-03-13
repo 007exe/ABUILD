@@ -1,20 +1,22 @@
 pkgname=psmisc
 pkgver=23.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="Miscellaneous procfs tools"
-longdesc="Utilities for managing processes on your system"
+shortdesc=("Miscellaneous procfs tools.")
+longdesc=("The Psmisc package contains programs for displaying information about running processes.")
 
-tags=("base sys-base")
+tags=("base sys-process")
 
 source=("http://downloads.sourceforge.net/psmisc/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="gcc ncurses"
+build_deps=("ncurses")
 
 build() {
   go_src_dir
-  ./configure --prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --sysconfdir=/etc
-  make
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
