@@ -1,56 +1,44 @@
 pkgname=bash
-pkgver=5.1.008
+pkgver=5.1.16
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-_patchlevel=$(echo ${pkgver} | sed 's/^[0-9]\.[0-9]\.//g')
-_basever=$(echo ${pkgver} | sed 's/\.[0-9]*$//g')
+shortdesc=("The GNU Bourne Again shell.")
+longdesc=("The Bash package contains the Bourne-Again SHell.")
 
-shortdesc="The GNU Bourne Again shell"
-longdesc="Bash is a sh-compatible command interpreter that executes commands read from the standard input or from a file. Bash also incorporates useful features from the Korn and C shells (ksh and csh). Bash is ultimately intended to be a conformant implementation of the IEEE Posix Shell and Tools specification (IEEE Working Group 1003.2). Bash must be present for the system to boot properly."
+source=("https://ftp.gnu.org/gnu/bash/bash-${pkgver}.tar.gz")
 
 tags=("app-shells base")
 
-build_deps="readline groff"
+build_deps=("readline glibc ncurses")
 
-source=("http://ftp.gnu.org/gnu/bash/bash-${_basever}.tar.gz")
-
-for (( p=1; p<=$((10#${_patchlevel})); p++ )); do
-	source=(${source[@]} "http://ftp.gnu.org/gnu/bash/bash-$_basever-patches/bash${_basever//./}-$(printf "%03d" $p) n")
-done
-
-before_build() {
-  go_src_dir
-  burn_patches
-  for (( p=1; p<=$((10#${_patchlevel})); p++ )); do
-    echo "Applying patch $p"
-    cat ${srcache}/bash${_basever//./}-$(printf "%03d" $p) | patch -p0 --verbose
-  done
-}
+config_files=("etc/bash.bashrc
+etc/bash.bash_logout
+etc/skel/.bashrc
+etc/skel/.bash_profile
+etc/skel/.bash_logout")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --bindir=/bin \
     --with-curses \
     --enable-readline \
     --without-bash-malloc \
     --with-installed-readline
-  make
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
-  go_src_dir
-  mv $pkgdir/bin/bash $pkgdir/bin/bash5.new
+  mv $pkgdir/usr/bin/bash $pkgdir/usr/bin/bash5.new
+  ln -s bash ${pkgdir}/usr/bin/sh.new
 
-# We don't include the "bashbug" script.
-  rm -rf $pkgdir/usr/bin $pkgdir/usr/man/man1/bashbug.1*
+# Общесистемные конфигурационные файлы
+  install -Dm644 ${filedir}/system.bashrc ${pkgdir}/etc/bash.bashrc
+  install -Dm644 ${filedir}/system.bash_logout ${pkgdir}/etc/bash.bash_logout
 
-  ( cd ${pkgdir}/bin ; ln -s bash sh.new )
-
-  mkdir -p ${pkgdir}/usr/bin
-# I don't know why it ever needs, but let it be for now.
-  ( cd ${pkgdir}/usr/bin ; ln -s /bin/bash bash )
+# Пользовательские настройки
+  install -dm755 ${pkgdir}/etc/skel/
+  install -m644 ${filedir}/dot.bashrc ${pkgdir}/etc/skel/.bashrc
+  install -m644 ${filedir}/dot.bash_profile ${pkgdir}/etc/skel/.bash_profile
+  install -m644 ${filedir}/dot.bash_logout ${pkgdir}/etc/skel/.bash_logout
 }
