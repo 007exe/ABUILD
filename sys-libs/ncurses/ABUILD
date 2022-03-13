@@ -1,59 +1,50 @@
 pkgname=ncurses
-pkgver=6.2
-pkgbuild=3
+pkgver=6.3
+pkgbuild=1
 arch=("auto")
 
-shortdesc="CRT screen handling and optimization package"
-longdesc="The ncurses (new curses) library is a free software emulation of curses in System V Release 4.0, and more. It uses terminfo format, supports pads and color and multiple highlights and forms characters and function-key mapping, and has all the other SYSV-curses enhancements over BSD curses."
+shortdesc=("System V Release 4.0 curses emulation library.")
+longdesc=("The Ncurses package contains libraries for terminal-independent handling of character screens.")
 
 tags=("libs sys-libs")
 
-source=("https://ftp.gnu.org/pub/gnu/ncurses/${pkgname}-${pkgver}.tar.gz")
+source=("https://invisible-mirror.net/archives/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc libtermcap"
+build_deps=("glibc gcc-libs autoconf")
 
 build() {
   go_src_dir
   burn_patches
-
-# Do not install a static library that is not handled by the configure script
-  sed -i '/LIBTOOL_INSTALL/d' c++/Makefile.in
-
   ./configure --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-pkg-config-libdir=/usr/lib${LIBDIRSUFFIX}/pkgconfig \
-    --mandir=/usr/share/man \
-    --with-shared \
-    --without-debug \
-    --without-normal \
-    --enable-pc-files \
     --enable-widec \
-    --enable-symlinks \
-
+    --enable-pc-files \
+    --mandir=/usr/share/man \
+    --with-cxx-binding \
+    --with-cxx-shared \
+    --with-manpage-format=normal \
+    --with-pkg-config-libdir=/usr/lib/pkgconfig \
+    --with-shared \
+    --with-versioned-syms \
+    --without-ada
   make -j${numjobs}
-  make install DESTDIR=${pkgdir}
-  install -vDm 644 COPYING -t "$pkgdir/usr/share/licenses/$pkgname/"
-}
+  make DESTDIR=${pkgdir} install
 
-after_build() {
-  go_src_dir
+  install -vDm 644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}/
 
-# fool packages looking to link to non-wide-character ncurses libraries
+# Для компоновки с библиотеками содержащими широкие символы.
   for lib in ncurses ncurses++ form panel menu; do
-    echo "INPUT(-l${lib}w)" > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib${lib}.so
-    ln -sv ${lib}w.pc ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/${lib}.pc
+    printf "INPUT(-l%sw)\n" ${lib} > ${pkgdir}/usr/lib/lib${lib}.so
+    ln -sv ${lib}w.pc ${pkgdir}/usr/lib/pkgconfig/${lib}.pc
   done
 
+# Для сборки старых программ использующих -lcurses
+  printf 'INPUT(-lncursesw)\n' > ${pkgdir}/usr/lib/libcursesw.so
+  ln -sv libncurses.so ${pkgdir}/usr/lib/libcurses.so
+
+# Функциональность tic и ticinfo встроена по умолчанию, убедимся, что все, что ссылается на нее, вместо этого ссылается на libncursesw.so
   for lib in tic tinfo; do
-    echo "INPUT(libncursesw.so.${pkgver:0:1})" > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib${lib}.so
-    ln -sv libncursesw.so.${pkgver:0:1} ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib${lib}.so.${pkgver:0:1}
-    ln -sv ncursesw.pc ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/${lib}.pc
+    printf "INPUT(libncursesw.so.%s)\n" ${pkgver:0:1} > ${pkgdir}/usr/lib/lib${lib}.so
+    ln -sv libncursesw.so.${pkgver:0:1} ${pkgdir}/usr/lib/lib${lib}.so.${pkgver:0:1}
+    ln -sv ncursesw.pc ${pkgdir}/usr/lib/pkgconfig/${lib}.pc
   done
-
-# some packages look for -lcurses during build
-  echo 'INPUT(-lncursesw)' > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcursesw.so
-  ln -s libncurses.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcurses.so
-
-  cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-  ln -sv libncursesw.so.${pkgver:0:1} libncurses.so.6
 }
