@@ -1,24 +1,26 @@
 pkgname=gettext
 pkgver=0.21
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc="GNU libraries and utilities for producing multi-lingual messages"
-longdesc=("The GNU gettext package contains 'gettext' and 'ngettext', programs that are used to internationalize the messages given by shell scripts.")
+shortdesc=("GNU internationalization library.")
+longdesc=("The Gettext package contains utilities for internationalization and localization. These allow programs to be compiled with NLS (Native Language Support), enabling them to output messages in the user's native language.")
 
 tags=("base sys-devel")
 
-source=("ftp://ftp.gnu.org/pub/gnu/gettext/${pkgname}-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/pub/gnu/gettext/gettext-$pkgver.tar.gz")
 
-build_deps="make gcc gcc-libs acl glib2"
+build_deps=("gcc-libs acl libunistring libxml2 gettext")
 
 build() {
   go_src_dir
+  burn_patches
+  autoreconf --force
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --enable-csharp \
     --enable-nls \
+    --disable-static \
     --with-xz \
     --without-included-gettext
   sed -e 's/ -shared / -Wl,-O1,--as-needed\0/g' -i gettext-{tools,runtime,runtime/libasprintf}/libtool
