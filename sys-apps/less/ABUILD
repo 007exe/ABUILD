@@ -1,23 +1,23 @@
 pkgname=less
 pkgver=590
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A text file browser similar to more, but better")
-longdesc=("The less utility is a text file browser that resembles more, but has more capabilities.  Less allows you to move backwards in the file as well as forwards.  Since less doesn't have to read the entire input file before it starts, less starts up more quickly than text editors")
-
-tags=("base sys-base")
+shortdesc=("A terminal based program for viewing text files.")
+longdesc=("The Less package contains a text file viewer.")
 
 source=("http://www.greenwoodsoftware.com/$pkgname/$pkgname-$pkgver.tar.gz")
 
-build_deps="pcre2 ncurses"
+tags=("base sys-apps")
+
+build_deps=("pcre2 ncurses")
 
 build() {
   go_src_dir
   ./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --with-regex=pcre2
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-regex=pcre2
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
