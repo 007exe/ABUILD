@@ -1,86 +1,68 @@
 pkgname=perl
 pkgver=5.34.0
-_baseversion="${pkgver%.*}"
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="Standalone executable Perl interpreter"
-longdesc="Perl is a high-level programming language with roots in C, sed, awk and shell scripting. Perl is good at handling processes and files, and is especially good at handling text. Perl's hallmarks are practicality and efficiency. While it is used to do a lot of different things, Perl's most common applications are system administration utilities and web programming."
-
-tags=("dev-lang develop")
+shortdesc=("A highly capable, feature-rich programming language")
+longdesc=("The Perl package contains the Practical Extraction and Report Language.")
 
 source=("http://www.cpan.org/src/5.0/perl-${pkgver}.tar.xz")
 
-build_deps="gdbm db coreutils glibc-solibs"
+tags=("dev-lang develop")
+
+build_deps=("gdbm db glibc")
 
 build() {
   go_src_dir
   burn_patches
-
-   if [ "${CARCH}" = "x86_64" ]; then
-# for x86_64
-    arch_opts="-Dcccdlflags='-fPIC'"
-   else
-# for i686
-    arch_opts=""
-   fi
-
-  CFLAGS="${SLKCFLAGS}"
-  ./Configure -des -Dusethreads -Duseshrplib -Doptimize="${CFLAGS}" \
-                   -Dprefix=/usr -Dvendorprefix=/usr \
-                   -Dprivlib=/usr/share/perl5/core_perl \
-                   -Darchlib=/usr/lib${LIBDIRSUFFIX}/perl5/$_baseversion/core_perl \
-                   -Dsitelib=/usr/share/perl5/site_perl \
-                   -Dsitearch=/usr/lib${LIBDIRSUFFIX}/perl5/$_baseversion/site_perl \
-                   -Dvendorlib=/usr/share/perl5/vendor_perl \
-                   -Dvendorarch=/usr/lib${LIBDIRSUFFIX}/perl5/$_baseversion/vendor_perl \
-                   -Dscriptdir=/usr/bin/core_perl \
-                   -Dsitescript=/usr/bin/site_perl \
-                   -Dvendorscript=/usr/bin/vendor_perl \
-                   -Dinc_version_list=none \
-                   -Dman1ext=1perl -Dman3ext=3perl ${arch_opts} \
-                   -Dlddlflags="-shared ${LDFLAGS}" -Dldflags="${LDFLAGS}" \
-                   -Dmyuname="agilialinux" \
-                   -Dmyhostname="agilialinux" \
-                   -Dpager="/usr/bin/less -isR"  \
-                   -Dcf_time="`date -u --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}"`"
-
+  cp ${filedir}/config.over .
+  ./Configure -des \
+    -Dusethreads \
+    -Duseshrplib \
+    -Doptimize="${CFLAGS}" \
+    -Dprefix=/usr \
+    -Dvendorprefix=/usr \
+    -Dprivlib=/usr/share/perl5/core_perl \
+    -Darchlib=/usr/lib/perl5/${pkgver%.*}/core_perl \
+    -Dsitelib=/usr/share/perl5/site_perl \
+    -Dsitearch=/usr/lib/perl5/${pkgver%.*}/site_perl \
+    -Dvendorlib=/usr/share/perl5/vendor_perl \
+    -Dvendorarch=/usr/lib/perl5/${pkgver%.*}/vendor_perl \
+    -Dscriptdir=/usr/bin/core_perl \
+    -Dsitescript=/usr/bin/site_perl \
+    -Dvendorscript=/usr/bin/vendor_perl \
+    -Dinc_version_list=none \
+    -Dman1ext=1perl \
+    -Dman3ext=3perl \
+    -Dcccdlflags='-fPIC' \
+    -Dlddlflags="-shared ${LDFLAGS}" \
+    -Dldflags="${LDFLAGS}"
   make -j${numjobs}
   make DESTDIR=$pkgdir install
 
-### Perl Settings ###
-# Change man page extensions for site and vendor module builds.
-# Set no mail address since bug reports should go to the bug tracker
-# and not someone's email.
+# Настройки Perl
   sed -e '/^man1ext=/ s/1perl/1p/' -e '/^man3ext=/ s/3perl/3pm/' \
       -e "/^cf_email=/ s/'.*'/''/" \
       -e "/^perladmin=/ s/'.*'/''/" \
-      -i "${pkgdir}/usr/lib${LIBDIRSUFFIX}/perl5/$_baseversion/core_perl/Config_heavy.pl"
+      -i ${pkgdir}/usr/lib/perl5/${pkgver%.*}/core_perl/Config_heavy.pl
 
-### CPAN Settings ###
-# Set CPAN default config to use the site directories.
+# Настройки CPAN
   sed -e '/(makepl_arg =>/   s/""/"INSTALLDIRS=site"/' \
       -e '/(mbuildpl_arg =>/ s/""/"installdirs=site"/' \
-      -i "${pkgdir}/usr/share/perl5/core_perl/CPAN/FirstTime.pm"
+      -i ${pkgdir}/usr/share/perl5/core_perl/CPAN/FirstTime.pm
 
-# Profile script to set paths to perl scripts.
-  install -D -m755 "${filedir}/perlbin.sh" \
-                   "${pkgdir}/etc/profile.d/perlbin.sh"
-# Profile script to set paths to perl scripts on csh. (FS#22441)
-  install -D -m755 "${filedir}/perlbin.csh" \
-                  "${pkgdir}/etc/profile.d/perlbin.csh"
-# Profile script to set paths to perl scripts on fish. (FS#51191)
-  install -D -m 755 "${filedir}/perlbin.fish" \
-                  "${pkgdir}/usr/share/fish/vendor_conf.d/perlbin.fish"
+# Скрипт профиля для установки путей к perl-скриптам .
+  install -D -m755 ${filedir}/perlbin.sh ${pkgdir}/etc/profile.d/perlbin.sh
+  install -D -m755 ${filedir}/perlbin.csh ${pkgdir}/etc/profile.d/perlbin.csh
+  install -D -m 755 ${filedir}/perlbin.fish ${pkgdir}/usr/share/fish/vendor_conf.d/perlbin.fish
 
-# Add the dirs so new installs will already have them in PATH once they
-# install their first perl programm
-  install -d -m755 "$pkgdir/usr/bin/vendor_perl"
-  install -d -m755 "$pkgdir/usr/bin/site_perl"
+# Добавkztv каталоги, чтобы новые установки уже имели их в PATH, как только они установят свою первую программу Perl.
+  install -d -m755 ${pkgdir}/usr/bin/vendor_perl
+  install -d -m755 ${pkgdir}/usr/bin/site_perl
 
-  rm "$pkgdir/usr/bin/perl$pkgver"
+  rm ${pkgdir}/usr/bin/perl${pkgver}
 
-#  find "$pkgdir" -name perllocal.pod -delete
-#  find "$pkgdir" -name .packlist -delete
+  find ${pkgdir} -name perllocal.pod -delete
+  find ${pkgdir} -name .packlist -delete
+  find ${pkgdir} -maxdepth 1 -name "*.0" -delete
 }
-
