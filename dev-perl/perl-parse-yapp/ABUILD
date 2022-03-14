@@ -1,23 +1,22 @@
 pkgname=perl-parse-yapp
 pkgver=1.21
-pkgbuild=1
-arch=('noarch')
+pkgbuild=2
+arch=("noarch")
 
-shortdesc=("Perl/CPAN Module Parse::Yapp : Generates OO LALR parser modules")
+shortdesc=("Perl/CPAN Module Parse::Yapp : Generates OO LALR parser modules.")
 longdesc=("Parse::Yapp is a Perl extension for generating and using LALR parsers.")
 
 source=("https://www.cpan.org/authors/id/W/WB/WBRASWELL/Parse-Yapp-$pkgver.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
 build() {
   go_src_dir
-  burn_patches
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
-  make
-  make install DESTDIR="$pkgdir"
-  find "$pkgdir" -name '.packlist' -delete
-  find "$pkgdir" -name '*.pod' -delete
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name '*.pod' -delete
 }
