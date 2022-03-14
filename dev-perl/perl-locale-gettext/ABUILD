@@ -1,25 +1,24 @@
 pkgname=perl-locale-gettext
 pkgver=1.07
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Message handling functions for Perl")
+shortdesc=("Permits access from Perl to the gettext() family of functions.")
 longdesc=("The gettext module permits access from perl to the gettext() family of functions for retrieving message strings from databases constructed to internationalize software.")
 
 source=("https://search.cpan.org/CPAN/authors/id/P/PV/PVANDRY/Locale-gettext-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl gettext"
+build_deps=("perl gettext")
 
-adddep="gettext"
+adddep=("gettext")
 
 build() {
   go_src_dir
-# install module in vendor directories.
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
-  make
-  make install DESTDIR="$pkgdir"
-  find "$pkgdir" -name '.packlist' -delete
-  find "$pkgdir" -name '*.pod' -delete
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name '*.pod' -delete
 }
