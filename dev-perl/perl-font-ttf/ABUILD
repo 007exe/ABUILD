@@ -3,21 +3,21 @@ pkgver=1.06
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Perl module for TrueType Font hacking")
+shortdesc=("Perl module for TrueType Font hacking.")
 longdesc=("Perl module to manipulate TTF fonts, needed by perl-Text-PDF.")
 
 tags=("libs dev-perl")
 
 source=("https://www.cpan.org/modules/by-module/Font/Font-TTF-${pkgver}.tar.gz")
 
-build_deps="perl-io-string"
+build_deps=("perl-io-string")
 
-adddep="perl-io-string"
+adddep=("perl-io-string")
 
 build() {
   go_src_dir
-# Install module in vendor directories.
   PERL_MM_USE_DEFAULT=1 perl 'Makefile.PL' INSTALLDIRS='vendor'
-  make
-  make install DESTDIR="${pkgdir}"
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  rm -r ${pkgdir}/usr/lib
 }
