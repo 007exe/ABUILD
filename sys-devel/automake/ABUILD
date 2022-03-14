@@ -1,7 +1,7 @@
 pkgname=automake
 pkgver=1.16.5
-pkgbuild=1
-arch=('noarch')
+pkgbuild=2
+arch=("noarch")
 
 shortdesc=("A GNU tool for automatically creating Makefiles.")
 longdesc=("The Automake package contains programs for generating Makefiles for use with Autoconf.")
@@ -12,7 +12,7 @@ tags=("develop sys-devel")
 
 build_deps=("make grep binutils autoconf")
 
-adddep=("bash perl")
+adddep=("perl")
 
 build() {
   go_src_dir
