@@ -1,0 +1,24 @@
+pkgname=autoconf-archive
+pkgver=2022.02.11
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("GNU Autoconf Macro Archive.")
+longdesc=("A collection of freely re-usable Autoconf macros.")
+
+source=("https://ftpmirror.gnu.org/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop sys-devel")
+
+build_deps=("mkpkg")
+
+adddep=("autoconf")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
