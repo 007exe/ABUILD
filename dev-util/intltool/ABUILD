@@ -1,26 +1,25 @@
 pkgname=intltool
 pkgver=0.51.0
-pkgbuild=2
+pkgbuild=3
 arch=("noarch")
 
-shortdesc="Utilities for translation support"
-longdesc="This package contains scripts and autoconf files for internationalizing data."
-
-tags=("develop dev-util")
-
-adddep="perl patch file automake gettext perl-xml-parser"
+shortdesc=("The internationalization tool collection.")
+longdesc=("The Intltool is an internationalization tool used for extracting translatable strings from source files.")
 
 source=("http://edge.launchpad.net/intltool/trunk/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="perl-xml-parser"
+tags=("develop dev-util")
+
+build_deps=("perl-xml-parser")
+
+adddep=("perl-xml-parser")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
-  make
+    --prefix=/usr
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -D -m644 doc/I18N-HOWTO "${pkgdir}/usr/share/doc/${pkgname}/I18N-HOWTO"
+  install -D -m644 doc/I18N-HOWTO ${pkgdir}/usr/share/doc/${pkgname}/I18N-HOWTO
 }
