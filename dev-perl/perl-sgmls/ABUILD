@@ -1,42 +1,30 @@
 pkgname=perl-sgmls
 pkgver=1.1
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("noarch")
 
-shortdesc=("Perl library for parsing the output of nsgmls")
+shortdesc=("A Post-Processor for SGMLS and NSGMLS.")
 longdesc=("Perl programs can use the SGMLSpm module to help convert SGML, HTML or XML documents into new formats.")
 
 source=("https://search.cpan.org/CPAN/authors/id/R/RA/RAAB/SGMLSpm-$pkgver.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
 build() {
   go_src_dir
-  burn_patches
   find . -type f -exec chmod 0644 {} \;
   export \
         PERL_MM_USE_DEFAULT=1 \
         PERL_AUTOINSTALL=--skipdeps \
-        PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='"$pkgdir"'" \
-        PERL_MB_OPT="--installdirs vendor --destdir '"$pkgdir"'" \
+        PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+        PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
         MODULEBUILDRC=/dev/null
-        /usr/bin/perl Makefile.PL
-  make
-}
-
-after_build() {
-
-  export \
-        PERL_MM_USE_DEFAULT=1 \
-        PERL_AUTOINSTALL=--skipdeps \
-        PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='"$pkgdir"'" \
-        PERL_MB_OPT="--installdirs vendor --destdir '"$pkgdir"'" \
-        MODULEBUILDRC=/dev/null
+  /usr/bin/perl Makefile.PL
+  make -j${numjobs}
   make install
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
 
-# FS#51874
-  ln -sv /usr/bin/vendor_perl/sgmlspl.pl "$pkgdir"/usr/bin/sgmlspl
+  ln -sv /usr/bin/vendor_perl/sgmlspl.pl ${pkgdir}/usr/bin/sgmlspl
 }
