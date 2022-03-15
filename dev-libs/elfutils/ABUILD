@@ -1,33 +1,29 @@
 pkgname=elfutils
 pkgver=0.186
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A collection of utilities and DSOs to handle compiled objects")
-longdesc=("Elfutils is a collection of utilities, including stack (to show backtraces), nm (for listing symbols from object files), size (for listing the section sizes of an object or archive file), strip (for discarding symbols), readelf (to see the raw ELF file structures), and elflint (to check for well-formed ELF files).")
+shortdesc=("Handle ELF object files and DWARF debugging information.")
+longdesc=("Libelf is a library for handling ELF (Executable and Linkable Format) files.")
 
 source=("https://sourceware.org/ftp/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2")
 
-tags="develop dev-libs compat32"
+tags=("develop dev-libs")
 
-build_deps="zlib bzip2 curl gcc-libs zstd xz sqlite libmicrohttpd"
+build_deps=("bzip2 curl gcc-libs libarchive libmicrohttpd sqlite xz zlib zstd")
 
 build() {
   go_src_dir
   burn_patches
-# required for test-suite success
+  autoreconf -fiv
   CFLAGS+=" -g"
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --program-prefix="eu-" \
     --enable-deterministic-archives
   make -j${numjobs}
-
-# Some tests fail due to limited capabilities of build chroot
-  make check || echo "Known problem: The build environment might lack enough resources."
   make DESTDIR=${pkgdir} install
 
-  install -vDm 644 {AUTHORS,ChangeLog,NEWS,NOTES,README} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -vDm 644 {AUTHORS,ChangeLog,NEWS,NOTES,README} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
