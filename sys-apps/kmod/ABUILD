@@ -1,46 +1,34 @@
 pkgname=kmod
 pkgver=29
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Linux kernel module management tools and library")
-longdesc=("The Kmod package contains libraries and utilities for loading kernel modules")
+shortdesc=("Linux kernel module management tools and library.")
+longdesc=("The Kmod package contains libraries and utilities for loading kernel modules.")
 
-source="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz"
+source=("https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz")
 
-tags="base sys-apps"
+tags=("base sys-apps")
 
-build_deps="pkg-config zlib zstd"
+build_deps=("glibc zlib openssl xz zstd")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --sysconfdir=/etc \
-    --prefix=/usr \
-    --bindir=/usr/bin \
-    --with-rootlibdir=/usr/lib$LIBDIRSUFFIX \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --with-zlib \
     --with-xz \
+    --with-zlib \
     --with-zstd \
     --with-openssl
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
-  mkdir -p $pkgdir/sbin
-  mkdir -p $pkgdir/{etc,lib$LIBDIRSUFFIX}/{depmod,modprobe}.d
-  for tool in insmod rmmod depmod lsmod modinfo modprobe; do
-    ln -s /usr/bin/kmod "$pkgdir/sbin/$tool"
+  install -Dm644 ${filedir}/search.conf ${pkgdir}/usr/lib/depmod.d/search.conf
+
+  install -dm755 ${pkgdir}/{etc,usr/lib}/{depmod,modprobe}.d
+
+  for tool in {ins,ls,rm,dep}mod mod{probe,info}; do
+    ln -s kmod ${pkgdir}/usr/bin/${tool}
   done
-
-# install depmod.d file for search/ dir
-  install -Dm644 $filedir/search.conf $pkgdir/lib$LIBDIRSUFFIX/depmod.d/search.conf
-
-  if [ -d ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig ] ; then
-    mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-    mv -v ${pkgdir}/lib${LIBDIRSUFFIX}/pkgconfig ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-  fi
 }
