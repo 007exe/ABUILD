@@ -1,35 +1,29 @@
 pkgname=openssl
 pkgver=1.1.1m
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("The Open Source toolkit for Secure Sockets Layer and Transport Layer Security.")
 longdesc=("The OpenSSL package contains management tools and libraries relating to cryptography. These are useful for providing cryptographic functions to other packages, such as OpenSSH, email applications, and web browsers (for accessing HTTPS sites).")
 
-tags=('dev-libs libs')
-
 source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz")
 
-build_deps="perl ca-certificates"
+tags=("dev-libs libs")
+
+build_deps=("perl")
+
+config_files=("etc/ssl/openssl.cnf")
 
 build() {
   go_src_dir
   burn_patches
   ./Configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --openssldir=/etc/ssl \
-    --libdir=lib${LIBDIRSUFFIX} shared no-ssl3-method enable-ec_nistp_64_gcc_128 linux-x86_64 "-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
+    --libdir=lib shared no-ssl3-method enable-ec_nistp_64_gcc_128 linux-x86_64 "-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
   make depend
   make -j${numjobs}
   make DESTDIR=$pkgdir MANDIR=/usr/share/man MANSUFFIX=ssl install_sw install_ssldirs install_man_docs
 
-  install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-
-# I create links to libssl.so and libcrypto.so for compatibility. When building mpkg, the latter persistently refers to libssl.so.0 and libcrypto.so.0 in the future, you need to remove it
-  ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so.0
-  ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so.0
-
-  ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libssl.so.1.0.0
-  ln -n ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcrypto.so.1.0.0
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
