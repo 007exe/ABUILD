@@ -1,5 +1,5 @@
 pkgname=python-setuptools
-pkgver=58.3.0
+pkgver=59.3.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ source=("https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-
 
 tags=("dev-python libs")
 
-build_deps=("python")
+build_deps=("python python-appdirs python-more-itertools python-ordered-set python-packaging python-pyparsing")
 
 adddep=("python-appdirs python-more-itertools python-ordered-set python-packaging python-pyparsing")
 
