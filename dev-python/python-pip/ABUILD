@@ -1,5 +1,5 @@
 pkgname=python-pip
-pkgver=20.3.4
+pkgver=22.0.4
 pkgbuild=1
 arch=("auto")
 
