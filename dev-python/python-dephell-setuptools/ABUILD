@@ -1,6 +1,6 @@
 pkgname=python-dephell-setuptools
 pkgver=0.2.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Extract meta information from setup.py.")

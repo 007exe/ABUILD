@@ -1,6 +1,6 @@
 pkgname=python-jsonschema
 pkgver=3.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An implementation of JSON Schema validation for Python.")

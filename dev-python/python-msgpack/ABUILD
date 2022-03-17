@@ -1,6 +1,6 @@
 pkgname=python-msgpack
 pkgver=1.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("MessagePack serializer implementation for Python.")

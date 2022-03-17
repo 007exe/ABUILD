@@ -1,6 +1,6 @@
 pkgname=python-pyasn1
 pkgver=0.4.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("ASN.1 tools for Python.")

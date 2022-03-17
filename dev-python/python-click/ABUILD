@@ -1,6 +1,6 @@
 pkgname=python-click
 pkgver=8.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A simple wrapper around optparse for powerful command line utilities.")

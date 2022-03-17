@@ -1,6 +1,6 @@
 pkgname=python-dephell-archive
 pkgver=0.1.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Pathlib for archives.")

@@ -1,6 +1,6 @@
 pkgname=python-cerberus
 pkgver=1.3.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Lightweight, extensible schema and data validation tool for Python dictionaries.")

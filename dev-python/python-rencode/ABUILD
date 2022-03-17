@@ -1,6 +1,6 @@
 pkgname=python-rencode
 pkgver=1.0.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A Module similar to bencode from the BitTorrent project.")

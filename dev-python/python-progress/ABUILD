@@ -1,6 +1,6 @@
 pkgname=python-progress
 pkgver=1.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Easy to use progress bars for Python.")

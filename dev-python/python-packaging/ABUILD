@@ -1,6 +1,6 @@
 pkgname=python-packaging
 pkgver=21.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Core utilities for Python packages.")

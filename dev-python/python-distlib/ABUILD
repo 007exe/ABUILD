@@ -1,6 +1,6 @@
 pkgname=python-distlib
 pkgver=0.3.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Low-level components of distutils2/packaging")

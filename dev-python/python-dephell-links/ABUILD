@@ -1,6 +1,6 @@
 pkgname=python-dephell-links
 pkgver=0.1.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Parse dependency links.")

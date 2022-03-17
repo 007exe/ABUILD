@@ -1,6 +1,6 @@
 pkgname=python-patiencediff
 pkgver=0.2.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Patiencediff Python and C implementations.")

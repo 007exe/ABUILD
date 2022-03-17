@@ -1,6 +1,6 @@
 pkgname=pyqt-builder
 pkgver=1.12.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The PEP 517 compliant PyQt build system.")

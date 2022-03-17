@@ -1,6 +1,6 @@
 pkgname=python-m2r
 pkgver=0.2.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Markdown to reStructuredText converter.")

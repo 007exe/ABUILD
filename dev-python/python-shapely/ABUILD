@@ -1,6 +1,6 @@
 pkgname=python-shapely
 pkgver=1.8.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Manipulation and analysis of geometric objects in the Cartesian plane.")

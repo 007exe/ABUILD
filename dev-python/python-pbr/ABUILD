@@ -1,6 +1,6 @@
 pkgname=python-pbr
 pkgver=5.8.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python Build Reasonableness.")

@@ -1,6 +1,6 @@
 pkgname=python-iso8601
 pkgver=1.0.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Simple module to parse ISO 8601 dates.")

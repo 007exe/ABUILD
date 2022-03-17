@@ -1,6 +1,6 @@
 pkgname=python-anytree
 pkgver=2.8.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Powerful and Lightweight Python Tree Data Structure")

@@ -1,6 +1,6 @@
 pkgname=python-pyparsing
 pkgver=3.0.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("General parsing module for Python.")

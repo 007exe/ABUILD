@@ -1,6 +1,6 @@
 pkgname=python-rjsmin
 pkgver=1.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Fast javascript minifier for Python")

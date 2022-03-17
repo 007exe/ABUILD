@@ -1,6 +1,6 @@
 pkgname=python-charset-normalizer
 pkgver=2.0.10
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Encoding and language detection alternative to chardet.")

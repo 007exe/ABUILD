@@ -1,6 +1,6 @@
 pkgname=python-dephell-pythons
 pkgver=0.1.15
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Work with python versions.")

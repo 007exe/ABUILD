@@ -1,6 +1,6 @@
 pkgname=python-twisted
 pkgver=21.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Asynchronous networking framework written in Python.")

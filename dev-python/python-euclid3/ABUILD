@@ -1,7 +1,7 @@
 pkgname=python-euclid3
 _pkgname=euclid3
 pkgver=0.01
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("2D and 3D vector, matrix, quaternion and geometry module.")

@@ -1,6 +1,6 @@
 pkgname=python-lark-parser
 pkgver=0.12.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A modern parsing library.")

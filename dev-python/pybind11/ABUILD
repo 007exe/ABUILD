@@ -1,6 +1,6 @@
 pkgname=pybind11
 pkgver=2.9.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A lightweight header-only library that exposes C++ types in Python and vice versa")
@@ -15,7 +15,6 @@ build_deps=("cmake boost eigen python python-setuptools python-pytest")
 build() {
   go_src_dir
   python setup.py build
-# tests
   cmake \
     -B "${srcdir}/build-cmake" \
     -S "${srcdir}/${pkgname}-${pkgver}" \
@@ -26,17 +25,15 @@ build() {
 
   python setup.py install --root="$pkgdir" --skip-build --optimize='1'
 
-# symlinks
   local _pyver
   _pyver="$(python -c 'import sys; print("%s.%s" %sys.version_info[0:2])')"
   install -d -m755 "${pkgdir}/usr"/{include,lib/cmake}
   ln -s "../lib/python${_pyver}/site-packages/pybind11/include/pybind11" "${pkgdir}/usr/include/pybind11"
   ln -s "../../lib/python${_pyver}/site-packages/pybind11/share/cmake/pybind11" "${pkgdir}/usr/lib/cmake/pybind11"
 
-  install -d -m755 "${pkgdir}/usr"/{include,lib${LIBDIRSUFFIX}/cmake}
-  ln -s "../lib${LIBDIRSUFFIX}/python${_pyver}/site-packages/pybind11/include/pybind11" "${pkgdir}/usr/include/pybind11"
-  ln -s "../../lib${LIBDIRSUFFIX}/python${_pyver}/site-packages/pybind11/share/cmake/pybind11" "${pkgdir}/usr/lib${LIBDIRSUFFIX}/cmake/pybind11"
+  install -d -m755 "${pkgdir}/usr"/{include,lib/cmake}
+  ln -s "../lib/python${_pyver}/site-packages/pybind11/include/pybind11" "${pkgdir}/usr/include/pybind11"
+  ln -s "../../lib/python${_pyver}/site-packages/pybind11/share/cmake/pybind11" "${pkgdir}/usr/lib/cmake/pybind11"
 
-# license
   install -D -m644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
 }

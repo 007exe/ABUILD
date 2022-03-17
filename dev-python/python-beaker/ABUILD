@@ -1,6 +1,6 @@
 pkgname=python-beaker
 pkgver=1.11.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("WSGI middleware layer to provide sessions")

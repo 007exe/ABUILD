@@ -1,6 +1,6 @@
 pkgname=dbus-python
 pkgver=1.2.18
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings for DBUS.")

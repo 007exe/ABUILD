@@ -1,6 +1,6 @@
 pkgname=python-lxml
 pkgver=4.7.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python3 binding for the libxml2 and libxslt libraries")

@@ -1,6 +1,6 @@
 pkgname=python-idna
 pkgver=3.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Internationalized Domain Names in Applications (IDNA)")

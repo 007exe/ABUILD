@@ -1,6 +1,6 @@
 pkgname=python-docutils
 pkgver=0.17.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Python Documentation Utilities")

@@ -1,6 +1,6 @@
 pkgname=python-pylev
 pkgver=1.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A pure Python Levenshtein implementation that's not freaking GPL.")

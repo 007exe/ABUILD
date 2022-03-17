@@ -1,6 +1,6 @@
 pkgname=python-pillow
 pkgver=9.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python Imaging Library (PIL) fork.")

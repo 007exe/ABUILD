@@ -1,6 +1,6 @@
 pkgname=python-flit-core
 pkgver=3.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Simplified packaging of Python modules.")

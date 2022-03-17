@@ -1,6 +1,6 @@
 pkgname=python-pkginfo
 pkgver=1.7.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Query metadatdata from sdists / bdists / installed packages.")

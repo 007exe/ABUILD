@@ -1,6 +1,6 @@
 pkgname=python-pymeta3
 pkgver=0.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A Pattern-Matching Language Based on Python.")

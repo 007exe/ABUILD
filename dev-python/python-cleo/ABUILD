@@ -1,6 +1,6 @@
 pkgname=python-cleo
 pkgver=0.8.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Create beautiful and testable command-line interfaces")

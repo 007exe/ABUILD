@@ -1,6 +1,6 @@
 pkgname=python-zipp
 pkgver=3.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Backport of pathlib-compatible object wrapper for zip files.")

@@ -1,6 +1,6 @@
 pkgname=python-pybars3
 pkgver=0.9.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Template system for Python which is compatible with Handlebars.js.")

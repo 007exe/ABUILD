@@ -1,6 +1,6 @@
 pkgname=towncrier
 pkgver=21.3.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Utility to produce useful, summarised news files for your project.")

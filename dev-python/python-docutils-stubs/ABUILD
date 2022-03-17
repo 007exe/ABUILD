@@ -1,6 +1,6 @@
 pkgname=python-docutils-stubs
 pkgver=0.0.21
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("PEP 561 based Type information for docutils.")

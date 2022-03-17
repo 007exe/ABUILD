@@ -3,7 +3,7 @@ pkgver=1.12.0
 # Коммит версии
 _commit=1b85ff5306f02985ab00c73b41504bb5b17943eb
 strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Type hints support for the Sphinx autodoc extension.")

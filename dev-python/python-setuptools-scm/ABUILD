@@ -1,6 +1,6 @@
 pkgname=python-setuptools-scm
 pkgver=6.4.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Tool to manage python package versions by scm tags.")

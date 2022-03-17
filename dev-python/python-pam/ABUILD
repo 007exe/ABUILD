@@ -1,6 +1,6 @@
 pkgname=python-pam
 pkgver=1.8.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Pure Python interface to the Pluggable Authentication Modules system on Linux.")

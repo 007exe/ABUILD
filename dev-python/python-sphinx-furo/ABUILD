@@ -1,6 +1,6 @@
 pkgname=python-sphinx-furo
 pkgver=2022.02.14.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A clean customizable documentation theme for Sphinx.")

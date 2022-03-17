@@ -1,6 +1,6 @@
 pkgname=python-cachy
 pkgver=0.3.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Simple yet effective caching library.")

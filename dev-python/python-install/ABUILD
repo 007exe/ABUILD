@@ -1,6 +1,6 @@
 pkgname=python-install
 pkgver=0.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 strict_version=1
 

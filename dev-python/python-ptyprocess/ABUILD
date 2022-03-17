@@ -1,6 +1,6 @@
 pkgname=python-ptyprocess
 pkgver=0.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Run a subprocess in a pseudo terminal.")

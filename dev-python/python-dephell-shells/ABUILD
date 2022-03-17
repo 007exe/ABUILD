@@ -1,6 +1,6 @@
 pkgname=python-dephell-shells
 pkgver=0.1.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Activate virtual environment for current shell")

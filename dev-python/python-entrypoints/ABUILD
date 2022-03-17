@@ -1,6 +1,6 @@
 pkgname=python-entrypoints
 pkgver=0.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Discover and load entry points from installed packages.")

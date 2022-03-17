@@ -1,6 +1,6 @@
 pkgname=python-certifi
 pkgver=2021.10.8
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("Mozillas SSL Certs")

@@ -1,7 +1,7 @@
 pkgname=python-toml
 _name=toml
 pkgver=0.10.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python Library for Tom's Obvious, Minimal Language.")

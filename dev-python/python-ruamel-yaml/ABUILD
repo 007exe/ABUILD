@@ -1,6 +1,6 @@
 pkgname=python-ruamel-yaml
 pkgver=0.17.21
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order.")

@@ -1,6 +1,6 @@
 pkgname=python-nose
 pkgver=1.3.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A discovery-based unittest extension.")

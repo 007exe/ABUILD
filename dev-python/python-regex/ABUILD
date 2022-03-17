@@ -1,6 +1,6 @@
 pkgname=python-regex
 pkgver=2021.11.10
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Alternative python regular expression module.")

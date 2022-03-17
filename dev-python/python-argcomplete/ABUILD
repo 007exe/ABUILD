@@ -1,6 +1,6 @@
 pkgname=python-argcomplete
 pkgver=1.12.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Easy, extensible command line tab completion of arguments for your Python script.")

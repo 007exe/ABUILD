@@ -1,6 +1,6 @@
 pkgname=python-tomli
 pkgver=2.0.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A lil' TOML parser.")

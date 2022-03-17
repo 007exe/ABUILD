@@ -1,6 +1,6 @@
 pkgname=python-mistune
 pkgver=2.0.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A fast yet powerful Python Markdown parser with renderers and plugins")

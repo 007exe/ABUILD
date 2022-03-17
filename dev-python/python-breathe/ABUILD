@@ -1,6 +1,6 @@
 pkgname=python-breathe
 pkgver=4.33.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An extension to reStructuredText and Sphinx to be able to read and render Doxygen xml output")

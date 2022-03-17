@@ -1,6 +1,6 @@
 pkgname=python-filelock
 pkgver=3.4.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A platform independent file lock.")

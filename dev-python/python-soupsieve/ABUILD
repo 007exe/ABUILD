@@ -1,6 +1,6 @@
 pkgname=python-soupsieve
 pkgver=2.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A CSS4 selector implementation for Beautiful Soup.")

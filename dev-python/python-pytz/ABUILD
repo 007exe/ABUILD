@@ -1,6 +1,6 @@
 pkgname=python-pytz
 pkgver=2021.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("World timezone definitions for Python")

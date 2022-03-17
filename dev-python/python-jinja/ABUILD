@@ -1,6 +1,6 @@
 pkgname=python-jinja
 pkgver=3.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A simple pythonic template language written in Python")

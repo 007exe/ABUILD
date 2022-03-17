@@ -1,6 +1,6 @@
 pkgname=python-pexpect
 pkgver=4.8.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An efficient, pure Python replacement for Expect.")

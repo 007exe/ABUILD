@@ -1,6 +1,6 @@
 pkgname=python-smartypants
 pkgver=2.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python with the SmartyPants.")

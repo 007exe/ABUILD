@@ -1,6 +1,6 @@
 pkgname=python-attrs
 pkgver=21.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python library for attributes without boilerplate.")

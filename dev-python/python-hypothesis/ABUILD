@@ -1,6 +1,6 @@
 pkgname=python-hypothesis
 pkgver=6.17.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library for property based testing.")

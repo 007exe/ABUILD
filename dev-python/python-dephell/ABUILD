@@ -1,6 +1,6 @@
 pkgname=python-dephell
 pkgver=0.8.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Universal Python project management: convert between formats, build, manage venvs")
@@ -26,16 +26,16 @@ build(){
 
   python setup.py build
 
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
 # make shell completions
   python -c 'from dephell.actions._autocomplete import make_bash_autocomplete as comp; print(comp())' | \
-      install -Dm644 /dev/stdin "${pkgdir}"/usr/share/bash-completion/completions/dephell
+      install -Dm644 /dev/stdin ${pkgdir}/usr/share/bash-completion/completions/dephell
 
 # rewrite zsh completion to support autoloading
   {   printf '#compdef dephell\n'
       python -c 'from dephell.actions._autocomplete import make_zsh_autocomplete as comp; print(comp())' | \
           sed 's/^compdef _dephell dephell$/_dephell/'
-  } | install -Dm644 /dev/stdin "${pkgdir}"/usr/share/zsh/site-functions/_dephell
+  } | install -Dm644 /dev/stdin ${pkgdir}/usr/share/zsh/site-functions/_dephell
 }

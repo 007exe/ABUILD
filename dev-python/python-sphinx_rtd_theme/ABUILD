@@ -1,6 +1,6 @@
 pkgname=python-sphinx_rtd_theme
 pkgver=1.0.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Read the Docs theme for Sphinx.")

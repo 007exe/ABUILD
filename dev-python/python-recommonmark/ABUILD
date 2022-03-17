@@ -1,6 +1,6 @@
 pkgname=python-recommonmark
 pkgver=0.7.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Docutils compatibility bridge to CommonMark.")

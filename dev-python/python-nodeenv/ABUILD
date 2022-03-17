@@ -1,6 +1,6 @@
 pkgname=python-nodeenv
 pkgver=1.6.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Node.js virtual environment builder.")

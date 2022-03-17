@@ -207,7 +207,6 @@ python-lark-parser
 python-requests-toolbelt
 python-nodeenv
 python-pep621
-python-flit-core
 python-soupsieve
 python-beautifulsoup4
 python-sphinx-furo
@@ -239,6 +238,7 @@ python-sphinx-theme-builder
 set -e
 for i in $MODULES ; do
 	( cd $i && mkpkg -si -ba ${BUILD} )
+        rm -r ~/mkpkg/source_cache/
 	echo "================== Пакет $i успешно собран =================="
 done
 set +e

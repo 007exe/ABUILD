@@ -1,6 +1,6 @@
 pkgname=python-pyproject2setuppy
 pkgver=21
-pkgbuild=1
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Cheap builder for pyproject-based build systems.")

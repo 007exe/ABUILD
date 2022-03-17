@@ -1,6 +1,6 @@
 pkgname=python-fissix
 pkgver=21.6.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Fork of lib2to3 with patch for Python issue33983 support.")

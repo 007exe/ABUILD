@@ -1,6 +1,6 @@
 pkgname=python-setuptools-rust
 pkgver=0.12.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Compile and distribute Python extensions written in rust as easily as if they were written in C.")

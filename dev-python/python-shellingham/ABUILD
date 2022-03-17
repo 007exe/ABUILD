@@ -1,6 +1,6 @@
 pkgname=python-shellingham
 pkgver=1.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Detect what shell the current Python executable is running in.")

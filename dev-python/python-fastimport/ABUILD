@@ -1,6 +1,6 @@
 pkgname=python-fastimport
 pkgver=0.9.14
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("VCS fastimport/fastexport parser.")

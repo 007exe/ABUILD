@@ -1,6 +1,6 @@
 pkgname=python-pytest
 pkgver=6.2.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Simple powerful testing with Python.")

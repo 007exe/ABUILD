@@ -1,6 +1,6 @@
 pkgname=python-clikit
 pkgver=0.6.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Clikit allows you to create beautiful and testable command-line interfaces.")

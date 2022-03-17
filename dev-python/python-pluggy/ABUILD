@@ -1,6 +1,6 @@
 pkgname=python-pluggy
 pkgver=1.0.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("A minimalist production ready plugin system.")

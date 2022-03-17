@@ -1,6 +1,6 @@
 pkgname=python-more-itertools
 pkgver=8.10.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Implements a lazy string for python useful for use with get-text")

@@ -1,6 +1,6 @@
 pkgname=python-cachecontrol
 pkgver=0.12.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("httplib2 caching for requests.")

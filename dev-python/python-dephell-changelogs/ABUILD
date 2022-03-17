@@ -1,6 +1,6 @@
 pkgname=python-dephell-changelogs
 pkgver=0.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Find changelog for github repository, local dir, parse changelog.")

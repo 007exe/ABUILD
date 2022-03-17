@@ -1,6 +1,6 @@
 pkgname=python-dephell-discover
 pkgver=0.2.10
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Find project modules and data files (packages and package_data for setup.py)")

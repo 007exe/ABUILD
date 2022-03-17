@@ -1,6 +1,6 @@
 pkgname=python-sphinx-theme-builder
 pkgver=0.2.0a12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python build backend for Sphinx themes.")

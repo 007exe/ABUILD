@@ -1,6 +1,6 @@
 pkgname=python-dephell-markers
 pkgver=1.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Work with environment markers (PEP-496).")

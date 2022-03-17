@@ -1,6 +1,6 @@
 pkgname=python-ordered-set
 pkgver=4.0.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Custom MutableSet that remembers its order")

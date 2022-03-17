@@ -1,6 +1,6 @@
 pkgname=python-html5lib
 pkgver=1.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A python based HTML parser/tokenizer based on the WHATWG HTML5 specification.")

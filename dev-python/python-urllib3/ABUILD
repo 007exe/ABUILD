@@ -1,6 +1,6 @@
 pkgname=python-urllib3
 pkgver=1.26.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python HTTP library with thread-safe connection pooling, file post, and more")

@@ -1,6 +1,6 @@
 pkgname=python-sphinxcontrib-qthelp
 pkgver=1.0.3
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("Sphinx extension which outputs QtHelp document.")

@@ -1,6 +1,6 @@
 pkgname=python-webencodings
 pkgver=0.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("This is a Python implementation of the WHATWG Encoding standard.")

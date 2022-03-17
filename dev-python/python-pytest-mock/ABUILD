@@ -1,6 +1,6 @@
 pkgname=python-pytest-mock
 pkgver=3.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Thin-wrapper around the mock package for easier use with py.test")

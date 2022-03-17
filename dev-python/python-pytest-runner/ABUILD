@@ -1,6 +1,6 @@
 pkgname=python-pytest-runner
 pkgver=5.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Invoke py.test as distutils command with dependency resolution")

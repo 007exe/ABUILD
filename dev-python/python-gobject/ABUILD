@@ -1,6 +1,6 @@
 pkgname=python-gobject
 pkgver=3.42.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python Bindings for GLib/GObject/GIO/GTK+")

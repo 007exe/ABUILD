@@ -1,6 +1,6 @@
 pkgname=python-setproctitle
 pkgver=1.2.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Allows a python process to change its process title.")

@@ -1,6 +1,6 @@
 pkgname=python-cssselect
 pkgver=1.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A Python3 library that parses CSS3 Selectors and translates them to XPath 1.0")

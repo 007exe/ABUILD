@@ -1,6 +1,6 @@
 pkgname=python-geoip
 pkgver=1.3.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings for GeoIP.")

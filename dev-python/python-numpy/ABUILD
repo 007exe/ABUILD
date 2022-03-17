@@ -1,6 +1,6 @@
 pkgname=python-numpy
 pkgver=1.22.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Scientific tools for Python")

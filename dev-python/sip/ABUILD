@@ -1,6 +1,6 @@
 pkgname=sip
 pkgver=6.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings generator for C/C++ libraries.")

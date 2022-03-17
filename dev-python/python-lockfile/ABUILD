@@ -1,6 +1,6 @@
 pkgname=python-lockfile
 pkgver=0.12.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Platform-independent file locking module.")

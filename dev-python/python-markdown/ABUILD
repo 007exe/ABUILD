@@ -1,6 +1,6 @@
 pkgname=python-markdown
 pkgver=3.3.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python implementation of John Gruber's Markdown.")

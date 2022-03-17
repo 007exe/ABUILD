@@ -1,6 +1,6 @@
 pkgname=python-wxpython
 pkgver=4.0.7.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Cross-platform GUI toolkit.")
@@ -25,5 +25,5 @@ build() {
   python build.py install --destdir="$pkgdir"
 
   install -Dm 644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
-  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f | xargs chmod 644
+  find "$pkgdir/usr/lib" -type f | xargs chmod 644
 }

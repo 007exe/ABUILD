@@ -1,6 +1,6 @@
 pkgname=python-six
 pkgver=1.16.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python 3 compatibility utilities.")

@@ -1,6 +1,6 @@
 pkgname=python-incremental
 pkgver=21.3.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A small library that versions your Python projects.")

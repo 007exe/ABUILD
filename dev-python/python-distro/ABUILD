@@ -1,6 +1,6 @@
 pkgname=python-distro
 pkgver=1.6.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Linux OS platform information API.")

@@ -1,6 +1,6 @@
 pkgname=python-wcwidth
 pkgver=0.2.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Measures number of Terminal column cells of wide-character codes.")

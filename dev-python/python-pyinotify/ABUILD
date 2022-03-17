@@ -1,6 +1,6 @@
 pkgname=python-pyinotify
 pkgver=0.9.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python module used for monitoring filesystems events on Linux platforms with inotify.")

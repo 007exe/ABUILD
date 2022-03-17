@@ -1,6 +1,6 @@
 pkgname=python-bowler
 pkgver=0.9.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Safe code refactoring for modern Python.")

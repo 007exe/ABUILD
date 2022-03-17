@@ -1,6 +1,6 @@
 pkgname=python-jeepney
 pkgver=0.7.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Low-level, pure Python DBus protocol wrapper.")

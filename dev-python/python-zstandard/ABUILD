@@ -1,6 +1,6 @@
 pkgname=python-zstandard
 pkgver=0.16.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings to the Zstandard (zstd) compression library.")

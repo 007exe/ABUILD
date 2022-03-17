@@ -1,6 +1,6 @@
 pkgname=python-sh
 pkgver=1.14.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Subprocess interface that allows you to call any program as if it were a function.")

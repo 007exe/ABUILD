@@ -1,6 +1,6 @@
 pkgname=python-pycparser
 pkgver=2.21
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("C parser and AST generator written in Python.")

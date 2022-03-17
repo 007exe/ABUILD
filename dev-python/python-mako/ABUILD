@@ -1,6 +1,6 @@
 pkgname=python-mako
 pkgver=1.1.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Mako template library for Python.")

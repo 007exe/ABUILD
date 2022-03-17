@@ -1,6 +1,6 @@
 pkgname=python-dephell-versioning
 pkgver=0.1.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Bump project version like a pro.")

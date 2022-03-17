@@ -1,6 +1,6 @@
 pkgname=python-contextlib2
 pkgver=0.6.0.post1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Backport of the standard library's contextlib module to earlier Python versions.")

@@ -1,6 +1,6 @@
 pkgname=python-pep621
 pkgver=0.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("PEP 621 metadata parsing.")

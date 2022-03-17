@@ -1,6 +1,6 @@
 pkgname=python-pyasn1-modules
 pkgver=0.2.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A collection of ASN.1-based protocols modules.")

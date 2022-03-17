@@ -1,6 +1,6 @@
 pkgname=python-pyqt5
 pkgver=5.15.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A set of Python bindings for the Qt5 toolkit")
@@ -28,8 +28,8 @@ build() {
   make -j${numjobs}
   make INSTALL_ROOT="$pkgdir" install -j1
 # Remove unused py2 version of uic modules:
-  rm -r "$pkgdir"/usr/lib${LIBDIRSUFFIX}/python*/site-packages/PyQt5/uic/port_v2
+  rm -r "$pkgdir"/usr/lib/python*/site-packages/PyQt5/uic/port_v2
 # compile Python bytecode
-  python -m compileall -d / "$pkgdir"/usr/lib${LIBDIRSUFFIX}
-  python -O -m compileall -d / "$pkgdir"/usr/lib${LIBDIRSUFFIX}
+  python -m compileall -d / "$pkgdir"/usr/lib
+  python -O -m compileall -d / "$pkgdir"/usr/lib
 }

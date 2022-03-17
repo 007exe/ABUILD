@@ -1,6 +1,6 @@
 pkgname=python-opengl
 pkgver=3.1.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python OpenGL bindings.")

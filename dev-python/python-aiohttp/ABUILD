@@ -1,6 +1,6 @@
 pkgname=python-aiohttp
 pkgver=3.8.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("HTTP client/server for asyncio")

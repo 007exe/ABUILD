@@ -1,6 +1,6 @@
 pkgname=python-virtualenv
 pkgver=20.13.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Virtual Python Environment builder.")

@@ -1,6 +1,6 @@
 pkgname=python-pyopenssl
 pkgver=21.0.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python3 wrapper module around the OpenSSL library.")

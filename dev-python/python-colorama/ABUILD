@@ -1,6 +1,6 @@
 pkgname=python-colorama
 pkgver=0.4.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python API for cross-platform colored terminal text.")

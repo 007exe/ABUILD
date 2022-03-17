@@ -1,6 +1,6 @@
 pkgname=python-solidpython
 pkgver=1.1.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python frontend for solid modelling that compiles to OpenSCAD.")
@@ -20,5 +20,5 @@ build() {
   dephell deps convert --from pyproject.toml --to setup.py
 
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }

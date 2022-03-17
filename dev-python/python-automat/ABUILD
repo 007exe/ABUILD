@@ -1,6 +1,6 @@
 pkgname=python-automat
 pkgver=20.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Self-service finite-state machines for the programmer on the go.")

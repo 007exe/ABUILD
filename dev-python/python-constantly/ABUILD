@@ -1,6 +1,6 @@
 pkgname=python-constantly
 pkgver=15.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Symbolic constants in Python.")

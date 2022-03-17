@@ -1,6 +1,6 @@
 pkgname=python-sphinx-argparse
 pkgver=0.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Sphinx extension that automatically documents argparse commands and options.")

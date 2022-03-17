@@ -1,6 +1,6 @@
 pkgname=python-cython
 pkgver=0.29.28
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("C-Extensions for Python")

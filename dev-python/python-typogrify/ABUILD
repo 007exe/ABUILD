@@ -1,6 +1,6 @@
 pkgname=python-typogrify
 pkgver=2.0.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Filters to make caring about typography on the web a bit easier.")

@@ -1,6 +1,6 @@
 pkgname=python-secretstorage
 pkgver=3.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Securely store passwords and other private data using the SecretService DBus AP.I")

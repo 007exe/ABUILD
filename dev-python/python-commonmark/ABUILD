@@ -1,6 +1,6 @@
 pkgname=python-commonmark
 pkgver=0.9.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python parser for the CommonMark Markdown spec")

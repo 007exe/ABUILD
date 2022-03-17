@@ -1,6 +1,6 @@
 pkgname=python-ruamel.yaml.clib
 pkgver=0.2.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("C version of reader, parser and emitter for ruamel.yaml derived from libyaml.")

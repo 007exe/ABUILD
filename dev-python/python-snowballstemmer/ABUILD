@@ -1,6 +1,6 @@
 pkgname=python-snowballstemmer
 pkgver=2.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Snowball stemming library collection for Python.")

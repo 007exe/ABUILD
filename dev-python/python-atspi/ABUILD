@@ -1,6 +1,6 @@
 pkgname=python-atspi
 pkgver=2.38.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings for D-Bus AT-SPI.")
@@ -19,7 +19,7 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-python=/usr/bin/python
   make -j${numjobs}
   make DESTDIR="$pkgdir" install

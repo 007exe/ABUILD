@@ -1,6 +1,6 @@
 pkgname=python-multidict
 pkgver=5.2.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("Asyncio-based multidict implementation for Python.")

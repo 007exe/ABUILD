@@ -1,6 +1,6 @@
 pkgname=python-ply
 pkgver=3.11
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Implementation of lex and yacc parsing tools")

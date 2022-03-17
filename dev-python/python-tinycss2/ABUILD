@@ -1,6 +1,6 @@
 pkgname=python-tinycss2
 pkgver=1.1.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Low-level CSS parser for Python.")

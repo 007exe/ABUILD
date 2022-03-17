@@ -1,6 +1,6 @@
 pkgname=python-service-identity
 pkgver=21.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Service identity verification for pyOpenSSL.")

@@ -1,6 +1,6 @@
 pkgname=python-markdown2
 pkgver=2.4.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A fast and complete implementation of Markdown in Python.")

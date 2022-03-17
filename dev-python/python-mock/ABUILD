@@ -1,6 +1,6 @@
 pkgname=python-mock
 pkgver=4.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Rolling backport of unittest.mock for all Pythons")
