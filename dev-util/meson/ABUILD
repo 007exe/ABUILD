@@ -1,33 +1,29 @@
 pkgname=meson
-pkgver=0.59.1
+pkgver=0.61.3
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("High productivity build system")
-longdesc=("Meson is an open source build system meant to be fast and user friendly.")
-
-tags=("dev-util develop")
+shortdesc=("High productivity build system.")
+longdesc=("Meson is an open source build system meant to be both extremely fast and as user friendly as possible.")
 
 source=("https://github.com/mesonbuild/meson/releases/download/${pkgver}/meson-${pkgver}.tar.gz")
 
-build_deps="python-setuptools ninja pkg-config"
+tags=("dev-util develop")
 
-adddep="python-setuptools ninja"
+build_deps=("python-setuptools ninja")
+
+adddep=("python-setuptools ninja")
 
 build() {
   go_src_dir
+  burn_patches
   python setup.py build
-}
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 
-after_build() {
-  go_src_dir
+  install -d ${pkgdir}/usr/share/vim/vimfiles
+  cp -rt ${pkgdir}/usr/share/vim/vimfiles data/syntax-highlighting/vim/*/
 
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
-
-  install -d "${pkgdir}/usr/share/vim/vimfiles"
-  cp -rt "${pkgdir}/usr/share/vim/vimfiles" data/syntax-highlighting/vim/*/
-
-  install -Dt "${pkgdir}/usr/share/bash-completion/completions" -m644 data/shell-completions/bash/*
-  install -Dt "${pkgdir}/usr/share/emacs/site-lisp" -m644 data/syntax-highlighting/emacs/*
-  install -Dt "${pkgdir}/usr/share/zsh/site-functions" -m644 data/shell-completions/zsh/*
+  install -Dt ${pkgdir}/usr/share/bash-completion/completions -m644 data/shell-completions/bash/*
+  install -Dt ${pkgdir}/usr/share/emacs/site-lisp -m644 data/syntax-highlighting/emacs/*
+  install -Dt ${pkgdir}/usr/share/zsh/site-functions -m644 data/shell-completions/zsh/*
 }
