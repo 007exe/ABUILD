@@ -1,24 +1,25 @@
 pkgname=gawk
-pkgver=5.1.0
-pkgbuild=2
+pkgver=5.1.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc="The GNU version of the awk text processing utility"
-longdesc="The gawk packages contains the GNU version of awk, a text processing utility.  Awk interprets a special-purpose programming language to do quick and easy text pattern matching and reformatting jobs. Gawk should be upwardly compatible with the Bell Labs research version of awk and is almost completely compliant with the 1993 POSIX 1003.2 standard for awk."
-
-tags=("base sys-base")
+shortdesc=("GNU version of awk.")
+longdesc=("The Gawk package contains programs for manipulating text files.")
 
 source=("https://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc readline mpfr gmp"
+tags=("base sys-apps")
 
-adddep="bash"
+build_deps=("glibc readline mpfr gmp")
+
+adddep=("bash")
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}\
+    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --without-libsigsegv
   make -j${numjobs}
