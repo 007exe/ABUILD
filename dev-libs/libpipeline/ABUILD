@@ -1,22 +1,21 @@
 pkgname=libpipeline
-pkgver=1.5.3
-pkgbuild=2
+pkgver=1.5.5
+pkgbuild=1
 arch=("auto")
 
-shortdesc="Library for manipulating pipelines of subprocesses"
-longdesc="Development files for libpipeline, a library for manipluating pipelines of subprocesses"
-
-tags=("libs dev-libs")
+shortdesc=("A C library for manipulating pipelines of subprocesses in a flexible and convenient way.")
+longdesc=("The Libpipeline package contains a library for manipulating pipelines of subprocesses in a flexible and convenient way.")
 
 source=("http://download.savannah.gnu.org/releases/libpipeline/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="make gcc binutils glibc pkg-config check"
+tags=("libs dev-libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --prefix=/usr
   make DESTDIR=${pkgdir} install
 }
