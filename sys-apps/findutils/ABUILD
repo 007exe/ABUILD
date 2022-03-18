@@ -1,28 +1,26 @@
 pkgname=findutils
-pkgver=4.8.0
+pkgver=4.9.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Utilities to locate files"
-longdesc="The findutils package contains programs which will help you locate files on your system.  The find utility searches through a hierarchy of directories looking for files which match a certain set of criteria The xargs utility builds and executes command lines from standard input arguments."
+shortdesc=("GNU utilities to locate files")
+longdesc=("The Findutils package contains programs to find files. These programs are provided to recursively search through a directory tree and to create, maintain, and search a database (often faster than the recursive find, but is unreliable if the database has not been recently updated).")
 
-tags=("base sys-base")
+source=("https://ftp.gnu.org/pub/gnu/findutils/${pkgname}-${pkgver}.tar.xz")
 
-source=("ftp://ftp.gnu.org/pub/gnu/findutils/${pkgname}-${pkgver}.tar.xz")
+tags=("base sys-apps")
 
-build_deps="glibc"
+build_deps=("glibc")
 
-adddep="bash"
+adddep=("bash")
 
 build() {
   go_src_dir
-# Don't build or install locate because we use mlocate,
-# which is a secure version of locate.
+  burn_patches
+# Не устанавливать frcode
   sed -e '/^SUBDIRS/s/locate//' -e 's/frcode locate updatedb//' -i Makefile.in
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
-# don't build locate, but the docs want a file in there.
+    --prefix=/usr
   make -C locate dblocation.texi
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
