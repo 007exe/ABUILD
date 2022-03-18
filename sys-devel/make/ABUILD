@@ -1,24 +1,26 @@
 pkgname=make
 pkgver=4.3
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc="A GNU tool which simplifies the build process for users"
-longdesc="A GNU tool for controlling the generation of executables and other non-source files of a program from the programs source files.  Make allows users to build and install packages without any significant knowledge about the details of the build process.  The details about how the program should be built are provided for make in the program's makefile."
-
-tags=("develop sys-devel")
+shortdesc=("GNU make utility to maintain groups of programs.")
+longdesc=("The Make package contains a program for controlling the generation of executables and other non-source files of a package from source files.")
 
 source=("http://ftp.gnu.org/gnu/make/make-${pkgver}.tar.gz")
 
-build_deps="make gcc glibc"
+tags=("develop sys-devel")
 
-adddep="bash"
+build_deps=("glibc guile")
+
+adddep=("bash")
+
+removedep=("gc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --prefix=/usr
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
