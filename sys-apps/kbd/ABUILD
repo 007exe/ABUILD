@@ -1,42 +1,34 @@
 pkgname=kbd
 pkgver=2.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="Keytable files and keyboard utilities"
-longdesc="This package contains utilities to load console fonts and keyboard maps. It also includes a number of different fonts and keyboard maps."
-
-tags=("base sys-apps")
-
-build_deps="glibc linux-pam check"
+shortdesc=("Keytable files and keyboard utilities.")
+longdesc=("The Kbd package contains key-table files, console fonts, and keyboard utilities.")
 
 source=("https://git.kernel.org/pub/scm/linux/kernel/git/legion/kbd.git/snapshot/kbd-${pkgver}.tar.gz")
 
-before_build() {
+tags=("base sys-apps")
+
+build_deps=("glibc linux-pam check")
+
+config_files=("etc/pam.d/vlock")
+
+build() {
   go_src_dir
   burn_patches
-# rename keymap files with the same names
-# this is needed because when only name of keymap is specified
-# loadkeys loads the first keymap it can find, which is bad (see FS#13837)
-# this should be removed when upstream adopts the change
   mv data/keymaps/i386/qwertz/cz{,-qwertz}.map
   mv data/keymaps/i386/olpc/es{,-olpc}.map
   mv data/keymaps/i386/olpc/pt{,-olpc}.map
   mv data/keymaps/i386/fgGIod/trf{,-fgGIod}.map
   mv data/keymaps/i386/colemak/{en-latin9,colemak}.map
   autoreconf -if
-}
-
-build() {
-  go_src_dir
   ./configure \
     --prefix=/usr \
+    --sysconfdir=/etc \
     --datadir=/usr/share/kbd \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --datadir=/usr/share/kbd \
-    --enable-nls
-  make -j${numjobs}
-  make KEYCODES_PROGS=yes RESIZECONS_PROGS=yes
+    --mandir=/usr/share/man
+  make -j${numjobs} KEYCODES_PROGS=yes RESIZECONS_PROGS=yes
   make KEYCODES_PROGS=yes RESIZECONS_PROGS=yes DESTDIR=${pkgdir} install
   install -Dm644 ${filedir}/vlock.pam ${pkgdir}/etc/pam.d/vlock
 }
