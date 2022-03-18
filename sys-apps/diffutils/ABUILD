@@ -1,24 +1,25 @@
 pkgname=diffutils
 pkgver=3.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Utility programs used for creating patch files")
-longdesc=("The GNU diff utilities finds differences between files. A major use for this package is to make source code patches.")
+shortdesc=("Utility programs used for creating patch files.")
+longdesc=("The Diffutils package contains programs that show the differences between files or directories.")
 
-tags=("console sys-devel")
+source=("https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
 
-source=("ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+tags=("base sys-apps")
 
-build_deps="glibc"
+build_deps=("glibc")
 
-adddep="bash"
+adddep=("bash")
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX}
+    --prefix=/usr \
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
