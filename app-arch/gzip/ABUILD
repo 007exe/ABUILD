@@ -10,9 +10,9 @@ source=("https://ftp.gnu.org/pub/gnu/gzip/gzip-$pkgver.tar.xz")
 
 tags=("base app-arch")
 
-build_deps=("glibc")
+build_deps=("glibc bash less")
 
-adddep=("bash")
+adddep=("bash less")
 
 build() {
   go_src_dir
