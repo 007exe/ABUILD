@@ -1,54 +1,40 @@
 pkgname=tar
 pkgver=1.34
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="Utility used to store, backup, and transport files"
-longdesc="This is the GNU version of tar, an archiving program designed to store and extract files from an archive file known as a tarfile. A tarfile may be made on a tape drive, however, it is also common to write a tarfile to a normal file. Slackware's package system uses tarfiles compressed with GNU gzip."
+shortdesc=("Utility used to store, backup, and transport files.")
+longdesc=("The Tar package provides the ability to create tar archives as well as perform various other kinds of archive manipulation. Tar can be used on previously created archives to extract files, to store additional files, or to update or list files which were already stored.")
+
+source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz"
+"ftp://ftp.gnu.org/gnu/tar/tar-1.13.tar.gz")
 
 tags=("base app-arch")
 
-build_deps="glibc"
+build_deps=("glibc acl attr")
 
-adddep="bash"
+adddep=("attr")
 
-source=("ftp://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.bz2"
-"ftp://ftp.gnu.org/gnu/tar/tar-1.13.tar.gz n")
-
-
-before_build() {
-  go_src_dir
-# fix build failure with glibc-2.16
-  sed -i -e '/gets is a/d' gnu/stdio.in.h
-
-# Build tar 1.13
-# Most tar versions destroy symlinks!!!
-# Therefore tar-1.13 is only used for packaging packages.
-# The makepkg script can work with more recent versions, but you may need to add new options to the script. 
-  tar xf ${srcache}/tar-1.13.tar.gz
-  cd tar-1.13
+build() {
+#FIXME: Версии старше 1.13 при упаковку удаляют символические ссылки. Данная версия tar используется только для упаковки пакетов сценарием makepkg,
+# его следует обновить или вовсе отказаться от него написав свой сценарий
+  cd ${srcdir}/tar-1.13
   zcat $filedir/tar-1.13.bzip2.diff.gz | patch -p1 --verbose || exit 1
-
-# The original config.{guess,sub} do not work on x86_64
-#  cp -p /usr/share/libtool/config/config.{guess,sub} .
-  chown -R root:root .
   CFLAGS="$SLKCFLAGS" \
   ./configure \
     --prefix=/usr \
     --disable-nls
-  make ${numjobs} || make || exit 1
+  make -j${numjobs}
   mkdir -p ${pkgdir}/usr/bin
   cat src/tar > ${pkgdir}/usr/bin/tar-1.13
   chmod 0755 ${pkgdir}/usr/bin/tar-1.13
-# End building of tar-1.13
-}
+#tar-1.13 END
 
-build() {
-  go_src_dir
+  cd ${srcdir}/tar-${pkgver}
   export FORCE_UNSAFE_CONFIGURE=1
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX}/tar
+    --libexecdir=/usr/lib/tar
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
