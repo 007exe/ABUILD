@@ -1,41 +1,39 @@
 pkgname=groff
 pkgver=1.22.4
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
-shortdesc="GNU troff text-formatting system"
-longdesc="The GNU groff package provides versions of troff, nroff, eqn, tbl, and other Unix text-formatting utilities. Groff is used to 'compile' man pages stored in groff/nroff format into a form which can be printed or displayed on the screen."
+shortdesc=("GNU troff text-formatting system.")
+longdesc=("The Groff package contains programs for processing and formatting text.")
 
-tags=("console app-text")
+tags=("console sys-apps")
 
+source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-source=("ftp://ftp.gnu.org/gnu/groff/groff-$pkgver.tar.gz")
+build_deps=("perl gcc-libs")
 
-build_deps="perl gcc-libs"
+adddep=("perl")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --without-x \
     --with-appresdir=/usr/share/X11/app-defaults
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# add compatibility symlinks
-  cd $pkgdir/usr/bin
+# Символические ссылки совместимости
+  cd ${pkgdir}/usr/bin
   ln -s eqn geqn
   ln -s tbl gtbl
   ln -s soelim zsoelim
-  rm -rf $pkgdir/usr/lib${LIBDIRSUFFIX}/groff/site-tmac
+  rm -rf ${pkgdir}/usr/lib/groff/site-tmac
 
-# Fix some issues when encoding to utf8 man pages
-#  The output chars don't match keyboard chars...
-  cat $filedir/site.tmac >> $pkgdir/usr/share/groff/site-tmac/man.local
-  cat $filedir/site.tmac >> $pkgdir/usr/share/groff/site-tmac/mdoc.local
-
+# FS33760 - переменные TERMCAP не отслеживаются
+  cat ${filedir}/site.tmac >> ${pkgdir}/usr/share/groff/site-tmac/man.local
+  cat ${filedir}/site.tmac >> ${pkgdir}/usr/share/groff/site-tmac/mdoc.local
 }
 
 
