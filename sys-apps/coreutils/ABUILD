@@ -1,9 +1,9 @@
 pkgname=coreutils
 pkgver=9.0
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
-shortdesc=("The GNU core utilities: a set of tools commonly used in shell scripts.")
+shortdesc=("The basic file, shell and text manipulation utilities of the GNU operating system.")
 longdesc=("The Coreutils package contains utilities for showing and setting the basic system characteristics.")
 
 tags=("base sys-apps")
@@ -15,21 +15,18 @@ build_deps=("acl attr gmp libcap openssl")
 build() {
   go_src_dir
   burn_patches
-  sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk
   autoreconf -fiv
+  sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk
 # Поскольку сборка выполняется в среде fakeroot, следует снять ряд ограничений.
   FORCE_UNSAFE_CONFIGURE=1 ./configure \
     --prefix=/usr \
+    --libexecdir=/usr/lib \
     --enable-no-install-program=groups,hostname,kill,uptime \
     --with-openssl \
-    --sysconfdir=/etc \
-    --enable-no-install-program=groups,hostname,kill,uptime
+    --sysconfdir=/etc
 # NOTE: groups, hostname предоставляются пакетом inetutils.
 # kill предоставляется пакетом psmisc.
 # uptime предоставляется пакетом procps.
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-# NOTE: Обратная совместимость
-  mkdir -p $pkgdir/bin
-  cp $pkgdir/usr/bin/* $pkgdir/bin/
 }
