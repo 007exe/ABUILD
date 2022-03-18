@@ -1,23 +1,24 @@
 pkgname=patch
 pkgver=2.7.6
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc="A utility to apply patch files to original sources"
-longdesc="The patch program applies diff files to originals.  The diff command is used to compare an original to a changed file.  Diff lists the changes made to the file.  A person who has the original file can then use the patch command with the diff file to add the changes to their original file (patching the file)."
-
-tags=("base sys-base")
-
-build_deps="ed"
+shortdesc=("A utility to apply patch files to original sources.")
+longdesc=("The Patch package contains a program for modifying or creating files by applying a patch file typically created by the diff program.")
 
 source=("ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop sys-devel")
+
+build_deps=("ed attr")
+
+adddep=("ed")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --prefix=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
