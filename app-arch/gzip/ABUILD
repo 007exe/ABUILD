@@ -1,23 +1,24 @@
 pkgname=gzip
-pkgver=1.10
-pkgbuild=2
+pkgver=1.11
+pkgbuild=1
 arch=("auto")
 
-shortdesc="The GNU data compression program"
-longdesc="The gzip package contains the popular GNU gzip data compression program. Gzipped files have a .gz extension. Gzip should be installed on your Mandriva Linux system, because it is a very commonly used data compression program."
+shortdesc=("GNU compression utility.")
+longdesc=("The Gzip package contains programs for compressing and decompressing files.")
+
+source=("https://ftp.gnu.org/pub/gnu/gzip/gzip-$pkgver.tar.xz")
 
 tags=("base app-arch")
 
-build_deps="glibc-solibs"
-adddep="bash"
+build_deps=("glibc")
 
-source=("ftp://ftp.gnu.org/pub/gnu/gzip/gzip-$pkgver.tar.xz")
+adddep=("bash")
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --prefix=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
