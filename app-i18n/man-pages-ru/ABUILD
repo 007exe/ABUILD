@@ -1,28 +1,27 @@
 pkgname=man-pages-ru
 pkgver=5.03_2390_2390_20191017
-pkgbuild=1
+pkgbuild=2
 arch=("noarch")
 
-shortdesc=("Russian man (manual) pages from the Linux Documentation Project")
+shortdesc=("Russian man (manual) pages from the Linux Documentation Project.")
 longdesc=("A large collection of man pages (reference material) from the Linux Documentation Project (LDP), translated to Russian.")
-
-tags=("console app-i18n")
 
 source=("http://downloads.sourceforge.net/project/man-pages-ru/man-pages-ru_${pkgver//_/-}.tar.bz2")
 
+tags=("console app-i18n")
+
 #man2html
-build_deps="sed"
+build_deps=("sed")
 
-adddep="man"
+adddep=("man-db")
 
-custom_opts="skip_gendeps"
+custom_opts=("skip_gendeps")
 
 build() {
   go_src_dir
-  mkdir -p $pkgdir/usr/share/man/ru
-  mv man* $pkgdir/usr/share/man/ru/
-  cd $pkgdir/usr/share/man/ru
- # this is included in shadow
+  mkdir -p ${pkgdir}/usr/share/man/ru
+  mv man* ${pkgdir}/usr/share/man/ru/
+  cd ${pkgdir}/usr/share/man/ru
   rm -f man5/passwd.5*
   rm -f man3/getspnam.3*
 

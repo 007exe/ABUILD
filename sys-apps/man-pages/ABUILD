@@ -1,49 +1,41 @@
 pkgname=man-pages
 pkgver=5.13
 _posixver=2017-a
-pkgbuild=1
+pkgbuild=2
 arch=("noarch")
 
-shortdesc=("English man (manual) pages from the Linux Documentation Project")
+shortdesc=("Linux man pages.")
 longdesc=("A large collection of man pages (reference material) from the Linux Documentation Project (LDP).")
 
-tags=("console app-i18n")
+tags=("console sys-apps")
 
 source=("https://www.kernel.org/pub/linux/docs/man-pages/$pkgname-$pkgver.tar.xz"
 	"https://www.kernel.org/pub/linux/docs/man-pages/man-pages-posix/man-pages-posix-${_posixver}.tar.xz")
 #man2html
-build_deps="sed"
+build_deps=("sed")
 
-adddep="man"
+adddep=("man-db")
 
-custom_opts="skip_gendeps"
+custom_opts=("skip_gendeps")
 
 build() {
-  cd "${srcdir}"/$pkgname-$pkgver
-
+  cd ${srcdir}/$pkgname-$pkgver
   sed -i "s|prefix := /usr/local|prefix := /usr|g" Makefile
 
-# included in shadow
   rm man5/passwd.5
   rm man3/getspnam.3
-# included in tzdata
   rm man5/tzfile.5 man8/{tzselect,zdump,zic}.8
-# included in libxcrypt
   rm man3/crypt*.3
 
-# install man-pages
   make prefix=${pkgdir}/usr install
 
-# posix pages have a custom license
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 "${srcdir}"/$pkgname-posix-${_posixver%-*}/POSIX-COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/POSIX-COPYRIGHT"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 ${srcdir}/$pkgname-posix-${_posixver%-*}/POSIX-COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/POSIX-COPYRIGHT
 
-# install posix pages
-  pushd "${srcdir}"/$pkgname-posix-${_posixver%-*}
-  make DESTDIR="${pkgdir}" install
+  pushd ${srcdir}/$pkgname-posix-${_posixver%-*}
+  make DESTDIR=${pkgdir} install
   popd
 
-# posix pages have a custom license
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 "${srcdir}"/$pkgname-posix-${_posixver%-*}/POSIX-COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/POSIX-COPYRIGHT"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 ${srcdir}/$pkgname-posix-${_posixver%-*}/POSIX-COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/POSIX-COPYRIGHT
 }
