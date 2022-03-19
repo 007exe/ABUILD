@@ -1,0 +1,30 @@
+pkgname=procps-ng
+pkgver=3.3.17
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utilities for monitoring your system and its processes.")
+longdesc=("The Procps-ng package contains programs for monitoring processes.")
+
+source=("https://downloads.sourceforge.net/project/procps-ng/Production/procps-ng-${pkgver}.tar.xz")
+
+tags=("base sys-process")
+
+build_deps=("ncurses glibc")
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --exec-prefix=/ \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib \
+    --bindir=/usr/bin \
+    --sbindir=/usr/bin \
+    --enable-watch8bit \
+    --disable-modern-top \
+    --disable-static \
+    --disable-kill
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

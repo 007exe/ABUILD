@@ -10,7 +10,7 @@ file
 findutils
 gawk
 grep
-procps
+procps-ng
 sed
 tar
 gettext
