@@ -1,38 +1,35 @@
 pkgname=wget
-pkgver=1.21.2
+pkgver=1.21.3
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Network utility to retrieve files from the Web")
+shortdesc=("Network utility to retrieve files from the Web.")
 longdesc=("The Wget package contains a utility useful for non-interactive downloading of files from the Web.")
-
-tags=("network net-misc")
 
 source=("http://ftp.gnu.org/gnu/wget/wget-${pkgver}.tar.gz")
 
-build_deps="glibc zlib gnutls libidn2 util-linux-ng ca-certificates"
+tags=("network net-misc")
 
-adddep="ca-certificates"
+build_deps=("glibc zlib gnutls libidn2 util-linux ca-certificates")
 
-config_files="etc/wgetrc"
+adddep=("ca-certificates")
+
+config_files=("etc/wgetrc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-rpath \
     --with-ssl=openssl \
     --enable-nls
-
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
-  cat >> "$pkgdir/etc/wgetrc" <<EOF
+  cat >> ${pkgdir}/etc/wgetrc <<EOF
 # default root certs location
 ca_certificate=/etc/ssl/certs/ca-certificates.crt
 EOF
