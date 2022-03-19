@@ -1,30 +1,28 @@
 pkgname=eudev
 pkgver=3.2.11
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The userspace dev tools (udev) forked by Gentoo")
 longdesc=("The Eudev package contains programs for dynamic creation of device nodes.")
 
-source=("https://github.com/eudev-project/eudev/archive/refs/tags/v${pkgver}.tar.gz")
+source=("https://github.com/eudev-project/eudev/releases/download/v${pkgver}/eudev-${pkgver}.tar.gz")
 
 tags=('base sys-fs')
 
-build_deps="kmod util-linux-ng openssl xz zstd"
+build_deps=("kmod util-linux-ng openssl xz zstd gperf")
 
 build(){
   go_src_dir
   burn_patches
-  ./autogen.sh
   ./configure \
     --prefix=/usr \
+    --sbindir=/usr/bin \
     --with-rootprefix=/ \
-    --bindir=/sbin \
-    --sbindir=/sbin \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --config-cache \
-    --with-rootlibexecdir=/lib/udev \
+    --with-rootlibexecdir=/usr/lib/udev \
     --enable-split-usr \
     --with-rootrundir=/run \
     --enable-hwdb \
@@ -36,20 +34,18 @@ build(){
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# prune_libtool_files
-  find "${pkgdir}" -name '*.la' -delete
-
   mkdir -p ${pkgdir}/etc/{firmware,modprobe.d,udev/rules.d/,init.d}
+  mkdir -p ${pkgdir}/usr/lib/udev/rules.d
   install -Dm755 ${filedir}/etc/init.d/* ${pkgdir}/etc/init.d
   cp -r ${filedir}/etc/conf.d ${pkgdir}/etc
-  install -Dm755 ${filedir}/helpers/* ${pkgdir}/lib/udev/
+  install -Dm755 ${filedir}/helpers/* ${pkgdir}/usr/lib/udev/
 
-# make a place for udev to store the socket
+# Создаём каталог для сокета udev
   mkdir -p ${pkgdir}/run/udev/
 
-# Copy additional rules
-  cp -v ${filedir}/rules.d/*.rules ${pkgdir}/lib/udev/rules.d/
+# Копируем правила udev
+  cp -v ${filedir}/rules.d/*.rules ${pkgdir}/usr/lib/udev/rules.d/
 
 # Нормальные имена сетевых интерфейсов
-  rm -f  ${pkgdir}/lib/udev/rules.d/80-net-name-slot.rules
+  rm -f  ${pkgdir}/usr/lib/udev/rules.d/80-net-name-slot.rules
 }
