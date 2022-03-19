@@ -1,0 +1,13 @@
+MANPATH_DEFAULT=/usr/local/share/man:/usr/share/man
+
+PREFIX=/usr
+SBINDIR=$PREFIX/bin
+MANDIR=$PREFIX/share/man
+
+MANM_MAN=mandoc_man
+MANM_MDOC=mandoc_mdoc
+
+BINM_SOELIM=msoelim
+MANM_ROFF=mandoc_roff
+
+BUILD_CATMAN=1
