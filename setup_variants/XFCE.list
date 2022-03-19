@@ -17,7 +17,7 @@ gettext
 pciutils
 psmisc
 shadow
-util-linux-ng
+util-linux
 bzip2
 gzip
 xz

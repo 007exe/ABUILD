@@ -1,0 +1,86 @@
+pkgname=util-linux
+pkgver=2.37.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Miscellaneous system utilities for Linux.")
+longdesc=("The Util-linux package contains miscellaneous utility programs. Among them are utilities for handling file systems, consoles, partitions, and messages.")
+
+source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-${pkgver}.tar.xz")
+
+tags=("base sys-apps")
+
+build_deps=("eudev linux-pam acl shadow coreutils asciidoctor")
+
+adddep=("coreutils")
+
+pkglist=("util-linux-ng")
+
+config_files=("etc/pam.d/chfn
+etc/pam.d/chsh
+etc/pam.d/login
+etc/pam.d/runuser
+etc/pam.d/runuser-l
+etc/pam.d/su
+etc/pam.d/su-l")
+
+build() {
+  go_src_dir
+  ./configure \
+  --prefix=/usr \
+  --bindir=/usr/bin \
+  --sbindir=/usr/bin \
+  --libdir=/usr/lib \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --enable-fs-paths-default=/usr/bin:/usr/local/bin \
+  --enable-usrdir-path \
+  --enable-vipw \
+  --enable-newgrp \
+  --enable-chfn-chsh \
+  --enable-write \
+  --enable-mesg \
+  --disable-raw \
+  --disable-static \
+  --disable-hardlink \
+  --with-python=3
+
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  mv ${pkgdir}/usr/sbin/* ${pkgdir}/usr/bin
+# setuid chfn and chsh
+  chmod 4755 "$pkgdir"/usr/bin/{newgrp,ch{sh,fn}}
+
+  cd ${pkgdir}/usr/bin
+  ln -s hwclock clock
+
+# PAM-файлы для login-utils
+  install -Dm0644 ${filedir}/pam.d/chfn ${pkgdir}/etc/pam.d/chfn
+  install -m0644 ${filedir}/pam.d/chsh ${pkgdir}/etc/pam.d/chsh
+  install -m0644 ${filedir}/pam.d/login ${pkgdir}/etc/pam.d/login
+  install -m0644 ${filedir}/pam.d/runuser ${pkgdir}/etc/pam.d/runuser
+  install -m0644 ${filedir}/pam.d/runuser-l ${pkgdir}/etc/pam.d/runuser-l
+  install -m0644 ${filedir}/pam.d/su ${pkgdir}/etc/pam.d/su
+  install -m0644 ${filedir}/pam.d/su-l ${pkgdir}/etc/pam.d/su-l
+
+  install -Dm0644 ${filedir}/udev/60-rfkill.rules ${pkgdir}/usr/lib/udev/rules.d/60-rfkill.rules
+}
+
+# NOTE: Это временный виртуальный пакет созданный при переименовании util-linux-ng в util-linux.
+# следующие пакеты зависят от util-linux-ng
+# chafa cryptsetup e2fsprogs eudev fakeroot glib2 hwloc imagemagick libblockdev libsm libxaw libxmu libxpm libxt lvm2 ngspice ntfs-3g openldap parted sysvinit thunar-archive-plugin
+# thunar-media-tags-plugin udisks volume_key wget xfce4-clipman-plugin xfce4-datetime-plugin xfce4-dict xfce4-diskperf-plugin xfce4-eyes-plugin xfce4-genmon-plugin xfce4-kbdleds-plugin
+# xfce4-mailwatch-plugin xfce4-mpc-plugin xfce4-notes-plugin xfce4-notifyd xfce4-panel xfce4-power-manager xfce4-screenshooter xfce4-timer-plugin xfce4-verve-plugin xfce4-xkb-plugin 
+# xfwm4
+# Как только эти пакеты перестанут требовать util-linux-ng этот пакет следует удалить.
+
+util-linux-ng() {
+  pkgname=util-linux-ng
+  shortdesc=("This is a temporary virtual package created for compatibility when renaming util-linux-ng.")
+  adddep=("util-linux")
+}
+
+multipkgname1_prep() {
+  echo "The virtual package util-linux-ng has been created."
+}
