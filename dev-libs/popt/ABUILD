@@ -1,25 +1,25 @@
 pkgname=popt
 pkgver=1.18
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("C library for parsing command line parameters")
-longdesc=("Popt is a C library for parsing command line parameters. Popt was heavily influenced by the getopt() and getopt_long() functions, but it improves on them by allowing more powerful argument expansion.")
-
-tags=("libs sys-devel compat32")
+shortdesc=("A commandline option parser.")
+longdesc=("The popt package contains the popt libraries which are used by some programs to parse command-line options.")
 
 source=("http://ftp.rpm.org/popt/releases/popt-1.x/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc"
+tags=("libs dev-libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
