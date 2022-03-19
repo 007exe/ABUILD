@@ -1,20 +1,18 @@
 pkgname=man-db
-pkgver=2.9.4
+pkgver=2.10.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A set of documentation tools: man, apropos and whatis"
-longdesc="The man package includes three tools for finding information and/or documentation about your Linux system: man, apropos and whatis. The man system formats and displays on-line manual pages about commands or functions on your system. Apropos searches the whatis database (containing short descriptions of system commands) for a string. Whatis searches its own database for a complete word."
+shortdesc=("A utility for reading man pages.")
+longdesc=("The Man-DB package contains programs for finding and viewing man pages.")
 
 source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz")
 
-tags="console sys-base"
+tags=("console sys-apps")
 
-build_deps="bash gdbm zlib groff less gzip libpipeline"
+build_deps=("bash gdbm zlib groff less gzip libpipeline less libseccomp")
 
-provides="man"
-
-adddep="groff zlib gdbm"
+adddep=("groff zlib gdbm less libseccomp")
 
 build(){
   go_src_dir
@@ -22,10 +20,9 @@ build(){
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --sbindir=/usr/bin \
     --enable-cache-owner=root \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+    --libexecdir=/usr/lib \
     --with-db=gdbm \
     --disable-setuid \
     --enable-mandirs=GNU \
@@ -34,19 +31,17 @@ build(){
     --with-sections="1 n l 8 3 0 2 5 4 9 6 7"
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build(){
-# part of groff pkg
+# Часть groff
   rm -f ${pkgdir}/usr/bin/zsoelim
 
-# script from LFS to convert manpages, see
+# Скрипт из LFS для преобразования man-страниц, см.
 # http://www.linuxfromscratch.org/lfs/view/6.4/chapter06/man-db.html
   install -D -m755 ${filedir}/convert-mans  ${pkgdir}/usr/bin/convert-mans
 
-#install whatis cron script
+# Установкак cron скрипта
   install -D -m744 ${filedir}/man-db.cron.daily ${pkgdir}/etc/cron.daily/man-db
 
-#installign cache directory
+# Создаём каталог для кеша
   mkdir -p ${pkgdir}/var/cache/man
 }
