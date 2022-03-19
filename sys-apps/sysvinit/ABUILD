@@ -1,6 +1,6 @@
 pkgname=sysvinit
 pkgver=3.01
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Classical init system")
@@ -10,22 +10,33 @@ tags=("base sys-apps")
 
 source=("http://download.savannah.gnu.org/releases/sysvinit/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="glibc util-linux-ng coreutils gawk"
+build_deps=("glibc util-linux coreutils")
 
-adddep="coreutils util-linux-ng gawk"
+adddep=("coreutils util-linux")
+
+config_files=("etc/inittab")
 
 build() {
   go_src_dir
-#  sysvinit-3.01-consolidated-1 LSF Patch removes several programs installed by other packages, clarifying the message and fixing the compiler warning.
+# sysvinit-3.01-consolidated-1 патч LFS удаляющий ряд программ предоставляемых util-linux
   burn_patches
   make -j${numjobs}
   make install ROOT=${pkgdir}
-  mv ${pkgdir}/sbin/init ${pkgdir}/sbin/init.new
+  mv ${pkgdir}/sbin/* ${pkgdir}/usr/bin/
+  rm -r ${pkgdir}/{sbin,bin}
+  mv ${pkgdir}/usr/bin/init ${pkgdir}/usr/bin/init.new
 
-# All this removes the patch.
-# provided by util-linux
-# rm "${pkgdir}"/usr/bin/{mesg,utmpdump,wall}
-# rm "${pkgdir}"/usr/share/man/man1/{mesg,utmpdump,wall}.1
-# rm "${pkgdir}"/sbin/sulogin
-# rm "${pkgdir}"/usr/share/man/man8/sulogin.8
+# Всё это предоставляется пакетом util-linux
+# rm ${pkgdir}/usr/bin/{mesg,utmpdump,wall}
+# rm ${pkgdir}/usr/share/man/man1/{mesg,utmpdump,wall}.1
+# rm ${pkgdir}/usr/bin/sulogin
+# rm ${pkgdir}/usr/share/man/man8/sulogin.8
+
+# Устанавливаем inittab
+  install -Dm644 ${filedir}/inittab ${pkgdir}/etc/inittab
+
+# Создаём уровень запуска для X11
+  mkdir -p ${pkgdir}/etc/runlevels/X11
+  cd ${pkgdir}/etc/runlevels/X11
+  ln -s ../default default
 }

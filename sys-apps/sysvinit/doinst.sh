@@ -1,16 +1,16 @@
 
-# Make backup of old init in case of epic failure:
-if [ -r sbin/init ] ; then
-	mv sbin/init sbin/init.old
+# Создаём резервную копию init на случай сбоя
+if [ -r usr/bin/init ] ; then
+	mv usr/bin/init usr/bin/init.old
 fi
 
-mv sbin/init.new sbin/init
+mv usr/bin/init.new usr/bin/init
 
 if [ ! -r var/log/btmp ] ; then
 	( cd var/log && umask 077 && touch btmp )
 fi
 
-# Everybody things that restarting init on install is a good idea. Ok, let's do it too:
+# На всякий случий перезапускаем init
 if [ "`pwd`" = "/" ] ; then
-	/sbin/init u
+	/usr/bin/init u
 fi
