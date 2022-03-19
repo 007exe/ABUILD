@@ -1,27 +1,27 @@
 pkgname=libtasn1
 pkgver=4.18.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("The ASN.1 library used in GNUTLS")
-longdesc=("Libtasn1 is an implementation of the ASN.1 standard used by GnuTLS and others.")
-
-tags=("dev-libs libs")
+shortdesc=("The ASN.1 library used in GNUTLS.")
+longdesc=("libtasn1 is a highly portable C library that encodes and decodes DER/BER data following an ASN.1 schema.")
 
 source=("https://ftp.gnu.org/gnu/libtasn1/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc"
+tags=("dev-libs libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --sysconfdir=/etc \
     --with-packager=AgiliaLinux \
     --with-packager-version=${pkgver}-${pkgbuild}
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  make -C doc/reference DESTDIR="${pkgdir}" install-data-local
+  make -C doc/reference DESTDIR=${pkgdir} install-data-local
 }
