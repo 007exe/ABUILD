@@ -1,54 +1,67 @@
 pkgname=dbus
-pkgver=1.12.20
+pkgver=1.14.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Freedesktop.org message bus system")
-longdesc=("D-Bus is a message bus system, a simple way for applications to talk to one another. D-Bus supplies both a system daemon and a per-user-login-session daemon. Also, the message bus is built on top of a general one-to-one message passing framework, which can be used by any two applications to communicate directly.")
+shortdesc=("Freedesktop.org message bus system.")
+longdesc=("D-Bus is a message bus system, a simple way for applications to talk to one another.")
 
-tags=('base sys-apps')
+source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.xz")
 
-build_deps="libaudit libcap-ng expat libaudit xmlto docbook-xsl python yelp-tools doxygen elogind"
+tags=("base sys-apps")
 
-source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz")
+build_deps=("libaudit libcap-ng expat libaudit xmlto docbook-xsl python yelp-tools doxygen elogind autoconf-archive")
 
-config_files="etc/dbus-1/system.conf
-etc/dbus-1/session.conf"
+removedep=("libx11")
+
+config_files=("etc/dbus-1/system.conf
+etc/dbus-1/session.conf")
 
 build() {
   go_src_dir
   burn_patches
+  NOCONFIGURE=1 ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/dbus-1.0 \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --enable-user-session \
     --enable-x11-autolaunch \
+    --enable-libaudit \
+    --enable-inotify \
     --disable-doxygen-docs \
     --disable-xml-docs \
     --disable-static \
+    --runstatedir=/run \
     --with-systemduserunitdir=no \
     --with-systemdsystemunitdir=no \
-    --with-console-auth-dir=/run/console \
+    --with-console-auth-dir=/run/console/ \
     --with-system-pid-file=/run/dbus/pid \
     --with-system-socket=/run/dbus/system_bus_socket \
-    --with-init-scripts=openrc
+    --with-init-scripts=openrc \
+    --with-dbus-user=dbus
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# Fix some directory ownership
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
+
+# Установим корректные права на каталоги и файлы
   chown messagebus ${pkgdir}/var/lib/dbus
 
-# Add OpenRC scripts
-  install -Dm755 $filedir/dbus.init ${pkgdir}/etc/init.d/dbus
+# Установка скрипта OpenRC
+  install -Dm755 ${filedir}/dbus.init ${pkgdir}/etc/init.d/dbus
 
-# Add socket dir. DBus cannot do it and keep silent about
+# Создание директории для сокета
   mkdir -p ${pkgdir}/run/dbus
 
-  chown -v root:messagebus ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
-  chmod -v      4750       ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
+  chown -v root:messagebus ${pkgdir}/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+  chmod -v 4750 ${pkgdir}/usr/lib/dbus-1.0/dbus-daemon-launch-helper
 
   cd ${pkgdir}/etc
   ln -sv /var/lib/dbus/machine-id
+
+  echo 'u dbus 81 "System Message Bus"' |
+    install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/dbus.conf
 }
