@@ -1,21 +1,20 @@
 pkgname=openrc
 pkgver=0.44.10
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("OpenRC is a dependency-based init system that works with the system-provided init program, normally.")
+shortdesc=("OpenRC manages the services, startup and shutdown of a host.")
 longdesc=("OpenRC is a dependency-based init system that works with the system-provided init program, normally.")
 
 source=("https://github.com/OpenRC/openrc/archive/${pkgver}.tar.gz")
 
-tags="base sys-apps"
+tags=("base sys-apps")
 
-adddep="etc>=16.0 sed grep sysvinit"
+build_deps=("glibc kernel-headers")
 
-build_deps="glibc kernel-headers"
+adddep=("etc sed grep sysvinit")
 
-config_files="etc/rc.conf
-etc/inittab
+config_files=("etc/rc.conf
 etc/conf.d/keymaps
 etc/conf.d/hwclock
 etc/conf.d/consolefont
@@ -27,40 +26,31 @@ etc/conf.d/bootmisc
 etc/conf.d/localmount
 etc/conf.d/network
 etc/conf.d/urandom
-etc/conf.d/dmesg
-"
+etc/conf.d/dmesg")
 
 build() {
   go_src_dir
   burn_patches
   export BRANDING="AgiliaLinux"
-  make  LIBNAME=lib$LIBDIRSUFFIX LIBEXECDIR=/lib$LIBDIRSUFFIX/rc -j${numjobs} OS=Linux || exit 1
-  make install DESTDIR=${pkgdir} LIBNAME=lib$LIBDIRSUFFIX LIBEXECDIR=/lib$LIBDIRSUFFIX/rc OS=Linux || exit 1
+  make  LIBNAME=lib LIBEXECDIR=/lib/rc -j${numjobs} OS=Linux
+  make install DESTDIR=${pkgdir} LIBNAME=lib LIBEXECDIR=/lib/rc OS=Linux
 
   install -m755 ${filedir}/consolefont ${pkgdir}/etc/init.d/consolefont
 
-# Fix defaults in configuration file
+# Исправляем значения по умолчанию в файле конфигурации
   sed -i 's/#rc_parallel=.*$/rc_parallel="YES"/g' ${pkgdir}/etc/rc.conf
   sed -i 's/#unicode=.*$/unicode="YES"/g' ${pkgdir}/etc/rc.conf
   sed -i 's/#rc_sys=.*$/rc_sys=""/g' ${pkgdir}/etc/rc.conf
 
-# Copy inittab
-  install -m644 ${filedir}/inittab ${pkgdir}/etc/inittab
-
-# Create X11 runlevel
-  mkdir -p ${pkgdir}/etc/runlevels/X11
-  ( cd ${pkgdir}/etc/runlevels/X11 ; ln -s ../default default )
-
-# Fix hwclock init script to match clock_synctohc variable
+# Исправляем скрипт инициализации hwclock, чтобы он соответствовал переменной clock_synctohc.
   sed -i -e 's/clock_systohc/clock_synctohc/g' ${pkgdir}/etc/init.d/hwclock
 
-# Fix default settings
-# Don't wipe tmp by default, some users got shocked about this
+# Не стирать tmp
   sed -i 's/wipe_tmp="YES"/wipe_tmp="NO"/g' ${pkgdir}/etc/conf.d/bootmisc
 
-# Fix path for urandom seed
+# Путь для urandom seed
   sed -i 's/urandom_seed=.*/urandom_seed="\/etc\/random-seed"/g' ${pkgdir}/etc/conf.d/urandom
 
-# Fix default console font
+# Шрифт консоли по умолчанию
   sed -i 's/default8x16/cyr-sun16/g' ${pkgdir}/etc/conf.d/consolefont
 }

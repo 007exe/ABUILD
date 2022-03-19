@@ -1,4 +1,4 @@
-#!/sbin/openrc-run
+#!/usr/bin/openrc-run
 # Copyright (c) 2007-2009 Roy Marples <roy@marples.name>
 # All rights reserved. Released under the 2-clause BSD license.
 
@@ -32,7 +32,7 @@ start()
 
 	local x= param= sf_param= retval=0 ttydev=/dev/tty
 
-	# Get additional parameters
+	# Получить дополнительные параметры
 	if [ -n "$consoletranslation" ]; then
 		param="$param -m $consoletranslation"
 	fi
@@ -40,7 +40,7 @@ start()
 		param="$param -u $unicodemap"
 	fi
 
-	# Set the console font
+	# Установить шрифт консоли
 	ebegin "Setting console font [$consolefont]"
 	[ -d /dev/vc ] && ttydev=/dev/vc/
 	x=1
@@ -53,7 +53,7 @@ start()
 	done
 	eend $retval
 
-	# Store the last font so we can use it ASAP on boot
+	# Сохранить последний шрифт, чтобы загрузка происходила быстрее
 	if [ $retval -eq 0 -a -w "$RC_LIBEXECDIR" ]; then
 		mkdir -p "$RC_LIBEXECDIR"/console
 		for font in /usr/share/kbd/consolefonts/"$consolefont".*; do
