@@ -1,14 +1,14 @@
 pkgname=texinfo
 pkgver=6.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("GNU documentation system for on-line information and printed output")
+shortdesc=("GNU documentation system for on-line information and printed output.")
 longdesc=("The Texinfo package contains programs for reading, writing, and converting info pages.")
 
-tags=("console app-text")
-
 source=("ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("console sys-apps")
 
 build_deps="ncurses findutils gzip perl"
 
@@ -18,8 +18,7 @@ build() {
   go_src_dir
   burn_patches
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --prefix=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
