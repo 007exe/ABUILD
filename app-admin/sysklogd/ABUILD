@@ -1,20 +1,20 @@
 pkgname=sysklogd
-pkgver=2.2.3
+pkgver=2.3.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("System logging and kernel message trapping daemons")
-longdesc=("The sysklogd package contains two system utilities (syslogd and klogd) which provide support for system logging.  Syslogd and klogd run as daemons (background processes) and log system messages to different places, like sendmail logs, security logs, error logs, etc.")
-
-tags=("app-admin base")
+shortdesc=("System logging and kernel message trapping daemons.")
+longdesc=("The sysklogd package contains programs for logging system messages, such as those given by the kernel when unusual things happen.")
 
 source=("https://github.com/troglobit/sysklogd/archive/refs/tags/v${pkgver}.tar.gz")
 
-build_deps="glibc"
+tags=("app-admin base")
 
-config_files="etc/conf.d/sysklogd
+build_deps=("glibc")
+
+config_files=("etc/conf.d/sysklogd
 etc/logrotate.d/syslog
-etc/syslog.conf"
+etc/syslog.conf")
 
 build() {
   go_src_dir
@@ -23,7 +23,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --runstatedir=/run
   make -j${numjobs}
