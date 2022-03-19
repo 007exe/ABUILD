@@ -1,24 +1,28 @@
 pkgname=emacs
 pkgver=27.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc="GNU Emacs is much more then just an extensible, customizable text editor."
-longdesc="GNU Emacs is an extensible, customizable text editor-and more. At its core is an interpreter for Emacs Lisp, a dialect of the Lisp programming language with extensions to support text editing."
+shortdesc=("The extensible, customizable, self-documenting real-time display editor.")
+longdesc=("The Emacs package contains an extensible, customizable, self-documenting real-time display editor.")
 
 source=("http://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="xapps app-editors"
+tags=("console app-editors")
 
-build_deps=" "
+build_deps=("glibc acl gmp gnutls gpm ncurses libxml2")
 
 build() {
-  cd "${srcdir}"/emacs-$pkgver
-
+  go_src_dir
+  burn_patches
+# Исправление ошибки переносимости в glibc 2.34 которая больше не определяет SIGSTKSZ.
+  sed -e '/SIGSTKSZ/ s|^.*$|static max_align_t sigsegv_stack[\
+    (64 * 1024 + sizeof (max_align_t) - 1) / sizeof (max_align_t)];|' \
+    -i src/sysdep.c
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+    --libexecdir=/usr/lib \
     --localstatedir=/var \
     --without-x \
     --without-sound \
@@ -26,17 +30,13 @@ build() {
     --with-gnutls=ifavailable
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
+# Исправляем конфликт с пакетом ctags
+  mv ${pkgdir}/usr/bin/{ctags,ctags.emacs}
+  mv ${pkgdir}/usr/share/man/man1/{ctags.1.gz,ctags.emacs.1}
 
-after_build()
-{
-# remove conflict with ctags package
-  mv "${pkgdir}"/usr/bin/{ctags,ctags.emacs}
-  mv "${pkgdir}"/usr/share/man/man1/{ctags.1.gz,ctags.emacs.1}
-
-# fix user/root permissions on usr/share files
-  find "${pkgdir}"/usr/share/emacs/$pkgver -exec chown root.root {} \;
-# remove .desktop file and icons
-  rm -rf "${pkgdir}"/usr/share/{applications,icons}
+# Устанавливаем правельные права на файлы
+  find ${pkgdir}/usr/share/emacs/${pkgver} -exec chown root.root {} \;
+# Удаляем иконку и .desktop
+  rm -rf ${pkgdir}/usr/share/{applications,icons}
 }
