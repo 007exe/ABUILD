@@ -1,12 +1,10 @@
 pkgname=vim
-pkgver=8.2.3441
+pkgver=8.2.4464
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("The VIM editor")
-longdesc=("VIM (VIsual editor iMproved) is an updated and improved version of the vi editor. Vi was the first real screen-based editor for UNIX, and is still very popular. VIM improves on vi by adding new features: multiple windows, multi-level undo, block highlighting and more.")
-
-tags=('app-editors console')
+shortdesc=("The Vim package contains a powerful text editor.")
+longdesc=("Vi Improved, a highly configurable, improved version of the vi text editor")
 
 source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz"
 "ftp://ftp.vim.org/pub/vim/runtime/spell/ru.cp1251.spl"
@@ -22,16 +20,17 @@ source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz"
 "ftp://ftp.vim.org/pub/vim/runtime/spell/en.utf-8.spl"
 "ftp://ftp.vim.org/pub/vim/runtime/spell/en.utf-8.sug")
 
-build_deps="glibc libgcrypt gpm python ruby gawk tcl pcre zlib"
+tags=("app-editors console")
 
-config_files="etc/vimrc"
+build_deps=("glibc libgcrypt gpm python ruby gawk tcl pcre zlib acl ncurses")
+
+config_files=("etc/vimrc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
     --with-features=huge \
-    --with-compiledby='Arch Linux' \
     --enable-gpm \
     --enable-acl \
     --with-x=no \
@@ -50,7 +49,7 @@ build() {
   make -j${numjobs}
   make install DESTDIR=$pkgdir
 
-# install locale
+# Установка локализаций
   install -Dm 644 ${srcache}/ru.cp1251.spl ${pkgdir}/share/vim/vimfiles/spell/ru.cp1251.spl
   install -Dm 644 ${srcache}/ru.cp1251.sug ${pkgdir}/share/vim/vimfiles/spell/ru.cp1251.sug
   install -Dm 644 ${srcache}/ru.koi8-r.spl ${pkgdir}/share/vim/vimfiles/spell/ru.koi8-r.spl
@@ -64,9 +63,7 @@ build() {
   install -Dm 644 ${srcache}/en.utf-8.spl ${pkgdir}/share/vim/vimfiles/spell/en.utf-8.spl
   install -Dm 644 ${srcache}/en.utf-8.sug ${pkgdir}/share/vim/vimfiles/spell/en.utf-8.sug
 
-# license
   install -Dm 644 runtime/doc/uganda.txt ${pkgdir}/usr/share/licenses/vim/license.txt
 
-# config file
   install -Dm 644 ${filedir}/vimrc ${pkgdir}/etc/vimrc
 }
