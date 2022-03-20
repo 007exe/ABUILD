@@ -1,15 +1,15 @@
 pkgname=sqlite
-pkgver=3.37.2
+pkgver=3.38.1
 pkgbuild=1
-arch=('auto')
-_amalgamationver=3370200
+arch=("auto")
+_amalgamationver=3380100
 
-shortdesc=("A C library that implements an SQL database engine")
-longdesc=("SQLite is a C library that implements an embeddable SQL database engine. Programs that link with the SQLite library can have SQL database access without running a separate RDBMS process. The distribution comes with a standalone command-line access program (sqlite) that can be used to administer an SQLite database and which serves as an example of how to use the SQLite library.")
+shortdesc=("A C library that implements an SQL database engine.")
+longdesc=("The SQLite package is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.")
 
-tags=('libs dev-db')
+tags=("libs dev-db")
 
-build_deps="tcl readline zlib"
+build_deps=("tcl readline zlib")
 
 source=("http://sqlite.org/2022/sqlite-autoconf-${_amalgamationver}.tar.gz"
         "http://www.sqlite.org/2022/sqlite-doc-${_amalgamationver}.zip")
@@ -32,27 +32,27 @@ build() {
 
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-amalgamation \
     --enable-fts3 \
     --enable-fts4 \
     --enable-fts5 \
     --enable-rtree \
-    --enable-json1
+    --enable-json1 \
+    TCLLIBDIR=/usr/lib/sqlite$pkgver
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
-
   make DESTDIR=${pkgdir} install
 
-# install manpage
-  install -m755 -d "${pkgdir}"/usr/share/man/man1
-  install -m644 sqlite3.1 "${pkgdir}"/usr/share/man/man1/
+  install -m755 -d ${pkgdir}/usr/share/man/man1
+  install -m644 sqlite3.1 ${pkgdir}/usr/share/man/man1/
 }
 
 sqlite-doc() {
   pkgname=sqlite-doc
-  shortdesc=("Most of the static HTML files that comprise this website, including all of the SQL Syntax and the C/C++ interface specs and other miscellaneous documentation")
-  longdesc=("Most of the static HTML files that comprise this website, including all of the SQL Syntax and the C/C++ interface specs and other miscellaneous documentation")
+  shortdesc=("Most of the static HTML files that comprise this website, including all of the SQL Syntax and the C/C++ interface specs and other miscellaneous documentation.")
+  longdesc=("The SQLite package is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.")
 }
 
 sqlite-doc_prep() {
@@ -60,7 +60,6 @@ sqlite-doc_prep() {
   mkdir -p ${pkgdir}/usr/doc/sqlite-${pkgver}
   cp -R *  ${pkgdir}/usr/doc/sqlite-${pkgver}/
 
-  # fix permissions and remove obsolete files; https://bugs.archlinux.org/task/24605
   find ${pkgdir} -type f -perm 755 -exec ls -lha {} \;
   find ${pkgdir} -type f -perm 755 -exec chmod 644 {} \;
 
