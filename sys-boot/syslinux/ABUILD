@@ -1,38 +1,35 @@
 pkgname=syslinux
 pkgver=6.04-pre1
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc="Collection of flexible boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE"
-longdesc="SYSLINUX is a boot loader for the Linux operating system which operates off an MS-DOS/Windows FAT filesystem. This is used by the Slackware makebootdisk script to create system boot floppies. Also included are PXELINUX and ISOLINUX, boot loaders for booting from a network server or CD-ROM. SYSLINUX, PXELINUX, and ISOLINUX were written by H. Peter Anvin."
-
-tags=("sys-boot base")
+shortdesc=("Collection of flexible boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE")
+longdesc=("SYSLINUX is a boot loader for the Linux operating system which operates off an MS-DOS/Windows FAT filesystem. This is used by the Slackware makebootdisk script to create system boot floppies. Also included are PXELINUX and ISOLINUX, boot loaders for booting from a network server or CD-ROM. SYSLINUX, PXELINUX, and ISOLINUX were written by H. Peter Anvin.")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/Testing/${pkgver%-*}/syslinux-$pkgver.tar.xz")
 
-adddep="mtools perl"
+tags=("sys-boot base")
 
-build_deps="perl glibc nasm util-linux-ng upx"
+build_deps=("perl glibc nasm util-linux upx mtools")
 
-config_files="boot/syslinux/syslinux.cfg"
+# NOTE: Это опциональные зависимости: perl-crypt-passwdmd5 perl-digest-sha1 mtools gptfdisk util-linux efibootmgr dosfstools
+removedep=("mtools gptfdisk util-linux efibootmgr dosfstools")
+
+config_files=("boot/syslinux/syslinux.cfg")
 
 build() {
   go_src_dir
   burn_patches
-# do not swallow efi compilation output to make debugging easier
   sed 's|> /dev/null 2>&1||' -i efi/check-gnu-efi.sh
-
-# do not swallow efi compilation output to make debugging easier
   truncate --size 0 mk/devel.mk
 
-# fix ld.gold ArchLinux
-# workaround for binutils 2.28 http://www.syslinux.org/wiki/index.php?title=Building
+# Фикс линковщика ld.gold binutils 2.28 http://www.syslinux.org/wiki/index.php?title=Building
   export LDFLAGS+=--no-dynamic-linker
 
-# to fix gpxe build
+# Исправление сборки gpxe
   export EXTRA_CFLAGS=-fno-PIE
 
-# Do not try to build the Windows or DOS installers and DIAG files
+# Не собирать инстолятор DOS и Windows
   sed 's|diag libinstaller dos win32 win64 dosutil txt|libinstaller txt|g' -i Makefile
   sed 's|win32/syslinux.exe win64/syslinux64.exe||g' -i Makefile
   sed 's|dosutil/\*.com dosutil/\*.sys||g' -i Makefile
@@ -41,9 +38,17 @@ build() {
   sed 's|install -m 644 -c $(INSTALL_DIAG) $(INSTALLROOT)$(DIAGDIR)|# install -m 644 -c $(INSTALL_DIAG) $(INSTALLROOT)$(DIAGDIR)|g' -i Makefile
 
   make PYTHON=python bios efi64 efi32
-  make bios efi64 efi32 INSTALLROOT="${pkgdir}" SBINDIR=/usr/bin MANDIR=/usr/share/man AUXDIR=/usr/lib/syslinux install
+  make bios efi64 efi32 INSTALLROOT=${pkgdir} SBINDIR=/usr/bin MANDIR=/usr/share/man AUXDIR=/usr/lib/syslinux install
 
-  install -D -m755 "${filedir}"/syslinux-install_update "${pkgdir}"/usr/bin/syslinux-install_update
-  install -D -m644 "${filedir}"/syslinux.cfg "${pkgdir}"/boot/syslinux/syslinux.cfg
-  install -D -m644 "${filedir}"/splash.png "${pkgdir}"/boot/syslinux/splash.png
+  rm -r ${pkgdir}/usr/lib/syslinux/com32
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/syslinux/COPYING
+  install -d ${pkgdir}/usr/share/doc
+  cp -ar doc ${pkgdir}/usr/share/doc/syslinux
+
+  install -d ${pkgdir}/usr/lib/syslinux/bios
+  mv ${pkgdir}/usr/lib/syslinux/{*.bin,*.c32,*.0,memdisk} ${pkgdir}/usr/lib/syslinux/bios
+
+  install -D -m755 ${filedir}/syslinux-install_update ${pkgdir}/usr/bin/syslinux-install_update
+  install -D -m644 ${filedir}/syslinux.cfg ${pkgdir}/boot/syslinux/syslinux.cfg
+  install -D -m644 ${filedir}/splash.png ${pkgdir}/boot/syslinux/splash.png
 }
