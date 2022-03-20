@@ -1,0 +1,60 @@
+pkgname=audit
+pkgver=3.0.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Userspace components of the audit framework.")
+longdesc=("Userspace utilities for storing and processing auditing records.")
+
+source=("http://people.redhat.com/sgrubb/audit/audit-${pkgver}.tar.gz")
+
+tags=("libs sys-process")
+
+build_deps=("libcap-ng openldap kernel-headers python krb5 swig")
+
+pkglist=("libaudit")
+
+config_files=("etc/libaudit.conf
+etc/audit/audit-stop.rules
+etc/audit/auditd.conf
+etc/audit/audisp-remote.conf
+etc/audit/zos-remote.conf
+etc/audit/plugins.d/af_unix.conf
+etc/audit/plugins.d/au-remote.conf
+etc/audit/plugins.d/audispd-zos-remote.conf
+etc/audit/plugins.d/syslog.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/audit \
+    --sysconfdir=/etc \
+    --with-python=yes \
+    --enable-gssapi-krb5=yes \
+    --with-libcap-ng=yes \
+    --disable-static
+  make -j${numjobs}
+  [ -n "${SOURCE_DATE_EPOCH}" ] && touch -h -d @$SOURCE_DATE_EPOCH bindings/swig/python/audit.py
+  make DESTDIR="${pkgdir}" INSTALL='install -p' install
+
+  install -d ${pkgdir}/var/log/audit
+  rm -rf ${pkgdir}/etc/rc.d
+  rm -rf ${pkgdir}/etc/sysconfig
+}
+
+# NOTE: Это временный виртуальный пакет созданный при переименовании libaudit в audit.
+# следующие пакеты зависят от libaudit: dbus linux-pam shadow
+# Как только эти пакеты перестанут требовать libaudit этот пакет следует удалить.
+libaudit() {
+  pkgname=libaudit
+  shortdesc=("This is a temporary virtual package created for compatibility when renaming libaudit.")
+  adddep=("audit")
+}
+
+libaudit_prep() {
+  echo "The virtual package libaudit has been created."
+}
