@@ -1,18 +1,19 @@
 pkgname=glib2
-pkgver=2.70.2
+pkgver=2.72.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Low level core library")
+shortdesc=("Low level core library.")
 longdesc=("The GLib package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}.tar.xz")
 
-tags="libs dev-libs compat32"
+tags=("libs dev-libs")
 
-build_deps="gettext shared-mime-info python git util-linux-ng meson dbus pcre libffi zlib elfutils gtk-doc"
+build_deps=("gettext shared-mime-info python git util-linux-ng meson dbus pcre libffi zlib elfutils gtk-doc")
 
-#pkglist="glib2-docs"
+config_files=("etc/profile.d/libglib2.csh
+etc/profile.d/libglib2.sh")
 
 build() {
   go_src_dir
@@ -20,45 +21,26 @@ build() {
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
   meson build \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --buildtype=release \
     -D glib_debug=disabled \
     -D selinux=disabled \
-    -D man=true
-#    -D gtk_doc=true
+    -D man=true \
+    -D gtk_doc=false
   meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 
-  meson install -C build --destdir "$pkgdir"
+  python -m compileall -d /usr/share/glib-2.0/codegen ${pkgdir}/usr/share/glib-2.0/codegen
+  python -O -m compileall -d /usr/share/glib-2.0/codegen ${pkgdir}/usr/share/glib-2.0/codegen
 
-  python -m compileall -d /usr/share/glib-2.0/codegen \
-    "$pkgdir/usr/share/glib-2.0/codegen"
-  python -O -m compileall -d /usr/share/glib-2.0/codegen \
-    "$pkgdir/usr/share/glib-2.0/codegen"
-
-# Install profile scripts:
+# Установка скриптов профиля
   mkdir -p $pkgdir/etc/profile.d/
-  cp -a $filedir/libglib2.{csh,sh} $pkgdir/etc/profile.d/
-  chown root:root $pkgdir/etc/profile.d/*
-  chmod 755 $pkgdir/etc/profile.d/*
-  mv $pkgdir/etc/profile.d/libglib2.csh $pkgdir/etc/profile.d/libglib2.csh.new
-  mv $pkgdir/etc/profile.d/libglib2.sh $pkgdir/etc/profile.d/libglib2.sh.new
+  cp -a ${filedir}/libglib2.{csh,sh} ${pkgdir}/etc/profile.d/
+  chown root:root ${pkgdir}/etc/profile.d/*
+  chmod 755 ${pkgdir}/etc/profile.d/*
 
 # bash-completion
-  for _i in "$pkgdir/usr/share/bash-completion/completions/"*; do
+  for _i in ${pkgdir}/usr/share/bash-completion/completions/*; do
     chmod -x "$_i"
   done
 }
-
-#glib2-docs() {
-#  pkgname=glib2-docs
-#  shortdesc=("Documentation for the Rust programming language")
-#  longdesc=("The Rust programming language is designed to be a safe, concurrent, practical language.")
-#}
-
-#glib2-docs_prep() {
-#  cd "${srcdir}/glib-$pkgver"
-#  install -d "$pkgdir"/usr/share/doc
-#  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share
-
-#  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 glib/docs/reference/COPYING
-#}
