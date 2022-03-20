@@ -6,7 +6,7 @@ arch=("noarch")
 shortdesc=("MPKG package system: localization files")
 longdesc=("MPKG package system: localization files")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("app-i18n base")
 

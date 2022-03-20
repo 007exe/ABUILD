@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("mpkg parted libs")
 longdesc=("Parted bindings for mpkg, mainly used by system installers such as agilia-gui-installer.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("console dev-util")
 
@@ -21,5 +21,8 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
+# FIXME: Следует исправить CmakeList.txt, а пока вручную фиксим
+  mkdir -p ${pkgdir}/usr/lib/
+  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib/
+  rm -r ${pkgdir}/usr/lib64
 }
-

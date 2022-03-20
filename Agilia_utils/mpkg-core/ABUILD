@@ -6,13 +6,13 @@ arch=("auto")
 shortdesc=("MPKG package system: core libraries")
 longdesc=("The core of mpkg.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("base sys-pkgtools")
 
-build_deps=("nwidgets mpkgsupport cmake gcc gcc-libs curl sqlite libxml2 mpkg-i18n")
+build_deps=("nwidgets mpkgsupport cmake gcc gcc-libs curl sqlite libxml2 mpkg-i18n texinfo")
 
-adddep=("mpkg-i18n tar xz gzip sed wget which")
+adddep=("mpkg-i18n tar xz gzip sed wget which texinfo")
 
 build() {
   go_src_dir
@@ -21,8 +21,7 @@ build() {
   cd build
   cmake ../lib \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
+    -DCMAKE_INSTALL_LIBDIR=lib
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }
-

@@ -6,11 +6,13 @@ arch=("auto")
 shortdesc=("MPKG package system: console utilities")
 longdesc=("Console tools related to mpkg. A must-have package.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("base sys-pkgtools")
 
-build_deps=("mpkg-core cmake gcc-libs mpkgsupport nwidgets")
+build_deps=("mpkg-core cmake gcc-libs mpkgsupport nwidgets texinfo")
+
+adddep=("texinfo")
 
 build() {
   go_src_dir
@@ -18,13 +20,20 @@ build() {
   mkdir build
   cd build
   cmake ../console \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
+    -DCMAKE_INSTALL_PREFIX=/usr
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 
   cd ${pkgdir}/usr/bin
   ln -s mpkg buildpkg
   ln -s mpkg buildsrcpkg
-}
 
+# NOTE: Пути к mpkglddcheck.sh mpkg_objdump_check.sh жёстко прописаны в libmpkg.cpp пока их не трогаю.
+# Следует разобраться с ними нужны ли они.
+
+# FIXME: Во первых надо обновить данный скрипт, Во вторых поправить CmakeList.txt дабы он устанавливался в /usr/bin
+# NOTE: Cкрипт makepkg используется из комплекта pkgtools дистрибутива Slakware, думаю от него следует избавится и переложить
+# функции упаковки на mkpkg
+  mv ${pkgdir}/sbin/makepkg ${pkgdir}/usr/bin/makepkg
+  rm -r ${pkgdir}/sbin/
+}

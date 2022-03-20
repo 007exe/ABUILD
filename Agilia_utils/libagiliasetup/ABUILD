@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("AgiliaLinux OS installation library")
 longdesc=("This library was splitted from agilia-gui-setup, mainly for non-GUI setup implementations.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("libs sys-libs")
 
@@ -21,7 +21,7 @@ build() {
   cd build
   cmake ../libagiliasetup \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
+    -DCMAKE_INSTALL_LIBDIR=lib
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }

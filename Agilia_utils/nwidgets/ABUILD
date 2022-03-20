@@ -3,10 +3,10 @@ pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("NCurses widgets framework")
+shortdesc=("NCurses widgets framework.")
 longdesc=("NCurses widgets framework.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("base sys-libs")
 
@@ -20,7 +20,7 @@ build() {
   cmake ../nwidgets \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONF_INSTALL_DIR=/etc \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DMAN_INSTALL_DIR=/usr/share/man
   make -j${numjobs}
   make install DESTDIR=${pkgdir}

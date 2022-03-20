@@ -6,7 +6,7 @@ arch=("noarch")
 shortdesc=("AgiliaLinux LiveCD build scripts")
 longdesc=("This package contains mkpkg-like scripts to build LiveCDs from ISOBUILD specifications.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("xapps sys-apps")
 

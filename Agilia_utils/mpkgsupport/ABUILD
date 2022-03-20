@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Support library from mpkg")
 longdesc=("Support library from mpkg. Contains many useful functions, not related directly to mpkg and which can be used in other programs.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("base sys-libs")
 
@@ -20,7 +20,7 @@ build() {
   cmake ../mpkgsupport \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONF_INSTALL_DIR=/etc \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DMAN_INSTALL_DIR=/usr/share/man
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
