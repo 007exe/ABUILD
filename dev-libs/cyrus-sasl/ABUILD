@@ -1,23 +1,23 @@
 pkgname=cyrus-sasl
 pkgver=2.1.27
-pkgbuild=4
-arch=('auto')
+pkgbuild=5
+arch=("auto")
 numjobs=1
 
-shortdesc=("The Simple Authentication and Security Layer")
+shortdesc=("The Simple Authentication and Security Layer.")
 longdesc=("SASL is the Simple Authentication and Security Layer, a method for adding authentication support to connection-based protocols. To use SASL, a protocol includes a command for identifying and authenticating a user to a server and for optionally negotiating protection of subsequent protocol interactions. If its use is negotiated, a security layer is inserted between the protocol and the connection.")
 
-tags=('dev-libs network compat32')
+tags=("dev-libs network")
 
 source=("https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-${pkgver}/cyrus-sasl-${pkgver}.tar.gz")
-config_files="etc/conf.d/saslauthd"
 
-build_deps="openssl glibc sqlite autoconf"
+build_deps=("openssl glibc sqlite autoconf")
+
+config_files=("etc/conf.d/saslauthd")
 
 build() {
   go_src_dir
   burn_patches
-
   rm -f config/config.guess config/config.sub
   rm -f config/ltconfig config/ltmain.sh config/libtool.m4
   rm -fr autom4te.cache
@@ -31,8 +31,8 @@ build() {
 
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-plugindir=/usr/lib${LIBDIRSUFFIX}/sasl2 \
+    --libdir=/usr/lib \
+    --with-plugindir=/usr/lib/sasl2 \
     --with-configdir=/etc/sasl2:/etc/sasl \
     --sysconfdir=/etc \
     --docdir=/usr/share/doc \
@@ -56,7 +56,7 @@ build() {
     --enable-ntlm \
     --disable-passdss \
     --enable-sql \
-    --with-sqlite3=/usr/lib${LIBDIRSUFFIX} \
+    --with-sqlite3=/usr/lib \
     --with-devrandom=/dev/urandom \
     --without-ldap \
     --without-pgsql \
@@ -64,14 +64,17 @@ build() {
     --with-saslauthd \
     --with-gdbm \
     --with-dblib=gdbm
-  make -j${numjobs} sasldir=/usr/lib${LIBDIRSUFFIX}/sasl2
-  make DESTDIR=${pkgdir} sasldir=/usr/lib${LIBDIRSUFFIX}/sasl2 install
-}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} sasldir=/usr/lib/sasl2 install
 
-after_build() {
   mkdir -p $pkgdir/var/state/saslauthd
 
-# Add OpenRC scripts
-  install -Dm0644 $filedir/conf.d/saslauthd $pkgdir/etc/conf.d/saslauthd
-  install -Dm0755 $filedir/init.d/saslauthd $pkgdir/etc/init.d/saslauthd
+# Конфиг
+  install -Dm0644 ${filedir}/conf.d/saslauthd ${pkgdir}/etc/conf.d/saslauthd
+
+# Скрипты OpenRC
+  install -Dm0755 ${filedir}/init.d/saslauthd ${pkgdir}/etc/init.d/saslauthd
+
+  mkdir -p ${pkgdir}/usr/share/licenses/cyrus-sasl/
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/cyrus-sasl/
 }
