@@ -1,8 +1,8 @@
 pkgname=grub
 pkgver=2.06
-_UNIFONT_VER=13.0.06
-pkgbuild=2
-arch=('auto')
+_UNIFONT_VER=14.0.02
+pkgbuild=3
+arch=("auto")
 
 shortdesc=("GNU GRUB is a Multiboot boot loader")
 longdesc=("GNU GRUB is a Multiboot boot loader. It was derived from GRUB, the GRand Unified Bootloader, which was originally designed and implemented by Erich Stefan Boleyn.")
@@ -12,16 +12,17 @@ source=("https://ftp.gnu.org/gnu/grub/grub-${pkgver}.tar.gz"
 
 tags=("base sys-boot")
 
-adddep="os-prober"
+build_deps=("fuse device-mapper python bzip2 xz freetype gettext texinfo bdf-unifont libarchive efibootmgr libisoburn mtools rsync")
 
-build_deps="fuse3 device-mapper python bzip2 xz freetype gettext texinfo bdf-unifont libarchive pkg-config"
+adddep=("os-prober gettext")
 
-config_files="etc/default/grub
-etc/grub.d/40_custom"
+# NOTE: Это опциональные зависимости: freetype fuse3 dosfstools lzop efibootmgr libisoburn os-prober mtools
+removedep=("freetype fuse")
 
-[[ "${CARCH}" == "x86_64" ]] && _EFI_ARCH="x86_64"
-[[ "${CARCH}" == "i686" ]] && _EFI_ARCH="i386"
+config_files=("etc/default/grub
+etc/grub.d/40_custom")
 
+#NOTE: Общая конфигурация для grub-bios, grub-efi и grub-emu
 _configure_options=(
         FREETYPE="pkg-config freetype2"
         BUILD_FREETYPE="pkg-config freetype2"
@@ -43,64 +44,35 @@ _configure_options=(
         --disable-werror
 )
 
-before_build() {
+build() {
   go_src_dir
-
-  echo "Apply backports..."
-  local _c
-  for _c in "${_backports[@]}"; do
-         git log --oneline -1 "${_c}"
-         git cherry-pick -n "${_c}"
-  done
-
   burn_patches
-
-  echo "Fix DejaVuSans.ttf location so that grub-mkfont can create *.pf2 files for starfield theme..."
+  echo "===> Исправим местоположение DejaVuSans.ttf, чтобы grub-mkfont мог создавать файлы *.pf2 для темы звездного поля... <==="
   sed 's|/usr/share/fonts/dejavu|/usr/share/fonts/dejavu /usr/share/fonts/TTF|g' -i "configure.ac"
 
-  echo "Fix mkinitcpio 'rw' FS#36275..."
-  sed 's| ro | rw |g' -i "util/grub.d/10_linux.in"
-
-  echo "Fix OS naming FS#33393..."
+  echo "===> Исправим имя OS FS#33393... <==="
   sed 's|GNU/Linux|Linux|' -i "util/grub.d/10_linux.in"
 
-  echo "Pull in latest language files..."
+  echo "===> Загрузка последних языковых файлов... <==="
   ./linguas.sh
 
-  echo "Avoid problem with unifont during compile of grub..."
+  echo "===> Исправление проблем с unifont во время компиляции grub... <==="
 # http://savannah.gnu.org/bugs/?40330 and https://bugs.archlinux.org/task/37847
-  gzip -cd "${srcache}/unifont-${_UNIFONT_VER}.bdf.gz" > "unifont.bdf"
+  gzip -cd ${srcache}/unifont-${_UNIFONT_VER}.bdf.gz > "unifont.bdf"
 
-#  echo "Run bootstrap..."
-#  ./bootstrap --gnulib-srcdir=. --no-git
-
-  echo "Make translations reproducible..."
+  echo "===> Делаем переводы воспроизводимыми..."
   sed -i '1i /^PO-Revision-Date:/ d' po/*.sed
   ./autogen.sh
-  cd "${srcdir}"
-  cp -r "grub-${pkgver}" "${srcdir}/grub-bios"
-  mv -f "grub-${pkgver}" "${srcdir}/grub-efi"
-}
 
-
-build() {
-	go_src_dir
-echo ===========================================================
-echo
-echo                    Build grub-bios
-echo
-echo ===========================================================
-  cd "${srcdir}/grub-bios/"
-
-  echo "Set ARCH dependent variables for bios build..."
-  if [[ "${CARCH}" == 'x86_64' ]]; then
-        _EFIEMU="--enable-efiemu"
-  else
-        _EFIEMU="--disable-efiemu"
-  fi
-
-  echo "Run ./configure for bios build..."
-
+  cp -r ${srcdir}/grub-${pkgver} ${srcdir}/grub-bios
+  cp -r ${srcdir}/grub-${pkgver} ${srcdir}/grub-emu
+  mv -f ${srcdir}/grub-${pkgver} ${srcdir}/grub-efi
+####################################################################################################
+  echo "==========================================================="
+  echo "                   Сборка grub-bios                        "
+  echo "==========================================================="
+  cd ${srcdir}/grub-bios/
+  echo "===> Запуск ./configure для сборки grub-bios... <==="
   ./configure \
     CC=gcc BUILD_CC=gcc TARGET_CC=gcc \
     CFLAGS="-Os -fuse-ld=bfd" \
@@ -108,71 +80,26 @@ echo ===========================================================
     TARGET_LDFLAGS="-static" \
     --with-platform="pc" \
     --target="i386" \
-    "${_EFIEMU}" \
+    --enable-efiemu \
     --enable-boot-time \
     "${_configure_options[@]}"
 
     if [ ! -z "${SOURCE_DATE_EPOCH}" ]; then
-           echo "Make info pages reproducible..."
+           echo "===> Собрать информационные страницы... <==="
            touch -d "@${SOURCE_DATE_EPOCH}" $(find -name '*.texi')
     fi
-
+  echo "===> Сборка grub-bios... <==="
   CFLAGS="" make -j${numjobs}
-echo ===========================================================
-echo
-echo "Run make install for bios build..."
-echo
-echo ===========================================================
+
+  echo "===> Установка grub-bios... <==="
   make DESTDIR=${pkgdir} bashcompletiondir="/usr/share/bash-completion/completions" install
 
-echo ===========================================================
-echo
-echo "install /etc/default/grub"
-echo
-echo ===========================================================
-# install /etc/default/grub
-  install -Dm644 ${filedir}/grub.default ${pkgdir}/etc/default/grub
-
-echo ===========================================================
-echo
-echo "install memtest config detection"
-echo
-echo ===========================================================
-# install memtest config detection
-  install -Dm755 ${filedir}/20_memtest86+ ${pkgdir}/etc/grub.d/20_memtest86+
-echo ===========================================================
-echo
-echo "remove gdb debugging related files"
-echo
-echo ===========================================================
-## remove gdb debugging related files
-  rm -f "${pkgdir}/usr/lib/grub/i386-pc"/*.module || true
-  rm -f "${pkgdir}/usr/lib/grub/i386-pc"/*.image || true
-  rm -f "${pkgdir}/usr/lib/grub/i386-pc"/{kernel.exec,gdb_grub,gmodule.pl} || true
-echo ===========================================================
-echo
-echo "Default AgiliaLinux background"
-echo
-echo ===========================================================
-# Default AgiliaLinux background
-  install -Dm644 ${filedir}/grub640.png ${pkgdir}/boot/grub/grub640.png
-
-echo ===========================================================
-echo
-echo "Default font"
-echo
-echo ===========================================================
-# Default font
-  xzcat ${filedir}/unifont.pf2.xz > ${pkgdir}/boot/grub/unifont.pf2
-
-echo ===========================================================
-echo
-echo                     Build grub-efi
-echo
-echo ===========================================================
-  cd "${srcdir}/grub-efi/"
-
-  echo "Run ./configure for ${_EFI_ARCH} efi build..."
+####################################################################################################
+  echo "==========================================================="
+  echo "                    Build grub-efi                         "
+  echo "==========================================================="
+  cd ${srcdir}/grub-efi/
+  echo "===> Запуск ./configure для сборки grub-efi... <==="
   ./configure \
     CFLAGS="-Os -fuse-ld=bfd" \
     LDFLAGS="" \
@@ -182,14 +109,57 @@ echo ===========================================================
     --disable-efiemu \
     --enable-boot-time \
     "${_configure_options[@]}"
-
+  echo "===> Сборка grub-efi... <==="
   CFLAGS="" make -j${numjobs}
 
-  echo "Run make install for ${_EFI_ARCH} efi build..."
-  make DESTDIR="${pkgdir}/" bashcompletiondir="/usr/share/bash-completion/completions" install
+  echo "===> Установка grub-efi... <==="
+  make DESTDIR=${pkgdir}/ bashcompletiondir="/usr/share/bash-completion/completions" install
 
-  echo "Remove gdb debugging related files for x86_64 efi build..."
-  rm -f "${pkgdir}/usr/lib/grub/x86_64-efi"/*.module || true
-  rm -f "${pkgdir}/usr/lib/grub/x86_64-efi"/*.image || true
-  rm -f "${pkgdir}/usr/lib/grub/x86_64-efi"/{kernel.exec,gdb_grub,gmodule.pl} || true
+####################################################################################################
+#  echo "==========================================================="
+#  echo "                    Build grub-emu                         "
+#  echo "==========================================================="
+#  cd ${srcdir}/grub-emu/
+#  echo "===> Запуск ./configure для сборки grub-emu... <==="
+#  ./configure \
+#    --with-platform="emu" \
+#    --target=x86_64 \
+#    --enable-grub-emu-usb=no \
+#    --enable-grub-emu-sdl=no \
+#    --disable-grub-emu-pci \
+#    "${_configure_options[@]}"
+#  echo "===> Сборка grub-emu... <==="
+#  CFLAGS="" make -j${numjobs}
+
+#  echo "===> Установка grub-emu... <==="
+#  make DESTDIR=${pkgdir}/ bashcompletiondir="/usr/share/bash-completion/completions" install
+
+####################################################################################################
+
+  echo "===> Удаляем файлы, связанные с отладкой gdb... <==="
+  rm -f ${pkgdir}/usr/lib/grub/i386-pc/*.module || true
+  rm -f ${pkgdir}/usr/lib/grub/i386-pc/*.image || true
+  rm -f ${pkgdir}/usr/lib/grub/i386-pc/{kernel.exec,gdb_grub,gmodule.pl} || true
+
+  rm -f ${pkgdir}/usr/lib/grub/x86_64-efi/*.module || true
+  rm -f ${pkgdir}/usr/lib/grub/x86_64-efi/*.image || true
+  rm -f ${pkgdir}/usr/lib/grub/x86_64-efi/{kernel.exec,gdb_grub,gmodule.pl} || true
+
+#  rm -f ${pkgdir}/usr/lib/grub/x86_64-emu/*.module || true
+#  rm -f ${pkgdir}/usr/lib/grub/x86_64-emu/*.image || true
+#  rm -f ${pkgdir}/usr/lib/grub/x86_64-emu/{kernel.exec,gdb_grub,gmodule.pl} || true
+
+  sed -e "s/%PKGVER%/${pkgver}/" < ${filedir}/sbat.csv > ${pkgdir}/usr/share/grub/sbat.csv
+
+  echo "===> Установка /etc/default/grub... <==="
+  install -Dm644 ${filedir}/grub.default ${pkgdir}/etc/default/grub
+
+  echo "===> Установка конфига поиска memtest... <==="
+  install -Dm755 ${filedir}/20_memtest86+ ${pkgdir}/etc/grub.d/20_memtest86+
+
+  echo "===> Устанавливаем фон AgaliaLinux по умолчанию... <==="
+  install -Dm644 ${filedir}/grub640.png ${pkgdir}/boot/grub/grub640.png
+
+  echo "===> Шрифт по умолчанию... <==="
+  xzcat ${filedir}/unifont.pf2.xz > ${pkgdir}/boot/grub/unifont.pf2
 }
