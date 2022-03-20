@@ -1,5 +1,5 @@
 pkgname=pcre2
-pkgver=10.37
+pkgver=10.39
 pkgbuild=1
 arch=("auto")
 
@@ -8,9 +8,9 @@ longdesc="PCRE2 is a re-working of the original PCRE (Perl-compatible regular ex
 
 tags=("dev-libs libs")
 
-source=("https://ftp.pcre.org/pub/pcre/${pkgname}-${pkgver}.tar.bz2")
+source=("https://github.com/PhilipHazel/pcre2/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="bzip2 gcc-libs readline zlib"
+build_deps=("bzip2 gcc-libs readline zlib")
 
 build() {
   go_src_dir
@@ -18,13 +18,14 @@ build() {
     --prefix=/usr \
     --enable-utf \
     --enable-unicode-properties \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --enable-pcre2-16 \
     --enable-pcre2-32 \
     --enable-pcre2grep-libz \
     --enable-pcre2grep-libbz2 \
     --enable-pcre2test-libreadline \
-    --enable-jit
+    --enable-jit \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -Dm644 LICENCE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
