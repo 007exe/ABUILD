@@ -1,5 +1,5 @@
---- tcp_wrappers_7.6/tcpd.c.bug11881	Thu Jul 27 15:39:27 2000
-+++ tcp_wrappers_7.6/tcpd.c	Thu Jul 27 15:41:54 2000
+--- tcp_wrappers_7.6/tcpd.c.bug11881
++++ tcp_wrappers_7.6/tcpd.c
 @@ -60,10 +60,10 @@
       */
  
@@ -13,8 +13,8 @@
      }
  
      /*
---- tcp_wrappers_7.6/eval.c.bug11881	Thu Jul 27 15:39:53 2000
-+++ tcp_wrappers_7.6/eval.c	Thu Jul 27 15:40:51 2000
+--- tcp_wrappers_7.6/eval.c.bug11881
++++ tcp_wrappers_7.6/eval.c
 @@ -111,7 +111,7 @@
  	return (hostinfo);
  #endif
