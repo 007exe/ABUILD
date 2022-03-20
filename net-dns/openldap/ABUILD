@@ -1,22 +1,23 @@
 pkgname=openldap
-pkgver=2.5.7
+pkgver=2.6.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("LDAP servers and sample clients")
-longdesc="OpenLDAP is an open source suite of LDAP (Lightweight Directory Access Protocol) applications and development tools.  The suite includes a stand-alone LDAP server (slapd) which is in the -servers package, libraries for implementing the LDAP protocol (in the lib packages), and utilities, tools, and sample clients (in the -clients package). The openldap binary package includes only configuration files used by the libraries."
+shortdesc=("Lightweight Directory Access Protocol (LDAP) client and server.")
+longdesc=("The OpenLDAP package provides an open source implementation of the Lightweight Directory Access Protocol.")
 
 tags=("network net-misc compat32")
 
 source=("http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz")
 
-config_files="etc/openldap/ldap.conf
+config_files=("etc/openldap/ldap.conf
 etc/conf.d/slapd
 etc/openldap/slapd.ldif
-etc/openldap/slapd.conf"
-# libsasl libsodium
+etc/openldap/slapd.conf")
+
+# libsasl
 # wiredtiger --disable-wt
-build_deps="libtool e2fsprogs util-linux-ng chrpath unixodbc e2fsprogs"
+build_deps="libtool e2fsprogs util-linux-ng chrpath unixodbc e2fsprogs libsodium"
 
 before_build() {
   go_src_dir
@@ -29,10 +30,20 @@ before_build() {
 
 build() {
   go_src_dir
+  burn_patches
+# Изменение прав с 0644 на 0755
+  sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap}/Makefile.in
+
+# Заменить rundir на /run/openldap
+  sed -i 's|#define LDAPI_SOCK LDAP_RUNDIR LDAP_DIRSEP "run" LDAP_DIRSEP "ldapi"|#define LDAPI_SOCK LDAP_DIRSEP "run" LDAP_DIRSEP "openldap" LDAP_DIRSEP "ldapi"|' include/ldap_defaults.h
+  sed -i 's|%LOCALSTATEDIR%/run|/run/openldap|' servers/slapd/slapd.{conf,ldif}
+  sed -i 's|-$(MKDIR) $(DESTDIR)$(localstatedir)/run|-$(MKDIR) $(DESTDIR)/run/openldap|' servers/slapd/Makefile.in
+
   autoconf
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var/lib/openldap \
     --sbindir=/usr/bin \
@@ -69,12 +80,19 @@ build() {
     --with-threads
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
-after_build() {
-# get rid of duplicate default conf files
-  rm "${pkgdir}"/etc/openldap/*.default
-  cat << EOF >> ${pkgdir}/etc/openldap/ldap.conf
 
+# Удаляем дубликаты конфигурационных файлов
+  rm "${pkgdir}"/etc/openldap/*.default
+
+# Управление версиями общей библиотеки
+  ln -sf liblber.so ${pkgdir}/usr/lib/liblber.so.2
+  ln -sf libldap.so ${pkgdir}/usr/lib/libldap.so.2
+
+  ln -s ../lib/slapd ${pkgdir}/usr/bin/slapd
+  chown root:439 ${pkgdir}/etc/openldap/slapd.{conf,ldif}
+  chmod 640 ${pkgdir}/etc/openldap/slapd.{conf,ldif}
+
+  cat << EOF >> ${pkgdir}/etc/openldap/ldap.conf
 # In order to avoid problems with self-signed certificates using TLS:
 # "TLS certificate verification: Error, self signed certificate"
 # See also 'man ldap.conf' or http://www.openldap.org/doc/admin/tls.html
