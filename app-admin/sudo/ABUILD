@@ -1,5 +1,5 @@
 pkgname=sudo
-_sudover=1.9.9
+_sudover=1.9.10
 pkgver=${_sudover/p/.p}
 pkgbuild=1
 arch=("auto")
@@ -7,9 +7,9 @@ arch=("auto")
 shortdesc=("Give certain users the ability to run some commands as root.")
 longdesc=("The Sudo package allows a system administrator to give certain users (or groups of users) the ability to run some (or all) commands as root or another user while logging the commands and arguments.")
 
-tags=("console sys-auth")
-
 source=("http://www.sudo.ws/sudo/dist/sudo-$_sudover.tar.gz")
+
+tags=("console sys-auth")
 
 build_deps=("glibc linux-pam libaudit zlib")
 
@@ -21,8 +21,8 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --disable-env-reset \
     --with-logfac=auth \
     --with-pam \
@@ -39,5 +39,5 @@ build() {
 
   install -Dm0644 ${filedir}/sudo.pam ${pkgdir}/etc/pam.d/sudo
 
-  install -Dm644 LICENSE.md -t "$pkgdir/usr/share/licenses/sudo"
+  install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/sudo
 }
