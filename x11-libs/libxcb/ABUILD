@@ -1,31 +1,31 @@
 pkgname=libxcb
 pkgver=1.14
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("X protocol C-language Binding Library")
+shortdesc=("X11 client-side library.")
 longdesc=("The libxcb package provides an interface to the X Window System protocol, which replaces the current Xlib interface. Xlib can also use XCB as a transport layer, allowing software to make requests and receive responses with both.")
-
-tags=("x11-xcbs xserver compat32")
 
 source=("https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.tar.xz")
 
-build_deps="xorgproto xorg-util-macros python libxslt xcb-proto libxdmcp libxau"
+tags=("x11-xcbs xserver")
 
-adddep="xcb-proto"
+build_deps=("xorgproto xorg-util-macros python libxslt xcb-proto libxdmcp libxau")
+
+adddep=("xcb-proto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-xinput \
     --enable-xkb \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
-  install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"
+  install -m755 -d $pkgdir/usr/share/licenses/$pkgname
+  install -m644 COPYING $pkgdir/usr/share/licenses/$pkgname
 }
