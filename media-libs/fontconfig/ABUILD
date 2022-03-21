@@ -1,34 +1,39 @@
 pkgname=fontconfig
-pkgver=2.13.94
+pkgver=2.13.96
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Font configuration library")
-longdesc=("Fontconfig is designed to locate fonts within the system and select them according to requirements specified by applications.")
-
-tags=("xserver x11-utils")
+shortdesc=("Library for configuring and customizing font access.")
+longdesc=("The Fontconfig package contains a library and support programs used for configuring and customizing font access.")
 
 source=("http://www.fontconfig.org/release/$pkgname-$pkgver.tar.gz")
-# docbook-utils docbook-sgml
-build_deps="expat freetype meson gperf perl-sgmls"
 
-config_files="etc/fonts/fonts.conf"
+tags=("media-libs libs")
+
+# docbook-utils docbook-sgml
+build_deps=("expat freetype gperf perl-sgmls")
+
+config_files=("etc/fonts/fonts.conf")
 
 build() {
-  meson fontconfig-$pkgver build \
-    -Dprefix=/usr \
-    -D doc-txt=disabled \
-    -D doc-pdf=disabled \
-    -D doc-html=disabled
-  meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-docs \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-# Handle conf.d using the hook to avoid overwriting the symlinks on upgrade
-  mkdir -p "$pkgdir/usr/share/fontconfig/conf.default"
-  for _f in "$pkgdir"/etc/fonts/conf.d/*.conf; do
-    ln -sr "$pkgdir"/usr/share/fontconfig/conf.{avail,default}/"${_f##*/}"
+# Обработка conf.d с помощью хука, чтобы избежать перезаписи символических ссылок при обновлении
+  mkdir -p $pkgdir/usr/share/fontconfig/conf.default
+  for _f in ${pkgdir}/etc/fonts/conf.d/*.conf; do
+    ln -sr ${pkgdir}/usr/share/fontconfig/conf.{avail,default}/"${_f##*/}"
     rm "$_f"
   done
 
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 fontconfig-$pkgver/COPYING
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
