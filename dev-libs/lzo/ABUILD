@@ -1,38 +1,35 @@
 pkgname=lzo
 pkgver=2.10
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc=("Data compression library with very fast (de-)compression")
-longdesc=("LZO is a portable lossless data compression library written in ANSI C. It offers pretty fast compression and *very* fast decompression. Decompression requires no memory. In addition there are slower compression levels achieving a quite competitive compression ratio while still decompressing at this very high speed.")
+shortdesc=("Portable lossless data compression library.")
+longdesc=("LZO is a data compression library which is suitable for data decompression and compression in real-time. This means it favors speed over compression ratio.")
 
 source=("https://www.oberhumer.com/opensource/lzo/download/lzo-${pkgver}.tar.gz")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --enable-shared
+    --libdir=/usr/lib \
+    --enable-shared \
+    --disable-static
   make -j${numjobs}
 
-  # build minilzo
+# сборка minilzo
   gcc $CPPFLAGS $CFLAGS -fpic -Iinclude/lzo -o minilzo/minilzo.o -c minilzo/minilzo.c
   gcc $LDFLAGS -shared -o libminilzo.so.0 -Wl,-soname,libminilzo.so.0 minilzo/minilzo.o
-}
-
-after_build(){
-  go_src_dir
 
   make DESTDIR=${pkgdir} install
 
-# install minilzo
-  install -m 755 libminilzo.so.0 ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+# Установка minilzo
+  install -m 755 libminilzo.so.0 ${pkgdir}/usr/lib
   install -p -m 644 minilzo/minilzo.h ${pkgdir}/usr/include/lzo
-  cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  cd ${pkgdir}/usr/lib
   ln -s libminilzo.so.0 libminilzo.so
 }
