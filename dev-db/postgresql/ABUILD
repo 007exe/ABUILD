@@ -1,28 +1,28 @@
 pkgname=postgresql
-pkgver=14.1
+pkgver=14.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Sophisticated object-relational DBMS")
+shortdesc=("Sophisticated object-relational DBMS.")
 longdesc=("PostgreSQL is an advanced object-relational database management system (ORDBMS), derived from the Berkeley Postgres database management system.")
 
 tags=("server dev-db")
 
 source=("https://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.tar.bz2")
 
-build_deps=("krb5 libxml2 python perl tcl>=8.6.0 openssl>=1.0.0 linux-pam zlib icu llvm clang libxslt")
+build_deps=("krb5 libxml2 python perl tcl openssl linux-pam zlib icu llvm clang libxslt")
 
-pkglist="postgresql-libs postgresql-docs"
+pkglist=("postgresql-libs postgresql-docs")
 
-config_files="etc/logrotate.d/postgresql
-etc/conf.d/postgresql"
+config_files=("etc/logrotate.d/postgresql
+etc/conf.d/postgresql")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --with-tcl \
     --with-perl \
@@ -35,76 +35,68 @@ build() {
     --with-libxslt \
     --with-system-tzdata=/usr/share/zoneinfo \
     --enable-thread-safety \
-    --enable-nls
+    --enable-nls \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
 
 postgresql-libs() {
   pkgname=postgresql-libs
-  shortdesc=("Libraries for use with PostgreSQL")
+  shortdesc=("Libraries for use with PostgreSQL.")
   longdesc=("PostgreSQL is an advanced object-relational database management system (ORDBMS), derived from the Berkeley Postgres database management system.")
-  arch=('auto')
+  arch=("auto")
+  tags=("libs dev-db")
 }
 
 postgresql-libs_prep() {
+  cd ${srcdir}/postgresql-${pkgver}
 
-  cd "${srcdir}/postgresql-${pkgver}"
+  install -Dm 644 COPYRIGHT -t ${pkgdir}/usr/share/licenses/${pkgname}
 
-# install license
-  install -Dm 644 COPYRIGHT -t "${pkgdir}/usr/share/licenses/${pkgname}"
-
-# install libs and non-server binaries
   for dir in src/interfaces src/bin/pg_config src/bin/pg_dump src/bin/psql src/bin/scripts; do
-    make -C ${dir} DESTDIR="${pkgdir}" install
+    make -C ${dir} DESTDIR=${pkgdir} install
   done
 
   for util in pg_config pg_dump pg_dumpall pg_restore psql \
       clusterdb createdb createuser dropdb dropuser pg_isready reindexdb vacuumdb; do
-    install -Dm 644 doc/src/sgml/man1/${util}.1 "${pkgdir}"/usr/share/man/man1/${util}.1
+    install -Dm 644 doc/src/sgml/man1/${util}.1 ${pkgdir}/usr/share/man/man1/${util}.1
   done
 
   cd src/include
 
-  install -d "${pkgdir}"/usr/include/{libpq,postgresql/internal/libpq}
+  install -d ${pkgdir}/usr/include/{libpq,postgresql/internal/libpq}
 
-# these headers are needed by the public headers of the interfaces
-  install -m 644 pg_config.h "${pkgdir}/usr/include"
-  install -m 644 pg_config_os.h "${pkgdir}/usr/include"
-  install -m 644 pg_config_ext.h "${pkgdir}/usr/include"
-  install -m 644 postgres_ext.h "${pkgdir}/usr/include"
-  install -m 644 libpq/libpq-fs.h "${pkgdir}/usr/include/libpq"
-  install -m 644 pg_config_manual.h "${pkgdir}/usr/include"
+  install -m 644 pg_config.h ${pkgdir}/usr/include
+  install -m 644 pg_config_os.h ${pkgdir}/usr/include
+  install -m 644 pg_config_ext.h ${pkgdir}/usr/include
+  install -m 644 postgres_ext.h ${pkgdir}/usr/include
+  install -m 644 libpq/libpq-fs.h ${pkgdir}/usr/include/libpq
+  install -m 644 pg_config_manual.h ${pkgdir}/usr/include
 
-# these he aders are needed by the not-so-public headers of the interfaces
-  install -m 644 c.h "${pkgdir}/usr/include/postgresql/internal"
-  install -m 644 port.h "${pkgdir}/usr/include/postgresql/internal"
-  install -m 644 postgres_fe.h "${pkgdir}/usr/include/postgresql/internal"
-  install -m 644 libpq/pqcomm.h "${pkgdir}/usr/include/postgresql/internal/libpq"
+  install -m 644 c.h ${pkgdir}/usr/include/postgresql/internal
+  install -m 644 port.h ${pkgdir}/usr/include/postgresql/internal
+  install -m 644 postgres_fe.h ${pkgdir}/usr/include/postgresql/internal
+  install -m 644 libpq/pqcomm.h ${pkgdir}/usr/include/postgresql/internal/libpq
 }
 
 
 postgresql-docs() {
   pkgname=postgresql-docs
-  shortdesc=("HTML documentation for PostgreSQL")
+  shortdesc=("HTML documentation for PostgreSQL.")
   longdesc=("PostgreSQL is an advanced object-relational database management system (ORDBMS), derived from the Berkeley Postgres database management system.")
-  arch=('noarch')
+  arch=("noarch")
 }
 
 postgresql-docs_prep() {
+  cd ${srcdir}/postgresql-${pkgver}
 
-  cd "${srcdir}/postgresql-${pkgver}"
+  install -D -m644 COPYRIGHT ${pkgdir}/usr/share/licenses/postgresql-docs/LICENSE
+  make -C doc/src/sgml DESTDIR=${pkgdir} install-html
 
-# install license
-  install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/postgresql-docs/LICENSE"
-  make -C doc/src/sgml DESTDIR="${pkgdir}" install-html
-# chown -R root:root "${pkgdir}/usr/share/doc/postgresql/html/"
-
-# clean up
-  rmdir "${pkgdir}"/usr/share/man/man{1,3,7}
-  rmdir "${pkgdir}"/usr/share/man
+  rmdir ${pkgdir}/usr/share/man/man{1,3,7}
+  rmdir ${pkgdir}/usr/share/man
 }
-
 
 after_build() {
   go_src_dir
@@ -118,21 +110,18 @@ after_build() {
   install -D -m0644 $filedir/postgresql.logrotate ${pkgdir}/etc/logrotate.d/postgresql
   install -Dm0755 ${filedir}/postgresql.init ${pkgdir}/etc/init.d/postgresql
   install -Dm0755 ${filedir}/postgresql.conf.d ${pkgdir}/etc/conf.d/postgresql
-  install -Dm 644 COPYRIGHT -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm 644 COPYRIGHT -t ${pkgdir}/usr/share/licenses/${pkgname}
   install -D -m0644 $filedir/postgresql.logrotate ${pkgdir}/etc/logrotate.d/postgresql
-  install -Dm 755 ${filedir}/postgresql-check-db-dir -t "${pkgdir}/usr/bin"
-  install -Dm 644 ${filedir}/${pkgname}.pam "${pkgdir}/etc/pam.d/${pkgname}"
-
+  install -Dm 755 ${filedir}/postgresql-check-db-dir -t ${pkgdir}/usr/bin
+  install -Dm 644 ${filedir}/${pkgname}.pam ${pkgdir}/etc/pam.d/${pkgname}
 
   mkdir -p ${pkgdir}/var/lib/pgsql
-#  chown -R pgsql:pgsql ${pkgdir}/var/log/pgsql
-#  chown pgsql:pgsql ${pkgdir}/var/lib/pgsql
 
   for dir in src/interfaces src/bin/pg_config src/bin/psql src/bin/pg_dump; do
-    make -C ${dir} DESTDIR="${pkgdir}" uninstall
+    make -C ${dir} DESTDIR=${pkgdir} uninstall
   done
 
-  rm -rf "${pkgdir}/usr/include/postgresql/internal"
-  rm -rf "${pkgdir}/usr/include/libpq"
-  find "${pkgdir}/usr/include" -maxdepth 1 -type f -execdir rm {} +
+  rm -rf ${pkgdir}/usr/include/postgresql/internal
+  rm -rf ${pkgdir}/usr/include/libpq
+  find ${pkgdir}/usr/include -maxdepth 1 -type f -execdir rm {} +
 }
