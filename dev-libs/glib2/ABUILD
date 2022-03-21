@@ -1,3 +1,4 @@
+# NOTE: Пересобери gobject-introspection под новый glib2
 pkgname=glib2
 pkgver=2.72.0
 pkgbuild=1

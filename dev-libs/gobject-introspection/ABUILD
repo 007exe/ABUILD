@@ -1,8 +1,8 @@
 pkgname=gobject-introspection
-pkgver=1.70.0
-_glibver=2.70.2
+pkgver=1.72.0
+_glibver=2.72.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Introspection system for GObject-based libraries.")
 longdesc=("The GObject Introspection is used to describe the program APIs and collect them in a uniform, machine readable format.")
@@ -20,8 +20,8 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D libdir=/usr/lib \
     -D buildtype=release
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
