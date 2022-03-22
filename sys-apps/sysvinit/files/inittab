@@ -13,7 +13,7 @@ rc::bootwait:/usr/bin/openrc boot
 
 l0u:0:wait:/usr/bin/telinit u
 l0:0:wait:/usr/bin/openrc shutdown
-l0s:0:wait:/usr/bin/halt.sh
+l0s:0:wait:/usr/bin/poweroff
 l1:1:wait:/usr/bin/openrc single
 l2:2:wait:/usr/bin/openrc nonetwork
 l3:3:wait:/usr/bin/openrc default
