@@ -1,14 +1,14 @@
 pkgname=harfbuzz
-pkgver=3.2.0
+pkgver=4.0.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("OpenType text shaping engine")
+shortdesc=("OpenType text shaping engine.")
 longdesc=("The HarfBuzz package contains an OpenType text shaping engine.")
 
-tags=("libs media-libs")
-
 source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/harfbuzz-${pkgver}.tar.xz")
+
+tags=("libs media-libs")
 
 build_deps=("glib2 freetype icu python meson python-setuptools graphite cairo gobject-introspection python-fonttools ragel chafa")
 
@@ -17,9 +17,9 @@ build(){
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D libdir=/usr/lib \
     -D graphite=enabled
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  meson install -C build --destdir ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
