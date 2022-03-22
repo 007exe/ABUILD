@@ -1,14 +1,14 @@
 pkgname=gdk-pixbuf
-pkgver=2.42.6
-pkgbuild=2
-arch=('auto')
+pkgver=2.42.8
+pkgbuild=1
+arch=("auto")
 
-shortdesc=("An image loading library")
+shortdesc=("An image loading library.")
 longdesc=("The Gdk Pixbuf package is a toolkit for image loading and pixel buffer manipulation. It is used by GTK+ 2 and GTK+ 3 to load and manipulate images. In the past it was distributed as part of GTK+ 2 but it was split off into a separate package in preparation for the change to GTK+ 3.")
 
 source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-${pkgver}.tar.xz")
 
-tags=("libs x11-libs compat32")
+tags=("libs x11-libs")
 
 build_deps=("glib2 libpng libjpeg-turbo libtiff shared-mime-info gobject-introspection meson docbook-xsl gi-docgen")
 
@@ -20,8 +20,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D builtin_loaders=all \
-    -D gtk_doc=true \
+    -D gtk_doc=false \
     -D installed_tests=false
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
