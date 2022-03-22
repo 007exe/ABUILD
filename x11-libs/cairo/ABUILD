@@ -1,12 +1,12 @@
 pkgname=cairo
-pkgver=1.17.4
-pkgbuild=2
+pkgver=1.17.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("2D graphics library with support for multiple output devices")
 longdesc=("Cairo provides anti-aliased vector-based rendering for X. Paths consist of line segments and cubic splines and can be rendered at any width with various join and cap styles. All colors may be specified with optional translucence (opacity/alpha) and combined using the extended Porter/Duff compositing algebra as found in the X Render Extension.")
 
-source=("https://www.cairographics.org/snapshots/cairo-$pkgver.tar.xz")
+source=("https://gitlab.freedesktop.org/cairo/cairo/-/archive/${pkgver}/cairo-${pkgver}.tar.gz")
 
 tags=("xserver x11-libs")
 
