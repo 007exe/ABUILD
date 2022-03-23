@@ -1,47 +1,43 @@
 pkgname=boost
 pkgver=1.78.0
-_srcname=${pkgver//./_}
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Free peer-reviewed portable C++ source libraries runtime libraries")
 longdesc=("Boost provides a set of free peer-reviewed portable C++ source libraries. It includes libraries for linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions and unit testing.")
 
-tags=("develop dev-libs")
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${pkgver//./_}.tar.bz2")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${_srcname}.tar.bz2")
+tags=("develop dev-libs")
 
 build_deps=("icu python python-numpy bzip2 zlib openmpi zstd")
 
 before_build(){
   go_src_dir
-  # https://github.com/bfgroup/b2/issues/104
+# https://github.com/bfgroup/b2/issues/104
   patch -Np1 -d tools/build <$startdir/patches/$pkgname-b2-fix-lib-install.patch
-
-  # https://github.com/boostorg/ublas/pull/97
+# https://github.com/boostorg/ublas/pull/97
   patch -Np2 -i $startdir/patches/$pkgname-ublas-c++20-iterator.patch
 }
 
 build() {
-  cd ${srcdir}
+  go_src_dir
   local JOBS="$(sed 's/.*\(-j *[0-9]\+\).*/\1/' <<<$MAKEFLAGS)"
 
-  pushd boost_$_srcname/tools/build
+  pushd tools/build
   ./bootstrap.sh --cxxflags="$CXXFLAGS $LDFLAGS"
-  ./b2 install --prefix="$pkgdir"/usr
-  ln -s b2 "$pkgdir"/usr/bin/bjam
+  ./b2 install --prefix=${pkgdir}/usr
+  ln -s b2 ${pkgdir}/usr/bin/bjam
   popd
-
-  cd boost_$_srcname
 
   ./bootstrap.sh --with-toolset=gcc --with-icu --with-python=python3
 
-# support for OpenMPI
+# Поддержка OpenMPI
   echo "using mpi ;" >>project-config.jam
 
-# boostbook is needed by quickbook
-  install -dm755 "$pkgdir"/usr/share/boostbook
-  cp -a tools/boostbook/{xsl,dtd} "$pkgdir"/usr/share/boostbook/
+# Boostbook нужен QuickBook
+  install -dm755 ${pkgdir}/usr/share/boostbook
+  cp -a tools/boostbook/{xsl,dtd} ${pkgdir}/usr/share/boostbook/
 
   ./b2 install \
     variant=release \
@@ -50,25 +46,25 @@ build() {
     runtime-link=shared \
     link=shared,static \
     toolset=gcc \
-    python=3.9 \
+    python=3.10 \
     cflags="$CPPFLAGS $CFLAGS -fPIC -O3 -ffat-lto-objects" \
     cxxflags="$CPPFLAGS $CXXFLAGS -fPIC -O3 -ffat-lto-objects" \
     linkflags="$LDFLAGS" \
     --layout=system \
     $JOBS \
     \
-    --prefix="$pkgdir"/usr/ \
-    --libdir="$pkgdir"/usr/lib$LIBDIRSUFFIX
+    --prefix=${pkgdir}/usr/ \
+    --libdir=${pkgdir}/usr/lib
 
 # https://github.com/boostorg/mpi/issues/112
-  install -d "$pkgdir"/usr/lib$LIBDIRSUFFIX/python3.9/site-packages/boost
-  touch "$pkgdir"/usr/lib$LIBDIRSUFFIX/python3.9/site-packages/boost/__init__.py
-  python -m compileall -o 0 -o 1 -o 2 "$pkgdir"/usr/lib$LIBDIRSUFFIX/python3.9/site-packages/boost
+  install -d ${pkgdir}/usr/lib/python3.10/site-packages/boost
+  touch ${pkgdir}/usr/lib/python3.10/site-packages/boost/__init__.py
+  python -m compileall -o 0 -o 1 -o 2 ${pkgdir}/usr/lib/python3.10/site-packages/boost
 
 # https://github.com/boostorg/python/issues/203#issuecomment-391477685
   for _lib in python numpy; do
-    ln -srL "$pkgdir"/usr/lib$LIBDIRSUFFIX/libboost_${_lib}3{9,}.so
+    ln -srL ${pkgdir}/usr/lib/libboost_${_lib}3{10,}.so
   done
 
-  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" ${srcdir}/boost_$_srcname/LICENSE_1_0.txt
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE_1_0.txt
 }
