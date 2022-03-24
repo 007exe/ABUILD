@@ -1,14 +1,14 @@
 pkgname=djvulibre
 pkgver=3.5.28
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Suite to create, manipulate and view DjVu documents")
+shortdesc=("Suite to create, manipulate and view DjVu documents.")
 longdesc=("DjVu is a web-centric format and software platform for distributing documents and images. DjVu content downloads faster, displays and renders faster, looks nicer on a screen, and consume less client resources than competing formats. DjVu was originally developed at AT&T Labs-Research by Leon Bottou, Yann LeCun, Patrick Haffner, and many others.")
 
 source=("https://downloads.sourceforge.net/project/djvu/DjVuLibre/$pkgver/djvulibre-$pkgver.tar.gz")
 
-tags=("libs media-libs")
+tags=("xapps app-text")
 
 build_deps=("librsvg libtiff hicolor-icon-theme")
 
@@ -19,12 +19,12 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-desktopfiles
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
   for sz in 22 32 48 64; do
-	install -Dm644 desktopfiles/prebuilt-hi${sz}-djvu.png "${pkgdir}/usr/share/icons/hicolor/${sz}x${sz}/mimetypes/image-vnd.djvu.mime.png"
+	install -Dm644 desktopfiles/prebuilt-hi${sz}-djvu.png ${pkgdir}/usr/share/icons/hicolor/${sz}x${sz}/mimetypes/image-vnd.djvu.mime.png
   done
 }
