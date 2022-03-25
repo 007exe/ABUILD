@@ -1,27 +1,28 @@
 pkgname=aom
-pkgver=3.2.0
+pkgver=3.3.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Alliance for Open Media video codec")
+shortdesc=("Alliance for Open Media video codec.")
 longdesc=("The Alliance for Open Media focus is to deliver a next-generation.")
 
 source=("https://storage.googleapis.com/aom-releases/libaom-$pkgver.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="cmake ninja doxygen yasm gcc-libs"
+build_deps=("cmake ninja doxygen yasm gcc-libs")
 
 build() {
+  go_src_dir
   burn_patches
   cmake -S . -B build -G Ninja \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=1 \
     -DENABLE_TESTS=0
   cmake --build build
-  DESTDIR="$pkgdir" cmake --install build
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 LICENSE PATENTS
-# documentation
-  mkdir -p "$pkgdir/usr/share/doc"
-  cp -r build/docs/html "$pkgdir/usr/share/doc/$pkgbase"
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE PATENTS
+  mkdir -p ${pkgdir}/usr/share/doc
+  cp -r build/docs/html ${pkgdir}/usr/share/doc/${pkgbase}
 }
