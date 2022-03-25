@@ -1,32 +1,28 @@
 pkgname=ocaml
-pkgver=4.12.0
+pkgver=4.13.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="The Objective Caml compiler and programming environment"
-longdesc="OCaml is a high-level, strongly-typed, functional and object-oriented programming language from the ML family of languages."
+shortdesc=("The Objective Caml compiler and programming environment.")
+longdesc=("OCaml is a high-level, strongly-typed, functional and object-oriented programming language from the ML family of languages.")
 
 source=("https://caml.inria.fr/distrib/ocaml-${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-tags="develop dev-lang"
+tags=("develop dev-lang")
 
-build_deps="ncurses>=5.6-7"
+build_deps=("ncurses>=5.6-7")
 
-build()
-{
+build() {
   go_src_dir
   burn_patches
-
   ./configure \
     --prefix /usr \
-    --libdir /usr/lib${LIBDIRSUFFIX}/ocaml \
+    --libdir /usr/lib/ocaml \
     --mandir /usr/share/man \
     --disable-force-safe-string
-
   make --debug=v world.opt
   make DESTDIR=${pkgdir} install
 
-  # install license
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/
 }
