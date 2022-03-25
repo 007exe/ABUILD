@@ -1,17 +1,18 @@
 pkgname=libde265
 pkgver=1.0.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Open h.265 video codec implementation.")
-longdesc=("Open h.265 video codec implementation.")
-
-tags=("libs media-libs")
+longdesc=("libde265 is an open source implementation of the h.265 video codec. It is written from scratch and has a plain C API to enable a simple integration into other software.")
 
 source=("https://github.com/strukturag/libde265/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
 
+tags=("libs media-libs")
+
 build_deps=("ffmpeg sdl qt5-base gcc-libs")
-# Remove optional dependencies.
+
+# Удаляем опциональные зависимости
 removedep=("ffmpeg sdl qt5-base")
 
 build() {
@@ -19,8 +20,10 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-static=no
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+# Удаляем бесполезный тест
+  rm ${pkgdir}/usr/bin/tests
 }
