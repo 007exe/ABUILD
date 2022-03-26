@@ -1,6 +1,6 @@
 pkgname=python-click
-pkgver=8.0.3
-pkgbuild=2
+pkgver=8.0.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A simple wrapper around optparse for powerful command line utilities.")
@@ -15,6 +15,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --skip-build --root="${pkgdir}" --optimize=1
-  install -Dm644 "LICENSE.rst" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst"
+  python setup.py install --skip-build --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE.rst ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst
 }
