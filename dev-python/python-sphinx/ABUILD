@@ -19,6 +19,6 @@ build() {
   burn_patches
   make build
   export PYTHONHASHSEED=0
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 -t "$pkgdir"/usr/share/licenses/$pkgname LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
