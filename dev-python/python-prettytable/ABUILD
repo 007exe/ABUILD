@@ -1,6 +1,6 @@
 pkgname=python-prettytable
-pkgver=2.2.0
-pkgbuild=2
+pkgver=2.3.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A simple Python library for easily displaying tabular data.")
@@ -15,8 +15,8 @@ build_deps=("python python-setuptools-scm python-wcwidth")
 adddep=("python-wcwidth")
 
 build() {
-  export SETUPTOOLSA_SCM_PRETEND_VERSION=$pkgver
+  export SETUPTOOLSA_SCM_PRETEND_VERSION=${pkgver}
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir/"
+  python setup.py install --root=${pkgdir}/
 }
