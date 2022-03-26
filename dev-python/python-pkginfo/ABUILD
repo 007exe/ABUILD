@@ -1,6 +1,6 @@
 pkgname=python-pkginfo
-pkgver=1.7.1
-pkgbuild=2
+pkgver=1.8.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Query metadatdata from sdists / bdists / installed packages.")
@@ -15,5 +15,5 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 }
