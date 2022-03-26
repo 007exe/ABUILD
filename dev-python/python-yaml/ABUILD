@@ -1,0 +1,22 @@
+pkgname=python-yaml
+pkgver=6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python bindings for YAML, using fast libYAML library.")
+longdesc=("Python bindings for YAML, using fast libYAML library.")
+
+_name=PyYAML
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-cython python-setuptools libyaml")
+
+build() {
+  go_src_dir
+  python setup.py --with-libyaml build
+  python setup.py install --optimize=1 --root=${pkgdir}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 CHANGES README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+}
