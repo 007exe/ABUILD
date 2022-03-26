@@ -1,6 +1,6 @@
 pkgname=python-snowballstemmer
-pkgver=2.1.0
-pkgbuild=2
+pkgver=2.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Snowball stemming library collection for Python.")
@@ -15,6 +15,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/COPYING
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
