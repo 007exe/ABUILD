@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend python-urllib3 capabilities:"
+echo -e "python-pysocks: SOCKS support"
+echo -e "python-brotli: Brotli support"
+echo -e "python-pyopenssl: security support"
+echo -e "python-idna: security support"
