@@ -1,0 +1,22 @@
+pkgname=python-mdit_py_plugins
+pkgver=0.2.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Collection of core plugins for markdown-it-py.")
+longdesc=("Extended commonmark compliant parser, with bridges to sphinx.")
+
+source=("https://github.com/executablebooks/mdit-py-plugins/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-markdown-it-py")
+
+adddep=("python-markdown-it-py")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
