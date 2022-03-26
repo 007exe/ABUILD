@@ -1,6 +1,6 @@
 pkgname=python-cryptography
-pkgver=36.0.1
-pkgbuild=2
+pkgver=36.0.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A package designed to expose cryptographic recipes and primitives to Python developers")
@@ -17,5 +17,5 @@ adddep=("python-cffi")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }
