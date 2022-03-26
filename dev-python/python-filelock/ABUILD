@@ -1,6 +1,6 @@
 pkgname=python-filelock
-pkgver=3.4.1
-pkgbuild=2
+pkgver=3.4.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A platform independent file lock.")
@@ -14,8 +14,8 @@ build_deps=("python python-setuptools python-setuptools-scm")
 
 build() {
   go_src_dir
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
