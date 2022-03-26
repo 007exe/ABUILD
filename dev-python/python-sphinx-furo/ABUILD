@@ -1,6 +1,6 @@
 pkgname=python-sphinx-furo
-pkgver=2022.02.14.1
-pkgbuild=2
+pkgver=2022.03.04
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A clean customizable documentation theme for Sphinx.")
@@ -17,6 +17,6 @@ adddep=("python-sphinx python-pygments python-beautifulsoup4")
 build() {
   go_src_dir
   python -m build -nw
-  PIP_CONFIG_FILE=/dev/null pip install --isolated --root="$pkgdir" --ignore-installed --no-deps dist/*.whl
-  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
