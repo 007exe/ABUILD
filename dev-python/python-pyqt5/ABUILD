@@ -26,10 +26,10 @@ build() {
     --api-dir /usr/share/qt/qsci/api/python
   cd build
   make -j${numjobs}
-  make INSTALL_ROOT="$pkgdir" install -j1
-# Remove unused py2 version of uic modules:
-  rm -r "$pkgdir"/usr/lib/python*/site-packages/PyQt5/uic/port_v2
-# compile Python bytecode
-  python -m compileall -d / "$pkgdir"/usr/lib
-  python -O -m compileall -d / "$pkgdir"/usr/lib
+  make INSTALL_ROOT=${pkgdir} install -j1
+# Удаляем неиспользуемую версию py2 модулей uic:
+  rm -r ${pkgdir}/usr/lib/python*/site-packages/PyQt5/uic/port_v2
+# Компилируем байт-код Python
+  python -m compileall -d / ${pkgdir}/usr/lib
+  python -O -m compileall -d / ${pkgdir}/usr/lib
 }

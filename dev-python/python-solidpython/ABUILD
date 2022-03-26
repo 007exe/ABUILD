@@ -10,7 +10,7 @@ source=("https://github.com/SolidCode/SolidPython/archive/v$pkgver.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-euclid3 python-pypng python-prettytable python-regex python-setuptools python-dephell python-dephell-argparse")
+build_deps=("python python-setuptools python-dephell python-euclid3 python-pypng python-prettytable python-regex python-setuptools python-dephell python-dephell-argparse")
 
 adddep=("python-euclid3 python-pypng python-prettytable python-regex")
 
@@ -18,7 +18,6 @@ build() {
   go_src_dir
   sed -i -e '/tox/d' -e 's|regex = "^2019.4"|regex = ">=2019.4"|' pyproject.toml
   dephell deps convert --from pyproject.toml --to setup.py
-
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }
