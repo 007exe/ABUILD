@@ -17,10 +17,6 @@ adddep=("python-jsonschema python-lark-parser python-packaging python-tomlkit")
 
 build() {
   go_src_dir
-# Удаляем вендорные зависимости
-  rm -r poetry/core/_vendor
-  sed -i '/^__version__/!d' poetry/core/__init__.py
-  rm poetry/__init__.py
   python -m build -wn
   python -m installer -d ${pkgdir} dist/*.whl
   install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname}/ LICENSE
