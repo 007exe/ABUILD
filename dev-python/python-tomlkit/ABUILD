@@ -1,6 +1,6 @@
 pkgname=python-tomlkit
-pkgver=0.9.2
-pkgbuild=2
+pkgver=0.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Style-preserving TOML library for Python.")
@@ -16,6 +16,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
