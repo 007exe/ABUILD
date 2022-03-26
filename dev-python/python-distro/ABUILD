@@ -1,6 +1,6 @@
 pkgname=python-distro
-pkgver=1.6.0
-pkgbuild=2
+pkgver=1.7.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux OS platform information API.")
@@ -18,6 +18,6 @@ build() {
   go_src_dir
   python setup.py build
   make man SPHINXBUILD=sphinx-build
-  python setup.py install -O1 --root="${pkgdir}" --skip-build
-  install -Dm 644 README.md CHANGELOG.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  python setup.py install -O1 --root=${pkgdir} --skip-build
+  install -Dm 644 README.md CHANGELOG.md -t ${pkgdir}/usr/share/doc/${pkgname}
 }
