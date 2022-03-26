@@ -1,6 +1,6 @@
 pkgname=python-pytest
-pkgver=6.2.5
-pkgbuild=2
+pkgver=7.1.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple powerful testing with Python.")
@@ -16,15 +16,15 @@ adddep=("python-attrs python-iniconfig python-packaging python-pluggy python-py 
 
 build() {
   go_src_dir
-# Remove dep on setuptools_scm and workaround test failures
-  sed -i "/^\[metadata\]/a version = $pkgver
+# Удаляем зависимость от setuptools_scm и обойти сбои тестов
+  sed -i "/^\[metadata\]/a version = ${pkgver}
   /setuptools-scm/d" setup.cfg
   sed -i '/setuptools-scm\|wheel/d
   /\[tool.setuptools_scm\]/,/^$/d
   /_pytest.warning_types.PytestUnknownMarkWarning/a \    "ignore:Creating a LegacyVersion has been deprecated and will be removed in the next major release:DeprecationWarning",' pyproject.toml
 
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 
-  install -D -m644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
