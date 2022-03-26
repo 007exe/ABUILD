@@ -16,13 +16,8 @@ adddep=("python-tomli")
 
 build() {
   go_src_dir
-# Copied from openSUSE: 
-# Remove what appears to be overly cautious flag
-# that causes tests to require internet, both here
-# and the test suites of any dependencies. Tracking at:
-# https://github.com/pypa/pep517/issues/101
-  sed -i "s/ '--ignore-installed',//" pep517/envbuild.py
+  sed -i -e '/--flake8/d' pytest.ini
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
