@@ -1,0 +1,26 @@
+From 7927a238f5c502435bb33869ed60eae8c3dedb67 Mon Sep 17 00:00:00 2001
+From: Evangelos Foutras <evangelos@foutrelis.com>
+Date: Thu, 9 Dec 2021 03:35:56 +0200
+Subject: [PATCH] test_egg_fetcher: use newer setuptools on Python 3.10
+
+setuptools==49.0.0 appears to be the first version compatible with
+Python 3.10 -- earlier versions either misdetect the minor version
+or try to import MutableMapping from collections which dropped its
+deprecated aliases to Collections Abstract Base Classes (bpo-37324).
+---
+ tests/test_ptr.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tests/test_ptr.py b/tests/test_ptr.py
+index f6eac16..f4dce36 100644
+--- a/tests/test_ptr.py
++++ b/tests/test_ptr.py
+@@ -44,6 +44,8 @@ def venv(virtualenv):
+     ['setuptools', 'setuptools==27.3.0', 'setuptools==32.3.1', 'setuptools==36.3.0']
+     if sys.version_info < (3, 7)
+     else ['setuptools', 'setuptools==38.4.1']
++    if sys.version_info < (3, 10)
++    else ['setuptools', 'setuptools==49.0.0']
+ )
+ args_variants = ['', '--extras']
+ 
