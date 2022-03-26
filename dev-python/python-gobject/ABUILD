@@ -6,20 +6,20 @@ arch=("auto")
 shortdesc=("Python Bindings for GLib/GObject/GIO/GTK+")
 longdesc=("PyGObject is a Python package which provides bindings for GObject based libraries such as GTK, GStreamer, WebKitGTK, GLib, GIO and many more.")
 
-source=("https://gitlab.gnome.org/GNOME/pygobject/-/archive/$pkgver/pygobject-$pkgver.tar.gz")
+source=("https://download.gnome.org/sources/pygobject/${pkgver%.*}/pygobject-${pkgver}.tar.xz")
 
 tags=("libs dev-python")
 
 build_deps=("python python-cairo gobject-introspection git meson")
 
-#adddep=("gobject-introspection-runtime")
+adddep=("gobject-introspection")
 
 build() {
   go_src_dir
   burn_patches
   meson build --prefix=/usr --buildtype=release
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
-  python -m compileall -d /usr/lib "$pkgdir/usr/lib"
-  python -O -m compileall -d /usr/lib "$pkgdir/usr/lib"
+  meson install -C build --destdir ${pkgdir}
+  python -m compileall -d /usr/lib ${pkgdir}/usr/lib
+  python -O -m compileall -d /usr/lib ${pkgdir}/usr/lib
 }
