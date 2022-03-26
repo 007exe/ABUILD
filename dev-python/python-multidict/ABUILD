@@ -1,7 +1,7 @@
 pkgname=python-multidict
-pkgver=5.2.0
-pkgbuild=2
-arch=('auto')
+pkgver=6.0.2
+pkgbuild=1
+arch=("auto")
 
 shortdesc=("Asyncio-based multidict implementation for Python.")
 longdesc=("Multidicts are useful for working with HTTP headers, URL query args etc.")
@@ -16,5 +16,5 @@ build(){
   go_src_dir
   burn_patches
   python setup.py build
-  python setup.py install --root="${pkgdir}" -O1 --skip-build
+  python setup.py install --root=${pkgdir} -O1 --skip-build
 }
