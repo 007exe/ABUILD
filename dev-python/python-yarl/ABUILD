@@ -1,6 +1,6 @@
 pkgname=python-yarl
-pkgver=1.7.2
-pkgbuild=2
+pkgver=1.8.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Yet another URL library.")
@@ -20,5 +20,5 @@ build(){
   sed 's| .install-cython ||g' -i Makefile
   make cythonize
   LANG=en_US.UTF-8 python setup.py build
-  LANG=en_US.UTF-8 python setup.py install --root="${pkgdir}" -O1 --skip-build
+  LANG=en_US.UTF-8 python setup.py install --root=${pkgdir} -O1 --skip-build
 }
