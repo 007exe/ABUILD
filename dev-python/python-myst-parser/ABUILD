@@ -9,10 +9,10 @@ longdesc=("Extended commonmark compliant parser, with bridges to sphinx.")
 source=("https://github.com/executablebooks/MyST-Parser/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
-# python-markdown-it-py python-mdit_py_plugins python-yaml
-build_deps=("python python-setuptools python-docutils python-sphinx python-jinja")
-# python-markdown-it-py python-mdit_py_plugins python-yaml
-adddep=("python-docutils python-sphinx python-jinja")
+
+build_deps=("python python-setuptools python-docutils python-sphinx python-jinja python-markdown-it-py python-mdit_py_plugins python-yaml")
+
+adddep=("python-docutils python-sphinx python-jinja python-markdown-it-py python-mdit_py_plugins python-yaml")
 
 build() {
   go_src_dir
