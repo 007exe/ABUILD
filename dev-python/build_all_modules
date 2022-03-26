@@ -223,7 +223,22 @@ python-poetry
 python-rich
 python-commonmark
 python-sphinx-theme-builder
+python-pysocks
+python-pytest-console-scripts
+python-installer
+python-markdown-it-py
+python-mdit_py_plugins
+python-yaml
+python-myst-parser
+python-ndg-httpsclient
+python-gdal
+python-gpgme
+python-marisa
+python-flit-core
+python-brotli
+python-tests
 "
+
 #pip install
 #pip uninstall
 
@@ -236,10 +251,32 @@ python-sphinx-theme-builder
 #-pod  : Имя директории, куда будет помещён готовый пакет.
 ###
 set -e
-for i in $MODULES ; do
-	( cd $i && mkpkg -si -ba ${BUILD} )
-        rm -r ~/mkpkg/source_cache/
-	echo "================== Пакет $i успешно собран =================="
+ii=0
+for i in $MODULES; do
+    # Проверить сущетвует ли сценарй ABUILD для сборки пакета
+    # если он существует
+    if [ -f $i/ABUILD ]
+    then
+        echo "Очистить директорию с исходниками"
+        rm -r ~/mkpkg/source_cache
+        echo "Перейти в каталог с ABUILD пакета"
+        cd $i
+        echo "Собрать и установить пакет"
+        mkpkg -si -ba ${BUILD}
+        echo "Подняться на уровень выше"
+        cd ..
+        echo "Пакет $i успешно собран"
+        echo "=========================================================================="
+    else
+        # Если сценарй ABUILD для сборки пакета не найден
+        # Занести имя пакетав массив
+        multipkg[ii]=$i
+        # и увеличить счётчик на 1
+        ((ii=ii+1))
+    fi
 done
-set +e
 
+echo "     Следующие пакеты были пропищены поскольку являются мльтипакетами"
+echo "=========================================================================="
+echo ${multipkg[@]}
+set +e

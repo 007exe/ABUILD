@@ -22,7 +22,6 @@ python-bowler
 python-breathe
 python-build
 python-cachecontrol
-python-cachy
 python-cairo
 python-cerberus
 python-certifi
@@ -105,7 +104,6 @@ python-moreorless
 python-mpi4py
 python-msgpack
 python-multidict
-python-ndg-httpsclient
 python-nodeenv
 python-nose
 python-numpy
@@ -126,8 +124,6 @@ python-pkginfo
 python-platformdirs
 python-pluggy
 python-ply
-python-poetry
-python-poetry-core
 python-prettytable
 python-progress
 python-psutil
@@ -147,10 +143,8 @@ python-pyopenssl
 python-pyparsing
 python-pypng
 python-pyproject2setuppy
-python-pyqt5
 python-pyqt5-sip
 python-pyrsistent
-python-pysocks
 python-pytest
 python-pytest-mock
 python-pytest-runner
@@ -196,7 +190,6 @@ python-sphinxcontrib-qthelp
 python-sphinxcontrib-serializinghtml
 python-sphinx-furo
 python-sphinx_rtd_theme
-python-sphinx-theme-builder
 python-tabulate
 python-termcolor
 python-tinycss2
@@ -224,12 +217,23 @@ python-zope-interface
 python-zstandard
 sip
 towncrier
+python-cachy
+python-ndg-httpsclient
+python-poetry
+python-poetry-core
+python-pyqt5
+python-pysocks
+python-sphinx-theme-builder
 "
 
 set -e
 for i in $PKG ; do
-	echo " $i ===================================================="
+	echo "===================================================="
+        echo "$i"
 	mpkg-conflicts $i
 done
 set +e
 
+echo "===================================================="
+echo "===================================================="
+echo "Проверка окончена"
