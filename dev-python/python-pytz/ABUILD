@@ -1,6 +1,6 @@
 pkgname=python-pytz
-pkgver=2021.3
-pkgbuild=2
+pkgver=2022.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("World timezone definitions for Python")
@@ -14,6 +14,6 @@ build_deps=("python")
 
 build() {
   go_src_dir
-  PYTHONHASHSEED=1 python3 setup.py install --root="$pkgdir"/
-  install -Dm644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  PYTHONHASHSEED=1 python3 setup.py install --root=${pkgdir}/
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
