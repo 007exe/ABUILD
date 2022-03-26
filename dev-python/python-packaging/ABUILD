@@ -1,6 +1,6 @@
 pkgname=python-packaging
-pkgver=21.0
-pkgbuild=2
+pkgver=21.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Core utilities for Python packages.")
@@ -17,5 +17,5 @@ adddep=("python-pyparsing python-six")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root "$pkgdir"
+  python setup.py install --root ${pkgdir}
 }
