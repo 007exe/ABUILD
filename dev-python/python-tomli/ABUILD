@@ -1,6 +1,6 @@
 pkgname=python-tomli
-pkgver=2.0.0
-pkgbuild=2
+pkgver=2.0.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A lil' TOML parser.")
@@ -10,11 +10,11 @@ source=("https://github.com/hukkin/tomli/archive/$pkgver/$pkgname-$pkgver.tar.gz
 
 tags=("libs dev-python")
 
-build_deps=("python python-pyproject2setuppy")
+build_deps=("python python-build python-installer python-flit-core")
 
 build() {
   go_src_dir
-  python -m pyproject2setuppy.main build
-  python -m pyproject2setuppy.main install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
