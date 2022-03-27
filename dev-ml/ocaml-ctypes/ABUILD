@@ -1,29 +1,29 @@
 pkgname=ocaml-ctypes
-pkgver=0.17.1
+pkgver=0.20.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("C type support for OCaml")
+shortdesc=("Library for binding to C libraries using pure OCaml.")
 longdesc=("Ctypes is a library for binding to C libraries using pure OCaml. The primary aim is to make writing C extensions as straightforward as possible.")
 
 source=("https://github.com/ocamllabs/ocaml-ctypes/archive/$pkgver.tar.gz")
 
-tags="develop dev-util"
+tags=("dev-ml libs")
 
-build_deps="ocaml ocaml-findlib ocaml-integers libffi"
+build_deps=("ocaml ocaml-findlib ocaml-integers libffi ocaml-bigarray-compat")
 
-adddep="ocaml libffi ocaml-integers"
+adddep=("ocaml>=4.13.1 libffi ocaml-integers ocaml-bigarray-compat")
 
-build()
-{
+build() {
   go_src_dir
   burn_patches
-  make
+  sed -e 's/oUnit/ounit2/g' -i Makefile.tests
+  make -j1
 
   local _destdir="$pkgdir$(ocamlfind printconf destdir)"
   install -d "$_destdir/stublibs"
 
   make OCAMLFIND_DESTDIR="$_destdir" install
 
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
