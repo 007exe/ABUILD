@@ -1,21 +1,20 @@
 pkgname=opam
-pkgver=2.0.8
+pkgver=2.1.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("OCaml package manager")
-longdesc=("Opam is a source-based package manager for OCaml. It supports multiple simultaneous compiler installations, flexible package constraints, and a Git-friendly development workflow.")
+shortdesc=("OCaml package manager.")
+longdesc=("A source-based package manager for OCaml.")
 
 source=("https://github.com/ocaml/opam/releases/download/$pkgver/opam-full-$pkgver.tar.gz")
 
-tags="develop dev-util"
+tags=("libs dev-ml")
 
-build_deps="ocaml ocaml-findlib tar unzip"
+build_deps=("ocaml ocaml-findlib tar unzip bubblewrap")
 
-adddep="ocaml unzip"
+adddep=("ocaml unzip bubblewrap")
 
-build()
-{
+build(){
   go_src_dir
   burn_patches
   ./configure --prefix=/usr --without-mccs
