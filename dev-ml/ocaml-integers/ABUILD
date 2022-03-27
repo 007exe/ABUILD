@@ -1,26 +1,26 @@
 pkgname=ocaml-integers
-pkgver=0.4.0
+pkgver=0.5.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Library for binding to C libraries using pure OCaml")
-longdesc=("Library for binding to C libraries using pure OCaml")
+shortdesc=("Library for binding to C libraries using pure OCaml.")
+longdesc=("Various signed and unsigned integer types for OCaml.")
 
 source=("https://github.com/ocamllabs/$pkgname/archive/$pkgver.tar.gz")
 
-tags="develop dev-util"
+tags=("libs dev-ml")
 
-build_deps="dune ocaml-topkg ocaml-findlib ocaml ocamlbuild opam"
+build_deps=("dune ocaml-topkg ocaml-findlib ocaml ocamlbuild opam")
 
-build()
-{
+build() {
   go_src_dir
   burn_patches
   dune build --profile release
-  opam-installer --prefix="${pkgdir}/usr" \
-		 --libdir="${pkgdir}$(ocamlc -where)" \
-		 --docdir="${pkgdir}/usr/share/doc" \
-		 --stubsdir="${pkgdir}$(ocamlc -where)/stublibs" \
+  opam-installer --prefix=${pkgdir}/usr \
+		 --libdir=${pkgdir}$(ocamlc -where) \
+		 --docdir=${pkgdir}/usr/share/doc \
+		 --stubsdir=${pkgdir}$(ocamlc -where)/stublibs \
 		 ./_build/default/integers.install
-  install -Dm644 LICENSE.md "${pkgdir}/usr/share/licenses/${pkgname}"/LICENSE.md
+
+  install -Dm644 LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
