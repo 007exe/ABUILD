@@ -1,0 +1,25 @@
+pkgname=ocaml-bigarray-compat
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Compatibility library to use Stdlib.Bigarray when possible.")
+longdesc=("Compatibility library to use Stdlib.Bigarray when possible.")
+
+source=("https://github.com/mirage/bigarray-compat/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("dev-ml libs")
+
+build_deps=("ocaml dune")
+
+adddep=("ocaml>=4.13.1")
+
+build() {
+  go_src_dir
+  burn_patches
+  dune build
+  DESTDIR=${pkgdir} dune install --prefix "/usr" --libdir "lib/ocaml"
+
+  install -dm755 ${pkgdir}/usr/share/
+  mv ${pkgdir}/usr/doc ${pkgdir}/usr/share/
+}
