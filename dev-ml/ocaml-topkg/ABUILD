@@ -1,27 +1,26 @@
 pkgname=ocaml-topkg
-pkgver=1.0.3
+pkgver=1.0.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A packager for distributing OCaml software")
-longdesc=("Topkg is a packager for distributing OCaml software. It provides an API to describe the files a package installs in a given build configuration and to specify information about the package's distribution creation and publication procedures.")
+shortdesc=("A packager for distributing OCaml software.")
+longdesc=("The transitory OCaml software packager.")
 
 source=("https://erratique.ch/software/topkg/releases/topkg-${pkgver}.tbz")
 
-tags="develop dev-util"
+tags=("libs dev-ml")
 
-build_deps="ocaml ocaml-findlib ocamlbuild opam ocaml-result"
+build_deps=("ocaml ocaml-findlib ocamlbuild opam ocaml-result")
 
-adddep="ocaml ocaml-result"
+adddep=("ocaml>=4.13.1 ocaml-result")
 
-build()
-{
+build() {
   go_src_dir
   burn_patches
   pkg/pkg.ml build --pkg-name topkg
   opam-installer --prefix="${pkgdir}/usr" \
     --libdir="${pkgdir}$(ocamlc -where)" \
     --docdir="${pkgdir}/usr/share/doc"
-  install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  mv "${pkgdir}/usr/share/doc/topkg/LICENSE.md" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md"
+  install -dm755 ${pkgdir}/usr/share/licenses/${pkgname}
+  mv ${pkgdir}/usr/share/doc/topkg/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
