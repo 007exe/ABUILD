@@ -1,29 +1,28 @@
 pkgname=ocaml-csexp
-pkgver=1.3.2
+pkgver=1.5.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("OCaml canonical S-expressions")
-longdesc=("This project provides minimal support for parsing and printing S-expressions in canonical form, which is a very simple and canonical binary encoding of S-expressions.")
+shortdesc=("OCaml canonical S-expressions.")
+longdesc=("Parsing and printing of S-expressions in Canonical form.")
 
 source=("https://github.com/ocaml-dune/csexp/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="develop dev-util"
+tags=("libs dev-ml")
 
-build_deps="ocaml ocaml-findlib ocaml-result dune"
+build_deps=("ocaml ocaml-findlib ocaml-result dune")
 
-adddep="ocaml"
+adddep=("ocaml>=4.13.1")
 
-build()
-{
+build(){
   go_src_dir
   burn_patches
   dune build -p csexp
-  DESTDIR="${pkgdir}" dune install --prefix "/usr" --libdir "lib${LIBDIRSUFFIX}/ocaml"
+  DESTDIR=${pkgdir} dune install --prefix /usr --libdir lib/ocaml
 
-  install -dm755 "${pkgdir}/usr/share/"
-  mv "${pkgdir}/usr/doc" "${pkgdir}/usr/share/"
+  install -dm755 ${pkgdir}/usr/share/
+  mv ${pkgdir}/usr/doc ${pkgdir}/usr/share/
 
-  install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  ln -s /usr/share/doc/csexp/LICENSE.md "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -dm755 ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s /usr/share/doc/csexp/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
