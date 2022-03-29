@@ -1,6 +1,6 @@
 pkgname=cmake
 pkgver=3.21.2
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("Cross-platform, open-source make system")
