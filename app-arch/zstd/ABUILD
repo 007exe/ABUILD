@@ -1,16 +1,16 @@
 pkgname=zstd
 pkgver=1.5.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Zstandard - Fast real-time compression algorithm.")
 longdesc=("Zstandard is a real-time compression algorithm, providing high compression ratios. It offers a very wide range of compression / speed trade-offs, while being backed by a very fast decoder..")
 
-tags=("base app-arch")
-
 source=("https://github.com/facebook/zstd/releases/download/v${pkgver}/zstd-${pkgver}.tar.gz")
 
-build_deps="mkpkg cmake"
+tags=("base app-arch")
+
+build_deps=("gtest glibc gcc-libs zlib xz lz4")
 
 build() {
   go_src_dir
