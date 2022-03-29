@@ -1,22 +1,22 @@
 pkgname=nettle
 pkgver=3.7.3
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Nettle cryptographic library")
-longdesc=("Nettle is a cryptographic library that is designed to fit easily in more or less any context: In crypto toolkits for object-oriented languages (C++, Python, Pike, ...), in applications like LSH or GNUPG, or even in kernel space.")
+shortdesc=("A low-level cryptographic library.")
+longdesc=("The Nettle package contains a low-level cryptographic library that is designed to fit easily in many contexts.")
 
-source=("http://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="sys-libs libs"
+tags=("dev-libs libs")
 
-build_deps="gmp"
+build_deps=("gmp")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
