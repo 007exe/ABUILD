@@ -1,23 +1,23 @@
 pkgname=libidn2
 pkgver=2.3.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Library to support IDNA2008 internationalized domain names")
-longdesc=("Libidn2 is a package designed for internationalized string handling based on standards from the Internet Engineering Task Force (IETF)'s IDN working group, designed for internationalized domain names.")
+shortdesc=("Free software implementation of IDNA2008, Punycode and TR46.")
+longdesc=("libidn2 is a package designed for internationalized string handling based on standards from the Internet Engineering Task Force (IETF)'s IDN working group, designed for internationalized domain names.")
+
+source=("http://ftp.gnu.org/gnu/libidn/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-dns")
 
-build_deps="glibc"
-
-source=("http://ftp.gnu.org/gnu/libidn/${pkgname}-${pkgver}.tar.gz")
+build_deps=("glibc libunistring")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
