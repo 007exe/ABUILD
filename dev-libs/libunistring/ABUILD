@@ -1,16 +1,16 @@
 pkgname=libunistring
-pkgver=0.9.10
-pkgbuild=2
+pkgver=1.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc="GNU Unicode string library"
-longdesc="This library implements Unicode strings (in three flavours: UTF-8 strings, UTF-16 strings, UTF-32 strings), together with functions for Unicode charactets (character names, classifications, properties) and functions for string processing (formatted output, width, word breaks, line breaks, normalization, case folding, regular expressions)."
-
-tags=("develop dev-libs")
+shortdesc=("Library for manipulating Unicode strings and C strings.")
+longdesc=("libunistring is a library that provides functions for manipulating Unicode strings and for manipulating C strings according to the Unicode standard.")
 
 source=("https://ftp.gnu.org/gnu/$pkgname/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="glibc"
+tags=("libs dev-libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -19,7 +19,8 @@ build() {
   sed -i '/pragma weak pthread_create/d' tests/glthread/thread.h
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
