@@ -1,38 +1,33 @@
 pkgname=gnutls
-pkgver=3.7.3
+pkgver=3.7.4
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Library providing a secure layer (SSL)")
+shortdesc=("A library which provides a secure layer over a reliable transport layer.")
 longdesc=("GnuTLS is a project that aims to develop a library which provides a secure layer, over a reliable transport layer.")
-
-tags=("net-libs network")
 
 source=("https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="gcc gcc-libs libtasn1 readline zlib nettle pkg-config libidn2 libunistring p11-kit"
+tags=("net-libs libs")
 
-adddep="libunistring"
+build_deps=("gcc-libs libtasn1 readline zlib nettle libidn2 libunistring p11-kit")
+
+# Это опциональная зависимость
+removedep=("guile")
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --mandir=/usr/share/man \
-    --sysconfdir=/etc \
-    --disable-guile \
-    --disable-valgrind-tests \
-    --with-zlib \
     --disable-static \
-    --with-included-unistring \
-    --without-p11-kit
+    --with-idn \
+    --enable-openssl-compatibility \
+    --enable-guile \
+    --disable-rpath \
+    --with-guile-site-dir=no \
+    --with-default-trust-store-pkcs11="pkcs11:"
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-# lots of .png files are put into infodir and are gzipped by makepkg! this needs to be fixed by using !zipman
-# gzip -9 all files in infodir and manpages manually
-  find "$pkgdir/usr/share/info" -name '*.info*' -exec gzip -n -9 {} \;
-  find "$pkgdir/usr/share/man" -exec gzip -n -9 {} \;
 }
-
