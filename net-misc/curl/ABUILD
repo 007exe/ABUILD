@@ -1,46 +1,41 @@
 pkgname=curl
-pkgver=7.81.0
+pkgver=7.82.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An URL retrieval utility and library")
+shortdesc=("An URL retrieval utility and library.")
 longdesc=("The cURL package contains an utility and a library used for transferring files with URL syntax to any of the following protocols: FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT, LDAP, LDAPS and FILE. Its ability to both download and upload files can be incorporated into other programs to support functions like streaming media.")
-
-tags=("network net-misc")
 
 source=("http://curl.haxx.se/download/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="krb5 libidn2 libnghttp2 libssh2 openssl zlib zstd libpsl brotli ca-certificates"
+tags=("network net-misc")
 
-adddep="ca-certificates"
+build_deps=("krb5 libidn2 libnghttp2 libssh2 openssl zlib zstd libpsl brotli ca-certificates")
+
+adddep=("ca-certificates")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
     --mandir=/usr/share/man \
-    --sysconfdir=/etc \
-    --disable-dependency-tracking \
     --disable-ldap \
     --disable-ldaps \
+    --disable-manual \
     --disable-static \
     --enable-ipv6 \
-    --disable-manual \
-    --enable-versioned-symbols \
     --enable-threaded-resolver \
-    --without-libidn \
     --with-gssapi \
     --with-libssh2 \
     --with-openssl \
     --with-random=/dev/urandom \
     --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
 
   make DESTDIR=${pkgdir} install
   make DESTDIR=${pkgdir} install -C scripts
 
-# license
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
