@@ -1,22 +1,21 @@
+# NOTE: У меня много вопросов к этому пакету, возможно стоит заменить его на make-ca
 pkgname=ca-certificates
 pkgver=20210119
-pkgbuild=1
-arch=('noarch')
+pkgbuild=2
+arch=("noarch")
 
-shortdesc="Common CA certificates"
-longdesc="Common CA certificates"
+shortdesc=("Common CA certificates.")
+longdesc=("Common CA certificates.")
 
 source=("http://ftp.debian.org/debian/pool/main/c/${pkgname}/${pkgname}_${pkgver}.tar.xz")
 
-tags="network net-misc"
+tags=("network net-misc")
 
-build_deps="python"
+build_deps=("python")
 
-adddep="bash openssl coreutils sed findutils"
+adddep=("bash openssl coreutils sed findutils")
 
-config_files='etc/ca-certificates.conf'
-
-conflicts=ca-certificates-java
+config_files=("etc/ca-certificates.conf")
 
 build(){
   go_src_dir
@@ -35,4 +34,3 @@ after_build() {
   find . -name '*.crt' | sort | cut -b3-
   ) > ${pkgdir}/etc/ca-certificates.conf
 }
-
