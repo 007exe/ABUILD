@@ -1,24 +1,33 @@
 pkgname=rtmpdump
-pkgver=2.4
+pkgver=2.4.r99.f1b83c1
+# NOTE: коммит данной версии
+_commit=f1b83c10d8beb43fcc70a6e88cf4325499f25857
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Toolkit for RTMP streams")
-longdesc=("A tool to download rtmp streams. Also contains librtmp.")
+strict_version=1
 
-tags=("media-video libs")
-
-build_deps="make gcc openssl git"
+shortdesc=("A toolkit for RTMP streams.")
+longdesc=("RTMP client, librtmp library intended to stream audio or video flash content.")
 
 source=("git:git://git.ffmpeg.org/rtmpdump.git")
 
+tags=("media-video libs")
+
+build_deps=("glibc gnutls zlib openssl git")
+
 build() {
   go_src_dir
-
+  burn_patches
+  git checkout ${_commit}
   sed -e 's/^CRYPTO=OPENSSL/#CRYPTO=OPENSSL/' -e 's/#CRYPTO=GNUTLS/CRYPTO=GNUTLS/' -i Makefile -i librtmp/Makefile
 
-  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  mkdir -p ${pkgdir}/usr/lib
   make OPT="$CFLAGS" XLDFLAGS="$LDFLAGS"
-  make prefix=/usr sbindir=/usr/bin MANDIR="${pkgdir}/usr/share/man" LIBDIR="${pkgdir}/usr/lib${LIBDIRSUFFIX}" DESTDIR="${pkgdir}" install
+  make \
+    prefix=/usr \
+    sbindir=/usr/bin \
+    mandir=/usr/share/man \
+    DESTDIR=${pkgdir} install
 }
 
