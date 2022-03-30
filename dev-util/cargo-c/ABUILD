@@ -1,16 +1,16 @@
 pkgname=cargo-c
-pkgver=0.9.4
+pkgver=0.9.8
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A cargo subcommand to build and install C-ABI compatibile dynamic and static libraries")
-longdesc=("cargo applet to build and install C-ABI compatibile dynamic and static libraries.")
+shortdesc=("A cargo subcommand to build and install C-ABI compatibile dynamic and static libraries.")
+longdesc=("Helper program to build and install c-like libraries.")
 
 source=("https://github.com/lu-zero/cargo-c/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="dev-util develop"
+tags=("dev-util libs")
 
-build_deps="curl openssl zlib rust"
+build_deps=("curl openssl zlib rust")
 
 build() {
   go_src_dir
@@ -21,5 +21,5 @@ build() {
     --no-track \
     --root "${pkgdir}/usr" \
     --path .
-  install -D -m644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
