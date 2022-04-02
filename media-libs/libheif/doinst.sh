@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend libheif capabilities:"
+echo -e "libjpeg-turbo: for heif-convert and heif-enc"
+echo -e "libpng: for heif-convert and heif-enc"
+echo -e ""
