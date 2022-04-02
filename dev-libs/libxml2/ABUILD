@@ -1,16 +1,16 @@
 pkgname=libxml2
-pkgver=2.9.12
-pkgbuild=2
+pkgver=2.9.13
+pkgbuild=1
 arch=("auto")
 
-shortdesc="Library providing XML and HTML support"
-longdesc="This library allows you to manipulate XML files. It includes support for reading, modifying and writing XML and HTML files. There is DTDs support: this includes parsing and validation even with complex DtDs, either at parse time or later once the document has been modified. The output can be a simple SAX stream or and in-memory DOM-like representations. In this case one can use the built-in XPath and XPointer implementation to select subnodes or ranges. A flexible Input/Output mechanism is available, with existing HTTP and FTP modules and combined to a URI library."
+shortdesc=("XML parsing library, version 2.")
+longdesc=("The libxml2 package contains libraries and utilities used for parsing XML files.")
 
-tags=("dev-libs libs compat32")
+source=("https://download.gnome.org/sources/libxml2/${pkgver%.*}/libxml2-${pkgver}.tar.xz")
 
-source=("http://xmlsoft.org/sources/${pkgname}-${pkgver}.tar.gz")
+tags=("dev-libs libs")
 
-build_deps="ncurses readline xz zlib python"
+build_deps=("ncurses readline xz zlib python")
 
 build() {
   go_src_dir
@@ -19,7 +19,8 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --disable-static \
     --with-threads \
     --with-history \
     --with-icu \
