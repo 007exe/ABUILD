@@ -1,24 +1,24 @@
 pkgname=fribidi
 pkgver=1.0.11
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("A Free Implementation of the Unicode Bidirectional Algorithm")
+shortdesc=("A Free Implementation of the Unicode Bidirectional Algorithm.")
 longdesc=("The FriBidi package is an implementation of the Unicode Bidirectional Algorithm (BIDI). This is useful for supporting Arabic and Hebrew alphabets in other packages.")
 
 source=("https://github.com/fribidi/fribidi/releases/download/v${pkgver}/fribidi-${pkgver}.tar.xz")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
-build_deps="meson"
+build_deps=("meson")
 
 build(){
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D libdir=/usr/lib \
     -D docs=false
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
