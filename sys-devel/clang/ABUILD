@@ -1,36 +1,33 @@
+# NOTE: при сборке данного пакета возникли проблемы "hmmm... wrong build system!" почему то вызвалась функция autobuild
 pkgname=clang
-pkgver=12.0.1
+pkgver=14.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C language family front-end for LLVM")
 longdesc=("The goal of the Clang project is to create a new C, C++, Objective C and Objective C++ front-end for the LLVM compiler. Its tools are built as libraries and designed to be loosely-coupled and extensible.")
 
-tags=("develop sys-devel")
-
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-$pkgver.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-$pkgver.src.tar.xz")
 
-build_deps="llvm cmake ninja python-sphinx python"
+tags=("develop sys-devel")
 
-adddep="gcc compiler-rt"
+build_deps=("llvm cmake ninja python-sphinx python")
+
+adddep=("gcc compiler-rt")
 
 before_build(){
-  go_src_dir
+  mv ${srcdir}/clang-${pkgver}.src ${srcdir}/clang
+  mv ${srcdir}/llvm-${pkgver}.src ${srcdir}/llvm
+  cd ${srcdir}/clang
+  mv ${srcdir}/clang-tools-extra-${pkgver}.src tools/extra
   mkdir build
-  mv "$srcdir/clang-tools-extra-$pkgver.src" tools/extra
-  burn_patches
-}
-
-build(){
-  go_src_dir
   cd build
-
   cmake ..  -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLLVM_LIBDIR_SUFFIX=${LIBDIRSUFFIX} \
+    -DCMAKE_SKIP_RPATH=ON \
     -DLLVM_LINK_LLVM_DYLIB=ON \
     -DCLANG_LINK_CLANG_DYLIB=ON \
     -DLLVM_ENABLE_RTTI=ON \
@@ -40,27 +37,27 @@ build(){
     -DLLVM_ENABLE_SPHINX=ON \
     -DSPHINX_WARNINGS_AS_ERRORS=OFF \
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
-    -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-$pkgver.src"
+    -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm
   ninja
-}
-
-
-after_build(){
-  go_src_dir
-  cd build
-
-  DESTDIR="$pkgdir" ninja install
-  install -Dm644 ../LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-
-# Remove documentation sources
-  rm -r "$pkgdir"/usr/share/doc/clang{,-tools}/html/{_sources,.buildinfo}
-
-# Install Python bindings
-  install -d "$pkgdir/usr/lib/python3.9/site-packages"
-  cp -a ../bindings/python/clang "$pkgdir/usr/lib/python3.9/site-packages/"
-  python3 -m compileall "$pkgdir/usr/lib/python3.9"
-  python3 -O -m compileall "$pkgdir/usr/lib/python3.9"
-  python3 -OO -m compileall "$pkgdir/usr/lib/python3.9"
-
-  rm -f "$pkgdir"/usr/lib${LIBDIRSUFFIX}/*.a
+echo "=====> Установка"
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+echo "=====> Удаление исходников документации"
+# Удаляем исходники документации
+  rm -r ${pkgdir}/usr/share/doc/Clang/clang{,-tools}/html/{_sources,.buildinfo}
+echo "=====> Установка привязки к Python"
+# Устанавливаем привязку к Python
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  install -d ${pkgdir}/${site_packages}
+  mv ${pkgdir}/usr/lib/{libear,libscanbuild} ${pkgdir}/${site_packages}/
+  cp -a ../bindings/python/clang ${pkgdir}/${site_packages}/
+echo "=====> Перемещение скриптов"
+# Перемещаем скрипты анализатора из /usr/libexec
+  mv ${pkgdir}/usr/libexec/* ${pkgdir}/usr/lib/clang/
+  rmdir ${pkgdir}/usr/libexec
+  sed -i 's|libexec|lib/clang|' \
+    ${pkgdir}/usr/bin/scan-build \
+    ${pkgdir}/${site_packages}/libscanbuild/analyze.py
+echo "=====> Удаляем *.a"
+  rm -f ${pkgdir}/usr/lib/*.a
 }
