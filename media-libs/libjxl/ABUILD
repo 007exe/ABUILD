@@ -1,27 +1,30 @@
 pkgname=libjxl
 pkgver=0.6.1
 strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("JPEG XL image format reference implementation.")
 longdesc=("JPEG XL image format reference implementation.")
 
+source=("git:https://github.com/libjxl/libjxl.git")
+
 tags=("libs media-libs")
 
-source=("git:https://github.com/libjxl/libjxl.git")
 #java-environment gperftools
-build_deps=("cmake clang brotli gdk-pixbuf giflib gimp libjpeg-turbo libpng openexr gtest python asciidoc doxygen graphviz xdg-utils highway")
+build_deps=("git cmake clang brotli gdk-pixbuf giflib gimp libjpeg-turbo libpng openexr gtest python asciidoc doxygen graphviz xdg-utils highway")
 
 build() {
   go_src_dir
   burn_patches
+
   git checkout v${pkgver}
   git submodule update --init --recursive --depth 1 --recommend-shallow
+
   cmake -B build \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF \
     -DJPEGXL_ENABLE_BENCHMARK=OFF \
     -DJPEGXL_ENABLE_COVERAGE=OFF \
@@ -35,8 +38,7 @@ build() {
     -DJPEGXL_FORCE_SYSTEM_HWY=ON \
     -DJPEGXL_FORCE_SYSTEM_LCMS=ON
   make -j${numjobs} -C build all doc
-  make -C build DESTDIR="$pkgdir" install
+  make -C build DESTDIR=${pkgdir} install
 
-#  install -D -m755 build/tools/libjxl_jni.so -t "${pkgdir}/usr/lib${LIBDIRSUFFIX}"
-  install -D -m644 {LICENSE,PATENTS} -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -D -m644 {LICENSE,PATENTS} -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
