@@ -1,23 +1,23 @@
 pkgname=libwebp
-pkgver=1.2.1
+pkgver=1.2.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Library and tools for the WebP graphics format")
+shortdesc=("WebP library and conversion tools.")
 longdesc=("The libwebp package contains a library and support programs to encode and decode images in WebP format.")
 
 source=("http://downloads.webmproject.org/releases/webp/libwebp-${pkgver}.tar.gz")
 
-tags="media-libs libs"
+tags=("media-libs libs")
 
-build_deps="libpng libjpeg-turbo libtiff"
+build_deps=("libpng libjpeg-turbo libtiff")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-swap-16bit-csp \
     --enable-experimental \
@@ -25,5 +25,5 @@ build() {
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
