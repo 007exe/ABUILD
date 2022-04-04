@@ -1,16 +1,18 @@
 pkgname=pango
-pkgver=1.50.3
+pkgver=1.50.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A library for layout and rendering of text")
+shortdesc=("A library for layout and rendering of text.")
 longdesc=("Pango is a library for laying out and rendering text, with an emphasis on internationalization. It can be used anywhere that text layout is needed, though most of the work on Pango so far has been done in the context of the GTK+ widget toolkit.")
 
 source=("https://download.gnome.org/sources/pango/${pkgver%.*}/pango-${pkgver}.tar.xz")
 
-tags="libs x11-libs"
+tags=("libs x11-libs")
 # libthai
-build_deps="cairo libxft harfbuzz fribidi gobject-introspection help2man meson gi-docgen"
+build_deps=("cairo libxft harfbuzz fribidi gobject-introspection help2man meson gi-docgen")
+
+removedep=("libx11 libxrender fontconfig freetype")
 
 build() {
   go_src_dir
@@ -19,5 +21,5 @@ build() {
   -D prefix=/usr \
   -D gtk_doc=false
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
