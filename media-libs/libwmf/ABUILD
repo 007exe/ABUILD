@@ -1,10 +1,10 @@
 pkgname=libwmf
 pkgver=0.2.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A library for reading vector images in Microsoft's native Windows Metafile Format (WMF)")
-longdesc=("A library for reading vector images in Microsoft's Windows Metafile Format (WMF)")
+shortdesc=("A library for reading vector images in Microsoft's native Windows Metafile Format (WMF).")
+longdesc=("A library for reading vector images in Microsoft's Windows Metafile Format (WMF).")
 
 source=("https://github.com/caolanm/libwmf/archive/v$pkgver.tar.gz")
 
@@ -14,18 +14,21 @@ build_deps=("libxt libx11 libjpeg-turbo freetype expat gsfonts")
 
 adddep=("gsfonts")
 
+removedep=("libxau libxdmcp brotli bzip2 gdk-pixbuf glib2 harfbuzz libpng libxcb")
+
 build() {
   go_src_dir
   burn_patches
   autoreconf -vif -Ipatches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-gsfontdir=/usr/share/fonts/Type1 \
     --with-fontdir=/usr/share/fonts/Type1 \
-    --with-gsfontmap=/usr/share/ghostscript/9.10/Resource/Init/Fontmap.GS
+    --with-gsfontmap=/usr/share/ghostscript/9.56.0/Resource/Init/Fontmap.GS
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install -j1
-#Remove fonts, these are in gsfonts
-  rm -rf "${pkgdir}/usr/share/fonts"
+  make DESTDIR=${pkgdir} install -j1
+
+#Удаляем шрифты которые находятся в gsfonts
+  rm -rf ${pkgdir}/usr/share/fonts
 }
