@@ -1,16 +1,22 @@
 pkgname=poppler
-pkgver=21.09.0
+pkgver=22.03.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("PDF rendering library based on xpdf 3.0")
 longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
 
-tags=('app-text libs')
-
 source=("http://poppler.freedesktop.org/poppler-${pkgver}.tar.xz")
-# gtk3 qt5-base qt6-base nss
-build_deps="libjpeg-turbo gcc-libs cairo fontconfig openjpeg2 pkg-config lcms2 gobject-introspection icu gtk-doc curl cmake python boost"
+
+tags=("app-text libs")
+
+# poppler-qt6
+pkglist=("poppler-glib poppler-qt5")
+
+# qt6-base
+build_deps="libjpeg-turbo gcc-libs cairo fontconfig openjpeg2 lcms2 gobject-introspection icu gtk-doc curl cmake python boost nss gtk3 qt5-base"
+
+removedep=("freetype libpng libtiff zlib nspr")
 
 build() {
   go_src_dir
@@ -20,8 +26,66 @@ build() {
   cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
     -DENABLE_GTK_DOC=ON
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+
+# Удаляем бибилиотеки предоставляемые другими пакетами
+  rm -vrf ${pkgdir}/usr/include/poppler/{glib,qt5,qt6}
+  rm -vf ${pkgdir}/usr/lib/libpoppler-{glib,qt5,qt6}.*
+  rm -vf ${pkgdir}/usr/lib/pkgconfig/poppler-{glib,qt5,qt6}.pc
+  rm -vrf ${pkgdir}/usr/{lib,share}/gir*
+  rm -vrf ${pkgdir}/usr/share/gtk-doc
+}
+
+poppler-glib() {
+  pkgname=poppler-glib
+  shortdesc=("Poppler glib bindings.")
+  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+  adddep=("poppler=${pkgver}")
+  removedep=("cairo freetype gcc-libs")
+}
+
+poppler-glib_prep() {
+  go_src_dir
+  cd build
+  make -C glib DESTDIR=${pkgdir} install
+  install -m755 -d ${pkgdir}/usr/lib/pkgconfig
+  install -m644 poppler-glib.pc ${pkgdir}/usr/lib/pkgconfig/
+  rm -vf ${pkgdir}/usr/lib/libpoppler.*
+  rm -vf ${pkgdir}/usr/bin/poppler-glib-demo
+}
+
+poppler-qt5() {
+  pkgname=poppler-qt5
+  shortdesc=("Poppler Qt5 bindings.")
+  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+  adddep=("poppler=${pkgver}")
+  removedep=("freetype lcms2 gcc-libs")
+}
+
+poppler-qt5_prep() {
+  go_src_dir
+  cd build
+  make -C qt5 DESTDIR=${pkgdir} install
+  install -m755 -d ${pkgdir}/usr/lib/pkgconfig
+  install -m644 poppler-qt5.pc ${pkgdir}/usr/lib/pkgconfig/
+}
+
+poppler-qt6() {
+  pkgname=poppler-qt6
+  shortdesc=("Poppler Qt6 bindings.")
+  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+  adddep=("poppler=${pkgver}")
+  removedep=("freetype lcms2 gcc-libs")
+}
+
+poppler-qt6_prep() {
+  go_src_dir
+  cd build
+  make -C qt6 DESTDIR=${pkgdir} install
+  install -m755 -d ${pkgdir}/usr/lib/pkgconfig
+  install -m644 poppler-qt6.pc ${pkgdir}/usr/lib/pkgconfig/
 }
