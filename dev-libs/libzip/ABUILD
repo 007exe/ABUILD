@@ -1,16 +1,20 @@
 pkgname=libzip
 pkgver=1.8.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A C library for reading, creating, and modifying zip archives")
-longdesc=("Library for manipulating zip archives")
+shortdesc=("A C library for reading, creating, and modifying zip archives.")
+longdesc=("Library for manipulating zip archives.")
 
 source=("http://www.nih.at/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs dev-libs")
 
 build_deps=("cmake zlib bzip2 zstd openssl gnutls")
+
+removedep=("xz nettle")
+
+adddep=("openssl zlib")
 
 build() {
   go_src_dir
@@ -19,9 +23,9 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX}
+    -DCMAKE_INSTALL_LIBDIR=lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 ../LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
