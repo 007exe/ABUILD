@@ -1,7 +1,7 @@
 pkgname=chafa
 pkgver=1.8.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Image-to-text converter supporting a wide range of symbols and palettes, transparency, animations, etc.")
 longdesc=("Versatile and fast Unicode/ASCII/ANSI graphics renderer")
@@ -12,13 +12,16 @@ tags=("media-gfx xapps")
 
 build_deps=("gtk-doc libxslt imagemagick")
 
+adddep=("libxslt")
+
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --enable-man
+    --libdir=/usr/lib \
+    --enable-man \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
