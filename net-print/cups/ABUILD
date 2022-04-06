@@ -1,122 +1,110 @@
 pkgname=cups
-pkgver=2.3.3op2
+pkgver=2.4.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("The CUPS Printing System - daemon package")
+shortdesc=("The CUPS Printing System - daemon package.")
 longdesc=("The Common Unix Printing System (CUPS) is a print spooler and associated utilities. It is based on the Internet Printing Protocol and provides printing services to most PostScript and raster printers.")
-
-tags=('base net-print')
 
 source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz")
 
-build_deps="gnutls libtiff libpng krb5 libusb acl linux-pam bc dbus hicolor-icon-theme gzip autoconf inetutils valgrind xdg-utils cups-filters"
+tags=("base net-print")
 
-adddep="hicolor-icon-theme libcups>=${pkgver} cups-filters"
+build_deps=("gnutls libtiff libpng krb5 libusb acl linux-pam bc dbus hicolor-icon-theme gzip autoconf inetutils valgrind xdg-utils cups-filters")
 
-config_files="etc/cups/cupsd.conf
+adddep=("hicolor-icon-theme libcups>=${pkgver} cups-filters")
+
+pkglist=("libcups")
+
+config_files=("etc/cups/cupsd.conf
 etc/cups/snmp.conf
 etc/cups/cups-files.conf
 etc/logrotate.d/cups
 etc/pam.d/cups
 etc/cups/printers.conf
 etc/cups/classes.conf
-etc/cups/subscriptions.conf"
-
-pkglist="libcups"
+etc/cups/subscriptions.conf")
 
 build() {
   go_src_dir
   burn_patches
 
-# Rebuild configure script for not zipping man-pages.
   aclocal -I config-scripts
   autoconf -I config-scripts
 
-# The build system uses only DSOFLAGS but not LDFLAGS to build some libraries.
   export DSOFLAGS=${LDFLAGS}
 
-# Fix libdir
  sed -i.orig -e 's#$exec_prefix/lib/cups#$libdir/cups#g' configure
 
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --sysconfdir=/etc \
     --localstatedir=/var \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
     --disable-systemd \
-    --enable-pam=yes \
-    --enable-raw-printing \
-    --enable-dbus=yes \
-    --enable-ssl=yes \
-    --enable-relro \
-    --enable-threads \
-    --disable-avahi\
-    --enable-libpaper \
     --with-logdir=/var/log/cups \
     --with-docdir=/usr/share/cups/doc \
     --with-exe-file-perm=0755 \
-    --with-rcdir=/tmp/cupsinit \
+    --with-cups-user=209 \
+    --with-cups-group=209 \
     --with-max-log-size=0 \
+    --enable-pam=yes \
+    --enable-raw-printing \
+    --enable-dbus=yes \
     --with-dbusdir=/usr/share/dbus-1 \
-    --disable-dnssd
+    --enable-relro \
+    --enable-libpaper
   make -j${numjobs}
-  make BUILDROOT="${pkgdir}" install-data install-exec
-}
+  make BUILDROOT=${pkgdir} install-data install-exec
 
-after_build() {
-  go_src_dir
-
- rm -R ${pkgdir}/tmp
-
-# Logrotate
-  install -D -m644 ${filedir}/cups.logrotate "${pkgdir}"/etc/logrotate.d/cups
+  install -D -m644 ${filedir}/cups.logrotate ${pkgdir}/etc/logrotate.d/cups
 
 # PAM
-  install -D -m644 ${filedir}/cups.pam "${pkgdir}"/etc/pam.d/cups
+  install -D -m644 ${filedir}/cups.pam ${pkgdir}/etc/pam.d/cups
 
 # OpenRC init
   install -D -m755 ${filedir}/cupsd.init ${pkgdir}/etc/init.d/cupsd
 
-  # install some more configuration files that will get filled by cupsd
-  touch "${pkgdir}"/etc/cups/printers.conf
-  touch "${pkgdir}"/etc/cups/classes.conf
-  touch "${pkgdir}"/etc/cups/subscriptions.conf
-  chgrp -R 209 "${pkgdir}"/etc/cups
+# файлы конфигурации которые заполняет демон cupsd
+  touch ${pkgdir}/etc/cups/printers.conf
+  touch ${pkgdir}/etc/cups/classes.conf
+  touch ${pkgdir}/etc/cups/subscriptions.conf
+  chgrp -R 209 ${pkgdir}/etc/cups
 
-# fix .desktop file
   sed -i 's|^Exec=htmlview http://localhost:631/|Exec=xdg-open http://localhost:631/|g' "${pkgdir}"/usr/share/applications/cups.desktop
 
-# compress some driver files, adopted from Fedora
-  find "${pkgdir}"/usr/share/cups/model -name "*.ppd" | xargs gzip -n9f
+# Сжимаем файлы драйвкров из Fedora
+  find ${pkgdir}/usr/share/cups/model -name "*.ppd" | xargs gzip -n9f
 
-# remove client.conf man page
-  rm -f "${pkgdir}"/usr/share/man/man5/client.conf.5
+# Удаляем man-страницу client.conf
+  rm -f ${pkgdir}/usr/share/man/man5/client.conf.5
 
-# remove directory from package, it will be recreated at each server start
-  rm -rf "${pkgdir}"/run
+# Удаляем каталог из пакета он будит пересоздаваться при каждом старте
+  rm -rf ${pkgdir}/run
 
-# comment out removed filters that are now part of cups-filters
-  perl -p -i -e 's:^(.*\s+bannertops\s*)$:#\1:' "$pkgdir"/usr/share/cups/mime/mime.convs
+# Коментируем удаленные фильтры, которые теперь являются частью cups-filters
+  perl -p -i -e 's:^(.*\s+bannertops\s*)$:#\1:' ${pkgdir}/usr/share/cups/mime/mime.convs
 
-# comment out unnecessary PageLogFormat entry
-  sed -i -e 's:PageLogFormat:#PageLogFormat:' "$pkgdir"/etc/cups/cupsd.conf*
+# Коментируем ненужную запись PageLogFormat
+  sed -i -e 's:PageLogFormat:#PageLogFormat:' ${pkgdir}/etc/cups/cupsd.conf*
 }
 
 libcups() {
   pkgname=libcups
   shortdesc=("The CUPS Printing System - client libraries and headers")
   longdesc=("The Common Unix Printing System (CUPS) is a print spooler and associated utilities. It is based on the Internet Printing Protocol and provides printing services to most PostScript and raster printers.")
-  removedep="cups-filters"
+  tags=("libs net-print")
+  removedep=("cups-filters e2fsprogs")
 }
 
 libcups_prep() {
   go_src_dir
-  make BUILDROOT="${pkgdir}" install-headers install-libs
-  # put this into the libs pkg to make other software find the libs(no pkg-config file included)
-  mkdir -p "${pkgdir}"/usr/bin
-  mv "${p_pkgdir}"/usr/bin/cups-config "${pkgdir}"/usr/bin/cups-config
+  make BUILDROOT=${pkgdir} install-headers install-libs
 
-  # add license + exception
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" {LICENSE,NOTICE}
+# Помещаем это в пакет libs, чтобы другое программы нашли эти библиотеки (файл pkg-config не включен)
+  mkdir -p ${pkgdir}/usr/bin
+  mv ${p_pkgdir}/usr/bin/cups-config ${pkgdir}/usr/bin/cups-config
+
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} {LICENSE,NOTICE}
 }

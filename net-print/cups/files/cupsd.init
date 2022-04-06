@@ -1,5 +1,5 @@
-#!/sbin/openrc-run
-# Copyright 1999-2017 Gentoo Foundation
+#!/usr/bin/openrc-run
+
 
 description="The Common Unix Printing System daemon"
 command="/usr/sbin/cupsd"
