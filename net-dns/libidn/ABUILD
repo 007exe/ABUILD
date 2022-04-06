@@ -1,27 +1,27 @@
 pkgname=libidn
-pkgver=1.37
+pkgver=1.38
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Internationalized string processing library"
-longdesc="GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN) working group, used for internationalized domain names."
+shortdesc=("Implementation of the Stringprep, Punycode and IDNA specifications.")
+longdesc=("GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN) working group, used for internationalized domain names.")
+
+source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-dns")
 
-build_deps="glibc"
-
-source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-# doc html installation - gtk-doc isn't supported anymore - FS#55151
-  mkdir -p "${pkgdir}/usr/share/gtk-doc/html/${pkgname}"
-  cp -r -v doc/reference/html/* "${pkgdir}/usr/share/gtk-doc/html/${pkgname}"
+
+  mkdir -p ${pkgdir}/usr/share/gtk-doc/html/${pkgname}
+  cp -r -v doc/reference/html/* ${pkgdir}/usr/share/gtk-doc/html/${pkgname}
 }
 
