@@ -1,6 +1,6 @@
 pkgname=libidn2
 pkgver=2.3.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Free software implementation of IDNA2008, Punycode and TR46.")
