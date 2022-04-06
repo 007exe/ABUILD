@@ -1,0 +1,27 @@
+pkgname=ijs
+pkgver=0.35
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library which implements a protocol for transmission of raster page images.")
+longdesc=("A library which implements a protocol for transmission of raster page images.")
+
+source=("https://www.openprinting.org/download/ijs/download/ijs-${pkgver}.tar.bz2")
+
+tags=("libs media-gfx")
+# docbook-utils
+build_deps=("glibc ghostscript")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-shared \
+    --disable-static \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ijs_spec.pdf ${pkgdir}/usr/share/doc/${pkgname}/ijs_spec.pdf
+}
