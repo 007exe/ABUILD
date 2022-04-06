@@ -1,19 +1,19 @@
 pkgname=graphviz
-pkgver=2.49.2
+pkgver=3.0.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Graph visualization software")
 longdesc=("The Graphviz package contains graph visualization software. Graph visualization is a way of representing structural information as diagrams of abstract graphs and networks. Graphviz has several main graph layout programs. It also has web and interactive graphical interfaces, auxiliary tools, libraries, and language bindings.")
 
 source=("https://gitlab.com/graphviz/graphviz/-/archive/$pkgver/$pkgname-$pkgver.tar.gz")
 
-tags="utils media-gfx"
-# mono guile r tk
-build_deps="swig lua ocaml>=4.12.0 perl python gtk2 ghostscript qt5-base"
+tags=("utils media-gfx")
+# mono r
+build_deps=("swig lua ocaml>=4.12.0 perl python gtk2 ghostscript qt5-base guile tk")
 
 adddep="ghostscript"
-# Removing optional dependencies
+# Это опциональные зависимости
 removedep="mono guile lua lua51 lua52 lua53 ocaml perl python r tcl qt5-base gtk2"
 
 build() {
@@ -24,20 +24,18 @@ build() {
   export CXXFLAGS+=' -fPIC -fpermissive'
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-python3=yes \
     --disable-python \
     --disable-static
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool # Fix overlinking
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# fix symlink to symlink that doesn't get picked up by makepkg's zipman
-  ln -s gv2gxl.1.gz "${pkgdir}"/usr/share/man/man1/dot2gxl.1.gz
-  rm "${pkgdir}"/usr/share/man/man1/dot2gxl.1
+  ln -s gv2gxl.1.gz ${pkgdir}/usr/share/man/man1/dot2gxl.1.gz
+  rm ${pkgdir}/usr/share/man/man1/dot2gxl.1
 
-# Deduplicates TCL libraries
-#  cd "${pkgdir}/usr/lib${LIBDIRSUFFIX}/tcl8.6"
-#  rm -fr graphviz
-#  ln -s ../graphviz/tcl graphviz
+  cd ${pkgdir}/usr/lib/tcl8.6
+  rm -fr graphviz
+  ln -s ../graphviz/tcl graphviz
 }
