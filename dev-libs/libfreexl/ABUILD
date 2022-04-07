@@ -1,22 +1,23 @@
 pkgname=libfreexl
 pkgver=1.0.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library to extract valid data from within an Excel (.xls) spreadsheet")
 longdesc=("FreeXL is an open source library to extract valid data from within Spreadsheets.")
 
-source=("https://www.gaia-gis.it/gaia-sins/${pkgname/lib/}-$pkgver.tar.gz")
+source=("https://www.gaia-gis.it/gaia-sins/${pkgname/lib/}-${pkgver}.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
