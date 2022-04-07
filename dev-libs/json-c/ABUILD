@@ -1,16 +1,16 @@
 pkgname=json-c
 pkgver=0.15
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc="JSON implementation in C"
-longdesc="JSON-C implements a reference counting object model that allows you to easily construct JSON objects in C, output them as JSON formatted strings and parse JSON formatted strings back into the C representation of JSON objects."
+shortdesc=("A JSON implementation in C.")
+longdesc=("The JSON-C implements a reference counting object model that allows you to easily construct JSON objects in C, output them as JSON formatted strings and parse JSON formatted strings back into the C representation of JSON objects.")
 
 source=("https://s3.amazonaws.com/json-c_releases/releases/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
-build_deps="cmake"
+build_deps=("cmake ninja glibc")
 
 build() {
   go_src_dir
@@ -22,10 +22,11 @@ build() {
   cmake -Hjson-c -Bbuild \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DBUILD_STATIC_LIBS=OFF \
     -DENABLE_THREADING=ON \
     -DENABLE_RDRAND=OFF ..
-  cmake --build build
-  DESTDIR="$pkgdir" cmake --build build --target install
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 ../COPYING
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --build build --target install
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ../COPYING
 }
