@@ -1,5 +1,5 @@
 pkgname=vala
-pkgver=0.54.6
+pkgver=0.56.0
 pkgbuild=1
 arch=("auto")
 
@@ -8,18 +8,18 @@ longdesc=("Vala is a new programming language that aims to bring modern programm
 
 source=("https://download.gnome.org/sources/vala/${pkgver%.*}/vala-${pkgver}.tar.xz")
 
-tags=("develop sys-devel")
+tags=("develop dev-lang")
 
-build_deps=("glib2 help2man pkg-config gcc graphviz")
+build_deps=("glib2 help2man pkgconf gcc graphviz")
 
-adddep="gtk-doc pkg-config gcc"
+adddep=("gtk-doc pkgconf gcc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-valadoc \
     --disable-static
   make -j${numjobs}
