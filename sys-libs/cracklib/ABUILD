@@ -1,16 +1,16 @@
 pkgname=cracklib
 pkgver=2.9.7
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("A password-checking library")
-longdesc=("CrackLib tests passwords to determine whether they match certain security-oriented characteristics. You can use CrackLib to stop users from choosing passwords which would be easy to guess.")
+shortdesc=("A password-checking library.")
+longdesc=("The CrackLib package contains a library used to enforce strong passwords by comparing user selected passwords to words in chosen word lists.")
+
+source=("https://github.com/cracklib/cracklib/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("sys-libs libs")
 
-source=("https://github.com/cracklib/cracklib/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
-
-build_deps="zlib"
+build_deps=("glibc zlib")
 
 build() {
   go_src_dir
@@ -18,13 +18,14 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --without-python
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-# symlink cracklib-small #34778
-  mkdir -p "$pkgdir"/usr/share/dict
-  ln -sf /usr/share/cracklib/cracklib-small "$pkgdir"/usr/share/dict/cracklib-small
+
+# Символическая ссылка cracklib-small #34778
+  mkdir -p ${pkgdir}/usr/share/dict
+  ln -sf /usr/share/cracklib/cracklib-small ${pkgdir}/usr/share/dict/cracklib-small
   sh ./util/cracklib-format dicts/cracklib-small \
-    | sh ./util/cracklib-packer "$pkgdir"/usr/share/cracklib/pw_dict
+    | sh ./util/cracklib-packer ${pkgdir}/usr/share/cracklib/pw_dict
 }
