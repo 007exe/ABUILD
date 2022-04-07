@@ -1,44 +1,36 @@
 pkgname=cfitsio
-pkgver=4.0.0
+pkgver=4.1.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A library of C and Fortran subroutines for reading and writing data files in FITS (Flexible Image Transport System) data format")
-longdesc=("CFITSIO is a library of C and Fortran subroutines for reading and writing data files in FITS (Flexible Image Transport System) data format.")
+longdesc=("C and Fortran library for manipulating FITS files.")
 
 source=("https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-$pkgver.tar.gz")
 
-tags="dev-libs libs"
+tags=("sci-libs libs")
 
-build_deps="curl gcc-fortran bzip2 zlib"
+build_deps=("curl gcc-fortran bzip2 zlib")
 
 build() {
   go_src_dir
   burn_patches
-# Fix LDFLAGS
   sed -e 's|LDFLAGS=.*|LDFLAGS="$LDFLAGS"|g' -i configure.in
-# Fix setting rights during installation.
+# FIXME: Проблемы с coreutils-9.0
   sed -e 's|/bin/cp -a $$lib|/bin/cp $$lib|g' -i Makefile.in
   autoreconf -vi
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
     --enable-reentrant \
-    --with-bzip2 \
-    --enable-sse2 \
-    --enable-ssse3 \
-    --enable-hera \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --disable-static
   make -j${numjobs} shared
   make -j${numjobs} utils
 
-  LD_LIBRARY_PATH=. ./testprog > testprog.lis
-  [[ -z $(diff testprog.lis testprog.out) ]] || return 1
-  [[ -z $(cmp testprog.fit testprog.std) ]] || return 1
+  make DESTDIR=${pkgdir} install
 
-  make DESTDIR="$pkgdir" install
+  install -D -m644 License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-  install -D -m644 License.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
-
-# Fix conflicts with ccfits and smem
-  rm "$pkgdir"/usr/bin/{cookbook,smem,testprog}
+# Исправление конфликта с ccfits и smem
+  rm ${pkgdir}/usr/bin/{cookbook,smem,testprog}
 }
