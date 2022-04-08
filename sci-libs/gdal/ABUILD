@@ -1,5 +1,5 @@
 pkgname=gdal
-pkgver=3.4.0
+pkgver=3.4.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,19 +10,18 @@ source=("https://download.osgeo.org/gdal/${pkgver}/gdal-${pkgver}.tar.xz")
 
 tags=("libs sci-libs")
 
-build_deps="curl geos giflib hdf5 libgeotiff libjpeg-turbo libpng libspatialite libtiff netcdf openjpeg2 poppler cfitsio sqlite mariadb-libs postgresql-libs xerces-c json-c perl swig chrpath doxygen python-breathe python-numpy python-sphinx boost python-charset-normalizer"
+build_deps=("curl geos giflib hdf5 libgeotiff libjpeg-turbo libpng libspatialite libtiff netcdf openjpeg2 poppler cfitsio sqlite mariadb-libs postgresql-libs xerces-c json-c perl swig chrpath doxygen python-breathe python-numpy python-sphinx boost python-charset-normalizer")
 
-pkglist="python-gdal"
+pkglist=("python-gdal")
 
 build() {
   go_src_dir
   burn_patches
-
   export CFLAGS="$SLKCFLAGS -fno-strict-aliasing"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-libz=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --with-libz=/usr/lib \
     --with-netcdf \
     --with-libtiff \
     --with-sqlite3 \
@@ -39,19 +38,18 @@ build() {
   make -j${numjobs}
   make man
 
-  make DESTDIR="${pkgdir}" install
-  make DESTDIR="${pkgdir}" install-man
+  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} install-man
 
-# install license
-  install -Dm644 LICENSE.TXT "${pkgdir}"/usr/share/licenses/$pkgbase/LICENSE
+  install -Dm644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-# Remove RPATH
+# Удаляем RPATH
   eval local $(perl -V:vendorarch)
-  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/OSR/OSR.so
-  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/OGR/OGR.so
-  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GDAL/GDAL.so
-  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GDAL/Const/Const.so
-  chrpath --delete "${pkgdir}"${vendorarch}/auto/Geo/GNM/GNM.so
+  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/OSR/OSR.so
+  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/OGR/OGR.so
+  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/GDAL/GDAL.so
+  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/GDAL/Const/Const.so
+  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/GNM/GNM.so
 
 }
 
@@ -59,7 +57,8 @@ python-gdal() {
   pkgname=python-gdal
   shortdesc=("Python bindings for GDAL")
   longdesc=("GDAL is a translator library for raster and vector geospatial data formats that is released under an X/MIT style Open Source License by the Open Source Geospatial Foundation.")
-  adddep="gdal=$pkgver python-numpy"
+  tags=("libs dev-python")
+  adddep=("gdal=$pkgver python-numpy")
 }
 
 python-gdal_prep() {
@@ -68,6 +67,6 @@ python-gdal_prep() {
   python setup.py build
   python setup.py install --root="$pkgdir" --optimize=1 --skip-build
 
-  install -dm755 "${pkgdir}"/usr/share/licenses
-  ln -s $pkgbase "${pkgdir}"/usr/share/licenses/$pkgname
+  install -dm755 ${pkgdir}/usr/share/licenses
+  ln -s gdal ${pkgdir}/usr/share/licenses/${pkgname}
 }
