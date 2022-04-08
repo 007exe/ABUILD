@@ -1,10 +1,10 @@
 pkgname=xerces-c
 pkgver=3.2.3
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc=("A validating XML parser written in a portable subset of C++")
-longdesc=("Xerces-C++ is a validating XML parser written in a portable subset of C++. ")
+shortdesc=("A validating XML parser written in a portable subset of C++.")
+longdesc=("Xerces-C++ is a validating XML parser written in a portable subset of C++.")
 
 source=("https://apache.osuosl.org/xerces/c/3/sources/${pkgname}-${pkgver}.tar.gz")
 
@@ -16,8 +16,8 @@ build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-msgloader-icu
   make -j${numjobs}
-  make DESTDIR="${pkgdir}/" install
+  make DESTDIR=${pkgdir} install
 }
