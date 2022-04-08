@@ -1,16 +1,16 @@
 pkgname=gsettings-desktop-schemas
-pkgver=41.0
+pkgver=42.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Shared GSettings schemas for the desktop")
+shortdesc=("Shared GSettings schemas for the desktop.")
 longdesc=("The GSettings Desktop Schemas package contains a collection of GSettings schemas for settings shared by various components of a GNOME Desktop.")
 
 source=("https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/archive/${pkgver}/gsettings-desktop-schemas-${pkgver}.tar.gz")
 
-tags="gnome gnome-base"
+tags=("gnome gnome-base")
 
-build_deps="gobject-introspection git meson"
+build_deps=("gobject-introspection git meson")
 
 build() {
   go_src_dir
@@ -18,5 +18,5 @@ build() {
   meson build \
     -D prefix=/usr
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
