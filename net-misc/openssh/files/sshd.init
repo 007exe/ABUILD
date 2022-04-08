@@ -1,7 +1,4 @@
-#!/sbin/openrc-run
-# Copyright 1999-2013 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/openssh/files/sshd.rc6.4,v 1.3 2013/04/24 03:13:03 vapier Exp $
+#!/usr/bin/openrc-run
 
 extra_commands="checkconfig"
 extra_started_commands="reload"
@@ -26,7 +23,7 @@ depend() {
 		done
 		unset x
 		if [ "${warn_addr:+set}" = "set" ]; then
-			need net 
+			need net
 			ewarn "You are binding an interface in ListenAddress statement in your sshd_config!"
 			ewarn "You must add rc_need=\"net.FOO\" to your /etc/conf.d/sshd"
 			ewarn "where FOO is the interface(s) providing the following address(es):"

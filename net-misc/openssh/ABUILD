@@ -1,20 +1,20 @@
 pkgname=openssh
-pkgver=8.8p1
+pkgver=9.0p1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("OpenSSH free Secure Shell (SSH) implementation")
-longdesc=("Ssh (Secure Shell) is a program for logging into a remote machine and for executing commands in a remote machine. It is intended to replace rlogin and rsh, and provide secure encrypted communications between two untrusted hosts over an insecure network.")
-
-tags=('net-misc network')
-#ldns libxcrypt libfido2
-build_deps="kernel-headers linux-pam inetutils glibc krb5 openssl libedit zlib"
+shortdesc=("Premier connectivity tool for remote login with the SSH protocol.")
+longdesc=("The OpenSSH package contains ssh clients and the sshd daemon. This is useful for encrypting authentication and subsequent traffic over a network. The ssh and scp commands are secure implementations of telnet and rcp respectively.")
 
 source=("https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz")
 
-config_files="etc/ssh/ssh_config
+tags=("net-misc network")
+#ldns libxcrypt libfido2
+build_deps="kernel-headers linux-pam inetutils glibc krb5 openssl libedit zlib"
+
+config_files=("etc/ssh/ssh_config
 etc/ssh/sshd_config
-etc/pam.d/sshd"
+etc/pam.d/sshd")
 
 build() {
   go_src_dir
@@ -22,61 +22,40 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --mandir=/usr/share/man \
+    --libexecdir=/usr/lib/ssh \
     --sysconfdir=/etc/ssh \
-    --with-pam \
-    --with-kerberos5=/usr \
-    --with-md5-passwords \
-    --with-mantype=man \
-    --with-xauth=/usr/bin/xauth \
-    --with-ssl-engine \
-    --with-tcp-wrappers \
-    --with-default-path=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin \
-    --with-ipv4-default \
-    --with-privsep-path=/var/empty \
-    --with-privsep-user=sshd \
     --disable-strip \
+    --with-libedit \
+    --with-ssl-engine \
+    --with-pam \
+    --with-privsep-user=nobody \
+    --with-kerberos5=/usr \
+    --with-xauth=/usr/bin/xauth \
     --with-pid-dir=/run \
-    --with-libedit
+    --with-default-path=/usr/local/sbin:/usr/local/bin:/usr/bin
 #--with-security-key-builtin
 #--with-ldns
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
-  go_src_dir
-# Install directory used with PrivilegeSeparation option:
-  mkdir -p ${pkgdir}/var/empty
-  chmod 755 ${pkgdir}/var/empty
+  ln -sf ssh.1.gz ${pkgdir}/usr/share/man/man1/slogin.1.gz
+  install -Dm644 LICENCE ${pkgdir}/usr/share/licenses/${pkgname}/LICENCE
 
-# Install also 'ssh-copy-id' and its manpage from contrib:
-  ( cd contrib
-    cp -a ssh-copy-id ${pkgdir}/usr/bin/ssh-copy-id
-    chmod 755 ${pkgdir}/usr/bin/ssh-copy-id
-    install -Dm0644 ssh-copy-id.1 ${pkgdir}/usr/man/man1/ssh-copy-id.1
-  )
+  install -Dm755 contrib/findssl.sh ${pkgdir}/usr/bin/findssl.sh
+  install -Dm755 contrib/ssh-copy-id ${pkgdir}/usr/bin/ssh-copy-id
+  install -Dm644 contrib/ssh-copy-id.1 ${pkgdir}/usr/share/man/man1/ssh-copy-id.1
 
-  ( cd ${pkgdir}
+  sed \
+    -e '/^#KbdInteractiveAuthentication yes$/c KbdInteractiveAuthentication no' \
+    -e '/^#PrintMotd yes$/c PrintMotd no # pam does that' \
+    -e '/^#UsePAM no$/c UsePAM yes' \
+    -i "${pkgdir}"/etc/ssh/sshd_config
 
-# Ditch the new host keys, since these have to be uniquely prepared on each machine:
-    rm -f ${pkgdir}/etc/ssh/ssh_host_dsa_key
-    rm -f ${pkgdir}/etc/ssh/ssh_host_dsa_key.pub
-    rm -f ${pkgdir}/etc/ssh/ssh_host_rsa_key
-    rm -f ${pkgdir}/etc/ssh/ssh_host_rsa_key.pub
-    rm -f ${pkgdir}/etc/ssh/ssh_host_key
-    rm -f ${pkgdir}/etc/ssh/ssh_host_key.pub
-  )
-
-# PAM config
+# Добавляем init и pam в пакет.
   install -Dm644 $filedir/sshd.pam $pkgdir/etc/pam.d/sshd
 
-# Add OpenRC scripts
   mkdir -p $pkgdir/etc/conf.d
   install -m644 $filedir/sshd $pkgdir/etc/conf.d/sshd
   mkdir -p $pkgdir/etc/init.d
   install -m755 $filedir/sshd.init $pkgdir/etc/init.d/sshd
-
-# Fix sshd defaults
-  sed -i 's/^#PermitRootLogin yes/PermitRootLogin no/g' ${pkgdir}/etc/ssh/sshd_config
 }

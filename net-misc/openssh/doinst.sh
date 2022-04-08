@@ -1,5 +1,5 @@
 
-# If the sshd user/group/shadow don't exist, add them:
+# Если пользователя или группы sshd не существует то создаём их:
 
 if ! grep -q "^sshd:" etc/passwd ; then
   echo "sshd:x:33:33:sshd:/:" >> etc/passwd
@@ -13,7 +13,7 @@ if ! grep -q "^sshd:" etc/shadow ; then
   echo "sshd:*:9797:0:::::" >> etc/shadow
 fi
 
-# Add a btmp file to store login failure if one doesn't exist:
+# Если файл btmp не существует то создадим его для хранения ошибок входа:
 if [ ! -r var/log/btmp ]; then
   ( cd var/log ; umask 077 ; touch btmp )
 fi
