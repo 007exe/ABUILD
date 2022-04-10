@@ -1,24 +1,24 @@
 pkgname=libtorrent
 pkgver=0.13.8
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("BitTorrent library with a focus on high performance and good code")
-longdesc=("LibTorrent is a BitTorrent library written in C++ for *nix. It is designed to avoid redundant copying and storing of data that other clients and libraries suffer from. Licensed under the GPL.")
+shortdesc=("BitTorrent library with a focus on high performance and good code.")
+longdesc=("BitTorrent library written in C++ for *nix.")
 
 source=("https://github.com/rakshasa/rtorrent/releases/download/v0.9.${pkgver##*.}/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs net-p2p"
+tags=("libs net-libs")
 
-build_deps="openssl"
+build_deps=("openssl")
 
 build() {
   go_src_dir
-  ./autogen.sh
   burn_patches
+  ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
