@@ -1,0 +1,38 @@
+pkgname=libxmlrpc
+pkgver=1.51.08
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("XML-RPC for C and C++.")
+longdesc=("A lightweigt RPC library based on XML and HTTP.")
+
+source=("https://downloads.sourceforge.net/project/xmlrpc-c/Xmlrpc-c%20Super%20Stable/$pkgver/xmlrpc-$pkgver.tgz")
+
+tags=("libs dev-libs")
+
+# setconf
+build_deps=("curl libtool")
+
+conflicts=("xmlrpc-c")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --disable-libxml2-backend \
+    --disable-cgi-server \
+    --disable-libwww-client \
+    --disable-wininet-client \
+    --enable-cplusplus
+  mkdir -p include/curl
+  touch include/curl/types.h
+  make CFLAGS_PERSONAL="$CFLAGS -fPIC -w" CXXFLAGS_PERSONAL="$CXXFLAGS -fPIC -w"
+  make -C tools CFLAGS_PERSONAL="$CFLAGS -fPIC -w" CXXFLAGS_PERSONAL="$CXXFLAGS -fPIC -w"
+  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} -C tools install
+
+  install -Dm644 doc/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
