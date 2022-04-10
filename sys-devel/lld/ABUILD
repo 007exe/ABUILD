@@ -1,29 +1,24 @@
 pkgname=lld
-pkgver=12.0.1
+pkgver=14.0.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Linker from the LLVM project")
-longdesc=("Linker from the LLVM project")
+shortdesc=("Linker from the LLVM project.")
+longdesc=("The LLVM linker (link editor).")
 
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz"
-"https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-$pkgver.src.tar.xz"
-"https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libunwind-$pkgver.src.tar.xz")
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+"https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/llvm-${pkgver}.src.tar.xz"
+"https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/libunwind-${pkgver}.src.tar.xz")
 
 tags=("develop sys-devel")
 
-build_deps="llvm-libs llvm cmake ninja python-sphinx"
+build_deps=("llvm-libs llvm cmake ninja python-sphinx")
 
-before_build(){
+build(){
   # https://bugs.llvm.org/show_bug.cgi?id=49228
-  mv libunwind{-$pkgver.src,}
-
-  cd "$srcdir/$pkgname-$pkgver.src"
-  mkdir build
-}
-
-build() {
-  cd "$srcdir/$pkgname-$pkgver.src/build"
+  mv libunwind{-${pkgver}.src,}
+  mkdir ${srcdir}/${pkgname}-${pkgver}.src/build
+  cd ${srcdir}/${pkgname}-${pkgver}.src/build
   cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -34,14 +29,13 @@ build() {
     -DLLVM_ENABLE_SPHINX=ON \
     -DSPHINX_WARNINGS_AS_ERRORS=OFF \
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
-    -DLLVM_MAIN_SRC_DIR="$srcdir/llvm-$pkgver.src"
+    -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm-${pkgver}.src
   ninja
-  DESTDIR="$pkgdir" ninja install
-  install -Dm644 ../LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
 # https://bugs.llvm.org/show_bug.cgi?id=42455
-  install -Dm644 -t "$pkgdir/usr/share/man/man1" ../docs/ld.lld.1
+  install -Dm644 -t ${pkgdir}/usr/share/man/man1 ../docs/ld.lld.1
 
-# Remove documentation sources
-  rm -r "$pkgdir"/usr/share/doc/$pkgname/html/{_sources,.buildinfo}
+  rm -r ${pkgdir}/usr/share/doc/lld/${pkgname}/html/{_sources,.buildinfo}
 }
