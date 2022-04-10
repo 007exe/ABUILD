@@ -1,27 +1,25 @@
 pkgname=libclc
-pkgver=12.0.1
+pkgver=14.0.0
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Library requirements of the OpenCL C programming language")
-longdesc=("Library requirements of the OpenCL C programming language")
+shortdesc=("OpenCL C library.")
+longdesc=("Library requirements of the OpenCL C programming language.")
 
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz")
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz")
 
-tags="develop dev-libs compat32"
+tags=("develop dev-libs")
 
-build_deps="clang llvm cmake ninja python spirv-llvm-translator"
+build_deps=("clang llvm cmake ninja python spirv-llvm-translator")
 
 build() {
-  go_src_dir
-  burn_patches
+  cd ${srcdir}/${pkgname}-${pkgver}.src
   mkdir build
   cd build
   cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr
   ninja
-
-  DESTDIR="$pkgdir" ninja install
-  install -Dm644 ../LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
