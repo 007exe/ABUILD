@@ -1,14 +1,15 @@
 pkgname=openmpi
 pkgver=4.1.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("High performance message passing library (MPI)")
+shortdesc=("High performance message passing library (MPI).")
 longdesc=("The Open MPI Project is an open source Message Passing Interface implementation that is developed and maintained by a consortium of academic, research, and industry partners.")
 
-tags=('libs sys-libs')
-
 source=("https://download.open-mpi.org/release/open-mpi/v${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs sys-cluster")
+
 # --with-cuda=/opt/cuda \ cuda
 build_deps="glibc openssh zlib libnl perl libevent inetutils valgrind gcc-fortran hwloc libltdl"
 
@@ -19,7 +20,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc/${pkgname} \
     --enable-mpi-fortran=all \
-    --libdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
+    --libdir=/usr/lib/${pkgname} \
     --enable-builtin-atomics \
     --enable-mpi-cxx \
     --with-valgrind \
@@ -35,12 +36,12 @@ build() {
   make DESTDIR=${pkgdir} install
 
 # FS#28583
-  install -dm 755 "${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig"
-  for i in "${pkgdir}/usr/lib${LIBDIRSUFFIX}/openmpi/pkgconfig/"*.pc; do
-    ln -sf "/usr/lib${LIBDIRSUFFIX}/openmpi/pkgconfig/$(basename ${i})" "${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/"
+  install -dm 755 ${pkgdir}/usr/lib/pkgconfig
+  for i in ${pkgdir}/usr/lib/openmpi/pkgconfig/*.pc; do
+    ln -sf /usr/lib/openmpi/pkgconfig/$(basename ${i}) ${pkgdir}/usr/lib/pkgconfig/
   done
 
-  install -dm 755 "${pkgdir}/etc/ld.so.conf.d"
-  echo "/usr/lib${LIBDIRSUFFIX}/${pkgname}" > "${pkgdir}"/etc/ld.so.conf.d/${pkgname}.conf
-  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -dm 755 ${pkgdir}/etc/ld.so.conf.d
+  echo /usr/lib/${pkgname} > ${pkgdir}/etc/ld.so.conf.d/${pkgname}.conf
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
