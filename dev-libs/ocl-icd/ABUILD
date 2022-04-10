@@ -1,10 +1,10 @@
 pkgname=ocl-icd
 pkgver=2.3.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("OpenCL ICD Bindings")
-longdesc=("Alternative to vendor specific OpenCL ICD loaders")
+shortdesc=("OpenCL ICD Bindings.")
+longdesc=("Alternative to vendor specific OpenCL ICD loaders.")
 
 source=("https://github.com/OCL-dev/${pkgname}/archive/v${pkgver}.tar.gz")
 
@@ -19,11 +19,12 @@ build() {
   CFLAGS+=' -fcommon' # https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "$pkgdir/usr/share/licenses/ocl-icd"
-  install -m644 "$srcdir/$pkgname-$pkgver/COPYING" "${pkgdir}/usr/share/licenses/ocl-icd/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/ocl-icd
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/ocl-icd/
 }
 
