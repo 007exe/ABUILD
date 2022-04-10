@@ -1,0 +1,7 @@
+echo -e "\n"
+echo -e "The following packages extend hwloc capabilities:"
+echo -e "cairo"
+echo -e "libxml2"
+echo -e "pciutils"
+echo -e "libx11"
+echo -e ""

@@ -1,10 +1,10 @@
 pkgname=hwloc
-pkgver=2.7.0
-pkgbuild=2
+pkgver=2.7.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Portable Hardware Locality is a portable abstraction of hierarchical architectures")
-longdesc=("The Portable Hardware Locality (hwloc) software package provides a portable abstraction (across OS, versions, architectures, ...) of the hierarchical topology of modern architectures, including NUMA memory nodes, sockets, shared caches, cores and simultaneous multithreading. It also gathers various system attributes such as cache and memory information as well as the locality of I/O devices such as network interfaces, InfiniBand HCAs or GPUs.")
+shortdesc=("Portable Hardware Locality is a portable abstraction of hierarchical architectures.")
+longdesc=("Displays the hardware topology in convenient formats.")
 
 source=("https://www.open-mpi.org/software/hwloc/v${pkgver%.*}/downloads/${pkgname}-${pkgver}.tar.bz2")
 
@@ -12,17 +12,20 @@ tags=("sys-apps console")
 
 build_deps=("glibc libtool libpciaccess cairo libxml2 pciutils libx11")
 
+removedep=("libice ocl-icd libsm libx11 cairo ncurses libxml2")
+
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-plugins \
-    --sysconfdir=/etc
+    --sysconfdir=/etc \
+    --disable-static
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
-  install -Dm 644 COPYING -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm 644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
