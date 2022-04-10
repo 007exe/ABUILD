@@ -1,32 +1,25 @@
 pkgname=compiler-rt
-pkgver=12.0.1
+pkgver=14.0.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Compiler runtime libraries for clang")
-longdesc=("Compiler runtime libraries for clang.")
+shortdesc=("Compiler runtime libraries for clang.")
+longdesc=("Compiler runtime library for clang (built-in part).")
 
-tags=("develop sys-devel")
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz")
 
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz")
+tags=("develop sys-libs")
 
 build_deps="gcc-libs llvm cmake ninja python"
 
 build(){
-  go_src_dir
-  burn_patches
+  cd ${pkgname}-${pkgver}.src
   mkdir build
   cd build
-
   cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr
   ninja
-  DESTDIR="$pkgdir" ninja install
-  install -Dm644 ../LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-
-  mkdir -p "$pkgdir"/usr/lib/clang/$pkgver/{lib,share}
-  mv "$pkgdir"/usr/lib/{linux,clang/$pkgver/lib/}
-  mv "$pkgdir"/usr/{share/*.txt,lib/clang/$pkgver/share/}
-  mv "$pkgdir"/usr/lib "$pkgdir"/usr/lib${LIBDIRSUFFIX}
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
