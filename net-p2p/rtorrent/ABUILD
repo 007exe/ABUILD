@@ -1,16 +1,16 @@
 pkgname=rtorrent
 pkgver=0.9.8
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Ncurses BitTorrent client based on libTorrent")
+shortdesc=("Ncurses BitTorrent client based on libTorrent.")
 longdesc=("This is a text mode BitTorrent client with a curses interface based on libtorrent.")
 
 source=("https://github.com/rakshasa/rtorrent/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="console net-p2p"
+tags=("console net-p2p")
 
-build_deps="libtorrent=0.13.${pkgver##*.} curl xmlrpc-c"
+build_deps=("libtorrent=0.13.${pkgver##*.} curl libxmlrpc")
 
 build() {
   go_src_dir
@@ -19,11 +19,11 @@ build() {
   export CXXFLAGS+=' -fno-strict-aliasing'
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --with-xmlrpc-c
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -D doc/rtorrent.rc "${pkgdir}"/usr/share/doc/rtorrent/rtorrent.rc
+  install -D doc/rtorrent.rc ${pkgdir}/usr/share/doc/rtorrent/rtorrent.rc
 }
