@@ -1,23 +1,23 @@
 pkgname=alsa-ucm-conf
-pkgver=1.2.5.1
+pkgver=1.2.6.3
 pkgbuild=1
-arch="noarch"
+arch=("noarch")
 
-shortdesc=("Use Case Manager configuration for ALSA")
-longdesc=("Use Case Manager configuration for ALSA")
-
-tags=('libs media-libs')
+shortdesc=("Use Case Manager configuration for ALSA.")
+longdesc=("ALSA ucm configuration files.")
 
 source=("https://www.alsa-project.org/files/pub/lib/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="mkpkg"
+tags=("libs media-libs")
+
+build_deps=("mkpkg")
 
 build(){
   go_src_dir
   burn_patches
-  find ucm2 -type f -iname "*.conf" -exec install -vDm 644 {} "${pkgdir}/usr/share/alsa/"{} \;
-  find ucm2 -type l -iname "*.conf" -exec cp -dv {} "${pkgdir}/usr/share/alsa/"{} \;
-  install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
-  install -vDm 644 README.md -t "$pkgdir/usr/share/doc/$pkgname"
-  install -vDm 644 ucm2/README.md -t "$pkgdir/usr/share/doc/$pkgname/ucm2"
+  find ucm2 -type f -iname "*.conf" -exec install -vDm 644 {} ${pkgdir}/usr/share/alsa/{} \;
+  find ucm2 -type l -iname "*.conf" -exec cp -dv {} ${pkgdir}/usr/share/alsa/{} \;
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 ucm2/README.md -t ${pkgdir}/usr/share/doc/${pkgname}/ucm2
 }
