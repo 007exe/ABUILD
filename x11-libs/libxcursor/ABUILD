@@ -1,31 +1,31 @@
 pkgname=libxcursor
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("X cursor management library")
+shortdesc=("X cursor management library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-tags=('x11-libs xserver compat32')
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXcursor-${pkgver}.tar.xz")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXcursor-${pkgver}.tar.bz2")
+tags=("x11-libs xserver")
 
-build_deps="libxfixes libxrender xorg-util-macros"
+build_deps=("libxfixes libxrender xorg-util-macros")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/icons/default"
-  install -m644 ${filedir}/index.theme "${pkgdir}/usr/share/icons/default/"
+  install -m755 -d ${pkgdir}/usr/share/icons/default
+  install -m644 ${filedir}/index.theme ${pkgdir}/usr/share/icons/default/
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
