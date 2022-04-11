@@ -1,7 +1,7 @@
 pkgname=hidapi
 pkgver=0.11.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Simple library for communicating with USB and Bluetooth HID devices.")
 longdesc=("A multi-platform library for USB and Bluetooth HID-Class devices.")
@@ -18,10 +18,11 @@ build() {
   ./bootstrap
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  mkdir -p "${pkgdir}/usr/share/licenses/${pkgname}"
-  rm -f "${pkgdir}/usr/share/doc/hidapi/"LICENSE*
-  install -m0644 LICENSE.txt LICENSE-bsd.txt LICENSE-orig.txt "${pkgdir}/usr/share/licenses/${pkgname}/"
+  mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
+  rm -f ${pkgdir}/usr/share/doc/hidapi/LICENSE*
+  install -m0644 LICENSE.txt LICENSE-bsd.txt LICENSE-orig.txt ${pkgdir}/usr/share/licenses/${pkgname}/
 }
