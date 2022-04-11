@@ -1,14 +1,15 @@
 pkgname=sdl2
 pkgver=2.0.20
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)")
+shortdesc=("A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2).")
 longdesc=("The Simple DirectMedia Layer Version 2 (SDL2 for short) is a cross-platform library designed to make it easy to write multimedia software, such as games and emulators.")
+
+source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
 
 tags=("media-libs libs")
 
-source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
 # pipewire
 build_deps=("alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake jack ninja libxss ibus fcitx libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb")
 
@@ -17,11 +18,16 @@ adddep=("libxext libxrender libx11 libxcursor libibus hidapi libusb")
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  CFLAGS+=" -ffat-lto-objects"
+  cmake -B build -G Ninja \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
+    -D SDL_STATIC=OFF \
+    -D SDL_DLOPEN=ON \
+    -D SDL_RPATH=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
 
-  install -Dm644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  sed -i "s/libSDL2\.a/libSDL2main.a/g" ${pkgdir}/usr/lib/cmake/SDL2/SDL2Targets-noconfig.cmake
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
