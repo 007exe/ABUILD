@@ -1,25 +1,24 @@
 pkgname=libglvnd
 pkgver=1.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("The GL Vendor-Neutral Dispatch library")
+shortdesc=("The GL Vendor-Neutral Dispatch library.")
 longdesc=("libglvnd is an implementation of the vendor-neutral dispatch layer for arbitrating OpenGL API calls between multiple vendors on a per-screen basis.")
 
 source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v$pkgver/libglvnd-v$pkgver.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-# opengl-driver
-build_deps="libxext libx11 xorgproto python meson libxext mesa"
+build_deps=("libxext libx11 xorgproto python meson")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D libdir=/usr/lib \
     -D gles1=false
   ninja -C build
-  DESTDIR="$pkgdir" ninja -C build install
+  DESTDIR=${pkgdir} ninja -C build install
 }
