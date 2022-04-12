@@ -1,41 +1,102 @@
 pkgname=bluez
-pkgver=5.61
+pkgver=5.64
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
-shortdesc=("Daemons for the bluetooth protocol stack")
+shortdesc=("Daemons for the bluetooth protocol stack.")
 longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
 
 source=("http://www.kernel.org/pub/linux/bluetooth/bluez-${pkgver}.tar.gz")
 
-tags="network net-wireless"
-# ell
-build_deps="dbus alsa-lib json-c python-docutils libical"
+tags=("network net-wireless")
 
-config_files="etc/bluetooth/main.conf"
+# ell
+build_deps=("dbus alsa-lib json-c python-docutils libical")
+
+adddep=("bluez-libs>=${pkgver}")
+
+config_files=("etc/bluetooth/main.conf")
+
+pkglist=("bluez-libs bluez-cups bluez-hid2hci")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/share/man \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --enable-tools \
-    --disable-systemd \
-    --enable-cups \
-    --with-udevdir=/etc/udev \
-    --enable-library
+    --libexecdir=/usr/lib \
+    --with-dbusconfdir=/usr/share \
+    --enable-btpclient \
+    --enable-midi \
+    --enable-sixaxis \
+    --enable-mesh \
+    --enable-hid2hci \
+    --enable-experimental \
+    --enable-library \
+    --disable-systemd
   make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} \
+    install-pkglibexecPROGRAMS \
+    install-dbussessionbusDATA \
+    install-dbussystembusDATA \
+    install-dbusDATA \
+    install-man8
 
-# ship upstream main config file
-  install -dm755 "${pkgdir}"/etc/bluetooth
-  install -Dm644 src/main.conf "${pkgdir}"/etc/bluetooth/main.conf
+# Установка конфигурационных файлов
+  install -dm755 ${pkgdir}/etc/bluetooth
+  install -Dm644 src/main.conf ${pkgdir}/etc/bluetooth/main.conf
 
-# Patch default bluetooth group from lp to netdev
-  cat ${filedir}/bluetooth.conf > ${pkgdir}/etc/dbus-1/system.d/bluetooth.conf
+# Исправление ощибки загрузки модулей
+  install -dm755 ${pkgdir}/usr/lib/modprobe.d
+  install -Dm644 ${filedir}/bluetooth.modprobe ${pkgdir}/usr/lib/modprobe.d/bluetooth-usb.conf
+
+  install -dm755 ${pkgdir}/usr/lib/modules-load.d
+  echo "crypto_user" > ${pkgdir}/usr/lib/modules-load.d/bluez.conf
+
+# Сервис OpenRC
   install -Dm755 ${filedir}/bluetooth.init ${pkgdir}/etc/init.d/bluetooth
-  install -Dm644 ${filedir}/bluetooth-conf.d ${pkgdir}/etc/conf.d/bluetooth.new
+}
+
+
+bluez-libs() {
+  pkgname=bluez-libs
+  shortdesc=("Deprecated libraries for the bluetooth protocol stack.")
+  longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
+  tags=("libs net-wireless")
+}
+
+bluez-libs_prep() {
+  go_src_dir
+  make DESTDIR=${pkgdir} \
+    install-pkgincludeHEADERS \
+    install-libLTLIBRARIES \
+    install-pkgconfigDATA
+}
+
+bluez-cups() {
+  pkgname=bluez-cups
+  shortdesc=("CUPS printer backend for Bluetooth printers.")
+  longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
+}
+
+bluez-cups_prep() {
+  go_src_dir
+  make DESTDIR=${pkgdir} install-cupsPROGRAMS
+}
+
+
+bluez-hid2hci() {
+  pkgname=bluez-hid2hci
+  shortdesc=("Put HID proxying bluetooth HCI's into HCI mode.")
+  longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
+}
+
+bluez-hid2hci_prep() {
+  go_src_dir
+  make DESTDIR=${pkgdir} \
+    install-udevPROGRAMS \
+    install-rulesDATA
 }

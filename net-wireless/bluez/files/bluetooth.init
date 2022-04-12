@@ -1,6 +1,4 @@
-#!/sbin/openrc-run
-# Copyright 1999-2021 Gentoo Authors
-# Distributed under the terms of the GNU General Public License v2
+#!/usr/bin/openrc-run
 
 pidfile="/run/bluetoothd.pid"
 command="/usr/libexec/bluetooth/bluetoothd"
