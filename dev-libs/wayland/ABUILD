@@ -1,16 +1,16 @@
 pkgname=wayland
 pkgver=1.20.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A computer display server protocol")
+shortdesc=("A computer display server protocol.")
 longdesc=("Wayland is a project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol.")
 
 source=("http://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
-build_deps="meson ninja libxslt doxygen xmlto graphviz docbook-xsl glibc libffi expat libxml2"
+build_deps=("meson ninja libxslt doxygen xmlto graphviz docbook-xsl glibc libffi expat libxml2")
 
 build() {
   go_src_dir
@@ -18,9 +18,9 @@ build() {
   meson build \
     --buildtype=release \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   ninja -C build
-  DESTDIR="$pkgdir" ninja -C build install
+  DESTDIR=${pkgdir} ninja -C build install
 
-  install -Dm 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  install -Dm 644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
