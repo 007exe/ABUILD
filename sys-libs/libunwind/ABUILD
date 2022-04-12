@@ -1,23 +1,25 @@
 pkgname=libunwind
-pkgver=1.5.0
+pkgver=1.6.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Portable and efficient C programming interface (API) to determine the call-chain of a program")
+shortdesc=("Portable and efficient C programming interface (API) to determine the call-chain of a program.")
 longdesc=("Libunwind provides a C ABI to determine the call-chain of a program.")
 
-source=("https://download.savannah.gnu.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("https://download.savannah.gnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="sys-libs libs"
+tags=("sys-libs libs")
+
 # texlive-core
-build_deps="xz zlib"
+build_deps=("xz zlib")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
