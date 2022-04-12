@@ -1,0 +1,28 @@
+pkgname=libomxil-bellagio
+pkgver=0.9.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An opensource implementation of the OpenMAX Integration Layer API.")
+longdesc=("OpenMAX Integration Layer (IL) is a standard API to access Multimedia Components on mobile platforms. It has been defined by the Khronos group.")
+
+source=("https://downloads.sourceforge.net/project/omxil/omxil/Bellagio%200.9.3/${pkgname}-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's/-Werror//' -i configure.ac
+  autoreconf -fiv
+  CFLAGS+=' -fcommon'
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --docdir=/usr/share/doc/${pkgname}
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
