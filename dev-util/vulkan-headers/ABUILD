@@ -1,16 +1,16 @@
 pkgname=vulkan-headers
-pkgver=1.2.187
+pkgver=1.3.211
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Vulkan Header files and API registry")
+shortdesc=("Vulkan header files.")
 longdesc=("Vulkan Header files and API registry.")
-
-tags=("dev-util develop")
 
 source=("https://github.com/KhronosGroup/Vulkan-Headers/archive/v${pkgver}.tar.gz")
 
-build_deps="cmake git"
+tags=("dev-util develop")
+
+build_deps=("cmake")
 
 build() {
   go_src_dir
