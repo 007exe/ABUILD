@@ -1,26 +1,27 @@
 pkgname=libgudev
 pkgver=237
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("GObject bindings for libudev")
+shortdesc=("GObject bindings for libudev.")
 longdesc=("The libgudev package contains GObject bindings for libudev.")
 
 source=("https://download.gnome.org/sources/libgudev/${pkgver}/libgudev-${pkgver}.tar.xz")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
+
 # umockdev
-build_deps="glib2 eudev gobject-introspection gtk-doc git meson vala"
+build_deps=("glib2 eudev gobject-introspection gtk-doc git meson vala")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D libdir=/usr/lib \
     -D buildtype=release \
     -D gtk_doc=true \
     -D buildtype=release
   ninja -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
