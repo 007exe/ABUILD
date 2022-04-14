@@ -1,16 +1,16 @@
 pkgname=at-spi2-atk
 pkgver=2.38.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A GTK+ module that bridges ATK to D-Bus at-spi")
+shortdesc=("A GTK+ module that bridges ATK to D-Bus at-spi.")
 longdesc=("The At-Spi2 Atk package contains a library that bridges ATK to At-Spi2 D-Bus service.")
-
-tags=("app-accessibility libs")
 
 source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
 
-build_deps="at-spi2-core libx11 libxml2 atk meson"
+tags=("app-accessibility libs")
+
+build_deps=("at-spi2-core libx11 libxml2 atk meson")
 
 build() {
   go_src_dir
