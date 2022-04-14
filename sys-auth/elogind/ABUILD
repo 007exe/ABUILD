@@ -1,36 +1,39 @@
 pkgname=elogind
 pkgver=246.10
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("The systemd project's logind, extracted to a standalone package")
+shortdesc=("The systemd project's logind, extracted to a standalone package.")
 longdesc=("elogind is the systemd project's logind, extracted out to be a standalone daemon.")
 
 source=("https://github.com/elogind/elogind/archive/v${pkgver}/elogind-${pkgver}.tar.gz")
 
-tags="base sys-base"
+tags=("base sys-base")
 
-build_deps="meson dbus linux-pam docbook-xml docbook-xsl libxslt"
+build_deps=("meson dbus linux-pam docbook-xml docbook-xsl libxslt")
 
-config_files="etc/elogind/logind.conf"
+config_files=("etc/elogind/logind.conf")
 
 build() {
   go_src_dir
   burn_patches
+# Разрешаем сборку без установленного polkit
   sed -i '/Disable polkit/,+8 d' meson.build &&
   mkdir build
   cd build
-  meson --prefix=/usr \
-      --buildtype=release \
-      -Dcgroup-controller=elogind \
-      -Drootlibdir="/lib${LIBDIRSUFFIX}" \
-      -Drootlibexecdir="/lib${LIBDIRSUFFIX}/elogind" \
-      -Dpamlibdir="/lib${LIBDIRSUFFIX}/security" \
-      -Dudevrulesdir="/lib/udev/rules.d" \
-      -Ddbuspolicydir=/etc/dbus-1/system.d \
-      -Dman=auto
+  meson \
+    -D prefix=/usr \
+    -D buildtype=release \
+    -D cgroup-controller=openrc \
+    -D rootlibexecdir=/usr/lib/elogind \
+    -D udevrulesdir=/usr/lib/udev/rules.d \
+    -D dbuspolicydir=/etc/dbus-1/system.d \
+    -D man=auto
   ninja
   DESTDIR=${pkgdir} ninja install
+
+  ln -sfv  libelogind.pc ${pkgdir}/usr/lib/pkgconfig/libsystemd.pc
+  ln -sfvn elogind ${pkgdir}/usr/include/systemd
 
   cp ${filedir}/system-session.pam ${pkgdir}/etc/pam.d/system-session
   rm ${pkgdir}/etc/pam.d/elogind-user
@@ -38,6 +41,5 @@ build() {
 
   mkdir -p ${pkgdir}/etc/elogind/{logind.conf.d,sleep.conf.d}
 
-# license
-  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" ../LICENSE*
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ../LICENSE*
 }
