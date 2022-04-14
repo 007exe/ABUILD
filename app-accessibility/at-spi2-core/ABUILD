@@ -1,29 +1,30 @@
 pkgname=at-spi2-core
-pkgver=2.42.0
+pkgver=2.44.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Protocol definitions and daemon for D-Bus at-spi")
+shortdesc=("Protocol definitions and daemon for D-Bus at-spi.")
 longdesc=("The At-Spi2 Core package is a part of the GNOME Accessibility Project. It provides a Service Provider Interface for the Assistive Technologies available on the GNOME platform and a library against which applications can be linked.")
-
-tags=("app-accessibility libs")
 
 source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
 
-build_deps="dbus glib2 libxtst gobject-introspection git gtk-doc meson"
+tags=("app-accessibility libs")
+
+build_deps=("dbus glib2 libxtst gobject-introspection git gtk-doc meson")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
+    -D libexecdir=/usr/lib \
     -D buildtype=release \
     -D default_bus=dbus-broker \
     -D systemd_user_dir=/tmp \
     -D docs=true
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 
-#-Dsystemd_user_dir=/tmp: This flag puts the systemd unit file in /tmp where it will be removed. SysV, is unable to use this file.
-  rm -r "$pkgdir"/tmp
+# NOTE: -Dsystemd_user_dir=/tmp: этот флаг помещает файл модуля systemd в /tmp, откуда он будет удален. SysV не может использовать этот файл.
+  rm -r ${pkgdir}/tmp
 }
