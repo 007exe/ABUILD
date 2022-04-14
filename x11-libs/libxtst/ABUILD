@@ -1,28 +1,28 @@
 pkgname=libxtst
 pkgver=1.2.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("X11 Testing -- Resource extension library")
+shortdesc=("X11 Testing -- Resource extension library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
-
-tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXtst-${pkgver}.tar.bz2")
 
-build_deps="libxext libxi libxfixes xorg-util-macros xorgproto"
+tags=("x11-libs xserver")
+
+build_deps=("libxext libxi libxfixes xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
