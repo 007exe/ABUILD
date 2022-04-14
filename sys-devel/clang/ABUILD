@@ -39,25 +39,23 @@ before_build(){
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
     -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm
   ninja
-echo "=====> Установка"
+
   DESTDIR=${pkgdir} ninja install
   install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-echo "=====> Удаление исходников документации"
+
 # Удаляем исходники документации
   rm -r ${pkgdir}/usr/share/doc/Clang/clang{,-tools}/html/{_sources,.buildinfo}
-echo "=====> Установка привязки к Python"
+
 # Устанавливаем привязку к Python
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d ${pkgdir}/${site_packages}
   mv ${pkgdir}/usr/lib/{libear,libscanbuild} ${pkgdir}/${site_packages}/
   cp -a ../bindings/python/clang ${pkgdir}/${site_packages}/
-echo "=====> Перемещение скриптов"
+
 # Перемещаем скрипты анализатора из /usr/libexec
   mv ${pkgdir}/usr/libexec/* ${pkgdir}/usr/lib/clang/
   rmdir ${pkgdir}/usr/libexec
   sed -i 's|libexec|lib/clang|' \
     ${pkgdir}/usr/bin/scan-build \
     ${pkgdir}/${site_packages}/libscanbuild/analyze.py
-echo "=====> Удаляем *.a"
-  rm -f ${pkgdir}/usr/lib/*.a
 }
