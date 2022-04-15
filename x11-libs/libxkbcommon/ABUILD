@@ -1,5 +1,5 @@
 pkgname=libxkbcommon
-pkgver=1.3.1
+pkgver=1.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -8,18 +8,19 @@ longdesc=("libxkbcommon is a keymap compiler and support library which processes
 
 source=("http://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
 
-tags=("x11-apps xserver")
+tags=("x11-libs xserver")
 
 build_deps=("xkeyboard-config libxml2 libxcb wayland wayland-protocols git meson xorgproto doxygen")
 
-#These are optional dependencies.
+# Это опциональные зависимости
 removedep=("wayland libxkbcommon-x11")
 
 pkglist=("x11")
 
 x11(){
   pkgname=libxkbcommon-x11
-  shortdesc=("Keyboard handling library using XKB data for X11 XCB clients")
+  shortdesc=("Keyboard handling library using XKB data for X11 XCB clients.")
+  longdesc=("libxkbcommon is a keymap compiler and support library which processes a reduced subset of keymaps as defined by the XKB specification.")
   adddep=("libxkbcommon")
 }
 
@@ -28,24 +29,20 @@ build() {
   burn_patches
   meson build \
     --prefix=/usr \
-    --buildtype=release \
-    -Denable-docs=false
+    --buildtype=release
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 LICENSE
-}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
 
-after_build(){
-  go_src_dir
-  ### Split libxkbcommon-x11
-  install -m 755 -d "${srcdir}"/x11/usr/{lib${LIBDIRSUFFIX}/pkgconfig,include/xkbcommon,/share/man/man1}
-  mv "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/*x11* "${srcdir}/x11/usr/lib${LIBDIRSUFFIX}"
-  mv "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/pkgconfig/*x11* "${srcdir}/x11/usr/lib${LIBDIRSUFFIX}/pkgconfig"
-  mv "${pkgdir}"/usr/include/xkbcommon/*x11* "${srcdir}/x11/usr/include/xkbcommon"
-  mv "${pkgdir}"/usr/share/man/man1/*x11* "${srcdir}/x11/usr/share/man/man1"
+# Переносим файлы в libxkbcommon-x11
+  install -m 755 -d ${srcdir}/x11/usr/{lib/pkgconfig,include/xkbcommon,/share/man/man1}
+  mv ${pkgdir}/usr/lib/*x11* ${srcdir}/x11/usr/lib
+  mv ${pkgdir}/usr/lib/pkgconfig/*x11* ${srcdir}/x11/usr/lib/pkgconfig
+  mv ${pkgdir}/usr/include/xkbcommon/*x11* ${srcdir}/x11/usr/include/xkbcommon
+  mv ${pkgdir}/usr/share/man/man1/*x11* ${srcdir}/x11/usr/share/man/man1
 }
 
 x11_prep(){
-  mv "${srcdir}"/x11/* "${pkgdir}"
+  mv ${srcdir}/x11/* ${pkgdir}
 }

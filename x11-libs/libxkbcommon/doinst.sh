@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend libxkbcommon capabilities:"
+echo -e "libxkbcommon-x11: xkbcli interactive-x11"
+echo -e "wayland: xkbcli interactive-wayland"
+echo -e ""
