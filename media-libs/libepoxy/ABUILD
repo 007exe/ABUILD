@@ -1,24 +1,25 @@
 pkgname=libepoxy
-pkgver=1.5.9
+pkgver=1.5.10
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Library handling OpenGL function pointer management")
+shortdesc=("Library handling OpenGL function pointer management.")
 longdesc=("libepoxy is a library for handling OpenGL function pointer management.")
 
 source=("https://github.com/anholt/libepoxy/archive/refs/tags/${pkgver}.tar.gz")
 
-tags="media-libs libs"
-# doxygen graphviz
-build_deps="python mesa meson"
+tags=("media-libs libs")
+
+build_deps=("python mesa meson doxygen graphviz")
 
 build(){
   go_src_dir
   meson build \
+  -D buildtype=release \
   -D prefix=/usr \
   -D docs=true
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
