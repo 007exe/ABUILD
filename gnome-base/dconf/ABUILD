@@ -1,16 +1,16 @@
 pkgname=dconf
 pkgver=0.40.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Configuration database system")
-longdesc=("This is a new unified configuration system for freedekstop-compatible environments")
+shortdesc=("Configuration database system.")
+longdesc=("This is a new unified configuration system for freedekstop-compatible environments.")
 
 source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-tags="gnome gnome-base"
+tags=("gnome gnome-base")
 
-build_deps="glib2 vala dbus git gtk-doc python meson bash-completion"
+build_deps=("glib2 vala dbus git gtk-doc python meson bash-completion")
 
 build() {
   go_src_dir
@@ -19,9 +19,8 @@ build() {
     -D prefix=/usr \
     -D gtk_doc=true
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 
-# Prevent this directory from getting removed when other
-# packages which install files there get uninstalled
-  install -Dm644 /dev/null "$pkgdir/etc/dconf/db/.placeholder"
+# Запрет удаления данного каталога при удалении других пакетов
+  install -Dm644 /dev/null ${pkgdir}/etc/dconf/db/.placeholder
 }
