@@ -1,38 +1,43 @@
 pkgname=polkit
 pkgver=0.120
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Application development toolkit for controlling system-wide privileges")
+shortdesc=("Application development toolkit for controlling system-wide privileges.")
 longdesc=("Polkit is a toolkit for defining and handling authorizations. It is used for allowing unprivileged processes to communicate with privileged processes.")
 
 source=("https://www.freedesktop.org/software/polkit/releases/polkit-${pkgver}.tar.gz")
 
 tags=("libs sys-auth")
 
-build_deps=("glib2 linux-pam expat intltool gtk-doc gobject-introspection git autoconf js78 elogind")
+build_deps=("meson gtk-doc gobject-introspection glib2 linux-pam expat elogind js78")
 
 config_files=("etc/pam.d/polkit-1")
 
 build(){
   go_src_dir
   burn_patches
-  autoreconf -fv
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --enable-man-pages \
-    --enable-gtk-doc \
-    --disable-gtk-doc-html \
-    --disable-static \
-    --enable-introspection \
-    --with-os-type=AgiliaLinux \
-    --disable-libsystemd-login
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  mkdir build
+  meson build \
+    -D prefix=/usr \
+    -D man=true \
+    -D session_tracking=libelogind \
+    -D systemdsystemunitdir=/tmp   \
+    -D buildtype=release
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 
-  install -d -o root -g 102 -m 750 "$pkgdir"/{etc,usr/share}/polkit-1/rules.d
-  mv "$pkgdir"/{etc,usr/share}/polkit-1/rules.d/50-default.rules
+  rm ${pkgdir}/etc/pam.d/polkit-1
+
+cat > ${pkgdir}/etc/pam.d/polkit-1 << "EOF"
+
+auth     include        system-auth
+account  include        system-account
+password include        system-password
+session  include        system-session
+
+EOF
+
+# Удаляем бесполезные сервисы systemd
+  rm -r ${pkgdir}/tmp
 }
