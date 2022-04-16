@@ -1,0 +1,24 @@
+pkgname=libdc1394
+pkgver=2.2.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("High level programming interface to control IEEE 1394 based cameras")
+longdesc=("Library to interface with IEEE 1394 cameras following the IIDC specification.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("libraw1394 libusb")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
