@@ -1,0 +1,36 @@
+pkgname=libcaca
+pkgver=0.99.beta20
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Colour AsCii Art library.")
+longdesc=("A library that creates colored ASCII-art graphics.")
+
+source=("https://github.com/cacalabs/libcaca/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("imlib2 ncurses")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --enable-shared \
+    --disable-csharp \
+    --disable-cxx \
+    --disable-doc \
+    --disable-gl \
+    --disable-python \
+    --disable-slang \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
