@@ -1,16 +1,16 @@
 pkgname=speexdsp
 pkgver=1.2.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("DSP library derived from Speex")
-longdesc=("Speex is a patent-free audio codec designed especially for voice (unlike Vorbis which targets general audio) signals and providing good narrowband  and wideband quality. This project aims to be complementary to the Vorbis codec.")
+shortdesc=("DSP library derived from Speex.")
+longdesc=("Audio compression format designed for speech -- DSP.")
 
-source=("https://downloads.us.xiph.org/releases/speex/$pkgname-$pkgver.tar.gz")
+source=("https://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -19,10 +19,10 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var\
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
