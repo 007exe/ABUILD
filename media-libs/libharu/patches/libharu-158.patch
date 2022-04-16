@@ -1,0 +1,41 @@
+From 14d5d11358f541bd7e313dfd022b349637206b7a Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Nico=20Schl=C3=B6mer?= <nico.schloemer@gmail.com>
+Date: Wed, 17 May 2017 10:13:02 +0200
+Subject: [PATCH] add libm to link line
+
+---
+ CMakeLists.txt | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 354ca75..ccbfbbc 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -90,7 +90,7 @@ if(ZLIB_FOUND)
+   include_directories(${ZLIB_INCLUDE_DIR})
+   set(ADDITIONAL_LIBRARIES ${ZLIB_LIBRARIES})
+ endif(ZLIB_FOUND)
+-  
++
+ # check png availibility
+ find_package(PNG)
+ if(PNG_FOUND)
+@@ -99,6 +99,9 @@ if(PNG_FOUND)
+   set(ADDITIONAL_LIBRARIES ${ADDITIONAL_LIBRARIES} ${PNG_LIBRARIES})
+ endif(PNG_FOUND)
+ 
++find_library(M_LIB m)
++set(ADDITIONAL_LIBRARIES ${ADDITIONAL_LIBRARIES} ${M_LIB})
++
+ 
+ # =======================================================================
+ # configure header files, add compiler flags
+@@ -174,7 +177,7 @@ set(
+   haru_HDRS
+     include/hpdf.h
+     include/hpdf_types.h
+-    include/hpdf_consts.h 
++    include/hpdf_consts.h
+     include/hpdf_version.h
+     include/hpdf_annotation.h
+     include/hpdf_catalog.h

@@ -1,18 +1,18 @@
-From 54c145867ad04c20cc71878fab662f6eb720621e Mon Sep 17 00:00:00 2001
+From 9e8ba2f5453552909e52fde5ec30856004a616d0 Mon Sep 17 00:00:00 2001
 From: "David C. Lonie" <david.lonie@kitware.com>
 Date: Wed, 10 May 2017 11:07:28 -0400
-Subject: [PATCH 4/4] Add support for free-form triangle Shading objects.
+Subject: [PATCH] Add support for free-form triangle Shading objects.
 
 ---
- include/hpdf.h           |  24 ++++-
+ include/hpdf.h           |  24 +++-
  include/hpdf_error.h     |   3 +
  include/hpdf_objects.h   |   2 +
  include/hpdf_pages.h     |   5 +
  include/hpdf_types.h     |  14 +++
  src/CMakeLists.txt       |   1 +
- src/hpdf_page_operator.c |  31 +++++++
- src/hpdf_pages.c         |  55 ++++++++++-
- src/hpdf_shading.c       | 231 +++++++++++++++++++++++++++++++++++++++++++++++
+ src/hpdf_page_operator.c |  31 ++++++
+ src/hpdf_pages.c         |  55 +++++++++-
+ src/hpdf_shading.c       | 231 +++++++++++++++++++++++++++++++++++++++
  9 files changed, 362 insertions(+), 4 deletions(-)
  create mode 100644 src/hpdf_shading.c
 
@@ -148,7 +148,7 @@ index 8b3e0a8..a2e2157 100644
  }
  #endif /* __cplusplus */
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 6f93d18..d428b78 100644
+index 9d2a604..71c7d10 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -56,6 +56,7 @@ set(
@@ -525,6 +525,3 @@ index 0000000..53204c0
 +
 +  return ret;
 +}
--- 
-2.16.0
-
