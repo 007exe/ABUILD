@@ -1,0 +1,31 @@
+pkgname=cudnn
+pkgver=8.3.2.44
+_cudaver=11.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("NVIDIA CUDA Deep Neural Network library.")
+longdesc=("NVIDIA Accelerated Deep Learning on GPU library.")
+
+source=("https://developer.download.nvidia.com/compute/redist/cudnn/v${pkgver%.*}/local_installers/${_cudaver}/cudnn-linux-x86_64-${pkgver}_cuda${_cudaver}-archive.tar.xz")
+
+tags=("dev-libs libs")
+
+# cuda
+build_deps=("glibc gcc-libs zlib")
+
+#adddep=("cuda>='"${_cudaver}")
+
+build() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
+
+  mv {include,lib} ${pkgdir}/usr/
+
+  find ${pkgdir}/usr/lib -type f \( -iname "*.a" -or -iname "*.a.*" \) -print0 | while read -rd $'\0' _so_file; do
+    chmod 644 "${_so_file}"
+  done
+
+  mv LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+}
