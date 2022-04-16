@@ -1,0 +1,25 @@
+pkgname=double-conversion
+pkgver=3.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Binary-decimal and decimal-binary routines for IEEE doubles.")
+longdesc=("The Double-conversion package contains a library that facilitates binary-to-decimal and decimal-to-binary routines for IEEE doubles.")
+
+source=("https://github.com/google/double-conversion/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("gcc-libs cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib\
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
