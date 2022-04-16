@@ -1,10 +1,10 @@
 pkgname=libgphoto2
-pkgver=2.5.28
+pkgver=2.5.29
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Digital camera access library")
-longdesc=("The gPhoto2 project is a universal, free application and library framework that lets you download images from several different digital camera models, including the newer models with USB connections.")
+shortdesc=("Digital camera access library.")
+longdesc=("Library that implements support for numerous digital cameras.")
 
 source=("https://github.com/gphoto/libgphoto2/releases/download/v${pkgver}/libgphoto2-${pkgver}.tar.gz")
 
@@ -18,21 +18,21 @@ build() {
   autoreconf -fvi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-rpath \
     --disable-static
   make -j${numjobs}
-# Make sure udev helper scripts are put in the right place and
-# install the other utilities to /usr/bin instead of /usr/lib/libgphoto2/
-  make -j${numjobs} \
-  udevscriptdir=/lib/udev \
-  utilsdir=/usr/bin \
-  || make \
-  udevscriptdir=/lib/udev \
-  utilsdir=/usr/bin \
-  || exit 1
-  make \
-  udevscriptdir=/lib/udev \
-  utilsdir=/usr/bin \
-  DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} install
+
+  rm -r ${pkgdir}/usr/lib/udev
+
+  cd ${pkgdir}/usr/lib/libgphoto2
+
+  export LD_LIBRARY_PATH=${pkgdir}/usr/lib${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH
+  export CAMLIBS=$PWD/${pkgver}
+
+  ./print-camera-list hwdb \
+    | install -Dm644 /dev/stdin ${pkgdir}/usr/lib/udev/hwdb.d/20-gphoto.hwdb
+  ./print-camera-list udev-rules version 201 \
+    | install -Dm644 /dev/stdin ${pkgdir}/usr/lib/udev/rules.d/40-gphoto.rules
 }
