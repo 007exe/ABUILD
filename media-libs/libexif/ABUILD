@@ -1,16 +1,16 @@
 pkgname=libexif
-pkgver=0.6.23
+pkgver=0.6.24
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library to parse an EXIF file and read the data from those tags")
 longdesc=("The libexif package contains a library for parsing, editing, and saving EXIF data. Most digital cameras produce EXIF files, which are JPEG files with extra tags that contain information about the image. All EXIF tags described in EXIF standard 2.1 are supported.")
 
-tags=("libs media-libs")
-
 source=("https://github.com/libexif/libexif/archive/${pkgname}-${pkgver//./_}-release.tar.gz")
 
-build_deps="glibc"
+tags=("libs media-libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -18,7 +18,8 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
