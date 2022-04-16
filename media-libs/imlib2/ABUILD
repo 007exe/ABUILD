@@ -1,16 +1,16 @@
 pkgname=imlib2
-pkgver=1.7.4
+pkgver=1.8.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support")
+shortdesc=("Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support.")
 longdesc=("imlib2 is a graphics library for fast file loading, saving, rendering and manipulation.")
 
-source=("http://downloads.sourceforge.net/enlightenment/$pkgname-$pkgver.tar.bz2")
+source=("https://downloads.sourceforge.net/project/enlightenment/imlib2-src/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
-tags="libs media-libs"
-# libid3tag giflib
-build_deps="libtiff bzip2 freetype libxext libpng libjpeg-turbo libwebp"
+tags=("libs media-libs")
+
+build_deps=("libtiff bzip2 freetype libxext libpng libjpeg-turbo libwebp giflib libid3tag libheif librsvg xz")
 
 build() {
   go_src_dir
@@ -18,9 +18,10 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc/imlib2 \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-amd64
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
