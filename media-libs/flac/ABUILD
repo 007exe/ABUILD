@@ -1,25 +1,25 @@
 pkgname=flac
-pkgver=1.3.3
+pkgver=1.3.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Free Lossless Audio Codec")
-longdesc=("FLAC stands for Free Lossless Audio Codec. Grossly oversimplified, FLAC is similar to MP3, but lossless. 'Free' means that the specification of the stream format is in the public domain, and that neither the FLAC format nor any of the implemented encoding/decoding methods are covered by any patent. It also means that the sources for libFLAC and libFLAC++ are available under the LGPL and the sources for flac, metaflac, and the plugins are available under the GPL. FLAC was developed by Josh Coalson.")
+longdesc=("FLAC is an audio CODEC similar to MP3, but lossless, meaning that audio is compressed without losing any information.")
+
+source=("http://downloads.xiph.org/releases/flac/${pkgname}-${pkgver}.tar.xz")
 
 tags=("console media-libs")
 
-source=("http://downloads.xiph.org/releases/flac/${pkgname}-${pkgver}.tar.xz")
-#doxygen
-build_deps="make gcc nasm coreutils binutils sed grep"
+build_deps=("make gcc nasm coreutils binutils sed grep doxygen")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-sse
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm 644 COPYING.Xiph -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -Dm 644 COPYING.Xiph -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
