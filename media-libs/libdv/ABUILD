@@ -1,0 +1,24 @@
+pkgname=libdv
+pkgver=1.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Quasar DV codec (libdv) is a software codec for DV video.")
+longdesc=("The Quasar DV Codec (libdv) is a software CODEC for DV video, the encoding format used by most digital camcorders. It can be used to copy videos from camcorders using a firewire (IEEE 1394) connection.")
+
+source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
+
+tags=("media-libs libs")
+
+build_deps=("popt")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --disable-gtk \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
