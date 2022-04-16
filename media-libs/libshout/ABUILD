@@ -1,0 +1,26 @@
+pkgname=libshout
+pkgver=2.4.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for accessing a shoutcast/icecast server.")
+longdesc=("library for connecting and sending data to icecast servers")
+
+source=("https://downloads.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("libvorbis libtheora speex openssl")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
