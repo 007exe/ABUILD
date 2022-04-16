@@ -1,24 +1,24 @@
 pkgname=tbb
 pkgver=2021.5.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("High level abstract threading library")
+shortdesc=("High level abstract threading library.")
 longdesc=("oneTBB is a flexible C++ library that simplifies the work of adding parallelism to complex applications, even if you are not a threading expert.")
+
+source=("https://github.com/oneapi-src/oneTBB/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-cpp")
 
-source=("https://github.com/oneapi-src/oneTBB/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
-
-build_deps="cmake inetutils ninja python swig gcc-libs hwloc"
+build_deps=("cmake inetutils ninja python swig gcc-libs hwloc")
 
 build() {
   go_src_dir
   burn_patches
   cmake -GNinja \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DTBB4PY_BUILD=ON .
-  ninja all python_build
-  DESTDIR="$pkgdir" ninja install
+  ninja all python_build -j${numjobs}
+  DESTDIR=${pkgdir} ninja install
 }
