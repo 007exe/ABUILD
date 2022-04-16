@@ -1,0 +1,25 @@
+pkgname=twolame
+pkgver=0.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An optimized MPEG Audio Layer 2 (MP2) encoder.")
+longdesc=("An optimised MPEG Audio Layer 2 (MP2) encoder.")
+
+source=("https://github.com/njh/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-sound")
+
+build_deps=("glibc libsndfile")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
