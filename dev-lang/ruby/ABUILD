@@ -1,50 +1,50 @@
 pkgname=ruby
-pkgver=3.0.2
+pkgver=3.0.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An object-oriented language for quick and easy programming")
 longdesc=("The Ruby package contains the Ruby development environment. This is useful for object-oriented scripting.")
 
-tags=("develop dev-ruby")
-
 source=("https://cache.ruby-lang.org/pub/ruby/${pkgver:0:3}/ruby-${pkgver}.tar.xz")
 
-pkglist="rubydocs"
-# doxygen graphviz libyaml tk
-build_deps="gdbm openssl libffi ttf-dejavu valgrind"
+tags=("develop dev-lang")
 
-adddep="zlib"
+pkglist=("rubydocs")
+
+build_deps=("gdbm openssl libffi ttf-dejavu valgrind doxygen graphviz libyaml tk")
+
+adddep=("zlib")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-shared \
     --enable-pthread \
     --disable-rpath \
     --with-dbm-type=gdbm_compat
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install-nodoc
+  make DESTDIR=${pkgdir} install-nodoc
 
-  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/ruby/LICENSE"
-  install -D -m644 BSDL "${pkgdir}/usr/share/licenses/ruby/BSDL"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/ruby/LICENSE
+  install -D -m644 BSDL ${pkgdir}/usr/share/licenses/ruby/BSDL
 }
 
 rubydocs() {
   pkgname=ruby-docs
   shortdesc=("Documentation files for ruby")
   longdesc=("The Ruby package contains the Ruby development environment. This is useful for object-oriented scripting.")
-  arch="noarch"
+  arch=("noarch")
   custom_opts=no_strip
 }
 
 rubydocs_prep() {
   go_src_dir
-  make DESTDIR="${pkgdir}" install-doc install-capi
+  make DESTDIR=${pkgdir} install-doc install-capi
 
-  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/ruby-docs/LICENSE"
-  install -D -m644 BSDL "${pkgdir}/usr/share/licenses/ruby-docs/BSDL"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/ruby-docs/LICENSE
+  install -D -m644 BSDL ${pkgdir}/usr/share/licenses/ruby-docs/BSDL
 }
