@@ -1,0 +1,25 @@
+pkgname=aalib
+pkgver=1.4rc5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A portable ASCII art graphic library.")
+longdesc=("AAlib is a library to render any graphic into ASCII Art.")
+
+source=("https://downloads.sourceforge.net/sourceforge/aa-project/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("gpm libx11 libxt")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --infodir=/usr/share/info \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
