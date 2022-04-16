@@ -1,0 +1,29 @@
+pkgname=perl-gtk3
+downname=Gtk3
+pkgver=1.247
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Perl bindings for GTK+ 2.x"
+source=("http://downloads.sourceforge.net/gtk2-perl/${downname}-${pkgver}.tar.gz")
+tags="develop dev-lang"
+build_deps="perl-glib perl-pango perl-extutils-pkgconfig perl-extutils-depends gtk+2"
+adddep="perl-glib perl-pango gtk+2"
+
+BUILD_SYSTEM="perl"
+BUILD_KEYS="Makefile.PL \
+    OPTIMIZE="$SLKCFLAGS" \
+    PREFIX=/usr \
+    INSTALLDIRS=vendor \
+    INSTALLVENDORMAN3DIR=/usr/man/man3
+    make"
+
+after_build()
+{
+    # Remove perllocal.pod and other special files that don't need to be installed,
+    # as they will overwrite what's already on the system
+    find ${pkgdir} -name perllocal.pod -o -name ".packlist" -o -name "*.bs" | xargs rm -f || true
+
+    # Remove empty directories
+    find ${pkgdir} -depth -type d -empty -delete || true
+}

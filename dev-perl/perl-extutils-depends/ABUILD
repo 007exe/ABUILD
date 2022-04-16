@@ -1,0 +1,25 @@
+pkgname=perl-extutils-depends
+downname=ExtUtils-Depends
+pkgver=0.304
+pkgbuild=1
+arch=('auto')
+
+shortdesc="ExtUtils::Depends (perl module)"
+source=("http://www.cpan.org/authors/id/F/FL/FLORA/${downname}-${pkgver}.tar.gz")
+tags="develop dev-lang"
+build_deps="perl"
+adddep="perl"
+
+BUILD_SYSTEM="perl"
+BUILD_KEYS="Makefile.PL PREFIX=/usr && make"
+INSTALL_WORD="make install INSTALLDIRS=vendor"
+
+after_build()
+{
+    # Remove perllocal.pod and other special files that don't need to be installed,
+    # as they will overwrite what's already on the system
+    find ${pkgdir} -name perllocal.pod -o -name ".packlist" -o -name "*.bs" | xargs rm -f || true
+
+    # Remove empty directories
+    find ${pkgdir} -depth -type d -empty -delete || true
+}
