@@ -1,0 +1,25 @@
+pkgname=zvbi
+pkgver=0.2.35
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("VBI capture and decoding library.")
+longdesc=("VBI Decoding Library for Zapping.")
+
+source=("https://downloads.sourceforge.net/sourceforge/zapping/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs media-libs")
+
+build_deps=("libpng libx11")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
