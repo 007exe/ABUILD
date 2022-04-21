@@ -1,0 +1,29 @@
+pkgname=raptor
+pkgver=2.0.15
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C library that parses RDF/XML/N-Triples into RDF triples.")
+longdesc=("Raptor is a C library that provides a set of parsers and serializers that generate Resource Description Framework (RDF) triples.")
+
+tags=("libs media-libs")
+
+source=("https://librdf.org/dist/source/raptor2-${pkgver}.tar.gz")
+
+build_deps=("glibc libxml2 libxslt xz zlib curl gtk-doc icu")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-icu-config=/usr/bin/icu-config \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -vDm 644 {AUTHORS,ChangeLog*,README} -t ${pkgdir}/usr/share/doc/${pkgname}/
+}
