@@ -1,0 +1,28 @@
+pkgname=liblrdf
+pkgver=0.6.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for the manipulation of RDF file in LADSPA plugins.")
+longdesc=("Library for manipulation of RDF files in LADSPA plugins.")
+
+source=("https://github.com/swh/LRDF/archive/v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("ladspa raptor")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  export CXXFLAGS="$(pkg-config --cflags raptor2) ${CXXFLAGS}"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -vDm 644 {AUTHORS,ChangeLog,NEWS,README} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
