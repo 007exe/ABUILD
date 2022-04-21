@@ -1,0 +1,31 @@
+pkgname=libdca
+pkgver=0.0.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Free library for decoding DTS Coherent Acoustics streams.")
+longdesc=("Library for decoding DTS Coherent Acoustics streams used in DVD.")
+
+source=("https://download.videolan.org/pub/videolan/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs media-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./bootstrap
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -f ${pkgdir}/usr/share/man/man1/{extract_dts,dtsdec}.1
+  ln -s dcadec.1.gz ${pkgdir}/usr/share/man/man1/dtsdec.1.gz
+  ln -s extract_dca.1.gz ${pkgdir}/usr/share/man/man1/extract_dts.1.gz
+  rm -f ${pkgdir}/usr/lib/libdts.a
+}
