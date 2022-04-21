@@ -1,28 +1,32 @@
 pkgname=coreutils
-pkgver=9.0
-pkgbuild=4
+pkgver=9.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The basic file, shell and text manipulation utilities of the GNU operating system.")
 longdesc=("The Coreutils package contains utilities for showing and setting the basic system characteristics.")
 
-tags=("base sys-apps")
-
 source=("http://ftp.gnu.org/gnu/coreutils/coreutils-${pkgver}.tar.xz")
+
+tags=("base sys-apps")
 
 build_deps=("acl attr gmp libcap openssl")
 
 build() {
   go_src_dir
   burn_patches
-  autoreconf -fiv
-  sed -i '/test.lock/s/^/#/' gnulib-tests/gnulib.mk
+# NOTE: Исправление ошибки приводящей к не возможности установить владельца для символической ссылке. Возможно косяк с gluibc.
+  export ac_cv_func_lchmod="no"
 # Поскольку сборка выполняется в среде fakeroot, следует снять ряд ограничений.
   FORCE_UNSAFE_CONFIGURE=1 ./configure \
     --prefix=/usr \
     --libexecdir=/usr/lib \
     --enable-no-install-program=groups,hostname,kill,uptime \
+    --enable-install-program=arch \
+    --enable-largefile \
     --with-openssl \
+    --with-tty-group \
+    --without-selinux \
     --sysconfdir=/etc
 # NOTE: groups, hostname предоставляются пакетом inetutils.
 # kill предоставляется пакетом psmisc.
