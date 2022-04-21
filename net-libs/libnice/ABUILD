@@ -1,0 +1,24 @@
+pkgname=libnice
+pkgver=0.1.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An implementation of the IETF's draft ICE (for p2p UDP data streams).")
+longdesc=("An implementation of the Interactice Connectivity Establishment standard (ICE).")
+
+source=("http://nice.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+# gupnp-igd
+build_deps=("gstreamer gtk-doc git meson gobject-introspection graphviz glib2 gnutls")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
