@@ -1,0 +1,25 @@
+pkgname=soundtouch
+pkgver=2.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An audio processing library.")
+longdesc=("The SoundTouch package contains an open-source audio processing library that allows changing the sound tempo, pitch and playback rate parameters independently from each other.")
+
+source=("http://www.surina.net/soundtouch/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake ninja gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE='' \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
