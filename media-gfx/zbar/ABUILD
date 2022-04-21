@@ -1,0 +1,32 @@
+pkgname=zbar
+pkgver=0.23.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Application and library for reading bar codes from various sources.")
+longdesc=("Library and tools for reading barcodes from images or video.")
+
+source=("https://github.com/mchehab/zbar/archive/${pkgver}.tar.gz")
+
+tags=("media-gfx xapps")
+
+build_deps=("gtk3 qt5-x11extras python xmlto docbook-xsl gobject-introspection dbus imagemagick libsm libxv v4l-utils")
+
+# NOTE: Это опциональные зависимости
+removedep=("gtk3 qt5-x11extras python")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  sed -i '/tp_print/d' python/enum.c
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --without-qt \
+    --with-gtk=gtk3 \
+    --with-dbusconfdir=/usr/share
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
