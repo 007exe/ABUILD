@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend libmpeg2 capabilities:"
+echo -e "sdl: required for mpeg2dec"
+echo -e "libxv: required for mpeg2dec"
+echo -e " "

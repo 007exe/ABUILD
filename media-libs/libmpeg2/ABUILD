@@ -1,0 +1,30 @@
+pkgname=libmpeg2
+pkgver=0.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for decoding MPEG-1 and MPEG-2 video streams.")
+longdesc=("The libmpeg2 package contains a library for decoding MPEG-2 and MPEG-1 video streams. The library is able to decode all MPEG streams that conform to certain restrictions: constrained parameters for MPEG-1, and main profile for MPEG-2. This is useful for programs and applications needing to decode MPEG-2 and MPEG-1 video streams.")
+
+source=("http://libmpeg2.sourceforge.net/files/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc sdl libxv")
+
+# NOTE: Это опциональные зависимости
+removedep=("sdl libxv")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed '/AC_PATH_XTRA/d' -i configure.ac
+  autoreconf --force --install
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-shared \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
