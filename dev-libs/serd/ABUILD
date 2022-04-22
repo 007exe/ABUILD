@@ -1,0 +1,38 @@
+pkgname=serd
+pkgver=0.30.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Lightweight C library for RDF syntax supporting reading/ writing Turtle and NTriples.")
+longdesc=("Library for RDF syntax which supports reading and writing Turtle and NTriples.")
+
+source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs dev-libs")
+
+build_deps=("waf glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i "/ldconfig/d" wscript
+  mkdir -pv tools
+  touch __init__.py
+  cp -v waflib/extras/{autoship,autowaf,lv2}.py tools/
+  mkdir -pv plugins/tools/
+  cp -v waflib/extras/{autoship,autowaf,lv2}.py plugins/tools/
+  rm -rv waflib
+  sed -e 's/waflib.extras/tools/g' \
+      -e "s/load('autowaf'/load('autowaf', tooldir='tools'/g" \
+      -e "s/load('lv2'/load('lv2', tooldir='tools'/g" \
+      -i wscript
+  waf configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --test
+  waf -v build
+  waf install --destdir=${pkgdir}
+
+  install -vDm 644 COPYING $pkgdir/usr/share/licenses/${pkgname}/LICENSE
+  install -t ${pkgdir}/usr/share/doc/${pkgname} -vDm 644 {AUTHORS,NEWS,README.md}
+}
