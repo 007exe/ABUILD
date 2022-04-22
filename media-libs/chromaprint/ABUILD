@@ -1,0 +1,29 @@
+pkgname=chromaprint
+pkgver=1.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for extracting fingerprints from any audio source.")
+longdesc=("Library implementing a custom algorithm for extracting audio fingerprints.")
+
+source=("https://github.com/acoustid/${pkgname}/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("gcc-libs glibc cmake ffmpeg gtest")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE='None' \
+    -DBUILD_TESTS=ON \
+    -DBUILD_TOOLS=ON \
+    -DGTEST_SOURCE_DIR=/usr/src/googletest/ \
+    -Wno-dev
+  make VERBOSE=1 -C build
+  make VERBOSE=1 DESTDIR=${pkgdir} install -C build
+  install -vDm 644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 {NEWS.txt,README.md} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
