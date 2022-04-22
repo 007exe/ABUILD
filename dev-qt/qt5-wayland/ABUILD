@@ -1,0 +1,29 @@
+pkgname=qt5-wayland
+pkgver=5.15.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides APIs for Wayland.")
+longdesc=("Wayland platform plugin for Qt.")
+
+#source=("git:https://invent.kde.org/qt/qt/qtwayland")
+source=("https://invent.kde.org/qt/qt/qtwayland/-/archive/v${pkgver}/qtwayland-v${pkgver}.tar.bz2")
+
+tags=("dev-qt libs")
+
+build_deps=("vulkan-headers git qt5-declarative libxcomposite")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+
+  find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
