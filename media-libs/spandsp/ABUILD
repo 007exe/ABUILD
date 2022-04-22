@@ -1,0 +1,24 @@
+pkgname=spandsp
+pkgver=0.0.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A DSP library for telephony.")
+longdesc=("SpanDSP is a library of DSP functions for telephony.")
+
+source=("https://www.soft-switch.org/downloads/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("libtiff")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
