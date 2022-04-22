@@ -1,0 +1,25 @@
+pkgname=libmicrodns
+pkgver=0.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Minimal mDNS resolver library.")
+longdesc=("Minimal mDNS resolver (and announcer) library.")
+
+source=("https://github.com/videolabs/libmicrodns/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("meson glibc")
+
+adddep="bash"
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  ninja -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
