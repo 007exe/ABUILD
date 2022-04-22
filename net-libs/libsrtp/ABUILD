@@ -1,0 +1,31 @@
+pkgname=libsrtp
+pkgver=2.4.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for SRTP (Secure Realtime Transport Protocol).")
+longdesc=("Open-source implementation of the Secure Real-time Transport Protocol (SRTP).")
+
+source=("https://github.com/cisco/libsrtp/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("net-libs libs")
+
+build_deps=("meson libpcap doxygen nss")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D buildtype=release \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D crypto-library=nss \
+    -D crypto-library-kdf=disabled
+  meson compile -C build
+  meson compile -C build doc
+  meson install -C build --destdir ${pkgdir}
+  mkdir -p ${pkgdir}/usr/share/doc
+  cp -a build/html ${pkgdir}/usr/share/doc/${pkgname}
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
+}
