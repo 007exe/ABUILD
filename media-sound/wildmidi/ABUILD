@@ -1,0 +1,26 @@
+pkgname=wildmidi
+pkgver=0.4.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Open Source MIDI Synthesizer.")
+longdesc=("MIDI processing library and player using the GUS patch set.")
+
+source=("https://github.com/psi29a/wildmidi/archive/wildmidi-${pkgver}.tar.gz")
+
+tags=("libs media-sound")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make DESTDIR=${pkgdir} install
+
+  ln -s wildmidi.pc ${pkgdir}/usr/lib/pkgconfig/WildMIDI.pc
+}
