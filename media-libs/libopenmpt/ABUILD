@@ -1,0 +1,28 @@
+pkgname=libopenmpt
+pkgver=0.6.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library to render tracker music to a PCM audio stream.")
+longdesc=("Library to decode tracked music files (modules).")
+
+source=("https://lib.openmpt.org/files/libopenmpt/src/${pkgname}-${pkgver}+release.autotools.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("autoconf-archive doxygen help2man flac gcc-libs glibc libogg libpulse libsndfile libvorbis mpg123 portaudio")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
