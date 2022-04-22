@@ -1,0 +1,22 @@
+pkgname=python-rdflib
+pkgver=6.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python library for working with RDF, a simple yet powerful language for representing information.")
+longdesc=("RDF library containing a triple store and parser/serializer.")
+
+source=("https://github.com/RDFLib/rdflib/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-isodate python-pyparsing")
+
+adddep=("python-isodate python-pyparsing")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644  LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
