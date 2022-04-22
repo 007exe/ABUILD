@@ -1,29 +1,29 @@
 pkgname=mpg123
 pkgver=1.29.3
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Console based real time MPEG Audio Player for Layer 1, 2 and 3")
+shortdesc=("Console based real time MPEG Audio Player for Layer 1, 2 and 3.")
 longdesc=("The mpg123 package contains a console-based MP3 player. It claims to be the fastest MP3 decoder for Unix.")
 
 source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="media-sound libs"
+tags=("media-sound libs")
 
-build_deps="sdl jack libpulse libltdl alsa-lib"
+build_deps=("sdl jack libpulse libltdl alsa-lib")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-int-quality \
     --with-audio="alsa oss sdl jack pulse"
 # https://bugzilla.gnome.org/show_bug.cgi?id=655517
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
-  install -Dm 755 scripts/conplay "${pkgdir}/usr/bin/conplay"
+  install -Dm 755 scripts/conplay ${pkgdir}/usr/bin/conplay
 }
