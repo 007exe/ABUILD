@@ -1,0 +1,26 @@
+pkgname=zxing-cpp
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C++ library to decode QRCode.")
+longdesc=("C++ Multi-format 1D/2D barcode image processing library.")
+
+source=("https://github.com/nu-book/zxing-cpp/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DBUILD_EXAMPLES=OFF \
+    -DBUILD_BLACKBOX_TESTS=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
