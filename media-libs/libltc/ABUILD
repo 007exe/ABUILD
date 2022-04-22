@@ -1,0 +1,29 @@
+pkgname=libltc
+pkgver=1.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linear/Logitudinal Time Code (LTC) Library.")
+longdesc=("Linear/Logitudinal Time Code (LTC) Library.")
+
+source=("https://github.com/x42/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc doxygen")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  doxygen
+  make DESTDIR=${pkgdir} install
+
+  install -vDm 644 {AUTHORS,ChangeLog,README.md} -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 doc/html/*.{css,html,js,png} -t ${pkgdir}/usr/share/doc/${pkgname}/html
+}
