@@ -1,0 +1,20 @@
+pkgname=libfreeaptx
+pkgver=0.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Open Source aptX codec library.")
+longdesc=("Reverse-engineered aptX and aptX HD library (fork of libopenaptx).")
+
+source=("https://github.com/iamthehorker/libfreeaptx/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \
+    PREFIX=/usr DESTDIR=${pkgdir} install
+}
