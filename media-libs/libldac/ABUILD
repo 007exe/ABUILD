@@ -1,0 +1,24 @@
+pkgname=libldac
+pkgver=2.0.2.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("LDAC Bluetooth encoder library.")
+longdesc=("LDAC codec library from AOSP.")
+
+source=("https://github.com/EHfive/ldacBT/releases/download/v${pkgver}/ldacBT-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
+    -DLDAC_SOFT_FLOAT=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
