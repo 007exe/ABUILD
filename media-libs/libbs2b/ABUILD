@@ -1,0 +1,28 @@
+pkgname=libbs2b
+pkgver=3.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Bauer stereophonic-to-binaural DSP effect library.")
+longdesc=("Bauer stereophonic-to-binaural DSP library.")
+
+source=("https://downloads.sourceforge.net/sourceforge/bs2b/${pkgname}-${pkgver}.tar.lzma")
+
+tags=("libs media-libs")
+
+build_deps=("libsndfile gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+#  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
