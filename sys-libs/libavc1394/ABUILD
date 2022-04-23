@@ -1,6 +1,6 @@
 pkgname=libavc1394
 pkgver=0.5.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library to control A/V devices using the 1394ta AV/C commands.")
@@ -8,16 +8,16 @@ longdesc=("libavc1394 is a programming interface for the 1394 Trade Association 
 
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs sys-libs compat32"
+tags=("libs sys-libs")
 
-build_deps="libraw1394"
+build_deps=("libraw1394")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --disable-static
   make -j${numjobs}
