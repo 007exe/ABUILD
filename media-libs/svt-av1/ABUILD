@@ -1,16 +1,16 @@
 pkgname=svt-av1
-pkgver=0.8.7
+pkgver=0.9.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Scalable Video Technology AV1 encoder and decoder")
+shortdesc=("Scalable Video Technology AV1 encoder and decoder.")
 longdesc=("The Scalable Video Technology for AV1 (SVT-AV1 Encoder and Decoder) is an AV1-compliant encoder/decoder library core. The SVT-AV1 encoder development is a work-in-progress targeting performance levels applicable to both VOD and Live encoding / transcoding video applications. The SVT-AV1 decoder implementation is targeting future codec research activities.")
 
 source=("https://gitlab.com/AOMediaCodec/SVT-AV1/-/archive/v${pkgver}/SVT-AV1-v${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="cmake git nasm ninja"
+build_deps=("cmake nasm ninja")
 
 build() {
   go_src_dir
@@ -18,9 +18,10 @@ build() {
   export LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
   cmake -B build -G Ninja \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=ON \
     -DNATIVE=OFF
   ninja -C build
-  DESTDIR="${pkgdir}" ninja -C build install
-  install -Dm 644 {LICENSE,PATENTS}.md -t "${pkgdir}"/usr/share/licenses/svt-av1/
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm 644 {LICENSE,PATENTS}.md -t ${pkgdir}/usr/share/licenses/svt-av1/
 }
