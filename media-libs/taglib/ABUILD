@@ -1,25 +1,24 @@
 pkgname=taglib
 pkgver=1.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A Library for reading and editing the meta-data of several popular audio formats")
+shortdesc=("A Library for reading and editing the meta-data of several popular audio formats.")
 longdesc=("TagLib, is well, a library for reading and editing audio meta data, commonly know as tags.")
 
-build_deps="cmake zlib"
+source=("https://taglib.github.io/releases/$pkgname-$pkgver.tar.gz")
 
 tags=("libs media-libs")
 
-source=("https://taglib.github.io/releases/$pkgname-$pkgver.tar.gz")
+build_deps=("cmake zlib")
 
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_BUILD_TYPE=Release
   cmake --build build
-  DESTDIR="$pkgdir" cmake --install build
+  DESTDIR=${pkgdir} cmake --install build
 }
