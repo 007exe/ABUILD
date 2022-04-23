@@ -1,22 +1,23 @@
 pkgname=libmpcdec
 pkgver=1.2.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Portable Musepack decoder library")
-longdesc=("Dynamic libraries from libmpcdec")
+shortdesc=("Portable Musepack decoder library.")
+longdesc=("Dynamic libraries from libmpcdec.")
 
-tags=("media-libs libs")
 source=("http://files.musepack.net/source/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="glibc"
+tags=("media-libs libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
