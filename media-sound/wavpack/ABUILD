@@ -1,26 +1,26 @@
 pkgname=wavpack
 pkgver=5.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Audio compression format with lossless, lossy and hybrid compression modes")
+shortdesc=("Audio compression format with lossless, lossy and hybrid compression modes.")
 longdesc=("WavPack is a completely open audio compression format providing lossless, high-quality lossy, and a unique hybrid compression mode. Although the technology is loosely based on previous versions of WavPack, the new version 4 format has been designed from the ground up to offer unparalleled performance and functionality.")
-
-tags=("media-sound libs")
 
 source=("https://github.com/dbry/WavPack/releases/download/$pkgver/$pkgname-$pkgver.tar.xz")
 
-build_deps="glibc"
+tags=("media-sound libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --disable-asm
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING -t "$pkgdir"/usr/share/licenses/$pkgname/
+  install -Dm644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
