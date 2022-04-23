@@ -1,16 +1,16 @@
 pkgname=libmad
 pkgver=0.15.1b
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A high-quality MPEG audio decoder")
-longdesc=("MAD (libmad) is a high-quality MPEG audio decoder. It currently supports MPEG-1 and the MPEG-2 extension to Lower Sampling Frequencies, as well as the so-called MPEG 2.5 format. All three audio layers (Layer I, Layer II, and Layer III a.k.a. MP3) are fully implemented. Because MAD provides full 24-bit PCM output, applications using MAD are able to produce high quality audio. MAD is distributed under the terms of the GPL. MAD (libmad) was written by Robert Leslie.")
+shortdesc=("A high-quality MPEG audio decoder.")
+longdesc=("libmad is a high-quality MPEG audio decoder capable of 24-bit output.")
 
 tags=("libs media-libs")
 
 source=("https://downloads.sourceforge.net/sourceforge/mad/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   CFLAGS="$CFLAGS -ftree-vectorize -ftree-vectorizer-verbose=1"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
