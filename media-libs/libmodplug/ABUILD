@@ -1,26 +1,26 @@
 pkgname=libmodplug
 pkgver=0.8.9.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Modplug music player")
+shortdesc=("Modplug music player.")
 longdesc=("Olivier Lapicque, author of Modplug, which is arguably the best quality MOD-playing software available, has placed his sound rendering code in the public domain. This library and plugin is based on that code.")
 
 source=("https://downloads.sourceforge.net/modplug-xmms/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="gcc-libs"
+build_deps=("gcc-libs")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
