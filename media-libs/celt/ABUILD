@@ -1,16 +1,16 @@
 pkgname=celt
 pkgver=0.11.3
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Low-latency audio communication codec")
+shortdesc=("Low-latency audio communication codec.")
 longdesc=("CELT is a very low delay audio codec designed for high-quality communications.")
 
 source=("https://gitlab.xiph.org/xiph/celt/-/archive/v${pkgver}/celt-v${pkgver}.tar.gz")
 
-tags="libs media-libs compat32"
+tags=("libs media-libs")
 
-build_deps="libogg"
+build_deps=("libogg")
 
 build() {
   go_src_dir
@@ -18,11 +18,11 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-custom-modes \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
