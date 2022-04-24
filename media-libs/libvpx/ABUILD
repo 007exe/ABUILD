@@ -1,23 +1,23 @@
 pkgname=libvpx
 pkgver=1.11.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("VP8 and VP9 codec")
+shortdesc=("VP8 and VP9 codec.")
 longdesc=("This package, from the WebM project, provides the reference implementations of the VP8 Codec, used in most current html5 video, and of the next-generation VP9 Codec.")
 
 source=("https://github.com/webmproject/libvpx/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="yasm nasm"
+build_deps=("yasm nasm")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-install-docs \
     --disable-install-srcs \
     --disable-static \
@@ -32,5 +32,5 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/libvpx/
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/libvpx/
 }
