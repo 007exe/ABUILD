@@ -1,16 +1,16 @@
 pkgname=opencore-amr
 pkgver=0.1.5
-pkgbuild=1
-arch="auto"
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Open source implementation of the Adaptive Multi Rate (AMR) speech codec")
-longdesc=("This library contains an implementation of the 3GPP TS 26.073 specification for the Adaptive Multi Rate (AMR) speech codec. The implementation is derived from the OpenCORE framework, part of the Google Android project.")
+shortdesc=("Open source implementation of the Adaptive Multi Rate (AMR) speech codec.")
+longdesc=("Implementation of Adaptive Multi Rate Narrowband and Wideband speech codec.")
 
 source=("https://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -18,11 +18,11 @@ build() {
   autoreconf -vfi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-examples
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -vDm 644 {ChangeLog,README} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -vDm 644 {ChangeLog,README} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
