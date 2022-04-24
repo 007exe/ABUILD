@@ -1,25 +1,26 @@
 pkgname=lame
 pkgver=3.100
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A high quality MPEG Audio Layer III (MP3) encoder")
-longdesc=("Following the great history of GNU naming, LAME originally stood for LAME Ain an Mp3 Encoder. LAME started life as a GPL patch against the dist10 ISO demonstration source, and thus was incapable of producing an mp3 stream or even being compiled by itself. But in May 2000, the last remnants of the ISO source code were replaced, and now LAME is the source code for a fully GPL'd MP3 encoder, with speed and quality to rival all commercial competitors.")
+shortdesc=("A high quality MPEG Audio Layer III (MP3) encoder.")
+longdesc=("The LAME package contains an MP3 encoder and optionally, an MP3 frame analyzer. This is useful for creating and analyzing compressed audio files.")
 
 source=("https://downloads.sourceforge.net/lame/lame-${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="ncurses nasm"
+build_deps=("ncurses nasm")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-nasm \
-    --enable-shared
+    --enable-shared \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
