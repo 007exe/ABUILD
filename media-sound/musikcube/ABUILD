@@ -1,0 +1,27 @@
+pkgname=musikcube
+pkgver=0.97.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A terminal-based cross-platform music player, audio engine, metadata indexer, and server.")
+longdesc=("musikcube is a fully functional terminal-based music player, library, and streaming audio server that runs natively on Windows, macOS, and Linux.")
+
+source=("https://github.com/clangen/musikcube/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("console media-sound")
+
+build_deps=("cmake boost faad2 libogg libvorbis flac libmicrohttpd lame ncurses pulseaudio libpulse libev alsa-lib curl ffmpeg taglib")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DNO_NCURSESW=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 ../LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
