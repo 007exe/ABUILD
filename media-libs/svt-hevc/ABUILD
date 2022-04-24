@@ -1,0 +1,26 @@
+pkgname=libavtp
+pkgver=1.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Scalable Video Technology HEVC encoder.")
+longdesc=("The Scalable Video Technology for HEVC Encoder (SVT-HEVC Encoder) is an HEVC-compliant encoder library core that achieves excellent density-quality tradeoffs, and is highly optimized for Intel Xeon Scalable Processor and Xeon D processors.")
+
+source=("https://github.com/OpenVisualCloud/SVT-HEVC/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake nasm ninja")
+
+build() {
+  go_src_dir
+  burn_patches
+  export LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
+  cmake -B build -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON \
+    -DNATIVE=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm 644 LICENSE.md -t ${pkgdir}/usr/share/licenses/svt-hevc/
+}
