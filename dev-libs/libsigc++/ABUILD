@@ -1,18 +1,18 @@
 pkgname=libsigc++
-pkgver=2.10.7
+pkgver=2.10.8
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Callback framework for C++")
+shortdesc=("Callback framework for C++.")
 longdesc=("The libsigc++ package implements a typesafe callback system for standard C++.")
-
-tags=("dev-libs libs")
 
 source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="meson mm-common"
+tags=("dev-libs libs")
 
-pkglist="libsigc++-docs"
+build_deps=("meson mm-common")
+
+pkglist=("libsigc++-docs")
 
 build() {
   go_src_dir
@@ -22,19 +22,19 @@ build() {
     -D maintainer-mode=true \
     --buildtype=release
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
 
 libsigc++-docs() {
   pkgname=libsigc++-docs
-  shortdesc=("libsigc++ Documentation")
+  shortdesc=("libsigc++ Documentation.")
   longdesc=("The libsigc++ package implements a typesafe callback system for standard C++.")
-  arch="noarch"
+  arch=("noarch")
 }
 
 libsigc++-docs_prep() {
   go_src_dir
-  mkdir -p "$pkgdir"/usr/share
-  mv ${p_pkgdir}/usr/share/{devhelp,doc} "$pkgdir"/usr/share
+  mkdir -p ${pkgdir}/usr/share
+  mv ${p_pkgdir}/usr/share/{devhelp,doc} ${pkgdir}/usr/share
   rm -r ${p_pkgdir}/usr/share
 }
