@@ -1,16 +1,16 @@
 pkgname=intel-gmmlib
-pkgver=21.3.1
+pkgver=22.1.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Intel Graphics Memory Management Library")
+shortdesc=("Intel Graphics Memory Management Library.")
 longdesc=("The Intel(R) Graphics Memory Management Library provides device specific and buffer management for the Intel(R) Graphics Compute Runtime for OpenCL(TM) and the Intel(R) Media Driver for VAAPI.")
 
 source=("https://github.com/${pkgname/-//}/archive/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs sys-libs"
+tags=("libs sys-libs")
 
-build_deps="gcc-libs cmake"
+build_deps=("gcc-libs cmake")
 
 build() {
   go_src_dir
@@ -19,10 +19,10 @@ build() {
     -DBUILD_TYPE=Release \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DRUN_TEST_SUITE=OFF \
     -Wno-dev
   make -C build
-  make -C build DESTDIR="$pkgdir" install
-  install -Dm644 LICENSE.md -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
