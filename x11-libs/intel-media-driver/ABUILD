@@ -1,28 +1,31 @@
 pkgname=intel-media-driver
-pkgver=21.3.5
+pkgver=22.2.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Intel Media Driver for VAAPI Broadwell+ iGPUs")
+shortdesc=("Intel Media Driver for VAAPI Broadwell+ iGPUs.")
 longdesc=("The Intel(R) Media Driver for VAAPI is a new VA-API (Video Acceleration API) user mode driver supporting hardware accelerated decoding, encoding, and video post processing for GEN based graphics hardware.")
 
 source=("https://github.com/intel/media-driver/archive/${pkgname%-*}-${pkgver}.tar.gz")
 
-tags="libs media-video"
+tags=("libs media-video")
 
-build_deps="gcc-libs intel-gmmlib libva libpciaccess cmake"
+build_deps=("gcc-libs intel-gmmlib libva libpciaccess cmake")
 
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DINSTALL_DRIVER_SYSCONF=OFF \
     -DMEDIA_BUILD_FATAL_WARNINGS=OFF \
-    -DMEDIA_RUN_TEST_SUITE=OFF \
     -Wno-dev
   make -j${numjobs} -C build
-  make -C build DESTDIR="$pkgdir" install
-  install -Dm644 LICENSE.md -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}/
+
+# FIXME:
+  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib
+  rm -r ${pkgdir}/usr/lib64
 }
