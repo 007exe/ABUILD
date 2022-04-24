@@ -1,10 +1,10 @@
 pkgname=vte
-pkgver=0.66.2
+pkgver=0.68.0
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Virtual Terminal Emulator widget")
-longdesc=("The VTE library inserts terminal capability strings into a trie, and then uses it to determine if data received from a pseudo-terminal is a control sequence  or just random data. The sample program interpret illustrates more or less what the widget sees after it filters incoming data.")
+shortdesc=("Virtual Terminal Emulator widget.")
+longdesc=("The VTE package contains a termcap file implementation for terminal emulators..")
 
 source=("https://gitlab.gnome.org/GNOME/vte/-/archive/${pkgver}/vte-${pkgver}.tar.gz")
 
@@ -14,19 +14,21 @@ build_deps=("gtk3 pcre2 gnutls fribidi gobject-introspection vala git gtk-doc gp
 
 adddep=("python vte-common")
 
-pkglist="vte-common"
+pkglist=("vte-common")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-    --prefix=/usr \
-    --buildtype=release \
+    -D buildtype=release \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     -D b_lto=false \
     -D_systemd=false \
     -D docs=false
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
 
 vte-common(){
@@ -37,7 +39,7 @@ vte-common(){
 
 vte-common_prep(){
   go_src_dir
-  mkdir -p $pkgdir/usr
-  mv ${p_pkgdir}/etc "$pkgdir"
-  mv ${p_pkgdir}/usr/libexec "$pkgdir"/usr
+  mkdir -p $pkgdir/usr/lib
+  mv ${p_pkgdir}/etc ${pkgdir}
+  mv ${p_pkgdir}/usr/lib/vte-urlencode-cwd ${pkgdir}/usr/lib
 }
