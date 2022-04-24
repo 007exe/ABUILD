@@ -1,10 +1,10 @@
 pkgname=jack
-pkgver=1.9.20
+pkgver=1.9.21
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("The JACK2 low-latency audio server")
-longdesc=("Jack has been developed with one main goal: ripping CDs without having to worry. There is nearly no way that an incomplete rip goes unnoticed, e.g. jack compares WAV and MP3/Vorbis filesizes when continuing from a previous run. Jack also checks your HD space before doing anything (even keeps some MB free).")
+shortdesc=("The JACK2 low-latency audio server.")
+longdesc=("Jackdmp jack implemention for multi-processor machine.")
 
 source=("https://github.com/jackaudio/jack2/archive/refs/tags/v${pkgver}.tar.gz")
 
@@ -12,33 +12,48 @@ tags=("libs media-sound")
 
 build_deps=("waf alsa-lib dbus expat libsndfile readline libsamplerate celt libffado zita-alsa-pcmi zita-resampler")
 
-before_build() {
-  go_src_dir
-# copying relevant custom waf scripts and loading them specifically using
-# wscript
-  (
-    touch __init__.py
-    mkdir -vp tools
-    cp -v waflib/extras/xcode*.py tools
-    rm -rv waflib
-    sed -e "s/load('xcode'/load('xcode', tooldir='tools'/g" \
-        -e "s/load('xcode6'/load('xcode6', tooldir='tools'/g" \
-        -i wscript
-  )
-}
+pkglist=("jack-dbus jack-docs")
 
 build() {
   go_src_dir
+# Удаляем пользовательский waflib
+  touch __init__.py
+  rm -rv waflib
   export LINKFLAGS="$LDFLAGS"
   export PYTHONPATH="${PWD}:${PYTHONPATH}"
   waf configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --htmldir="/usr/share/doc/${pkgbase}/" \
+    --libdir=/usr/lib \
+    --htmldir=/usr/share/doc/jack/html \
+    --autostart=none \
+    --doxygen=yes \
     --classic \
-    --dbus \
-    --alsa
-
+    --dbus
   waf build
   waf install --destdir=${pkgdir}
+}
+
+jack-dbus() {
+  pkgname=jack-dbus
+  shortdesc=("The JACK2 low-latency audio server dbus integration.")
+  longdesc=("Jackdmp jack implemention for multi-processor machine.")
+}
+
+jack-dbus_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/{bin,share/dbus-1/services}
+  mv ${p_pkgdir}/usr/bin/jack{dbus,_control} ${pkgdir}/usr/bin/
+  mv ${p_pkgdir}/usr/share/dbus-1/services/* ${pkgdir}/usr/share/dbus-1/services/
+}
+
+jack-docs() {
+  pkgname=jack-docs
+  shortdesc=("The JACK2 low-latency audio server documentation")
+  longdesc=("Jackdmp jack implemention for multi-processor machine.")
+}
+
+jack-docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share/doc/jack/
+  mv ${p_pkgdir}/usr/share/doc/jack/html ${pkgdir}/usr/share/doc/jack/
 }
