@@ -1,16 +1,16 @@
 pkgname=avisynthplus
-pkgver=3.7.1
+pkgver=3.7.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("An improved version of the AviSynth frameserver")
+shortdesc=("An improved version of the AviSynth frameserver.")
 longdesc=("AviSynth+ is a fork of the well-known frameserver, but with community contributions that avoided mainline inclusion until now. In the hope of modernizing AviSynth to meet present day needs and expectations, the project encourages everybody to help reach our goals: add long-sought features, energize the community, and improve developer and user friendliness. AviSynth+ is fully compatible with plugins and scripts written for AviSynth.")
 
 source=("https://github.com/AviSynth/AviSynthPlus/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs media-video"
+tags=("libs media-video")
 
-build_deps="gcc-libs cmake devil"
+build_deps=("gcc-libs cmake devil")
 
 build(){
   go_src_dir
@@ -18,7 +18,8 @@ build(){
   cmake -B build \
     -DCMAKE_BUILD_TYPE:STRING='None' \
     -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -Wno-dev
   make -j${numjobs} -C build
-  make -C build DESTDIR="$pkgdir" install
+  make -C build DESTDIR=${pkgdir} install
 }
