@@ -1,31 +1,34 @@
 pkgname=moc
-pkgver=2.5.2
+pkgver=2.6-alpha3
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
 shortdesc=("An ncurses console audio player designed to be powerful and easy to use")
 longdesc=("MOC is a console audio player with ncurses interface")
 
-source=("http://ftp.daper.net/pub/soft/moc/stable/${pkgname}-${pkgver}.tar.bz2")
+source=("http://ftp.daper.net/pub/soft/moc/unstable/${pkgname}-${pkgver}.tar.xz")
 
-tags="console media-sound"
-# jack libltdl
-build_deps="curl file speex ffmpeg libmodplug flac libmad libid3tag faad2 wavpack libmpcdec taglib"
+tags=("console media-sound")
+
+build_deps=("curl file speex ffmpeg libmodplug flac libmad libid3tag faad2 wavpack libmpcdec taglib jack libltdl")
+
+# NOTE: Это опциональные зависимости
+removedep=("speex ffmpeg taglib libmpcdec wavpack faad2 libmodplug")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-samplerate \
     --with-musepack \
     --with-wavpack \
     --with-sndfile \
     --with-modplug \
     --with-vorbis \
+    --without-ffmpeg \
     --without-rcc \
-    --with-ffmpeg \
     --with-speex \
     --with-alsa \
     --with-jack \
@@ -39,3 +42,4 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
+# FIXME: --with-ffmpeg На данный момент сборка с пятой версией ffmpeg не возможна
