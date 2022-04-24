@@ -1,35 +1,29 @@
 pkgname=zita-alsa-pcmi
 pkgver=0.4.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Provides easy access to ALSA PCM devices")
+shortdesc=("Provides easy access to ALSA PCM devices.")
 longdesc=("The successor of clalsadrv, provides easy access to ALSA PCM devices.")
 
 source=("https://kokkinizita.linuxaudio.org/linuxaudio/downloads/$pkgname-$pkgver.tar.bz2")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
 build_deps=("alsa-lib gcc-libs glibc")
 
 build() {
   go_src_dir
   burn_patches
-# remove optimization
-# call ldconfig in local context
   sed -e '/native/d' -e 's/ldconfig/& -N $(DESTDIR)\/$(LIBDIR)/' -i source/Makefile
-# fix use of BINDIR without preceeding DESTDIR
   sed -e 's/\ $(BINDIR)/\ $(DESTDIR)$(BINDIR)/' -i apps/Makefile
   make -C source
-# create lib link for building apps
-  ln -sv lib$pkgname.so.$pkgver source/lib$pkgname.so
+  ln -sv lib${pkgname}.so.${pkgver} source/lib${pkgname}.so
   CXXFLAGS+=" -I../source" \
   LDFLAGS+=" -L../source" \
   make -C apps
-  rm -v source/lib$pkgname.so
-# libs
-  make -C source DESTDIR="$pkgdir/" PREFIX=/usr LIBDIR=/usr/lib$LIBDIRSUFFIX SUFFIX="" install
-  install -vDm 644 {AUTHORS,README} -t "${pkgdir}/usr/share/doc/${pkgname}"
-# apps
-  make -C apps DESTDIR="$pkgdir/" PREFIX=/usr install
+  rm -v source/lib${pkgname}.so
+  make -C source DESTDIR=${pkgdir} PREFIX=/usr LIBDIR=/usr/lib SUFFIX="" install
+  install -vDm 644 {AUTHORS,README} -t ${pkgdir}/usr/share/doc/${pkgname}
+  make -C apps DESTDIR=${pkgdir} PREFIX=/usr install
 }
