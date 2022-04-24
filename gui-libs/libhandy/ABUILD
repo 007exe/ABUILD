@@ -1,25 +1,27 @@
 pkgname=libhandy
-pkgver=1.4.0
+pkgver=1.6.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Library full of GTK+ widgets for mobile phones")
+shortdesc=("Library full of GTK+ widgets for mobile phones.")
 longdesc=("The libhandy package provides additional GTK UI widgets for use in developing user interfaces.")
 
 source=("https://download.gnome.org/sources/libhandy/${pkgver%.*}/libhandy-${pkgver}.tar.xz")
 
-tags=("x11-misc libs")
+tags=("gui-libs libs")
 
 build_deps=("glib2 gtk3 gobject-introspection meson vala glade")
+
+removedep=("atk cairo fribidi gdk-pixbuf pango glade")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D libdir=/usr/lib \
     -D gtk_doc=false
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
 
