@@ -1,31 +1,34 @@
 pkgname=v4l-utils
 pkgver=1.22.1
-pkgbuild=1
-arch="auto"
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Userspace tools and conversion library for Video 4 Linux")
+shortdesc=("Userspace tools and conversion library for Video 4 Linux.")
 longdesc=("v4l-utils provides a series of utilities for media devices, allowing to handle the proprietary formats available at most webcams (libv4l), and providing tools to test V4L devices.")
 
 source=("https://linuxtv.org/downloads/v4l-utils/${pkgname}-${pkgver}.tar.bz2")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="qt5-base alsa-lib gcc-libs libjpeg-turbo"
+build_deps=("qt5-base alsa-lib gcc-libs libjpeg-turbo hicolor-icon-theme")
 
-adddep="hicolor-icon-theme"
-# This is an optional package
-removedep="qt5-base"
+# Это опциональные зависимости
+removedep=("qt5-base")
 
-config_files="etc/rc_maps.cfg"
+adddep=("hicolor-icon-theme")
+
+config_files=("etc/rc_maps.cfg")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
-  MAKEFLAGS="-j1" make install DESTDIR="${pkgdir}/"
+  MAKEFLAGS="-j1" make install DESTDIR=${pkgdir}
+  rm ${pkgdir}/usr/bin/ivtv-ctl
 }
