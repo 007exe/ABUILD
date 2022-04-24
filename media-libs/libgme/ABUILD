@@ -1,0 +1,24 @@
+pkgname=libgme
+pkgver=0.6.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Video game music file emulation/playback library.")
+longdesc=("game-music-emu is a collection of audio emulators for assorted video game console hardware.")
+
+source=("https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-${pkgver}.tar.xz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
