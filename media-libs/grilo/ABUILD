@@ -1,0 +1,27 @@
+pkgname=grilo
+pkgver=0.3.14
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Framework that provides access to various sources of multimedia content.")
+longdesc=("Grilo is a framework focused on making media discovery and browsing easy for applications and application developers.")
+
+source=("https://gitlab.gnome.org/GNOME/grilo/-/archive/grilo-${pkgver}/grilo-grilo-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+# liboauth
+build_deps=("libxml2 libsoup totem-pl-parser gobject-introspection gtk-doc vala meson gtk3")
+
+# NOTE: это опциональные зависимости
+removedep=("grilo-plugins gtk3")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
