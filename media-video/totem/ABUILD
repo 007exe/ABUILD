@@ -1,0 +1,50 @@
+pkgname=totem
+pkgver=42.0
+strict_version=1
+# NOTE: Коммит версии 42.0
+_commit=d578333de76dc51f7a58bd84edee8ee93f5050e3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Media player for GNOME.")
+longdesc=("Movie player for the GNOME desktop based on GStreamer.")
+
+source=("git:https://gitlab.gnome.org/GNOME/totem.git"
+"git:https://gitlab.gnome.org/GNOME/libgd.git")
+
+tags=("gnome media-video")
+
+# libnautilus-extension python-pylint appstream-glib
+build_deps=("iso-codes libpeas gsettings-desktop-schemas python-gobject gnome-desktop
+gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugin-gtk libhandy itstool git
+docbook-xsl gobject-introspection gtk-doc meson intltool totem-pl-parser grilo")
+
+adddep=("gsettings-desktop-schemas")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-ugly gst-libav grilo-plugins")
+
+before_build() {
+  cd ${srcdir}/totem_git_totem.git.src
+  git checkout ${_commit}
+
+  git submodule init
+  git submodule set-url subprojects/libgd ${srcdir}/totem_git_libgd.git.src
+  git submodule update
+}
+
+build() {
+  cd ${srcdir}/totem_git_totem.git.src
+  meson build \
+    -D prefix=/usr \
+    -D libexecdir=lib \
+    -D sbindir=bin \
+    -D buildtype=plain \
+    -D b_lto=true \
+    -D b_pie=true \
+    -D enable-gtk-doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}

@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend totem capabilities:"
+echo -e "gst-plugins-ugly: Extra media codecs"
+echo -e "gst-libav: Extra media codecs"
+echo -e "grilo-plugins: Media discovery"
+echo -e " "
