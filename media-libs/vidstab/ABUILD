@@ -1,16 +1,16 @@
 pkgname=vidstab
 pkgver=1.1.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Video stabilization library")
+shortdesc=("Video stabilization library.")
 longdesc=("This package contains libraries and signature files for developing applications that use vidstab.")
 
 source=("https://github.com/georgmartius/vid.stab/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="cmake"
+build_deps=("cmake")
 
 build() {
   go_src_dir
@@ -18,8 +18,7 @@ build() {
   mkdir build
   cd build
   cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_SUFFIX=${LIBDIRSUFFIX}
+    -DCMAKE_INSTALL_PREFIX=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
