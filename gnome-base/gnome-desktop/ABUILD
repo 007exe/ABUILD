@@ -1,0 +1,31 @@
+pkgname=gnome-desktop
+pkgver=42.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library with common API for various GNOME modules.")
+longdesc=("The GNOME Desktop package contains a library that provides an API shared by several applications on the GNOME Desktop.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-desktop/-/archive/${pkgver}/gnome-desktop-${pkgver}.tar.gz")
+
+tags=("gnome gnome-base")
+
+build_deps=("gobject-introspection meson gtk-doc yelp-tools gsettings-desktop-schemas gtk3 xkeyboard-config iso-codes
+libseccomp bubblewrap libxkbcommon gsettings-desktop-schemas xkeyboard-config iso-codes libseccomp bubblewrap libxkbcommon")
+
+adddep=("gsettings-desktop-schemas")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D gnome_distributor="AgiliaLinux" \
+    -D gtk_doc=true \
+    -D debug_tools=false \
+    -D date_in_gnome_version=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
