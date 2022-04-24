@@ -1,28 +1,29 @@
 pkgname=libev
 pkgver=4.33
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A full-featured and high-performance event loop that is loosely modelled after libevent, but without its limitations and bugs.")
 longdesc=("It is used, among others, in the GNU Virtual Private Ethernet and rxvt-unicode packages, and in the Deliantra MORPG Server and Client.")
 
-tags=("libs x11-libs")
+tags=("libs dev-libs")
 
 source=("http://dist.schmorp.de/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# fix conflict with libevent
-  rm "${pkgdir}"/usr/include/event.h
+# NOTE: Конфликт с libevent
+  rm ${pkgdir}/usr/include/event.h
 
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
