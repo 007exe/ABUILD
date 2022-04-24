@@ -1,0 +1,25 @@
+pkgname=gnome-terminal
+pkgver=3.44.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The GNOME Terminal Emulator.")
+longdesc=("The GNOME Terminal package contains the terminal emulator for GNOME Desktop.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-terminal/-/archive/${pkgver}/gnome-terminal-${pkgver}.tar.gz")
+
+tags=("gnome x11-terms")
+
+# gnome-shell libnautilus-extension
+build_deps=("vte gsettings-desktop-schemas docbook-xsl yelp-tools meson")
+
+adddep=("gsettings-desktop-schemas")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
