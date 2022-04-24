@@ -1,28 +1,28 @@
 pkgname=libsamplerate
 pkgver=0.2.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("An audio sample rate conversion library")
+shortdesc=("An audio sample rate conversion library.")
 longdesc=("libsamplerate is a sample rate converter for audio.")
-
-tags=("libs media-libs compat32")
 
 source=("https://github.com/libsndfile/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="alsa-lib cmake libsndfile opus"
+tags=("libs media-libs")
+
+build_deps=("alsa-lib cmake libsndfile opus")
 
 build() {
   go_src_dir
   burn_patches
-  cmake -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE='None' \
-        -DBUILD_SHARED_LIBS=ON \
-        -Wno-dev \
-        -B build \
-        -S .
+  cmake -S . -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE='None' \
+    -DBUILD_SHARED_LIBS=ON \
+    -Wno-dev
   make VERBOSE=1 -C build
-  make DESTDIR="${pkgdir}" install -C build
-  install -vDm 644 {AUTHORS,NEWS,README.md,ChangeLog} -t "${pkgdir}/usr/share/doc/${pkgname}"
-  install -vDm 644 COPYING -t "${pkgdir}/usr/share/licenses/${pkgname}"
+  make DESTDIR=${pkgdir} install -C build
+  install -vDm 644 {AUTHORS,NEWS,README.md,ChangeLog} -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
