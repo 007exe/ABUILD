@@ -1,16 +1,16 @@
 pkgname=xvidcore
 pkgver=1.3.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("XviD is an open source MPEG-4 video codec")
+shortdesc=("XviD is an open source MPEG-4 video codec.")
 longdesc=("This is a video codec based on the original OpenDivX codec. Its compatible with DivX and MPEG-4.")
 
 tags=("libs media-libs")
 
 source=("https://downloads.xvid.com/downloads/xvidcore-${pkgver}.tar.gz")
 
-build_deps="glibc nasm"
+build_deps=("glibc nasm")
 
 build() {
   go_src_dir
@@ -18,7 +18,8 @@ build() {
   cd build/generic
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
