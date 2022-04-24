@@ -1,24 +1,24 @@
 pkgname=ffnvcodec-headers
 pkgver=11.1.5.1
-pkgbuild=1
-arch=('noarch')
+pkgbuild=2
+arch=("noarch")
 
 shortdesc=("FFmpeg version of headers required to interface with Nvidias codec APIs")
 longdesc=("FFmpeg version of headers required to interface with Nvidia codec APIs (NVENC)")
 
 source=("https://github.com/FFmpeg/nv-codec-headers/releases/download/n${pkgver}/nv-codec-headers-${pkgver}.tar.gz")
 
-tags="media-video libs"
+tags=("media-video libs")
 
-build_deps="git"
+build_deps=("git")
 
 build() {
   go_src_dir
   burn_patches
-  make PREFIX=/usr LIBDIR=lib${LIBDIRSUFFIX}
-  sed -n '4,25p' include/ffnvcodec/nvEncodeAPI.h > LICENSE # Extract license
-  sed -i '1,22s/^.\{,3\}//' LICENSE # Delete C comments
-  make PREFIX=/usr LIBDIR=lib${LIBDIRSUFFIX} DESTDIR="${pkgdir}" install
-  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/ffnvcodec-headers/
+  make PREFIX=/usr LIBDIR=lib
+  sed -n '4,25p' include/ffnvcodec/nvEncodeAPI.h > LICENSE
+  sed -i '1,22s/^.\{,3\}//' LICENSE
+  make PREFIX=/usr LIBDIR=lib DESTDIR=${pkgdir} install
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/ffnvcodec-headers/
 }
 
