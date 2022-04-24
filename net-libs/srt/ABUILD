@@ -1,16 +1,16 @@
 pkgname=srt
 pkgver=1.4.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Secure Reliable Transport library")
+shortdesc=("Secure Reliable Transport library.")
 longdesc=("Secure Reliable Transport (SRT) is an open source transport technology that optimizes streaming performance across unpredictable networks, such as the Internet.")
 
 source=("https://github.com/Haivision/srt/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="libs net-libs"
+tags=("libs net-libs")
 
-build_deps="openssl cmake"
+build_deps=("openssl cmake")
 
 build() {
   go_src_dir
@@ -18,13 +18,13 @@ build() {
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_BINDIR=bin \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_INCLUDEDIR=include \
     -DCMAKE_BUILD_TYPE=None \
     -DENABLE_STATIC=ON \
     -DENABLE_TESTING=ON
   cmake --build build
 
-  DESTDIR="$pkgdir" cmake --install build
-  rm "$pkgdir"/usr/bin/{uriparser,utility}-test
+  DESTDIR=${pkgdir} cmake --install build
+  rm ${pkgdir}/usr/bin/{uriparser,utility}-test
 }
