@@ -1,22 +1,22 @@
 pkgname=x264
-pkgver=20220121
+pkgver=20220222
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Open Source H264/AVC video encoder")
 longdesc=("x264 package provides a library for encoding video streams into the H.264/MPEG-4 AVC format.")
 
 source=("https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable-$pkgver.tar.bz2")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="yasm nasm"
+build_deps=("yasm nasm")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-shared \
     --enable-static \
     --enable-strip \
