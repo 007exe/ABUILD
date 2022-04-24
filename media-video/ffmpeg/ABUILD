@@ -1,5 +1,5 @@
 pkgname=ffmpeg
-pkgver=5.0
+pkgver=5.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -8,19 +8,21 @@ longdesc=("ffmpeg is a hyper fast realtime audio/video encoder, a streaming serv
 
 source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
 
-tags="libs media-video"
+tags=("libs media-video")
 
 build_deps=("avisynthplus libmfx libsoxr vmaf rav1e dav1d aom svt-av1 amf-headers zimg vidstab v4l-utils
 libvpx ffnvcodec-headers jack librsvg libpulse sdl2 fontconfig fribidi libraw1394 libssh libxml2 libwebp
 alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr
 openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883 libvdpau libx11 libxext libxv libxcb")
 
+removedep=("avisynthplus intel-media-sdk ladspa nvidia-utils")
+
 build(){
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-debug \
     --disable-static \
     --disable-stripping \
@@ -74,12 +76,14 @@ build(){
     --enable-libvmaf \
     --enable-libmfx \
     --enable-nonfree \
-    --enable-libsoxr \
     --enable-avisynth
+
+#--enable-libsoxr
+
   make -j${numjobs}
   make tools/qt-faststart -j${numjobs}
   make doc/ff{mpeg,play}.1
-  make DESTDIR="${pkgdir}" install install-man
+  make DESTDIR=${pkgdir} install install-man
 
-  install -Dm 755 tools/qt-faststart "${pkgdir}"/usr/bin/
+  install -Dm 755 tools/qt-faststart ${pkgdir}/usr/bin/
 }
