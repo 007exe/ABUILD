@@ -1,6 +1,6 @@
 pkgname=scons
 pkgver=4.3.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Extensible Python-based build utility.")
@@ -9,17 +9,16 @@ longdesc=("Extensible Python-based build utility.")
 source=("https://github.com/${pkgname}/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("develop dev-util")
+
 # rst2pdf
 build_deps=("python-setuptools python-sphinx python-sphinx_rtd_theme")
 
 build() {
   go_src_dir
-# fix wrong build target
   sed -e 's/bdist_wheel/bdist/g' -i SConstruct
   python scripts/scons.py --include-dir= -j1
-# copy man pages into place, so that install-data may pick them up
   cp -av build/doc/man/* .
-  python setup.py install --optimize=1 --install-data=/usr/share/man/man1/ --root="$pkgdir"
-  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
-  install -vDm 644 {{CHANGES,RELEASE}.txt,README.rst} -t "${pkgdir}/usr/share/doc/${pkgname}/"
+  python setup.py install --optimize=1 --install-data=/usr/share/man/man1/ --root=${pkgdir}
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -vDm 644 {{CHANGES,RELEASE}.txt,README.rst} -t ${pkgdir}/usr/share/doc/${pkgname}/
 }
