@@ -1,42 +1,40 @@
 pkgname=intel-media-sdk
-pkgver=21.3.5
+pkgver=22.3.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("API to access hardware-accelerated video on Intel Gen graphics hardware platforms")
+shortdesc=("API to access hardware-accelerated video on Intel Gen graphics hardware platforms.")
 longdesc=("Intel Media SDK provides a plain C API to access hardware-accelerated video decode, encode and filtering on Intel Gen graphics hardware platforms. Implementation written in C++ 11 with parts in C-for-Media (CM).")
 
 source=("https://github.com/Intel-Media-SDK/MediaSDK/archive/intel-mediasdk-${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="intel-media-driver libdrm libva wayland cmake libpciaccess libx11 libxcb python"
+build_deps=("intel-media-driver libdrm libva wayland cmake libpciaccess libx11 libxcb python")
 
 adddep="libmfx=${pkgver}"
 
-pkglist="libmfx"
+pkglist=("libmfx")
 
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_ALL:BOOL='ON' \
     -DBUILD_TOOLS:BOOL='ON' \
     -DCMAKE_BUILD_TYPE:STRING='None' \
-    -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
     -DENABLE_ITT:BOOL='OFF' \
     -DENABLE_OPENCL:BOOL='OFF' \
     -DENABLE_WAYLAND:BOOL='ON' \
     -DENABLE_X11_DRI3:BOOL='ON' \
-    -DMFX_APPS_DIR='/usr/lib${LIBDIRSUFFIX}/mfx' \
+    -DMFX_APPS_DIR='/usr/lib/mfx' \
     -Wno-dev
   make -j${numjobs} -C build
-  make -C build DESTDIR="$pkgdir" install
-# Fix the location of the samples libraries
-  mv -f ${pkgdir}/usr/lib/mfx/samples ${pkgdir}/usr/lib64/mfx/
-  rm -r ${pkgdir}/usr/lib
+  make -C build DESTDIR=${pkgdir} install
 
-  ln -s mfx/samples/libcttmetrics.so "${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcttmetrics.so"
+  ln -s mfx/samples/libcttmetrics.so ${pkgdir}/usr/lib/libcttmetrics.so
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
@@ -48,10 +46,10 @@ libmfx() {
 
 libmfx_prep() {
   go_src_dir
-  mkdir -p ${pkgdir}/usr/{include,lib${LIBDIRSUFFIX}/pkgconfig}
-  mv "${p_pkgdir}/usr/include/mfx" ${pkgdir}/usr/include
-  mv "${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/libmfx.so"* ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-  mv "${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/"{,lib}mfx.pc ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-  rm -d "${p_pkgdir}/usr/include"
+  mkdir -p ${pkgdir}/usr/{include,lib/pkgconfig}
+  mv ${p_pkgdir}/usr/include/mfx ${pkgdir}/usr/include
+  mv ${p_pkgdir}/usr/lib/libmfx.so* ${pkgdir}/usr/lib
+  mv ${p_pkgdir}/usr/lib/pkgconfig/{,lib}mfx.pc ${pkgdir}/usr/lib/pkgconfig
+  rm -d ${p_pkgdir}/usr/include
   install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
