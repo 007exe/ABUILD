@@ -1,4 +1,4 @@
-pkgname=libavtp
+pkgname=svt-hevc
 pkgver=1.5.1
 pkgbuild=1
 arch=("auto")
@@ -18,6 +18,7 @@ build() {
   export LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
   cmake -B build -G Ninja \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=ON \
     -DNATIVE=OFF
   cmake --build build
