@@ -1,21 +1,22 @@
 pkgname=openal
-pkgver=1.21.1
+pkgver=1.22.0
+strict_version=1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Cross-platform 3D audio library, software implementation")
-longdesc=("A software implementation of the OpenAL 3D audio API")
+shortdesc=("Cross-platform 3D audio library, software implementation.")
+longdesc=("A software implementation of the OpenAL 3D audio API.")
 
-#source=("https://www.openal-soft.org/openal-releases/openal-soft-$pkgver.tar.bz2")
 source=("git:https://github.com/kcat/openal-soft.git")
 
-tags="libs media-libs"
-
-pkglist="openal-examples"
+tags=("libs media-libs")
 
 build_deps=("alsa-lib libpulse fluidsynth portaudio jack qt5-base sdl2 libsndfile ffmpeg libmysofa cmake ninja")
-# These are optional dependencies.
+
+# NOTE: Это опциональные зависимости
 removedep=("qt5-base fluidsynth libmysofa")
+
+pkglist=("openal-examples")
 
 build() {
   go_src_dir
@@ -23,7 +24,7 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=None
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
