@@ -1,16 +1,16 @@
 pkgname=portaudio
 pkgver=19.7.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("A free, cross-platform, open source, audio I/O library.")
 longdesc=("A free, cross-platform, open-source, audio I/O library.")
 
 source=("https://github.com/${pkgname}/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="alsa-lib jack gcc-libs glibc"
+build_deps=("alsa-lib jack gcc-libs glibc")
 
 build() {
   go_src_dir
@@ -21,10 +21,12 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --enable-cxx
+    --libdir=/usr/lib \
+    --enable-cxx \
+    --disable-static
+# NOTE: Сборка в один поток
   make -j1
   make DESTDIR=${pkgdir} install
-  install -vDm 644 LICENSE.txt -t "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -vDm 644 README.* -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -vDm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 README.* -t ${pkgdir}/usr/share/doc/${pkgname}
 }
