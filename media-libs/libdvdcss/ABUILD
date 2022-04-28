@@ -1,23 +1,23 @@
 pkgname=libdvdcss
 pkgver=1.4.3
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Portable abstraction library for DVD decryption")
 longdesc=("libdvdcss is a simple library designed for accessing DVDs as a block device without having to bother about the decryption.")
 
 source=("https://download.videolan.org/pub/$pkgname/$pkgver/$pkgname-$pkgver.tar.bz2")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
