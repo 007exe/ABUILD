@@ -1,16 +1,16 @@
 pkgname=gsl
-pkgver=2.7
+pkgver=2.7.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("The GNU Scientific Library (GSL) is a modern numerical library for C and C++ programmers")
+shortdesc=("The GNU Scientific Library (GSL) is a modern numerical library for C and C++ programmers.")
 longdesc=("The GNU Scientific Library (GSL) is a numerical library for C and C++ programmers. It provides a wide range of mathematical routines such as random number generators, special functions and least-squares fitting.")
 
 source=("https://ftp.gnu.org/gnu/gsl/$pkgname-$pkgver.tar.gz")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -19,7 +19,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
