@@ -1,25 +1,27 @@
 pkgname=graphene
-pkgver=1.10.6
+pkgver=1.10.8
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A thin layer of graphic data types")
+shortdesc=("A thin layer of graphic data types.")
 longdesc=("The Graphene package provides a thin layer of types for graphics libraries.")
 
-source=("https://github.com/ebassi/graphene/releases/download/${pkgver}/graphene-${pkgver}.tar.xz")
+source=("https://github.com/ebassi/graphene/archive/refs/tags/${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="gtk-doc gobject-introspection meson glib2"
+build_deps=("gtk-doc gobject-introspection meson glib2")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
     -D gtk_doc=true \
     -D installed_tests=false
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 LICENSE.txt
+  DESTDIR=${pkgdir} meson install -C build
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE.txt
 }
