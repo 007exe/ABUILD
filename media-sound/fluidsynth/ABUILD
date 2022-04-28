@@ -1,34 +1,36 @@
 pkgname=fluidsynth
-pkgver=2.2.4
+pkgver=2.2.7
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A real-time software synthesizer based on the SoundFont 2 specifications")
-longdesc=("Software real-time synthesizer based on the Soundfont 2 specifications")
+shortdesc=("A real-time software synthesizer based on the SoundFont 2 specifications.")
+longdesc=("Software real-time synthesizer based on the Soundfont 2 specifications.")
 
 source=("https://github.com/${pkgname}/${pkgname}/archive/v$pkgver.tar.gz")
 
-tags="libs media-sound"
-# libinstpatch
-build_deps="alsa-lib cmake dbus doxygen glib2 jack ladspa libpulse libsndfile portaudio readline glibc sdl2"
+tags=("libs media-sound")
 
-config_files="etc/conf.d/$pkgname"
+# libinstpatch
+build_deps=("alsa-lib cmake dbus doxygen glib2 jack ladspa libpulse libsndfile portaudio readline glibc sdl2")
+
+config_files=("etc/conf.d/$pkgname")
 
 build() {
   go_src_dir
   burn_patches
   cmake -B build -S . \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX="" \
     -DCMAKE_BUILD_TYPE=None \
     -DFLUID_DAEMON_ENV_FILE=/etc/conf.d/fluidsynth \
     -Denable-ladspa=ON \
     -Denable-portaudio=ON \
-    -DLIB_SUFFIX=lib${LIBDIRSUFFIX} \
     -Wno-dev
   make -j${numjobs} -C build VERBOSE=1
-  make -C build DESTDIR="$pkgdir" install
-# system-wide configuration file
-  install -vDm 644 "build/${pkgname}.conf" "${pkgdir}/etc/conf.d/${pkgname}"
-# docs
-  install -vDm 644 {AUTHORS,ChangeLog,{CONTRIBUTING,README}.md,THANKS,TODO} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  make -C build DESTDIR=${pkgdir} install
+
+# Общесистемный конфигурационный файл
+  install -vDm 644 build/${pkgname}.conf ${pkgdir}/etc/conf.d/${pkgname}
+
+  install -vDm 644 {AUTHORS,ChangeLog,{CONTRIBUTING,README}.md,THANKS,TODO} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
