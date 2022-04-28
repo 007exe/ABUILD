@@ -1,25 +1,25 @@
 pkgname=neon
-pkgver=0.32.1
+pkgver=0.32.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("HTTP and WebDAV client library with a C interface.")
 longdesc=("neon is an HTTP and WebDAV client library, with a C interface.")
 
-tags=("libs net-libs")
-
 source=("https://notroj.github.io/neon/$pkgname-$pkgver.tar.gz")
 
-build_deps="xmlto docbook-xsl krb5 expat ca-certificates zlib"
+tags=("libs net-libs")
 
-adddep="ca-certificates"
+build_deps=("xmlto docbook-xsl krb5 expat ca-certificates zlib")
+
+adddep=("ca-certificates")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-expat \
     --enable-shared \
     --disable-static \
