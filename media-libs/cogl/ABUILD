@@ -1,9 +1,9 @@
 pkgname=cogl
 pkgver=1.22.8
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("An object oriented GL/GLES Abstraction/Utility Layer")
+shortdesc=("An object oriented GL/GLES Abstraction/Utility Layer.")
 longdesc=("Cogl is a modern 3D graphics API with associated utility APIs designed to expose the features of 3D graphics hardware using a direct state access API design, as opposed to the state-machine style of OpenGL.")
 
 source=("https://download.gnome.org/sources/cogl/${pkgver%.*}/cogl-${pkgver}.tar.xz")
@@ -17,7 +17,7 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-gles2 \
     --enable-{kms,wayland}-egl-platform \
     --enable-wayland-egl-server
