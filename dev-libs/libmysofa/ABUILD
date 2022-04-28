@@ -1,14 +1,14 @@
 pkgname=libmysofa
 pkgver=1.2.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("C library to read HRTFs if they are stored in the AES69-2015 SOFA format.")
 longdesc=("C library to read HRTFs if they are stored in the AES69-2015 SOFA format.")
 
 source=("https://github.com/hoene/libmysofa/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
 build_deps=("cmake cunit")
 
@@ -16,10 +16,10 @@ build() {
   go_src_dir
   burn_patches
   cmake -B build \
-    -DCMAKE_BUILD_TYPE:STRING='None' \
-    -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
-    -DCMAKE_INSTALL_LIBDIR:PATH=lib${LIBDIRSUFFIX} \
-    -DCODE_COVERAGE:BOOL='OFF' \
+    -DCMAKE_BUILD_TYPE:STRING=None \
+    -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DCMAKE_INSTALL_LIBDIR:PATH=lib \
+    -DCODE_COVERAGE:BOOL=OFF \
     -Wno-dev
     make -j${numjobs} -C build all
     make -C build DESTDIR=${pkgdir} install
