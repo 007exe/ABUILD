@@ -1,6 +1,6 @@
 pkgname=libcap
-pkgver=2.63
-pkgbuild=2
+pkgver=2.64
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("POSIX 1003.1e capabilities.")
