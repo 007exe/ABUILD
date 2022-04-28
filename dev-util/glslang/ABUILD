@@ -1,14 +1,14 @@
 pkgname=glslang
-pkgver=11.6.0
+pkgver=11.9.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Khronos reference front-end for GLSL and ESSL, and sample SPIR-V generator")
-longdesc=("Glslang is the official reference compiler front end for the OpenGL ES and OpenGL shading languages. It implements a strict interpretation of the specifications for these languages.")
-
-tags=("dev-util develop")
+shortdesc=("OpenGL and OpenGL ES shader front end and validator.")
+longdesc=("Khronos reference front-end for GLSL and ESSL, and sample SPIR-V generator.")
 
 source=("https://github.com/KhronosGroup/glslang/archive/${pkgver}.tar.gz")
+
+tags=("dev-util develop")
 
 build_deps="gcc-libs python cmake ninja"
 
@@ -18,6 +18,7 @@ build() {
     -Bbuild-shared \
     -GNinja \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON
   ninja -Cbuild-shared
@@ -25,17 +26,18 @@ build() {
     -Bbuild-static \
     -GNinja \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=OFF
   ninja -Cbuild-static
 
-  DESTDIR="${pkgdir}" ninja -C build-shared install
-  DESTDIR="${pkgdir}" ninja -C build-static install
+  DESTDIR=${pkgdir} ninja -C build-shared install
+  DESTDIR=${pkgdir} ninja -C build-static install
 
-  install -Dm644 LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-    cd "${pkgdir}"/usr/lib${LIBDIRSUFFIX}
+    cd ${pkgdir}/usr/lib
   for lib in *.so; do
-    ln -sf "${lib}" "${lib}.0"
+    ln -sf ${lib} ${lib}.0
   done
 }
