@@ -1,9 +1,9 @@
 pkgname=clutter
 pkgver=1.26.4
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("A toolkit for creating fast, portable, compelling dynamic UIs")
+shortdesc=("A toolkit for creating fast, portable, compelling dynamic UIs.")
 longdesc=("The Clutter package contains an open source software library used for creating fast, visually rich and animated graphical user interfaces.")
 
 source=("https://gitlab.gnome.org/GNOME/clutter/-/archive/${pkgver}/clutter-${pkgver}.tar.gz")
@@ -18,7 +18,7 @@ build() {
   autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-maintainer-flags \
     --disable-mir-backend \
@@ -33,7 +33,7 @@ build() {
     --enable-x11-backend \
     --enable-evdev-input \
     --enable-wayland-compositor \
-    --enable-gtk-doc
+    --disable-gtk-doc
 # https://bugzilla.gnome.org/show_bug.cgi?id=655517
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
