@@ -1,16 +1,16 @@
 pkgname=libdvdnav
 pkgver=6.1.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("The library for xine-dvdnav plugin.")
 longdesc=("libdvdnav is a library that allows easy use of sophisticated DVD navigation features such as DVD menus, multiangle playback and even interactive DVD games.")
 
 source=("https://download.videolan.org/pub/videolan/libdvdnav/$pkgver/libdvdnav-$pkgver.tar.bz2")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="libdvdread"
+build_deps=("libdvdread")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
