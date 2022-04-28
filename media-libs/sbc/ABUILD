@@ -1,10 +1,10 @@
 pkgname=sbc
 pkgver=1.5
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Bluetooth Subband Codec (SBC) library.")
-longdesc=("Bluetooth Subband Codec (SBC) library.")
+longdesc=("Audio codec to connect bluetooth HQ audio devices as headphones or loudspeakers.")
 
 source=("https://www.kernel.org/pub/linux/bluetooth/sbc-${pkgver}.tar.xz")
 
@@ -17,7 +17,7 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib\
     --disable-static \
     --disable-tester
   make -j${numjobs}
