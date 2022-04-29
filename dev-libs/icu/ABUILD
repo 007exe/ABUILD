@@ -1,6 +1,7 @@
+# NOTE: Обязательно пересобрать libxml2
 pkgname=icu
-pkgver=70.1
-pkgbuild=2
+pkgver=71.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("International Components for Unicode.")
