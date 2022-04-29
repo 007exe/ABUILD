@@ -1,0 +1,26 @@
+pkgname=libcue
+pkgver=2.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("CUE Sheet Parser Library.")
+longdesc=("Parses so-called cue sheets and handles the parsed data.")
+
+source=("https://github.com/lipnitsk/libcue/archive/v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
