@@ -1,6 +1,6 @@
 pkgname=zlib
-pkgver=1.2.11
-pkgbuild=4
+pkgver=1.2.12
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Compression library implementing the deflate compression method found in gzip and PKZIP.")
