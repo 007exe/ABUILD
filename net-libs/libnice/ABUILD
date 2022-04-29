@@ -1,6 +1,6 @@
 pkgname=libnice
 pkgver=0.1.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An implementation of the IETF's draft ICE (for p2p UDP data streams).")
@@ -9,8 +9,8 @@ longdesc=("An implementation of the Interactice Connectivity Establishment stand
 source=("http://nice.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
-# gupnp-igd
-build_deps=("gstreamer gtk-doc git meson gobject-introspection graphviz glib2 gnutls")
+
+build_deps=("gstreamer gtk-doc git meson gobject-introspection graphviz glib2 gnutls gupnp-igd")
 
 build() {
   go_src_dir
