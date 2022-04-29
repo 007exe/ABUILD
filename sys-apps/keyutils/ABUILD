@@ -1,0 +1,22 @@
+pkgname=keyutils
+pkgver=1.6.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux Key Management Utilities.")
+longdesc=("Linux Key Management Utilities.")
+
+source=("https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/${pkgver}.tar.gz")
+
+tags=("utils sys-apps")
+
+build_deps=("glibc")
+
+config_files=("etc/request-key.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  make CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" SBINDIR='/usr/bin' BINDIR='/usr/bin'
+  make DESTDIR="${pkgdir}" SBINDIR='/usr/bin' BINDIR='/usr/bin' LIBDIR='/usr/lib' USRLIBDIR='/usr/lib' install
+}
