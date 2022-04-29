@@ -1,8 +1,8 @@
 pkgname=sqlite
-pkgver=3.38.1
+pkgver=3.38.3
 pkgbuild=1
 arch=("auto")
-_amalgamationver=3380100
+_amalgamationver=3380300
 
 shortdesc=("A C library that implements an SQL database engine.")
 longdesc=("The SQLite package is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.")
