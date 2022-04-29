@@ -1,0 +1,24 @@
+pkgname=gupnp-igd
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library to handle UPnP IGD port mapping.")
+longdesc=("Library to handle UPnP IGD port mapping for GUPnP.")
+
+source=("https://gitlab.gnome.org/GNOME/gupnp-igd/-/archive/${pkgver}/gupnp-igd-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("gupnp gobject-introspection git gtk-doc meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
