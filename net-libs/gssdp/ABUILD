@@ -1,0 +1,24 @@
+pkgname=gssdp
+pkgver=1.4.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A GObject-based API for handling resource discovery and announcement over SSDP.")
+longdesc=("GObject-based API for handling resource discovery and announcement over SSDP.")
+
+source=("https://gitlab.gnome.org/GNOME/gssdp/-/archive/gssdp-${pkgver}/gssdp-gssdp-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("glib2 libsoup gobject-introspection gi-docgen vala meson gtk4")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
