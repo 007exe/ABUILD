@@ -1,0 +1,28 @@
+pkgname=tracker3
+pkgver=3.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Desktop-neutral user information store, search tool and indexer.")
+longdesc=("Tracker is the file indexing and search provider used in the GNOME desktop environment.")
+
+source=("https://download.gnome.org/sources/tracker/${pkgver%.*}/tracker-${pkgver}.tar.xz")
+
+tags=("app-misc utils")
+
+# libstemmer hotdoc python-tappy
+build_deps=("sqlite icu glib2 libffi util-linux libseccomp json-glib libsoup3 gobject-introspection vala
+bash-completion meson asciidoc libsoup python-gobject dbus-python")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D docs=false \
+    -D man=false \
+    -D systemd_user_services=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
