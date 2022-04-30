@@ -1,10 +1,10 @@
 pkgname=gtk4
-pkgver=4.6.0
+pkgver=4.6.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("GObject-based multi-platform GUI toolkit")
-longdesc=("The gtk+ package contains the GIMP ToolKit (GTK+), a library for creating graphical user interfaces for the X Window System.  GTK+ was originally written for the GIMP (GNU Image Manipulation Program) image processing program, but is now used by several other programs as well.")
+shortdesc=("GObject-based multi-platform GUI toolkit.")
+longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 
 source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.tar.gz")
 
@@ -23,7 +23,7 @@ build() {
   cd build
   meson setup \
     --prefix=/usr \
-    --libdir=lib${LIBDIRSUFFIX} \
+    --libdir=lib \
     -D broadway-backend=true \
     -D cloudproviders=enabled \
     -D colord=enabled \
@@ -31,29 +31,29 @@ build() {
     -D man-pages=true \
     ..
   meson compile
-  meson install --destdir "$pkgdir"
+  meson install --destdir ${pkgdir}
 
   cp ${filedir}/settings.ini $pkgdir/usr/share/gtk-4.0/settings.ini
 }
 
 gtk-update-icon-cache() {
     pkgname=gtk-update-icon-cache
-    shortdesc=("GTK icon cache update tool")
-    longdesc=("GTK icon cache updater")
+    shortdesc=("GTK icon cache update tool.")
+    longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 }
 
 gtk-update-icon-cache_prep() {
   go_src_dir
-  mkdir -p $pkgdir/usr/bin
-  mv ${p_pkgdir}/usr/bin/gtk4-update-icon-cache $pkgdir/usr/bin/gtk4-update-icon-cache
-  cd $pkgdir/usr/bin
+  mkdir -p ${pkgdir}/usr/bin
+  mv ${p_pkgdir}/usr/bin/gtk4-update-icon-cache ${pkgdir}/usr/bin/gtk4-update-icon-cache
+  cd ${pkgdir}/usr/bin
   ln -s gtk4-update-icon-cache gtk-update-icon-cache
 }
 
 gtk4-docs() {
     pkgname=gtk4-docs
-    shortdesc=("GObject-based multi-platform GUI toolkit documentation")
-    longdesc=("GObject-based multi-platform GUI toolkit documentationr")
+    shortdesc=("GObject-based multi-platform GUI toolkit documentation.")
+    longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 }
 
 gtk4-docs_prep(){
@@ -64,14 +64,17 @@ gtk4-docs_prep(){
 
 gtk4-demos() {
     pkgname=gtk4-demos
-    shortdesc=("GObject-based multi-platform GUI toolkit demo applications")
-    longdesc=("GObject-based multi-platform GUI toolkit demo applications")
+    shortdesc=("GObject-based multi-platform GUI toolkit demo applications.")
+    longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 }
 
 gtk4-demos_prep(){
   go_src_dir
-  install -d "$pkgdir"/usr/{bin,share/applications,share/glib-2.0/schemas,share/icons/hicolor,share/man/man1}
-  mv ${p_pkgdir}/usr/bin/gtk4-{demo,demo-application,icon-browser,widget-factory} "$pkgdir"/usr/bin
-  mv ${p_pkgdir}/usr/share/applications "$pkgdir"/usr/share
-  mv ${p_pkgdir}/usr/share/man/man1/gtk4-{demo,demo-application,icon-browser,widget-factory}.1 "$pkgdir"/usr/share/man/man1
+  install -d ${pkgdir}/usr/{bin,share/{glib-2.0/schemas,man/man1}}
+  mv ${p_pkgdir}/usr/bin/gtk4-{demo,demo-application,icon-browser,widget-factory} ${pkgdir}/usr/bin/
+  mv ${p_pkgdir}/usr/share/applications ${pkgdir}/usr/share
+  mv ${p_pkgdir}/usr/share/glib-2.0/schemas/org.gtk.Demo4.gschema.xml ${pkgdir}/usr/share/glib-2.0/schemas/org.gtk.Demo4.gschema.xml
+  mv ${p_pkgdir}/usr/share/icons/ ${pkgdir}/usr/share
+  mv ${p_pkgdir}/usr/share/man/man1/gtk4-{demo,demo-application,icon-browser,widget-factory}.1 ${pkgdir}/usr/share/man/man1
+  mv ${p_pkgdir}/usr/share/metainfo/ ${pkgdir}/usr/share/
 }
