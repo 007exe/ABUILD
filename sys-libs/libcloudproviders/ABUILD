@@ -1,7 +1,7 @@
 pkgname=libcloudproviders
 pkgver=0.3.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("DBus API that allows cloud storage sync clients to expose their services")
 longdesc=("Cross desktop library for desktop integration of cloud storage providers and sync tools.")
@@ -10,14 +10,15 @@ source=("https://gitlab.gnome.org/World/libcloudproviders/-/archive/${pkgver}/li
 
 tags=("libs sys-libs")
 
-build_deps="glib2"
+build_deps=("glib2")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-  -D prefix=/usr \
-  -D enable-gtk-doc=true
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D enable-gtk-doc=true
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
