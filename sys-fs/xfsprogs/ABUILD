@@ -1,5 +1,5 @@
 pkgname=xfsprogs
-pkgver=5.14.2
+pkgver=5.15.0
 pkgbuild=1
 arch=("auto")
 
@@ -18,12 +18,16 @@ build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --sbindir=/usr/bin \
     --bindir=/usr/bin \
     --enable-shared=yes
   make -j${numjobs}
-  make DIST_ROOT="${pkgdir}" PKG_ROOT_SBIN_DIR="/usr/bin" install install-dev
-  chown -R root "$pkgdir"
-  chgrp -R root "$pkgdir"
+  make DIST_ROOT=${pkgdir} PKG_ROOT_SBIN_DIR="/usr/bin" install install-dev
+  chown -R root ${pkgdir}
+  chgrp -R root ${pkgdir}
+
+# NOTE: Переместить библиотеки
+  mv ${pkgdir}/lib/libhandle.so* ${pkgdir}/usr/lib/
+  rm -rf ${pkgdir}/lib
 }
