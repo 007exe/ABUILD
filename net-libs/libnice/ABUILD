@@ -1,6 +1,6 @@
 pkgname=libnice
-pkgver=0.1.8
-pkgbuild=2
+pkgver=0.1.18
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An implementation of the IETF's draft ICE (for p2p UDP data streams).")
@@ -10,15 +10,20 @@ source=("http://nice.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
-build_deps=("gstreamer gtk-doc git meson gobject-introspection graphviz glib2 gnutls gupnp-igd")
+build_deps=("gstreamer gtk-doc git meson gobject-introspection graphviz glib2 gnutls gupnp-igd meson")
+
+# NOTE: Это опциональные завичимости
+removedep=("gstreamer")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D gtk_doc=enabled \
+    -D tests=disabled
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
