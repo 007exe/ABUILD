@@ -1,23 +1,23 @@
 pkgname=rest
 pkgver=0.8.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Helper library for RESTful services")
+shortdesc=("Library for accessing RESTful web services (legacy)")
 longdesc=("The rest package contains a library that was designed to make it easier to access web services that claim to be RESTful. It includes convenience wrappers for libsoup and libxml to ease remote use of the RESTful API.")
 
 source=("https://download.gnome.org/sources/rest/${pkgver%.*}/rest-${pkgver}.tar.xz")
 
-tags="libs net-libs"
+tags=("libs net-libs")
 
-build_deps="gobject-introspection gtk-doc glib2 libxml2 libsoup"
+build_deps=("gobject-introspection gtk-doc glib2 libxml2 libsoup")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --sysconfdir=/etc \
     --enable-gtk-doc
