@@ -1,27 +1,26 @@
 pkgname=libevdev
-pkgver=1.11.0
+pkgver=1.12.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Wrapper library for evdev devices")
+shortdesc=("Wrapper library for evdev devices.")
 longdesc=("The libevdev package contains common functions for Xorg input drivers.")
 
 source=("https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz")
 
-tags="x11-misc xserver"
-# doxygen
-build_deps="python check valgrind"
+tags=("libs dev-libs")
+
+build_deps=("python check valgrind doxygen")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
-#  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
