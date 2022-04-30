@@ -1,6 +1,4 @@
-#!/sbin/openrc-run
-# Copyright 1999-2019 Gentoo Authors
-# Distributed under the terms of the GNU General Public License v2
+#!/usr/bin/openrc-run
 
 alsastatedir=/var/lib/alsa
 alsascrdir=/etc/alsa.d
@@ -37,7 +35,6 @@ restore() {
 
 	for ossfile in "${alsastatedir}"/oss/card*_pcm* ; do
 		[ -e "${ossfile}" ] || continue
-		# We use cat because I'm not sure if cp works properly on /proc
 		local procfile=${ossfile##${alsastatedir}/oss}
 		procfile="$(echo "${procfile}" | sed -e 's,_,/,g')"
 		if [ -e /proc/asound/"${procfile}"/oss ] ; then

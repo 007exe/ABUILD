@@ -1,16 +1,16 @@
 pkgname=alsa-utils
-pkgver=1.2.5.1
+pkgver=1.2.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Advanced Linux Sound Architecture - Utilities")
+shortdesc=("Advanced Linux Sound Architecture - Utilities.")
 longdesc=("The ALSA Utilities package contains various utilities which are useful for controlling your sound card.")
-
-tags=('console media-sound')
 
 source=("ftp://ftp.alsa-project.org/pub/utils/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="alsa-lib docbook-xsl ncurses python-docutils xmlto fftw libsamplerate"
+tags=("utils media-sound")
+
+build_deps=("alsa-lib docbook-xsl ncurses python-docutils xmlto fftw libsamplerate")
 
 build() {
   go_src_dir
@@ -19,20 +19,19 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-udev-rules-dir=/lib/udev/rules.d \
+    --libdir=/usr/lib \
+    --with-udev-rules-dir=/usr/lib/udev/rules.d \
     --disable-alsaconf
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# Add OpenRC scripts
   install -D -m755 ${filedir}/alsasound.initd ${pkgdir}/etc/init.d/alsasound
 
   install -D -m644 ${filedir}/alsasound.confd ${pkgdir}/etc/conf.d/alsasound
 
-# dir where to save ALSA state
-  install -d "${pkgdir}/var/lib/alsa"
-  
-  install -vDm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+# Каталог, где сохранить состояние ALSA
+  install -d ${pkgdir}/var/lib/alsa
+
+  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
 }
 
