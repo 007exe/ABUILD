@@ -1,5 +1,5 @@
 pkgname=pango
-pkgver=1.50.6
+pkgver=1.50.7
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,8 @@ longdesc=("Pango is a library for laying out and rendering text, with an emphasi
 source=("https://download.gnome.org/sources/pango/${pkgver%.*}/pango-${pkgver}.tar.xz")
 
 tags=("libs x11-libs")
-# libthai
-build_deps=("cairo libxft harfbuzz fribidi gobject-introspection help2man meson gi-docgen")
+
+build_deps=("cairo libxft harfbuzz fribidi gobject-introspection help2man meson gi-docgen libthai")
 
 removedep=("libx11 libxrender fontconfig freetype")
 
