@@ -1,30 +1,31 @@
 pkgname=avahi
 pkgver=0.8
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Service Discovery for Linux using mDNS/DNS-SD -- compatible with Bonjour")
+shortdesc=("Service Discovery for Linux using mDNS/DNS-SD -- compatible with Bonjour.")
 longdesc=("The Avahi package is a system which facilitates service discovery on a local network.")
 
 source=("https://github.com/lathiat/avahi/releases/download/v${pkgver}/avahi-${pkgver}.tar.gz")
 
-tags="network net-dns"
+tags=("network net-dns")
 
-build_deps="gobject-introspection gtk3 doxygen libevent libdaemon qt5-base"
-# Let's not drag these heavy libraries with us
-removedep="gtk3 qt5-base"
+build_deps=("gobject-introspection gtk3 doxygen libevent libdaemon qt5-base")
 
-config_files='etc/avahi/hosts
+# NOTE: Это опциональные зависимости
+removedep=("gtk3 qt5-base libevent")
+
+config_files=("etc/avahi/hosts
 etc/avahi/avahi-daemon.conf
 etc/avahi/services/ssh.service
-etc/avahi/services/sftp-ssh.service'
+etc/avahi/services/sftp-ssh.service")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --disable-static \
