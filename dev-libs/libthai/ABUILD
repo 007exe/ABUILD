@@ -1,0 +1,24 @@
+pkgname=libthai
+pkgver=0.1.29
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Thai language support routines.")
+longdesc=("LibThai is a set of Thai language support routines aimed to ease developers tasks to incorporate Thai language support in their applications.")
+
+tags=("libs dev-libs")
+
+source=("https://linux.thai.net/pub/thailinux/software/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+build_deps=("pkgconf libdatrie")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
