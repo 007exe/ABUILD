@@ -1,6 +1,6 @@
 pkgname=libdaemon
 pkgver=0.14
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Lightweight C library that eases the writing of UNIX daemons")
@@ -10,14 +10,14 @@ tags=("dev-libs libs compat32")
 
 source=("http://0pointer.de/lennart/projects/libdaemon/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --disable-lynx \
     --disable-static
   make -j${numjobs}
