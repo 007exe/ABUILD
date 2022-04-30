@@ -1,0 +1,24 @@
+pkgname=libdatrie
+pkgver=0.2.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Implementation of double-array structure for representing trie, as proposed by Junichi Aoe.")
+longdesc=("This is an implementation of double-array structure for representing trie.")
+
+tags=("libs dev-libs")
+
+source=("https://linux.thai.net/pub/thailinux/software/libthai/${pkgname}-${pkgver}.tar.xz")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
