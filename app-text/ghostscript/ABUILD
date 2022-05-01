@@ -1,6 +1,6 @@
 pkgname=ghostscript
-pkgver=9.55.0
-pkgbuild=2
+pkgver=9.56.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An interpreter for the PostScript language")
