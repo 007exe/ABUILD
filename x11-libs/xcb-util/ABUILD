@@ -1,27 +1,27 @@
 pkgname=xcb-util
 pkgver=0.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Utility libraries for XC Binding")
+shortdesc=("Utility libraries for XC Binding.")
 longdesc=("The xcb-util package provides additional extensions to the XCB library, many that were previously found in Xlib, but are not part of core X protocol.")
-
-tags=('x11-xcbs xserver')
 
 source=("http://xcb.freedesktop.org/dist//xcb-util-${pkgver}.tar.bz2")
 
-build_deps="libxcb gperf xorg-util-macros xorgproto"
+tags=("x11-libs libs")
+
+build_deps=("libxcb gperf xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
