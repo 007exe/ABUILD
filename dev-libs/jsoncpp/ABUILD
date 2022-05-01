@@ -1,33 +1,41 @@
 pkgname=jsoncpp
-pkgver=1.9.4
+pkgver=1.9.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="C++ JSON Library"
-longdesc="JsonCpp is a simple API to manipulate JSON value, handle serialization and unserialization to string."
+shortdesc=("C++ library for interacting with JSON.")
+longdesc=("JsonCpp is a simple API to manipulate JSON value, handle serialization and unserialization to string.")
 
-source="https://github.com/open-source-parsers/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/open-source-parsers/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs dev-libs"
-# doxygen graphviz
-build_deps="gcc-libs python meson ninja"
+tags=("libs dev-libs")
 
-build()
-{
+build_deps=("gcc-libs python meson ninja doxygen graphviz")
+
+build(){
   go_src_dir
   burn_patches
-  meson --prefix=/usr --default-library shared build
+  meson \
+    --prefix=/usr \
+    --default-library shared build
   ninja -C build
-  meson --prefix=/usr --default-library static build-static
+
+  meson \
+    --prefix=/usr \
+    --default-library static build-static
   ninja -C build-static
+
 #  python doxybuild.py \
 #    --doxygen="$(command -v doxygen)" \
 #    --with-dot
-  DESTDIR="${pkgdir}" ninja -C build install
-  DESTDIR="${pkgdir}" ninja -C build-static install
-  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -Dm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
-  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -dm 755 "${pkgdir}/usr/share/doc/${pkgbase}"
-#  cp -a dist/doxygen/jsoncpp-api-html-${pkgver} "${pkgdir}/usr/share/doc/${pkgbase}/html"
+
+  DESTDIR=${pkgdir} ninja -C build install
+  DESTDIR=${pkgdir} ninja -C build-static install
+
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -dm 755 ${pkgdir}/usr/share/doc/${pkgbase}
+
+#  cp -a dist/doxygen/jsoncpp-api-html-${pkgver} ${pkgdir}/usr/share/doc/${pkgbase}/html
 }
