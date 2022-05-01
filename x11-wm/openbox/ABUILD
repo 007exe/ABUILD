@@ -1,12 +1,12 @@
 pkgname=openbox
 pkgver=3.6.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("Highly configurable and lightweight X11 window manager")
-longdesc=("Standards compliant, fast, light-weight, extensible window manager")
+shortdesc=("Highly configurable and lightweight X11 window manager.")
+longdesc=("Standards compliant, fast, light-weight, extensible window manager.")
 
-source=("http://openbox.org/dist/openbox/$pkgname-$pkgver.tar.gz")
+source=("http://openbox.org/dist/openbox/openbox-${pkgver}.tar.gz")
 
 tags=("xapps x11-wm")
 
@@ -20,21 +20,19 @@ etc/xdg/openbox/environment")
 build() {
   go_src_dir
   burn_patches
-# py3.patch modifies configure.ac
   autoreconf -ifv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-x \
     --enable-startup-notification \
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# GNOME Panel is no longer available in the official repositories
-  rm -r "$pkgdir"/usr/bin/{gdm-control,gnome-panel-control,openbox-gnome-session} \
-    "$pkgdir"/usr/share/gnome{,-session} \
-    "$pkgdir"/usr/share/man/man1/openbox-gnome-session.1 \
-    "$pkgdir"/usr/share/xsessions/openbox-gnome.desktop
+  rm -r ${pkgdir}/usr/bin/{gdm-control,gnome-panel-control,openbox-gnome-session} \
+    ${pkgdir}/usr/share/gnome{,-session} \
+    ${pkgdir}/usr/share/man/man1/openbox-gnome-session.1 \
+    ${pkgdir}/usr/share/xsessions/openbox-gnome.desktop
 }
 
