@@ -1,0 +1,22 @@
+pkgname=re2
+_re2ver=2022-04-01
+pkgver=${_re2ver//-}
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fast, safe, thread-friendly regular expression engine.")
+longdesc=("An efficient, principled regular expression library.")
+
+source=("https://github.com/google/re2/archive/$_re2ver.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("gobject-introspection glib2 meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  make prefix=/usr DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
