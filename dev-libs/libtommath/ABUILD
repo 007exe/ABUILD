@@ -1,0 +1,21 @@
+pkgname=libtommath
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Highly optimized and portable routines for integer based number theoretic applications.")
+longdesc=("Optimized and portable routines for integer theoretic applications.")
+
+source=("https://github.com/libtom/libtommath/releases/download/v${pkgver}/ltm-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -f makefile.shared IGNORE_SPEED=1
+  make -f makefile.shared PREFIX=/usr DESTDIR=${pkgdir} INSTALL_GROUP=root install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
