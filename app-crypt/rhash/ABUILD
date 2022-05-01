@@ -1,34 +1,30 @@
 pkgname=rhash
-pkgver=1.4.1
+pkgver=1.4.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Great utility for computing hash sums")
-longdesc=("RHash is a console utility for calculation and verification of magnet links and a wide range of hash sums like  CRC32, MD4, MD5, SHA1, SHA256, SHA512, SHA3, AICH, ED2K, Tiger, DC++ TTH, BitTorrent BTIH, GOST R 34.11-94, RIPEMD-160, HAS-160, EDON-R, Whirlpool and Snefru.")
-
-tags=("develop dev-util")
+shortdesc=("Utility for verifying hash sums of files.")
+longdesc=("Console utility and library for computing and verifying file hash sums.")
 
 source=("https://github.com/rhash/RHash/archive/v$pkgver.tar.gz")
 
-build_deps="glibc"
+tags=("utils app-crypt")
 
-config_files="etc/rhashrc"
+build_deps=("glibc")
+
+config_files=("etc/rhashrc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --extra-cflags="$CFLAGS" \
     --extra-ldflags="$LDFLAGS" \
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-# library, since the makefiles are still broken
-  make -C librhash DESTDIR="$pkgdir" install-lib-headers install-lib-shared install-so-link
-
-# license
-  install -Dm644 COPYING "$pkgdir"/usr/share/licenses/rhash/LICENSE
+  make -C librhash DESTDIR=${pkgdir} install-lib-headers install-lib-shared install-so-link
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/rhash/LICENSE
 }
