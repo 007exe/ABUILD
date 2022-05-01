@@ -1,0 +1,23 @@
+pkgname=libtomcrypt
+pkgver=1.18.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A fairly comprehensive, modular and portable cryptographic toolkit.")
+longdesc=("LibTomCrypt is a comprehensive, modular and portable cryptographic toolkit.")
+
+source=("https://github.com/libtom/$pkgname/releases/download/v$pkgver/${pkgname#libtom}-$pkgver.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("libtommath gmp")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CPPFLAGS+=" -DLTM_DESC -DGMP_DESC -DUSE_LTM"
+  export EXTRALIBS="-ltommath -lgmp"
+  make -f makefile.shared IGNORE_SPEED=1 library test
+  make -f makefile.shared DESTDIR="$pkgdir" PREFIX="/usr" INSTALL_GROUP="root" INSTALL_OPTS="" install
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
