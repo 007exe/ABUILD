@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend libinput capabilities:"
+echo -e "gtk4: libinput debug-gui"
+echo -e "python-pyudev: libinput measure"
+echo -e "python-libevdev: libinput measure"
+echo -e " "
