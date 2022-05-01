@@ -1,27 +1,27 @@
 pkgname=xcb-util-image
 pkgver=0.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Utility libraries for XC Binding - Port of Xlib's XImage and XShmImage functions")
+shortdesc=("Utility libraries for XC Binding - Port of Xlib's XImage and XShmImage functions.")
 longdesc=("The xcb-util-image package provides additional extensions to the XCB library.")
-
-tags=('x11-xcbs xserver')
 
 source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="libxcb xcb-util xorg-util-macros xorgproto"
+tags=("x11-libs libs")
+
+build_deps=("libxcb xcb-util xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -D -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/COPYING
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
