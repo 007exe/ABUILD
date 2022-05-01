@@ -1,0 +1,51 @@
+pkgname=libfbclient
+pkgver=4.0.0.2496
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Client library for Firebird.")
+longdesc=("Client library for Firebird.")
+
+source=("https://github.com/FirebirdSQL/firebird/releases/download/v4.0.0/Firebird-${pkgver}-0.tar.xz")
+
+tags=("libs dev-db")
+
+build_deps=("gcc-libs libtommath libtomcrypt editline unzip re2")
+
+build() {
+  go_src_dir
+  burn_patches
+# Использовать только системные библиотеки
+  rm -r extern/{editline,libtommath,libtomcrypt,zlib}
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-fbmsg=/usr/share/firebird \
+    --without-fbdoc \
+    --without-fblog \
+    --without-fbintl \
+    --without-fbmisc \
+    --without-fbhelp \
+    --without-fbsbin \
+    --without-fbconf \
+    --without-fbglock \
+    --without-fbtzdata \
+    --without-fbsample \
+    --without-fbplugins \
+    --without-fbsample-db \
+    --without-fbsecure-db \
+    --with-system-editline \
+    --disable-static
+  make -j${numjobs}
+  mkdir -p ${pkgdir}/usr/{bin,share/{firebird,licenses/$pkgname}}
+  cp -R gen/Release/firebird/{lib,include} ${pkgdir}/usr
+  rm -f ${pkgdir}/usr/lib/{libdecFloat.a,libedit.a}
+
+  install -m644 gen/Release/firebird/*.msg ${pkgdir}/usr/share/firebird
+  install -m755 gen/Release/firebird/bin/fb_config ${pkgdir}/usr/bin
+
+# Добавим поддержку libgds
+  cd ${pkgdir}/usr/lib
+  ln -s libfbclient.so libgds.so.0
+  ln -s libfbclient.so libgds.so
+}
