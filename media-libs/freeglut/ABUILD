@@ -1,16 +1,16 @@
 pkgname=freeglut
-pkgver=3.2.1
+pkgver=3.2.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Provides functionality for small OpenGL programs")
+shortdesc=("Provides functionality for small OpenGL programs.")
 longdesc=("Freeglut is intended to be a 100% compatible, completely opensourced clone of the GLUT library. GLUT is a window system independent toolkit for writing OpenGL programs, implementing a simple windowing API, which makes learning about and exploring OpenGL programming very easy.")
 
 source=("https://downloads.sourceforge.net/freeglut/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs media-libs compat32"
+tags=("libs media-libs")
 
-build_deps="mesa glu libxxf86vm cmake libxi libxrandr libglvnd"
+build_deps=("mesa glu libxxf86vm cmake libxi libxrandr libglvnd")
 
 build() {
   go_src_dir
@@ -19,10 +19,10 @@ build() {
   cmake -Bbuild \
     -DFREEGLUT_BUILD_STATIC_LIBS=OFF \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=None
   cmake --build build
-  DESTDIR="$pkgdir" cmake --build build --target install
-  ln -sr "$pkgdir"/usr/lib${LIBDIRSUFFIX}/pkgconfig/{glut,freeglut}.pc
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  DESTDIR=${pkgdir} cmake --build build --target install
+  ln -sr ${pkgdir}/usr/lib/pkgconfig/{glut,freeglut}.pc
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
