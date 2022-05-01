@@ -1,27 +1,27 @@
 pkgname=unixodbc
 pkgver=2.3.9
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc="Unix ODBC driver manager and database drivers"
-longdesc="UnixODBC is a free/open specification for providing application developers with a predictable API with which to access Data Sources. Data Sources include SQL Servers and any Data Source with an ODBC Driver."
+shortdesc=("Complete ODBC driver manager.")
+longdesc=("UnixODBC is a free/open specification for providing application developers with a predictable API with which to access Data Sources. Data Sources include SQL Servers and any Data Source with an ODBC Driver.")
 
 source=(http://www.unixodbc.org/unixODBC-$pkgver.tar.gz)
 
-tags="libs dev-db"
+tags=("libs dev-db")
 
-build_deps="make gcc readline coreutils binutils grep kernel-headers"
+build_deps=("readline libltdl")
 
-config_files="/etc/odbc.ini
-/etc/odbcinst.ini"
+config_files=("/etc/odbc.ini
+/etc/odbcinst.ini")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-touch "$pkgdir"/etc/{odbc,odbcinst}.ini
+  touch ${pkgdir}/etc/{odbc,odbcinst}.ini
 }
