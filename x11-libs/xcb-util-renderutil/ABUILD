@@ -1,23 +1,23 @@
 pkgname=xcb-util-renderutil
 pkgver=0.3.9
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Utility libraries for XC Binding - Convenience functions for the Render extension")
+shortdesc=("Utility libraries for XC Binding - Convenience functions for the Render extension.")
 longdesc=("The xcb-util-renderutil package provides additional extensions to the XCB library.")
-
-tags=('x11-xcbs xserver')
 
 source=("https://xcb.freedesktop.org/dist/xcb-util-renderutil-${pkgver}.tar.bz2")
 
-build_deps="libxcb xorg-util-macros xorgproto"
+tags=("x11-libs libs")
+
+build_deps=("libxcb xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
