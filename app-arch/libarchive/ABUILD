@@ -1,27 +1,28 @@
 pkgname=libarchive
-pkgver=3.5.2
+pkgver=3.6.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Library for reading and writing streaming archives")
-longdesc=("Libarchive is a programming library that can create and read several different streaming archive formats, including most popular tar variants and several cpio formats.")
+shortdesc=("Library for reading and writing streaming archives.")
+longdesc=("The libarchive library provides a single interface for reading/writing various compression formats.")
+
+source=("http://www.libarchive.org/downloads/$pkgname-${pkgver}.tar.gz")
 
 tags=("app-arch libs")
 
-build_deps="acl bzip2 expat lz4 openssl xz zlib zstd"
-
-source=("http://www.libarchive.org/downloads/$pkgname-${pkgver}.tar.gz")
+build_deps=("acl bzip2 expat lz4 openssl xz zlib zstd")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --without-xml2 \
     --without-nettle \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/libarchive/COPYING"
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/libarchive/COPYING
 }
