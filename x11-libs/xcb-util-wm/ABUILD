@@ -1,23 +1,23 @@
 pkgname=xcb-util-wm
 pkgver=0.4.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Utility libraries for XC Binding - client and window-manager helpers for ICCCM")
+shortdesc=("Utility libraries for XC Binding - client and window-manager helpers for ICCCM.")
 longdesc=("The xcb-util-wm package contains libraries which provide client and window-manager helpers for EWMH and ICCCM.")
-
-tags=('x11-xcbs xserver')
 
 source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="libxcb xorg-util-macros xorgproto"
+tags=("x11-libs libs")
+
+build_deps=("libxcb xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
