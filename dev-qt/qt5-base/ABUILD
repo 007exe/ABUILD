@@ -1,40 +1,44 @@
 pkgname=qt5-base
-pkgver=5.15.2
-_pkgfqn=qtbase
-pkgbuild=3
+pkgver=5.15.3+r145
+strict_version=1
+_commit=cfa044e74c4f3be46fe2f177d022af3321766b1f
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework")
 longdesc=("Qt5 is a cross-platform application framework that is widely used for developing application software with a graphical user interface (GUI) (in which cases Qt5 is classified as a widget toolkit), and also used for developing non-GUI programs such as command-line tools and consoles for servers. One of the major users of Qt is KDE Frameworks 5 (KF5).")
 
-tags=('libs x11-libs')
+source=("git:https://invent.kde.org/qt/qt/qtbase")
 
-source=("https://download.qt.io/archive/qt/${pkgver%.*}/${pkgver}/single/qt-everywhere-src-${pkgver}.tar.xz")
-# libfbclient freetds
-build_deps=("unixodbc postgresql-libs alsa-lib gtk3 libpulse cups vulkan-headers cups glib2 harfbuzz icu libjpeg-turbo libpng libtiff libwebp libxkbcommon mesa mtdev pcre2 sqlite egl-wayland wayland wayland-protocols xcb-util-image xcb-util-keysyms xcb-util-renderutil xcb-util-wm gst-plugins-base-libs mariadb-libs jasper")
+tags=("libs x11-libs")
 
-pkglist="qt5-xcb-private-headers"
+build_deps=("unixodbc postgresql-libs alsa-lib gtk3 libpulse cups vulkan-headers cups glib2 harfbuzz icu libjpeg-turbo
+libpng libtiff libwebp libxkbcommon mesa mtdev pcre2 sqlite egl-wayland wayland wayland-protocols xcb-util-image git
+xcb-util-keysyms xcb-util-renderutil xcb-util-wm gst-plugins-base-libs mariadb-libs jasper freetds libfbclient")
+
+# NOTE: Это опциональные зависимости
+removedep=("qt5-svg qt5-wayland qt5-translations postgresql-libs mariadb-libs unixodbc libfbclient freetds gtk3 perl clang")
+
+pkglist=("qt5-xcb-private-headers")
 
 build() {
-  go_src_dir
+#  mv ${srcdir}/qtbase-v${pkgver}-lts-lgpl ${srcdir}/qtbase
+  mv ${srcdir}/qt5-base_git_qtbase.src ${srcdir}/qtbase
+  cd ${srcdir}/qtbase
+  git checkout ${_commit}
   burn_patches
-# Next fix some issues using gcc-11
-  sed -i '/utility/a #include <limits>'     qtbase/src/corelib/global/qglobal.h         &&
-  sed -i '/string/a #include <limits>'      qtbase/src/corelib/global/qfloat16.h        &&
-  sed -i '/qbytearray/a #include <limits>'  qtbase/src/corelib/text/qbytearraymatcher.h &&
-  sed -i '/type_traits/a #include <limits>' qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
   ./configure \
     -confirm-license \
     -opensource -v \
     -prefix /usr \
     -docdir /usr/share/doc/qt \
     -headerdir /usr/include/qt \
-    -libdir /usr/lib$LIBDIRSUFFIX \
-    -archdatadir /usr/lib${LIBDIRSUFFIX}/qt \
+    -libdir /usr/lib \
+    -archdatadir /usr/lib/qt \
     -datadir /usr/share/qt \
     -sysconfdir /etc/xdg \
     -examplesdir /usr/share/doc/qt/examples \
-    -plugin-sql-{sqlite,odbc} \
+    -plugin-sql-{psql,mysql,sqlite,odbc,ibase} \
     -system-sqlite \
     -openssl-linked \
     -nomake examples \
@@ -45,37 +49,33 @@ build() {
     -no-use-gold-linker \
     -reduce-relocations \
     -no-strip
-#-plugin-sql-{psql,mysql,sqlite,odbc,ibase}
   make -j${numjobs}
-  make INSTALL_ROOT="${pkgdir}" install
+  make INSTALL_ROOT=${pkgdir} install
 
-  install -Dm644 LICENSE* -t "$pkgdir"/usr/share/licenses/qt5-base
+  install -Dm644 LICENSE* -t ${pkgdir}/usr/share/licenses/qt5-base
 
-# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
-  find "${pkgdir}/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' \
-    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+# Отбросьте QMAKE_PRL_BUILD_DIR, паоскольку он ссылаетесь на каталог сборки
+  find ${pkgdir}/usr/lib -type f -name '*.prl'  -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
-# Fix wrong qmake path in pri file
-  sed -i "s|${srcdir}/${_pkgfqn}|/usr|" \
-    "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/qt/mkspecs/modules/qt_lib_bootstrap_private.pri
+# Исправляем не правильный пут к qmake в файле pri
+  sed -i "s|${srcdir}/qtbase|/usr|" ${pkgdir}/usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri
 
-# Symlinks for backwards compatibility
-  for b in "${pkgdir}"/usr/bin/*; do
-    ln -s $(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt5
+# Симлинки для обратной совместимости
+  for b in ${pkgdir}/usr/bin/*; do
+    ln -s $(basename $b) ${pkgdir}/usr/bin/$(basename $b)-qt5
   done
 }
 
 qt5-xcb-private-headers() {
   pkgname=qt5-xcb-private-headers
-  shortdesc=("Private headers for Qt5 Xcb")
+  shortdesc=("Private headers for Qt5 Xcb.")
   longdesc=("Qt5 is a cross-platform application framework that is widely used for developing application software with a graphical user interface (GUI) (in which cases Qt5 is classified as a widget toolkit), and also used for developing non-GUI programs such as command-line tools and consoles for servers. One of the major users of Qt is KDE Frameworks 5 (KF5).")
-  arch="noarch"
-  adddep="qt5-base=$pkgver"
+  arch=("noarch")
+  adddep=("qt5-base=${pkgver}")
 }
 
 qt5-xcb-private-headers_prep() {
-  go_src_dir
-  install -d -m755 "$pkgdir"/usr/include/qtxcb-private
-  cd ${_pkgfqn}
-  cp -r src/plugins/platforms/xcb/*.h "$pkgdir"/usr/include/qtxcb-private/
+  cd ${srcdir}/qtbase
+  install -d -m755 ${pkgdir}/usr/include/qtxcb-private
+  cp -r ${srcdir}/qtbase/src/plugins/platforms/xcb/*.h ${pkgdir}/usr/include/qtxcb-private/
 }
