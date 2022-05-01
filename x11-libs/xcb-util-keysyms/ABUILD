@@ -1,23 +1,23 @@
 pkgname=xcb-util-keysyms
 pkgver=0.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Utility libraries for XC Binding - Standard X key constants and conversion to/from keycodes")
+shortdesc=("Utility libraries for XC Binding - Standard X key constants and conversion to/from keycodes.")
 longdesc=("The xcb-util-keysyms package contains a library for handling standard X key constants and conversion to/from keycodes.")
-
-tags=('x11-xcbs xserver')
 
 source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="libxcb xorg-util-macros xorgproto"
+tags=("x11-libs libs")
+
+build_deps=("libxcb xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
