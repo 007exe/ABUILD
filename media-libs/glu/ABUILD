@@ -1,26 +1,26 @@
 pkgname=glu
 pkgver=9.0.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Mesa OpenGL Utility library")
+shortdesc=("Mesa OpenGL Utility library.")
 longdesc=("This package provides the Mesa OpenGL Utility library.")
-
-tags=("x11-libs xserver")
 
 source=("ftp://ftp.freedesktop.org/pub/mesa/$pkgname/$pkgname-$pkgver.tar.xz")
 
-build_deps="meson mesa"
+tags=("libs media-libs")
+
+build_deps=("meson mesa")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
+    -D libdir=/usr/lib \
     -D default_library=shared
-# Print config
   meson configure build
   ninja -C build
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
