@@ -1,16 +1,16 @@
 pkgname=nspr
-pkgver=4.32
+pkgver=4.33
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Netscape Portable Runtime")
-longdesc=("NSPR provides platform independence for non-GUI operating system facilities. These facilities include threads, thread synchronization, normal file and network I/O, interval timing and calendar time, basic memory management (malloc and free) and shared library linking.")
+shortdesc=("Netscape Portable Runtime.")
+longdesc=("Netscape Portable Runtime (NSPR) provides a platform-neutral API for system level and libc like functions.")
 
 source=("https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${pkgver}/src/nspr-${pkgver}.tar.gz")
 
-tags="net-libs libs"
+tags=("net-libs libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   cd nspr
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --includedir=/usr/include/nspr \
     --enable-optimize \
     --disable-debug \
@@ -26,7 +26,8 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  ln -s nspr.pc "$pkgdir/usr/lib${LIBDIRSUFFIX}/pkgconfig/mozilla-nspr.pc"
-  rm -r "$pkgdir"/usr/bin/{compile-et.pl,prerr.properties} \
-        "$pkgdir"/usr/include/nspr/md
+  ln -s nspr.pc ${pkgdir}/usr/lib/pkgconfig/mozilla-nspr.pc
+
+  rm -r ${pkgdir}/usr/bin/{compile-et.pl,prerr.properties}
+  rm -r ${pkgdir}/usr/include/nspr/md
 }
