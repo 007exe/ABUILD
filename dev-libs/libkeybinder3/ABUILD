@@ -1,26 +1,26 @@
 pkgname=libkeybinder3
 pkgver=0.3.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A library for registering global keyboard shortcuts")
+shortdesc=("A library for registering global keyboard shortcuts.")
 longdesc=("The keybinder-3.0 package contains a utility library registering global X keyboard shortcuts for GTK+-3.")
 
 source=("https://github.com/kupferlauncher/keybinder/releases/download/keybinder-3.0-v$pkgver/keybinder-3.0-$pkgver.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
-build_deps="gtk-doc gobject-introspection gtk3"
+build_deps=("gtk-doc gobject-introspection gtk3")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-gtk-doc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
