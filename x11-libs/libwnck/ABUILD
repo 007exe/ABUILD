@@ -1,30 +1,30 @@
 pkgname=libwnck
 pkgver=2.31.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Window Navigator Construction Kit")
+shortdesc=("Window Navigator Construction Kit.")
 longdesc=("The libwnck package contains a Window Navigator Construction Kit.")
 
 source=("https://download.gnome.org/sources/${pkgname}/${pkgver:0:4}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs x11-libs")
 
-build_deps="libxt intltool gobject-introspection gtk2 startup-notification libxres"
+build_deps=("libxt intltool gobject-introspection gtk2 startup-notification libxres")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-#The binaries are shipped in libwnck3
-    rm -f "${pkgdir}/usr/bin/wnckprop"
-    rm -f "${pkgdir}/usr/bin/wnck-urgency-monitor"
-    rmdir "${pkgdir}/usr/bin"
+# Эти файлы находяться в пакете libwnck3
+    rm -f ${pkgdir}/usr/bin/wnckprop
+    rm -f ${pkgdir}/usr/bin/wnck-urgency-monitor
+    rmdir ${pkgdir}/usr/bin
 }
