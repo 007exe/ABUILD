@@ -1,24 +1,25 @@
 pkgname=parted
-pkgver=3.4
+pkgver=3.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Flexible partitioning tool"
-longdesc="GNU Parted is a program that allows you to create, destroy, resize, move and copy hard disk partitions. This is useful for creating space for new operating systems, reorganising disk usage, and copying data to new hard disks."
-
-tags=('base sys-apps')
+shortdesc=("A program for creating, destroying, resizing, checking and copying partitions.")
+longdesc=("The Parted package is a disk partitioning and partition resizing tool.")
 
 source=("http://ftp.gnu.org/gnu/parted/${pkgname}-${pkgver}.tar.xz")
 
-build_deps='glibc util-linux-ng'
+tags=("console sys-block")
+
+build_deps=("device-mapper util-linux")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --disable-rpath
+    --libdir=/usr/lib \
+    --disable-rpath \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
