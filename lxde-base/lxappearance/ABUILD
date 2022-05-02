@@ -1,24 +1,23 @@
 pkgname=lxappearance
 pkgver=0.6.3
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Feature-rich GTK+ theme switcher of the LXDE Desktop")
+shortdesc=("Feature-rich GTK+ theme switcher of the LXDE Desktop.")
 longdesc=("The LXAppearance package contains a desktop-independent theme switcher for GTK+.")
 
 source=("https://downloads.sourceforge.net/lxde/lxappearance-$pkgver.tar.xz")
 
-tags="lxde-base lxde"
+tags=("lxde-base lxde")
 
-build_deps="intltool dbus-glib gtk3"
-
+build_deps=("intltool dbus-glib gtk3")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-dbus \
     --enable-gtk3
