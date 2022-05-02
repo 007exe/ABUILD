@@ -1,16 +1,16 @@
 pkgname=libgcrypt
-pkgver=1.9.4
+pkgver=1.10.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("General purpose cryptographic library based on the code from GnuPG")
+shortdesc=("General purpose cryptographic library based on the code from GnuPG.")
 longdesc=("The libgcrypt package contains a general purpose crypto library based on the code used in GnuPG. The library provides a high level interface to cryptographic building blocks using an extendable and flexible API.")
-
-tags=("dev-libs network")
 
 source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="libgpg-error autoconf"
+tags=("dev-libs libs")
+
+build_deps=("libgpg-error autoconf")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   autoreconf -vfi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-padlock-support
   make -j${numjobs}
