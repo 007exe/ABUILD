@@ -1,14 +1,14 @@
 pkgname=lxmenu-data
 pkgver=0.1.5
-pkgbuild=1
-arch=('noarch')
+pkgbuild=2
+arch=("noarch")
 
 shortdesc=("Freedesktop.org desktop menus for LXDE.")
 longdesc=("The LXMenu Data package provides files required to build freedesktop.org menu spec-compliant desktop menus for LXDE.")
 
 source=("https://downloads.sourceforge.net/lxde/$pkgname-$pkgver.tar.xz")
 
-tags="lxde lxde-base"
+tags=("lxde lxde-base")
 
 build_deps="intltool"
 
