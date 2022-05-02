@@ -1,26 +1,21 @@
 pkgname=nss
-pkgver=3.70
+pkgver=3.78
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Network Security Services")
+shortdesc=("Network Security Services.")
 longdesc=("The Network Security Services (NSS) package is a set of libraries designed to support cross-platform development of security-enabled client and server applications. Applications built with NSS can support SSL v2 and v3, TLS, PKCS #5, PKCS #7, PKCS #11, PKCS #12, S/MIME, X.509 v3 certificates, and other security standards. This is useful for implementing SSL and S/MIME or other Internet security standards into an application.")
 
 source=("https://archive.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_}_RTM/src/nss-${pkgver}.tar.gz")
 
-tags="libs net-libs"
+tags=("libs net-libs")
 
-build_deps="nspr sqlite zlib p11-kit gyp"
-
-#pkglist="ca-certificates-mozilla"
-
-before_build() {
-  go_src_dir
-  burn_patches
-}
+# mercurial
+build_deps=("nspr sqlite zlib p11-kit gyp perl python gyp")
 
 build(){
   go_src_dir
+
   cd nss
   ./build.sh \
     --target x64 \
@@ -29,11 +24,10 @@ build(){
     --system-nspr \
     --enable-libpkix \
     --disable-tests
-}
+  cd ..
+  local nsprver="$(pkg-config --modversion nspr)"
+  local libdir=/usr/lib
 
-after_build() {
-  go_src_dir
-local libdir=/usr/lib${LIBDIRSUFFIX} nsprver="$(pkg-config --modversion nspr)"
   sed nss/pkg/pkg-config/nss.pc.in \
     -e "s,%libdir%,$libdir,g" \
     -e "s,%prefix%,/usr,g" \
@@ -41,13 +35,13 @@ local libdir=/usr/lib${LIBDIRSUFFIX} nsprver="$(pkg-config --modversion nspr)"
     -e "s,%includedir%,/usr/include/nss,g" \
     -e "s,%NSPR_VERSION%,$nsprver,g" \
     -e "s,%NSS_VERSION%,$pkgver,g" |
-    install -Dm644 /dev/stdin "$pkgdir$libdir/pkgconfig/nss.pc"
+    install -Dm644 /dev/stdin ${pkgdir}${libdir}/pkgconfig/nss.pc
 
-  ln -s nss.pc "$pkgdir$libdir/pkgconfig/mozilla-nss.pc"
+  ln -s nss.pc ${pkgdir}${libdir}/pkgconfig/mozilla-nss.pc
 
-  install -Dt "$pkgdir$libdir" dist/Release/lib/*.so
+  install -Dt ${pkgdir}${libdir} dist/Release/lib/*.so
 
-local vmajor vminor vpatch
+  local vmajor vminor vpatch
   { read vmajor; read vminor; read vpatch; } \
     < <(awk '/#define.*NSS_V(MAJOR|MINOR|PATCH)/ {print $3}' nss/lib/nss/nss.h)
 
@@ -59,29 +53,16 @@ local vmajor vminor vpatch
     -e "s,@MOD_MAJOR_VERSION@,$vmajor,g" \
     -e "s,@MOD_MINOR_VERSION@,$vminor,g" \
     -e "s,@MOD_PATCH_VERSION@,$vpatch,g" |
-    install -D /dev/stdin "$pkgdir/usr/bin/nss-config"
+    install -D /dev/stdin ${pkgdir}/usr/bin/nss-config
 
-  install -Dt "$pkgdir/usr/bin" \
+  install -Dt ${pkgdir}/usr/bin \
     dist/Release/bin/{*util,shlibsign,signtool,signver,ssltap}
 
-  install -Dt "$pkgdir/usr/include/nss" -m644 dist/public/nss/*.h
+  install -Dt ${pkgdir}/usr/include/nss -m644 dist/public/nss/*.h
 
-  install -Dt "$pkgdir/usr/share/man/man1" -m644 \
+  install -Dt ${pkgdir}/usr/share/man/man1 -m644 \
     nss/doc/nroff/{*util,signtool,signver,ssltap}.1
 
-# Replace built-in trust with p11-kit connection
-  ln -s pkcs11/p11-kit-trust.so "$pkgdir$libdir/p11-kit-trust.so"
-  ln -sf p11-kit-trust.so "$pkgdir$libdir/libnssckbi.so"
-}
-
-
-ca-certificates-mozilla() {
-  pkgname=ca-certificates-mozilla
-  shortdesc="Mozilla's set of trusted CA certificates"
-  arch=('noarch')
-  adddep=ca-certificates
-}
-
-ca-certificates-mozilla_prep() {
-  install -Dm644 ca-bundle.trust.p11-kit "$pkgdir/usr/share/ca-certificates/trust-source/mozilla.trust.p11-kit"
+  ln -s pkcs11/p11-kit-trust.so ${pkgdir}${libdir}/p11-kit-trust.so
+  ln -sf p11-kit-trust.so ${pkgdir}${libdir}/libnssckbi.so
 }
