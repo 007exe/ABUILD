@@ -1,63 +1,60 @@
 pkgname=gpgme
-pkgver=1.16.0
+pkgver=1.17.1
 pkgbuild=1
 arch=("auto")
+# Получаем версию python
+_python_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4)
 
-shortdesc=("A C wrapper library for GnuPG")
+shortdesc=("A C wrapper library for GnuPG.")
 longdesc=("The GPGME package is a C library that allows cryptography support to be added to a program. It is designed to make access to public key crypto engines like GnuPG or GpgSM easier for applications. GPGME provides a high-level crypto API for encryption, decryption, signing, signature verification and key management.")
-
-tags=("app-crypt network")
 
 source=("https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${pkgver}.tar.bz2")
 
-build_deps="libgpg-error gnupg qt5-base python swig"
+tags=("app-crypt libs")
 
-pkglist="qgpgme python-gpgme"
+build_deps=("libgpg-error gnupg qt5-base python swig")
+
+pkglist=("qgpgme python-gpgme")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --disable-fd-passing \
     --enable-languages=cpp,qt,python \
     --disable-gpgsm-test
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-# split qgpgme
-#  rm -r "${pkgdir}"/usr/include/{qgpgme,QGpgME}/
-#  rm -r "${pkgdir}"/usr/lib$LIBDIRSUFFIX/{cmake/QGpgme/,libqgpgme.*}
-  rm -r "${pkgdir}"/usr/lib$LIBDIRSUFFIX/python*
+# Находится в пакетах qgpgme python-gpgme
+  rm -r ${pkgdir}/usr/include/{qgpgme,QGpgME}/
+  rm -r ${pkgdir}/usr/lib/{cmake/QGpgme/,libqgpgme.*}
+  rm -r ${pkgdir}/usr/lib/python*
 }
 
 qgpgme() {
   pkgname=qgpgme
   shortdesc=("Qt bindings for GPGme")
   longdesc=("The GPGME package is a C library that allows cryptography support to be added to a program. It is designed to make access to public key crypto engines like GnuPG or GpgSM easier for applications. GPGME provides a high-level crypto API for encryption, decryption, signing, signature verification and key management.")
-  adddep="gpgme"
+  adddep=("gpgme=${pkgver}")
 }
 
 qgpgme_prep() {
   go_src_dir
-#  cd lang/qt
-#  make DESTDIR="${pkgdir}" install
-  install -d ${pkgdir}/usr/{include,lib$LIBDIRSUFFIX/cmake}
-  mv ${p_pkgdir}/usr/include/{qgpgme,QGpgME}/ ${pkgdir}/usr/include/
-  mv ${p_pkgdir}/usr/lib$LIBDIRSUFFIX/libqgpgme.* ${pkgdir}/usr/lib$LIBDIRSUFFIX/
-  mv ${p_pkgdir}/usr/lib$LIBDIRSUFFIX/cmake/QGpgme/ ${pkgdir}/usr/lib$LIBDIRSUFFIX/cmake
+  cd lang/qt
+  make DESTDIR=${pkgdir} install
 }
 
 python-gpgme() {
   pkgname=python-gpgme
   shortdesc=("Python bindings for GPGme")
   longdesc=("The GPGME package is a C library that allows cryptography support to be added to a program. It is designed to make access to public key crypto engines like GnuPG or GpgSM easier for applications. GPGME provides a high-level crypto API for encryption, decryption, signing, signature verification and key management.")
-  adddep="gpgme"
+  adddep=("gpgme=${pkgver}")
 }
 
 python-gpgme_prep() {
   go_src_dir
   cd lang/python
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
