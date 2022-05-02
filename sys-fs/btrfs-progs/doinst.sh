@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend btrfs-progs capabilities:"
+echo -e "python: libbtrfsutil python bindings"
+echo -e "e2fsprogs: btrfs-convert"
+echo -e "reiserfsprogs: btrfs-convert"
+echo -e " "

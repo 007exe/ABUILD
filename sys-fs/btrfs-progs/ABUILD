@@ -1,30 +1,30 @@
 pkgname=btrfs-progs
-pkgver=5.14
+pkgver=5.17
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Userspace programs for btrfs")
+shortdesc=("Btrfs filesystem utilities.")
 longdesc=("The btrfs-progs package contains administration and debugging tools for the B-tree file system (btrfs).")
 
 source=("https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v$pkgver.tar.xz")
 
-tags="base sys-fs"
+tags=("utils sys-fs")
 
-build_deps="asciidoc xmlto python python-setuptools e2fsprogs reiserfsprogs glibc util-linux-ng lzo zlib zstd libgcrypt"
+build_deps=("asciidoc xmlto python python-setuptools e2fsprogs reiserfsprogs glibc util-linux-ng lzo zlib zstd libgcrypt")
 
-build()
-{
+# NOTE: Это опциональные зависимости
+removedep=("python e2fsprogs reiserfsprogs")
+
+build(){
   go_src_dir
   burn_patches
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --bindir=/sbin \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --with-crypto=libgcrypt
   make -j${numjobs}
-  make DESTDIR="$pkgdir" install install_python
+  make DESTDIR=${pkgdir} install install_python
 
-# install bash completion (FS#44618)
-  install -Dm644 btrfs-completion "$pkgdir/usr/share/bash-completion/completions/btrfs"
+  install -Dm644 btrfs-completion ${pkgdir}/usr/share/bash-completion/completions/btrfs
 }
