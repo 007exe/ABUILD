@@ -1,16 +1,16 @@
 pkgname=volume_key
 pkgver=0.3.12
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A library for manipulating storage volume encryption keys and storing them separately from volumes to handle forgotten passphrases")
+shortdesc=("A library for manipulating storage volume encryption keys and storing them separately from volumes to handle forgotten passphrases.")
 longdesc=("The volume_key package provides a library for manipulating storage volume encryption keys and storing them separately from volumes to handle forgotten passphrases.")
 
 source=("https://releases.pagure.org/volume_key/volume_key-$pkgver.tar.xz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
-build_deps="cryptsetup nss gpgme python swig"
+build_deps=("cryptsetup nss gpgme python swig")
 
 build() {
   go_src_dir
@@ -19,8 +19,10 @@ build() {
   export CFLAGS+=" $(python3-config --includes)"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --without-python3
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+
+  sed -i '/#include <config.h>/d' ${pkgdir}/usr/include/volume_key/libvolume_key.h
 }
