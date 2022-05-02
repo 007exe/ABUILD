@@ -1,16 +1,16 @@
 pkgname=cryptsetup
-pkgver=2.4.1
+pkgver=2.4.3
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Userspace setup tool for transparent encryption of block devices using dm-crypt")
-longdesc=("LUKS is the upcoming standard for Linux hard disk encryption. By providing a standard on-disk-format, it does not only facilitate compatibility among distributions, but also provide secure management of multiple user passwords. In contrast to existing solution, LUKS stores all setup necessary setup information in the partition header, enabling the user to transport or migrate his data seamlessly. LUKS for dm-crypt is implemented in cryptsetup. cryptsetup-luks is as a complete replacement for the original cryptsetup. It provides all the functionally of the original version plus all LUKS features, that are accessible by luks* action.")
-
-tags=("base sys-fs")
+shortdesc=("Userspace setup tool for transparent encryption of block devices using dm-crypt.")
+longdesc=("cryptsetup is used to set up transparent encryption of block devices using the kernel crypto API.")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/utils/cryptsetup/v${pkgver%.*}/cryptsetup-${pkgver}.tar.gz")
 
-build_deps="device-mapper openssl popt util-linux-ng json-c argon2"
+tags=("utils sys-fs")
+
+build_deps=("device-mapper openssl popt util-linux json-c argon2")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --enable-libargon2 \
     --disable-ssh-token \
     --enable-cryptsetup-reencrypt \
@@ -27,6 +27,5 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# install docs
-  install -D -m0644 -t "${pkgdir}"/usr/share/doc/cryptsetup/ FAQ docs/{Keyring,LUKS2-locking}.txt
+  install -D -m0644 -t ${pkgdir}/usr/share/doc/cryptsetup/ FAQ docs/{Keyring,LUKS2-locking}.txt
 }
