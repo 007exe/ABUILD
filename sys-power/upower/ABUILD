@@ -1,30 +1,29 @@
 pkgname=upower
-pkgver=0.99.13
+pkgver=0.99.17
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Abstraction for enumerating power devices, listening to device events and querying history and statistics")
+shortdesc=("Abstraction for enumerating power devices, listening to device events and querying history and statistics.")
 longdesc=("The UPower package provides an interface to enumerating power devices, listening to device events and querying history and statistics. Any application or service on the system can access the org.freedesktop.UPower service via the system message bus.")
 
-source=("https://gitlab.freedesktop.org/upower/upower/-/archive/UPOWER_${pkgver//./_}/upower-UPOWER_${pkgver//./_}.tar.gz")
+source=("https://gitlab.freedesktop.org/upower/upower/-/archive/v${pkgver}/upower-v${pkgver}.tar.gz")
 
-tags="base sys-power"
+tags=("utils sys-power")
 
-build_deps="docbook-xsl gobject-introspection python git gtk-doc libgudev"
+build_deps=("eudev docbook-xsl gobject-introspection python git gtk-doc meson")
 
-config_files="/etc/UPower/UPower.conf"
+config_files=("/etc/UPower/UPower.conf")
 
 build() {
   go_src_dir
   burn_patches
-  ./autogen.sh
-  ./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --disable-static \
-    --disable-gtk-doc
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D udevrulesdir=/usr/lib/udev/rules.d \
+    -D systemdsystemunitdir=no \
+    -D man=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
