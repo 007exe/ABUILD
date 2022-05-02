@@ -1,25 +1,25 @@
 pkgname=libassuan
 pkgver=2.5.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("IPC library used by some GnuPG related software")
+shortdesc=("IPC library used by some GnuPG related software.")
 longdesc=("The libassuan package contains an inter process communication library used by some of the other GnuPG related packages. libassuan's primary use is to allow a client to interact with a non-persistent server. libassuan is not, however, limited to use with GnuPG servers and clients. It was designed to be flexible enough to meet the demands of many transaction based environments with non-persistent servers.")
-
-tags=("dev-libs network")
 
 source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="glibc libgpg-error"
+tags=("dev-libs libs")
+
+build_deps=("glibc libgpg-error")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -vDm 644 {AUTHORS,NEWS,README,ChangeLog} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -vDm 644 {AUTHORS,NEWS,README,ChangeLog} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
