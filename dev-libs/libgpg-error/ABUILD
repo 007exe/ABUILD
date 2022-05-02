@@ -1,24 +1,25 @@
 pkgname=libgpg-error
-pkgver=1.42
+pkgver=1.45
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Library containing common error values for GnuPG components")
-longdesc=("This is a library that defines common error values for all GnuPG components.  Among these are GPG, GPGSM, GPGME, GPG-Agent, libgcrypt, pinentry, SmartCard Daemon and possibly more in the future.")
-
-tags=("dev-libs network")
+shortdesc=("Support library for libgcrypt.")
+longdesc=("The libgpg-error package contains a library that defines common error values for all GnuPG components.")
 
 source=("https://www.gnupg.org/ftp/gcrypt/libgpg-error/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="glibc"
+tags=("dev-libs libs")
 
-adddep="bash"
+build_deps=("glibc")
+
+adddep=("bash")
 
 build() {
   go_src_dir
+  autoreconf -vfi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
