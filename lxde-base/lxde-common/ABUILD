@@ -1,19 +1,19 @@
 pkgname=lxde-common
 pkgver=0.99.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Common files of the LXDE Desktop")
+shortdesc=("Common files of the LXDE Desktop.")
 longdesc=("The LXDE Common package provides a set of default configuration for LXDE.")
 
 source=("https://downloads.sourceforge.net/lxde/$pkgname-$pkgver.tar.xz")
 
-tags="lxde lxde-base"
+tags=("lxde lxde-base")
 
-build_deps="intltool"
+build_deps=("intltool")
 
-config_files="etc/xdg/lxsession/LXDE/desktop.conf
-etc/xdg/lxsession/LXDE/autostart"
+config_files=("etc/xdg/lxsession/LXDE/desktop.conf
+etc/xdg/lxsession/LXDE/autostart")
 
 build() {
   go_src_dir
@@ -21,23 +21,12 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# Add xinitrc
-  mkdir -p $pkgdir/etc/X11/xinit
-  install -m755 $filedir/xinitrc.lxde $pkgdir/etc/X11/xinit/
-
-# fix lxde-logout on lxpanel
-  mkdir -p $pkgdir/usr/share/applications
-  cat $filedir/lxde-logout.desktop > $pkgdir/usr/share/applications/lxde-logout.desktop
-
-# add lock screen
-  cat $filedir/lxde-lock-screen.desktop > $pkgdir/usr/share/applications/lxde-lock-screen.desktop
-
-# add new lxde wallpapers
-  tar -xvjf $filedir/lxde-new-wallpapers.tar.bz2 -C $pkgdir/usr/share/lxde/wallpapers
-  mv $pkgdir/usr/share/lxde/wallpapers/lxde-new-wallpapers/* $pkgdir/usr/share/lxde/wallpapers/
-  rm -rf $pkgdir/usr/share/lxde/wallpapers/lxde-new-wallpapers
+# Дополнительные обои
+  tar -xvjf ${filedir}/lxde-new-wallpapers.tar.bz2 -C ${pkgdir}/usr/share/lxde/wallpapers
+  mv ${pkgdir}/usr/share/lxde/wallpapers/lxde-new-wallpapers/* ${pkgdir}/usr/share/lxde/wallpapers/
+  rm -rf ${pkgdir}/usr/share/lxde/wallpapers/lxde-new-wallpapers
 }
