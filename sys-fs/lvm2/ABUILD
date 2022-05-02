@@ -58,7 +58,7 @@ build() {
   install -d ${pkgdir}/etc/lvm/{archive,backup}
 
   mkdir -p ${pkgdir}/etc/init.d/
-  install -m755  ${filedir}/lvm.init ${pkgdir}/etc/init.d/
+  install -m755  ${filedir}/lvm.init ${pkgdir}/etc/init.d/lvm
 }
 
 device-mapper() {
