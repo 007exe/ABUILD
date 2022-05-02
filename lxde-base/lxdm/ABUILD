@@ -1,18 +1,18 @@
 pkgname=lxdm
 pkgver=0.5.3
-pkgbuild=1
-arch="auto"
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Display manager from LXDE project")
-longdesc=("LXDM is the lightweight display manager aimed to replace gdm in LXDE distros. The UI is implemented with GTK+. LXDM was started by 'dgod' from China and is developed by the LXDE community. For some time it only worked smoothly with Fedora while on Ubuntu and others, there might have been some issues.")
+shortdesc=("Display manager from LXDE project.")
+longdesc=("The LXDM is a lightweight Display Manager for the LXDE desktop. It can also be used as an alternative to other Display Managers such as GNOME's GDM or LightDM.")
 
 source=("https://downloads.sourceforge.net/lxde/lxdm-$pkgver.tar.xz")
 
-tags="xapps x11-misc"
+tags=("xapps lxde-base")
 
-build_deps="gtk3 xorg-server intltool iso-codes"
+build_deps=("gtk3 xorg-server intltool iso-codes")
 
-config_files="etc/lxdm/lxdm.conf
+config_files=("etc/lxdm/lxdm.conf
 etc/pam.d/lxdm
 etc/lxdm/Xsession
 etc/lxdm/PreLogin
@@ -20,15 +20,20 @@ etc/lxdm/LoginReady
 etc/lxdm/PostLogin
 etc/lxdm/PostLogout
 etc/lxdm/PreReboot
-etc/lxdm/PreShutdown"
+etc/lxdm/PreShutdown")
 
 build() {
   go_src_dir
   burn_patches
+# NOTE: Используйте пользовательские файлы pam и Xsession
+  cp ${filedir}/Xsession  data/Xsession
+  cat ${filedir}/lxdm.pam pam/lxdm
   autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/lxdm \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --with-systemdsystemunitdir=no \
@@ -36,20 +41,13 @@ build() {
     --enable-gtk3
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
+  chmod 644 ${pkgdir}/etc/lxdm/lxdm.conf
+
   install -d ${pkgdir}/var/{lib,run}/lxdm
-  mkdir -p ${pkgdir}/etc/init.d
-  cat ${filedir}/lxdm.init > ${pkgdir}/etc/init.d/lxdm
-  chmod 755 ${pkgdir}/etc/init.d/lxdm
-  cat ${filedir}/Xsession > ${pkgdir}/etc/lxdm/Xsession
-  chmod 755 ${pkgdir}/etc/lxdm/Xsession
-#  sed -i "s/local\/libexec/lib$LIBDIRSUFFIX\/lxdm/g" $pkgdir/etc/lxdm/lxdm.conf
-  cat ${filedir}/lxdm.pam > ${pkgdir}/etc/pam.d/lxdm
+  install -Dm755 ${filedir}/lxdm.init ${pkgdir}/etc/init.d/lxdm
 
-# change default non-existent background image to a newly added one
+# Установить новые обои
   sed -i -e "s|^# bg=.*|bg=/usr/share/wallpapers/stripes-lxdm.jpg|" $pkgdir/etc/lxdm/lxdm.conf
   install -m 0644 -D ${filedir}/stripes-lxdm.jpg $pkgdir/usr/share/wallpapers/stripes-lxdm.jpg
 }
-
