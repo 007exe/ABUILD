@@ -1,6 +1,6 @@
 pkgname=json-c
-pkgver=0.15
-pkgbuild=3
+pkgver=0.16
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A JSON implementation in C.")
