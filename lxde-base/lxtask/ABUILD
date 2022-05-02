@@ -1,26 +1,26 @@
 pkgname=lxtask
 pkgver=0.1.10
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Task manager of the LXDE Desktop")
+shortdesc=("Task manager of the LXDE Desktop.")
 longdesc=("The LXTask package contains a lightweight and desktop-independent task manager.")
 
 source=("https://downloads.sourceforge.net/lxde/lxtask-$pkgver.tar.xz")
 
-tags="lxde lxde-base"
+tags=("lxde lxde-base")
 
-build_deps="intltool gtk3"
+build_deps=("intltool gtk3")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-gtk3
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-# Ignore package by AppStream to avoid duplicated IDs
-  echo 'X-AppStream-Ignore=true' >> "$pkgdir/usr/share/applications/$pkgbase.desktop"
+# Игнорировать пакет AppStream, чтобы избежать дублирования идентификаторов
+  echo 'X-AppStream-Ignore=true' >> ${pkgdir}/usr/share/applications/lxtask.desktop
 }
