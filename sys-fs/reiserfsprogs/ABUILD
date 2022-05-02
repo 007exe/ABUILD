@@ -1,16 +1,16 @@
 pkgname=reiserfsprogs
 pkgver=3.6.27
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc="The utilities to create reiserfs volumes"
-longdesc="This package contains tools for reiserfs filesystems. Reiserfs is a file system using a plug-in based object oriented variant on classical balanced tree algorithms."
-
-tags=("base sys-fs")
+shortdesc=("Reiserfs utilities.")
+longdesc=("The reiserfsprogs package contains various utilities for use with the Reiser file system..")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${pkgver}/reiserfsprogs-${pkgver}.tar.xz")
 
-build_deps="make coreutils gcc kernel-headers grep util-linux-ng"
+tags=("utils sys-fs")
+
+build_deps=("util-linux")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
