@@ -1,34 +1,27 @@
 pkgname=fuse
 pkgver=2.9.9
-pkgbuild=4
+pkgbuild=5
 arch=("auto")
 
-shortdesc=("Interface for userspace programs to export a virtual filesystem to the kernel")
+shortdesc=("A library that makes it possible to implement a filesystem in a userspace program.")
 longdesc=("FUSE (Filesystem in USErspace) is a simple interface for userspace programs to export a virtual filesystem to the linux kernel. FUSE also aims to provide a secure method for non privileged users to create and mount their own filesystem implementations.")
+
+source=("https://github.com/libfuse/libfuse/releases/download/fuse-${pkgver}/fuse-${pkgver}.tar.gz")
 
 tags=("libs sys-fs")
 
-source=("https://github.com/libfuse/libfuse/releases/download/fuse-$pkgver/$pkgname-$pkgver.tar.gz")
+build_deps=("glibc")
 
-build_deps="pkg-config"
-
-adddep="fuse-common"
-
-#config_files="etc/fuse.conf" etc/fuse.conf также необходим для fuse 3х и по этому перенесён в пакет fuse-common
+adddep=("fuse-common")
 
 build() {
   go_src_dir
-
-  UDEV_RULES_PATH=/lib/udev/rules.d MOUNT_FUSE_PATH=/usr/bin ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --enable-lib --enable-util --disable-example
-
+  burn_patches
+  autoreconf -fiv
+  UDEV_RULES_PATH=/usr/lib/udev/rules.d MOUNT_FUSE_PATH=/usr/bin ./configure --prefix=/usr --libdir=/usr/lib --enable-lib --enable-util --disable-example
   make -j${numjobs}
-
   make DESTDIR=${pkgdir} install
 
-# static device nodes will cause collision.
+# Cтатические узлы устройств вызызавают конфликты.
   rm -rf ${pkgdir}/dev
-
-# Remove init script in wrong path
-# Don't add our own for now, as fusectl fs oopses on 2.6.18
-  rm -rf ${pkgdir}/etc/init.d
 }
