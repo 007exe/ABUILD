@@ -1,25 +1,20 @@
 pkgname=argon2
 pkgver=20190702
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("The reference C implementation of Argon2")
-longdesc=("Argon2 is a password-hashing function that summarizes the state of the art in the design of memory-hard functions and can be used to hash passwords for credential storage, key derivation, or other applications.")
-
-tags=("base sys-apps compat32")
-
-build_deps="glibc"
+shortdesc=("A password-hashing function (reference C implementation).")
+longdesc=("Password hashing software that won the Password Hashing Competition (PHC).")
 
 source=("https://github.com/P-H-C/phc-winner-argon2/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
+tags=("utils app-crypt")
+
+build_deps=("glibc")
+
 build() {
   go_src_dir
-# fix the location of libraries, OpenMandriva
-  sed -i s,"LIBRARY_REL ?= lib.*","LIBRARY_REL = lib${LIBDIRSUFFIX}", Makefile
-  sed -i -e "s|@UPSTREAM_VER@|${pkgver}|" libargon2.pc.in
-  sed -i -e "s|lib/@HOST_MULTIARCH@|${LIBDIRSUFFIX}|" libargon2.pc.in
-
-  make OPTTARGET='none' LIBRARY_REL='lib${LIBDIRSUFFIX}'
-  make OPTTARGET='none' DESTDIR="$pkgdir" install
-  install -D -m0644 LICENSE "${pkgdir}/usr/share/licenses/argon2/LICENSE"
+  make ARGON2_VERSION=${pkgver} OPTTARGET='none' LIBRARY_REL='lib'
+  make ARGON2_VERSION=${pkgver} OPTTARGET='none' LIBRARY_REL='lib' DESTDIR=${pkgdir} install
+  install -D -m0644 LICENSE ${pkgdir}/usr/share/licenses/argon2/LICENSE
 }
