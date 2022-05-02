@@ -1,17 +1,17 @@
 pkgname=gyp
 pkgver=20190716.fcd686f1
 _commit=fcd686f1880fa52a1ee78d3e98af1b88cb334528
-pkgbuild=1
+pkgbuild=2
 arch=('noarch')
 
-shortdesc=("Generate Your Projects Meta-Build system")
+shortdesc=("Generate Your Projects Meta-Build system.")
 longdesc=("GYP is a tool to generates native Visual Studio, Xcode and SCons and/or make build files from a platform-independent input format.")
 
 source=("https://chromium.googlesource.com/external/gyp/+archive/${_commit}.tar.gz")
 
-tags="develop dev-util"
+tags=("develop dev-util")
 
-build_deps="python git python-setuptools"
+build_deps=("python git python-setuptools")
 
 adddep="ninja"
 
@@ -19,6 +19,6 @@ build() {
   cd ${srcdir}
   burn_patches
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
 }
