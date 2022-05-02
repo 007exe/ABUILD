@@ -1,18 +1,20 @@
 pkgname=lvm2
-pkgver=2.03.13
-pkgbuild=2
+pkgver=2.03.15
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Device mapper userspace library and tools.")
+shortdesc=("Logical Volume Manager 2 utilities.")
 longdesc=("The LVM2 package is a set of tools that manage logical partitions. It allows spanning of file systems across multiple physical disks and disk partitions and provides for dynamic growing or shrinking of logical partitions, mirroring and low storage footprint snapshots.")
+
+source=("https://github.com/lvmteam/lvm2/archive/v${pkgver//./_}.tar.gz")
 
 tags=("base sys-fs")
 
 build_deps=("readline eudev libaio util-linux-ng glibc")
 
-pkglist=("dmap")
+adddep=("device-mapper>=${pkgver}")
 
-source=("https://github.com/lvmteam/lvm2/archive/v${pkgver//./_}.tar.gz")
+pkglist=("device-mapper")
 
 config_files=("etc/lvm/lvm.conf
 etc/lvm/lvmlocal.conf")
@@ -27,8 +29,10 @@ build() {
     scripts/lvm2_monitoring_systemd_red_hat.service.in
 
   ./configure \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-usrlibdir=/usr/lib${LIBDIRSUFFIX} \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --with-usrlibdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --enable-applib \
@@ -42,45 +46,28 @@ build() {
     --enable-udev_sync \
     --enable-use-lvmetad \
     --with-cache=internal \
-    --mandir=/usr/share/man \
-    --docdir=/usr/share/doc \
     --with-default-dm-run-dir=/run \
     --with-default-locking-dir=/run/lock/lvm \
     --with-default-pid-dir=/run \
     --with-default-run-dir=/run/lvm \
     --with-thin=internal \
-    --with-udev-prefix=""
-
+    --with-udev-prefix=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install_lvm2
-  install -d "${pkgdir}"/etc/lvm/{archive,backup}
-
-  make DESTDIR=${pkgdir} install
 
   install -d ${pkgdir}/etc/lvm/{archive,backup}
 
-#NOTE: обратная совместимость.
-  mkdir -p ${pkgdir}/lib${LIBDIRSUFFIX}
-  cp ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib*.so.?.* ${pkgdir}/lib${LIBDIRSUFFIX}
-
   mkdir -p ${pkgdir}/etc/init.d/
-  install -m755  ${filedir}/lvm ${pkgdir}/etc/init.d/
-  set +e
+  install -m755  ${filedir}/lvm.init ${pkgdir}/etc/init.d/
 }
 
-dmap() {
-	pkgname=device-mapper
-	shortdesc=("Logical Volume Manager 2 utilities.")
-	longdesc=("The LVM2 package is a set of tools that manage logical partitions. It allows spanning of file systems across multiple physical disks and disk partitions and provides for dynamic growing or shrinking of logical partitions, mirroring and low storage footprint snapshots.")
+device-mapper() {
+  pkgname=device-mapper
+  shortdesc=("Device mapper userspace library and tools.")
+  longdesc=("The LVM2 package is a set of tools that manage logical partitions. It allows spanning of file systems across multiple physical disks and disk partitions and provides for dynamic growing or shrinking of logical partitions, mirroring and low storage footprint snapshots.")
 }
 
-dmap_prep() {
+device-mapper_prep() {
   go_src_dir
-  set -e
   make DESTDIR=${pkgdir} install_device-mapper
-
-#NOTE: обратная совместимость.
-  mkdir -p ${pkgdir}/lib${LIBDIRSUFFIX}
-  cp ${pkgdir}/usr/lib${LIBDIRSUFFIX}/lib*.so.?.* ${pkgdir}/lib${LIBDIRSUFFIX}
-  set +e
 }
