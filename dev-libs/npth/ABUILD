@@ -1,16 +1,16 @@
 pkgname=npth
 pkgver=1.6
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("The new GNU portable threads library")
-longdesc=("The NPth package contains a very portable POSIX/ANSI-C based library for Unix platforms which provides non-preemptive priority-based scheduling for multiple threads of execution (multithreading) inside event-driven applications. All threads run in the same address space of the server application, but each thread has its own individual program-counter, run-time stack, signal mask and errno variable.")
+shortdesc=("The new GNU portable threads library.")
+longdesc=("The NPth package contains a very portable POSIX/ANSI-C based library for Unix platforms which provides non-preemptive priority-based scheduling for multiple threads of execution (multithreading) inside event-driven applications.")
 
 source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -18,9 +18,9 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
-  make -j1 DESTDIR="${pkgdir}" install
-  install -vDm 644 {README,NEWS,ChangeLog} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  make -j1 DESTDIR=${pkgdir} install
+  install -vDm 644 {README,NEWS,ChangeLog} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
