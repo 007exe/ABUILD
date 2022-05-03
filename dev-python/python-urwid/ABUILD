@@ -1,14 +1,21 @@
 pkgname=python-urwid
-pkgver=1.1.1
+pkgver=2.1.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Urwid is a curses-based user interface library."
-source=("http://excess.org/urwid/urwid-${pkgver}.tar.gz")
-tags="libs dev-python"
-build_deps="python"
-adddep="python"
-provides="urwid"
+shortdesc=("Curses-based user interface library")
+longdesc=("Urwid is a curses-based user interface library.")
 
+source=("https://pypi.org/packages/source/u/urwid/urwid-${pkgver}.tar.gz")
 
-BUILD_SYSTEM="python"
+tags=("libs dev-python")
+
+build_deps=("glibc python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} -O1 --skip-build
+  rm -r ${pkgdir}/usr/lib/python*/site-packages/urwid/tests
+}
