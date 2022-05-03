@@ -1,31 +1,27 @@
 pkgname=enchant
-pkgver=2.3.1
+pkgver=2.3.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("An Enchanting Spell Checking Library")
-longdesc=("A library that wraps other spell checking backends.")
+shortdesc=("A wrapper library for generic spell checking.")
+longdesc=("The enchant package provides a generic interface into various existing spell checking libraries.")
 
-source=("https://github.com/AbiWord/enchant/releases/download/v$pkgver/enchant-$pkgver.tar.gz")
+source=("https://github.com/AbiWord/enchant/releases/download/v$pkgver/enchant-${pkgver}.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs app-text")
 
-build_deps="glib2"
-
-before_build() {
-  go_src_dir
-  autoreconf -vfi
-}
+build_deps=("glib2")
 
 build(){
   go_src_dir
+  burn_patches
+  autoreconf -vfi
   ./configure \
     --prefix=/usr \
     --disable-static \
-    --disable-ispell \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --enable-relocatable \
-    --with-myspell-dir=/usr/share/myspell
+    --libdir=/usr/lib \
+    --enable-relocatable
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
