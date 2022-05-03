@@ -1,23 +1,24 @@
 pkgname=libwpe
 pkgver=1.12.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("General-purpose library for WPE WebKit")
+shortdesc=("General-purpose library for WPE WebKit.")
 longdesc=("The libwpe package contains a general purpose library for WPE WebKit and the WPE Renderer.")
 
-tags=('libs dev-libs')
+tags=("libs gui-libs")
 
 source=("https://github.com/WebPlatformForEmbedded/libwpe/releases/download/${pkgver}/libwpe-${pkgver}.tar.xz")
 
-build_deps="mesa meson libxkbcommon gcc-libs"
+build_deps=("mesa meson libxkbcommon gcc-libs")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-    -D prefix=/usr
+    -D prefix=/usr \
+    -D libdir=/usr/lib
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  meson install -C build --destdir ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
