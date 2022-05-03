@@ -10,9 +10,11 @@ source=("https://github.com/hhatto/autopep8/archive/v${pkgver}/${pkgname}-${pkgv
 
 tags=("libs dev-python")
 
-build_deps=("python python-pycodestyle python-toml")
+# python-pycodestyle
+build_deps=("python python-toml")
 
-adddep=("python-requests python-six python-websocket-client python-docker-pycreds python-paramiko")
+# python-pycodestyle
+adddep=("python-toml")
 
 build() {
   go_src_dir

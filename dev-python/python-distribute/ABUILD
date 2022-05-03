@@ -10,11 +10,12 @@ source=("https://github.com/dask/distributed/archive/${pkgver}/${pkgname}-${pkgv
 
 tags=("libs dev-python")
 
-build_deps=("python python-cython python-click python-cloudpickle python-dask python-jinja python-msgpack
-python-packaging python-psutil python-sortedcontainers python-tblib python-toolz python-tornado python-yaml python-zict")
+# python-cloudpickle python-dask python-tblib python-toolz python-tornado python-zict
+build_deps=("python python-cython python-click python-jinja python-msgpack
+python-packaging python-psutil python-sortedcontainers python-yaml")
 
-adddep=("python-cython python-click python-cloudpickle python-dask python-jinja python-msgpack python-packaging
-python-psutil python-sortedcontainers python-tblib python-toolz python-tornado python-yaml python-zict")
+#python-cython python-cloudpickle python-dask python-tblib python-toolz python-tornado python-zict
+adddep=("python-click python-jinja python-msgpack python-packaging python-psutil python-sortedcontainers python-yaml")
 
 build() {
   go_src_dir

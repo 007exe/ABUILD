@@ -10,7 +10,7 @@ source=("https://github.com/pycurl/pycurl/archive/REL_${pkgver//./_}/${pkgname}-
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptoolscurl")
+build_deps=("python python-setuptools curl")
 
 adddep=("curl")
 

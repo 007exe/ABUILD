@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Python toolkit for stream-based generation of output for the web.")
 longdesc=("Python toolkit for stream-based generation of output for the web.")
 
-source=("http://ftp.edgewall.com/pub/genshi/Genshi-$pkgver.tar.gz")
+source=("https://github.com/edgewall/genshi/archive/${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 

@@ -6,9 +6,7 @@ arch=("auto")
 shortdesc=("Python bindings for libcups.")
 longdesc=("These Python bindings are intended to wrap the CUPS API.")
 
-longdesc=("https://github.com/OpenPrinting/pycups/archive/v${pkgver}.tar.gz")
-
-source=("http://cyberelk.net/tim/data/pycups/pycups-${pkgver}.tar.bz2")
+source=("https://github.com/OpenPrinting/pycups/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

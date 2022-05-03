@@ -12,9 +12,13 @@ source=("https://github.com/$pkgname/$_pkgname/archive/$pkgver/$_archive.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-cachecontrol python-html5lib python-packaging python-pexpect python-requests python-tomlkit python-virtualenv python-cleo python-keyring python-lockfile python-pkginfo python-requests-toolbelt python-shellingham python-poetry-core python-cachy")
+build_deps=("python python-build python-installer python-cachecontrol python-html5lib python-packaging python-pexpect
+python-requests python-tomlkit python-virtualenv python-cleo python-keyring python-lockfile python-pkginfo
+python-requests-toolbelt python-shellingham python-poetry-core python-cachy")
 
-adddep=("python-cachecontrol python-html5lib python-packaging python-pexpect python-requests python-tomlkit python-virtualenv python-cleo python-keyring python-lockfile python-pkginfo python-requests-toolbelt python-shellingham python-poetry-core python-cachy")
+adddep=("python-cachecontrol python-html5lib python-packaging python-pexpect python-requests python-tomlkit
+python-virtualenv python-cleo python-keyring python-lockfile python-pkginfo python-requests-toolbelt
+python-shellingham python-poetry-core python-cachy")
 
 build() {
   go_src_dir

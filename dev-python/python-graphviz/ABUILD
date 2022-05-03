@@ -16,6 +16,8 @@ adddep=("graphviz")
 
 build() {
   go_src_dir
+  sed -i 's/--cov --cov-report=term --cov-report=html//' setup.cfg
+  sed -i '/mock_use_standalone_module/d' setup.cfg
   python -m build -wn
   python -m installer -d ${pkgdir} dist/*.whl
   install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE.txt

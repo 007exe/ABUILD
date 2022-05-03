@@ -10,9 +10,10 @@ source=("https://github.com/jazzband/django-debug-toolbar/archive/${pkgver}.tar.
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-django python-sqlparse")
+# python-sqlparse python-django
+build_deps=("python python-setuptools")
 
-adddep=("python-django python-sqlparse")
+#adddep=("python-django python-sqlparse")
 
 build(){
   go_src_dir

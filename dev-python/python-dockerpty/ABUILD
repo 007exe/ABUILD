@@ -9,10 +9,10 @@ longdesc=("Provides the functionality needed to operate the pseudo-tty (PTY) all
 source=("https://github.com/d11wtq/dockerpty/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
-
-build_deps=("python-setuptools python-docker-py python-six python-docker-py python-six")
-
-adddep=("python-docker-py python-six")
+# python-docker-py
+build_deps=("python-setuptools python-six python-six")
+# python-docker-py
+adddep=("python-six")
 
 build() {
   go_src_dir
