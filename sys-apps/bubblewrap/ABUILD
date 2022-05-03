@@ -1,23 +1,23 @@
 pkgname=bubblewrap
-pkgver=0.5.0
+pkgver=0.6.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Unprivileged sandboxing tool")
-longdesc=("Bubblewrap is a setuid implementation of user namespaces, or sandboxing, that provides access to a subset of kernel user namespace features. Bubblewrap allows user owned processes to run in an isolated environment with limited access to the underlying filesystem.")
+shortdesc=("Unprivileged sandboxing tool.")
+longdesc=("Bubblewrap is a setuid implementation of user namespaces, or sandboxing, that provides access to a subset of kernel user namespace features.")
 
 source=("https://github.com/containers/bubblewrap/releases/download/v${pkgver}/bubblewrap-${pkgver}.tar.xz")
 
-tags="sys-apps base"
+tags=("sys-apps utils")
 
-build_deps="libxslt docbook-xsl glibc libcap"
+build_deps=("libxslt docbook-xsl glibc libcap")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
