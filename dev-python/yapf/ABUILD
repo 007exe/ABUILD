@@ -1,0 +1,19 @@
+pkgname=yapf
+pkgver=0.32.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python style guide checker.")
+longdesc=("A formatter for Python code.")
+
+source=("https://github.com/google/yapf/archive/v$pkgver/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install -O1 --root=${pkgdir}
+}
