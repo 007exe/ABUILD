@@ -1,6 +1,6 @@
 pkgname=libseccomp
 pkgver=2.5.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Enhanced seccomp library.")
@@ -10,7 +10,9 @@ tags=("sys-libs libs")
 
 source=("https://github.com/seccomp/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps=("glibc gperf")
+build_deps=("glibc gperf python-cython python-setuptools")
+
+pkglist=("python-libseccomp")
 
 build() {
   go_src_dir
@@ -18,9 +20,23 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -Dm 644 CHANGELOG README.md SECURITY.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -Dm 644 CHANGELOG README.md SECURITY.md -t ${pkgdir}/usr/share/doc/${pkgname}
+}
+
+python-libseccomp() {
+  pkgname=python-libseccomp
+  shortdesc=("Enhanced seccomp library python")
+  longdesc=("The libseccomp package provides an easy to use and platform independent interface to the Linux kernel's syscall filtering mechanism.")
+  tags=("libs dev-python")
+  adddep=("libseccomp")
+}
+
+python-libseccomp_prep() {
+  go_src_dir
+  cd src/python
+  env VERSION_RELEASE=${pkgver} python setup.py build
+  env VERSION_RELEASE=${pkgver} python setup.py install --root="${pkgdir}" --prefix=/usr -O1 --skip-build
 }
