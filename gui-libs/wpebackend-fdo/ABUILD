@@ -1,23 +1,24 @@
 pkgname=wpebackend-fdo
-pkgver=1.10.0
+pkgver=1.12.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Freedesktop.org backend for WPE WebKit")
+shortdesc=("Freedesktop.org backend for WPE WebKit.")
 longdesc=("The wpebackend-fdo package contains the Freedesktop.org backend for WPE WebKit and the WPE renderer.")
-
-tags=('libs dev-libs')
 
 source=("https://github.com/Igalia/WPEBackend-fdo/releases/download/${pkgver}/wpebackend-fdo-${pkgver}.tar.xz")
 
-build_deps="mesa wayland-protocols git meson libwpe glib2 wayland libepoxy"
+tags=("libs gui-libs")
+
+build_deps=("mesa wayland-protocols git meson libwpe glib2 wayland libepoxy")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-    -D prefix=/usr
+    -D prefix=/usr \
+    -D libdir=/usr/lib
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  meson install -C build --destdir ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
