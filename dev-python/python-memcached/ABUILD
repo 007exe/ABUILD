@@ -1,13 +1,21 @@
 pkgname=python-memcached
-pkgver=1.53
+pkgver=1.59
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Python interface to memcached"
-source=("http://ftp.tummy.com/pub/python-memcached/${pkgname}-${pkgver}.tar.gz")
+shortdesc=("Python interface to memcached.")
+longdesc=("It is the client side software which allows storing values in one or more, possibly remote, memcached servers.")
+
+source=("https://github.com/linsomniac/python-memcached/archive/refs/tags/${pkgver}.tar.gz")
+
 tags="develop dev-python"
-build_deps="pysetuptools"
-adddep="python memcached"
 
-BUILD_SYSTEM="python"
-BUILD_KEYS=
+build_deps=("python python-setuptools python-six")
+
+adddep=("python-six")
+
+build() {
+  go_src_dir
+  burn_patches
+  python3 setup.py install --root=${pkgdir} --optimize=1
+}

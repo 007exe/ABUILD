@@ -1,0 +1,20 @@
+pkgname=python-aiofiles
+pkgver=0.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("File support for asyncio.")
+longdesc=("File support for asyncio.")
+
+source=("https://github.com/Tinche/aiofiles/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-pip python-poetry")
+
+build() {
+  go_src_dir
+  poetry build --format wheel
+  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps aiofiles/dist/*.whl
+  install -Dm 644 aiofiles/LICENSE -t ${pkgdir}/usr/share/licenses/python-aiofiles/
+}

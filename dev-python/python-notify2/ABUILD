@@ -1,0 +1,25 @@
+pkgname=python-notify2
+pkgver=0.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python interface to DBus notifications.")
+longdesc=("Python bindings for libnotify.")
+
+_name=notify2
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools dbus-python")
+
+adddep=("dbus-python")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --skip-build --optimize=1 --root=${pkgdir}
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 examples/* -t ${pkgdir}/usr/share/doc/${pkgname}/examples
+}

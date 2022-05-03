@@ -1,12 +1,20 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=python-unidecode
-pkgver=0.04.7
+pkgver=1.3.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A Unicode to ASCII converter/translator"
-source="http://pypi.python.org/packages/source/U/Unidecode/Unidecode-${pkgver}.tar.gz"
+shortdesc=("ASCII transliterations of Unicode text.")
+longdesc=("Unidecode, lossy ASCII transliterations of Unicode text.")
 
-tags="libs app-text"
+source=("https://github.com/avian2/unidecode/archive/refs/tags/unidecode-${pkgver}.tar.gz")
 
-BUILD_SYSTEM="python"
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}

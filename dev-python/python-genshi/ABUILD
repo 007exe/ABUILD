@@ -1,21 +1,23 @@
-# $Id: PKGBUILD 26275 2010-09-14 14:29:54Z schuay $
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Contributor : Todd Maynard <arch@toddmaynard.com>
-# Ported to AgiliaLinux: aix27249 <i27249@gmail.com>
-
 pkgname=python-genshi
-pkgver=0.6
-pkgbuild=2
-shortdesc="Python toolkit for stream-based generation of output for the web."
-longdesc="Python toolkit for stream-based generation of output for the web."
-url="http://genshi.edgewall.org/"
-license=("BSD")
-arch=('any')
-source=("http://ftp.edgewall.com/pub/genshi/Genshi-$pkgver.tar.gz")
-tags=("dev-python develop")
-build() {
-  cd $srcdir/Genshi-${pkgver}
+pkgver=0.7.5
+pkgbuild=1
+arch=("auto")
 
-  python setup.py install --root=$pkgdir
-  install -D -m0644 COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
+shortdesc=("Python toolkit for stream-based generation of output for the web.")
+longdesc=("Python toolkit for stream-based generation of output for the web.")
+
+source=("http://ftp.edgewall.com/pub/genshi/Genshi-$pkgver.tar.gz")
+
+tags=("dev-python libs")
+
+build_deps=("python python-setuptools python-six")
+
+adddep=("python-six")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

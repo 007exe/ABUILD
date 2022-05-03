@@ -1,0 +1,22 @@
+pkgname=python-graphviz
+pkgver=0.19.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple Python interface for Graphviz.")
+longdesc=("Simple Python interface for Graphviz.")
+
+source=("https://github.com/xflr6/graphviz/archive/${pkgver}/graphviz-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-wheel graphviz")
+
+adddep=("graphviz")
+
+build() {
+  go_src_dir
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE.txt
+}

@@ -1,18 +1,23 @@
-#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
-#----------------------------- General vars --------------------------------------
 pkgname=django-debug-toolbar
-pkgver=0.9.4
+pkgver=3.2.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Embedded debugging toolbar for Django projects"
-longdesc=("The Django Debug Toolbar is a plug-in Django application that displays a set of panels which conveys information about the current request at the top of the rendered page."
-)
+shortdesc=("A configurable set of panels that display various debug information about the current request/response.")
+longdesc=("The Django Debug Toolbar is a plug-in Django application that displays a set of panels which conveys information about the current request at the top of the rendered page.")
 
-source=("https://github.com/django-debug-toolbar/${pkgname}/tarball/${pkgver}")
-tags="develop dev-python"
-adddep="django"
+source=("https://github.com/jazzband/django-debug-toolbar/archive/${pkgver}.tar.gz")
 
-BUILD_SYSTEM="python"
-#MAKE_WORD="python setup.py build"
-BUILD_KEYS=
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-django python-sqlparse")
+
+adddep=("python-django python-sqlparse")
+
+build(){
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

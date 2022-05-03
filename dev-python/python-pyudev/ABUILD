@@ -1,67 +1,32 @@
-#ABUILD created by/создан: Unnamed_Hero, sorry at email.hide 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=python-pyudev
-pkgver=0.9
+pkgver=0.22
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A libudev binding"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Биндинг к libudev для питончика"
-)
+shortdesc=("Python bindings to libudev.")
+longdesc=("Pyudev is a LGPL licensed, pure Python binding for libudev, the device and hardware management and information library for Linux. It supports almost all libudev functionality.")
 
-source=("http://pypi.python.org/packages/source/p/pyudev/pyudev-${pkgver}.tar.gz")
+source=("https://github.com/pyudev/pyudev/archive/v${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("libs dev-python")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="libs dev-python"
+build_deps=("python python-setuptools python-sphinx python-mock")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("python-six")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-BUILD_SYSTEM="python"
-#
-#MAKE_WORD="python setup.py build"
-#
-BUILD_KEYS=
-
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build() {
+  go_src_dir
+  burn_patches
+  sed -i '/norecursedirs/d' setup.cfg
+  echo -e '[pytest]\nnorecursedirs = .* _* build' > pytest.ini
+  rm tests/test_{util,discover,device,monitor,enumerate,observer}.py
+  sed -i "s|os.path.join(doc_directory, os.pardir)|os.path.join(doc_directory, os.pardir, 'src')|
+          s|b'autodoc-process-docstring'|'autodoc-process-docstring'|" doc/conf.py
+  python setup.py build
+  sphinx-apidoc -f -e -o doc src/pyudev
+  sphinx-build -a -b html doc doc/html
+  python setup.py install --root ${pkgdir} --skip-build -O1
+  install -dm 755 ${pkgdir}/usr/share/doc/${pkgname}
+  cp -r -a --no-preserve=ownership doc/html ${pkgdir}/usr/share/doc/${pkgname}
+  rm -rf ${pkgdir}/usr/share/doc/${pkgname}/html/.doctrees
 }

@@ -1,0 +1,22 @@
+pkgname=python-docker
+pkgver=5.0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python library for the Docker Engine API.")
+longdesc=("A Python library for the Docker Engine API. It lets you do anything the docker command does, but from within Python apps – run containers, manage containers, manage Swarms, etc.")
+
+source=("https://github.com/docker/docker-py/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-pip python-requests python-six python-websocket-client python-docker-pycreds
+python-requests python-six python-websocket-client python-docker-pycreds python-paramiko")
+
+adddep=("python-requests python-six python-websocket-client python-docker-pycreds python-paramiko")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install -O1 --root=${pkgdir}
+}

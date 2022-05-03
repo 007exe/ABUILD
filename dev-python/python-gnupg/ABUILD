@@ -1,0 +1,23 @@
+pkgname=python-gnupg
+pkgver=0.4.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A wrapper for the Gnu Privacy Guard (GPG or GnuPG).")
+longdesc=("A wrapper for the Gnu Privacy Guard (GPG or GnuPG).")
+
+source=("https://files.pythonhosted.org/packages/source/${pkgname::1}/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools gnupg")
+
+adddep=("gnupg")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --optimize=1 --root=${pkgdir}
+  install -vDm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 README.rst -t ${pkgdir}/usr/share/doc/${pkgname}
+}
