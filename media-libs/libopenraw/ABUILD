@@ -1,22 +1,26 @@
 pkgname=libopenraw
-pkgver=0.1.3
+pkgver=0.3.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Library for decoding RAW files")
+shortdesc=("Library for decoding RAW files.")
+longdesc=("RAW image formats decoding library.")
 
 source=("https://libopenraw.freedesktop.org/download/${pkgname}-${pkgver}.tar.bz2")
 
-tags="media-libs libs"
+tags=("media-libs libs")
 
-build_deps="gdk-pixbuf boost libxml2"
+# cargo
+build_deps=("gdk-pixbuf boost libxml2")
 
 build() {
   go_src_dir
   burn_patches
+# Исправление зависимости libopenraw в файле -gnome pc
+  sed -e 's|libopenraw-0.1|libopenraw-0.3|' -i gnome/libopenraw-gnome-0.3.pc.in
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
