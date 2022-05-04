@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend webkit2gtk capabilities:"
+echo -e "gst-plugins-good: media decoding"
+echo -e "gst-plugins-bad: media decoding"
+echo -e "gst-libav: nonfree media decoding"
+echo -e " "
