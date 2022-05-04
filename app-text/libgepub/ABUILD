@@ -1,22 +1,23 @@
 pkgname=libgepub
 pkgver=0.6.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Simple library to read epub files using glib")
+shortdesc=("Simple library to read epub files using glib.")
 longdesc=("libgepub is a GObject based library for handling and rendering epub documents.")
 
 source=("https://gitlab.gnome.org/GNOME/libgepub/-/archive/${pkgver}/libgepub-${pkgver}.tar.gz")
 
-tags="libs app-text"
+tags=("libs app-text")
 
-build_deps="webkit2gtk libarchive gtk-doc gobject-introspection meson"
+build_deps=("webkit2gtk libarchive gtk-doc gobject-introspection meson")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-    -D prefix=/usr
+    -D prefix=/usr \
+    -D libdir=/usr/lib
   ninja -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
