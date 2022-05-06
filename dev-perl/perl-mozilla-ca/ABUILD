@@ -1,24 +1,19 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-mozilla-ca
-pkgver=20120309
+pkgver=20200520
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Mozilla's CA cert bundle in PEM format"
+shortdesc=("Mozilla's CA cert bundle in PEM format.")
 
 source=("http://search.cpan.org/CPAN/authors/id/A/AB/ABH/Mozilla-CA-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
 }
