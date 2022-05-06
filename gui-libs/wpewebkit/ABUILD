@@ -1,6 +1,6 @@
 pkgname=wpewebkit
 pkgver=2.36.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Web content engine for embedded devices.")
