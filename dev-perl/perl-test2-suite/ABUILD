@@ -1,0 +1,21 @@
+pkgname=perl-test2-suite
+pkgver=0.000145
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Distribution with a rich set of tools built upon the Test2 framework.")
+
+source=("https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test2-Suite-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-module-pluggable perl-importer perl-scope-guard perl-sub-info perl-term-table perl-test-simple")
+
+adddep=("perl-module-pluggable perl-importer perl-scope-guard perl-sub-info perl-term-table perl-test-simple")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
