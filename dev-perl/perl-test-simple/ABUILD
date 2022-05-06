@@ -1,0 +1,19 @@
+pkgname=perl-test-simple
+pkgver=1.302190
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Basic utilities for writing tests.")
+
+source=("https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
