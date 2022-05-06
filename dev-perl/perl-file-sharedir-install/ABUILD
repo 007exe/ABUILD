@@ -1,0 +1,19 @@
+pkgname=perl-file-sharedir-install
+pkgver=0.13
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("File::ShareDir::Install - Install read-only data files from a distribution.")
+
+source=("https://cpan.org/modules/by-module/File/File-ShareDir-Install-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
