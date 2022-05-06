@@ -1,21 +1,21 @@
 pkgname=perl-xml-namespacesupport
-pkgver=1.11
-pkgbuild=3
-arch=('auto')
+pkgver=1.12
+pkgbuild=1
+arch=("noarch")
 
-shortdesc="Generic namespace helpers (ported from SAX2)"
-source=("http://www.cpan.org/authors/id/P/PE/PERIGRIN/XML-NamespaceSupport-${pkgver}.tar.gz")
-tags="libs dev-libs"
-build_deps="bash perl"
+shortdesc=("Generic namespace helpers (ported from SAX2).")
 
-conflicts="perl-XML-NamespaceSupport"
+source=("https://www.cpan.org/authors/id/P/PE/PERIGRIN/XML-NamespaceSupport-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
 
 build() {
   go_src_dir
-  burn_patches
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
-  make pure_install doc_install DESTDIR=${pkgdir}
-
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
   find ${pkgdir} -name '.packlist' -delete
   find ${pkgdir} -name '*.pod' -delete
 }
