@@ -1,0 +1,19 @@
+pkgname=perl-importer
+pkgver=0.026
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Alternative but compatible interface to modules that export symbols.")
+
+source=("https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Importer-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
