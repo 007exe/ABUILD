@@ -1,0 +1,21 @@
+pkgname=perl-alien-libxml2
+pkgver=0.17
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Install the C libxml2 library on your system.")
+
+source=("https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Libxml2-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-html-parser perl-sort-versions perl-test2-suite perl-uri libxml2 perl-alien-build")
+
+adddep=("libxml2 perl-alien-build")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
