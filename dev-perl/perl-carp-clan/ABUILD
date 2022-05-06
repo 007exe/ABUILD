@@ -1,24 +1,19 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-carp-clan
-pkgver=6.04
+pkgver=6.08
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Report errors from perspective of caller of a "clan" of modules"
+shortdesc=("Report errors from perspective of caller of a "clan" of modules.")
 
-source=("http://search.cpan.org/CPAN/authors/id/S/ST/STBEY/Carp-Clan-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/E/ET/ETHER/Carp-Clan-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
 }
