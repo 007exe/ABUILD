@@ -1,0 +1,21 @@
+pkgname=perl-sub-info
+pkgver=0.002
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Tool for inspecting subroutines.")
+
+source=("https://search.cpan.org/CPAN/authors/id/E/EX/EXODIST/Sub-Info-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-importer")
+
+adddep=("perl-importer")
+
+build(){
+  go_src_dir
+  perl Makefile.PL
+  make -j${numjobs}
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
