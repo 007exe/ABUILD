@@ -1,0 +1,21 @@
+pkgname=perl-alien-build
+pkgver=2.48
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Build external dependencies for use in CPAN.")
+
+source=("https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Build-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-capture-tiny perl-ffi-checklib perl-file-chdir perl-file-which perl-path-tiny perl-test2-suite")
+
+adddep=("perl-capture-tiny perl-ffi-checklib perl-file-chdir perl-file-which perl-path-tiny")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
