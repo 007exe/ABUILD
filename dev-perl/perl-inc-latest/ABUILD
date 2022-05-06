@@ -1,0 +1,19 @@
+pkgname=perl-inc-latest
+pkgver=0.500
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Build, test, and install Perl modules.")
+
+source=("https://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/inc-latest-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+}
