@@ -1,26 +1,19 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-io-dirent
 pkgver=0.05
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Perl IO::Dirent module - Access to dirent structs returned by readdir"
+shortdesc=("Perl IO::Dirent module - Access to dirent structs returned by readdir.")
 
-source=("http://search.cpan.org/CPAN/authors/id/S/SC/SCOTTW/IO-Dirent-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/S/SC/SCOTTW/IO-Dirent-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
-adddep="${build_deps}"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  find $pkgdir -name '.packlist' -delete
-  find $pkgdir -name '*.pod' -delete
+  USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
 }
