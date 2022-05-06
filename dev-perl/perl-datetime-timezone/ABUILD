@@ -1,25 +1,23 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-datetime-timezone
-pkgver=1.60
+pkgver=2.47
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Time zone object base class and factory"
+shortdesc=("Time zone object base class and factory.")
 
-source=("http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-TimeZone-${pkgver}.tar.gz")
+source=("https://www.cpan.org/CPAN/authors/id/D/DR/DROLSKY/DateTime-TimeZone-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl perl-params-validate perl-class-singleton perl-class-load"
+build_deps=("perl perl-class-singleton perl-params-validate perl-class-load perl-list-allutils")
 
-adddep="perl perl-params-validate perl-class-singleton perl-class-load"
+adddep=("perl-class-singleton perl-params-validate perl-class-load perl-list-allutils")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name '*.pod' -delete
 }
