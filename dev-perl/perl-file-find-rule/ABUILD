@@ -1,26 +1,24 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-file-find-rule
-pkgver=0.33
+pkgver=0.34
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Perl/CPAN Module File::Find::Rule."
+shortdesc=("Alternative interface to File::Find.")
 
-source=("http://search.cpan.org/CPAN/authors/id/R/RC/RCLAMP/File-Find-Rule-${pkgver}.tar.gz")
+source=("https://search.mcpan.org/CPAN/authors/id/R/RC/RCLAMP/File-Find-Rule-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-adddep="perl-text-glob perl-number-compare"
+build_deps=("perl perl-number-compare perl-text-glob")
 
-build_deps="perl ${adddep}"
+adddep=("perl-number-compare perl-text-glob")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  perl Makefile.PL
+  make -j${numjobs}
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
 }
