@@ -1,23 +1,22 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-text-glob
-pkgver=0.09
+pkgver=0.11
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Match globbing patterns against text"
+shortdesc=("Match globbing patterns against text.")
 
-source=("http://search.cpan.org/CPAN/authors/id/R/RC/RCLAMP/Text-Glob-${pkgver}.tar.gz")
+source=("https://search.mcpan.org/CPAN/authors/id/R/RC/RCLAMP/Text-Glob-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  perl Makefile.PL
+  make -j${numjobs}
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
 }
