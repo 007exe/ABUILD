@@ -1,31 +1,25 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-datetime
-pkgver=1.03
+pkgver=1.55
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A complete, easy to use date and time object"
+shortdesc=("A complete, easy to use date and time object.")
 
 source=("http://www.cpan.org/authors/id/D/DR/DROLSKY/DateTime-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl perl-math-round perl-params-validate perl-datetime-locale perl-datetime-timezone"
+build_deps=("perl perl-datetime-timezone perl-datetime-locale perl-params-validate
+perl-math-round perl-namespace-autoclean perl-specio perl-eval-closure perl-params-validationcompiler")
 
-adddep="${build_deps}"
+adddep=("perl-datetime-timezone perl-datetime-locale perl-params-validate
+perl-math-round perl-namespace-autoclean perl-specio perl-eval-closure perl-params-validationcompiler")
 
 build() {
-  cd  $srcdir/DateTime-$pkgver
-  perl Build.PL installdirs=vendor destdir="$pkgdir/"
-  ./Build
-  ./Build test
-  true
-  ./Build install
-}
-
-after_build(){
   go_src_dir
-  find $pkgdir -name '.packlist' -delete
-  find $pkgdir -name '*.pod' -delete
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name '*.pod' -delete
 }
