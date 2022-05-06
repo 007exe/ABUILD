@@ -1,29 +1,23 @@
 pkgname=perl-xml-sax
-pkgver=0.99
-pkgbuild=3
-arch=('auto')
+pkgver=1.02
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Simple API for XML"
+shortdesc=("Simple API for XML.")
 
-source=("http://www.cpan.org/authors/id/G/GR/GRANTM/XML-SAX-$pkgver.tar.gz")
+source=("https://www.cpan.org/authors/id/G/GR/GRANTM/XML-SAX-${pkgver}.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs dev-perl")
 
-adddep="perl-xml-namespacesupport perl-xml-sax-base"
+build_deps=("perl perl-xml-sax-base perl-xml-namespacesupport")
 
-build_deps="perl perl-xml-namespacesupport perl-xml-sax-base"
-
-conflicts="perl-XML-SAX"
+adddep=("perl-xml-sax-base perl-xml-namespacesupport")
 
 build() {
   go_src_dir
-  burn_patches
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
   make -j${numjobs}
-  make test
-
-  make install DESTDIR=${pkgdir}
-
+  PERLLIB=blib/lib make install DESTDIR=${pkgdir}
   find ${pkgdir} -name '.packlist' -delete
   find ${pkgdir} -name '*.pod' -delete
 }
