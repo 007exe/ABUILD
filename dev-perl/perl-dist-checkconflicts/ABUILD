@@ -1,25 +1,26 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-dist-checkconflicts
-pkgver=0.06
+pkgver=0.11
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Declare version conflicts for your dist"
+shortdesc=("Declare version conflicts for your dist.")
 
-source=("http://search.cpan.org/CPAN/authors/id/D/DO/DOY/Dist-CheckConflicts-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/D/DO/DOY/Dist-CheckConflicts-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl perl-extutils-makemaker perl-test-fatal"
+build_deps=("perl perl-test-fatal")
 
-adddep="perl perl-list-moreutils"
+adddep=("perl-test-fatal")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" \
+  PERL_AUTOINSTALL=--skipdeps \
+  PERL_MM_OPT="INSTALLDIRS=vendor" \
+  PERL_MB_OPT="--installdirs vendor" \
+  MODULEBUILDRC=/dev/null
+  /usr/bin/perl Makefile.PL
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
