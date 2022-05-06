@@ -1,0 +1,21 @@
+pkgname=perl-namespace-autoclean
+pkgver=0.29
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Keep imports out of your namespace.")
+
+source=("https://search.cpan.org/CPAN/authors/id/E/ET/ETHER/namespace-autoclean-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-b-hooks-endofscope perl-sub-identify perl-namespace-clean")
+
+adddep=("perl-b-hooks-endofscope perl-sub-identify perl-namespace-clean")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
