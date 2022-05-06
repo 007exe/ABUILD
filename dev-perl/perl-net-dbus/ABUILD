@@ -1,20 +1,23 @@
 pkgname=perl-net-dbus
-pkgver=1.0.0
+pkgver=1.2.0
 pkgbuild=1
-arch=('auto')
-shortdesc="Binding for DBus messaging protocol"
-source=("http://www.cpan.org/authors/id/D/DA/DANBERR/Net-DBus-$pkgver.tar.gz")
-tags="libs dev-perl"
-adddep="perl-XML-Twig"
+arch=("auto")
 
-build()
-{
-	set -e
-	go_src_dir
-	PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
-	make
-	make install DESTDIR=$pkgdir
-	find $pkgdir -name '.packlist' -delete
-	find $pkgdir -name '*.pod' -delete
-	set +e
+shortdesc=("Binding for DBus messaging protocol.")
+
+source=("https://www.cpan.org/authors/id/D/DA/DANBERR/Net-DBus-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-xml-twig")
+
+adddep=("perl-xml-twig")
+
+build(){
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name '*.pod' -delete
 }
