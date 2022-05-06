@@ -1,0 +1,21 @@
+pkgname=perl-module-build
+pkgver=0.4231
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Build, test, and install Perl modules.")
+
+source=("https://search.cpan.org/CPAN/authors/id/L/LE/LEONT/Module-Build-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-cpan-meta perl-inc-latest")
+
+adddep=("perl-cpan-meta perl-inc-latest")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  perl Build
+  perl Build install destdir=${pkgdir}
+}
