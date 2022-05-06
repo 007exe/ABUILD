@@ -1,0 +1,19 @@
+pkgname=perl-list-moreutils-xs
+pkgver=0.430
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provide the stuff missing in List::Util.")
+
+source=("https://search.cpan.org/CPAN/authors/id/R/RE/REHSACK/List-MoreUtils-XS-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
