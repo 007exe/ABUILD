@@ -1,0 +1,25 @@
+pkgname=perl-list-allutils
+pkgver=0.16
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Perl package that combines List::Util and List::MoreUtils in one bite-sized package.")
+
+source=("https://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/List-AllUtils-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-list-moreutils perl-scalar-list-utils perl-list-someutils perl-list-utilsby")
+
+adddep=("perl-list-moreutils perl-scalar-list-utils perl-list-someutils perl-list-utilsby")
+
+build(){
+  go_src_dir
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  /usr/bin/perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  make install DESTDIR=${pkgdir}
+  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
+}
