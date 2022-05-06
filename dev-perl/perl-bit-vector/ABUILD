@@ -1,27 +1,21 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-bit-vector
-pkgver=7.2
+pkgver=7.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Efficient bit vector, set of integers and <big int> math library"
+shortdesc=("Efficient bit vector, set of integers and <big int> math library.")
 
-source=("http://search.cpan.org/CPAN/authors/id/A/AN/ANDK/Bit-Vector-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/S/ST/STBEY/Bit-Vector-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-adddep="perl-carp-clan"
+build_deps=("perl perl-carp-clan")
 
-build_deps="perl ${adddep}"
+adddep=("perl-carp-clan")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  find "${pkgdir}" -name .packlist -delete
-  find "${pkgdir}" -name perllocal.pod -delete
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
