@@ -1,25 +1,21 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-list-moreutils
-pkgver=0.33
+pkgver=0.430
 pkgbuild=1
-arch=('auto')
+arch=("noarch")
 
-shortdesc="Provide the stuff missing in List::Util"
+shortdesc=("Provide the stuff missing in List::Util.")
 
-source=("http://search.cpan.org/CPAN/authors/id/A/AD/ADAMK/List-MoreUtils-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/R/RE/REHSACK/List-MoreUtils-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl perl-exporter-tiny perl-list-moreutils-xs")
 
-adddep="perl"
+adddep=("perl-exporter-tiny perl-list-moreutils-xs")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  find "${pkgdir}" -name .packlist -o -name perllocal.pod -delete
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
