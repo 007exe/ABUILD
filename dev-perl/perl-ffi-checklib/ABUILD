@@ -1,0 +1,19 @@
+pkgname=perl-ffi-checklib
+pkgver=0.28
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Check that a library is available for FFI.")
+
+source=("https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/FFI-CheckLib-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
