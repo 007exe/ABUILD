@@ -1,0 +1,21 @@
+pkgname=perl-path-tiny
+pkgver=0.122
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("File path utility.")
+
+source=("https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Path-Tiny-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  unset PERL5LIB PERL_MM_OPT
+  /usr/bin/perl Makefile.PL
+  make -j${numjobs}
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
