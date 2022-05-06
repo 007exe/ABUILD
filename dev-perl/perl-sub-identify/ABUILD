@@ -1,0 +1,19 @@
+pkgname=perl-sub-identify
+pkgver=0.14
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Retrieve names of code references.")
+
+source=("https://search.mcpan.org/CPAN/authors/id/R/RG/RGARCIA/Sub-Identify-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
