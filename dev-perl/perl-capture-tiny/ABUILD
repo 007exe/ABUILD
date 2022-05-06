@@ -1,0 +1,19 @@
+pkgname=perl-capture-tiny
+pkgver=0.48
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Capture STDOUT and STDERR from Perl, XS or external programs.")
+
+source=("https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
