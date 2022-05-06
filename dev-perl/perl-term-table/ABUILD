@@ -1,0 +1,21 @@
+pkgname=perl-term-table
+pkgver=0.016
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Format a header and rows into a table.")
+
+source=("https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Term-Table-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-importer")
+
+adddep=("perl-importer")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
