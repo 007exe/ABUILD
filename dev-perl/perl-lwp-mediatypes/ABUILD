@@ -1,24 +1,19 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-lwp-mediatypes
-pkgver=6.02
+pkgver=6.04
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="guess media type for a file or a URL"
+shortdesc=("Guess media type for a file or a URL.")
 
-source=("http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/LWP-MediaTypes-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/O/OA/OALDERS/LWP-MediaTypes-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
