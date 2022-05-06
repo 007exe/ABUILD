@@ -1,25 +1,25 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-scalar-list-utils
-pkgver=1.27
+pkgver=1.60
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Scalar::Util and List::Util perl modules"
+shortdesc=("A selection of general-utility list subroutines.")
 
-source=("http://search.cpan.org/CPAN/authors/id/P/PE/PEVANS/Scalar-List-Utils-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/P/PE/PEVANS/Scalar-List-Utils-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
-adddep="${build_deps}"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" \
+      PERL_AUTOINSTALL=--skipdeps \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+      PERL_MB_OPT="--installdirs vendor --destdir '{$pkgdir}'" \
+      MODULEBUILDRC=/dev/null
+  perl Makefile.PL
+  make -j${numjobs}
+  make install
+  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
 }
