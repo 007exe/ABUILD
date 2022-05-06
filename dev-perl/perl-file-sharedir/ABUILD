@@ -1,0 +1,22 @@
+pkgname=perl-file-sharedir
+pkgver=1.118
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Locate per-dist and per-module shared files.")
+
+_author=REHSACK
+source=("https://cpan.metacpan.org/authors/id/${_author::1}/${_author::2}/${_author}/File-ShareDir-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-class-inspector")
+
+adddep=("perl-class-inspector")
+
+build(){
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
