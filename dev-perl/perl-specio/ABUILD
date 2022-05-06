@@ -1,0 +1,23 @@
+pkgname=perl-specio
+pkgver=0.47
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Type constraints and coercions for Perl.")
+
+source=("https://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Specio-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-role-tiny perl-test-fatal perl-mro-compat perl-devel-stacktrace")
+
+adddep=("perl-role-tiny perl-test-fatal perl-mro-compat perl-devel-stacktrace")
+
+build(){
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name '*.pod' -delete
+}
