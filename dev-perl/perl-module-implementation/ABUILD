@@ -1,25 +1,26 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-module-implementation
-pkgver=0.06
+pkgver=0.09
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Loads one of several alternate underlying implementations for a module"
+shortdesc=("Loads one of several alternate underlying implementations for a module.")
 
-source=("http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Module-Implementation-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Module-Implementation-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl perl-module-runtime perl-test-requires perl-test-fatal"
+build_deps=("perl perl-module-runtime perl-try-tiny")
 
-adddep="perl"
+adddep=("perl perl-module-runtime perl-try-tiny")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL="--skipdeps" \
+    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+    PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+    MODULEBUILDRC=/dev/null
+  perl Makefile.PL
+  make -j${numjobs}
+  make install
+  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
 }
