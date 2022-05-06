@@ -1,0 +1,27 @@
+pkgname=perl-list-utilsby
+pkgver=0.11
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Higher-order list utility functions.")
+
+source=("https://search.cpan.org/CPAN/authors/id/P/PE/PEVANS/List-UtilsBy-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  export \
+  PERL_MM_USE_DEFAULT=1 \
+  PERL_AUTOINSTALL=--skipdeps \
+  PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+  PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+  MODULEBUILDRC=/dev/null
+  perl Makefile.PL INSTALLDIRS=vendor
+  /usr/bin/perl Makefile.PL
+  make -j${numjobs}
+  make install
+  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
+}
