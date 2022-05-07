@@ -1,27 +1,21 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-http-cookies
-pkgver=6.01
+pkgver=6.10
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="HTTP cookie jars"
+shortdesc=("HTTP cookie jars.")
 
-source=("http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Cookies-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/O/OA/OALDERS/HTTP-Cookies-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-adddep="perl-http-date perl-http-message"
+build_deps=("perl perl-http-date perl-http-message")
 
-build_deps="perl ${adddep}"
+adddep=("perl-http-date perl-http-message")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
