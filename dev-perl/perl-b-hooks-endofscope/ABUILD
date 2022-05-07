@@ -18,5 +18,4 @@ build(){
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
 }
