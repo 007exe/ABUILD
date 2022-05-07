@@ -21,5 +21,4 @@ build(){
   make -j${numjobs}
   unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
   make install DESTDIR=${pkgdir}
-  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
 }
