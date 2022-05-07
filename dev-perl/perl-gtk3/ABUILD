@@ -1,29 +1,24 @@
 pkgname=perl-gtk3
-downname=Gtk3
-pkgver=1.247
+pkgver=0.038
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Perl bindings for GTK+ 2.x"
-source=("http://downloads.sourceforge.net/gtk2-perl/${downname}-${pkgver}.tar.gz")
-tags="develop dev-lang"
-build_deps="perl-glib perl-pango perl-extutils-pkgconfig perl-extutils-depends gtk+2"
-adddep="perl-glib perl-pango gtk+2"
+shortdesc=("Perl interface to the 3.x series of the GTK+ toolkit.")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL \
-    OPTIMIZE="$SLKCFLAGS" \
-    PREFIX=/usr \
-    INSTALLDIRS=vendor \
-    INSTALLVENDORMAN3DIR=/usr/man/man3
-    make"
+source=("https://cpan.metacpan.org/authors/id/X/XA/XAOC/Gtk3-${pkgver}.tar.gz")
 
-after_build()
-{
-    # Remove perllocal.pod and other special files that don't need to be installed,
-    # as they will overwrite what's already on the system
-    find ${pkgdir} -name perllocal.pod -o -name ".packlist" -o -name "*.bs" | xargs rm -f || true
+tags=("libs dev-perl")
 
-    # Remove empty directories
-    find ${pkgdir} -depth -type d -empty -delete || true
+build_deps=("perl gtk3 perl-cairo-gobject perl-glib-object-introspection")
+
+adddep=("perl-cairo-gobject perl-glib-object-introspection")
+
+build(){
+  go_src_dir
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  perl Makefile.PL
+  make -j${numjobs}
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  make pure_install INSTALLDIRS=vendor DESTDIR=${pkgdir}
 }
