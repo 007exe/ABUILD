@@ -17,6 +17,4 @@ after_build(){
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
-  find ${pkgdir} -name '.packlist' -delete
-  find ${pkgdir} -name '*.pod' -delete
 }
