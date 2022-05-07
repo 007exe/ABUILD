@@ -1,25 +1,21 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-package-deprecationmanager
-pkgver=0.13
+pkgver=0.17
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Manage deprecation warnings for your distribution"
+shortdesc=("Manage deprecation warnings for your distribution.")
 
-source=("http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Package-DeprecationManager-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Package-DeprecationManager-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl perl-test-fatal perl-test-requires"
+build_deps=("perl perl-params-util perl-sub-install perl-sub-name perl-package-stash perl-module-implementation perl-namespace-autoclean")
 
-adddep="perl perl-params-util perl-list-moreutils perl-sub-install"
+adddep=("perl-params-util perl-sub-install perl-sub-name perl-package-stash perl-module-implementation perl-namespace-autoclean")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
 }
