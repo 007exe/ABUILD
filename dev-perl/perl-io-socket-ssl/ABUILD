@@ -1,27 +1,21 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-io-socket-ssl
-pkgver=1.77
+pkgver=2.074
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Nearly transparent SSL encapsulation for IO::Socket::INET"
+shortdesc=("Nearly transparent SSL encapsulation for IO::Socket::INET.")
 
 source=("http://www.cpan.org/authors/id/S/SU/SULLR/IO-Socket-SSL-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-adddep="perl-net-ssleay"
+build_deps=("perl perl-net-ssleay perl-uri")
 
-build_deps="perl ${adddep}"
+adddep=("perl-net-ssleay perl-uri")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  yes | perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
