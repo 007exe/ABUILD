@@ -1,31 +1,26 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=perl-switch
-pkgver=2.16
-pkgbuild=3
-arch=('auto')
+pkgver=2.17
+pkgbuild=1
+arch=("noarch")
 
-shortdesc="Switch module for Perl"
-longdesc=("$shortdesc")
+shortdesc=("Switch module for Perl.")
 
-source=("http://search.cpan.org/CPAN/authors/id/R/RG/RGARCIA/Switch-2.16.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/C/CH/CHORNY/Switch-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-adddep="perl"
+build_deps=("perl")
 
-build()
-{
-	go_src_dir
-	burn_patches
-	export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
-	      PERL_AUTOINSTALL=--skipdeps                            \
-	      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
-	      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
-	      MODULEBUILDRC=/dev/null
-	perl Makefile.PL
-	make
-	make install
-	find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+build(){
+  go_src_dir
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" \
+  PERL_AUTOINSTALL=--skipdeps \
+  PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+  PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+  MODULEBUILDRC=/dev/null
+  perl Makefile.PL
+  make -j${numjobs}
+  make install
 }
 
 
