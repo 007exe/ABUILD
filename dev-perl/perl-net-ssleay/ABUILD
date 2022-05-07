@@ -1,28 +1,22 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-net-ssleay
-pkgver=1.49
+pkgver=1.90
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Perl extension for using OpenSSL"
+shortdesc=("Perl extension for using OpenSSL.")
 
-source=("http://www.cpan.org/authors/id/M/MI/MIKEM/Net-SSLeay-${pkgver}.tar.gz")
+source=("https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl openssl")
 
-adddep="openssl"
-
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  find "${pkgdir}" -name .packlist -delete
-  find "${pkgdir}" -name perllocal.pod -delete
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  install -Dm 644 README -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  find ${pkgdir} -name '*.so' -exec chrpath -d '{}' \;
 }
