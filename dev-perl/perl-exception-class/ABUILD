@@ -1,0 +1,23 @@
+pkgname=perl-exception-class
+pkgver=1.45
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A module that allows you to declare real exception classes in Perl.")
+
+source=("https://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Exception-Class-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-class-data-inheritable perl-devel-stacktrace")
+
+adddep=("perl-class-data-inheritable perl-devel-stacktrace")
+
+build(){
+  go_src_dir
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  unset PERL5LIB PERL_MM_OPT
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
