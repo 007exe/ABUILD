@@ -18,5 +18,4 @@ build(){
   /usr/bin/perl Makefile.PL INSTALLDIRS=vendor
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
 }
