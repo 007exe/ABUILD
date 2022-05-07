@@ -1,25 +1,19 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-time-modules
-pkgver=2011.0517
+pkgver=2013.0912
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Perl time related modules"
+shortdesc=("Perl time related modules.")
 
-source=("http://search.cpan.org/CPAN/authors/id/M/MU/MUIR/modules/Time-modules-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/M/MU/MUIR/modules/Time-modules-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl"
+build_deps=("perl")
 
-adddep="perl"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
 }
