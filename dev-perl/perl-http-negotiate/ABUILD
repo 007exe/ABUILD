@@ -1,7 +1,7 @@
 pkgname=perl-http-negotiate
 pkgver=6.01
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
 shortdesc=("Choose a variant to serve.")
 
