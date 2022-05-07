@@ -1,0 +1,167 @@
+#!/bin/sh
+
+MODULES="perl-xml-parser
+perl-font-ttf
+perl-locale-gettext
+perl-parse-yapp
+perl-sgmls
+perl-io-string
+perl-xml-simple
+perl-archive-zip
+perl-module-runtime
+perl-try-tiny
+perl-module-implementation
+perl-cpan-meta
+perl-inc-latest
+perl-module-build
+perl-params-validate
+perl-exporter-tiny
+perl-list-moreutils-xs
+perl-list-moreutils
+perl-class-inspector
+perl-file-sharedir
+perl-file-sharedir-install
+perl-datetime-locale
+perl-number-compare
+perl-text-glob
+perl-file-find-rule
+perl-clone
+perl-encode-locale
+perl-timedate
+perl-http-date
+perl-io-html
+perl-lwp-mediatypes
+perl-uri
+perl-http-message
+perl-ffi-checklib
+perl-capture-tiny
+perl-file-chdir
+perl-file-which
+perl-path-tiny
+perl-module-pluggable
+perl-importer
+perl-scope-guard
+perl-sub-info
+perl-term-table
+perl-test-simple
+perl-test2-suite
+perl-alien-build
+perl-html-tagset
+perl-html-parser
+perl-sort-versions
+perl-alien-libxml2
+perl-xml-sax-base
+perl-xml-namespacesupport
+perl-xml-sax
+perl-xml-libxml
+perl-carp-clan
+perl-bit-vector
+perl-class-singleton
+perl-params-util
+perl-scalar-list-utils
+perl-sub-install
+perl-data-optlist
+perl-test-fatal
+perl-dist-checkconflicts
+perl-package-stash-xs
+perl-package-stash
+perl-sub-exporter
+perl-sub-exporter-progressive
+perl-variable-magic
+perl-b-hooks-endofscope
+perl-namespace-clean
+perl-class-load
+perl-list-utilsby
+perl-list-someutils
+perl-list-allutils
+perl-datetime-timezone
+perl-file-listing
+perl-http-negotiate
+perl-mozilla-ca
+perl-dbi
+perl-file-rsyncp
+perl-io-dirent
+perl-text-iconv
+perl-xml-twig
+perl-net-dbus
+perl-math-round
+perl-sub-identify
+perl-namespace-autoclean
+perl-role-tiny
+perl-mro-compat
+perl-devel-stacktrace
+perl-specio
+perl-eval-closure
+perl-class-data-inheritable
+perl-exception-class
+perl-params-validationcompiler
+perl-datetime
+perl-datetime-format-mail
+perl-datetime-format-w3cdtf
+perl-xml-rss
+perl-net-ssleay
+perl-io-socket-ssl
+perl-digest-sha1
+perl-digest-hmac
+perl-net-ip
+perl-net-dns
+perl-switch
+perl-libintl-perl
+perl-net-http
+perl-extutils-depends
+perl-extutils-pkgconfig
+glib-perl
+cairo-perl
+perl-cairo-gobject
+perl-glib-object-introspection
+perl-gtk3
+perl-http-cookies
+perl-http-daemon
+perl-www-robotrules
+perl-libwww
+perl-test-requires
+perl-linux-pid
+perl-date-calc
+perl-time-modules
+perl-sub-name
+perl-package-deprecationmanager
+perl-test-needs
+perl-class-method-modifiers
+perl-devel-globaldestruction
+perl-import-into
+perl-sub-quote
+perl-moo
+perl-parallel-forkmanager
+perl-dbi
+perl-dbd-mysql"
+
+set -e
+ii=0
+for i in $MODULES; do
+    # Проверить сущетвует ли сценарй ABUILD для сборки пакета
+    # если он существует
+    if [ -f $i/ABUILD ]
+    then
+#        echo "Очистить директорию с исходниками"
+#        rm -r ~/mkpkg/source_cache
+        echo "Перейти в каталог с ABUILD пакета"
+        cd $i
+        echo "Собрать и установить пакет"
+        mkpkg -si -ba ${BUILD}
+        echo "Подняться на уровень выше"
+        cd ..
+        echo "Пакет $i успешно собран"
+        echo "=========================================================================="
+    else
+        # Если сценарй ABUILD для сборки пакета не найден
+        # Занести имя пакетав массив
+        multipkg[ii]=$i
+        # и увеличить счётчик на 1
+        ((ii=ii+1))
+    fi
+done
+
+echo "     Следующие пакеты были пропищены поскольку являются мльтипакетами"
+echo "=========================================================================="
+echo ${multipkg[@]}
+set +e
