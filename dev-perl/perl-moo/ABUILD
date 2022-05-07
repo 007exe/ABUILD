@@ -1,0 +1,28 @@
+pkgname=perl-moo
+pkgver=2.005004
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Minimalist Object Orientation (with Moose compatiblity).")
+
+source=("https://cpan.metacpan.org/authors/id/H/HA/HAARG/Moo-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-test-fatal perl-class-method-modifiers perl-devel-globaldestruction
+perl-import-into perl-module-runtime perl-role-tiny perl-sub-quote")
+
+adddep=("perl-class-method-modifiers perl-devel-globaldestruction perl-import-into
+perl-module-runtime perl-role-tiny perl-sub-quote")
+
+build(){
+  go_src_dir
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" \
+  PERL_AUTOINSTALL=--skipdeps \
+  PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+  PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+  MODULEBUILDRC=/dev/null
+  perl Makefile.PL
+  make -j${numjobs}
+  make install
+}
