@@ -1,0 +1,24 @@
+pkgname=perl-glib-object-introspection
+pkgver=0.049
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Dynamically create Perl language bindings.")
+
+source=("https://cpan.metacpan.org/authors/id/X/XA/XAOC/Glib-Object-Introspection-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl gobject-introspection perl-extutils-depends perl-extutils-pkgconfig perl-cairo-gobject glib-perl")
+
+adddep=("glib-perl")
+
+build(){
+  go_src_dir
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  perl Makefile.PL
+  make -j${numjobs}
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  make pure_install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
