@@ -1,0 +1,26 @@
+pkgname=perl-import-into
+pkgver=1.002005
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Import packages into other packages.")
+
+source=("https://cpan.metacpan.org/authors/id/E/ET/ETHER/JSON-MaybeXS-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-module-runtime")
+
+adddep=("perl-module-runtime")
+
+build(){
+  go_src_dir
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB="" \
+  PERL_AUTOINSTALL=--skipdeps \
+  PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+  PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+  MODULEBUILDRC=/dev/null
+  /usr/bin/perl Makefile.PL
+  make -j${numjobs}
+  make install
+}
