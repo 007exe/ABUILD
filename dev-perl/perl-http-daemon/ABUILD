@@ -1,27 +1,21 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-http-daemon
-pkgver=6.01
+pkgver=6.14
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="A simple http server class"
+shortdesc=("A simple http server class.")
 
-source=("http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Daemon-${pkgver}.tar.gz")
+source=("https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Daemon-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
+build_deps=("perl perl-http-date perl-http-message perl-lwp-mediatypes")
 
-adddep="perl-http-date perl-http-message"
+adddep=("perl-http-date perl-http-message perl-lwp-mediatypes")
 
-build_deps="perl ${adddep}"
-
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
