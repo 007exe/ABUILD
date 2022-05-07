@@ -1,0 +1,19 @@
+pkgname=perl-sub-name
+pkgver=0.26
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("(re)name a sub")
+
+source=("https://search.cpan.org/CPAN/authors/id/E/ET/ETHER/Sub-Name-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL
+  make -j${numjobs}
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
