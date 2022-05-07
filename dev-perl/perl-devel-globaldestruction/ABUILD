@@ -1,0 +1,21 @@
+pkgname=perl-devel-globaldestruction
+pkgver=0.14
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Expose the flag which marks global.")
+
+source=("https://search.cpan.org/CPAN/authors/id/H/HA/HAARG/Devel-GlobalDestruction-$pkgver.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-sub-exporter perl-sub-exporter-progressive")
+
+adddep=("perl-sub-exporter perl-sub-exporter-progressive")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
