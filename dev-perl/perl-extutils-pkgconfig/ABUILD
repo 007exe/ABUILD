@@ -1,25 +1,19 @@
 pkgname=perl-extutils-pkgconfig
-downname=ExtUtils-PkgConfig
-pkgver=1.14
+pkgver=1.16
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="ExtUtils::PkgConfig (perl module)"
-source=("http://downloads.sourceforge.net/sourceforge/gtk2-perl/${downname}-${pkgver}.tar.gz")
-tags="develop dev-lang"
-build_deps="perl"
-adddep="perl"
+shortdesc=("The Perl Pkgconfig module.")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr && make"
-INSTALL_WORD="make install INSTALLDIRS=vendor"
+source=("https://cpan.metacpan.org/authors/id/X/XA/XAOC/ExtUtils-PkgConfig-${pkgver}.tar.gz")
 
-after_build()
-{
-    # Remove perllocal.pod and other special files that don't need to be installed,
-    # as they will overwrite what's already on the system
-    find ${pkgdir} -name perllocal.pod -o -name ".packlist" -o -name "*.bs" | xargs rm -f || true
+tags=("libs dev-perl")
 
-    # Remove empty directories
-    find ${pkgdir} -depth -type d -empty -delete || true
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
