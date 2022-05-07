@@ -1,0 +1,25 @@
+pkgname=perl-eval-closure
+pkgver=0.14
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Safely and cleanly create closures via string eval.")
+
+source=("https://cpan.metacpan.org/authors/id/D/DO/DOY/Eval-Closure-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-try-tiny perl-sub-exporter")
+
+adddep=("perl-try-tiny perl-sub-exporter")
+
+build(){
+  go_src_dir
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL="--skipdeps" \
+  PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'" \
+  PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+  MODULEBUILDRC=/dev/null
+  perl Makefile.PL
+  make -j${numjobs}
+  make install
+}
