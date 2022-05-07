@@ -1,26 +1,21 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=perl-datetime-format-w3cdtf
-pkgver=0.06
+pkgver=0.08
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Parse and format W3CDTF datetime strings"
+shortdesc=("Parse and format W3CDTF datetime strings.")
 
-source=("http://search.cpan.org/CPAN/authors/id/G/GW/GWILLIAMS/DateTime-Format-W3CDTF-${pkgver}.tar.gz")
+source=("https://search.cpan.org/CPAN/authors/id/G/GW/GWILLIAMS/DateTime-Format-W3CDTF-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-build_deps="perl perl-module-runtime perl-data-optlist perl-package-stash perl-try-tiny perl-test-fatal 
-perl-module-implementation"
+build_deps=("perl perl-datetime")
 
-adddep="${build_deps}"
+adddep=("perl-datetime")
 
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
 }
