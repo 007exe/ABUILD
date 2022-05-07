@@ -15,5 +15,5 @@ build(){
   go_src_dir
   perl Makefile.PL INSTALLDIRS=vendor
   make -j${numjobs}
-   make install DESTDIR=${pkgdir}
+  make install DESTDIR=${pkgdir}
 }
