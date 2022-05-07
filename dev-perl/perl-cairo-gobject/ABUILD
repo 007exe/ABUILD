@@ -1,0 +1,24 @@
+pkgname=perl-cairo-gobject
+pkgver=1.004
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Integrate Cairo into the Glib type system.")
+
+source=("https://cpan.metacpan.org/authors/id/X/XA/XAOC/Cairo-GObject-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl glib-perl cairo-perl")
+
+adddep=("glib-perl cairo-perl")
+
+build(){
+  go_src_dir
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  perl Makefile.PL
+  make -j${numjobs}
+  unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+  make pure_install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
