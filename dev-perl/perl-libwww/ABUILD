@@ -1,26 +1,25 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=perl-libwww
-pkgver=6.04
+pkgver=6.60
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="The World-Wide Web library for Perl"
+shortdesc=("The World-Wide Web library for Perl.")
 
-source=("http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/libwww-perl-${pkgver}.tar.gz")
+source=("https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-${pkgver}.tar.gz")
 
-tags="libs dev-perl"
+tags=("libs dev-perl")
 
-adddep="perl-encode-locale perl-file-listing perl-html-parser perl-http-cookies perl-http-daemon perl-http-date perl-http-negotiate perl-lwp-mediatypes perl-net-http perl-uri perl-www-robotrules perl-http-message"
+build_deps=("perl perl-encode-locale perl-file-listing perl-html-parser perl-http-cookies
+perl-http-daemon perl-http-date perl-http-negotiate perl-lwp-mediatypes perl-net-http
+perl-try-tiny perl-uri perl-www-robotrules")
 
-build_deps="perl ${adddep}"
+adddep=("perl-encode-locale perl-file-listing perl-html-parser perl-http-cookies
+perl-http-daemon perl-http-date perl-http-negotiate perl-lwp-mediatypes perl-net-http
+perl-try-tiny perl-uri perl-www-robotrules")
 
-docs="Changes"
-
-BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
-
-after_build(){
+build(){
   go_src_dir
-  make test
-  rm -R  ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  perl Makefile.PL --aliases INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
