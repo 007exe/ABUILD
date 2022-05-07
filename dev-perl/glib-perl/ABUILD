@@ -1,0 +1,22 @@
+pkgname=glib-perl
+pkgver=1.329.3
+_pkgver=1.3293
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Perl wrappers for glib 2.x, including GObject.")
+
+source=("https://downloads.sourceforge.net/sourceforge/gtk2-perl/Glib-${_pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("glib2 perl-extutils-depends perl-extutils-pkgconfig")
+
+build(){
+  go_src_dir
+  PERL_USE_UNSAFE_INC=1 \
+  perl Makefile.PL INSTALLDIRS=vendor
+  PERL_USE_UNSAFE_INC=1 \
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
