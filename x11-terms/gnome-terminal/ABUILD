@@ -10,8 +10,7 @@ source=("https://gitlab.gnome.org/GNOME/gnome-terminal/-/archive/${pkgver}/gnome
 
 tags=("gnome x11-terms")
 
-# gnome-shell libnautilus-extension
-build_deps=("vte gsettings-desktop-schemas docbook-xsl yelp-tools meson")
+build_deps=("vte gsettings-desktop-schemas docbook-xsl yelp-tools meson libnautilus-extension gnome-shell")
 
 adddep=("gsettings-desktop-schemas")
 
