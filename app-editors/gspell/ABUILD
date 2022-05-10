@@ -1,0 +1,24 @@
+pkgname=gspell
+pkgver=1.10.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Spell-checking library for GTK applications.")
+longdesc=("The gspell package provides a flexible API to add spell checking to a GTK+ application.")
+
+source=("https://download.gnome.org/sources/gspell/${pkgver%.*}/gspell-${pkgver}.tar.xz")
+
+tags=("gnome app-editors")
+
+build_deps=("gobject-introspection vala gtk-doc autoconf-archive glib2 gtk3 enchant icu")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-gtk-doc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
