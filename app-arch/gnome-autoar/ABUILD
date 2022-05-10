@@ -1,0 +1,26 @@
+pkgname=gnome-autoar
+pkgver=0.4.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Automatic archives creating and extracting library.")
+longdesc=("Automatic archives creating and extracting library.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-autoar/-/archive/${pkgver}/gnome-autoar-${pkgver}.tar.gz")
+
+tags=("libs app-arch")
+
+build_deps=("gobject-introspection gtk-doc vala meson glib2 libarchive gtk3")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true \
+    -D tests=true \
+    -D vapi=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
