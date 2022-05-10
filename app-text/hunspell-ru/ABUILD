@@ -1,0 +1,40 @@
+pkgname=hunspell-ru
+pkgver=20210731
+_commit=9a771d3d10ef796086d8c2d618dd2528ce4245b1
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Russian dictionary for Hunspell.")
+longdesc=("Russian dictonaries for hunspell, includes Spelling,Hyphenation,Thesaurus.")
+
+source=("https://cgit.freedesktop.org/libreoffice/dictionaries/plain/ru_RU/ru_RU.aff?id=${_commit}"
+"https://cgit.freedesktop.org/libreoffice/dictionaries/plain/ru_RU/ru_RU.dic?id=${_commit}"
+"https://cgit.freedesktop.org/libreoffice/dictionaries/plain/ru_RU/README_ru_RU.txt?id=${_commit}")
+
+tags=("utils app-text")
+
+build_deps=("hunspell")
+
+adddep=("hunspell")
+
+build(){
+  go_src_dir
+  burn_patches
+  cp ${srcache}/README_ru_RU.txt?id=${_commit} ${srcdir}/hunspell-ru-README.txt
+  cp ${srcache}/ru_RU.aff?id=${_commit} ${srcdir}/hunspell-ru.aff
+  cp ${srcache}/ru_RU.dic?id=${_commit} ${srcdir}/hunspell-ru.dic
+
+  install -vdm755 ${pkgdir}/usr/share/hunspell
+
+  for dict in aff dic; do
+          install -vDm644 ${pkgname}.${dict} ${pkgdir}/usr/share/hunspell/ru_RU.${dict}
+  done
+
+  install -dm755 ${pkgdir}/usr/share/myspell/dicts
+  pushd ${pkgdir}/usr/share/myspell/dicts
+  for file in ${pkgdir}/usr/share/hunspell/*; do
+          ln -sv /usr/share/hunspell/$(basename ${file}) .
+  done
+  popd
+  install -vDm644 ${pkgname}-README.txt ${pkgdir}/usr/share/licenses/${pkgname}/README.txt
+}
