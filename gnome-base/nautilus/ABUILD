@@ -1,0 +1,53 @@
+pkgname=nautilus
+pkgver=42.1.1
+# NOTE: Коммит 42.1.1 версии
+_commit=8dca802ee401677f8d9740ea0622b97666031f3e
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Default file manager for GNOME.")
+longdesc=("The Nautilus package contains the GNOME file manager.")
+
+source=("git:https://gitlab.gnome.org/GNOME/nautilus.git"
+"git:https://gitlab.gnome.org/GNOME/libgd.git")
+
+tags=("gnome gnome-base")
+
+# libgexiv2 tracker3  tracker3-miners appstream-glib
+build_deps=("gnome-desktop gvfs dconf gst-plugins-base-libs libhandy gobject-introspection git gtk-doc meson gnome-autoar libportal-gtk3")
+
+adddep=("libnautilus-extension")
+
+pkglist=("libnautilus-extension")
+
+before_build() {
+  cd ${srcdir}/nautilus_git_nautilus.git.src
+  git checkout ${_commit}
+
+  git submodule init
+  git submodule set-url subprojects/libgd ${srcdir}/nautilus_git_libgd.git.src
+  git submodule update
+}
+
+build() {
+  cd ${srcdir}/nautilus_git_nautilus.git.src
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D docs=true \
+    -D packagekit=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
+
+libnautilus-extension() {
+  pkgname=libnautilus-extension
+  shortdesc=("Library for extending the default file manager for GNOME.")
+  longdesc=("The Nautilus package contains the GNOME file manager.")
+}
+
+libnautilus-extension_prep() {
+  mkdir -p ${pkgdir}/usr/{include,lib/girepository-1.0,share}
+}
