@@ -1,0 +1,26 @@
+pkgname=appstream-glib
+pkgver=0.7.18
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Objects and methods for reading and writing AppStream metadata.")
+longdesc=("Provides GObjects and helper methods to read and write AppStream metadata.")
+
+source=("https://github.com/hughsie/appstream-glib/archive/refs/tags/appstream_glib_${pkgver//./_}.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("gobject-introspection gtk-doc gperf meson gtk3 libyaml libsoup gcab libstemmer")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D alpm=true \
+    -D gtk-doc=true \
+    -D rpm=false
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
