@@ -1,5 +1,5 @@
 pkgname=gnome-desktop
-pkgver=42.0
+pkgver=42.1
 pkgbuild=1
 arch=("auto")
 
