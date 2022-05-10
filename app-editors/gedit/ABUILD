@@ -1,0 +1,27 @@
+pkgname=gedit
+pkgver=42.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNOME Text Editor.")
+longdesc=("The Gedit package contains a lightweight UTF-8 text editor for the GNOME Desktop.")
+
+source=("https://download.gnome.org/sources/gedit/${pkgver%.*}/gedit-${pkgver}.tar.xz")
+
+tags=("gnome app-editors")
+
+build_deps=("yelp-tools vala gobject-introspection git gspell gtk-doc meson desktop-file-utils
+libxml2 gtksourceview4 gsettings-desktop-schemas libpeas python-gobject appstream-glib")
+
+adddep=("gsettings-desktop-schemas")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D gtk_doc=true \
+    -D require_all_tests=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
