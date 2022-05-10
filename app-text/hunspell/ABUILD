@@ -1,0 +1,29 @@
+pkgname=hunspell
+pkgver=1.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Spell checker and morphological analyzer library and program.")
+
+source=("https://github.com/hunspell/hunspell/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("app-text utils")
+
+build_deps=("gcc-libs readline")
+
+build(){
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --disable-static \
+    --with-ui \
+    --with-readline
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  pushd ${pkgdir}/usr/lib
+  ln -s libhunspell-?.?.so libhunspell.so
+  popd
+}
