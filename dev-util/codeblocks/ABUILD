@@ -1,0 +1,28 @@
+pkgname=codeblocks
+pkgver=20.03
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cross-platform C/C++ IDE.")
+longdesc=("The open source, cross platform, free C, C++ and Fortran IDE")
+
+source=("https://downloads.sourceforge.net/codeblocks/codeblocks-${pkgver}.tar.xz")
+
+tags=("dev-util xapps")
+
+build_deps=("boost wxgtk3 hunspell imagemagick zip")
+
+build(){
+  go_src_dir
+#  convert src/mime/codeblocks.png +set date:create +set date:modify -background none -extent 64x64 src/mime/codeblocks.png
+  sed -i 's|$(datadir)/pixmaps|$(datadir)/icons/hicolor/64x64/apps|' src/mime/Makefile.{am,in}
+  sed -i 's|$(datarootdir)/appdata|$(datarootdir)/metainfo|' Makefile.{am,in} src/plugins/contrib/appdata/Makefile.{am,in}
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --with-contrib-plugins=all,-FileManager \
+    --with-wx-config=/usr/bin/wx-config-gtk3
+  sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
