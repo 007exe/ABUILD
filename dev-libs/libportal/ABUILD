@@ -1,0 +1,94 @@
+pkgname=libportal
+pkgver=0.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GIO-style async APIs for most Flatpak portals.")
+longdesc=("Flatpak portal library.")
+
+tags=("libs dev-libs")
+
+source=("https://github.com/flatpak/libportal/archive/refs/tags/${pkgver}.tar.gz")
+
+build_deps=("meson gi-docgen vala gobject-introspection gtk3 gtk4 qt5-base qt5-x11extras gjs")
+
+pkglist=("libportal-gtk3 libportal-gtk4 libportal-qt5 libportal-docs")
+
+_pick() {
+  local p=${1} f d; shift
+  for f; do
+    d=${srcdir}/${p}/${f#$pkgdir/}
+    mkdir -p "$(dirname "$d")"
+    mv ${f} ${d}
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  cd  ${pkgdir}
+  _pick gtk3 usr/include/libportal-gtk3
+  _pick gtk3 usr/lib{,/pkgconfig}/libportal-gtk3.*
+  _pick gtk3 {usr/lib/girepository-1.0,usr/share/gir-1.0}/XdpGtk3-1.0.*
+  _pick gtk3 usr/share/vala/vapi/libportal-gtk3.*
+
+  _pick gtk4 usr/include/libportal-gtk4
+  _pick gtk4 usr/lib{,/pkgconfig}/libportal-gtk4.*
+  _pick gtk4 {usr/lib/girepository-1.0,usr/share/gir-1.0}/XdpGtk4-1.0.*
+  _pick gtk4 usr/share/vala/vapi/libportal-gtk4.*
+
+  _pick qt5 usr/include/libportal-qt5
+  _pick qt5 usr/lib{,/pkgconfig}/libportal-qt5.*
+
+  _pick docs usr/share/doc
+}
+
+libportal-gtk3(){
+  pkgname=libportal-gtk3
+  shortdesc=("GIO-style async APIs for most Flatpak portals - GTK 3 backend.")
+  longdesc=("Flatpak portal library.")
+}
+
+libportal-gtk3_prep(){
+  go_src_dir
+  mv ${srcdir}/gtk3/* ${pkgdir}
+}
+
+libportal-gtk4() {
+  pkgname=libportal-gtk4
+  shortdesc=("GIO-style async APIs for most Flatpak portals - GTK 4 backend.")
+  longdesc=("Flatpak portal library.")
+}
+
+libportal-gtk4_prep(){
+  go_src_dir
+  mv ${srcdir}/gtk4/* ${pkgdir}
+}
+
+libportal-qt5(){
+  pkgname=libportal-qt5
+  shortdesc=("GIO-style async APIs for most Flatpak portals - Qt 5 backend.")
+  longdesc=("Flatpak portal library.")
+}
+
+libportal-qt5_prep(){
+  go_src_dir
+  mv ${srcdir}/qt5/* ${pkgdir}
+}
+
+libportal-docs(){
+  pkgname=libportal-docs
+  shortdesc=("GIO-style async APIs for most Flatpak portals - documentation.")
+  longdesc=("Flatpak portal library.")
+}
+
+libportal-docs_prep(){
+  go_src_dir
+  mv ${srcdir}/docs/* ${pkgdir}
+}
