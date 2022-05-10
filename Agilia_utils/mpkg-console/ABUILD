@@ -30,10 +30,4 @@ build() {
 
 # NOTE: Пути к mpkglddcheck.sh mpkg_objdump_check.sh жёстко прописаны в libmpkg.cpp пока их не трогаю.
 # Следует разобраться с ними нужны ли они.
-
-# FIXME: Во первых надо обновить данный скрипт, Во вторых поправить CmakeList.txt дабы он устанавливался в /usr/bin
-# NOTE: Cкрипт makepkg используется из комплекта pkgtools дистрибутива Slakware, думаю от него следует избавится и переложить
-# функции упаковки на mkpkg
-  mv ${pkgdir}/sbin/makepkg ${pkgdir}/usr/bin/makepkg
-  rm -r ${pkgdir}/sbin/
 }
