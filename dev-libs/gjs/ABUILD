@@ -1,0 +1,28 @@
+pkgname=gjs
+pkgver=1.72.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Javascript Bindings for GNOME.")
+longdesc=("Javascript bindings for GNOME.")
+
+tags=("libs dev-libs")
+
+source=("https://gitlab.gnome.org/GNOME/gjs/-/archive/${pkgver}/gjs-${pkgver}.tar.gz")
+
+# gobject-introspection-runtime libsysprof-capture
+build_deps=("gobject-introspection git meson dbus cairo gobject-introspection dconf readline js91")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS="${CFLAGS/-O2/-O3} -fno-semantic-interposition"
+  CXXFLAGS="${CXXFLAGS/-O2/-O3} -fno-semantic-interposition"
+  LDFLAGS+=" -Wl,-Bsymbolic-functions"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D installed_tests=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
