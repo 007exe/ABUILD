@@ -1,12 +1,12 @@
 pkgname=extra-cmake-modules
-pkgver=5.90.0
+pkgver=5.93.0
 pkgbuild=1
-arch=("auto")
+arch=("noarch")
 
 shortdesc=("Extra modules and scripts for CMake.")
 longdesc=("Extra modules and scripts for CMake.")
 
-tags=("kde-misc kde4")
+tags=("kde-frameworks develop")
 
 source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
 
@@ -19,9 +19,8 @@ build() {
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
     -DBUILD_HTML_DOCS=ON \
     -DBUILD_QTHELP_DOCS=ON
   cmake --build build
-  DESTDIR="$pkgdir" cmake --install build
+  DESTDIR=${pkgdir} cmake --install build
 }
