@@ -1,28 +1,28 @@
 pkgname=xorg-xauth
-pkgver=1.1
+pkgver=1.1.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("X.Org authorization settings program")
+shortdesc=("X.Org authorization settings program.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-tags=('x11-apps xserver')
+tags=("x11-apps xserver")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xauth-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/releases/individual/app/xauth-${pkgver}.tar.xz")
 
-build_deps="xorg-util-macros libxmu"
+build_deps=("xorg-util-macros libxmu")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
