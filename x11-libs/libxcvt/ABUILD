@@ -1,6 +1,6 @@
 pkgname=libxcvt
 pkgver=0.1.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("X.Org xcvt library and cvt program.")
@@ -16,9 +16,9 @@ build() {
   go_src_dir
   burn_patches
   meson build \
-    -Dprefix=/usr \
-    -Dlibdir=/usr/lib${LIBDIRSUFFIX}
+    -D prefix=/usr \
+    -D libdir=/usr/lib
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" COPYING
+  DESTDIR=${pkgdir} meson install -C build
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} COPYING
 }
