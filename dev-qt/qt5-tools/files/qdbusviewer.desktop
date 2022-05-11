@@ -6,4 +6,4 @@ Exec=qdbusviewer
 Icon=qdbusviewer
 Terminal=false
 Type=Application
-Categories=Qt;Development;Debugger; 
+Categories=Qt;Development;Debugger;

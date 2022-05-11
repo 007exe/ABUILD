@@ -1,53 +1,58 @@
 pkgname=qt5-tools
-pkgver=5.15.2
-_pkgfqn=qtbase
+pkgver=5.15.3+r1
+# NOTE: Коммит 5.15.3+r1
+_commit=a3e5b2eb8ef5982bc1fffb390ebcd141be1deee4
+strict_version=1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A cross-platform application and UI framework")
+shortdesc=("A cross-platform application and UI framework.")
 longdesc=("A cross-platform application and UI framework (Development Tools, QtHelp)")
 
-tags=('libs x11-libs')
+tags=("utils dev-qt")
 
-source=("https://download.qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qttools-everywhere-src-${pkgver}.tar.xz")
+source=("git:https://invent.kde.org/qt/qt/qttools")
 
 # qt5-webkit
 build_deps=("vulkan-headers clang qt5-base hicolor-icon-theme qt5-declarative")
 
 adddep=("hicolor-icon-theme")
 
+# NOTE: Это опциональные зависимости
+removedep=("clang")
+
 build() {
   go_src_dir
   burn_patches
+  git checkout ${_commit}
   mkdir -p build
   cd build
   qmake ..
   make -j${numjobs}
-  make INSTALL_ROOT="${pkgdir}" install
+  make INSTALL_ROOT=${pkgdir} install
 
-# install missing icons and desktop files
+# Устанавливаем отсутствующие значки и файлы рабочего стола
   for icon in ../src/linguist/linguist/images/icons/linguist-*-32.png ; do
     size=$(echo $(basename ${icon}) | cut -d- -f2)
     install -p -D -m644 ${icon} \
-      "${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/linguist.png"
+      ${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/linguist.png
   done
 
-  install -D -m644 ../src/assistant/assistant/images/assistant.png "${pkgdir}/usr/share/icons/hicolor/32x32/apps/assistant.png"
-  install -D -m644 ../src/assistant/assistant/images/assistant-128.png "${pkgdir}/usr/share/icons/hicolor/128x128/apps/assistant.png"
-  install -D -m644 ../src/designer/src/designer/images/designer.png "${pkgdir}/usr/share/icons/hicolor/128x128/apps/QtProject-designer.png"
-  install -D -m644 ../src/qdbus/qdbusviewer/images/qdbusviewer.png "${pkgdir}/usr/share/icons/hicolor/32x32/apps/qdbusviewer.png"
-  install -D -m644 ../src/qdbus/qdbusviewer/images/qdbusviewer-128.png "${pkgdir}/usr/share/icons/hicolor/128x128/apps/qdbusviewer.png"
-  install -d "${pkgdir}/usr/share/applications"
-  install -m644 "${filedir}"/{linguist,designer,assistant,qdbusviewer}.desktop "${pkgdir}/usr/share/applications/"
+  install -D -m644 ../src/assistant/assistant/images/assistant.png ${pkgdir}/usr/share/icons/hicolor/32x32/apps/assistant.png
+  install -D -m644 ../src/assistant/assistant/images/assistant-128.png ${pkgdir}/usr/share/icons/hicolor/128x128/apps/assistant.png
+  install -D -m644 ../src/designer/src/designer/images/designer.png ${pkgdir}/usr/share/icons/hicolor/128x128/apps/QtProject-designer.png
+  install -D -m644 ../src/qdbus/qdbusviewer/images/qdbusviewer.png ${pkgdir}/usr/share/icons/hicolor/32x32/apps/qdbusviewer.png
+  install -D -m644 ../src/qdbus/qdbusviewer/images/qdbusviewer-128.png ${pkgdir}/usr/share/icons/hicolor/128x128/apps/qdbusviewer.png
+  install -d ${pkgdir}/usr/share/applications
+  install -m644 ${filedir}/{linguist,designer,assistant,qdbusviewer}.desktop ${pkgdir}/usr/share/applications/
 
-# Symlinks for backwards compatibility
-  for b in "${pkgdir}"/usr/bin/*; do
-    ln -s $(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt5
+# Симлинки для обратной совместимости
+  for b in ${pkgdir}/usr/bin/*; do
+    ln -s $(basename $b) ${pkgdir}/usr/bin/$(basename $b)-qt5
   done
 
-# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
-  find "${pkgdir}/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+  find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
-  install -d "$pkgdir"/usr/share/licenses
-  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
