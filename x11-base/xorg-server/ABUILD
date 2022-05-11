@@ -1,6 +1,6 @@
 pkgname=xorg-server
 pkgver=21.1.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Xorg X server.")
@@ -48,7 +48,6 @@ xorg-server-devel() {
   pkgname=xorg-server-devel
   shortdesc=("Development files for the X.Org X server")
   longdesc=("Development files for the X.Org X server")
-# not technically required but almost every Xorg pkg needs it to build
   adddep=("xorgproto mesa libpciaccess xorg-util-macros")
 }
 
@@ -62,7 +61,7 @@ build() {
 
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --with-pic \
@@ -71,7 +70,7 @@ build() {
     --with-os-name="AgiliaLinux" \
     --with-xkb-output=/var/lib/xkb \
     --with-os-vendor="AgiliaLinux Project" \
-    --with-module-dir=/usr/lib${LIBDIRSUFFIX}/xorg/modules \
+    --with-module-dir=/usr/lib/xorg/modules \
     --enable-glamor \
     --enable-xorg \
     --enable-dmx \
@@ -88,10 +87,8 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# distro specific files must be installed in /usr/share/X11/xorg.conf.d
   install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"
 
-# license
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" COPYING
 }
 
@@ -101,7 +98,6 @@ xorg-server-xephyr_prep() {
   mkdir -p ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/man/man1/Xephyr.1 ${pkgdir}/usr/share/man/man1/
 
-# license
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
 }
 
@@ -112,9 +108,8 @@ xorg-server-xvfb_prep() {
   mv ${p_pkgdir}/usr/share/man/man1/Xvfb.1 ${pkgdir}/usr/share/man/man1
 
   install -m755 "${filedir}/xvfb-run" "${pkgdir}/usr/bin/"
-  install -m644 "${filedir}/xvfb-run.1" "${pkgdir}/usr/share/man/man1/" # outda
+  install -m644 "${filedir}/xvfb-run.1" "${pkgdir}/usr/share/man/man1/"
 
-# license
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
 }
 
@@ -124,30 +119,27 @@ xorg-server-xnest_prep() {
   mkdir -p ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/man/man1/Xnest.1 ${pkgdir}/usr/share/man/man1/
 
-# license
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
 }
 
 xorg-server-common_prep() {
-  mkdir -p ${pkgdir}/usr/lib$LIBDIRSUFFIX/xorg
-  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/xorg/protocol.txt ${pkgdir}/usr/lib${LIBDIRSUFFIX}/xorg/
+  mkdir -p ${pkgdir}/usr/lib/xorg
+  mv ${p_pkgdir}/usr/lib/xorg/protocol.txt ${pkgdir}/usr/lib/xorg/
   mkdir -p ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/man/man1/Xserver.1 ${pkgdir}/usr/share/man/man1/
 
   install -m644 -Dt ${pkgdir}/var/lib/xkb/ ${srcdir}/xorg-server-${pkgver}/xkb/README.compiled
 
-# license
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
 }
 
 xorg-server-devel_prep() {
   mkdir -p ${pkgdir}/usr/include/xorg/
-  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/
+  mkdir -p ${pkgdir}/usr/lib/pkgconfig/
   mkdir -p ${pkgdir}/usr/share/aclocal/
   mv ${p_pkgdir}/usr/include/xorg/* ${pkgdir}/usr/include/xorg/
-  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/xorg-server.pc ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/
+  mv ${p_pkgdir}/usr/lib/pkgconfig/xorg-server.pc ${pkgdir}/usr/lib/pkgconfig/
   mv ${p_pkgdir}/usr/share/aclocal/xorg-server.m4 ${pkgdir}/usr/share/aclocal/
 
-# license
   install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
 }
