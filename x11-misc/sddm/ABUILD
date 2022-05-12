@@ -1,0 +1,38 @@
+pkgname=sddm
+pkgver=0.19.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("QML based X11 and Wayland display manager.")
+longdesc=("Simple Desktop Display Manager.")
+
+source=("https://github.com/$pkgname/${pkgname}/archive/v${pkgver}.tar.gz")
+
+tags=("xapps x11-apps")
+
+build_deps=("extra-cmake-modules python-docutils qt5-tools qt5-declarative xorg-xauth xorg-server")
+
+config_files=("usr/share/sddm/scripts/Xsetup
+usr/share/sddm/scripts/Xstop
+etc/pam.d/sddm
+etc/pam.d/sddm-autologin
+etc/pam.d/sddm-greeter")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=/usr/lib/sddm \
+    -DUSE_ELOGIND=ON \
+    -DNO_SYSTEMD=ON \
+    -DDBUS_CONFIG_DIR=/usr/share/dbus-1/system.d \
+    -DBUILD_MAN_PAGES=ON \
+    -DUID_MAX=60513
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm755 ${filedir}/sddm.initd ${pkgdir}/etc/init.d/sddm
+  install -Dm644 ${filedir}/sddm.confd ${pkgdir}/etc/conf.d/sddm
+}
