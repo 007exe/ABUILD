@@ -1,31 +1,33 @@
 pkgname=qt5-x11extras
-pkgver=5.15.2
+pkgver=5.15.3+r0
+# NOTE: Коммит 5.15.3+r0
+_commit=f628d7a60e45d90a439cb0a393a6229ac6892be5
+strict_version=1
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("Provides platform-specific APIs for X11")
+shortdesc=("Provides platform-specific APIs for X11.")
 longdesc=("Must only be used by packages that are known to use private parts of the Qt API.")
 
-#Ссылка на исходники могут скачиватся из нескольких источников
-source=("https://download.qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtx11extras-everywhere-src-${pkgver}.tar.xz")
+source=("git:https://invent.kde.org/qt/qt/qtx11extras")
 
 tags="libs dev-libs"
 
-build_deps="qt5-base"
+build_deps="qt5-base git"
 
 build() {
   go_src_dir
   burn_patches
+  git checkout ${_commit}
   mkdir -p build
   cd build
   qmake ..
   make -j${numjobs}
-  make INSTALL_ROOT="$pkgdir" install
+  make INSTALL_ROOT=${pkgdir} install
 
-# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
-  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' \
+  find ${pkgdir}/usr/lib -type f -name '*.prl' \
     -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
 
-  install -d "$pkgdir"/usr/share/licenses
-  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
