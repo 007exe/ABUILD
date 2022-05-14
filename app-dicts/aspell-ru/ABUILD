@@ -1,0 +1,23 @@
+pkgname=aspell-ru
+pkgver=0.99f7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Russian dictionary for aspell")
+
+source=("ftp://ftp.gnu.org/gnu/aspell/dict/ru/aspell6-ru-${pkgver}-1.tar.bz2")
+
+tags=("app-dicts libs")
+
+build_deps=("aspell")
+
+adddep=("aspell")
+
+build(){
+  go_src_dir
+  ./configure
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m644 Copyright ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

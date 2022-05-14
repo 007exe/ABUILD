@@ -1,0 +1,24 @@
+pkgname=aspell-en
+pkgver=2020.12.07
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("English dictionary for aspell")
+
+source=("https://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-$pkgver-0.tar.bz2")
+
+tags=("app-dicts libs")
+
+build_deps=("aspell")
+
+adddep=("aspell")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m644 Copyright ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
