@@ -1,0 +1,40 @@
+pkgname=libdbusmenu-qt5
+pkgver=0.9.3+16.04.20160218
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that provides a Qt implementation of the DBusMenu spec.")
+longdesc=("This library provides a Qt implementation of the DBusMenu specification that exposes menus via DBus.")
+
+source=("http://archive.ubuntu.com/ubuntu/pool/main/libd/libdbusmenu-qt/libdbusmenu-qt_${pkgver}.orig.tar.gz")
+
+tags=("libs dev-libs")
+
+# qt6-base Необходим для qt6 версии
+build_deps=("cmake doxygen qt5-base")
+
+#pkglist=("libdbusmenu-qt6")
+
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build5 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DUSE_QT5=ON
+  cmake --build build5
+  DESTDIR=${pkgdir} cmake --install build5
+}
+
+libdbusmenu-qt6() {
+  pkgname=libdbusmenu-qt6
+  shortdesc=("A library that provides a Qt implementation of the DBusMenu spec.")
+  longdesc=("This library provides a Qt implementation of the DBusMenu specification that exposes menus via DBus.")
+}
+
+libdbusmenu-qt6_prep() {
+  go_src_dir
+  cmake -B build6 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DUSE_QT6=ON
+  DESTDIR=${pkgdir} cmake --install build6
+}
