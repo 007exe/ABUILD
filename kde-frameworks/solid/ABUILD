@@ -1,0 +1,34 @@
+pkgname=solid
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Hardware integration and detection.")
+longdesc=("Provider for platform independent hardware discovery, abstraction and management.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc
+build_deps=("extra-cmake-modules qt5-tools doxygen qt5-declarative qt5-base media-player-info upower udisks")
+
+adddep=("media-player-info")
+
+# Это опциональная зависимость
+removedep=("qt5-declarative")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON \
+    -DWITH_NEW_POWER_ASYNC_API=ON \
+    -DWITH_NEW_POWER_ASYNC_FREEDESKTOP=ON \
+    -DWITH_NEW_SOLID_JOB=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
