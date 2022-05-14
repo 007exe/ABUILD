@@ -1,12 +1,12 @@
 pkgname=extra-cmake-modules
-pkgver=5.93.0
+pkgver=5.94.0
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Extra modules and scripts for CMake.")
 longdesc=("Extra modules and scripts for CMake.")
 
-tags=("kde-frameworks develop")
+tags=("kde-frameworks kf5")
 
 source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
 
@@ -21,6 +21,6 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_HTML_DOCS=ON \
     -DBUILD_QTHELP_DOCS=ON
-  cmake --build build
+  cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }
