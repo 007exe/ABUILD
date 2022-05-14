@@ -1,0 +1,23 @@
+pkgname=plasma-wayland-protocols
+pkgver=1.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Plasma Specific Protocols for Wayland.")
+longdesc=("This package provides a custom set of protocol definitions for KDE.")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-qt")
+
+build_deps=("qt5-base extra-cmake-modules")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
