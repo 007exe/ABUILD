@@ -20,6 +20,7 @@ build(){
   burn_patches
   cmake -B build5 \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
     -DUSE_QT5=ON
   cmake --build build5
   DESTDIR=${pkgdir} cmake --install build5
@@ -35,6 +36,7 @@ libdbusmenu-qt6_prep() {
   go_src_dir
   cmake -B build6 \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
     -DUSE_QT6=ON
   DESTDIR=${pkgdir} cmake --install build6
 }
