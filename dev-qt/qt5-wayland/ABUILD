@@ -1,13 +1,13 @@
 pkgname=qt5-wayland
-pkgver=5.15.2
+pkgver=5.15.3
+strict_version=1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides APIs for Wayland.")
 longdesc=("Wayland platform plugin for Qt.")
 
-#source=("git:https://invent.kde.org/qt/qt/qtwayland")
-source=("https://invent.kde.org/qt/qt/qtwayland/-/archive/v${pkgver}/qtwayland-v${pkgver}.tar.bz2")
+source=("git:https://invent.kde.org/qt/qt/qtwayland")
 
 tags=("dev-qt libs")
 
@@ -16,6 +16,7 @@ build_deps=("vulkan-headers git qt5-declarative libxcomposite")
 build() {
   go_src_dir
   burn_patches
+  git checkout v${pkgver}-lts-lgpl
   mkdir -p build
   cd build
   qmake ..
