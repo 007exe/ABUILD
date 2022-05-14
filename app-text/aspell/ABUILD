@@ -1,0 +1,30 @@
+pkgname=aspell
+pkgver=0.60.8
+_pkgmajorver=0.60
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A spell checker designed to eventually replace Ispell.")
+longdesc=("The Aspell package contains an interactive spell checking program and the Aspell libraries. Aspell can either be used as a library or as an independent spell checker.")
+
+source=("https://github.com/GNUAspell/aspell/archive/rel-${pkgver}.tar.gz")
+
+tags=("libs app-text")
+
+build_deps=("gcc-libs ncurses")
+
+# NOTE: Это опциональная зависимость
+removedep=("perl")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  ln -s ${pkgname}-${_pkgmajorver} ${pkgdir}/usr/lib/${pkgname}
+}
