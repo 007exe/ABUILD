@@ -1,16 +1,16 @@
 pkgname=libatasmart
 pkgver=0.19
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("ATA S.M.A.R.T. Reading and Parsing Library")
+shortdesc=("ATA S.M.A.R.T. Reading and Parsing Library.")
 longdesc=("The libatasmart package is a disk reporting library. It only supports a subset of the ATA S.M.A.R.T. functionality.")
 
 source=("http://0pointer.de/public/${pkgname}-${pkgver}.tar.xz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
-build_deps="eudev"
+build_deps=("eudev")
 
 build() {
   go_src_dir
@@ -19,7 +19,8 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
