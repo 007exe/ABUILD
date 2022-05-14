@@ -1,0 +1,29 @@
+pkgname=sonnet
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Spelling framework for Qt5.")
+longdesc=("Framework for providing spell-checking through abstraction of popular backends.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc hspell
+build_deps=("extra-cmake-modules qt5-declarative qt5-tools hunspell aspell libvoikko doxygen qt5-base")
+
+# NOTE: Это опциональные зависимости
+removedep=("hunspell hspell qt5-declarative")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
