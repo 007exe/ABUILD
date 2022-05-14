@@ -1,0 +1,26 @@
+pkgname=krusader
+pkgver=2.7.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Advanced twin panel (commander style) file manager.")
+longdesc=("Advanced twin-panel (commander-style) file-manager with many extras.")
+
+source=("https://download.kde.org/stable/krusader/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("xapps kde-misc")
+
+build_deps=("kparts extra-cmake-modules kdoctools")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DKDESU_PATH="/usr/lib/kf5/kdesu"
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
