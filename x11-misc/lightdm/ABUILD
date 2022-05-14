@@ -1,78 +1,91 @@
 pkgname=lightdm
 pkgver=1.30.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A lightweight display manager")
+shortdesc=("A lightweight display manager.")
 longdesc=("The lightdm package contains a lightweight display manager based upon GTK.")
 
 source=("https://github.com/canonical/lightdm/releases/download/${pkgver}/lightdm-${pkgver}.tar.xz")
 
-tags="xapps x11-apps"
+tags=("xapps x11-misc")
 
-build_deps="glib2 gobject-introspection gtk-doc intltool itstool libgcrypt libx11 libxcb libxdmcp libxklavier linux-pam polkit qt5-base vala yelp-tools"
+build_deps=("glib2 gobject-introspection gtk-doc intltool itstool libgcrypt libx11 libxcb libxdmcp libxklavier linux-pam polkit qt5-base vala yelp-tools")
 
-pkglist="liblightdm-qt5"
+pkglist=("liblightdm-qt5")
 
-config_files="etc/apparmor.d/lightdm-guest-session
+config_files=("etc/apparmor.d/lightdm-guest-session
 etc/lightdm/keys.conf
 etc/lightdm/lightdm.conf
 etc/lightdm/users.conf
 etc/lightdm/Xsession
 etc/pam.d/lightdm
 etc/pam.d/lightdm-autologin
-etc/pam.d/lightdm-greeter"
+etc/pam.d/lightdm-greeter")
 
 build() {
   go_src_dir
   burn_patches
-# Then change the Linux-PAM configuration files so that elogind is used:
+# Изменить конфигурационные файлы Linux-PAM, чтобы использовался elogind:
   sed -i s/systemd/elogind/ data/pam/*
   ./autogen.sh
+  export MOC5=moc-qt5
   ./configure \
     --prefix=/usr \
+    --libexecdir=/usr/lib/lightdm \
+    --localstatedir=/var \
     --sbindir=/usr/bin \
     --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --disable-static \
     --disable-tests \
-    --with-greeter-user=lightdm
+    --enable-gtk-doc \
+    --with-greeter-user=lightdm \
+    --with-greeter-session=lightdm-gtk-greeter
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
-  make DESTDIR="${pkgdir}" -C liblightdm-qt uninstall
+  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} -C liblightdm-qt uninstall
 
-  mkdir -p $pkgdir/etc/{pam.d,init.d,lightdm}
+  mkdir -p ${pkgdir}/etc/{pam.d,init.d,lightdm}
 # Openrc
-  cp $filedir/lightdm.rc $pkgdir/etc/init.d/lightdm
+  cp ${filedir}/lightdm.rc ${pkgdir}/etc/init.d/lightdm
+  chmod 755 ${pkgdir}/etc/init.d/lightdm
 
-  install -m 755 $filedir/Xsession $pkgdir/etc/lightdm/Xsession
+  install -m 755 ${filedir}/Xsession ${pkgdir}/etc/lightdm/Xsession
 # PAM
-  install -m 644 $filedir/lightdm.pam $pkgdir/etc/pam.d/lightdm
-  install -m 644 $filedir/lightdm-autologin.pam $pkgdir/etc/pam.d/lightdm-autologin
-# PolicyKit
-  install -dm 750 -g 102 "${pkgdir}"/usr/share/polkit-1/rules.d
-  install -m 644 $filedir/lightdm.rules "${pkgdir}"/usr/share/polkit-1/rules.d/lightdm.rules
+  install -m 644 ${filedir}/lightdm.pam ${pkgdir}/etc/pam.d/lightdm
+  install -m 644 ${filedir}/lightdm-autologin.pam ${pkgdir}/etc/pam.d/lightdm-autologin
+  sed -i "s/pam_systemd/pam_elogind/" ${pkgdir}/etc/pam.d/*
 
-  cp $filedir/lightdm.conf $pkgdir/etc/lightdm
-  mkdir -p $pkgdir/usr/share/lightdm/themes
-  cp -r $filedir/agilialinux $pkgdir/usr/share/lightdm/themes/
-  rm -rf $pkgdir/etc/init
+  ln -s /etc/X11/xinit/Xsession ${pkgdir}/usr/bin/lightdm-session
+
+  install -o lightdm -g lightdm -d ${pkgdir}/var/lib/lightdm-data
+
+# Исправлено расположение конфигурации dbus
+  mv ${pkgdir}/etc/dbus-1/system.d ${pkgdir}/usr/share/dbus-1/system.d
+  rm -rf ${pkgdir}/etc/dbus-1
+
+# PolicyKit
+#  install -dm 750 -g 102 ${pkgdir}/usr/share/polkit-1/rules.d
+#  install -m 644 ${filedir}/lightdm.rules ${pkgdir}/usr/share/polkit-1/rules.d/lightdm.rules
+
+#  cp ${filedir}/lightdm.conf ${pkgdir}/etc/lightdm
+#  mkdir -p ${pkgdir}/usr/share/lightdm/themes
+#  cp -r ${filedir}/agilialinux ${pkgdir}/usr/share/lightdm/themes/
 }
 
 liblightdm-qt5() {
   pkgname=liblightdm-qt5
-  shortdesc=("LightDM Qt client library")
-  longdesc=("LightDM Qt client library")
-  adddep="lightdm"
+  shortdesc=("LightDM Qt client library.")
+  longdesc=("The lightdm package contains a lightweight display manager based Qt client library.")
+  adddep=("lightdm")
 }
 
 liblightdm-qt5_prep() {
   go_src_dir
-  make DESTDIR="${pkgdir}" -C liblightdm-gobject install
-  make DESTDIR="${pkgdir}" -C liblightdm-qt install
-  make DESTDIR="${pkgdir}" -C liblightdm-gobject uninstall
-  find "${pkgdir}" -type d -name *qt[!5]* -exec rm -rf {} +
-  find "${pkgdir}" -type f  -name *qt[!5]* -exec rm {} +
-  find "${pkgdir}" -type l  -name *qt[!5]* -exec rm {} +
+  make DESTDIR=${pkgdir} -C liblightdm-gobject install
+  make DESTDIR=${pkgdir} -C liblightdm-qt install
+  make DESTDIR=${pkgdir} -C liblightdm-gobject uninstall
+  find ${pkgdir} -type d -name *qt[!5]* -exec rm -rf {} +
+  find ${pkgdir} -type f  -name *qt[!5]* -exec rm {} +
+  find ${pkgdir} -type l  -name *qt[!5]* -exec rm {} +
 }
