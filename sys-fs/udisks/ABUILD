@@ -1,16 +1,18 @@
 pkgname=udisks
 pkgver=2.9.4
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Disk Management Service, version 2")
 longdesc=("The UDisks package provides a daemon, tools and libraries to access and manipulate disks and storage devices.")
 
 source=("https://github.com/storaged-project/udisks/archive/udisks-$pkgver.tar.gz")
 
-tags="sys-fs base"
+tags=("sys-fs base")
 
-build_deps="docbook-xsl gobject-introspection parted gtk-doc polkit libatasmart libgudev libblockdev"
+build_deps=("docbook-xsl gobject-introspection parted gtk-doc polkit libatasmart eudev libblockdev")
+
+config_files=("etc/udisks2/udisks2.conf")
 
 build() {
   go_src_dir
@@ -19,11 +21,12 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --disable-static \
-    --enable-fhs-media \
-    --with-udevdir=/etc/udev
+    --enable-gtk-doc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }

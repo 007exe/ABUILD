@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend udisks capabilities:"
+echo -e "gptfdisk: GUID partition table support"
+echo -e "ntfs-3g: NTFS filesystem management support"
+echo -e "dosfstools: VFAT filesystem management support"
+echo -e " "
