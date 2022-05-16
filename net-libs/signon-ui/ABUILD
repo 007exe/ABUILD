@@ -1,0 +1,24 @@
+pkgname=signon-ui
+pkgver=0.17+20171022
+_commit=4368bb77d9d1abc2978af514225ba4a42c29a646
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Online accounts signon UI.")
+longdesc=("UI component responsible for handling the user interactions which can happen during the login process of an online account.")
+
+source=("https://gitlab.com/accounts-sso/signon-ui/-/archive/${_commit}/signon-ui-${_commit}.tar.bz2")
+
+tags=("libs net-libs")
+
+build_deps=("libaccounts-qt signond libnotify qt5-webengine")
+
+build() {
+  go_src_dir
+# Отключаем тесты
+  sed -e 's|src \\|src|' -e '/tests/d' -i signon-ui.pro
+  burn_patches
+  qmake-qt5 CONFIG+=debug_and_release PREFIX=/usr LIBDIR=/usr/lib
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+}
