@@ -1,0 +1,29 @@
+pkgname=catdoc
+pkgver=0.95
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A convertor for Microsoft Word, Excel, PowerPoint and RTF Files to text.")
+longdesc=("Converter for Microsoft Word, Excel, PowerPoint and RTF files to text.")
+
+source=("http://ftp.wagner.pp.ru/pub/catdoc/catdoc-${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+build_deps=("glibc")
+
+# Это опциональная зависимость
+removedep=("tk")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --with-wish=/usr/bin/wish
+  make -j${numjobs}
+  make installroot=${pkgdir} mandir=/usr/share/man/man1 install
+
+  install -d ${pkgdir}/usr/share/man/man1
+  install -m644 doc/*.1 ${pkgdir}/usr/share/man/man1
+}
