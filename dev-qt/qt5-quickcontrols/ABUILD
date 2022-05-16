@@ -1,0 +1,31 @@
+pkgname=qt5-quickcontrols
+pkgver=5.15.3
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Reusable Qt Quick based UI controls to create classic desktop-style user interfaces.")
+longdesc=("Set of Qt Quick controls to create complete user interfaces (deprecated).")
+
+source=("git:https://invent.kde.org/qt/qt/qtquickcontrols.git")
+
+tags=("libs dev-qt")
+
+build_deps=("git qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  git checkout v${pkgver}-lts-lgpl
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+
+  find ${pkgdir}/usr/lib -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
