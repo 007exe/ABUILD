@@ -1,22 +1,27 @@
-#ABUILD created by/создан: aix27249, i27249 at gmail.com 
-#url https://github.com/steveire/grantlee/releases
-
 pkgname=grantlee
-pkgver=0.5.1
+pkgver=5.2.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Grantlee is a string template engine based on the Django template system and written in Qt."
+shortdesc=("Grantlee is a string template engine based on the Django template system and written in Qt.")
+longdesc=("Grantlee is a set of free software libraries written using the Qt framework.")
 
 source=("http://downloads.grantlee.org/grantlee-${pkgver}.tar.gz")
 
-tags="kde-misc kde4"
+tags=("dev-libs libs")
 
-build_deps="cmake gcc gcc-g++"
+build_deps=("cmake doxygen graphviz qt5-declarative")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTS=OFF
+  make
+  make docs
+  make DESTDIR=${pkgdir} install
+  install -Dm644 apidox/* -t ${pkgdir}/usr/share/doc/${pkgname}
+}
