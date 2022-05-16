@@ -1,0 +1,26 @@
+pkgname=knotifyconfig
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Configuration system for KNotify.")
+longdesc=("Framework for configuring desktop notifications.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc
+build_deps=("extra-cmake-modules doxygen qt5-tools kio")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
