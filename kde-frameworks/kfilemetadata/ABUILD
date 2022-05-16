@@ -1,0 +1,30 @@
+pkgname=kfilemetadata
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for extracting file metadata")
+removedep=("Library for extracting file metadata.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc libappimage
+build_deps=("extra-cmake-modules catdoc doxygen qt5-tools kdegraphics-mobipocket
+ki18n karchive kconfig kcoreaddons exiv2 poppler-qt5 taglib ffmpeg ebook-tools")
+
+# NOTE: Это опциональные зависимости
+removedep=("catdoc kdegraphics-mobipocket libappimage")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
