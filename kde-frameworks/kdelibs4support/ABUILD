@@ -1,0 +1,27 @@
+pkgname=kdelibs4support
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Porting aid from KDELibs4.")
+longdesc=("Framework easing the development transition from KDELibs 4 to KF 5.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+build_deps=("extra-cmake-modules kdoctools qt5-tools networkmanager perl-uri kdesignerplugin
+kunitconversion kitemmodels kemoticons kparts perl")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
