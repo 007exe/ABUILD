@@ -1,14 +1,8 @@
-config() {
-  NEW="$1"
-  OLD="$(dirname $NEW)/$(basename $NEW .new)"
-  # If there's no config file by that name, mv it over:
-  if [ ! -r $OLD ]; then
-    mv $NEW $OLD
-  elif [ "$(cat $OLD | md5sum)" = "$(cat $NEW | md5sum)" ]; then
-    # toss the redundant copy
-    rm $NEW
-  fi
-  # Otherwise, we leave the .new copy for the admin to consider...
-}
-config etc/conf.d/svnserve.new
-
+echo -e "\n"
+echo -e "The following packages extend subversion capabilities:"
+echo -e "libgnome-keyring: for GNOME Keyring for auth credentials"
+echo -e "kwallet: for KWallet for auth credentials"
+echo -e "bash-completion: for svn bash completion"
+echo -e "python: for some hook scripts"
+echo -e "ruby: for some hook scripts"
+echo -e " "

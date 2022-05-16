@@ -1,18 +1,23 @@
 pkgname=subversion
-pkgver=1.14.1
+pkgver=1.14.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A Modern Concurrent Version Control System")
-longdesc=("Subversion is a version control system that is designed to be a compelling replacement for CVS in the open source community. It extends and enhances CVS' feature set, while maintaining a similar interface for those already familiar with CVS.")
+shortdesc=("A Modern Concurrent Version Control System.")
+longdesc=("Subversion is a version control system that is designed to be a compelling replacement for CVS in the open source community.")
 
-tags=('dev-util develop')
+tags=("dev-vcs develop")
 
-source=("https://www.apache.org/dist/subversion/subversion-${pkgver}.tar.bz2")
-# libutf8proc serf apache python-py3c java-environment libgnome-keyring kwallet kdelibs4support
-build_deps="file sqlite python perl swig ruby"
+source=("https://archive.apache.org/dist/subversion/subversion-${pkgver}.tar.bz2")
 
-config_files="etc/conf.d/svnserve"
+# apache libgnome-keyring serf
+build_deps=("perl swig kwallet kdelibs4support ruby file sqlite apr-util libutf8proc python-py3c")
+
+# NOTE: это опциональные зависимости
+removedep=("libgnome-keyring kwallet bash-completion python ruby kcoreaddons ki18n qt5-base db dbus expat glib2 lz4 cyrus-sasl libsecret zlib")
+
+config_files=("etc/conf.d/svnserve
+etc/xinetd.d/svn")
 
 build() {
   go_src_dir
@@ -20,33 +25,41 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --enable-shared \
-    --disable-static \
-    --with-apr-util=/usr/bin/apu-1-config \
-    --with-apxs=/usr/sbin/apxs \
-    --with-zlib \
-    --with-pic
-  make LT_LDFLAGS="-L$Fdestdir/usr/lib${LIBDIRSUFFIX}"
-  make swig_pydir=/usr/lib/python3.9/site-packages/libsvn swig_pydir_extra=/usr/lib/python3.9/site-packages/svn swig-py swig-pl javahl swig-rb
-  make DESTDIR=${pkgdir} INSTALLDIRS=vendor \
-     swig_pydir=/usr/lib/python3.9/site-packages/libsvn \
-     swig_pydir_extra=/usr/lib/python3.9/site-packages/svn \
-     install install-swig-py install-swig-pl install-javahl install-swig-rb
+    --with-jdk=/usr/lib/jvm/default \
+    --with-gnome-keyring \
+    --with-kwallet \
+    --with-apache-libexecdir=/usr/lib/httpd/modules \
+    --with-ruby-sitedir=/usr/lib/ruby/vendor_ruby \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+#  make -j${numjobs} LT_LDFLAGS="-L$Fdestdir/usr/lib"
+#  make -j${numjobs} swig_pydir=/usr/lib/python3.10/site-packages/libsvn \
+#     swig_pydir_extra=/usr/lib/python3.10/site-packages/svn swig-py swig-pl javahl swig-rb
+
+#  export LD_LIBRARY_PATH=${pkgdir}/usr/lib:${LD_LIBRARY_PATH}
+#  make DESTDIR=${pkgdir} INSTALLDIRS=vendor \
+#     swig_pydir=/usr/lib/python3.10/site-packages/libsvn \
+#     swig_pydir_extra=/usr/lib/python3.10/site-packages/svn \
+#     install install-swig-py install-swig-pl install-javahl install-swig-rb
 
   install -dm755 ${pkgdir}/usr/share/subversion
    cp -a tools/hook-scripts ${pkgdir}/usr/share/subversion/
    rm ${pkgdir}/usr/share/subversion/hook-scripts/*.in
 
-# ... common config
+# tmpfiles
+  install -D -m 644 ${filedir}/svnserve.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/svnserve.conf
+
+# xinetd
+  install -D -m 644 ${filedir}/svn ${pkgdir}/etc/xinetd.d/svn
+
+# config
   install -D -m 644 ${filedir}/svnserve.conf ${pkgdir}/etc/conf.d/svnserve
 
   install -Dm 644 tools/client-side/bash_completion \
-     "${pkgdir}"/usr/share/bash-completion/completions/subversion
+     ${pkgdir}/usr/share/bash-completion/completions/subversion
    for i in svn svnadmin svndumpfilter svnlook svnsync svnversion; do
-      ln -sf subversion "${pkgdir}"/usr/share/bash-completion/completions/${i}
+      ln -sf subversion ${pkgdir}/usr/share/bash-completion/completions/${i}
    done
-
-# OpenRC scripts for svnserve
-  install -Dm755 ${filedir}/svnserve.initd ${pkgdir}/etc/init.d/svnserve
 }
