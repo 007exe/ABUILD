@@ -1,26 +1,27 @@
 pkgname=baloo
-pkgver=4.14.2
-#strict_version='yes'
+pkgver=5.94.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=('A fast and easy to use image viewer for KDE')
-
-tags=('kde-base kde4')
+shortdesc=("A framework for searching and managing metadata")
+longdesc=("Framework for searching and managing metadata.")
 
 source=("ftp://ftp.kde.org/pub/kde/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
-build_deps="kdelibs"
 
-if [ -d /usr/lib${LIBDIRSUFFIX}/qt ]; then
-  QTDIR=/usr/lib${LIBDIRSUFFIX}/qt
-fi
+tags=("kde-frameworks kf5")
 
+# qt5-doc
+build_deps=("extra-cmake-modules kdoctools doxygen qt5-tools qt5-declarative kfilemetadata kidletime kio lmdb")
 
-BUILD_SYSTEM='cmake'
-BUILD_KEYS="-DCMAKE_BUILD_TYPE=Release \
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
-    -DCMAKE_SKIP_RPATH=ON"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
