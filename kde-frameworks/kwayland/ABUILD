@@ -1,0 +1,27 @@
+pkgname=kwayland
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt-style Client and Server library wrapper for the Wayland libraries.")
+longdesc=("Qt-style client and server library wrapper for Wayland libraries.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc
+build_deps=("extra-cmake-modules doxygen qt5-tools wayland-protocols plasma-wayland-protocols qt5-wayland")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
