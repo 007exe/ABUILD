@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# Версия всех пакетов из спика MOBULES
+VERSION=5.15.4
+
+MODULES="qt5-base
+qt5-declarative
+qt5-tools
+qt5-multimedia
+qt5-quickcontrols2
+qt5-sensors
+qt5-svg
+qt5-webchannel
+qt5-websockets
+qt5-graphicaleffects
+qt5-remoteobjects
+qt5-serialport
+qt5-x11extras
+qt5-connectivity
+qt5-location
+qt5-quickcontrols
+qt5-script
+qt5-speech
+qt5-wayland
+qt5-xmlpatterns
+qt5-quick3d
+"
+# qt5-webengine
+
+##mkpkg --help
+#-ba   : Авто установка пакетов из списка builddeps
+#-ib   : Автоматически увеличить номер билда на единицу.
+#-si   : Установить пакет после сборки (необходимо настроить sudo)
+#-nc   : Не очищать временные директории после сборки.
+#-wd   : Имя директории, где будет проходить сборка пакета.
+#-pod  : Имя директории, куда будет помещён готовый пакет.
+##
+set -e
+
+for i in $MODULES; do
+  cd $i
+  mkpkg -ba -si -bv $VERSION
+  cd ..
+done
+
+set +e
