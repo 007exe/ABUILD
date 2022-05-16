@@ -1,0 +1,22 @@
+pkgname=signond
+pkgver=8.61
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A D-Bus service which performs user authentication on behalf of its clients.")
+longdesc=("Signon daemon for libaccounts-glib.")
+
+source=("https://gitlab.com/accounts-sso/signond/-/archive/VERSION_${pkgver}/signond-VERSION_${pkgver}.tar.bz2")
+
+tags=("libs net-libs")
+
+build_deps=("doxygen graphviz qt5-tools qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  qmake PREFIX=/usr LIBDIR=/usr/lib
+  make INSTALL_ROOT=${pkgdir} install
+# Удаляем документацию
+  rm -rf ${pkgdir}/usr/share/doc
+}
