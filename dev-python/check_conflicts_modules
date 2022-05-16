@@ -6,6 +6,7 @@ python-gpgme
 python-nodeenv
 python-pyqt5
 python-sphinx-theme-builder
+python-py3c
 python-cryptography
 python-nose
 python-pyqt5-sip

@@ -26,6 +26,7 @@ python-ply
 python-pycparser
 python-cffi
 python-chardet
+python-py3c
 python-docutils
 python-imagesize
 python-markupsafe

@@ -1,0 +1,28 @@
+pkgname=python-py3c
+pkgver=1.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python 2/3 compatibility layer for C extensions.")
+longdesc=("py3c helps you port C extensions to Python 3. It provides a detailed guide, and a set of macros to make porting easy and reduce boilerplate.")
+
+source=("https://github.com/encukou/py3c/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+# Не регенерировать с неработающим путем в цели «установить»
+  sed -i 's/install: py3c.pc/install:/' Makefile
+  python setup.py build
+  make prefix=/usr py3c.pc
+  make prefix=${pkgdir}/usr install
+  python setup.py install --root=${pkgdir} --optimize=1
+
+# Удалить заголовки в неработающем месте
+  rm -r ${pkgdir}/usr/include/python*
+
+  install -Dm644 LICENSE.MIT -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
