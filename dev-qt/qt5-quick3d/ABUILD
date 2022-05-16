@@ -1,32 +1,36 @@
 pkgname=qt5-quick3d
-pkgver=5.15.2+kde+r19
-# commit 5.15.2+kde+r19
-_commit=3e3e53c834b25dc2959dd30f319d12d6f84ee1e3
+pkgver=5.15.3
+strict_version=1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt module and API for defining 3D content in Qt Quick.")
-longdesc=("Qt module and API for defining 3D content in Qt Quick.")
+longdesc=("Qt Quick 3D enables anyone to introduce 3D content into their Qt Quick applications.")
 
-tags=("libs x11-libs")
+tags=("libs dev-qt")
 
-#source=("https://download.qt.io/archive/qt/${pkgver%.*}/${pkgver}/submodules/qtquick3d-everywhere-src-${pkgver}.tar.xz")
 source=("git:https://invent.kde.org/qt/qt/qtquick3d.git")
 
 build_deps=("qt5-declarative assimp")
 
+# NOTE: это опциональная зависимость
+removedep=("assimp")
+
 build() {
   go_src_dir
-  git checkout $_commit
+  git checkout v${pkgver}-lts-lgpl
+
+# Использовать системный assimp
   burn_patches
+
   mkdir -p build
   cd build
   qmake ..
   make -j${numjobs}
-  make INSTALL_ROOT="$pkgdir" install
-# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
-  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+  make INSTALL_ROOT=${pkgdir} install
 
-  install -d "$pkgdir"/usr/share/licenses
-  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+  find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
