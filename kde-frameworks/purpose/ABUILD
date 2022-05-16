@@ -1,0 +1,30 @@
+pkgname=purpose
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Framework for providing abstractions to get the developers purposes fulfilled.")
+longdesc=("Library for providing abstractions to get the developer's purposes fulfilled.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc
+build_deps=("extra-cmake-modules intltool kaccounts-integration kirigami2 accounts-qml-module")
+
+# NOTE: Это опциональные зависимости
+removedep=("kdeconnect telegram-desktop bluedevil prison")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
