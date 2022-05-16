@@ -1,0 +1,8 @@
+echo -e "\n"
+echo -e "The following packages extend qt5-multimedia capabilities:"
+echo -e "qt5-declarative: QML bindings"
+echo -e "gst-plugins-good: camera support, additional plugins"
+echo -e "gst-plugins-bad: camera support, additional plugins"
+echo -e "gst-plugins-ugly: additional plugins"
+echo -e "gst-libav: ffmpeg plugin"
+echo -e " "

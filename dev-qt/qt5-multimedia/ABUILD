@@ -1,29 +1,32 @@
 pkgname=qt5-multimedia
-pkgver=5.15.2
+pkgver=5.15.3
+strict_version=1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classes for audio, video, radio and camera functionality.")
 longdesc=("Multimedia (audio, video, radio, camera) library for the Qt5 framework.")
 
-tags=('libs x11-libs')
+tags=("libs dev-qt")
 
-source=("https://download.qt.io/archive/qt/${pkgver%.*}/${pkgver}/submodules/qtserialport-everywhere-src-${pkgver}.tar.xz")
+source=("git:https://invent.kde.org/qt/qt/qtmultimedia.git")
 
-build_deps=("qt5-declarative gst-plugins-bad qt5-base gst-plugins-base libpulse openal")
-# Optional dependencies.
+build_deps=("qt5-base qt5-declarative gst-plugins-bad qt5-base gst-plugins-base libpulse openal")
+
+# NOTE: Это опциональные зависимости
 removedep=("qt5-declarative gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav")
 
 build() {
   go_src_dir
-  burn_patches
+  git checkout v${pkgver}-lts-lgpl
   mkdir -p build
   cd build
   qmake ..
   make -j${numjobs}
-  make INSTALL_ROOT="$pkgdir" install
-# Drop QMAKE_PRL_BUILD_DIR because reference the build dir
-  find "$pkgdir/usr/lib${LIBDIRSUFFIX}" -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
-  install -d "$pkgdir"/usr/share/licenses
-  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+  make INSTALL_ROOT=${pkgdir} install
+
+  find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
