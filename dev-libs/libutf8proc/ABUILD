@@ -1,0 +1,26 @@
+pkgname=libutf8proc
+pkgver=2.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C library for processing UTF-8 encoded Unicode strings.")
+longdesc=("A clean C Library for processing UTF-8 Unicode data.")
+
+source=("https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("cmake ninja")
+
+build() {
+  go_src_dir
+  sed "s#@VERSION@#$pkgver#" ${filedir}/libutf8proc.pc.in > libutf8proc.pc
+  cmake -B build \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_LIBDIR=lib \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D BUILD_SHARED_LIBS=ON \
+    -G Ninja
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+}
