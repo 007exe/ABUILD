@@ -1,0 +1,29 @@
+pkgname=apr
+pkgver=1.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Apache Portable Runtime.")
+longdesc=("The Apache Portable Runtime (APR) is a supporting library for the Apache web server.")
+
+source=("https://dlcdn.apache.org/apr/apr-${pkgver}.tar.bz2")
+
+tags=("libs dev-libs")
+
+build_deps=("util-linux python")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./buildconf
+  ./configure \
+    --prefix=/usr \
+    --includedir=/usr/include/apr-1 \
+    --with-installbuilddir=/usr/share/apr-1/build \
+    --enable-nonportable-atomics \
+    --with-devrandom=/dev/urandom \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
