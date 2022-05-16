@@ -1,0 +1,24 @@
+pkgname=convertlit
+pkgver=1.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("n extractor/converter for .LIT eBooks.")
+longdesc=("CLit converts MS ebook .lit files to .opf (xml+html+png+jpg).")
+
+source=("http://www.convertlit.com/clit${pkgver//./}src.zip")
+
+tags=("utils app-text")
+
+build_deps=("libtommath")
+
+build() {
+  cd ${srcdir}
+# Ссылка на общий libtommath и использование системы LDFLAGS
+  sed -i 's|../libtommath-0.30/libtommath.a|/usr/lib/libtommath.so ${LDFLAGS}|' clit18/Makefile
+  cd lib
+  make -j${numjobs}
+  cd ../clit18
+  make -j${numjobs}
+  install -Dm755 clit ${pkgdir}/usr/bin/clit
+}
