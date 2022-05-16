@@ -1,0 +1,30 @@
+pkgname=syntax-highlighting
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Framework for syntax highlighting.")
+longdesc=("Syntax highlighting engine for structured text and code.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc
+build_deps=("extra-cmake-modules qt5-declarative qt5-xmlpatterns qt5-tools doxygen qt5-base")
+
+# NOTE: Это опциональная зависимость
+removedep=("qt5-declarative")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DQRC_SYNTAX=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
