@@ -1,0 +1,24 @@
+pkgname=kdegraphics-mobipocket
+pkgver=22.04.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library to handle mobipocket files.")
+longdesc=("Library to support mobipocket ebooks.")
+
+source=("https://download.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("extra-cmake-modules qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
