@@ -8,7 +8,7 @@ longdesc=("This package provides a custom set of protocol definitions for KDE.")
 
 source=("https://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs dev-qt")
+tags=("libs dev-libs")
 
 build_deps=("qt5-base extra-cmake-modules")
 
