@@ -1,0 +1,26 @@
+pkgname=editorconfig-core-c
+pkgver=0.12.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("EditorConfig core library written in C.")
+longdesc=("EditorConfig core code written in C (for use by plugins supporting EditorConfig parsing).")
+
+source=("https://github.com/editorconfig/$pkgname/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-text libs")
+
+build_deps=("cmake doxygen pcre2")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_C_FLAGS="$CFLAGS -ffat-lto-objects"
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
