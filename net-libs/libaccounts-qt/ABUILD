@@ -1,0 +1,23 @@
+pkgname=libaccounts-qt
+pkgver=1.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt-based client library for accessing the online accounts database.")
+longdesc=("Shared library for Qt bindings for Accounts framework.")
+
+source=("https://gitlab.com/accounts-sso/libaccounts-qt/-/archive/VERSION_${pkgver}/libaccounts-qt-VERSION_${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("libaccounts-glib qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  qmake PREFIX=/usr LIBDIR=/usr/lib
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+# Удаляем доки
+  rm -r ${pkgdir}/usr/share
+}
