@@ -1,0 +1,34 @@
+pkgname=astyle
+pkgver=3.1
+_pkgver=3.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A free, fast and small automatic formatter for C, C++, C#, and Java source code.")
+longdesc=("Artistic Style is a re-indenter and reformatter for C++, C and Java source code.")
+
+source=("https://downloads.sourceforge.net/sourceforge/astyle/${pkgname}_${pkgver}_linux.tar.gz")
+
+tags=("utils dev-util")
+
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd build/gcc
+  make release shared
+  install -Dm0755 bin/astyle ${pkgdir}/usr/bin/astyle
+  install -Dm0755 bin/libastyle.so.${_pkgver} ${pkgdir}/usr/lib/libastyle.so.${_pkgver}
+  ln -s libastyle.so.${_pkgver} ${pkgdir}/usr/lib/libastyle.so.${_pkgver%%\.*}
+  ln -s libastyle.so.${_pkgver} ${pkgdir}/usr/lib/libastyle.so
+
+# Установка заголовков
+  install -Dm0644 ../../src/astyle.h -t ${pkgdir}/usr/include
+
+# Документация
+  install -d ${pkgdir}/usr/share/doc/${pkgname}/
+  for f in ../../doc/*.html; do
+    install -m0644 ${f} ${pkgdir}/usr/share/doc/${pkgname}/
+  done
+}
