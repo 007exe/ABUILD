@@ -1,0 +1,22 @@
+pkgname=libaccounts-glib
+pkgver=1.25
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Glib-based client library for accessing the online accounts database.")
+longdesc=("Accounts SSO (Single Sign-On) management library for GLib applications.")
+
+source=("https://gitlab.com/accounts-sso/libaccounts-glib/-/archive/VERSION_${pkgver}/libaccounts-glib-VERSION_${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("python-gobject gobject-introspection vala meson check glib2 libxml2 sqlite")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
