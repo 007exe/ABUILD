@@ -1,0 +1,24 @@
+pkgname=ebook-tools
+pkgver=0.2.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tools for accessing and converting various ebook file formats.")
+longdesc=("Tools for accessing and converting various ebook file formats.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs app-text")
+
+build_deps=("cmake libzip libxml2 convertlit")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ../LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
