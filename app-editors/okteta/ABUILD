@@ -1,0 +1,26 @@
+pkgname=okteta
+pkgver=0.26.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Hex editor by KDE")
+removedep=("KDE hex editor for viewing and editing the raw data of files.")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop app-editors")
+
+build_deps=("extra-cmake-modules kdoctools qt5-tools kcmutils kparts knewstuff qca-qt5 qt5-script")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
