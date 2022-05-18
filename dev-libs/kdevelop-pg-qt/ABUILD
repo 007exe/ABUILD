@@ -1,0 +1,25 @@
+pkgname=kdevelop-pg-qt
+pkgver=2.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("KDevelop Parser Generator, a LL(1) parser generator used by KDevelop language plugins.")
+longdesc=("LL(1) parser generator used mainly by KDevelop language plugins.")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("dev-libs libs")
+
+build_deps=("extra-cmake-modules qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
