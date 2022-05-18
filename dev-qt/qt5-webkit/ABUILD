@@ -1,32 +1,37 @@
 pkgname=qt5-webkit
-pkgver=5.212.0
+_pkgver=5.212.0-alpha4
+pkgver=${_pkgver/-/}
+strict_version=1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Classes for a WebKit2 based implementation and a new QML API")
 longdesc=("Qt WebKit library is an open source web browser engine.")
 
-source=("https://github.com/qtwebkit/qtwebkit/archive/refs/tags/qtwebkit-${pkgver}-alpha4.tar.gz")
+#source=("https://github.com/qtwebkit/qtwebkit/archive/refs/tags/qtwebkit-${_pkgver}.tar.gz")
+source=("git:https://github.com/qtwebkit/qtwebkit.git")
 
-tags="libs x11-libs"
+tags=("libs dev-qt")
 
-build_deps="cmake python qt5-base gst-plugins-base icu libjpeg-turbo libjpeg-turbo libpng libwebp libxslt ruby sqlite"
+build_deps=("cmake git ruby gperf python qt5-tools qt5-location qt5-sensors qt5-webchannel libwebp libxslt libxcomposite gst-plugins-base hyphen woff2")
+
+# NOTE: Это опциональная зависимость
+removedep=("gst-plugins-good")
 
 build() {
   go_src_dir
+  git checkout qtwebkit-${_pkgver}
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_CXX_FLAGS="${CXXFLAGS} -DNDEBUG" \
     -DPORT=Qt \
-    -DQt5_DIR=/usr/lib$LIBDIRSUFFIX/qt \
     -DENABLE_TOOLS=OFF
-  cmake --build build
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 
-  DESTDIR="$pkgdir" cmake --install build
-
-  install -d "$pkgdir"/usr/share/licenses
-  ln -s /usr/share/licenses/qt5-base "$pkgdir"/usr/share/licenses/${pkgname}
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
