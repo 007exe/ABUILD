@@ -1,0 +1,24 @@
+pkgname=kdevelop
+pkgver=22.04.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ IDE using KDE technologies.")
+longdesc=("Integrated Development Environment, supporting KF5/Qt, C/C++ and much more.")
+
+tags=("dev-util develop")
+
+source=("https://download.kde.org/stable/release-service/$pkgver/src/${pkgname}-${pkgver}.tar.xz")
+
+build_deps=("extra-cmake-modules llvm qt5-tools boost clang kdoctools kdevelop-pg-qt
+plasma-framework krunner okteta purpose subversion astyle libksysguard kitemmodels
+knotifyconfig ktexteditor grantlee libkomparediff2 kcmutils threadweaver")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DBUILD_TESTING=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
