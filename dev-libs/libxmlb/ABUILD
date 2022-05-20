@@ -1,0 +1,26 @@
+pkgname=libxmlb
+pkgver=0.3.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library to help create and query binary XML blobs.")
+longdesc=("Library to help create and query binary XML blobs.")
+
+source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("meson gobject-introspection gtk-doc glib2 xz libstemmer")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D stemmer=true
+  ninja -v -C build
+  meson install -C build --destdir ${pkgdir}
+  rm -r ${pkgdir}/usr/{lib,share}/installed-tests/
+}

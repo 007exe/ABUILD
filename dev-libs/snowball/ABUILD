@@ -1,0 +1,42 @@
+pkgname=snowball
+pkgver=2.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Snowball compiler and stemming algorithms.")
+longdesc=("String processing language for creating stemming algorithms.")
+
+source=("https://github.com/snowballstem/snowball/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("glibc")
+
+adddep=("libstemmer")
+
+pkglist=("libstemmer")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  install -Dt ${pkgdir}/usr/bin snowball stemwords
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
+
+libstemmer() {
+  pkgname=libstemmer
+  shortdesc=("Stemming library supporting several languages.")
+  longdesc=("String processing language for creating stemming algorithms.")
+}
+
+libstemmer_prep() {
+  go_src_dir
+  install -Dt ${pkgdir}/usr/include -m644 include/libstemmer.h
+  install -Dm644 libstemmer.so.0 ${pkgdir}/usr/lib/libstemmer.so.0.0.0
+  ln -s libstemmer.so.0.0.0 ${pkgdir}/usr/lib/libstemmer.so.0
+  ln -s libstemmer.so.0 ${pkgdir}/usr/lib/libstemmer.so
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
