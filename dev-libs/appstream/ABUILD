@@ -1,0 +1,54 @@
+# FIXME: Этот пакет требует доработки
+# Необходимо реалзовать хук который
+# 1) отследит изменение в usr/share/app-info/*
+# 2) запустит /usr/bin/appstreamcli refresh-cache --force
+# Или добавить комманду /usr/bin/appstreamcli refresh-cache --force
+# в пост установочные скрипты пакетов которые это требуют
+
+pkgname=appstream
+pkgver=0.15.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides a standard for creating app stores across distributions.")
+longdesc=("Cross-distro effort for providing metadata for software in the Linux ecosystem.")
+
+source=("https://www.freedesktop.org/software/appstream/releases/AppStream-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("meson xmlto gobject-introspection gtk-doc qt5-tools itstool vala gperf curl librsvg libyaml libxmlb libsoup")
+
+pkglist=("appstream-qt")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./buildconf
+  meson build \
+    -D prefix=/usr \
+    -D libexecdir=lib \
+    -D qt=true \
+    -D vapi=true \
+    -D compose=true
+  meson compile -C build
+  meson install --destdir ${pkgdir} -C build
+
+# Предоставляется пакетом appstream-qt
+  rm -r ${pkgdir}/usr/{include/AppStreamQt,lib/cmake,lib/libAppStreamQt.*}
+}
+
+appstream-qt() {
+  pkgname=appstream-qt
+  shortdesc=("Qt5 interface for AppStream")
+  longdesc=("Cross-distro effort for providing metadata for software in the Linux ecosystem.")
+  adddep=("appstream")
+}
+
+appstream-qt_prep() {
+  go_src_dir
+  meson install --destdir ${pkgdir} -C build
+
+# Предоставляется пакетом appstream
+  rm -r ${pkgdir}{/etc,/usr/{bin,include/appstream{,-compose},lib/{appstreamcli-compose,girepository-1.0,libappstream*,pkgconfig},share}}
+}
