@@ -1,0 +1,30 @@
+pkgname=bluez-qt
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt wrapper for Bluez 5 DBus API.")
+longdesc=("Qt wrapper for Bluez 5 DBus API.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+# qt5-doc
+build_deps=("extra-cmake-modules doxygen qt5-tools qt5-declarative qt5-base bluez")
+
+# NOTE: Это опциональная зависимость
+removedep=("qt5-declarative")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DUDEV_RULES_INSTALL_DIR=/usr/lib/udev/rules.d \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
