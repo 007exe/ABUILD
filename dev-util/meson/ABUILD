@@ -1,5 +1,5 @@
 pkgname=meson
-pkgver=0.61.3
+pkgver=0.62.1
 pkgbuild=1
 arch=("auto")
 
@@ -19,11 +19,19 @@ build() {
   burn_patches
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
-
   install -d ${pkgdir}/usr/share/vim/vimfiles
   cp -rt ${pkgdir}/usr/share/vim/vimfiles data/syntax-highlighting/vim/*/
 
   install -Dt ${pkgdir}/usr/share/bash-completion/completions -m644 data/shell-completions/bash/*
-  install -Dt ${pkgdir}/usr/share/emacs/site-lisp -m644 data/syntax-highlighting/emacs/*
   install -Dt ${pkgdir}/usr/share/zsh/site-functions -m644 data/shell-completions/zsh/*
+}
+
+# FIXME: Начиная с версии 0.62.0 meson запускается с ошибкой
+# В LFS рекомендуют устанавливать используя pip
+# pip3 wheel -w dist --no-build-isolation --no-deps meson
+# pip3 install --no-index --find-links dist meson
+# по этому /usr/bin/meson использую из установки pip
+after_build(){
+  rm ${pkgdir}/usr/bin/meson
+  install -m755 ${filedir}/meson ${pkgdir}/usr/bin/
 }
