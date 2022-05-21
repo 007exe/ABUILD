@@ -1,0 +1,28 @@
+pkgname=kimageformats
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Image format plugins for Qt5.")
+longdesc=("Framework providing additional format plugins for Qt's image I/O system.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+build_deps=("extra-cmake-modules karchive libavif openexr libheif libjxl qt5-base")
+
+# NOTE: Это опциональные зависимости
+removedep=("karchive libavif openexr libheif libjxl")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}

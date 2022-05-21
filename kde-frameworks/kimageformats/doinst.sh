@@ -1,0 +1,7 @@
+echo -e "\n"
+echo -e "The following packages extend kimageformats capabilities:"
+echo -e "libavif: AVIF format support"
+echo -e "openexr: EXR format support"
+echo -e "libheif: HEIF format support"
+echo -e "libjxl: JPEG-XL format support"
+echo -e " "
