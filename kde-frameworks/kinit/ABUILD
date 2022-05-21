@@ -1,0 +1,26 @@
+pkgname=kinit
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Process launcher to speed up launching KDE applications.")
+longdesc=("Helper library to speed up start of applications on KDE work spaces.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+build_deps=("extra-cmake-modules kdoctools kio")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
