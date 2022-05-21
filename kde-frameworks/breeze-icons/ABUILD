@@ -1,0 +1,25 @@
+pkgname=kservice
+pkgver=5.94.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Breeze icon themes.")
+longdesc=("The Breeze Icons package contains the default icons for KDE Plasma 5 applications, but it can be used for other window environments.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+build_deps=("extra-cmake-modules qt5-base python-lxml")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBINARY_ICONS_RESOURCE=ON \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
