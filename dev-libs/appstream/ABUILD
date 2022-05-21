@@ -24,7 +24,6 @@ pkglist=("appstream-qt")
 build() {
   go_src_dir
   burn_patches
-  ./buildconf
   meson build \
     -D prefix=/usr \
     -D libexecdir=lib \
