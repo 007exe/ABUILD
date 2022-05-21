@@ -1,25 +1,37 @@
 pkgname=oxygen-icons
-pkgver=4.14.2
+pkgver=5.94.0
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
 
-shortdesc="Full set of oxygen icons"
+shortdesc=("The Oxygen Icon Theme.")
+longdesc=("The oxygen icons 5 theme is a photo-realistic icon style, with a high standard of graphics quality.")
 
-#shortdesc=('Oxygen Icons')
-#longdesc=('Full set of oxygen icons.')
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/oxygen-icons5-$pkgver.tar.xz")
 
+tags=("kde-frameworks kf5")
 
-tags=('kde4 media-icons')
-build_deps="gcc"
+build_deps=("extra-cmake-modules qt5-base")
 
-source=("https://download.kde.org/Attic/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+pkglist=("oxygen-icons-svg")
 
-BUILD_SYSTEM='cmake'
-BUILD_KEYS="-DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
-    -DCMAKE_SKIP_RPATH=ON"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
+
+oxygen-icons-svg() {
+  pkgname=oxygen-icons-svg
+  shortdesc=("The Oxygen Icon Theme (Scalable Vector Graphics).")
+  longdesc=("The oxygen icons 5 theme is a photo-realistic icon style, with a high standard of graphics quality.")
+}
+
+oxygen-icons-svg_prep() {
+  go_src_dir
+  find scalable -type f ! -name '*.sh' -exec \
+    install -D -m644 "{}" ${pkgdir}/usr/share/icons/oxygen/{} \;
+}
