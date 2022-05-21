@@ -1,0 +1,24 @@
+pkgname=kross
+pkgver=5.94.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Multi-language application scripting.")
+longdesc=("Framework for embedding scripting into applications.")
+
+source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-frameworks kf5")
+
+build_deps=("extra-cmake-modules kdoctools qt5-tools kparts qt5-script")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
