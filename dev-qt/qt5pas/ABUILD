@@ -1,6 +1,6 @@
 _lazarus_version=2.2.0
 pkgname=qt5pas
-pkgver=2.6.$_lazarus_version
+pkgver=2.6.${_lazarus_version}
 pkgbuild=1
 arch=('auto')
 
@@ -9,9 +9,9 @@ longdesc=("Free Pascal Qt5 binding library updated by lazarus IDE.")
 
 source=("https://gitlab.com/freepascal.org/lazarus/lazarus/-/archive/lazarus_${_lazarus_version//./_}/lazarus-lazarus_${_lazarus_version//./_}.tar.bz2")
 
-tags="libs x11-libs"
+tags=("libs dev-qt")
 
-build_deps="qt5-base qt5-x11extras"
+build_deps=("qt5-base qt5-x11extras")
 
 build(){
   go_src_dir
