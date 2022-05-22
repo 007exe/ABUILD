@@ -2,13 +2,12 @@ pkgname=qt5-webkit
 _pkgver=5.212.0-alpha4
 pkgver=${_pkgver/-/}
 strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Classes for a WebKit2 based implementation and a new QML API")
 longdesc=("Qt WebKit library is an open source web browser engine.")
 
-#source=("https://github.com/qtwebkit/qtwebkit/archive/refs/tags/qtwebkit-${_pkgver}.tar.gz")
 source=("git:https://github.com/qtwebkit/qtwebkit.git")
 
 tags=("libs dev-qt")
