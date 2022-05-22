@@ -1,5 +1,5 @@
 pkgname=qt5-speech
-pkgver=5.15.3
+pkgver=5.15.4
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -7,16 +7,20 @@ arch=("auto")
 shortdesc=("Qt module to make text to speech and speech recognition easy.")
 longdesc=("Text-to-speech library for the Qt5 framework.")
 
-tags=("libs dev-qt")
+tags=("qt5 dev-qt")
 
 source=("git:https://invent.kde.org/qt/qt/qtspeech")
 
-build_deps=("flite speech-dispatcher qt5-multimedia")
+build_deps=("flite speech-dispatcher qt5-multimedia git")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}-lts-lgpl
+}
 
 build() {
   go_src_dir
   burn_patches
-  git checkout v${pkgver}-lts-lgpl
   mkdir -p build
   cd build
   qmake ..
