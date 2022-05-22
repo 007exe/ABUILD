@@ -1,5 +1,5 @@
 pkgname=qt5-xmlpatterns
-pkgver=5.15.3
+pkgver=5.15.4
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -7,18 +7,23 @@ arch=("auto")
 shortdesc=("Provides WebSocket communication compliant with RFC 6455.")
 longdesc=("XPath, XQuery, XSLT, and XML Schema validation library for the Qt5 framework.")
 
-tags=("libs dev-qt")
+tags=("qt5 dev-qt")
 
 source=("git:https://invent.kde.org/qt/qt/qtxmlpatterns.git")
 
-build_deps=("qt5-base qt5-declarative")
+build_deps=("qt5-base qt5-declarative git")
 
 # NOTE: это опциональная зависимость
 removedep=("qt5-declarative")
 
-build() {
+before_build() {
   go_src_dir
   git checkout v${pkgver}-lts-lgpl
+}
+
+build() {
+  go_src_dir
+  burn_patches
   mkdir -p build
   cd build
   qmake ..
