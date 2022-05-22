@@ -1,0 +1,35 @@
+pkgname=libdispatch
+pkgver=5.5.0
+pkgbuild=1
+strict_version=1
+arch=("auto")
+
+shortdesc=("Comprehensive support for concurrent code execution on multicore hardware.")
+longdesc=("A library for concurrent code execution on multicore hardware.")
+
+source=("git:https://github.com/apple/swift-corelibs-libdispatch.git")
+
+tags=("dev-libs libs")
+
+build_deps=("clang cmake ninja")
+
+before_build(){
+  go_src_dir
+  git checkout swift-${pkgver%.0}-RELEASE
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC=clang
+  export CXX=clang
+  cmake \
+    -Bbuild \
+    -GNinja \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBlocksRuntime_INCLUDE_DIR=/usr/include \
+    -DBlocksRuntime_LIBRARIES=/usr/lib/libBlocksRuntime.so
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+}
