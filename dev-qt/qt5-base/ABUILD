@@ -1,7 +1,6 @@
 pkgname=qt5-base
-pkgver=5.15.3+r145
+pkgver=5.15.4
 strict_version=1
-_commit=cfa044e74c4f3be46fe2f177d022af3321766b1f
 pkgbuild=1
 arch=("auto")
 
@@ -10,22 +9,31 @@ longdesc=("Qt5 is a cross-platform application framework that is widely used for
 
 source=("git:https://invent.kde.org/qt/qt/qtbase")
 
-tags=("libs x11-libs")
+tags=("qt5 dev-qt")
 
 build_deps=("unixodbc postgresql-libs alsa-lib gtk3 libpulse cups vulkan-headers cups glib2 harfbuzz icu libjpeg-turbo
 libpng libtiff libwebp libxkbcommon mesa mtdev pcre2 sqlite egl-wayland wayland wayland-protocols xcb-util-image git
-xcb-util-keysyms xcb-util-renderutil xcb-util-wm gst-plugins-base-libs mariadb-libs jasper freetds libfbclient")
+xcb-util-keysyms xcb-util-renderutil xcb-util-wm gst-plugins-base-libs mariadb-libs jasper freetds libfbclient git")
 
 # NOTE: Это опциональные зависимости
 removedep=("qt5-svg qt5-wayland qt5-translations postgresql-libs mariadb-libs unixodbc libfbclient freetds gtk3 perl clang")
 
 pkglist=("qt5-xcb-private-headers")
 
+before_build(){
+  go_src_dir
+# FIXME: Фатальная ошибка при попытке сборки lts версии
+# git checkout v${pkgver}-lts-lgpl
+  echo "***************************************************"
+  echo "*           Переключаюсь на 5.15.4 r144           *"
+  echo "*                                                 *"
+  echo "* коммит 0b45b0e13a87f08f5a3f452000aa26734d3c2bdf *"
+  echo "***************************************************"
+  git checkout 0b45b0e13a87f08f5a3f452000aa26734d3c2bdf
+}
+
 build() {
-#  mv ${srcdir}/qtbase-v${pkgver}-lts-lgpl ${srcdir}/qtbase
-  mv ${srcdir}/qt5-base_git_qtbase.src ${srcdir}/qtbase
-  cd ${srcdir}/qtbase
-  git checkout ${_commit}
+  go_src_dir
   burn_patches
   ./configure \
     -confirm-license \
@@ -75,7 +83,7 @@ qt5-xcb-private-headers() {
 }
 
 qt5-xcb-private-headers_prep() {
-  cd ${srcdir}/qtbase
+  go_src_dir
   install -d -m755 ${pkgdir}/usr/include/qtxcb-private
-  cp -r ${srcdir}/qtbase/src/plugins/platforms/xcb/*.h ${pkgdir}/usr/include/qtxcb-private/
+  cp -r src/plugins/platforms/xcb/*.h ${pkgdir}/usr/include/qtxcb-private/
 }
