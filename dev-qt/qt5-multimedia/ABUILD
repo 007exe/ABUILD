@@ -1,5 +1,5 @@
 pkgname=qt5-multimedia
-pkgver=5.15.3
+pkgver=5.15.4
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -7,18 +7,23 @@ arch=("auto")
 shortdesc=("Classes for audio, video, radio and camera functionality.")
 longdesc=("Multimedia (audio, video, radio, camera) library for the Qt5 framework.")
 
-tags=("libs dev-qt")
+tags=("qt5 dev-qt")
 
 source=("git:https://invent.kde.org/qt/qt/qtmultimedia.git")
 
-build_deps=("qt5-base qt5-declarative gst-plugins-bad qt5-base gst-plugins-base libpulse openal")
+build_deps=("qt5-base qt5-declarative gst-plugins-bad qt5-base gst-plugins-base libpulse openal git")
 
 # NOTE: Это опциональные зависимости
 removedep=("qt5-declarative gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav")
 
-build() {
+before_build() {
   go_src_dir
   git checkout v${pkgver}-lts-lgpl
+}
+
+build() {
+  go_src_dir
+  burn_patches
   mkdir -p build
   cd build
   qmake ..
