@@ -1,0 +1,25 @@
+pkgname=md4c
+pkgver=0.4.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C Markdown parser.")
+longdesc=("MD4C stands for Markdown for C and that exactly what this project is about.")
+
+source=("https://github.com/mity/md4c/archive/release-${pkgver}.tar.gz")
+
+tags=("develop app-text")
+
+build_deps=("glibc cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
