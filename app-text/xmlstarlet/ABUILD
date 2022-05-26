@@ -1,0 +1,26 @@
+pkgname=xmlstarlet
+pkgver=1.6.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A set of tools to transform, query, validate, and edit XML documents.")
+longdesc=("A set of tools to transform, query, validate, and edit XML documents.")
+
+source=("http://sourceforge.net/projects/xmlstar/files/xmlstarlet/$pkgver/xmlstarlet-${pkgver}.tar.gz/download")
+
+tags=("develop app-text")
+
+# fop
+build_deps=("ghostscript")
+
+build() {
+  go_src_dir
+  burn_patches
+  LIBXSLT_PREFIX=/usr LIBXML_PREFIX=/usr ./configure --prefix=/usr --enable-build-docs
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm0644 Copyright ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+
+  ln -s xml ${pkgdir}/usr/bin/xmlstarlet
+}
