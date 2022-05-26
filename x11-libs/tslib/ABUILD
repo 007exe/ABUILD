@@ -1,0 +1,25 @@
+pkgname=tslib
+pkgver=1.22
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Touchscreen Access Library.")
+longdesc=("Touchscreen Access Library.")
+
+tags=("x11-libs libs")
+
+source=("https://github.com/kergoth/tslib/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
