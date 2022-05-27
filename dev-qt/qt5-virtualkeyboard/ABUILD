@@ -1,0 +1,37 @@
+pkgname=qt5-virtualkeyboard
+pkgver=5.15.4
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Virtual keyboard framework.")
+longdesc=("Customizable input framework and virtual keyboard for Qt.")
+
+tags=("qt5 dev-qt")
+
+source=("git:https://invent.kde.org/qt/qt/qtvirtualkeyboard.git")
+
+build_deps=("qt5-declarative qt5-svg hunspell git qt5-base")
+
+adddep=("hunspell")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}-lts-lgpl
+}
+
+build() {
+  go_src_dir
+  burn_patches
+
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+
+  find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
