@@ -25,11 +25,11 @@ before_build(){
 # FIXME: Фатальная ошибка при попытке сборки lts версии
 # git checkout v${pkgver}-lts-lgpl
   echo "***************************************************"
-  echo "*           Переключаюсь на 5.15.4 r144           *"
+  echo "*           Переключаюсь на 5.15.4 r146           *"
   echo "*                                                 *"
-  echo "* коммит 0b45b0e13a87f08f5a3f452000aa26734d3c2bdf *"
+  echo "* коммит a19d88a641e09e1fa5532c73b86df3bf75acc741 *"
   echo "***************************************************"
-  git checkout 0b45b0e13a87f08f5a3f452000aa26734d3c2bdf
+  git checkout a19d88a641e09e1fa5532c73b86df3bf75acc741
 }
 
 build() {
