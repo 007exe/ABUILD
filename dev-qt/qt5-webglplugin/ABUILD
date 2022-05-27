@@ -1,0 +1,35 @@
+pkgname=qt5-webglplugin
+pkgver=5.15.4
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("QPA plugin for running an application via a browser using streamed WebGL commands.")
+longdesc=("QPA plugin for running an application via a browser using streamed WebGL commands.")
+
+tags=("qt5 dev-qt")
+
+source=("git:https://invent.kde.org/qt/qt/qtwebglplugin.git")
+
+build_deps=("qt5-websockets qt5-declarative git")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}-lts-lgpl
+}
+
+build() {
+  go_src_dir
+  burn_patches
+
+  mkdir -p build
+  cd build
+  qmake ..
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+
+  find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
