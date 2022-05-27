@@ -1,0 +1,30 @@
+pkgname=qt6-shadertools
+pkgver=6.3.0
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides functionality for the shader pipeline that allows Qt Quick to operate on Vulkan, Metal, and Direct3D, in addition to OpenGL.")
+longdesc=("Provides functionality for the shader pipeline that allows Qt Quick to operate on Vulkan, Metal, and Direct3D, in addition to OpenGL.")
+
+source=("git:https://invent.kde.org/qt/qt/qtshadertools.git")
+
+tags=("qt6 dev-qt")
+
+build_deps=("cmake ninja git qt6-base")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt6-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
