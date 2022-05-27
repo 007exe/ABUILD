@@ -1,24 +1,26 @@
 pkgname=qt5-x11extras
-pkgver=5.15.3+r0
-# NOTE: Коммит 5.15.3+r0
-_commit=f628d7a60e45d90a439cb0a393a6229ac6892be5
+pkgver=5.15.4
 strict_version=1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Provides platform-specific APIs for X11.")
 longdesc=("Must only be used by packages that are known to use private parts of the Qt API.")
 
 source=("git:https://invent.kde.org/qt/qt/qtx11extras")
 
-tags="libs dev-libs"
+tags=("qt5 dev-libs")
 
-build_deps="qt5-base git"
+build_deps=("qt5-base git")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}-lts-lgpl
+}
 
 build() {
   go_src_dir
   burn_patches
-  git checkout ${_commit}
   mkdir -p build
   cd build
   qmake ..
