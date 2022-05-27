@@ -1,0 +1,30 @@
+pkgname=qt6-quicktimeline
+pkgver=6.3.0
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt module for keyframe-based timeline construction.")
+longdesc=("Qt module for keyframe-based timeline construction.")
+
+tags=("qt5 dev-qt")
+
+source=("git:https://invent.kde.org/qt/qt/qtquicktimeline.git")
+
+build_deps=("qt6-declarative git qt6-base")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt6-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
