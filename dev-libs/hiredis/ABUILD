@@ -1,0 +1,22 @@
+pkgname=hiredis
+pkgver=1.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Minimalistic C client library for Redis.")
+longdesc=("Minimalistic C client library for the Redis database.")
+
+source=("https://github.com/redis/$pkgname/archive/v$pkgver/hiredis-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make PREFIX=/usr
+  make DESTDIR=${pkgdir} PREFIX=/usr install
+
+  install -Dm 644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
