@@ -1,0 +1,40 @@
+# NOTE: Этот пакет собирается очень долго и требует много оперативной памяти
+
+pkgname=qt6-webengine
+pkgver=6.3.0
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides support for web applications using the Chromium browser project.")
+longdesc=("QtWebEngine integrates chromium's web capabilities into Qt. It ships with its own copy of ninja which it uses for the build if it cannot find a system copy, and various copies of libraries from ffmpeg, icu, libvpx, and zlib (including libminizip) which have been forked by the chromium developers.")
+
+source=("git:https://code.qt.io/qt/qtwebengine.git")
+
+tags=("qt6 dev-qt")
+
+build_deps=("qt6-webchannel qt6-positioning libxcomposite libxrandr libxkbfile libevent snappy nss libxslt minizip
+ffmpeg re2 libvpx libxtst ttf-font pciutils cmake ninja python-html5lib gperf jsoncpp qt6-tools nodejs qt6-websockets")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DCMAKE_TOOLCHAIN_FILE=/usr/lib/cmake/Qt6/qt.toolchain.cmake \
+    -DQT_FEATURE_webengine_system_ffmpeg=ON \
+    -DQT_FEATURE_webengine_system_icu=ON \
+    -DQT_FEATURE_webengine_system_libevent=ON \
+    -DQT_FEATURE_webengine_system_libxslt=ON \
+    -DQT_FEATURE_webengine_proprietary_codecs=ON \
+    -DQT_FEATURE_webengine_kerberos=ON \
+    -DQT_FEATURE_webengine_webrtc_pipewire=OFF \
+    -DQT_FEATURE_webengine_full_debug_info=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 src/3rdparty/chromium/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.chromium
+}
