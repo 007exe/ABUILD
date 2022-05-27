@@ -1,0 +1,33 @@
+pkgname=qt6-3d
+pkgver=6.3.0
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ and QML APIs for easy inclusion of 3D graphics.")
+longdesc=("3D rendering module for the Qt6 framework.")
+
+tags=("qt6 dev-qt")
+
+source=("git:https://invent.kde.org/qt/qt/qt3d.git")
+
+build_deps=("cmake ninja qt6-declarative qt6-shadertools assimp qt6-base")
+
+# NOTE: Это опциональная зависимость
+removedep=("qt6-shadertools qt6-declarative assimp")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt6-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
