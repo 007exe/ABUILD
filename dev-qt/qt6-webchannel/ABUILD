@@ -1,0 +1,30 @@
+pkgname=qt6-webchannel
+pkgver=6.3.0
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt6 module for integrating C++ and QML applications with HTML/JavaScript clients.")
+longdesc=("Provides access to QObject or QML objects from HTML clients for seamless integration of Qt applications with HTML/JavaScript clients.")
+
+source=("git:https://invent.kde.org/qt/qt/qtwebchannel.git")
+
+tags=("qt6 dev-qt")
+
+build_deps=("qt6-declarative git cmake ninja qt6-websockets")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s /usr/share/licenses/qt6-base ${pkgdir}/usr/share/licenses/${pkgname}
+}
