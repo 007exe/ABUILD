@@ -1,6 +1,6 @@
 pkgname=compiler-rt
-pkgver=14.0.0
-pkgbuild=2
+pkgver=14.0.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Compiler runtime libraries for clang.")
@@ -10,7 +10,7 @@ source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver
 
 tags=("develop sys-libs")
 
-build_deps="gcc-libs llvm cmake ninja python"
+build_deps=("gcc-libs llvm cmake ninja python")
 
 build(){
   cd ${pkgname}-${pkgver}.src
