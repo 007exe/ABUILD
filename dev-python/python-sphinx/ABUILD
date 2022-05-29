@@ -1,6 +1,6 @@
 pkgname=python-sphinx
-pkgver=4.4.0
-pkgbuild=2
+pkgver=4.5.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python documentation generator.")
