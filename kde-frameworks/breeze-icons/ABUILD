@@ -1,4 +1,4 @@
-pkgname=kservice
+pkgname=breeze-icons
 pkgver=5.94.0
 pkgbuild=1
 arch=("noarch")
@@ -11,6 +11,8 @@ source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pk
 tags=("kde-frameworks kf5")
 
 build_deps=("extra-cmake-modules qt5-base python-lxml")
+
+custom_opts=("skip_gendeps")
 
 build() {
   go_src_dir
