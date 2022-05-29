@@ -1,19 +1,24 @@
 pkgname=audiocd-kio
-pkgver=4.14.2
+pkgver=22.04.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("AudioCD KIO for KDE")
+shortdesc=("Kioslave for accessing audio CDs.")
+longdesc=("kioslave for accessing audio CDs.")
 
-tags=("kde4 kde-base")
-build_deps="kdelibs"
+source=("https://download.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-source=("ftp://ftp.kde.org/pub/kde/stable/${pkgver}/src/audiocd-kio-${pkgver}.tar.xz")
+tags=("kde kde-apps")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
-	-DLIB_SUFFIX=${LIBDIRSUFFIX} \
-	-DMAN_INSTALL_DIR=/usr/man \
-	-DSYSCONF_INSTALL_DIR=/etc \
-	-DCMAKE_BUILD_TYPE=Release"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build_deps=("extra-cmake-modules kdoctools kcmutils libkcddb libkcompactdisc lame")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
