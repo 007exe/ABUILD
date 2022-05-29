@@ -30,7 +30,7 @@ build() {
   DESTDIR=${pkgdir} cmake --install build
 
 # Символические ссылки для пользовательских инструментов
-  cd "$pkgdir"
+  cd ${pkgdir}
   mkdir usr/bin
   while read _line; do
     ln -s $_line
