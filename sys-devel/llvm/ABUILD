@@ -1,5 +1,5 @@
 pkgname=llvm
-pkgver=14.0.0
+pkgver=14.0.3
 _ocaml_ver=4.13.1
 pkgbuild=1
 arch=("auto")
@@ -12,7 +12,8 @@ source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver
 
 tags=("develop sys-devel")
 
-build_deps="libffi python python-setuptools python-psutil python-sphinx ocaml ocaml-ctypes ocaml-findlib cmake ninja libedit ncurses libxml2 python-recommonmark python-commonmark"
+build_deps=("libffi python python-setuptools python-psutil python-sphinx ocaml ocaml-ctypes ocaml-findlib
+cmake ninja libedit ncurses libxml2 python-recommonmark python-commonmark")
 
 pkglist=("llvm_libs llvm_ocaml")
 
