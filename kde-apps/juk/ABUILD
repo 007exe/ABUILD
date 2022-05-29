@@ -1,19 +1,26 @@
 pkgname=juk
-pkgver=4.14.2
+pkgver=22.04.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A jukebox, tagger and music collection manager")
+shortdesc=("Jukebox and music manager by KDE.")
+longdesc=("A jukebox, tagger and music collection manager.")
 
-build_deps="doxygen kdelibs"
-tags=("kde4 kde-base")
+source=("https://download.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-source=("ftp://ftp.kde.org/pub/kde/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+tags=("kde kde-apps")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
-	-DLIB_SUFFIX=${LIBDIRSUFFIX} \
-	-DMAN_INSTALL_DIR=/usr/man \
-	-DSYSCONF_INSTALL_DIR=/etc \
-	-DCMAKE_BUILD_TYPE=Release"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build_deps=("kio taglib phonon hicolor-icon-theme extra-cmake-modules kdoctools")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
