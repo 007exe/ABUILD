@@ -30,7 +30,7 @@ build() {
   burn_patches
   mkdir -p build
   cd build
-  qmake ..
+  qmake .. CONFIG+=fat-static-lto
   make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
 
