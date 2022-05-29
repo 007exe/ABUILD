@@ -93,13 +93,15 @@ STARTD=`pwd`
 LOGFILE="$CWD/kf5-$KF5_VERSION-build.log"
 
 for i in $LIST ; do
-	echo "Сборка: $i" >> $LOGFILE
-        cd $STARTD/kde-frameworks/$i
-	if mkpkg -pod ~/mkpkg/packages/kde-frameworks -si -bv $KF5_VERSION -bb 1; then
-		echo "$i: ГОТОВ" >> $LOGFILE
-                cd $STARTD
-	else
-		echo "$i: ОШИБКА!" >> $LOGFILE
-                cd $STARTD
-	fi
+    echo "`date` || Сборка пакета: $i" >> $LOGFILE
+    cd $STARTD/kde-frameworks/$i
+    if mkpkg -ba -pod ~/mkpkg/packages/kde-frameworks -si -bv $KF5_VERSION -bb 1; then
+           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           cd $STARTD
+    else
+           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           cd $STARTD
+    fi
 done
+
+echo "============================= Завершено в `date` =============================" >> $LOGFILE
