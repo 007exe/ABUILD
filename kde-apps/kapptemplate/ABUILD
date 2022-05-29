@@ -1,22 +1,26 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=kapptemplate
-pkgver=4.14.2
+pkgver=22.04.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="KAppTemplate is a shell script to create the necessary framework to develop KDE applications"
+shortdesc=("KDE Template Generator.")
+longdesc=("Shell script to create the necessary framework to develop KDE applications.")
+
 source=("http://download.kde.org/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-#short and long tags / длинный и короткий тег
-tags="kde4 kde-base"
-build_deps="doxygen kdelibs"
+tags=("kde kde-apps")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
+build_deps=("extra-cmake-modules kdoctools kio hicolor-icon-theme")
 
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
