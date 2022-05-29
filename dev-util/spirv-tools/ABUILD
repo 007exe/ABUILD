@@ -1,6 +1,6 @@
 pkgname=spirv-tools
 pkgver=2022.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("API and commands for processing SPIR-V modules.")
