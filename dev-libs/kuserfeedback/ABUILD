@@ -1,0 +1,27 @@
+pkgname=kuserfeedback
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Framework for collecting user feedback for applications via telemetry and surveys.")
+longdesc=("Framework to collect user feedback for applications via telemetry and surveys.")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("extra-cmake-modules qt5-tools clang qt5-charts qt5-svg qt5-declarative qt5-base")
+
+# NOTE: Это опциональные зависимости
+removedep=("qt5-declarative qt5-charts qt5-svg")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
