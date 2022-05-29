@@ -54,11 +54,9 @@ for i in $MLIST ; do
     echo "`date` || Сборка пакета: $i" >> $LOGFILE
     cd $STARTD/dev-qt/$i
     if mkpkg -ba -pod ~/mkpkg/packages/dev-qt -wd ~/BUILD -si -bv $QT_VERSION -bb 1; then
-            DATETMP=`date`
             echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
             cd $STARTD
     else
-            DATETMP=`date`
             echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
             cd $STARTD
     fi
