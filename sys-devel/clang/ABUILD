@@ -1,6 +1,5 @@
-# NOTE: при сборке данного пакета возникли проблемы "hmmm... wrong build system!" почему то вызвалась функция autobuild
 pkgname=clang
-pkgver=14.0.0
+pkgver=14.0.3
 pkgbuild=1
 arch=("auto")
 
