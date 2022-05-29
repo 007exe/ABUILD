@@ -28,10 +28,13 @@ build() {
   burn_patches
   mkdir -p build
   cd build
+echo "1) ======================================>"
   qmake .. CONFIG+=fat-static-lto
+echo "2) ======================================>"
   make -j${numjobs}
+echo "3) ======================================>"
   make INSTALL_ROOT=${pkgdir} install
-
+echo "4) ======================================>"
 # Устанавливаем отсутствующие значки и файлы рабочего стола
   for icon in ../src/linguist/linguist/images/icons/linguist-*-32.png ; do
     size=$(echo $(basename ${icon}) | cut -d- -f2)
