@@ -1,19 +1,24 @@
 pkgname=analitza
-pkgver=4.14.2
+pkgver=22.04.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Math library for KAlgebra"
+shortdesc=("KDE library for mathematical features.")
+longdesc=("A library to add mathematical features to your program.")
 
-tags=('libs sci-mathematics')
+source=("https://download.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="kdelibs"
-source=("ftp://ftp.kde.org/pub/kde/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+tags=("libs kde-apps")
 
+build_deps=("qt5-svg qt5-declarative extra-cmake-modules kdoctools eigen qt5-tools")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
