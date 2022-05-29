@@ -17,7 +17,6 @@ adddep=("python-jinja python-yaml")
 
 build() {
   go_src_dir
-pwd
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
 }
