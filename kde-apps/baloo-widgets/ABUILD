@@ -1,26 +1,24 @@
 pkgname=baloo-widgets
-pkgver=4.14.2
-#strict_version='yes'
+pkgver=22.04.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=('A fast and easy to use image viewer for KDE')
-
-tags=('kde-base kde4')
+shortdesc=("Widgets for Baloo.")
+longdesc=("Widget library for baloo.")
 
 source=("ftp://ftp.kde.org/pub/kde/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
-build_deps="kdelibs"
 
-if [ -d /usr/lib${LIBDIRSUFFIX}/qt ]; then
-  QTDIR=/usr/lib${LIBDIRSUFFIX}/qt
-fi
+tags=("kde-apps kde")
 
+build_deps=("extra-cmake-modules kdoctools baloo")
 
-BUILD_SYSTEM='cmake'
-BUILD_KEYS="-DCMAKE_BUILD_TYPE=Release \
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DMAN_INSTALL_DIR=/usr/man \
-    -DSYSCONF_INSTALL_DIR=/etc \
-    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
-    -DCMAKE_SKIP_RPATH=ON"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
