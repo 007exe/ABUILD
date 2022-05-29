@@ -1,16 +1,16 @@
 pkgname=yandex-disk
-pkgver=0.1.6.1074
+pkgver=0.1.6.1080
 pkgbuild=1
 arch=("x86_64")
 
-shortdesc="Yandex.Disk keeps your files with you at all times."
-longdesc="The Yandex.Disk folder looks the same as a regular folder on a computer, but it also stores your files on the Yandex server. They are available only to you and to those whom you yourself choose. And you can get to them from any device with the Internet."
-
-tags="network www-client"
+shortdesc=("Yandex.Disk keeps your files with you at all times.")
+longdesc=("The Yandex.Disk folder looks the same as a regular folder on a computer, but it also stores your files on the Yandex server. They are available only to you and to those whom you yourself choose. And you can get to them from any device with the Internet.")
 
 source=("https://repo.yandex.ru/yandex-disk/deb/pool/main/y/yandex-disk/yandex-disk_${pkgver}_amd64.deb")
 
-build_deps="gcc-libs zlib libarchive"
+tags=("network net-misc")
+
+build_deps=("gcc-libs zlib libarchive")
 
 build() {
   go_src_dir
