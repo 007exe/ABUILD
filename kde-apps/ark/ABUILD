@@ -1,18 +1,26 @@
 pkgname=ark
-pkgver=4.14.2
+pkgver=22.04.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="KDE's default file archiver."
+shortdesc=("Archiving Tool.")
+longdesc=("The Ark package is a KF5 archive tool. It is a graphical front end to tar and similar tools.")
 
-source="http://download.kde.org/stable/$pkgver/src/$pkgname-$pkgver.tar.xz"
+source=("https://download.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="kdelibs"
-tags="kde4 app-arch"
+tags=("kde kde-apps")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
+build_deps=("extra-cmake-modules kdoctools kparts kpty libarchive libzip kitemmodels hicolor-icon-theme")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
