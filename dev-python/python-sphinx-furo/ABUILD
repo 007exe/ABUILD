@@ -1,5 +1,5 @@
 pkgname=python-sphinx-furo
-pkgver=2022.03.04
+pkgver=2022.04.07
 pkgbuild=1
 arch=("auto")
 
