@@ -1,5 +1,5 @@
 pkgname=qt5-script
-pkgver=5.15.3
+pkgver=5.15.4
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -9,17 +9,21 @@ longdesc=("Application scripting library for the Qt5 framework (deprecated).")
 
 source=("git:https://invent.kde.org/qt/qt/qtscript.git")
 
-tags=("libs dev-qt")
+tags=("qt5 dev-qt")
 
 build_deps=("git qt5-base")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}-lts
+}
 
 build() {
   go_src_dir
   burn_patches
-  git checkout v${pkgver}-lts
   mkdir -p build
   cd build
-  qmake ..
+  qmake .. CONFIG-=ltcg
   make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
 
