@@ -1,18 +1,21 @@
 pkgname=xfce4-session
 pkgver=4.16.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Session manager for Xfce")
+shortdesc=("Session manager for Xfce.")
 longdesc=("Xfce4 Session is a session manager for Xfce. Its task is to save the state of your desktop (opened applications and their location) and restore it during a next startup. You can create several different sessions and choose one of them on startup.")
 
 source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-base")
 
-build_deps="intltool libxfce4ui libwnck3 xfconf libsm polkit"
+build_deps=("intltool libxfce4ui libwnck3 xfconf libsm polkit")
 
-adddep="xorg-iceauth xorg-xinit xorg-xrdb polkit-gnome hicolor-icon-theme"
+adddep=("xorg-iceauth xorg-xinit xorg-xrdb polkit-gnome hicolor-icon-theme")
+
+# NOTE: Это опциональные зависимости
+removedep=("gnome-keyring xfce4-screensaver xscreensaver gnome-screensaver xlockmore slock")
 
 build() {
   go_src_dir
@@ -20,7 +23,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-legacy-sm \
     --localstatedir=/var \
@@ -28,7 +31,7 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# Provide a default PolicyKit Authentication Agent (FS#42569)
-  install -d "$pkgdir/etc/xdg/autostart"
-  cp "$filedir/xfce-polkit-gnome-authentication-agent-1.desktop" "$pkgdir/etc/xdg/autostart/"
+# Агент аутентификации PolicyKit по умолчанию (FS#42569)
+  install -d ${pkgdir}/etc/xdg/autostart
+  cp ${filedir}/xfce-polkit-gnome-authentication-agent-1.desktop ${pkgdir}/etc/xdg/autostart/
 }
