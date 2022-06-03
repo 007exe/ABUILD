@@ -1,18 +1,18 @@
 pkgname=xfce4-terminal
-pkgver=0.8.10
+pkgver=1.0.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A modern terminal emulator primarily for the Xfce desktop environment")
+shortdesc=("A modern terminal emulator primarily for the Xfce desktop environment.")
 longdesc=("Xfce4 Terminal is a GTK+3 terminal emulator. This is useful for running commands or programs in the comfort of an Xorg window; you can drag and drop files into the Xfce4 Terminal or copy and paste text with your mouse.")
 
-source=("https://archive.xfce.org/src/apps/$pkgname/0.8/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce x11-terms"
+tags=("xfce x11-terms")
 
-build_deps="libxfce4ui vte intltool"
+build_deps=("libxfce4ui vte intltool")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,8 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/xfce4 \
     --disable-static \
     --disable-debug
   make -j${numjobs}
