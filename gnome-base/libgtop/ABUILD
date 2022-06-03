@@ -1,25 +1,23 @@
 pkgname=libgtop
 pkgver=2.40.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A library for collecting system monitoring data")
+shortdesc=("A library for collecting system monitoring data.")
 longdesc=("The libgtop package contains the GNOME top libraries.")
 
-#source=("https://gitlab.gnome.org/GNOME/libgtop/-/archive/${pkgver}/libgtop-${pkgver}.tar.gz")
 source=("https://download.gnome.org/sources/libgtop/${pkgver%.*}/libgtop-${pkgver}.tar.xz")
 
-tags="gnome-base libs"
+tags=("gnome-base libs")
 
-build_deps="glib2 libxau gobject-introspection git gtk-doc"
+build_deps=("glib2 libxau gobject-introspection git gtk-doc")
 
 build() {
   go_src_dir
   burn_patches
-#  ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
