@@ -1,9 +1,9 @@
 pkgname=gcc
-pkgver=11.2.0
-pkgbuild=2
+pkgver=12.1.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("The GNU Compiler Collection - C and C++ frontends")
+shortdesc=("The GNU Compiler Collection - C and C++ frontends.")
 longdesc=("GCC is the collection of GNU compilers. This package contains the parts of the compiler collection that are required to compile C and C ++ code. Other packages add support for Ada, Fortran, Objective-C and Go.")
 
 source=("https://sourceware.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.xz")
@@ -160,10 +160,6 @@ build() {
 
   install -d ${pkgdir}/usr/share/licenses/$pkgname/
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION ${pkgdir}/usr/share/licenses/${pkgname}/
-
-#FIXME: Перенос libcc1.so из /usr/lib64/ в /usr/lib/
-  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib/
-  rm -r ${pkgdir}/usr/lib64
 }
 
 # gcc-libs #########################################################################################################################
