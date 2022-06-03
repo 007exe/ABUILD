@@ -1,18 +1,18 @@
 pkgname=xfwm4
 pkgver=4.16.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Xfce's window manager")
+shortdesc=("Xfce's window manager.")
 longdesc=("Xfwm4 is the window manager for Xfce.")
 
 source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-base")
 
-build_deps="libxfce4ui xfconf libwnck3 libepoxy libxpresent"
+build_deps=("libxfce4ui xfconf libwnck3 libepoxy libxpresent")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,8 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --disable-static \
     --enable-startup-notification \
     --enable-randr \
