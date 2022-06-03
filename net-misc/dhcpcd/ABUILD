@@ -1,9 +1,9 @@
 pkgname=dhcpcd
 pkgver=9.4.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("RFC2131 compliant DHCP client daemon")
+shortdesc=("RFC2131 compliant DHCP client daemon.")
 longdesc=("Dhcpcd is an implementation of the DHCP client specified in RFC2131. A DHCP client is useful for connecting your computer to a network which uses DHCP to assign network addresses. dhcpcd strives to be a fully featured, yet very lightweight DHCP client.")
 
 source=("http://roy.marples.name/downloads/${pkgname}/${pkgname}-${pkgver}.tar.xz")
@@ -15,32 +15,31 @@ etc/conf.d/dhcpcd")
 
 build_deps=("glibc bash eudev")
 
-adddep=("bash")
-
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --sbindir=/usr/bin \
     --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX}/dhcpcd \
-    --dbdir=/usr/lib${LIBDIRSUFFIX}/dhcpcd \
-    --rundir=/run \
-    --disable-static \
-    --mandir=/usr/share/man
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
+    --runstatedir=/run \
+    --privsepuser=dhcpcd \
+    --dbdir=/var/lib/dhcpcd \
+    --libexecdir=/usr/lib/dhcpcd \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# Set Options in /etc/dhcpcd.conf
-  echo noipv4ll >> "${pkgdir}/etc/dhcpcd.conf" # Disable ip4val
+# Задаем параметры в /etc/dhcpcd.conf
+  echo noipv4ll >> ${pkgdir}/etc/dhcpcd.conf # Отключить ip4val
 
-# Copy OpenRC scripts
+# OpenRC скрипты
   install -Dm0755 ${filedir}/dhcpcd.initd ${pkgdir}/etc/init.d/dhcpcd
   install -Dm0644 ${filedir}/dhcpcd.confd ${pkgdir}/etc/conf.d/dhcpcd
 
-# Install License
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 ${filedir}/dhcpcd.sysusers ${pkgdir}/usr/lib/sysusers.d/dhcpcd.conf
+  install -Dm644 ${filedir}/dhcpcd.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/dhcpcd.conf
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
