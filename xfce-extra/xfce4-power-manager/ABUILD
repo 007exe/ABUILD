@@ -1,18 +1,18 @@
 pkgname=xfce4-power-manager
 pkgver=4.16.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Power manager for Xfce desktop")
+shortdesc=("Power manager for Xfce desktop.")
 longdesc=("The Xfce4 Power Manager is a power manager for the Xfce desktop, Xfce power manager manages the power sources on the computer and the devices that can be controlled to reduce their power consumption (such as LCD brightness level, monitor sleep, CPU frequency scaling). In addition, Xfce4 Power Manager provides a set of freedesktop-compliant DBus interfaces to inform other applications about current power level so that they can adjust their power consumption.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="libxfce4ui upower libnotify intltool xfce4-panel"
-#xfce4-notifyd
-adddep="upower hicolor-icon-theme"
+build_deps=("libxfce4ui upower libnotify intltool xfce4-panel")
+
+adddep=("hicolor-icon-theme xfce4-notifyd")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-network-manager \
     --enable-polkit \
