@@ -1,18 +1,18 @@
 pkgname=xfdesktop
 pkgver=4.16.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A desktop manager for Xfce")
+shortdesc=("A desktop manager for Xfce.")
 longdesc=("Xfdesktop is a desktop manager for the Xfce Desktop Environment. Xfdesktop sets the background image / color, creates the right click menu and window list and displays the file icons on the desktop using Thunar libraries.")
 
 source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-base")
 
-build_deps="libxfce4ui libwnck3 exo thunar garcon intltool"
+build_deps=("libxfce4ui libwnck3 exo thunar garcon intltool")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-gio-unix \
     --enable-thunarx \
