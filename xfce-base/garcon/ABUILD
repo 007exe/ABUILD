@@ -1,16 +1,16 @@
 pkgname=garcon
 pkgver=4.16.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Implementation of the freedesktop.org menu specification")
+shortdesc=("Implementation of the freedesktop.org menu specification.")
 longdesc=("The Garcon package contains a freedesktop.org compliant menu implementation based on GLib and GIO.")
 
 source=("https://archive.xfce.org/src/xfce/garcon/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-base")
 
-build_deps="libxfce4ui intltool python gobject-introspection"
+build_deps=("libxfce4ui intltool python gobject-introspection")
 
 build() {
   go_src_dir
@@ -19,7 +19,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
