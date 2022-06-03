@@ -1,18 +1,18 @@
 pkgname=cairomm
 pkgver=1.14.3
-pkgbuild=1
-arch="auto"
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("C++ bindings for Cairo")
 longdesc=("The libcairomm-1.0 package provides a C++ interface to Cairo.")
 
 source=("http://www.cairographics.org/releases/cairomm-${pkgver}.tar.xz")
 
-tags="libs dev-cpp"
+tags=("libs dev-cpp")
 
-build_deps="meson mm-common"
+build_deps=("meson mm-common")
 
-pkglist="cairomm-docs"
+pkglist=("cairomm-docs")
 
 build() {
   go_src_dir
@@ -22,7 +22,7 @@ build() {
     -D maintainer-mode=true \
     --buildtype=release
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
 
 cairomm-docs() {
@@ -34,7 +34,7 @@ cairomm-docs() {
 
 cairomm-docs_prep() {
   go_src_dir
-  mkdir -p "$pkgdir"/usr/share
-  mv ${p_pkgdir}/usr/share/{devhelp,doc} "$pkgdir"/usr/share
+  mkdir -p ${pkgdir}/usr/share
+  mv ${p_pkgdir}/usr/share/{devhelp,doc} ${pkgdir}/usr/share
   rm -r ${p_pkgdir}/usr/share
 }
