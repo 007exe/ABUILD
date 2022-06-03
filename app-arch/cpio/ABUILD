@@ -1,30 +1,30 @@
 pkgname=cpio
 pkgver=2.13
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc=("A tool to copy files into or out of a cpio or tar archive")
-longdesc=("GNU cpio copies files into or out of a cpio or tar archive. The archive can be another file on the disk, a magnetic tape, or a pipe.")
+shortdesc=("The cpio package contains tools for archiving.")
+longdesc=("A tool to copy files into or out of a cpio or tar archive.")
 
 source=("https://ftp.gnu.org/gnu/cpio/cpio-${pkgver}.tar.gz")
 
-tags="base app-arch"
+tags=("base app-arch")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
-
+  burn_patches
 # https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
   CFLAGS+=' -fcommon'
-
-  ./configure --prefix=/usr --mandir=/usr/share/man
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --disable-mt
   make -j${numjobs}
-
-  make DESTDIR="${pkgdir}" install
-  rm -f "${pkgdir}/usr/bin/mt" "${pkgdir}/pkg/usr/share/man/man1/mt.1"
-  rm -rf "${pkgdir}/usr/libexec"
-  rm -f "${pkgdir}/usr/share/man/man8/rmt.8"
-  # remove infodir
-  rm "$pkgdir/usr/share/info/dir"
+  make DESTDIR=${pkgdir} install
+  rm -f ${pkgdir}/usr/bin/mt ${pkgdir}/pkg/usr/share/man/man1/mt.1
+  rm -rf ${pkgdir}/usr/libexec
+  rm -f ${pkgdir}/usr/share/man/man8/rmt.8
+  rm ${pkgdir}/usr/share/info/dir
 }
