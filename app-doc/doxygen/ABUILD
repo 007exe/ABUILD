@@ -1,33 +1,36 @@
 pkgname=doxygen
-pkgver=1.9.2
+pkgver=1.9.4
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Documentation system for C++, C, Java, IDL and PHP")
-longdesc=("Doxygen is a documentation system for C++, C, Java, IDL, and to some extent PHP and C special documentation blocks in the source code, easing the process of keeping docs and code in sync. Doxygen produces documentation in several output formats, including HTML, LaTeX, man pages, RTF, XML, compressed HTML, PostScript, and PDF.")
+shortdesc=("Documentation system for C++, C, Java, IDL and PHP.")
+longdesc=("Documentation system for most programming languages.")
 
-tags=("develop app-doc")
+tags=("utils app-doc")
 
 source=("https://github.com/doxygen/doxygen/archive/Release_${pkgver//./_}.tar.gz")
-# qt5-base -Dbuild_wizard=ON
-# texlive-core texlive-latexextra ghostscript graphviz
-build_deps="cmake gcc-libs flex python"
+
+# texlive-core texlive-latexextra
+build_deps=("cmake gcc-libs flex python qt5-base graphviz ghostscript")
+
+# Это опциональные зависимости
+removedep=("graphviz qt5-base")
 
 build() {
   go_src_dir
   burn_patches
-# Install the man pages in the right place
+# Установка документации в /usr/share/man/man1
   sed -i 's:DESTINATION man/man1:DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man1":g' doc/CMakeLists.txt
   cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+   -DDOC_INSTALL_DIR:PATH=share/doc/doxygen \
     -DPYTHON_EXECUTABLE:FILE=/usr/bin/python \
     -Dbuild_wizard:BOOL=ON \
-    -Dbuild_wizard=OFF \
+    -Dbuild_wizard=ON \
     -Wno-dev
-#    -DDOC_INSTALL_DIR:PATH=share/doc/doxygen \
-#    -Dbuild_doc:BOOL=ON \
+#    -Dbuild_doc:BOOL=ON
   make -j${numjobs} -C build
 #  make -C build docs -j1
-  make -C build DESTDIR="${pkgdir}" install
+  make -C build DESTDIR=${pkgdir} install
 }
