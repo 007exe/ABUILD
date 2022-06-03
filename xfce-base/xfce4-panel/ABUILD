@@ -1,18 +1,18 @@
 pkgname=xfce4-panel
-pkgver=4.16.3
+pkgver=4.16.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Panel for the Xfce desktop environment")
+shortdesc=("Panel for the Xfce desktop environment.")
 longdesc=("The Xfce4 Panel package contains the Xfce4 Panel.")
 
 source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-base")
 
-build_deps="exo garcon libxfce4ui xfconf libwnck3 libdbusmenu-gtk3 hicolor-icon-theme desktop-file-utils intltool gobject-introspection vala"
+build_deps=("exo garcon libxfce4ui xfconf libwnck3 libdbusmenu-gtk3 hicolor-icon-theme desktop-file-utils intltool gobject-introspection vala")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-gio-unix \
     --disable-debug
