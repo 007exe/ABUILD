@@ -1,18 +1,18 @@
 pkgname=xfce4-settings
 pkgver=4.16.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Settings manager of the Xfce desktop")
+shortdesc=("Settings manager of the Xfce desktop.")
 longdesc=("The Xfce4 Settings package contains a collection of programs that are useful for adjusting your Xfce preferences.")
 
 source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-base")
 
-build_deps="exo garcon libxfce4ui xfconf libnotify libcanberra colord libxklavier intltool xf86-input-libinput"
+build_deps=("exo garcon libxfce4ui xfconf libnotify libcanberra colord libxklavier intltool xf86-input-libinput")
 
-adddep="adwaita-icon-theme gnome-themes-extra"
+adddep=("adwaita-icon-theme gnome-themes-extra libcanberra")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-xrandr \
     --enable-xcursor \
