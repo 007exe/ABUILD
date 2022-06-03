@@ -1,16 +1,16 @@
 pkgname=btop
-pkgver=1.1.4
+pkgver=1.2.7
 pkgbuild=1
 arch="auto"
 
-shortdesc=("A monitor of system resources, bpytop ported to C++")
+shortdesc=("A monitor of system resources, bpytop ported to C++.")
 longdesc=("Resource monitor that shows usage and stats for processor, memory, disks, network and processes. C++ version and continuation of bashtop and bpytop.")
 
 source=("https://github.com/aristocratos/btop/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="sys-process console"
+tags=("sys-process console")
 
-build_deps="gcc-libs"
+build_deps=("gcc-libs")
 
 build() {
   go_src_dir
