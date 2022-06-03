@@ -1,18 +1,18 @@
 pkgname=libxfce4ui
 pkgver=4.16.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Commonly used Xfce widgets among Xfce applications")
+shortdesc=("Commonly used Xfce widgets among Xfce applications.")
 longdesc=("The libxfce4ui package contains GTK widgets that are used by other Xfce applications.")
 
 source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-base")
 
-build_deps="libxfce4util gtk3 xfconf libsm startup-notification libgtop libepoxy hicolor-icon-theme intltool gobject-introspection vala"
+build_deps=("libxfce4util gtk3 xfconf libsm startup-notification libgtop libepoxy hicolor-icon-theme intltool gobject-introspection vala")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-startup-notification \
     --with-vendor-info='AgiliaLinux' \
