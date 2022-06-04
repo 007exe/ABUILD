@@ -1,0 +1,27 @@
+pkgname=i3blocks
+pkgver=1.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Define blocks for your i3bar status line.")
+longdesc=("Highly flexible status line for the i3 window manager.")
+
+source=("https://github.com/vivien/i3blocks/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("x11-misc i3")
+
+build_deps=("glibc")
+
+config_files=("etc/i3blocks.conf")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --sysconfdir=/etc
+  make VERSION=${pkgver}
+  make VERSION=${pkgver} DESTDIR=${pkgdir} install
+}
