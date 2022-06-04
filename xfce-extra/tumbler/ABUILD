@@ -8,7 +8,7 @@ longdesc=("The Tumbler package contains a D-Bus thumbnailing service based on th
 
 source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags=("xfce xfce-base")
+tags=("xfce xfce-extra")
 
 build_deps=("intltool python ffmpegthumbnailer poppler libgsf libgepub libopenraw freetype gdk-pixbuf")
 
