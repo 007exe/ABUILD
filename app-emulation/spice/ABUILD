@@ -1,0 +1,24 @@
+pkgname=spice
+pkgver=0.15.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SPICE server.")
+longdesc=("The SPICE project aims to provide a complete open source solution for remote access to virtual machines in a seamless way so you can play videos, record audio, share usb devices and share folders without complications.")
+
+source=("https://www.spice-space.org/download/releases/spice-server/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("app-emulation xapps")
+
+# libsasl
+build_deps=("pixman opus libjpeg-turbo glib2 lz4 meson spice-protocol libcacard")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
