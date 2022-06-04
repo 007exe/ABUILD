@@ -1,0 +1,23 @@
+pkgname=slock
+pkgver=1.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A simple screen locker for X.")
+longdesc=("Simple X display locker.")
+
+source=("https://dl.suckless.org/tools/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils x11-misc")
+
+build_deps=("libxext libxrandr")
+
+build(){
+  go_src_dir
+  burn_patches
+  sed -i 's|static const char \*group = "nogroup";|static const char *group = "nobody";|' config.def.h
+  sed -ri 's/((CPP|C|LD)FLAGS) =/\1 +=/g' config.mk
+  make X11INC=/usr/include/X11 X11LIB=/usr/lib/X11
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+  install -m644 -D LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
