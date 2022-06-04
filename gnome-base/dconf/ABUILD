@@ -1,6 +1,6 @@
 pkgname=dconf
 pkgver=0.40.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Configuration database system.")
@@ -15,8 +15,11 @@ build_deps=("glib2 vala dbus git gtk-doc python meson bash-completion")
 build() {
   go_src_dir
   burn_patches
+# Отключаем установку сервиса systemd
+  sed -i 's/install_dir: systemd_userunitdir,//' service/meson.build
   meson build \
     -D prefix=/usr \
+    -D libexecdir=lib \
     -D gtk_doc=true
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
