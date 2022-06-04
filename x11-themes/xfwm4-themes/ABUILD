@@ -1,16 +1,16 @@
 pkgname=xfwm4-themes
 pkgver=4.10.0
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
 shortdesc=("A set of additionnal themes for the xfwm4 window manager.")
 longdesc=("A set of additional themes for the Xfwm window manager.")
 
-source=("https://archive.xfce.org/src/art/$pkgname/4.10/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/art/${pkgname}/4.10/${pkgname}-${pkgver}.tar.bz2")
 
-tags="themes x11-themes"
+tags=("xfce x11-themes")
 
-build_deps="mkpkg"
+build_deps=("mkpkg")
 
 build() {
   go_src_dir
