@@ -1,0 +1,30 @@
+pkgname=gnome-keyring
+pkgver=42.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Stores passwords and encryption keys.")
+longdesc=("The GNOME Keyring package contains a daemon that keeps passwords and other secrets for users.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("gnome gnome-base")
+
+build_deps=("gcr libcap-ng linux-pam openssh docbook-xsl python p11-kit")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libexecdir=/usr/lib \
+    --with-pam-dir=/usr/lib/security \
+    --disable-static \
+    --disable-schemas-compile
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
