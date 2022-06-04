@@ -1,16 +1,16 @@
 pkgname=xfce4-whiskermenu-plugin
-pkgver=2.6.1
+pkgver=2.7.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Menu for Xfce4")
+shortdesc=("Menu for Xfce4.")
 longdesc=("Whisker Menu is an alternate application launcher for Xfce.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="garcon xfce4-panel gtk3>=3.22 cmake ninja"
+build_deps=("garcon xfce4-panel gtk3 cmake ninja")
 
 build() {
   go_src_dir
@@ -20,8 +20,8 @@ build() {
   cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -GNinja
-  ninja
-  DESTDIR="$pkgdir" ninja install
+  ninja -j${numjobs}
+  DESTDIR=${pkgdir} ninja install
 }
