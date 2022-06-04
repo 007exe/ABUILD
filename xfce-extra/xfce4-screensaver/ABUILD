@@ -1,16 +1,18 @@
 pkgname=xfce4-screensaver
 pkgver=4.16.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Xfce Screensaver")
+shortdesc=("Xfce Screensaver.")
 longdesc=("xfce4-screensaver is a screen saver and locker that aims to have simple, sane, secure defaults and be well integrated with the desktop.")
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel intltool libxscrnsaver"
+build_deps=("xfce4-panel intltool libxscrnsaver")
+
+adddep=("python-gobject")
 
 build() {
   go_src_dir
@@ -19,11 +21,12 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --disable-static \
     --disable-debug \
     --enable-pam
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
