@@ -1,6 +1,6 @@
 pkgname=emacs
-pkgver=27.2
-pkgbuild=2
+pkgver=28.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The extensible, customizable, self-documenting real-time display editor.")
@@ -37,6 +37,9 @@ build() {
 
 # Устанавливаем правельные права на файлы
   find ${pkgdir}/usr/share/emacs/${pkgver} -exec chown root.root {} \;
+
 # Удаляем иконку и .desktop
   rm -rf ${pkgdir}/usr/share/{applications,icons}
+
+  rm -rvf ${pkgdir}/usr/lib/systemd
 }
