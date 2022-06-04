@@ -1,27 +1,30 @@
 pkgname=i3-wm
-pkgver=4.19.2
+pkgver=4.20.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("i3 is a tiling window manager, completely written from scratch.")
 longdesc=("Key features of i3 are correct handling multi-monitor, horizontal and vertical columns (table abstraction) in tiling. It also provides hooks/callbacks for other programs to integrate and it is UTF-8 clean. i3 uses xcb for asynchronous communication with X11, and has several measures to be very fast.")
 
 source=("https://i3wm.org/downloads/i3-$pkgver.tar.xz")
 
-tags="x11-wm xapps"
+tags=("x11-wm i3")
 
-build_deps="meson xmlto libxkbcommon-x11 pango xcb-util-cursor xcb-util-keysyms xcb-util-wm startup-notification xcb-util-xrm yajl libev"
+build_deps=("meson xmlto libxkbcommon-x11 pango xcb-util-cursor xcb-util-keysyms xcb-util-wm startup-notification xcb-util-xrm yajl libev")
 
-config_files="etc/i3/config"
+# NANO: Это опциональные зависимости
+removedep=("rxvt-unicode dmenu i3lock i3status perl-json-xs perl-anyevent-i3")
 
-conflicts="i3-gaps"
+config_files=("etc/i3/config")
+
+conflicts=("i3-gaps")
 
 build(){
   go_src_dir
   burn_patches
   meson build -D prefix=/usr
   ninja -C build
-  DESTDIR="$pkgdir" ninja -C build install
+  DESTDIR=${pkgdir} ninja -C build install
 
-  install -Dm644 -t "$pkgdir"/usr/share/licenses/$pkgname LICENSE
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
