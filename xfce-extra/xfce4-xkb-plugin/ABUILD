@@ -1,12 +1,12 @@
 pkgname=xfce4-xkb-plugin
 pkgver=0.8.2
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc=("Plugin to switch keyboard layouts for the Xfce4 panel")
-longdesc=("Plugin to switch keyboard layouts for the Xfce4 panel")
+shortdesc=("Plugin to switch keyboard layouts for the Xfce4 panel.")
+longdesc=("A plugin for the Xfce4 panel displaying keyboard layout.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
@@ -19,11 +19,11 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
