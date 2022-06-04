@@ -3,25 +3,25 @@ pkgver=2.5.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Xorg vesa video driver")
+shortdesc=("Xorg vesa video driver.")
 longdesc=("The Xorg driver for Generic VESA Cards.")
-
-tags=('x11-drivers xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-vesa-${pkgver}.tar.bz2")
 
-build_deps="xorg-server-devel"
+tags=("drivers xorg-drivers")
+
+build_deps=("xorg-server-devel")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
 }
