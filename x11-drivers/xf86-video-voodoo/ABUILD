@@ -1,32 +1,27 @@
 pkgname=xf86-video-voodoo
 pkgver=1.2.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Xorg 3dfx Voodoo1/Voodoo2 2D video driver")
+shortdesc=("X.org 3dfx Voodoo1/Voodoo2 2D video driver.")
 longdesc=("The Xorg video driver for Voodoo1 and Voodoo2 video adapters.")
 
-tags=('x11-drivers xserver')
-
-build_deps="xorg-server-devel xorgproto"
-
 source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-voodoo-${pkgver}.tar.bz2")
+
+tags=("drivers xorg-drivers")
+
+build_deps=("xorg-server-devel xorgproto")
 
 build() {
   go_src_dir
   burn_patches
-
-  export CFLAGS=${CFLAGS/-fno-plt}
-  export CXXFLAGS=${CXXFLAGS/-fno-plt}
-  export LDFLAGS=${LDFLAGS/,-z,now}
-
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
 }
