@@ -1,0 +1,24 @@
+pkgname=mate-desktop
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library with common API for various MATE modules.")
+longdesc=("Libraries for the MATE desktop that are not part of the UI.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("gtk3 startup-notification iso-codes gobject-introspection intltool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --disable-schemas-compile
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,28 @@
+pkgname=caja
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("File manager for the MATE desktop.")
+longdesc=("Caja file manager for the MATE desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("exempi gvfs libexif libsm mate-desktop libnotify gobject-introspection intltool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --enable-introspection \
+    --disable-update-mimedb
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+# Конфликт с nautilus-desktop
+  rm -r ${pkgdir}/usr/share/dbus-1/
+}
