@@ -20,12 +20,14 @@ build() {
   mkdir build
   cd build
   meson setup .. \
-    --prefix=/usr \
-    --libdir=lib \
-    --libexecdir lib \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --buildtype=release
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D sysconfdir=/etc \
+    -D localstatedir=/var \
+    -D buildtype=release
   meson compile
-  meson install --destdir "$pkgdir"
+  meson install --destdir ${pkgdir}
+# Удаляем не нужный сервис systemd
+  rm -r ${pkgdir}/usr/lib/systemd
 }
