@@ -1,0 +1,26 @@
+pkgname=spice-protocol
+pkgver=0.14.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Headers for SPICE protocol.")
+longdesc=("Headers defining the SPICE protocol.")
+
+source=("https://gitlab.freedesktop.org/spice/spice-protocol/-/archive/v${pkgver}/spice-protocol-v${pkgver}.tar.gz")
+
+tags=("app-emulation xapps")
+
+build_deps=("meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib
+  ninja -v -C build
+  DESTDIR=${pkgdir} ninja -C build install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
