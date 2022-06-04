@@ -1,0 +1,22 @@
+pkgname=libcacard
+pkgver=2.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("virtual Common Access Card (CAC) library emulator")
+longdesc=("Common Access Card) library thar provides emulation of smart cards to a virtual card reader running in a guest virtual machine.")
+
+source=("https://www.spice-space.org/download/libcacard/libcacard-${pkgver}.tar.xz")
+
+tags=("libs app-emulation")
+
+build_deps=("nss glib2")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
