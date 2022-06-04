@@ -1,18 +1,18 @@
 pkgname=xfce4-eyes-plugin
-pkgver=4.5.1
+pkgver=4.6.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A rolling eyes (following mouse pointer) plugin for the Xfce panel")
-longdesc=("An eyes plugin for the Xfce panel.")
+shortdesc=("An eyes plugin for the Xfce panel.")
+longdesc=("A rolling eyes (following mouse pointer) plugin for the Xfce panel")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel intltool perl-xml-parser"
+build_deps=("xfce4-panel intltool perl-xml-parser")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
