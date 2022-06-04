@@ -1,29 +1,29 @@
 pkgname=xtrans
 pkgver=1.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("noarch")
 
-shortdesc=("X transport library")
+shortdesc=("X transport library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
-
-tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/xtrans-${pkgver}.tar.bz2")
 
-build_deps="pkg-config"
+tags=("x11-libs libs")
+
+build_deps=("mkpkg")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --without-fop
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 
-  install -m755 -d "${pkgdir}/usr/lib"
-#  mv "${pkgdir}/usr/share/pkgconfig" "${pkgdir}/usr/lib/pkgconfig"
+  install -m755 -d ${pkgdir}/usr/lib
+  mv ${pkgdir}/usr/share/pkgconfig ${pkgdir}/usr/lib/pkgconfig
 }
