@@ -19,6 +19,8 @@ removedep=("xfce4-panel")
 build() {
   go_src_dir
   burn_patches
+# Отключим установку сервиса systemd
+  sed -i 's/\tinstall-systemd_userDATA/\t/' Makefile.in
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
