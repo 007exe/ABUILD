@@ -8,7 +8,7 @@ longdesc=("The Xorg driver for Generic VESA Cards.")
 
 source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-vesa-${pkgver}.tar.bz2")
 
-tags=("drivers xorg-drivers")
+tags=("xorg xorg-drivers")
 
 build_deps=("xorg-server-devel")
 
