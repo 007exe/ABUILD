@@ -1,0 +1,30 @@
+pkgname=i3lock
+pkgver=2.14
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple screen locker.")
+longdesc=("Improved screenlocker based upon XCB and PAM.")
+
+source=("https://i3wm.org/i3lock/${pkgname}-${pkgver}.tar.xz")
+
+tags=("x11-misc i3")
+
+build_deps=("meson xcb-util-image xcb-util-xrm libev cairo libxkbcommon-x11 linux-pam")
+
+config_files=("etc/pam.d/i3lock")
+
+build(){
+  go_src_dir
+  burn_patches
+  sed -i -e 's:login:system-auth:' pam/i3lock
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+
+  install -Dm 644 i3lock.1 -t ${pkgdir}/usr/share/man/man1
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
