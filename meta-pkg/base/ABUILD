@@ -1,0 +1,20 @@
+pkgname=base
+pkgver=20220530
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("The minimum set of packages for the distribution.")
+longdesc=("The basic set of programs is the minimum required for the distribution kit to work, except for the kernel and bootloader.")
+
+tags=("base sys-base")
+
+build_deps=("mkpkg")
+
+# NOTE: etc - Файлы конфигурации системы
+
+adddep=("bash bzip2 coreutils dracut etc eudev file findutils gawk gcc-libs gettext glibc grep gzip inetutils iproute2
+iputils kbd lsb-release mpkg-console openrc pciutils procps-ng psmisc sed shadow sysvinit tar util-linux xz")
+
+build() {
+  echo "done"
+}
