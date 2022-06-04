@@ -1,0 +1,8 @@
+echo -e "\n"
+echo -e "The following packages extend xf86-video-intel capabilities:"
+echo -e "libxrandr: for intel-virtual-output"
+echo -e "libxinerama: for intel-virtual-output"
+echo -e "libxcursor: for intel-virtual-output"
+echo -e "libxtst: for intel-virtual-output"
+echo -e "libxss: for intel-virtual-output"
+echo -e " "
