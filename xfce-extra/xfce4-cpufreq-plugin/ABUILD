@@ -1,16 +1,16 @@
 pkgname=xfce4-cpufreq-plugin
-pkgver=1.2.5
+pkgver=1.2.7
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("CPU frequency plugin for the Xfce4 panel")
+shortdesc=("CPU frequency plugin for the Xfce4 panel.")
 longdesc=("CPU freq plugin for the Xfce Desktop Environment. It provides a simple system for managing the frequency of the CPU.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel intltool"
+build_deps=("xfce4-panel intltool")
 
 build() {
   go_src_dir
@@ -19,7 +19,8 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
