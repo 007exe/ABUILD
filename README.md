@@ -129,6 +129,7 @@ kde-misc             | Различные пакеты KDE.
 kde-plasma           | Основные пакеты KDE Plasma
 lxde-base            | Основные пакеты для LXDE, облегченной среды рабочего стола X11.
 mate-base            | Основные пакеты MATE.
+mate-extra           | Дополнительные пакеты для среды MATE.
 media-fonts          | Шрифты.
 media-gfx            | Пакеты, связанные с графикой.
 media-libs           | Мультимедиа библиотеки.
