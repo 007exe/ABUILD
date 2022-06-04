@@ -1,18 +1,18 @@
 pkgname=xfce4-sensors-plugin
-pkgver=1.4.1
+pkgver=1.4.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Sensors plugin for the Xfce panel")
+shortdesc=("Sensors plugin for the Xfce panel.")
 longdesc=("A Xfce panel plugin which reads your hardware sensor values and displays them in your panel.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
-# netcat
-build_deps="xfce4-panel lm_sensors libnotify intltool hddtemp"
+tags=("xfce xfce-extra")
 
-adddep="hicolor-icon-theme hddtemp"
+build_deps=("xfce4-panel lm_sensors libnotify intltool hddtemp netcat")
+
+adddep=("hicolor-icon-theme hddtemp")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --datadir=/usr/share \
     --datarootdir=/usr/share \
     --disable-static \
