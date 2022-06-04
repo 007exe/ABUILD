@@ -1,16 +1,16 @@
 pkgname=xfce4-smartbookmark-plugin
 pkgver=0.5.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Allows you to send requests directly to your browser and perform a custom search")
+shortdesc=("Allows you to send requests directly to your browser and perform a custom search.")
 longdesc=("A plugin which allows you to do a search directly on Internet on sites like Google. It allows you to send requests directly to your browser and perform custom searches.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel intltool libxt"
+build_deps=("xfce4-panel intltool libxt")
 
 build() {
   go_src_dir
@@ -19,7 +19,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
