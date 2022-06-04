@@ -1,18 +1,18 @@
 pkgname=thunar-media-tags-plugin
 pkgver=0.3.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Adds special features for media files to the Thunar File Manager")
+shortdesc=("Adds special features for media files to the Thunar File Manager.")
 longdesc=("The thunar-media-tags-plugin is a plugin for the Thunar File Manager, which adds ID3/OGG tag support to the bulk rename dialog.")
 
 source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-extra")
 
-build_deps="taglib thunar intltool"
+build_deps=("taglib thunar intltool")
 
-adddep="thunar"
+adddep=("thunar")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
