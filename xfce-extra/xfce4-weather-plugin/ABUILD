@@ -1,18 +1,18 @@
 pkgname=xfce4-weather-plugin
 pkgver=0.11.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A weather plugin for the Xfce4 panel")
+shortdesc=("A weather plugin for the Xfce4 panel.")
 longdesc=("This panel plugin shows the current temperature and weather condition, using weather data provided by xoap.weather.com (www.weather.com).")
 
 source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel libxml2 libsoup intltool"
+build_deps=("xfce4-panel libxml2 libsoup intltool")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
