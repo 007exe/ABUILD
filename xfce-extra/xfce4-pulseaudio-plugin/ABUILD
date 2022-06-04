@@ -1,18 +1,16 @@
 pkgname=xfce4-pulseaudio-plugin
 pkgver=0.4.3
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Pulseaudio plugin for Xfce4 panel")
+shortdesc=("Pulseaudio plugin for Xfce4 panel.")
 longdesc=("Xfce4-pulseaudio-plugin is a panel plugin for controlling an audio output volume of the PulseAudio mixer.")
 
 source=("http://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/${pkgver%.*}/xfce4-pulseaudio-plugin-$pkgver.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel libpulse libkeybinder3 libnotify intltool dbus-glib xfce4-dev-tools"
-
-adddep="pulseaudio pavucontrol"
+build_deps=("xfce4-panel libpulse libkeybinder3 libnotify intltool dbus-glib xfce4-dev-tools")
 
 build() {
   go_src_dir
@@ -21,7 +19,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
