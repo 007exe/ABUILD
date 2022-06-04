@@ -1,16 +1,16 @@
 pkgname=xfce4-mpc-plugin
 pkgver=0.5.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Control the Music Player Daemon from the Xfce4 panel")
+shortdesc=("Control the Music Player Daemon from the Xfce4 panel.")
 longdesc=("This is a simple Xfce panel client plugin for Music Player Daemon.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel libmpd intltool"
+build_deps=("xfce4-panel libmpd intltool")
 
 build() {
   go_src_dir
@@ -19,7 +19,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
