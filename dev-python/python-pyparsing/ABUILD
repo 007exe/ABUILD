@@ -1,20 +1,20 @@
 pkgname=python-pyparsing
-pkgver=3.0.7
+pkgver=3.0.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("General parsing module for Python.")
 longdesc=("General parsing module for Python.")
 
-tags=("dev-python libs")
-
 source=("https://github.com/pyparsing/pyparsing/archive/pyparsing_$pkgver.tar.gz")
 
-build_deps=("python python-setuptools")
+tags=("dev-python libs")
+
+build_deps=("python python-build python-installer python-flit-core")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
-  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  python -m build -nw
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
