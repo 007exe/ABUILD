@@ -1,17 +1,17 @@
 pkgname=xfce4-artwork
 pkgver=0.1.1a_git20110420
 _debian_pkgver=0.1.1a~git+20110420
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Backdrops for the Xfce4 desktop")
+shortdesc=("Backdrops for the Xfce4 desktop.")
 longdesc=("Additional artwork for the Xfce Desktop Environment.")
 
 source=("https://deb.debian.org/debian/pool/main/x/$pkgname/${pkgname}_$_debian_pkgver.orig.tar.gz")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="gcc"
+build_deps=("gcc")
 
 build() {
   go_src_dir
