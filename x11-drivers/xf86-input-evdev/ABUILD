@@ -1,27 +1,27 @@
 pkgname=xf86-input-evdev
 pkgver=2.10.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("X.org evdev input driver")
-longdesc=("Evdev is an Xorg input driver for Linux's generic event devices. It therefore supports all input devices that the kernel knows about, including most mice and keyboards.")
-
-tags=('x11-drivers xserver')
+shortdesc=("X.org evdev input driver.")
+longdesc=("Evdev is an Xorg input driver for Linux's generic event devices.")
 
 source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-input-evdev-${pkgver}.tar.bz2")
 
-build_deps="mtdev libevdev xorg-server-devel xorgproto"
+tags=("xorg xorg-drivers")
+
+build_deps=("mtdev libevdev xorg-server-devel xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
 }
