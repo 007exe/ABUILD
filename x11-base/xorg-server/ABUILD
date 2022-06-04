@@ -1,6 +1,6 @@
 pkgname=xorg-server
 pkgver=21.1.3
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Xorg X server.")
@@ -8,69 +8,62 @@ longdesc=("The Xorg Server is the core of the X Window system.")
 
 source=("https://xorg.freedesktop.org/releases/individual/xserver/xorg-server-${pkgver}.tar.xz")
 
-tags=("xserver x11-base")
+tags=("xorg x11-base")
 
-build_deps=("xorgproto pixman libx11 mesa xtrans libxkbfile libxfont2 libpciaccess libxv libxmu libxrender libxi libxaw libxtst libxres xorg-xkbcomp xorg-util-macros xorg-font-util libepoxy xcb-util xcb-util-image xcb-util-renderutil xcb-util-wm xcb-util-keysyms libxshmfence libunwind wayland-protocols egl-wayland libxcvt")
+build_deps=("xorgproto pixman libx11 mesa xtrans libxkbfile libxfont2 libpciaccess libxv libxmu libxrender
+libxi libxaw libxtst libxres xorg-xkbcomp xorg-util-macros xorg-font-util libepoxy xcb-util xcb-util-image
+xcb-util-renderutil xcb-util-wm xcb-util-keysyms libxshmfence libunwind wayland-protocols egl-wayland libxcvt
+nettle")
 
 adddep=("xorg-server-common=${pkgver} xf86-input-libinput")
 
 pkglist=("xorg-server-xephyr xorg-server-xvfb xorg-server-xnest xorg-server-common xorg-server-devel")
 
-xorg-server-xephyr() {
-  pkgname=xorg-server-xephyr
-  shortdesc=("A nested X server that runs as an X application")
-  longdesc=("Xephyr is a nested X-Client like Xnest, but with some additional features like XRender support.")
-  adddep=("xorg-server-common=${pkgver} libunwind  libxv")
-}
-
-xorg-server-xvfb() {
-  pkgname=xorg-server-xvfb
-  shortdesc=("Virtual framebuffer X server")
-  longdesc=("Xvfb is an X server that can run on machines with no display hardware and no physical input devices. It emulates a dumb framebuffer using virtual memory. The primary use of this server is intended to be server testing. The mfb or cfb code for any depth can be exercised with this server without the need for real hardware that supports the desired depths. A secondary use is testing clients against unusual depths and screen configurations.")
-  adddep=("xorg-server-common=${pkgver} xkeyboard-config xorg-xkbcomp xorg-setxkbmap libunwind xorg-xauth")
-}
-
-xorg-server-xnest() {
-  pkgname=xorg-server-xnest
-  shortdesc=("A nested X server that runs as an X application")
-  longdesc=("Xnest is an experimental nested server for X that acts as both a client and a server. Xnest is a client of the real server which manages windows and graphics requests on its behalf. Xnest is a server to its own clients. Xnest manages windows and graphics requests on their behalf. To these clients Xnest appears to be a conventional server.")
-  adddep=("xorg-server-common=${pkgver}")
-}
-
-xorg-server-common() {
-  pkgname=xorg-server-common
-  shortdesc=("Xorg server common files")
-  longdesc=("Xorg server common files")
-  adddep=("xkeyboard-config xorg-xkbcomp xorg-setxkbmap")
-}
-
-xorg-server-devel() {
-  pkgname=xorg-server-devel
-  shortdesc=("Development files for the X.Org X server")
-  longdesc=("Development files for the X.Org X server")
-  adddep=("xorgproto mesa libpciaccess xorg-util-macros")
-}
-
 build() {
   go_src_dir
   burn_patches
-#  autoreconf -vif
-  export CFLAGS=${CFLAGS/-fno-plt}
-  export CXXFLAGS=${CXXFLAGS/-fno-plt}
-  export LDFLAGS=${LDFLAGS/,-z,now}
+# FIXME: По не понятной причине при сборке с помощью meson под не привилигированной учётной записью нет доступа к клавиатуре и мыши
+#  meson build \
+#    -D prefix=/usr \
+#    -D libdir=/usr/lib \
+#    -D libexecdir=lib \
+#    -D sysconfdir=/etc/X11 \
+#    -D sbindir=bin \
+#    -D module_dir=/usr/lib/xorg/modules \
+#    -D ipv6=true \
+#    -D xvfb=true \
+#    -D xnest=true \
+#    -D xcsecurity=true \
+#    -D xorg=true \
+#    -D xephyr=true \
+#    -D glamor=true \
+#    -D udev=true \
+#    -D drm=true \
+#    -D dtrace=false \
+#    -D int10=x86emu \
+#    -D sha1=libgcrypt \
+#    -D systemd_logind=true \
+#    -D suid_wrapper=true \
+#    -D xkb_dir=/usr/share/X11/xkb \
+#    -D xkb_output_dir=/var/lib/xkb \
+#    -D libunwind=true
+#  meson configure build
+#  ninja -C build -j${numjobs}
+#  DESTDIR=${pkgdir} ninja -C build install
 
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
+    --libexecdir=/usr/lib \
     --with-pic \
     --with-int10=x86emu \
-    --with-xkb-path=/usr/share/X11/xkb \
-    --with-os-name="AgiliaLinux" \
     --with-xkb-output=/var/lib/xkb \
-    --with-os-vendor="AgiliaLinux Project" \
+    --with-xkb-path=/usr/share/X11/xkb \
     --with-module-dir=/usr/lib/xorg/modules \
+    --with-os-name="AgiliaLinux" \
+    --with-os-vendor="AgiliaLinux Project" \
     --enable-glamor \
     --enable-xorg \
     --enable-dmx \
@@ -86,10 +79,21 @@ build() {
     --disable-systemd-logind
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/var
 
-  install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"
+  install -m755 -d ${pkgdir}/etc/X11/xorg.conf.d
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" COPYING
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} COPYING
+
+}
+
+# xorg-server-xephyr =================================================
+
+xorg-server-xephyr() {
+  pkgname=xorg-server-xephyr
+  shortdesc=("A nested X server that runs as an X application")
+  longdesc=("Xephyr is a nested X-Client like Xnest, but with some additional features like XRender support.")
+  adddep=("xorg-server-common=${pkgver} libunwind libxv nettle")
 }
 
 xorg-server-xephyr_prep() {
@@ -98,7 +102,16 @@ xorg-server-xephyr_prep() {
   mkdir -p ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/man/man1/Xephyr.1 ${pkgdir}/usr/share/man/man1/
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+# xorg-server-xvfb =================================================
+
+xorg-server-xvfb() {
+  pkgname=xorg-server-xvfb
+  shortdesc=("Virtual framebuffer X server")
+  longdesc=("Xvfb is an X server that can run on machines with no display hardware and no physical input devices. It emulates a dumb framebuffer using virtual memory. The primary use of this server is intended to be server testing. The mfb or cfb code for any depth can be exercised with this server without the need for real hardware that supports the desired depths. A secondary use is testing clients against unusual depths and screen configurations.")
+  adddep=("xorg-server-common=${pkgver} xkeyboard-config xorg-xkbcomp xorg-setxkbmap libunwind xorg-xauth nettle")
 }
 
 xorg-server-xvfb_prep() {
@@ -107,10 +120,19 @@ xorg-server-xvfb_prep() {
   mkdir -p ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/man/man1/Xvfb.1 ${pkgdir}/usr/share/man/man1
 
-  install -m755 "${filedir}/xvfb-run" "${pkgdir}/usr/bin/"
-  install -m644 "${filedir}/xvfb-run.1" "${pkgdir}/usr/share/man/man1/"
+  install -m755 ${filedir}/xvfb-run ${pkgdir}/usr/bin/
+  install -m644 ${filedir}/xvfb-run.1 ${pkgdir}/usr/share/man/man1/
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+# xorg-server-xnest =================================================
+
+xorg-server-xnest() {
+  pkgname=xorg-server-xnest
+  shortdesc=("A nested X server that runs as an X application")
+  longdesc=("Xnest is an experimental nested server for X that acts as both a client and a server. Xnest is a client of the real server which manages windows and graphics requests on its behalf. Xnest is a server to its own clients. Xnest manages windows and graphics requests on their behalf. To these clients Xnest appears to be a conventional server.")
+  adddep=("xorg-server-common=${pkgver}")
 }
 
 xorg-server-xnest_prep() {
@@ -119,7 +141,16 @@ xorg-server-xnest_prep() {
   mkdir -p ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/man/man1/Xnest.1 ${pkgdir}/usr/share/man/man1/
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+# xorg-server-common =================================================
+
+xorg-server-common() {
+  pkgname=xorg-server-common
+  shortdesc=("Xorg server common files.")
+  longdesc=("The Xorg Server is the core of the X Window system.")
+  adddep=("xkeyboard-config xorg-xkbcomp xorg-setxkbmap")
 }
 
 xorg-server-common_prep() {
@@ -130,7 +161,16 @@ xorg-server-common_prep() {
 
   install -m644 -Dt ${pkgdir}/var/lib/xkb/ ${srcdir}/xorg-server-${pkgver}/xkb/README.compiled
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+}
+
+# xorg-server-deve =================================================
+
+xorg-server-devel() {
+  pkgname=xorg-server-devel
+  shortdesc=("Development files for the X.Org X server.")
+  longdesc=("The Xorg Server is the core of the X Window system.")
+  adddep=("xorgproto mesa libpciaccess xorg-util-macros")
 }
 
 xorg-server-devel_prep() {
@@ -141,5 +181,5 @@ xorg-server-devel_prep() {
   mv ${p_pkgdir}/usr/lib/pkgconfig/xorg-server.pc ${pkgdir}/usr/lib/pkgconfig/
   mv ${p_pkgdir}/usr/share/aclocal/xorg-server.m4 ${pkgdir}/usr/share/aclocal/
 
-  install -m644 -Dt "${pkgdir}/usr/share/licenses/${pkgname}" ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} ${p_pkgdir}/usr/share/licenses/xorg-server/COPYING
 }
