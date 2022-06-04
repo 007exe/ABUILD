@@ -1,27 +1,27 @@
 pkgname=libxscrnsaver
 pkgver=1.2.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("The XScrnSaver Library")
+shortdesc=("The XScrnSaver Library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-tags=('x11-libs xserver compat32')
+tags=("x11-libs xorg")
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXScrnSaver-${pkgver}.tar.bz2")
 
-build_deps="libxext libx11 libxcb libxau libxdmcp"
+build_deps=("libxext libx11 libxcb libxau libxdmcp")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
