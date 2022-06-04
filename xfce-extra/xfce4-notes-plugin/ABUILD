@@ -1,18 +1,18 @@
 pkgname=xfce4-notes-plugin
 pkgver=1.9.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Notes plugin for the Xfce panel")
+shortdesc=("Notes plugin for the Xfce panel.")
 longdesc=("xfce4-notes-plugin is a notes panel plugin for the Xfce Desktop Environment. It provides a simple system for managing sticky notes on your desktop.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel intltool"
+build_deps=("xfce4-panel intltool")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,8 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
