@@ -1,18 +1,18 @@
 pkgname=xfce4-genmon-plugin
 pkgver=4.1.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Plugin that monitors customizable programs stdout for the Xfce4 panel")
+shortdesc=("Plugin that monitors customizable programs stdout for the Xfce4 panel.")
 longdesc=("This plugin cyclically spawns the indicated script/program, captures its output (stdout) and displays the resulting string into the panel.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-extra"
+tags=("xfce xfce-extra")
 
-build_deps="xfce4-panel intltool"
+build_deps=("xfce4-panel intltool")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -21,7 +21,7 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --disable-debug
   make -j${numjobs}
