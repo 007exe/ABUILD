@@ -1,32 +1,27 @@
 pkgname=xf86-video-fbdev
 pkgver=0.5.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Xorg framebuffer video driver")
-longdesc=("The Xorg Fbdev Driver package contains the X.Org Video Driver for framebuffer devices. This driver is often used as fallback driver if the hardware specific and VESA drivers fail to load or are not present. If this driver is not installed, Xorg Server will print a warning on startup, but it can be safely ignored if hardware specific driver works well.")
+shortdesc=("Xorg framebuffer video driver.")
+longdesc=("The Xorg Fbdev Driver package contains the X.Org Video Driver for framebuffer devices.")
 
 source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xserver x11-drivers"
+tags=("drivers xorg-drivers")
 
-build_deps="xorg-server-devel"
+build_deps=("xorg-server-devel")
 
 build() {
   go_src_dir
   burn_patches
-
-  export CFLAGS=${CFLAGS/-fno-plt}
-  export CXXFLAGS=${CXXFLAGS/-fno-plt}
-  export LDFLAGS=${LDFLAGS/,-z,now}
-
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
