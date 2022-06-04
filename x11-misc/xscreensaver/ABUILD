@@ -1,42 +1,47 @@
 pkgname=xscreensaver
-pkgver=6.02
+pkgver=6.04
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Screen saver and locker for the X Window System")
+shortdesc=("Screen saver and locker for the X Window System.")
 longdesc=("The XScreenSaver package is a modular screen saver and locker for the X Window System. It is highly customizable and allows the use of any program that can draw on the root window as a display mode. The purpose of XScreenSaver is to display pretty pictures on your screen when it is not in use, in keeping with the philosophy that unattended monitors should always be doing something interesting, just like they do in the movies. However, XScreenSaver can also be used as a screen locker, to prevent others from using your terminal while you are away.")
 
 source=("https://www.jwz.org/xscreensaver/${pkgname}-${pkgver}.tar.gz")
 
-tags="xapps sys-auth"
-# libxcrypt perl-libwww
-build_deps="bc intltool libxpm libglvnd libjpeg-turbo libx11 libxext libxft libxi libxinerama libxmu libxrandr libxt libxxf86vm linux-pam glibc glib2 gdk-pixbuf gdk-pixbuf-xlib"
+tags=("xapps x11-misc")
 
-config_files="etc/pam.d/xscreensaver"
+# libxcrypt xorg-appres
+build_deps=("gtk2 glu libglvnd libjpeg-turbo libx11 libxext libxft libxi libxinerama libxmu libxrandr elogind
+libxt libxxf86vm perl-libwww linux-pam glibc glib2 gdk-pixbuf gdk-pixbuf-xlib bc intltool libxpm")
+
+adddep=("perl-libwww")
+
+config_files=("etc/pam.d/xscreensaver")
 
 build(){
   go_src_dir
   burn_patches
-# Change a harcoded library name, which prevents using the settings found by configure:
   sed -i 's/-lsystemd/-lelogind/' driver/Makefile.in
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libexecdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-x-app-defaults=/usr/share/X11/app-defaults \
-    --with-pam \
-    --with-login-manager \
-    --with-gtk \
+    --libexecdir=/usr/lib \
+    --with-app-defaults=/usr/share/X11/app-defaults \
     --with-gl \
+    --with-pam \
+    --with-gtk \
+    --with-jpeg \
     --without-gle \
     --with-pixbuf \
-    --with-jpeg
+    --with-login-manager
   make -j${numjobs}
   install -d ${pkgdir}/etc/pam.d
-  make install_prefix="${pkgdir}" install
-  echo "NotShowIn=KDE;GNOME;" >> "${pkgdir}/usr/share/applications/xscreensaver-properties.desktop"
-  chmod 755 "${pkgdir}/usr/bin/xscreensaver"
+  make install_prefix=${pkgdir} install
+
+  echo "NotShowIn=KDE;GNOME;" >> ${pkgdir}/usr/share/applications/xscreensaver-properties.desktop
+
+  chmod 755 ${pkgdir}/usr/bin/xscreensaver
 }
 
 
