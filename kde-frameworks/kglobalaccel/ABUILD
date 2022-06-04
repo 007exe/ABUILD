@@ -23,4 +23,6 @@ build() {
     -DBUILD_QCH=ON
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
+# Удаляем бесполезный модуль systemd
+  rm -r ${pkgdir}/usr/lib/systemd
 }
