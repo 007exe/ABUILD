@@ -1,5 +1,5 @@
 pkgname=tracker3
-pkgver=3.3.0
+pkgver=3.3.1
 pkgbuild=1
 arch=("auto")
 
@@ -20,6 +20,7 @@ build(){
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
+    -D libexecdir=lib \
     -D docs=false \
     -D man=false \
     -D systemd_user_services=false
