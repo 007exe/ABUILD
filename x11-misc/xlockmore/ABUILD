@@ -1,0 +1,32 @@
+pkgname=xlockmore
+pkgver=5.69
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Just another screensaver application for X")
+longdesc=("Screen saver / locker for the X Window System.")
+
+source=("http://sillycycle.com/xlock/xlockmore-${pkgver}.tar.xz")
+
+tags=("xapps x11-misc")
+
+# openmotif
+build_deps=("mesa freetype gtk2 libxpm linux-pam libxmu glu")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-setuid \
+    --enable-appdefaultdir=/usr/share/X11/app-defaults \
+    --enable-pam \
+    --enable-syslog \
+    --with-gtk2 \
+    --without-esound \
+    --without-ftgl
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm0644 etc/xlock.pamd ${pkgdir}/etc/pam.d/xlock
+}
