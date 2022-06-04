@@ -1,14 +1,14 @@
 pkgname=libxkbcommon
-pkgver=1.4.0
+pkgver=1.4.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Keymap handling library for toolkits and window systems")
+shortdesc=("Keymap handling library for toolkits and window systems.")
 longdesc=("libxkbcommon is a keymap compiler and support library which processes a reduced subset of keymaps as defined by the XKB specification.")
 
 source=("http://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
 
-tags=("x11-libs xserver")
+tags=("x11-libs libs")
 
 build_deps=("xkeyboard-config libxml2 libxcb wayland wayland-protocols git meson xorgproto doxygen")
 
@@ -29,6 +29,7 @@ build() {
   burn_patches
   meson build \
     --prefix=/usr \
+    --libexecdir=lib \
     --buildtype=release
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
