@@ -22,13 +22,15 @@ removedep=("gst-plugins-good gst-plugins-bad gst-libav")
 build() {
   go_src_dir
   burn_patches
+  CFLAGS+=' -g1'
+  CXXFLAGS+=' -g1'
   cmake -B build -G Ninja \
     -DPORT=GTK \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_LIBEXECDIR=lib \
-    -DUSE_SYSTEMD=OFF \
+    -ENABLE_JOURNALD_LOG=OFF \
     -DCMAKE_SKIP_RPATH=ON \
     -DENABLE_GTKDOC=OFF \
     -DENABLE_MINIBROWSER=ON \
@@ -36,4 +38,7 @@ build() {
     -DUSE_GTK4=OFF
   cmake --build build
   DESTDIR=${pkgdir} cmake --install build
+
+# NOTE: Предоставляется webkit2gtk-5.0
+  rm -r ${pkgdir}/usr/bin
 }
