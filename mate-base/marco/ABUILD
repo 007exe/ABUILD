@@ -1,0 +1,26 @@
+pkgname=marco
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A window manager for MATE.")
+longdesc=("MATE default window manager.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("libcanberra libgtop mate-desktop zenity libxpresent gettext intltool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-startup-notification
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
