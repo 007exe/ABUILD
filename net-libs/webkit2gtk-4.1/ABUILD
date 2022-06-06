@@ -1,0 +1,44 @@
+pkgname=webkit2gtk-4.1
+pkgver=2.36.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Web content engine for GTK.")
+longdesc=("The WebKitGTK package is a port of the portable web rendering engine WebKit to the GTK+ 3 and GTK+ 2 platforms.")
+
+source=("https://webkitgtk.org/releases/webkitgtk-${pkgver}.tar.xz")
+
+tags=("libs net-libs")
+
+build_deps=("cmake ninja gtk-doc python ruby gobject-introspection wayland-protocols gst-plugins-bad gperf libwpe
+libjpeg-turbo wpebackend-fdo libmanette libsecret enchant libnotify hyphen woff2 bubblewrap libseccomp xdg-dbus-proxy
+gst-plugins-good gst-plugins-bad gst-libav")
+
+adddep=("zlib at-spi2-core libxext libice bubblewrap xdg-dbus-proxy")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-good gst-plugins-bad gst-libav")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=' -g1'
+  CXXFLAGS+=' -g1'
+  cmake -B build -G Ninja \
+    -DPORT=GTK \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DENABLE_JOURNALD_LOG=OFF \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DENABLE_GTKDOC=ON \
+    -DENABLE_MINIBROWSER=ON \
+    -DUSE_SOUP2=OFF \
+    -DUSE_GTK4=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+
+# NOTE: Предоставляется webkit2gtk-5.0
+  rm -r ${pkgdir}/usr/bin
+}
