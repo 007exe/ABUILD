@@ -1,0 +1,24 @@
+pkgname=mate-backgrounds
+pkgver=1.26.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Background images and data for MATE.")
+longdesc=("A set of backgrounds packaged with the MATE desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("gettext")
+
+adddep=("gettext")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
