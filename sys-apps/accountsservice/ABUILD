@@ -1,23 +1,24 @@
 pkgname=accountsservice
-pkgver=22.04.62
+pkgver=22.08.8
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("D-Bus interface for user account query and manipulation")
+shortdesc=("D-Bus interface for user account query and manipulation.")
 longdesc=("The AccountsService package provides a set of D-Bus interfaces for querying and manipulating user account information and an implementation of those interfaces based on the usermod(8), useradd(8) and userdel(8) commands.")
 
 source=("https://www.freedesktop.org/software/accountsservice/accountsservice-${pkgver}.tar.xz")
 
 tags=("base sys-apps")
 
-build_deps=("gtk-doc gobject-introspection git meson docbook-xsl xmlto glib2 polkit shadow libxcrypt elogind")
+# libxcrypt функции предоставляет пакет glibc
+build_deps=("gtk-doc gobject-introspection git meson docbook-xsl xmlto glib2 polkit shadow elogind")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX} \
+    -D libdir=/usr/lib \
     -D buildtype=release \
     -D admin_group=wheel \
     -D elogind=true \
@@ -25,14 +26,5 @@ build() {
     -D docbook=true \
     -D gtk_doc=true
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
-# Fix permissions to match the ones the daemon sets
-  chmod 0775 "$pkgdir/var/lib/AccountsService/icons"
-
-  mkdir -p "$pkgdir"/etc/polkit-1/rules.d
-cat > "$pkgdir"/etc/polkit-1/rules.d/40-adm.rules << "EOF"
-polkit.addAdminRule(function(action, subject) {
-   return ["unix-group:adm"];
-   });
-EOF
+  meson install -C build --destdir ${pkgdir}
 }
