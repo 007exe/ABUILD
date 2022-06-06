@@ -18,9 +18,9 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D alpm=true \
     -D gtk-doc=true \
     -D rpm=false
+#   -D alpm=true
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 }
