@@ -1,0 +1,23 @@
+pkgname=libmatekbd
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MATE keyboard library.")
+longdesc=("MATE keyboard configuration library.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs mate-base")
+
+build_deps=("gtk3 gettext libxklavier python")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
