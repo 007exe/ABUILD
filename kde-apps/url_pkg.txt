@@ -1,0 +1,3 @@
+https://github.com/KDE/${pkgname}.git
+https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz
+https://download.kde.org/stable/alkimia/${pkgver}/${pkgname}-${pkgver}.tar.xz
