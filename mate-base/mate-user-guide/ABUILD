@@ -1,0 +1,22 @@
+pkgname=mate-user-guide
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MATE User Guide.")
+longdesc=("User documentation for MATE Desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("yelp gettext itstool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
