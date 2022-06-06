@@ -1,0 +1,27 @@
+pkgname=gtk-layer-shell
+pkgver=0.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library to create Wayland desktop components using the Layer Shell protocol.")
+longdesc=("Library to create desktop components for Wayland using the Layer Shell protocol.")
+
+source=("https://github.com/wmww/gtk-layer-shell/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("gtk3 wayland gtk-doc gobject-introspection meson ninja")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    --wrap-mode=nofallback \
+    -D buildtype=plain \
+    -D tests=true \
+    -D docs=true \
+    -D introspection=true
+  ninja -C build -j${numjobs}
+  DESTDIR=${pkgdir} ninja -C build install
+}
