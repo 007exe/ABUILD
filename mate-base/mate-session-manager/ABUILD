@@ -1,0 +1,29 @@
+pkgname=mate-session-manager
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The MATE Session Handler.")
+longdesc=("MATE session manager.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("dbus-glib gettext gtk3 libsm mate-desktop xtrans python")
+
+# NOTE: Это опциональные зависимости
+removedep=("gnome-keyring xdg-user-dirs-gtk")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-upower
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

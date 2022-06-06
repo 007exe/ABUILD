@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend mate-session-manager capabilities:"
+echo -e "gnome-keyring: keyring support"
+echo -e "xdg-user-dirs-gtk: manage user directories"
+echo -e " "
