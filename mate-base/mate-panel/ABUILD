@@ -1,0 +1,28 @@
+pkgname=mate-panel
+pkgver=1.26.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The MATE Panel.")
+longdesc=("The MATE panel.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("dbus-glib libwnck3 libcanberra libmateweather libsm mate-menus mate-desktop gettext
+gtk-layer-shell itstool gobject-introspection mate-common yelp-tools autoconf-archive")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-introspection
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
