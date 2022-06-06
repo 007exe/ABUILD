@@ -1,0 +1,24 @@
+pkgname=mate-icon-theme
+pkgver=1.26.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("MATE icon theme.")
+longdesc=("MATE default icon themes.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("gettext icon-naming-utils")
+
+adddep=("gettext")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
