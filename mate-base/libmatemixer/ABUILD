@@ -1,0 +1,25 @@
+pkgname=libmatemixer
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Mixer library for MATE Desktop.")
+longdesc=("Mixer library for MATE Desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs mate-base")
+
+build_deps=("glib2 gettext libpulse alsa-lib")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
