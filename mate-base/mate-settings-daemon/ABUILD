@@ -1,0 +1,31 @@
+pkgname=mate-settings-daemon
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MATE Settings Daemon.")
+longdesc=("The MATE Settings daemon.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("dbus-glib libcanberra libmatekbd libmatemixer libnotify mate-desktop nss polkit gettext python")
+
+# NOTE: Это опциональные зависимости
+removedep=("libcanberra-pulse pulseaudio-alsa")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --enable-introspection \
+    --disable-update-mimedb
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+# Конфликт с nautilus-desktop
+  rm -r ${pkgdir}/usr/share/dbus-1/
+}
