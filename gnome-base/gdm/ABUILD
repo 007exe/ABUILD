@@ -1,0 +1,33 @@
+pkgname=gdm
+pkgver=42.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Display manager and login screen.")
+longdesc=("GDM is a system service that is responsible for providing graphical logins and managing local and remote displays.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("gnome gnome-base")
+
+# gnome-session gnome-shell
+build_deps=("yelp-tools gobject-introspection git docbook-xsl meson upower xorg-xrdb xorg-server xorg-xhost libxdmcp libcanberra")
+
+build() {
+  go_src_dir
+  burn_patches
+# Сборка без systemd
+  sed -i -r '/(^| )systemd_dep/d' meson.build
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D ipv6=true \
+    -D gdm-xsession=true \
+    -D systemd-journal=false \
+    -D default-path="/usr/local/bin:/usr/local/sbin:/usr/bin" \
+    -D run-dir=/run/gdm \
+    -Dlogind-provider=elogind
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
