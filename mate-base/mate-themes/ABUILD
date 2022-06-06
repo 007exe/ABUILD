@@ -1,0 +1,22 @@
+pkgname=mate-themes
+pkgver=3.22.23
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Default themes for the MATE desktop.")
+longdesc=("A set of MATE themes, with sets for users with limited or low vision.")
+
+source=("https://pub.mate-desktop.org/releases/themes/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-base")
+
+build_deps=("gtk2 intltool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
