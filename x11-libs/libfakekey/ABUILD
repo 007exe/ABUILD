@@ -1,0 +1,26 @@
+pkgname=libfakekey
+pkgver=0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X virtual keyboard library.")
+longdesc=("Helper library for the x11-misc/matchbox-keyboard package.")
+
+source=("https://git.yoctoproject.org/cgit/cgit.cgi/${pkgname}/snapshot/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs x11-libs")
+
+build_deps=("libxtst")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static
+  make AM_LDFLAGS=-lX11
+  make DESTDIR=${pkgdir} install
+}
