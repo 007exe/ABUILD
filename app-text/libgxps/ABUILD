@@ -1,0 +1,26 @@
+pkgname=libgxps
+pkgver=0.3.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("XPS Documents library.")
+longdesc=("The libgxps package provides an interface to manipulate XPS documents.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs app-text")
+
+build_deps=("gtk3 libarchive libjpeg-turbo libtiff lcms2")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D enable-man=true \
+    -D enable-gtk-doc=true
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
