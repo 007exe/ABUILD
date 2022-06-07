@@ -1,0 +1,24 @@
+pkgname=libspectre
+pkgver=0.2.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Small library for rendering Postscript documents.")
+longdesc=("Small library for rendering Postscript documents.")
+
+source=("http://libspectre.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs app-text")
+
+build_deps=("ghostscript")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
