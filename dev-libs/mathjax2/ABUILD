@@ -1,0 +1,31 @@
+pkgname=mathjax2
+pkgver=2.7.9
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("JavaScript display engine for LaTeX, MathML and AsciiMath")
+longdesc=("An open source JavaScript display engine for mathematics that works in all modern browsers.")
+
+source=("https://github.com/mathjax/MathJax/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("mkpkg")
+
+before_build() {
+  go_src_dir
+  rm -r docs test unpacked
+  rm -r fonts/HTML-CSS/TeX/png
+  for _format in eot otf svg ; do
+   find . -type d -name ${_format} -prune -exec rm -rf {} \;
+  done
+}
+
+build(){
+  cd ${srcdir}
+  mkdir -p ${pkgdir}/usr/share/{fonts,licenses/mathjax2}
+  cp -a MathJax-$pkgver ${pkgdir}/usr/share/mathjax2
+  mv ${pkgdir}/usr/share/mathjax2/fonts ${pkgdir}/usr/share/fonts/mathjax2
+  ln -s /usr/share/fonts/mathjax2 ${pkgdir}/usr/share/mathjax2/fonts
+  mv ${pkgdir}/usr/share/mathjax2/LICENSE ${pkgdir}/usr/share/licenses/mathjax2/
+}
