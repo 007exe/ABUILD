@@ -10,7 +10,10 @@ source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}
 
 tags=("mate mate-extra")
 
-build_deps=("djvulibre libspectre libgxps mathjax2 gettext poppler-glib cairo webkit2gtk libsynctex caja gobject-introspection itstool texlive-bin")
+# --enable-synctex texlive-bin libsynctex
+build_deps=("djvulibre libspectre libgxps mathjax2 gettext poppler-glib cairo webkit2gtk caja gobject-introspection itstool")
+
+adddep=("mathjax2")
 
 # NOTE: Это опциональные зависимости
 removedep=("caja texlive-bin")
@@ -30,7 +33,8 @@ build() {
     --enable-pixbuf \
     --enable-comics \
     --enable-xps \
-    --enable-introspection
+    --enable-introspection \
+    --disable-synctex
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
