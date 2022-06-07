@@ -1,0 +1,27 @@
+pkgname=gucharmap
+pkgver=14.0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Gnome Unicode Charmap.")
+longdesc=("Unicode character map viewer and library.")
+
+source=("https://gitlab.gnome.org/GNOME/gucharmap/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("gnome gnome-extra")
+
+# appdata-tools
+build_deps=("gtk-doc gobject-introspection yelp-tools meson unicode-character-database unzip vala gtk3")
+
+build() {
+  go_src_dir
+  meson build \
+    --strip \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D docs=false \
+    -D ucd_path=/usr/share/unicode
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
