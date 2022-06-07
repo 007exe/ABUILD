@@ -1,0 +1,25 @@
+pkgname=mate-sensors-applet
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MATE panel applet to display readings from hardware sensors.")
+longdesc=("A MATE Panel applet to display readings from hardware sensors, including CPU temperature, fan speeds and voltage readings.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+# libxnvctrl необходим для настройки карточек Nvidia
+build_deps=("libatasmart libnotify lm_sensors mate-panel gettext docbook-xsl itstool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname}
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,29 @@
+pkgname=mate-power-manager
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Power management tool for the MATE desktop.")
+longdesc=("A session daemon for MATE that makes it easy to manage your laptop or desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("dbus-glib gettext libcanberra libnotify upower polkit libsecret itstool mate-panel python")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --sbindir=/usr/bin \
+    --enable-applets \
+    --disable-strict \
+    --without-keyring
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

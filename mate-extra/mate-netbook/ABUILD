@@ -1,0 +1,24 @@
+pkgname=mate-netbook
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A simple window management tool.")
+longdesc=("MATE utilities for netbooks.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("libfakekey mate-panel gettext")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexec=/usr/lib/${pkgname} \
+    --sysconfdir=/etc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

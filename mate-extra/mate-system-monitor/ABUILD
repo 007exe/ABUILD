@@ -1,0 +1,25 @@
+pkgname=mate-system-monitor
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A system monitor for MATE.")
+longdesc=("The MATE System Monitor.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("gtkmm3 libgtop libwnck3 gettext polkit itstool python")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --localstatedir=/var \
+    --disable-systemd
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

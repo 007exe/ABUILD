@@ -1,0 +1,93 @@
+pkgname=caja-extensions-common
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Caja extensions (common files).")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/caja-extensions-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+# samba
+build_deps=("caja gettext dbus-glib gupnp imagemagick python")
+
+pkglist=("caja-image-converter caja-open-terminal caja-sendto caja-share caja-wallpaper caja-xattr-tags")
+
+build() {
+  go_src_dir
+  burn_patches
+  PYTHON=/usr/bin/python2
+  ./configure \
+    --prefix=/usr \
+    --disable-gksu
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make -C po DESTDIR=${pkgdir} install
+}
+
+caja-image-converter() {
+  pkgname=caja-image-converter
+  shortdesc=("A Caja extension for simple image conversions.")
+  adddep=("caja caja-extensions-common")
+}
+
+caja-image-converter_prep() {
+  go_src_dir
+  make -C image-converter DESTDIR=${pkgdir} install
+}
+
+caja-open-terminal() {
+  pkgname=caja-open-terminal
+  shortdesc=("A Caja extension for opening terminals in arbitrary local paths.")
+  adddep=("caja caja-extensions-common")
+}
+
+caja-open-terminal_prep() {
+  go_src_dir
+  make -C open-terminal DESTDIR=${pkgdir} install
+}
+
+caja-sendto() {
+  pkgname=caja-sendto
+  shortdesc=("A Caja extension for sending files.")
+  adddep=("caja caja-extensions-common")
+}
+
+caja-sendto_prep() {
+  go_src_dir
+  make -C sendto DESTDIR=${pkgdir} install
+}
+
+caja-share() {
+  pkgname=caja-share
+  shortdesc=("A Caja extension to quickly share a folder.")
+  adddep=("caja caja-extensions-common")
+}
+
+caja-share_prep() {
+  go_src_dir
+  make -C share DESTDIR=${pkgdir} install
+}
+
+caja-wallpaper() {
+  pkgname=caja-wallpaper
+  shortdesc=("A Caja extension to quickly set wallpaper.")
+  adddep=("caja caja-extensions-common")
+}
+
+caja-wallpaper_prep() {
+  go_src_dir
+  make -C wallpaper DESTDIR=${pkgdir} install
+}
+
+caja-xattr-tags() {
+  pkgname=caja-xattr-tags
+  shortdesc=("A Caja extension to see tags stored on xattrs.")
+  adddep=("caja caja-extensions-common")
+}
+
+caja-xattr-tags_prep() {
+  go_src_dir
+  make -C xattr-tags DESTDIR=${pkgdir} install
+}

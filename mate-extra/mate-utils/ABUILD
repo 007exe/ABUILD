@@ -1,0 +1,28 @@
+pkgname=mate-utils
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utilities for the MATE desktop.")
+longdesc=("Common MATE utilities for viewing disk usage, logs and fonts, taking screenshots, managing dictionaries and searching files.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+# inkscape
+build_deps=("mate-desktop gettext libcanberra libgtop libsm udisks itstool mate-panel python")
+
+removedep=("mate-panel")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --sysconfdir=/etc \
+    --disable-maintainer-flags
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,25 @@
+pkgname=eom
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The MATE image viewer.")
+longdesc=("An image viewing and cataloging program for MATE.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("dbus-glib gettext exempi lcms2 libexif libjpeg-turbo mate-desktop libpeas gobject-introspection itstool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --localstatedir=/var \
+    --with-librsvg
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend mate-applets capabilities:"
+echo -e "fortune-mod: for displaying fortune cookies in the Wanda the Fish applet"
+echo -e "gucharmap: character picker applet"
+echo -e " "

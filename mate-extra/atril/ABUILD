@@ -1,0 +1,36 @@
+pkgname=atril
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MATE document viewer.")
+longdesc=("Atril document viewer for MATE.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("djvulibre libspectre libgxps mathjax2 gettext poppler-glib cairo webkit2gtk libsynctex caja gobject-introspection itstool texlive-bin")
+
+# NOTE: Это опциональные зависимости
+removedep=("caja texlive-bin")
+
+build() {
+  go_src_dir
+  burn_patches
+# Исправить путь mathjax
+  sed -i 's|/usr/share/javascript/mathjax|/usr/share/mathjax2|' backend/epub/epub-document.c
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --enable-djvu \
+    --enable-dvi \
+    --enable-epub \
+    --enable-t1lib \
+    --enable-pixbuf \
+    --enable-comics \
+    --enable-xps \
+    --enable-introspection
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

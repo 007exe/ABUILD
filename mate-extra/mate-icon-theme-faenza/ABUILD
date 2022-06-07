@@ -1,0 +1,23 @@
+pkgname=mate-icon-theme-faenza
+pkgver=1.20.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Faenza icon theme for MATE.")
+longdesc=("Faenza icon theme, that was adapted for MATE desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("mate-common")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

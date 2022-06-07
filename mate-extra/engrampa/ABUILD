@@ -1,0 +1,28 @@
+pkgname=engrampa
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Archive manipulator for MATE.")
+longdesc=("Engrampa archive manager for MATE.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("gtk3 gzip gettext libarchive tar unzip zip caja itstool python")
+
+# NOTE: Это опциональные зависимости
+removedep=("caja p7zip unace unrar brotli rpm-tools cpio")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --disable-packagekit
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

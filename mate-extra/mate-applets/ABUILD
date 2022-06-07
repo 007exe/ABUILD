@@ -1,0 +1,31 @@
+pkgname=mate-applets
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Applets for MATE panel.")
+longdesc=("Applets for the MATE Desktop and Panel.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+# cpupower
+build_deps=("libgtop libnotify mate-panel polkit upower wireless_tools intltool itstool gucharmap yelp-tools gtksourceview3")
+
+# NOTE: Это опциональные зависимости
+removedep=("fortune-mod gucharmap")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/${pkgname} \
+    --with-upower \
+    --enable-polkit \
+    --enable-ipv6
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

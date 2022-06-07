@@ -1,0 +1,28 @@
+pkgname=mate-user-share
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("User level public file sharing via WebDAV for MATE.")
+longdesc=("Personal file sharing for the MATE desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+# mod_dnssd
+build_deps=("caja dbus-glib itstool libcanberra libnotify gtk3 gettext")
+
+build() {
+  go_src_dir
+  burn_patches
+  PYTHON=/usr/bin/python2
+  ./configure \
+    --prefix=/usr \
+    --libexec=/usr/lib/${pkgname} \
+    --sysconfdir=/etc \
+    --disable-bluetooth
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

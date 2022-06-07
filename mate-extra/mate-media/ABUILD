@@ -1,0 +1,25 @@
+pkgname=mate-media
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MATE Media Tools.")
+longdesc=("Multimedia related programs for the MATE desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("libcanberra libmatemixer mate-desktop mate-panel gettext")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/${pkgname} \
+    --localstatedir=/var
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

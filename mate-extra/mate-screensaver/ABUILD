@@ -1,0 +1,30 @@
+pkgname=mate-screensaver
+pkgver=1.26.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Screensaver for MATE.")
+longdesc=("Replaces xscreensaver, integrating with the MATE desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("libmatekbd gettext libnotify libxss mate-desktop mate-menus mate-session-manager")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --sysconfdir=/etc \
+    --with-xscreensaverdir=/usr/share/xscreensaver/config \
+    --with-xscreensaverhackdir=/usr/lib/xscreensaver \
+    --with-mit-ext \
+    --with-libnotify \
+    --enable-locking \
+    --without-console-kit
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

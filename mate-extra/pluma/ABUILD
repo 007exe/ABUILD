@@ -1,0 +1,28 @@
+pkgname=pluma
+pkgver=1.26.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A powerful text editor for MATE.")
+longdesc=("Pluma text editor for the MATE desktop.")
+
+source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("mate mate-extra")
+
+build_deps=("iso-codes mate-desktop zenity gtksourceview4 libpeas python gettext itstool gobject-introspection python mate-common yelp-tools autoconf-archive")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  PYTHON=/usr/bin/python
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib/${pkgname} \
+    --enable-gtk-doc=no \
+    --enable-python
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
