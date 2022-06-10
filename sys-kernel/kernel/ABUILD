@@ -1,9 +1,9 @@
 pkgname=kernel
-pkgver=5.16.9
+pkgver=5.18.3
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("The Linux kernel and modules")
+shortdesc=("The Linux kernel and modules.")
 longdesc=("This is a Linux kernel with built-in support for most disk controllers and filesystems.")
 
 tags=("base sys-kernel")
@@ -21,140 +21,159 @@ custom_opts=("skip_gendeps no_strip skip_validate")
 
 skip_gendeps=1
 
-build_deps=("bc kmod cpio perl tar xz xmlto rsync diffutils")
+build_deps=("bc kmod cpio perl tar xz xmlto rsync diffutils ncurses bison flex elfutils
+python-sphinx python-sphinx_rtd_theme graphviz imagemagick")
 
 adddep=("coreutils kmod")
 
 pkglist=("headers sources")
 
-headers() {
-  pkgname=kernel-headers
-  arch=("auto")
-  shortdesc=("Headers and scripts for building modules for the linux kernel")
-  longdesc=("These are the include files from the Linux kernel. You will need these to compile most system software for Linux.")
-  tags=("develop sys-kernel")
-}
-
-sources() {
-  pkgname=kernel-source
-  arch=("auto")
-  shortdesc=("Linux kernel source")
-  longdesc=("Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.")
-  tags=("develop sys-kernel")
-}
-
 before_build() {
   go_src_dir
   burn_patches
-  echo "Copying kernel configuration..."
-## It is now built as a module to save some RAM. Try this first:
-## sudo modprobe configs
-## (or add configs to /etc/conf.d/modules if you always want it available).
-## zcat /proc/config.gz > .config
+
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*      Очистка древа исходного кода от мусора...      *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  make mrproper
+
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*     Копирование предыдущей конфигурации ядра...     *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
   cat ${filedir}/defconfig-x86_64 > .config
 
-#clear
-echo ""
-echo "Kernel preconfiguration"
-while
-read -n1 -p  "
- 1 - Run make olddefconfig (New options will be left as they are by default)
+# sudo modprobe configs
+# (or add configs to /etc/conf.d/modules if you always want it available).
+# zcat /proc/config.gz > .config
+# Оставит все настройки с старого файла .config, и установит новые настройки в их рекомендуемое значение (т.е. в значение по умолчанию):
 
- 2 - Run make oldconfig? (Interactive setup menu, prompts a lot of questions)  " KERNEL_OLD_CONFIG
-echo ''
-[[ "$KERNEL_OLD_CONFIG" =~ [^12] ]]
-do
-	:
-done
-if [[ "$KERNEL_OLD_CONFIG" == 1 ]]; then
-echo "
-===============================================
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*         Применение настроек по умолчанию...         *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
 
-New options left as is (default)
-
-==============================================="
   make olddefconfig
-elif [[ "$KERNEL_OLD_CONFIG" == 2 ]]; then
-echo "
-=============================================================
-y - enable, n - do not include, m - include as a module
-=============================================================
-"
-  make oldconfig
-fi
 
-#clear
-echo ""
-echo "Manual kernel configuration"
-while
-read -n1 -p  "
- 1 - Run make menuconfig? (A configurator with a pseudo-graphic interface.)
+# Ручная настройка ядра
+  make menuconfig
 
- 2 - Run make nconfig? (A pseudo-graphical configurator. Requires ncurses library)
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*     Сохранение нового конфигурационного файла...    *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*  Не забудь скрпировать новый конфигурационный файл  *"
+  echo "*     ~/${pkgver}-defconfig-x86_64 в каталог files    *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
 
- 0 - Skip manual configuration " KERNEL_CONFIG_MENU
-echo ''
-[[ "$KERNEL_CONFIG_MENU" =~ [^120] ]]
-do
-	:
-done
-if [[ "$KERNEL_CONFIG_MENU" == 1 ]]; then
-        make menuconfig
-elif [[ "$KERNEL_CONFIG_MENU" == 2 ]]; then
-	make nconfig
-elif [[ "$KERNEL_CONFIG_MENU" == 0 ]]; then
-echo ""
-fi
-
-echo "Save new config file..."
-cp .config  ${filedir}/${pkgver}-defconfig-x86_64
-cp .config ${startdir}/${pkgver}-defconfig-x86_64
+  cp .config ~/${pkgver}-defconfig-x86_64
 }
+
+#################################################################################################################################
 
 build() {
   go_src_dir
   make -j${numjobs}
-echo "Installing the Kernel..."
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*                  Установка ядра...                  *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
   mkdir -p ${pkgdir}/boot
-  cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-${pkgver}
+  cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-linux
 
-echo "Installing Kernel Modules..."
-  make -j${numjobs} INSTALL_MOD_PATH=${pkgdir} INSTALL_MOD_STRIP=1 modules_install
-  rm -rf ${pkgdir}/lib/firmware
-  rm ${pkgdir}/lib/modules/${pkgver}/{source,build}
-  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/lib/modules/${pkgver}/source
-  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/lib/modules/${pkgver}/build
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*              Установка модулей Ядра...              *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
 
-# First installation script
-echo "First installation script..."
+  make -j${numjobs} INSTALL_MOD_PATH=${pkgdir}/usr INSTALL_MOD_STRIP=1 modules_install
+  rm -rf ${pkgdir}/usr/lib/firmware
+  rm ${pkgdir}/usr/lib/modules/${pkgver}/{source,build}
+  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/source
+  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/build
+
+# Пост установочный скрипт
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*       Создание пост установочного скрипта...        *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
   mkdir -p ${pkgdir}/install
-
   cat << EOF > ${pkgdir}/install/doinst.sh
-
-echo " A good idea whenever kernel modules are added or changed: "
-if [ -x sbin/depmod ]; then
-  chroot . /sbin/depmod -a ${pkgver} 1> /dev/null 2> /dev/null
+if [ -x usr/bin/depmod ]; then
+  chroot . usr/bin/depmod -a ${pkgver} 1> /dev/null 2> /dev/null
 fi
 
 EOF
 }
 
+#################################################################################################################################
+
+headers() {
+  pkgname=kernel-headers
+  arch=("noarch")
+  shortdesc=("Headers and scripts for building modules for the linux kernel.")
+  longdesc=("These are the include files from the Linux kernel. You will need these to compile most system software for Linux.")
+  tags=("develop sys-kernel")
+}
+
 headers_prep() {
   go_src_dir
-echo "Installing kernel headers..."
-  make headers_check
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*            Установка заголовков ядра...             *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+  make headers
   make headers_install INSTALL_HDR_PATH=${pkgdir}/usr
+}
+
+#################################################################################################################################
+# NOTE: Возможно этот пакет более не нужен но на всякий случай его создадим
+
+sources() {
+  pkgname=kernel-source
+  arch=("noarch")
+  shortdesc=("Linux kernel source.")
+  longdesc=("Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.")
+  tags=("develop sys-kernel")
 }
 
 sources_prep() {
   go_src_dir
   mkdir -p ${pkgdir}/usr/src/linux-${pkgver}
-echo "Copying the kernel source tree. This may take about 10 minutes..."
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*          Копирование исходного дерева ядра          *"
+  echo "*     Это может занять около 10 минут или более...    *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+
   cp -rd ./* ${pkgdir}/usr/src/linux-${pkgver}/
   ( cd ${pkgdir}/usr/src/linux-${pkgver} && make mrproper )
   cat .config > ${pkgdir}/usr/src/linux-${pkgver}/.config
   ( cd ${pkgdir}/usr/src/linux-${pkgver} && make prepare && make modules_prepare )
   ( cd ${pkgdir}/usr/src ; ln -s linux-${pkgver} linux )
-# recreate config. I forgot why it was needed, but it takes no time, so let it be.
   cat .config > ${pkgdir}/usr/src/linux-${pkgver}/.config
 }
