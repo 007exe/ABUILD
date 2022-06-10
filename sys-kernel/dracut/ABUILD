@@ -10,9 +10,9 @@ source=("http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-$pkgver.tar.xz
 
 tags=("base sys-kernel")
 
-build_deps=("asciidoc bash-completion bash coreutils cpio findutils grep gzip procps-ng sed util-linux xz grep binutils elfutils")
+build_deps=("asciidoc bash-completion bash coreutils cpio findutils grep gzip procps-ng sed util-linux xz grep elfutils eudev")
 
-adddep=("bash coreutils cpio findutils grep gzip procps-ng sed util-linux xz grep binutils elfutils")
+adddep=("bash coreutils cpio findutils grep gzip procps-ng sed util-linux xz grep elfutils eudev")
 
 config_files=("etc/dracut.conf")
 
