@@ -1,0 +1,22 @@
+pkgname=iana-etc
+pkgver=20220603
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("The Iana-Etc package provides data for network services and protocols.")
+
+source=("https://github.com/Mic92/iana-etc/releases/download/${pkgver}/iana-etc-${pkgver}.tar.gz")
+
+tags=("base sys-libs")
+
+build_deps=("coreutils")
+
+config_files=("etc/protocols
+etc/services")
+
+build() {
+  go_src_dir
+  burn_patches
+  install -d ${pkgdir}/etc
+  cp services protocols ${pkgdir}/etc
+}
