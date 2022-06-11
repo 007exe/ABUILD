@@ -16,7 +16,7 @@ uucp:x:14:uucp
 man:x:15:
 dialout:x:16:uucp
 audio:x:17:root,pulse
-video:x:18:sddm
+video:x:18:
 cdrom:x:19:
 games:x:20:
 slocate:x:21:
@@ -33,7 +33,6 @@ ntp:x:44:
 icecc:x:49:
 ftp:x:50:
 oprofile:x:51:
-sddm:x:64:
 pulse:x:65:
 dhcpcd:x:68:
 input:x:71:

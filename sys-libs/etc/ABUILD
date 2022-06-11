@@ -1,23 +1,23 @@
 pkgname=etc
-pkgver=20210908
+pkgver=20220611
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("System configuration files")
+shortdesc=("System configuration files.")
 longdesc=("System configuration files. The /etc directory is traditionally the location where configuration files are found.")
 
-tags=('base sys-base')
+tags=("base sys-libs")
 
-custom_opts="no_postperm skip_gendeps"
+custom_opts=("no_postperm skip_gendeps")
 
-build_deps="mkpkg"
+build_deps=("mkpkg")
 
-adddep="agilialinux-version"
+adddep=("agilialinux-version")
 
 build() {
   go_src_dir
-  for dir in etc usr var ; do
-    cp -rv ${filedir}/$dir ${pkgdir}/
+  for dir in etc var ; do
+    cp -rv ${filedir}/${dir} ${pkgdir}/
   done
   chmod 755 ${pkgdir}/etc/profile.d/{lang.csh.new,lang.sh.new}
 }

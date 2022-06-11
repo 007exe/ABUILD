@@ -2,16 +2,16 @@
 config() {
   NEW="$1"
   OLD="`dirname $NEW`/`basename $NEW .new`"
-  # If there's no config file by that name, mv it over:
+  # Если нет конфигурационного файла с таким именем, скопируйте его заново:
   if [ ! -r $OLD ]; then
     mv $NEW $OLD
-  elif [ "`cat $OLD | md5sum`" = "`cat $NEW | md5sum`" ]; then # toss the redundant copy
+  elif [ "`cat $OLD | md5sum`" = "`cat $NEW | md5sum`" ]; then # удалить лишнюю копию
     rm $NEW
   fi
-  # Otherwise, we leave the .new copy for the admin to consider...
+  # В противном случае мы оставляем новую копию на рассмотрение администратора...
 }
 
-# First, make sure any new entries in passwd/shadow/group are added:
+# Убедимся, что добавлены все новые записи в passwd/shadow/group:
 if [ -r etc/passwd -a -r etc/passwd.new ]; then
   cat etc/passwd.new | while read line ; do
     if ! grep -q "^$(echo $line | cut -f 1 -d :):" etc/passwd ; then
@@ -41,7 +41,6 @@ config etc/csh.login.new
 config etc/ld.so.conf.new
 config etc/profile.new
 config etc/hosts.new
-config etc/inputrc.new
 config etc/shadow.new
 config etc/passwd.new
 config etc/printcap.new
@@ -75,23 +74,18 @@ rm -f etc/mtab.new
 rm -f etc/motd.new
 rm -f etc/ld.so.conf.new
 rm -f etc/hosts.new
-#rm -f etc/shadow.new
+rm -f etc/shadow.new
 rm -f etc/networks.new
-#rm -f etc/gshadow.new
+rm -f etc/gshadow.new
 rm -f etc/shells.new
 rm -f etc/printcap.new
 rm -f etc/issue.new
 rm -f etc/issue.net.new
-#rm -f etc/profile.d/lang.csh.new
-#rm -f etc/profile.d/lang.sh.new
+rm -f etc/profile.d/lang.csh.new
+rm -f etc/profile.d/lang.sh.new
 rm -f var/run/utmp.new
 rm -f var/log/lastlog.new
 rm -f var/log/wtmp.new
-
-# Make sure $HOME is correct for user sddm:
-chroot . /usr/sbin/usermod -d /var/lib/sddm sddm > /dev/null 2> /dev/null
-# Make sure that sddm is a member of group video:
-chroot . /usr/sbin/usermod --groups video sddm > /dev/null 2> /dev/null
 
 # Also ensure ownerships/perms:
 chown root.utmp var/run/utmp var/log/wtmp
