@@ -1,34 +1,35 @@
 pkgname=qpdf
-pkgver=10.3.2
+pkgver=10.6.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("QPDF: A Content-Preserving PDF Transformation System")
+shortdesc=("QPDF: A Content-Preserving PDF Transformation System.")
 longdesc=("The Qpdf package contains command-line programs and a library that does structural, content-preserving transformations on PDF files.")
 
 source=("https://github.com/qpdf/qpdf/releases/download/release-qpdf-${pkgver}/qpdf-${pkgver}.tar.gz")
 
-tags="console app-doc"
+tags=("console app-text")
 
-build_deps="libjpeg-turbo zlib gnutls"
+build_deps=("libjpeg-turbo zlib gnutls")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-crypto-gnutls \
     --disable-crypto-openssl \
     --disable-implicit-crypto \
     --enable-show-failed-test-output
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 completions/bash/qpdf "${pkgdir}/usr/share/bash-completion/completions/qpdf"
-  install -Dm644 completions/zsh/_qpdf "${pkgdir}/usr/share/zsh/site-functions/_qpdf"
+  install -Dm644 completions/bash/qpdf ${pkgdir}/usr/share/bash-completion/completions/qpdf
+  install -Dm644 completions/zsh/_qpdf ${pkgdir}/usr/share/zsh/site-functions/_qpdf
 
-  mkdir -m755 -p "${pkgdir}"/usr/share/licenses/${pkgname}
-  install -m644 {Artistic-2.0,LICENSE.txt} "${pkgdir}"/usr/share/licenses/${pkgname}/
+  mkdir -m755 -p ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 {Artistic-2.0,LICENSE.txt} ${pkgdir}/usr/share/licenses/${pkgname}/
 }
