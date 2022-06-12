@@ -1,28 +1,24 @@
 pkgname=asciidoctor
-pkgver=2.0.15
+pkgver=2.0.17
 pkgbuild=1
 arch=("auto")
 
-shortdesc="Tool to convert AsciiDoc(tor) text files to DocBook, HTML or Unix man pages"
-longdesc="AsciiDoctor is a text document format for writing short documents, articles, books and UNIX man pages."
-
-tags=("dev-ruby develop")
+shortdesc=("An implementation of AsciiDoc in Ruby.")
+longdesc=("Asciidoctor is a fast, open source text processor and publishing toolchain for converting AsciiDoc content to HTML5, DocBook, PDF, and other formats.")
 
 source=("https://rubygems.org/downloads/${pkgname}-${pkgver}.gem")
 
-build_deps="ruby ruby-docs"
+tags=("dev-ruby develop")
+
+build_deps=("ruby")
 
 build() {
-# Since mkpkg unpacks * .gem files, we copy them manually
+# FIXME: Поскольку mkpkg пытается распаковать файлы *.gem, то мы копируем их из кеша вручную
   cp ${srcache}/${pkgname}-${pkgver}.gem .
   local _gemdir="$(ruby -e 'puts Gem.default_dir')"
-  gem install --ignore-dependencies --verbose \
-        -i "$pkgdir/$_gemdir" -n "$pkgdir/usr/bin" \
-        "$pkgname-$pkgver.gem"
-  install -Dm644 "$pkgdir/$_gemdir/gems/$pkgname-$pkgver/LICENSE" \
-        "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 "$pkgdir/$_gemdir/gems/$pkgname-$pkgver/man/asciidoctor.1" \
-        "$pkgdir/usr/share/man/man1/asciidoctor.1"
-  rm "$pkgdir/$_gemdir/cache/$pkgname-$pkgver.gem"
-  rm -rf "$pkgdir/$_gemdir/gems/$pkgname-$pkgver/man"
+  gem install --ignore-dependencies --verbose -i ${pkgdir}/${_gemdir} -n ${pkgdir}/usr/bin ${pkgname}-${pkgver}.gem
+  install -Dm644 ${pkgdir}/${_gemdir}/gems/${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ${pkgdir}/${_gemdir}/gems/${pkgname}-${pkgver}/man/asciidoctor.1 ${pkgdir}/usr/share/man/man1/asciidoctor.1
+  rm ${pkgdir}/${_gemdir}/cache/${pkgname}-${pkgver}.gem
+  rm -rf ${pkgdir}/${_gemdir}/gems/${pkgname}-${pkgver}/man
 }
