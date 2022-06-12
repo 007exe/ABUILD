@@ -1,6 +1,6 @@
 pkgname=gvfs
-pkgver=1.48.1
-pkgbuild=2
+pkgver=1.50.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Virtual filesystem implementation for GIO")
@@ -9,11 +9,13 @@ longdesc=("The Gvfs package is a userspace virtual filesystem designed to work w
 source=("https://gitlab.gnome.org/GNOME/gvfs/-/archive/${pkgver}/gvfs-${pkgver}.tar.gz")
 
 tags=("gnome gnome-base")
+
 # -D smb=false gvfs-smb для сборки требуется smbclient (samba)
 # -D goa=false -D google=false gvfs-goa gvfs-google для сборки требуется libgdata и gnome-online-accounts
 pkglist=("gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs")
 
-build_deps=("dbus glib2 libusb libsecret libsoup gcr gtk3 libcdio libgudev elogind meson avahi fuse3 dbus udisks gtk-doc libarchive libgcrypt libxml2 libxslt openssh libbluray libimobiledevice libgphoto2 libmtp libnfs dconf psmisc gsettings-desktop-schemas")
+build_deps=("dbus glib2 libusb libsecret libsoup gcr gtk3 libcdio libgudev elogind meson avahi fuse3 dbus udisks gtk-doc
+libarchive libgcrypt libxml2 libxslt openssh libbluray libimobiledevice libgphoto2 libmtp libnfs dconf psmisc gsettings-desktop-schemas")
 
 adddep=("dconf psmisc gsettings-desktop-schemas")
 
@@ -21,13 +23,15 @@ build() {
   go_src_dir
   burn_patches
   meson build \
-    --prefix=/usr \
-    --bindir=/usr/bin \
-    --sbindir=/usr/sbin \
-    --includedir=/usr/include \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --buildtype=release \
+    -D prefix=/usr \
+    -D bindir=/usr/bin \
+    -D sbindir=/usr/sbin \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D includedir=/usr/include \
+    -D sysconfdir=/etc \
+    -D localstatedir=/var \
+    -D buildtype=release \
     -D man=true \
     -D goa=false \
     -D google=false \
@@ -42,12 +46,12 @@ gvfs-afc() {
   pkgname=gvfs-afc
   shortdesc=("Virtual filesystem implementation for GIO (AFC backend; Apple mobile devices)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep=("gvfs=$pkgver")
+  adddep=("gvfs=${pkgver}")
 }
 
 gvfs-afc_prep() {
-  mkdir -p ${pkgdir}/usr/{libexec,share/{dbus-1/services,gvfs/{mounts,remote-volume-monitors}}}
-  mv ${p_pkgdir}/usr/libexec/gvfs{-afc-volume-monitor,d-afc} ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/{lib,share/{dbus-1/services,gvfs/{mounts,remote-volume-monitors}}}
+  mv ${p_pkgdir}/usr/lib/gvfs{-afc-volume-monitor,d-afc} ${pkgdir}/usr/lib
   mv ${p_pkgdir}/usr/share/dbus-1/services/org.gtk.vfs.AfcVolumeMonitor.service ${pkgdir}/usr/share/dbus-1/services
   mv ${p_pkgdir}/usr/share/gvfs/mounts/afc.mount ${pkgdir}/usr/share/gvfs/mounts
   mv ${p_pkgdir}/usr/share/gvfs/remote-volume-monitors/afc.monitor ${pkgdir}/usr/share/gvfs/remote-volume-monitors
@@ -57,12 +61,12 @@ gvfs-goa() {
   pkgname=gvfs-goa
   shortdesc=("Virtual filesystem implementation for GIO (Gnome Online Accounts backend; cloud storage)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep=("gvfs=$pkgver")
+  adddep=("gvfs=${pkgver}")
 }
 
 gvfs-goa_prep() {
-  mkdir -p ${pkgdir}/usr/{libexec,share/{dbus-1/services,gvfs/remote-volume-monitors}}
-  mv ${p_pkgdir}/usr/libexec/gvfs-goa-volume-monitor ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/{lib,share/{dbus-1/services,gvfs/remote-volume-monitors}}
+  mv ${p_pkgdir}/usr/lib/gvfs-goa-volume-monitor ${pkgdir}/usr/lib
   mv ${p_pkgdir}/usr/share/dbus-1/services/org.gtk.vfs.GoaVolumeMonitor.service ${pkgdir}/usr/share/dbus-1/services
   mv ${p_pkgdir}/usr/share/remote-volume-monitors/goa.monitor ${pkgdir}/usr/share/remote-volume-monitors
 }
@@ -71,12 +75,12 @@ gvfs-google() {
   pkgname=gvfs-google
   shortdesc=("Virtual filesystem implementation for GIO (Google Drive backend)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep=("gvfs=$pkgver")
+  adddep=("gvfs=${pkgver}")
 }
 
 gvfs-google_prep() {
-  mkdir -p ${pkgdir}/usr/{libexec,share/gvfs/monitors}
-    mv ${p_pkgdir}/usr/libexec/gvfsd-google ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/{lib,share/gvfs/monitors}
+    mv ${p_pkgdir}/usr/lib/gvfsd-google ${pkgdir}/usr/lib
     mv ${p_pkgdir}/usr/share/gvfs/mounts/google.mount ${pkgdir}/usr/share/gvfs/mounts
 }
 
@@ -84,12 +88,12 @@ gvfs-gphoto2() {
   pkgname=gvfs-gphoto2
   shortdesc=("Virtual filesystem implementation for GIO (gphoto2 backend; PTP camera, MTP media player)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep=("gvfs=$pkgver")
+  adddep=("gvfs=${pkgver}")
 }
 
 gvfs-gphoto2_prep() {
-  mkdir -p ${pkgdir}/usr/{libexec,share/{dbus-1/services,gvfs/{mounts,remote-volume-monitors}}}
-  mv ${p_pkgdir}/usr/libexec/gvfs{-gphoto2-volume-monitor,d-gphoto2} ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/{lib,share/{dbus-1/services,gvfs/{mounts,remote-volume-monitors}}}
+  mv ${p_pkgdir}/usr/lib/gvfs{-gphoto2-volume-monitor,d-gphoto2} ${pkgdir}/usr/lib
   mv ${p_pkgdir}/usr/share/dbus-1/services/org.gtk.vfs.GPhoto2VolumeMonitor.service ${pkgdir}/usr/share/dbus-1/services
   mv ${p_pkgdir}/usr/share/gvfs/mounts/gphoto2.mount ${pkgdir}/usr/share/gvfs/mounts
   mv ${p_pkgdir}/usr/share/gvfs/remote-volume-monitors/gphoto2.monitor ${pkgdir}/usr/share/gvfs/remote-volume-monitors
@@ -99,12 +103,12 @@ gvfs-mtp() {
   pkgname=gvfs-mtp
   shortdesc=("Virtual filesystem implementation for GIO (MTP backend; Android, media player)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep=("gvfs=$pkgver")
+  adddep=("gvfs=${pkgver}")
 }
 
 gvfs-mtp_prep() {
-  mkdir -p ${pkgdir}/usr/{libexec,share/{dbus-1/services,gvfs/{mounts,remote-volume-monitors}}}
-  mv ${p_pkgdir}/usr/libexec/gvfs{-mtp-volume-monitor,d-mtp} ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/{lib,share/{dbus-1/services,gvfs/{mounts,remote-volume-monitors}}}
+  mv ${p_pkgdir}/usr/lib/gvfs{-mtp-volume-monitor,d-mtp} ${pkgdir}/usr/lib
   mv ${p_pkgdir}/usr/share/dbus-1/services/org.gtk.vfs.MTPVolumeMonitor.service ${pkgdir}/usr/share/dbus-1/services
   mv ${p_pkgdir}/usr/share/gvfs/mounts/mtp.mount ${pkgdir}/usr/share/gvfs/mounts
   mv ${p_pkgdir}/usr/share/gvfs/remote-volume-monitors/mtp.monitor ${pkgdir}/usr/share/gvfs/remote-volume-monitors
@@ -114,12 +118,12 @@ gvfs-nfs() {
   pkgname=gvfs-nfs
   shortdesc=("Virtual filesystem implementation for GIO (NFS backend)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep=("gvfs=$pkgver")
+  adddep=("gvfs=${pkgver}")
 }
 
 gvfs-nfs_prep() {
-  mkdir -p ${pkgdir}/usr/{libexec,share/gvfs/mounts}
-  mv ${p_pkgdir}/usr/libexec/gvfsd-nfs ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/{lib,share/gvfs/mounts}
+  mv ${p_pkgdir}/usr/lib/gvfsd-nfs ${pkgdir}/usr/lib
   mv ${p_pkgdir}/usr/share/gvfs/mounts/nfs.mount ${pkgdir}/usr/share/gvfs/mounts
 }
 
@@ -127,12 +131,12 @@ gvfs-smb() {
   pkgname=gvfs-smb
   shortdesc=("Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client)")
   longdesc=("The Gvfs package is a userspace virtual filesystem designed to work with the I/O abstractions of GLib's GIO library.")
-  adddep=("gvfs=$pkgver")
+  adddep=("gvfs=${pkgver}")
 }
 
 gvfs-smb_prep() {
-  mkdir -p ${pkgdir}/usr/{libexec,share/{GConf/gsettings,glib-2.0/schemas,gvfs/mounts}}
-    mv ${p_pkgdir}/usr/libexec/gvfsd-smb{,-browse} ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/{lib,share/{GConf/gsettings,glib-2.0/schemas,gvfs/mounts}}
+    mv ${p_pkgdir}/usr/lib/gvfsd-smb{,-browse} ${pkgdir}/usr/lib
     mv ${p_pkgdir}/usr/share/GConf/gsettings/gvfs-smb.convert ${pkgdir}/usr/share/GConf/gsettings
     mv ${p_pkgdir}/usr/share/glib-2.0/schemas/org.gnome.system.smb.gschema.xml ${pkgdir}/usr/share/glib-2.0/schemas
     mv ${p_pkgdir}/usr/share/gvfs/mounts/smb{,-browse}.mount ${pkgdir}/usr/share/gvfs/mounts
