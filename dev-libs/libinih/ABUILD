@@ -1,27 +1,28 @@
 pkgname=libinih
-pkgver=53
+pkgver=55
 pkgbuild=1
 arch=("auto")
 
-shortdesc="A simple .INI file parser written in C"
-longdesc="inih is a simple .INI file parser written in C. It's only a couple of pages of code, and it was designed to be small and simple, so it's good for embedded systems."
+shortdesc=("A simple .INI file parser written in C.")
+longdesc=("inih is a simple .INI file parser written in C. It's only a couple of pages of code, and it was designed to be small and simple, so it's good for embedded systems.")
 
-tags="dev-libs libs"
+source=("https://github.com/benhoyt/inih/archive/r${pkgver}/inih-r${pkgver}.tar.gz")
 
-source="https://github.com/benhoyt/inih/archive/r${pkgver}/inih-r${pkgver}.tar.gz"
+tags=("dev-libs libs")
 
-build_deps="meson"
+build_deps=("meson")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  meson --prefix=/usr \
-    -Ddefault_library=shared \
-    -Ddistro_install=true \
-    -Dwith_INIReader=true
-  meson compile
-  DESTDIR="$pkgdir" meson install
-  install -Dm 644 ../LICENSE.txt -t "${pkgdir}"/usr/share/licenses/libinih/
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D default_library=shared \
+    -D distro_install=true \
+    -D with_INIReader=true
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+  install -Dm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/libinih/
 }
