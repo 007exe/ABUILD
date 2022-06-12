@@ -1,66 +1,65 @@
 pkgname=fpc
 pkgver=3.2.2
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
 shortdesc=("Free Pascal Compiler, Turbo Pascal 7.0 and Delphi compatible.")
-longdesc=("The Free Pascal Compiler is a Turbo Pascal 7.0 and Delphi compatible 32bit Pascal Compiler. It comes with fully TP 7.0 compatible run-time library. Some extensions are added to the language, like function overloading. Shared libraries can be linked. Basic Delphi support is already implemented (classes, exceptions,ansistrings,RTTI). This package contains commandline compiler and utils. Provided units are the runtime library (RTL), free component library (FCL), gtk, ncurses, zlib, mysql, postgres, ibase bindings.")
+longdesc=("The Free Pascal Compiler is a Turbo Pascal 7.0 and Delphi compatible 32bit Pascal Compiler.")
 
-source=("https://downloads.sourceforge.net/project/freepascal/Source/$pkgver/fpcbuild-$pkgver.tar.gz")
+source=("https://downloads.sourceforge.net/project/freepascal/Source/$pkgver/fpcbuild-${pkgver}.tar.gz")
 
-tags="develop dev-lang"
+tags=("develop dev-lang")
 
-build_deps="fpc ncurses zlib expat binutils make"
+build_deps=("fpc ncurses zlib expat binutils make")
 
-config_files="etc/fpc.cfg"
+adddep=("ncurses zlib expat binutils make")
 
-pkglist="fpcsrc"
+config_files=("etc/fpc.cfg")
 
-fpcsrc() {
-  pkgname=fpc-src
-  arch=('noarch')
-  shortdesc=("Sources for the FreePascal compiler (required by the Lazarus IDE)")
-  longdesc=("Sources for the FreePascal compiler (required by the Lazarus IDE)")
-  custom_opts="skip_gendeps"
-}
+pkglist=("fpcsrc")
 
 build() {
-  cd ${srcdir}/fpcbuild-$pkgver
+  cd ${srcdir}/fpcbuild-${pkgver}
+  export CFLAGS="$CFLAGS -ffat-lto-objects"
   pushd fpcsrc/compiler
   fpcmake -r -Tall
   popd
   make build NOGDB=1
-}
 
-after_build() {
-  cd ${srcdir}/fpcbuild-$pkgver
+  export HOME=${srcdir}
 
-  export HOME="$srcdir"
+  make -j1 PREFIX=${pkgdir}/usr install NOGDB=1
 
-  make -j1 PREFIX="$pkgdir"/usr install NOGDB=1
+  export PATH=${pkgdir}/usr/bin:$PATH
 
-  export PATH="$pkgdir"/usr/bin:$PATH
+  install -Dm0644 fpcsrc/rtl/COPYING.FPC ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.FPC
 
-  install -Dm0644 fpcsrc/rtl/COPYING.FPC "$pkgdir"/usr/share/licenses/${pkgname}/COPYING.FPC
+  ln -s /usr/lib/fpc/${pkgver}/ppcx64 ${pkgdir}/usr/bin/
 
-  mv ${pkgdir}/usr/lib ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-
-  ln -s /usr/lib${LIBDIRSUFFIX}/fpc/${pkgver}/ppcx64 ${pkgdir}/usr/bin/
-
-  mkdir -p "$pkgdir"/etc
-  "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/${pkgver}/samplecfg "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/${pkgver} "$pkgdir"/etc
+  mkdir -p ${pkgdir}/etc
+  ${pkgdir}/usr/lib/fpc/${pkgver}/samplecfg ${pkgdir}/usr/lib/fpc/${pkgver} ${pkgdir}/etc
+  ${pkgdir}/usr/lib/fpc/${pkgver}/samplecfg /usr/lib/fpc/${pkgver} ${pkgdir}/etc
+  cp ${srcdir}/.fp/fp.{cfg,ini} ${pkgdir}/usr/lib/fpc/${pkgver}/ide/text/
 
 # use -fPIC by default
-  echo -e "#ifdef cpux86_64\n# for x86_64 use -fPIC by default\n-Cg\n#endif" >> "$pkgdir/etc/fpc.cfg"
+  echo -e "#ifdef cpux86_64\n# for x86_64 use -fPIC by default\n-Cg\n#endif" >> ${pkgdir}/etc/fpc.cfg
 
-  mv "$pkgdir"/usr/man "$pkgdir"/usr/share/
+  mv ${pkgdir}/usr/man ${pkgdir}/usr/share/
 
-  find "$pkgdir"/etc/ -type f -exec sed -i "s|"$pkgdir"||g" {} \;
+  find ${pkgdir}/etc/ -type f -exec sed -i "s|"$pkgdir"||g" {} \;
+}
+
+fpcsrc(){
+  pkgname=fpc-src
+  shortdesc=("Sources for the FreePascal compiler (required by the Lazarus IDE).")
+  longdesc=("The source code of Freepascal for documentation and code generation purposes.")
+  arch=("noarch")
+  custom_opts=("skip_gendeps")
 }
 
 fpcsrc_prep() {
-  cd ${srcdir}/fpcbuild-$pkgver/fpcsrc
+  cd ${srcdir}/fpcbuild-${pkgver}/fpcsrc
   make clean
-  mkdir -p "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/src
-  cp -R --verbose . "$pkgdir"/usr/lib${LIBDIRSUFFIX}/fpc/src
+  mkdir -p ${pkgdir}/usr/lib/fpc/src
+  cp -R --verbose . ${pkgdir}/usr/lib/fpc/src
 }
