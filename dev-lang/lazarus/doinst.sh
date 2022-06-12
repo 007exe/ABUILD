@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend lazarus capabilities:"
+echo -e "perl: to run some scirpts in the tools directory"
+echo -e "gtk2: to compile gtk2 apps"
+echo -e "qt5pas: to compile qt5 apps and use help viewer"
+echo -e " "
