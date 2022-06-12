@@ -1,42 +1,32 @@
 pkgname=fakeroot
-pkgver=1.25.3
+pkgver=1.29
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Fakeroot makes it possible to run commands in an environment  faking root privileges"
+shortdesc=("Tool for simulating superuser privileges.")
+longdesc=("A fake root environment by means of LD_PRELOAD and SysV IPC (or TCP) trickery.")
 
-source=("https://deb.debian.org/debian/pool/main/f/$pkgname/${pkgname}_${pkgver}.orig.tar.gz")
+source=("https://deb.debian.org/debian/pool/main/f/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz")
 
-tags="develop dev-util"
-build_deps="glibc"
+tags=("utils sys-apps")
 
-adddep="sed util-linux-ng bash coreutils"
+build_deps=("glibc sed util-linux")
+
+adddep="sed util-linux bash coreutils"
 
 build() {
   go_src_dir
   burn_patches
-
-# always force absolute path for LD_PRELOAD
-  sed -i scripts/fakeroot.in -e 's/@LDPRELOADABS@/1/'
-
-# don't build translated manpages
-  sed -i doc/Makefile.am -e '/SUBDIRS/d'
-
-  ./bootstrap
-  ./configure --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}/libfakeroot \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib/libfakeroot \
     --disable-static \
-    --with-ipc=sysv \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --mandir=/usr/share/man
+    --with-ipc=sysv
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-  make
-  make DESTDIR="$pkgdir" install
-  install -dm0755 "$pkgdir/etc/ld.so.conf.d/"
+  install -dm0755 ${pkgdir}/etc/ld.so.conf.d/
+  echo '/usr/lib/libfakeroot' > ${pkgdir}/etc/ld.so.conf.d/fakeroot.conf
 
-  echo '/usr/lib/libfakeroot' > "$pkgdir/etc/ld.so.conf.d/fakeroot.conf"
-
-# install README for sysv/tcp usage
-  install -Dm0644 README "$pkgdir/usr/share/doc/$pkgname/README"
+  install -Dm0644 README ${pkgdir}/usr/share/doc/${pkgname}/README
 }
