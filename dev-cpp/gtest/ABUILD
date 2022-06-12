@@ -1,59 +1,54 @@
 pkgname=gtest
 pkgver=1.11.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Google Test - C++ testing utility")
+shortdesc=("Google Test - C++ testing utility.")
 longdesc=("GoogleTest now follows the Abseil Live at Head philosophy. We recommend using the latest commit in the main branch in your projects.")
-
-tags=("libs dev-cpp")
 
 source=("https://github.com/google/googletest/archive/release-${pkgver}.tar.gz")
 
-build_deps="python cmake gcc-libs"
+tags=("libs dev-cpp")
+
+build_deps=("python cmake gcc-libs")
 
 before_build(){
-  echo "Applying a patch ..."
-  cd "$startdir"/patches
+  cd ${startdir}/patches
   sed "s|__GOOGLETEST_VERSION__|${pkgver}|g" -i gtest-version.patch
   go_src_dir
   burn_patches
-  echo "The patch has been applied."
-  echo " "
 }
 
 build() {
   go_src_dir
   cmake -Bbuild \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=ON \
     -Dgtest_build_tests=ON
-  cmake --build build
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --build build --target install
 
-  DESTDIR="${pkgdir}" cmake --build build --target install
+  find ${pkgdir} -name '*.pump' -printf 'Removing %P\n' -delete
 
-  # Shouldn't be present
-  find "${pkgdir}" -name '*.pump' -printf 'Removing %P\n' -delete
-
-  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -Dm 644 README.md CONTRIBUTORS -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 README.md CONTRIBUTORS -t ${pkgdir}/usr/share/doc/${pkgname}
 
   cd googletest
-  install -Dm 755 scripts/gtest-config.in -t "${pkgdir}/usr/bin"
-  install -Dm 644 cmake/* -t "${pkgdir}/usr/src/googletest/cmake"
-  install -Dm 644 src/* -t "${pkgdir}/usr/src/googletest/src"
-  install -Dm 644 CMakeLists.txt -t "${pkgdir}/usr/src/googletest"
+  install -Dm 755 scripts/gtest-config.in -t ${pkgdir}/usr/bin
+  install -Dm 644 cmake/* -t ${pkgdir}/usr/src/googletest/cmake
+  install -Dm 644 src/* -t ${pkgdir}/usr/src/googletest/src
+  install -Dm 644 CMakeLists.txt -t ${pkgdir}/usr/src/googletest
 
   cd ../googlemock
-  install -Dm 644 cmake/* -t "${pkgdir}/usr/src/gmock/cmake"
-  install -Dm 644 src/* -t "${pkgdir}/usr/src/gmock/src"
-  install -Dm 644 CMakeLists.txt -t "${pkgdir}/usr/src/gmock"
-  install -Dm 644 scripts/generator/{*.py,LICENSE,README*} -t "${pkgdir}/usr/share/gmock/generator"
-  install -Dm 644 scripts/generator/cpp/* -t "${pkgdir}/usr/share/gmock/generator/cpp"
+  install -Dm 644 cmake/* -t ${pkgdir}/usr/src/gmock/cmake
+  install -Dm 644 src/* -t ${pkgdir}/usr/src/gmock/src
+  install -Dm 644 CMakeLists.txt -t ${pkgdir}/usr/src/gmock
+  install -Dm 644 scripts/generator/{*.py,LICENSE,README*} -t ${pkgdir}/usr/share/gmock/generator
+  install -Dm 644 scripts/generator/cpp/* -t ${pkgdir}/usr/share/gmock/generator/cpp
 
   sed -i 's|src/||' "${pkgdir}/usr/src/gmock/src/gmock-all.cc"
 
-  python -m compileall -d /usr/share/gmock "${pkgdir}/usr/share/gmock"
-  python -O -m compileall -d /usr/share/gmock "${pkgdir}/usr/share/gmock"
+  python -m compileall -d /usr/share/gmock ${pkgdir}/usr/share/gmock
+  python -O -m compileall -d /usr/share/gmock ${pkgdir}/usr/share/gmock
 }
