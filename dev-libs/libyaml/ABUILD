@@ -1,16 +1,16 @@
 pkgname=libyaml
 pkgver=0.2.5
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("YAML 1.1 library")
+shortdesc=("YAML 1.1 library.")
 longdesc=("The yaml package contains a C library for parsing and emitting YAML (YAML Ain't Markup Language) code.")
 
 source=("https://pyyaml.org/download/libyaml/yaml-$pkgver.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
-build_deps="doxygen"
+build_deps=("doxygen")
 
 build() {
   go_src_dir
