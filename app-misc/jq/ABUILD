@@ -1,0 +1,27 @@
+pkgname=jq
+pkgver=1.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Command-line JSON processor.")
+longdesc=("A lightweight and flexible command-line JSON processor.")
+
+source=("https://github.com/stedolan/jq/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils app-misc")
+
+build_deps=("autoconf automake bison flex python glibc oniguruma")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  automake -ac
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
