@@ -1,22 +1,23 @@
 pkgname=gdk-pixbuf-xlib
 pkgver=2.40.2
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Deprecated Xlib integration for GdkPixbuf")
+shortdesc=("Deprecated Xlib integration for GdkPixbuf.")
 longdesc=("The gdk-pixbuf-xlib package provides a deprecated Xlib interface to gdk-pixbuf, which is needed for some applications which have not been ported to use the new interfaces yet.")
 
 source=("https://download.gnome.org/sources/gdk-pixbuf-xlib/${pkgver%.*}/gdk-pixbuf-xlib-${pkgver}.tar.xz")
 
-tags="libs x11-libs compat32"
+tags=("libs x11-libs")
 
-build_deps="meson gtk-doc gdk-pixbuf libx11"
+build_deps=("meson gtk-doc gdk-pixbuf libx11")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-    -D prefix=/usr
+    -D prefix=/usr \
+    -D libdir=/usr/lib
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
