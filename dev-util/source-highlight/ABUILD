@@ -1,29 +1,25 @@
 pkgname=source-highlight
 pkgver=3.1.9
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("Produces a document with syntax highlighting")
-longdesc=("GNU Source-highlight produces a document with syntax highlighting when given a source file. It handles many languages, e.g., Java, C/C++, Prolog, Perl, PHP3, Python, Flex, HTML, and other formats, e.g., ChangeLog and log files, as source languages and HTML, XHTML, DocBook, ANSI color escapes, LaTeX, and Texinfo as output formats. Input and output formats can be specified with a regular expression- oriented syntax.")
-
-tags=("develop dev-util")
+shortdesc=("Produces a document with syntax highlighting.")
+longdesc=("GNU Source-highlight produces a document with syntax highlighting when given a source file.")
 
 source=("https://ftp.gnu.org/gnu/src-highlite/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="boost"
+tags=("develop dev-util")
 
+build_deps=("boost")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --with-bash-completion=/usr/share/bash-completion/completions \
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-# PKGBUILD syntax highlighting
-  echo -e "\npkgbuild = sh.lang" >> "${pkgdir}"/usr/share/${pkgname}/lang.map
 }
