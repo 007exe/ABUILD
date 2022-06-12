@@ -1,35 +1,34 @@
 pkgname=doublecmd-gtk2
-pkgver=1.0.3
+pkgver=1.0.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("twin-panel (commander-style) file manager (GTK2)")
+shortdesc=("twin-panel (commander-style) file manager (GTK2).")
 longdesc=("Double Commander is a cross platform open source file manager with two panels side by side.")
 
 source=("http://sourceforge.net/projects/doublecmd/files/Double%20Commander%20Source/doublecmd-${pkgver}-src.tar.gz")
 
-tags="app-misc xapps"
+tags=("app-misc xapps")
 
-build_deps="lazarus gtk2 qt5pas"
+build_deps=("lazarus gtk2 qt5pas")
 
-adddep="desktop-file-utils hicolor-icon-theme shared-mime-info"
+adddep=("desktop-file-utils hicolor-icon-theme shared-mime-info")
 
-conflicts="doublecmd-qt5"
+conflicts=("doublecmd-qt5")
 
-pkglist="doublecmd-qt"
+pkglist=("doublecmd-qt")
 
 before_build(){
   cd ${srcdir}
-  echo "Wait, copying Lazarus ..."
-  cp -r /usr/lib${LIBDIRSUFFIX}/lazarus ./
+  cp -a /usr/lib/lazarus ./
 
-  cd ${srcdir}/doublecmd-$pkgver
-#  sed -e 's/LIB_SUFFIX=.*/LIB_SUFFIX=/g' -i install/linux/install.sh
+  cd ${srcdir}/doublecmd-${pkgver}
+  sed -e 's/LIB_SUFFIX=.*/LIB_SUFFIX=/g' -i install/linux/install.sh
   sed -e "s@=\$(which lazbuild)@=\"\$(which lazbuild) --lazarusdir=$srcdir/lazarus\"@" -i build.sh
 
   cd ..
-  cp -r doublecmd-$pkgver doublecmd-gtk
-  cp -r doublecmd-$pkgver doublecmd-qt
+  cp -r doublecmd-${pkgver} doublecmd-gtk
+  cp -r doublecmd-${pkgver} doublecmd-qt
 }
 
 build(){
@@ -45,7 +44,8 @@ doublecmd-qt() {
   pkgname=doublecmd-qt5
   shortdesc=("twin-panel (commander-style) file manager (Qt5)")
   longdesc=("Double Commander is a cross platform open source file manager with two panels side by side.")
-  conflicts="doublecmd-gtk2"
+  adddep=("desktop-file-utils hicolor-icon-theme shared-mime-info")
+  conflicts=("doublecmd-gtk2")
 }
 
 doublecmd-qt_prep() {
