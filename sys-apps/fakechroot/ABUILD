@@ -1,28 +1,30 @@
 pkgname=fakechroot
 pkgver=2.20.1
 pkgbuild=4
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A chroot-like wrapper for non-privileged users")
-longdesc=("Fakechroot runs a command in an environment were is additional possibility to use chroot(8) command without root privileges. This is useful for allowing users to create own chrooted environment with possibility to install another packages without need for root privileges.")
+shortdesc=("Gives a fake chroot environment.")
+longdesc=("Provide a faked chroot environment without requiring root privileges.")
 
 source=("https://github.com/dex4er/fakechroot/archive/${pkgver}.tar.gz")
 
-tags="develop dev-util"
+tags=("utils sys-apps")
 
-build_deps="glibc perl"
+build_deps=("glibc perl")
+
+adddep=("perl bash")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}/libfakeroot \
-    --sysconfdir=/etc
+    --libdir=/usr/lib/libfakeroot \
+    --sysconfdir=/etc \
+    --disable-static
   make -j${numjobs}
-
   make DESTDIR=${pkgdir} install
 
   install -dm755 ${pkgdir}/etc/ld.so.conf.d/
-  echo "/usr/lib${LIBDIRSUFFIX}/libfakeroot/fakechroot/" > ${pkgdir}/etc/ld.so.conf.d/fakechroot.conf
+  echo "/usr/lib/libfakeroot/fakechroot/" > ${pkgdir}/etc/ld.so.conf.d/fakechroot.conf
 }
