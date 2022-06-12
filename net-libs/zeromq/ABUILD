@@ -1,38 +1,40 @@
 pkgname=zeromq
 pkgver=4.3.4
 _cppver=4.8.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Fast messaging system built on sockets. C and C++ bindings. aka 0MQ, ZMQ.")
 longdesc=("The ZeroMQ lightweight messaging kernel is a library which extends the standard socket interfaces with features traditionally provided by specialised messaging middleware products. ZeroMQ sockets provide an abstraction of asynchronous message queues, multiple messaging patterns, message filtering (subscriptions), seamless access to multiple transport protocols and more.")
 
-source=("https://github.com/zeromq/libzmq/releases/download/v$pkgver/zeromq-$pkgver.tar.gz"
-"https://github.com/zeromq/cppzmq/archive/v$_cppver.tar.gz")
+source=("https://github.com/zeromq/libzmq/releases/download/v${pkgver}/zeromq-${pkgver}.tar.gz"
+"https://github.com/zeromq/cppzmq/archive/v${_cppver}.tar.gz")
 
-tags="network net-libs"
-#--with-pgm \ libpgm
-build_deps="gcc-libs util-linux-ng libsodium asciidoc xmlto"
+tags=("libs net-libs")
+
+#--with-pgm libpgm
+build_deps=("gcc-libs util-linux-ng libsodium asciidoc xmlto")
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
-# Needed for new libsodium
+  cd ${srcdir}/zeromq-${pkgver}
+  burn_patches
+# Необходимо для нового libsodium
   sed -i 's/libzmq_werror="yes"/libzmq_werror="no"/' configure
-
   sed -i 's/openpgm-5.1/openpgm-5.3/' configure configure.ac
   sed -i 's/CXXFLAGS="-Wno-long-long/CXXFLAGS="-Wno-unused-function -Wno-long-long/' configure
 
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-libsodium \
     --with-documentation \
     --enable-static \
-    --disable-Werror
+    --disable-Werror \
+    --disable-static
   make -j${numjobs} -Wno-unused-function -Wnoerror=unused-function
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 
-  cd "$srcdir/cppzmq-$_cppver"
-  install -Dm644 zmq.hpp "$pkgdir/usr/include/zmq.hpp"
-  install -Dm644 zmq_addon.hpp "$pkgdir/usr/include/zmq_addon.hpp"
+  cd ${srcdir}/cppzmq-${_cppver}
+  install -Dm644 zmq.hpp ${pkgdir}/usr/include/zmq.hpp
+  install -Dm644 zmq_addon.hpp ${pkgdir}/usr/include/zmq_addon.hpp
 }
