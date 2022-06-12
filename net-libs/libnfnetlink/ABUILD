@@ -1,0 +1,24 @@
+pkgname=libnfnetlink
+pkgver=1.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Low-level library for netfilter related kernel/userspace communication.")
+longdesc=("The low-level library for netfilter related kernel/userspace communication.")
+
+source=("https://www.netfilter.org/projects/${pkgname}/files/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs net-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
