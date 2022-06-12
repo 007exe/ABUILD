@@ -1,58 +1,62 @@
 pkgname=networkmanager
-pkgver=1.34.0
+pkgver=1.38.0
+_pppver=2.4.9
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Network connection manager and user applications")
-longdesc=("NetworkManager is a set of co-operative tools that make networking simple and straightforward. Whether you use WiFi, wired, 3G, or Bluetooth, NetworkManager allows you to quickly move from one network to another: Once a network has been configured and joined once, it can be detected and re-joined automatically the next time it's available.")
+shortdesc=("Network connection manager and user applications.")
+longdesc=("NetworkManager is a set of co-operative tools that make networking simple and straightforward.")
 
 source=("https://download.gnome.org/sources/NetworkManager/${pkgver:0:4}/NetworkManager-${pkgver}.tar.xz")
 
 tags=("network net-misc")
 
-build_deps="meson jansson curl gobject-introspection iptables nss polkit elogind upower vala bluez gnutls gtk-doc libpsl valgrind libndp modemmanager mobile-broadband-provider-info newt python-gobject dnsmasq libaudit"
+build_deps=("meson jansson curl gobject-introspection iptables nss polkit elogind upower vala bluez gnutls gtk-doc
+libpsl valgrind libndp modemmanager mobile-broadband-provider-info newt python-gobject dnsmasq libaudit")
 
-adddep="mobile-broadband-provider-info"
+# NOTE: Это опциональнеые зависимости
+removedep=("polkit dnsmasq nftables iptables bluez modemmanager iwd dhclient dhcpcd openresolv firewalld ppp=${_pppver}")
 
-config_files="etc/NetworkManager/NetworkManager.conf"
+adddep=("mobile-broadband-provider-info")
+
+config_files=("etc/NetworkManager/NetworkManager.conf")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
+    -D buildtype=release \
     -D prefix=/usr \
+    -D sbindir=bin \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
     -D systemdsystemunitdir=no \
-    -D udev_dir=/lib/udev \
-    -D nmtui=true \
-    -D ppp=false \
-    -D modem_manager=false \
-    -D iptables=/sbin/iptables \
-    -D dnsmasq=/usr/sbin/dnsmasq \
+    -D systemd_journal=false \
+    -D session_tracking=elogind \
+    -D dbus_conf_dir=/usr/share/dbus-1/system.d \
     -D modify_system=true \
     -D selinux=false \
-    -D systemd_journal=false \
-    -D libaudit=no \
+    -D dist_version=${pkgver} \
+    -D session_tracking_consolekit=false \
     -D iwd=true \
-    -D pppd=/usr/sbin/pppd \
-    -D config_plugins_default=ifupdown \
-    -D ifupdown=true \
-    -D dhcpcd=true \
-    -D config_dhcp_default=internal \
+    -D pppd_plugin_dir=/usr/lib/pppd/${_pppver} \
+    -D nm_cloud_setup=true \
+    -D bluez5_dun=true \
+    -D ebpf=true \
+    -D config_plugins_default=keyfile \
+    -D netconfig=no \
+    -D config_dns_rc_manager_default=symlink \
     -D vapi=true \
-    -D tests=no \
-    -D polkit=true \
-    -D session_tracking=elogind \
-    -D qt=false \
-    -D ofono=true \
-    -D crypto=nss \
-    -D dbus_conf_dir=/usr/share/dbus-1/system.d \
-    -D docs=true
+    -D docs=true \
+    -D more_asserts=no \
+    -D more_logging=false \
+    -D qt=false
   meson compile -C build
-  meson install -C build --destdir $pkgdir
+  meson install -C build --destdir ${pkgdir}
 
-  install -m755 -D $filedir/networkmanager.initd $pkgdir/etc/init.d/networkmanager
-  install -m644 -D $filedir/NetworkManager.conf $pkgdir/etc/NetworkManager/NetworkManager.conf
-# allow plugdev users to modify connections
-  install -m644 -D $filedir/networkmanager.rules  $pkgdir/usr/share/polkit-1/rules.d/01-org.freedesktop.NetworkManager.settings.modify.system.rules
+  install -m755 -D ${filedir}/networkmanager.initd ${pkgdir}/etc/init.d/networkmanager
+  install -m644 -D ${filedir}/NetworkManager.conf ${pkgdir}/etc/NetworkManager/NetworkManager.conf
+
+# NOTE: Разрешить обычным пользователям настраивать сетевое подключение, пользователь должен состоять в группе netdev
+  install -m644 -D ${filedir}/networkmanager.rules  ${pkgdir}/usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules
 }
-
