@@ -1,5 +1,5 @@
 pkgname=gdb
-pkgver=11.2
+pkgver=12.1
 pkgbuild=1
 arch=("auto")
 
@@ -21,6 +21,8 @@ build() {
   cd build
   ../configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --disable-nls \
     --enable-source-highlight \
     --enable-tui \
