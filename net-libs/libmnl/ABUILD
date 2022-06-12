@@ -1,23 +1,24 @@
 pkgname=libmnl
-pkgver=1.0.4
-pkgbuild=2
+pkgver=1.0.5
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Minimalistic Netlink communication library")
-longdesc=("libmnl is a minimalistic user-space library oriented to Netlink developers. There are a lot of common tasks in parsing, validating, constructing of both the Netlink header and TLVs that are repetitive and easy to get wrong. This library aims to provide simple helpers that allows you to re-use code and to avoid re-inventing the wheel.")
-
-tags=("dev-libs network")
+shortdesc=("Minimalistic user-space library oriented to Netlink developers.")
+longdesc=("The libmnl library provides a minimalistic user-space library oriented to Netlink developers.")
 
 source=("https://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz2")
 
-build_deps="glibc"
+tags=("libs net-libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
