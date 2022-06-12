@@ -1,29 +1,28 @@
 pkgname=libpcap
 pkgver=1.10.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A system-independent interface for user-level packet capture")
-longdesc=("Libpcap provides a portable framework for low-level network monitoring. Libpcap can provide network statistics collection, security monitoring and network debugging. Since almost every system vendor provides a different interface for packet capture, the libpcap authors created this system-independent API to ease in porting and to alleviate the need for several system-dependent packet capture modules in each application.")
+shortdesc=("A system-independent interface for user-level packet capture.")
+longdesc=("Libpcap provides functions for user-level packet capture, used in low-level network monitoring.")
 
 source=("http://www.tcpdump.org/release/$pkgname-$pkgver.tar.gz")
 
-tags="network net-libs"
+tags=("libs net-libs")
 
-build_deps="libnl glibc"
+build_deps=("libnl glibc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-ipv6 \
     --enable-usb \
     --with-libnl
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname/"
-  install -vDm 644 {CHANGES,{CONTRIBUTING,README}.md} \
-    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 {CHANGES,{CONTRIBUTING,README}.md} -t ${pkgdir}/usr/share/doc/${pkgname}/
 }
