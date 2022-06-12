@@ -1,25 +1,23 @@
 pkgname=pciutils
-pkgver=3.7.0
-pkgbuild=4
+pkgver=3.8.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("PCI bus configuration space access library and tools")
+shortdesc=("PCI bus configuration space access library and tools.")
 longdesc=("The PCI Utils package contains a set of programs for listing PCI devices, inspecting their status and setting their configuration registers.")
 
-tags=("base sys-apps compat32")
+tags=("base sys-apps")
 
 source=("https://mj.ucw.cz/download/linux/pci/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="kmod glibc eudev"
+build_deps=("kmod glibc eudev kmod")
 
 build() {
   go_src_dir
   burn_patches
-  ./update-pciids.sh
-  make OPT="${CFLAGS} ${SLKCFLAGS} -fPIC -DPIC" ZLIB=no SHARED=no PREFIX=/usr SBINDIR=/usr/bin LIBDIR=/usr/lib${LIBDIRSUFFIX} SHAREDIR=/usr/share MANDIR=/usr/share/man all -j${numjobs}
+  make OPT="${CFLAGS} -fPIC -DPIC" ZLIB=no SHARED=no PREFIX=/usr SHAREDIR=/usr/share/hwdata MANDIR=/usr/share/man SBINDIR=/usr/bin lib/libpci.a
   cp lib/libpci.a ${srcdir}/
   make clean
-  make OPT="${CFLAGS} ${SLKCFLAGS}" ZLIB=no SHARED=yes PREFIX=/usr SBINDIR=/usr/bin LIBDIR=/usr/lib${LIBDIRSUFFIX} SHAREDIR=/usr/share MANDIR=/usr/share/man all -j${numjobs}
-  make SHARED=yes PREFIX=/usr SBINDIR=/usr/bin SHAREDIR=/usr/share MANDIR=/usr/share/man LIBDIR=/usr/lib${LIBDIRSUFFIX} DESTDIR=${pkgdir} install install-lib
-  install -m644 ${srcdir}/libpci.a ${pkgdir}/usr/lib${LIBDIRSUFFIX}/
+  make OPT="${CFLAGS}" ZLIB=no SHARED=yes PREFIX=/usr SBINDIR=/usr/bin SHAREDIR=/usr/share/hwdata MANDIR=/usr/share/man all
+  make SHARED=yes PREFIX=/usr SBINDIR=/usr/bin SHAREDIR=/usr/share/hwdata MANDIR=/usr/share/man DESTDIR=${pkgdir} install install-lib
 }
