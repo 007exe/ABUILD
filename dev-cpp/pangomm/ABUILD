@@ -1,28 +1,30 @@
 pkgname=pangomm
-pkgver=2.46.1
+pkgver=2.46.2
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
-shortdesc=("C++ interface for pango")
+shortdesc=("C++ interface for pango.")
 longdesc=("The Pangomm package provides a C++ interface to Pango.")
 
 source=("http://ftp.gnome.org/pub/GNOME/sources/pangomm/${pkgver%.*}/pangomm-${pkgver}.tar.xz")
 
-tags="libs dev-cpp"
+tags=("libs dev-cpp")
 
-build_deps="meson mm-common glibmm cairomm glibmm-docs cairomm-docs"
+build_deps=("meson mm-common glibmm cairomm")
 
-pkglist="pangomm-docs"
+pkglist=("pangomm-docs")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
     -D maintainer-mode=true \
-    --buildtype=release
+    -D buildtype=release
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
 
 pangomm-docs() {
@@ -34,7 +36,7 @@ pangomm-docs() {
 
 pangomm-docs_prep() {
   go_src_dir
-  mkdir -p "$pkgdir"/usr/share
-  mv ${p_pkgdir}/usr/share/{devhelp,doc} "$pkgdir"/usr/share
+  mkdir -p ${pkgdir}/usr/share
+  mv ${p_pkgdir}/usr/share/{devhelp,doc} ${pkgdir}/usr/share
   rm -r ${p_pkgdir}/usr/share
 }
