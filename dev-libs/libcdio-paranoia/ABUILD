@@ -1,16 +1,16 @@
 pkgname=libcdio-paranoia
 pkgver=10.2+2.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("CD paranoia libraries from libcdio")
+shortdesc=("CD paranoia libraries from libcdio.")
 longdesc=("This CDDA reader distribution libcdio-cdparanoia reads audio from the CDROM directly as data, with no analog step between, and writes the data to a file or pipe as .wav, .aifc or as raw 16 bit linear PCM.")
 
 tags=("libs dev-libs")
 
 source=("https://github.com/rocky/libcdio-paranoia/archive/refs/tags/release-${pkgver}.tar.gz")
 
-build_deps="libcdio"
+build_deps=("libcdio")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --enable-cpp-progs \
     --disable-static \
     --disable-example-progs
