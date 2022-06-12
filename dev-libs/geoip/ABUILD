@@ -1,16 +1,16 @@
 pkgname=geoip
 pkgver=1.6.12
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("GeoIP Legacy C API")
-longdesc=("Non-DNS IP-to-country resolver C library & utils")
+shortdesc=("GeoIP Legacy C API.")
+longdesc=("Non-DNS IP-to-country resolver C library & utils.")
 
 source=("https://github.com/maxmind/${pkgname}-api-c/archive/v${pkgver}.tar.gz")
 
-tags="dev-libs libs"
-#geoip-database
-build_deps="autoconf libtool zlib"
+tags=("dev-libs libs")
+
+build_deps=("autoconf libtool zlib")
 
 build() {
   go_src_dir
@@ -18,9 +18,10 @@ build() {
   ./bootstrap
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
-    --sysconfdir=/etc/geoip
+    --sysconfdir=/etc/geoip \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
