@@ -1,37 +1,31 @@
 pkgname=gcr
-pkgver=3.40.0
+pkgver=3.41.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A library for bits of crypto UI and parsing")
+shortdesc=("A library for bits of crypto UI and parsing.")
 longdesc=("The Gcr package contains libraries used for displaying certificates and accessing key stores. It also provides the viewer for crypto files on the GNOME Desktop.")
 
 source=("https://gitlab.gnome.org/GNOME/gcr/-/archive/${pkgver}/gcr-${pkgver}.tar.gz")
 
-tags="sys-libs libs"
+tags=("app-crypt libs")
 
-build_deps="gobject-introspection vala libxslt git gtk-doc meson gtk3 libgcrypt p11-kit gnupg"
+build_deps=("gobject-introspection vala libxslt git gtk-doc meson gtk3 libgcrypt p11-kit gnupg")
 
-config_files="etc/security/limits.d/10-gcr.conf"
+config_files=("etc/security/limits.d/10-gcr.conf")
 
-build() {
+build(){
   go_src_dir
   burn_patches
-sed -i 's:"/desktop:"/org:' schema/*.xml &&
-
-sed -e '208 s/@BASENAME@/gcr-viewer.desktop/'   \
-    -e '231 s/@BASENAME@/gcr-prompter.desktop/' \
-    -i ui/meson.build
-  mkdir build
-  cd build
-  meson setup \
+  meson build \
     -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
     -D systemd=disabled \
-    -Dgtk_doc=false ..
-  meson compile
-  DESTDIR="$pkgdir" meson install
+    -D gtk_doc=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 
-# gcr wants to lock some memory to prevent swapping out private keys
 # https://bugs.archlinux.org/task/32616
 # https://bugzilla.gnome.org/show_bug.cgi?id=688161
 install -Dm644 /dev/stdin "$pkgdir/etc/security/limits.d/10-gcr.conf" <<END
