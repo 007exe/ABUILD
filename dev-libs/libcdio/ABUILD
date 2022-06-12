@@ -1,14 +1,14 @@
 pkgname=libcdio
 pkgver=2.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("GNU Compact Disc Input and Control Library")
+shortdesc=("GNU Compact Disc Input and Control Library.")
 longdesc=("The libcdio is a library for CD-ROM and CD image access. The associated libcdio-cdparanoia library reads audio from the CD-ROM directly as data, with no analog step between, and writes the data to a file or pipe as .wav, .aifc or as raw 16 bit linear PCM.")
 
-tags=("dev-libs libs")
+source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.bz2")
 
-source=("https://ftp.gnu.org/gnu/libcdio/$pkgname-$pkgver.tar.bz2")
+tags=("dev-libs libs")
 
 build_deps="libcddb ncurses gcc-libs"
 
@@ -18,7 +18,7 @@ build() {
   autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --disable-vcd-info \
     --enable-cpp-progs \
     --disable-static
