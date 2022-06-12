@@ -1,23 +1,23 @@
 pkgname=libmtp
 pkgver=1.1.19
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Library implementation of the Media Transfer Protocol")
+shortdesc=("Library implementation of the Media Transfer Protocol.")
 longdesc=("libmtp is an Initiator implementation of the Media Transfer Protocol (MTP) in the form of a library suitable primarily for POSIX compliant operating systems. We implement MTP Basic, the stuff proposed for standardization.")
 
 source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="libusb"
+build_deps=("libusb")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-udev=/usr/lib/udev \
     --disable-static
   make -j${numjobs}
