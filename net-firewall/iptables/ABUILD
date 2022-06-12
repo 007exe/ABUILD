@@ -1,29 +1,32 @@
 pkgname=iptables
-pkgver=1.8.7
+pkgver=1.8.8
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Tools for managing Linux kernel packet filtering capabilities")
-longdesc=("The iptables utility controls the network packet filtering code in the Linux kernel. If you need to set up firewalls and/or IP masquerading, you should install this package.")
-
-tags=("network net-firewall")
+shortdesc=("Tools for managing Linux kernel packet filtering capabilities.")
+longdesc=("The iptables utility controls the network packet filtering code in the Linux kernel.")
 
 source=("http://www.netfilter.org/projects/iptables/files/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="glibc libpcap kernel-headers"
+tags=("network net-firewall")
 
-build() {
+build_deps=("glibc libpcap kernel-headers")
+
+build(){
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-devel \
     --enable-bpf-compiler \
     --enable-libipq \
     --disable-nftables \
     --enable-shared
+  sed -e 's/ -shared / -Wl,-O1,--as-needed\0/g' -i libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
