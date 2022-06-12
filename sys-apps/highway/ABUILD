@@ -1,27 +1,26 @@
 pkgname=highway
-pkgver=0.15.0
+pkgver=0.16.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A C++ library for SIMD (Single Instruction, Multiple Data).")
-longdesc=("High performance source code search tool.")
+longdesc=("Performance-portable, length-agnostic SIMD with runtime dispatch.")
 
-source=("https://github.com/google/highway/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/google/highway/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("sys-apps libs")
 
 build_deps=("cmake gtest")
 
-build() {
+build(){
   go_src_dir
   burn_patches
   cmake -B build \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF \
     -DHWY_SYSTEM_GTEST=ON
   make -j${numjobs} -C build
-  make -C build DESTDIR="$pkgdir" install
+  make -C build DESTDIR=${pkgdir} install
 }
-
