@@ -1,0 +1,27 @@
+pkgname=numactl
+pkgver=2.0.14
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple NUMA policy support.")
+longdesc=("Utilities and libraries for NUMA systems.")
+
+source=("https://github.com/numactl/numactl/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("sys-process utils")
+
+build_deps=("glibc")
+
+build(){
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}/
+  rm -rf ${pkgdir}/usr/share/man/man2
+}
