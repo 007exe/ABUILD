@@ -1,36 +1,55 @@
 pkgname=dnsmasq
-pkgver=2.85
+pkgver=2.86
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A lightweight dhcp and caching nameserver")
-longdesc=("Dnsmasq is lightweight, easy to configure DNS forwarder and DHCP server. It is designed to provide DNS and, optionally, DHCP, to a small network. It can serve the names of local machines which are not in the global DNS. The DHCP server integrates with the DNS server and allows machines with DHCP-allocated addresses to appear in the DNS with names configured either in each host or in a central configuration file. Dnsmasq supports static and dynamic DHCP leases and BOOTP for network booting of diskless machines.")
-
-tags=("net-dns network")
+shortdesc=("Lightweight, easy to configure DNS forwarder and DHCP server.")
+longdesc=("Dnsmasq is lightweight, easy to configure DNS forwarder and DHCP server.")
 
 source=("http://www.thekelleys.org.uk/$pkgname/$pkgname-$pkgver.tar.gz")
 
-build_deps="glibc gmp libidn2 nettle"
+tags=("net-dns network")
 
-config_files="etc/conf.d/dnsmasq
-etc/dnsmasq.conf"
+build_deps=("glibc gmp libidn2 nettle libnetfilter_conntrack")
+
+config_files=("etc/conf.d/dnsmasq
+etc/dnsmasq.conf")
 
 build() {
   go_src_dir
   burn_patches
 
-  set -e
-  make -j${numjobs}
-  make PREFIX=/usr BINDIR=/usr/bin all-i18n DESTDIR=${pkgdir} install install-i18n
+  make -j${numjobs} \
+    CFLAGS="$CPPFLAGS $CFLAGS" \
+    LDFLAGS="$LDFLAGS" \
+    COPTS="-DHAVE_DNSSEC -DHAVE_DBUS -DHAVE_LIBIDN2 -DHAVE_CONNTRACK" \
+    PREFIX=/usr \
+    BINDIR=/usr/bin \
+    all-i18n
+
+  cd contrib/lease-tools
+  make -j${numjobs}\
+    CFLAGS="$CPPFLAGS $CFLAGS" \
+    LDFLAGS="$LDFLAGS" \
+    COPTS="-DHAVE_DNSSEC -DHAVE_DBUS -DHAVE_LIBIDN2 -DHAVE_CONNTRACK" \
+    all
+
+  cd ../..
+  make \
+    COPTS="-DHAVE_DNSSEC -DHAVE_DBUS -DHAVE_LIBIDN2 -DHAVE_CONNTRACK" \
+    PREFIX=/usr \
+    BINDIR=/usr/bin \
+    DESTDIR=${pkgdir} \
+    install install-i18n
 
   install -D -m0755 ${filedir}/dnsmasq-init ${pkgdir}/etc/init.d/dnsmasq
   install -D -m0644 ${filedir}/dnsmasq.confd ${pkgdir}/etc/conf.d/dnsmasq
   install -D -m0644 dnsmasq.conf.example ${pkgdir}/etc/dnsmasq.conf
 
-# Required dirs for DHCP
+# Создание системного пользователя
+  install -Dm0644 ${filedir}/dnsmasq-sysusers.conf ${pkgdir}/usr/lib/sysusers.d/dnsmasq.conf
+
+# Необходимые каталоги для DHCP
   install -d ${pkgdir}/var/db
   install -d ${pkgdir}/var/lib/misc
-
-  set +e
-
 }
