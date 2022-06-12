@@ -1,28 +1,29 @@
 pkgname=help2man
-pkgver=1.48.3
+pkgver=1.49.2
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
-shortdesc=("Create simple man pages from --help output")
-longdesc=("help2man is a script to create simple man pages from the --help and --version output of programs.")
+shortdesc=("Conversion tool to create man files.")
+longdesc=("GNU utility to convert program --help output to a man page.")
 
 source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-tags="develop dev-util"
+tags=("utils sys-apps")
 
-build_deps="perl-locale-gettext"
+build_deps=("perl-locale-gettext")
 
-adddep="bash perl-locale-gettext"
+adddep=("bash perl-locale-gettext")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
-    --infodir=/usr/share/info
-  make
+    --infodir=/usr/share/info \
+    --disable-static
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
 
