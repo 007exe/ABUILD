@@ -1,14 +1,14 @@
 pkgname=psmisc
-pkgver=23.4
-pkgbuild=2
+pkgver=23.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Miscellaneous procfs tools.")
 longdesc=("The Psmisc package contains programs for displaying information about running processes.")
 
-tags=("base sys-process")
-
 source=("http://downloads.sourceforge.net/psmisc/${pkgname}-${pkgver}.tar.xz")
+
+tags=("base sys-process")
 
 build_deps=("ncurses")
 
@@ -16,7 +16,9 @@ build() {
   go_src_dir
   burn_patches
   ./configure \
-    --prefix=/usr
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
