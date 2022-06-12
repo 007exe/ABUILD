@@ -1,23 +1,23 @@
 pkgname=libisofs
 pkgver=1.5.4
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Library to pack up hard disk files and directories into a ISO 9660 disk image")
-longdesc=("Libisofs is a library that handles creating ISO disc image files. It is intended to work together with libburn to write these images to discs.")
+longdesc=("Libisofs is a library to create an ISO-9660 filesystem with extensions like RockRidge or Joliet.")
 
 source=("http://files.libburnia-project.org/releases/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
 
-build_deps="acl zlib"
+build_deps=("acl zlib")
 
-build() {
+build(){
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-libacl \
     --enable-xattr \
     --disable-static
