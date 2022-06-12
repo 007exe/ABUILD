@@ -1,7 +1,7 @@
 pkgname=libdecor
 pkgver=0.1.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Client-side decorations library for Wayland clients.")
 longdesc=("libdecor is a library that can help Wayland clients draw window decorations for them. It aims to provide multiple backends that implements the decoration drawing.")
@@ -17,8 +17,8 @@ build() {
   burn_patches
   meson build \
     -Dprefix=/usr \
-    -Dlibdir=/usr/lib${LIBDIRSUFFIX}
+    -Dlibdir=/usr/lib
   meson compile -C build
-  meson install -C build --destdir "${pkgdir}"
+  meson install -C build --destdir ${pkgdir}
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
