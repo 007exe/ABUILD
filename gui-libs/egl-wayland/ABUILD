@@ -1,14 +1,14 @@
 pkgname=egl-wayland
-pkgver=1.1.9
+pkgver=1.1.10
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("EGLStream-based Wayland external platform")
+shortdesc=("EGLStream-based Wayland external platform.")
 longdesc=("Wayland EGL External Platform library development package.")
 
 source=("https://github.com/NVIDIA/egl-wayland/archive/refs/tags/${pkgver}.tar.gz")
 
-tags=("x11-misc libs")
+tags=("gui-libs libs")
 
 build_deps=("wayland meson eglexternalplatform")
 
@@ -17,9 +17,11 @@ adddep=("eglexternalplatform")
 build() {
   go_src_dir
   burn_patches
-  meson build -D prefix=/usr
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
-  install -Dt "$pkgdir/usr/share/egl/egl_external_platform.d" -m644 ${filedir}/10_nvidia_wayland.json
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  DESTDIR=${pkgdir} meson install -C build
+  install -Dt ${pkgdir}/usr/share/egl/egl_external_platform.d -m644 ${filedir}/10_nvidia_wayland.json
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
