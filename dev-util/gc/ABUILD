@@ -1,20 +1,18 @@
 pkgname=gc
-pkgver=8.0.4
-pkgbuild=2
-arch=('auto')
+pkgver=8.2.0
+pkgbuild=1
+arch=("auto")
 
-shortdesc=("Conservative garbage collector for C")
+shortdesc=("A garbage collector for C and C++.")
 longdesc=("Boehm's GC is a garbage collecting storage allocator that is intended to be used as a plug-in replacement for C's malloc.")
 
 source=("https://github.com/ivmai/bdwgc/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="dev-libs libs"
+tags=("dev-util utils")
 
-build_deps="gcc-libs"
+build_deps=("gcc-libs")
 
-
-build()
-{
+build(){
   go_src_dir
   burn_patches
   autoreconf -fi
@@ -24,8 +22,11 @@ build()
     --localstatedir=/var \
     --docdir=/usr/share/doc \
     --mandir=/usr/share/man \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --enable-cplusplus --enable-static
+    --libdir=/usr/lib \
+    --enable-cplusplus \
+    --enable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+  sed 's|GC_MALLOC 1L|gc 3|g' doc/gc.man | install -Dm644 /dev/stdin ${pkgdir}/usr/share/man/man3/gc.3
 }
