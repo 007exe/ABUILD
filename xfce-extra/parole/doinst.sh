@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend parole capabilities:"
+echo -e "gst-libav: Extra media codecs"
+echo -e "gst-plugins-bad: Extra media codecs"
+echo -e "gst-plugins-ugly: Extra media codecs"
+echo -e " "
