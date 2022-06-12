@@ -1,52 +1,37 @@
 pkgname=ppp
 pkgver=2.4.9
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("The PPP daemon and documentation")
-longdesc=("The ppp package contains the PPP (Point-to-Point Protocol) daemon and documentation for PPP support.  The PPP protocol provides a method for transmitting datagrams over serial point-to-point links.")
+shortdesc=("Point-to-Point Protocol (PPP).")
+longdesc=("A daemon which implements the Point-to-Point Protocol for dial-up networking.")
+
+source=(https://download.samba.org/pub/ppp/ppp-${pkgver}.tar.gz)
 
 tags=("net-dialup network")
 
-source=(https://download.samba.org/pub/ppp/ppp-${pkgver}.tar.gz)
-# libxcrypt
-build_deps="glibc libpcap openssl"
+build_deps=("glibc libpcap openssl")
 
-config_files="etc/ppp/chap-secrets
+config_files=("etc/ppp/chap-secrets
 etc/ppp/pap-secrets
 etc/ppp/options
 etc/ppp/ip-up
-etc/ppp/ip-down"
+etc/ppp/ip-down")
 
-build() {
+build(){
   go_src_dir
   burn_patches
-  set -e
-# fix CFLAGS
-# -D_GNU_SOURCE is needed for IPv6 to work apparently
-  CFLAGS=$SLKCFLAGS
-  export CFLAGS="$CFLAGS -D_GNU_SOURCE"
-  sed -i "s:-O2 -pipe -Wall -g:${CFLAGS}:" pppd/Makefile.linux
-  sed -i "s:-g -O2:${CFLAGS}:" pppd/plugins/Makefile.linux
-  sed -i "s:-O2:${CFLAGS}:" pppstats/Makefile.linux
-  sed -i "s:-O2 -g -pipe:${CFLAGS}:" chat/Makefile.linux
-  sed -i "s:-O:${CFLAGS}:" pppdump/Makefile.linux
-
-# enable active filter
+# включить активный фильтр
   sed -i "s:^#FILTER=y:FILTER=y:" pppd/Makefile.linux
-# enable ipv6 support
+# включить поддержку ipv6
   sed -i "s:^#HAVE_INET6=y:HAVE_INET6=y:" pppd/Makefile.linux
-# Enable Microsoft proprietary Callback Control Protocol
-  sed -i "s:^#CBCP=y:CBCP=y:" pppd/Makefile.linux 
-  sed -i -e "s#lib/pppd#lib${LIBDIRSUFFIX}/pppd#g" $(grep -lr 'lib/pppd' *) 
-  ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX}
-  make -j${numjobs} || exit 1
-  make DESTDIR=${pkgdir}/usr install || exit 1
+# включить проприетарный протокол управления обратным вызовом Microsoft
+  sed -i "s:^#CBCP=y:CBCP=y:" pppd/Makefile.linux
 
-# Fix default permissions, it seems to be insecure
-# Feel free to "chmod 4750 pppoatm.so rp-pppoe.so" at your own risk.
-# Since they are only runnable by group root, the risk really isn't much...
-  chmod 755 ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pppd/*/*.so
+  CFLAGS="$CPPFLAGS $CFLAGS -D_GNU_SOURCE" LDFLAGS="$LDFLAGS" ./configure --prefix=/usr
+  make -j${numjobs}
+  make INSTROOT=${pkgdir} install
+
 
   install -D -m644 ${filedir}/options ${pkgdir}/etc/ppp/options
   install -D -m755 ${filedir}/ip-up ${pkgdir}/etc/ppp/ip-up
@@ -55,6 +40,12 @@ build() {
   install -d -m755 ${pkgdir}/etc/ppp/ip-down.d
   install -m755 ${filedir}/ip-up.d.dns.sh ${pkgdir}/etc/ppp/ip-up.d/00-dns.sh
   install -m755 ${filedir}/ip-down.d.dns.sh ${pkgdir}/etc/ppp/ip-down.d/00-dns.sh
+  install -D -m755 ${filedir}/ipv6-up   ${pkgdir}/etc/ppp/ipv6-up
+  install -D -m755 ${filedir}/ipv6-down ${pkgdir}/etc/ppp/ipv6-down
+  install -d -m755 ${pkgdir}/etc/ppp/ipv6-up.d
+  install -d -m755 ${pkgdir}/etc/ppp/ipv6-down.d
+  install -m755 ${filedir}/ipv6-up.d.iface-config.sh ${pkgdir}/etc/ppp/ipv6-up.d/00-iface-config.sh
+
   install -D -m755 ${filedir}/pon ${pkgdir}/usr/bin/pon
   install -D -m755 ${filedir}/poff ${pkgdir}/usr/bin/poff
   install -D -m755 ${filedir}/plog ${pkgdir}/usr/sbin/plog
@@ -62,5 +53,4 @@ build() {
   install -D -m600 etc.ppp/chap-secrets ${pkgdir}/etc/ppp/chap-secrets
   install -D -m644 ${filedir}/pon.1 ${pkgdir}/usr/share/man/man1/pon.1
   install -d -m755 ${pkgdir}/etc/ppp/peers
-  set +e
 }
