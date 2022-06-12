@@ -1,7 +1,7 @@
 pkgname=liburcu
 pkgver=0.13.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("LGPLv2.1 userspace RCU (read-copy-update) library.")
 longdesc=("liburcu-cds provides efficient data structures based on RCU and lock-free algorithms.")
@@ -17,7 +17,8 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
