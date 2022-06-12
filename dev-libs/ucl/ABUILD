@@ -1,16 +1,16 @@
 pkgname=ucl
 pkgver=1.03
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="The UCL Compression Library"
-longdesc="Portable lossless data compression library written in ANSI C"
-
-tags=("develop dev-libs")
+shortdesc=("The UCL Compression Library.")
+longdesc=("Portable lossless data compression library written in ANSI C.")
 
 source=("https://www.oberhumer.com/opensource/$pkgname/download/$pkgname-$pkgver.tar.gz")
 
-build_deps="glibc"
+tags=("libs dev-libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   CFLAGS+=" -std=gnu90 -fPIC"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-shared \
     --disable-static
   make -j${numjobs}
