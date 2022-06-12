@@ -1,22 +1,24 @@
 pkgname=libnma
-pkgver=1.8.32
+pkgver=1.8.38
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("NetworkManager GUI client library")
+shortdesc=("NetworkManager GUI client library.")
 longdesc=("The libnma package contains an implementation of the NetworkManager GUI functions.")
-
-tags=("libs net-libs")
 
 source=("https://download.gnome.org/sources/libnma/${pkgver%.*}/libnma-${pkgver}.tar.xz")
 
-build_deps="gcr gtk3 iso-codes networkmanager vala mobile-broadband-provider-info gobject-introspection gtk-doc meson"
+tags=("libs net-libs")
+
+build_deps=("gcr gtk3 iso-codes networkmanager vala mobile-broadband-provider-info gobject-introspection gtk-doc meson")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-    -Dprefix=/usr
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libnma_gtk4=false
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
