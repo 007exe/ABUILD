@@ -1,24 +1,24 @@
 pkgname=liburing
 pkgver=2.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Linux-native io_uring I/O access library")
+shortdesc=("Linux-native io_uring I/O access library.")
 longdesc=("Provides native async IO for the Linux kernel, in a fast and efficient manner, for both buffered and O_DIRECT.")
 
 source=("https://brick.kernel.dk/snaps/liburing-${pkgver}.tar.bz2")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir='/usr/share/man'
   make -j${numjobs}
-  make DESTDIR="$pkgdir" install
-  install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
+  make DESTDIR=${pkgdir} install
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
