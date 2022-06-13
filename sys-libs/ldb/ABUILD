@@ -1,29 +1,29 @@
 pkgname=ldb
-pkgver=2.4.1
+pkgver=2.5.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Schema-less, ldap like, API and database")
+shortdesc=("Schema-less, ldap like, API and database.")
 longdesc=("ldb is a LDAP-like embedded database. It is not at all LDAP standards compliant, so if you want a standards compliant database then please see the excellent OpenLDAP project.")
 
 source=("https://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs sys-libs"
+tags=("libs sys-libs")
 
-build_deps="talloc tdb popt lmdb"
+build_deps=("talloc tdb popt lmdb")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --bundled-libraries=NONE \
     --builtin-libraries=replace \
     --disable-rpath \
     --disable-rpath-install \
-    --with-modulesdir=/usr/lib${LIBDIRSUFFIX}/ldb/modules \
-    --with-privatelibdir=/usr/lib${LIBDIRSUFFIX}/ldb
+    --with-modulesdir=/usr/lib/ldb/modules \
+    --with-privatelibdir=/usr/lib/ldb
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
