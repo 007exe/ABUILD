@@ -1,39 +1,60 @@
 pkgname=samba
-pkgver=4.15.1
+pkgver=4.16.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("SMB file and print server")
-longdesc=("The Samba package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients. Samba can also be configured as a Windows Domain Controller replacement, a file/print server acting as a member of a Windows Active Directory domain and a NetBIOS (rfc1001/1002) nameserver (which among other things provides LAN browsing support).")
+shortdesc=("SMB Fileserver and AD Domain server.")
+longdesc=("The Samba package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients.")
 
-tags=('net-fs network')
+tags=("net-fs network")
 
 source=("https://us1.samba.org/samba/ftp/stable/samba-${pkgver}.tar.gz")
-# python-dateutils nor python-iso8601
-build_deps="python python-markdown python-dnspython python-pyasn1 python-cryptography python-iso8601 python-dephell-argparse python-py python-hypothesis python-pbr rpcsvc-proto perl-parse-yapp jansson liburing docbook-xsl pkg-config libunwind db popt libcups readline acl libcap krb5 cmocka linux-pam gnutls tdb dbus libaio libnsl libtirpc talloc tevent ldb"
 
-pkglist="smbclient"
+# python-dateutils heimdal
+build_deps=("python python-markdown python-dnspython python-pyasn1 python-cryptography python-iso8601
+python-dephell-argparse python-py python-hypothesis python-pbr rpcsvc-proto perl-parse-yapp jansson
+liburing docbook-xsl libunwind db popt libcups readline acl libcap krb5 cmocka linux-pam gnutls tdb
+dbus libaio libnsl libtirpc talloc tevent ldb")
 
-adddep="smbclient"
+pkglist=("smbclient")
 
-config_files="etc/conf.d/samba
+adddep=("smbclient")
+
+config_files=("etc/conf.d/samba
 etc/logrotate.d/samba
-etc/pam.d/samba"
+etc/pam.d/samba")
 
 build() {
   go_src_dir
   burn_patches
+  _samba4_idmap_modules=idmap_ad,idmap_rid,idmap_adex,idmap_hash,idmap_tdb2
+  _samba4_pdb_modules=pdb_tdbsam,pdb_ldap,pdb_ads,pdb_smbpasswd,pdb_wbc_sam,pdb_samba4
+  _samba4_auth_modules=auth_unix,auth_wbc,auth_server,auth_netlogond,auth_script,auth_samba4
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX/ \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --with-piddir=/run/samba \
-    --with-pammodulesdir=/usr/lib${LIBDIRSUFFIX}/security \
     --enable-fhs \
-    --without-ad-dc \
-    --without-systemd \
-    --enable-selftest
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/samba \
+    --localstatedir=/var \
+    --with-configdir=/etc/samba \
+    --with-lockdir=/var/cache/samba \
+    --with-sockets-dir=/run/samba \
+    --with-piddir=/run \
+    --with-ads \
+    --with-ldap \
+    --with-winbind \
+    --with-acl-support \
+    --systemd-install-services \
+    --with-pam \
+    --with-pammodulesdir=/usr/lib/security \
+    --bundled-libraries=!tdb,!talloc,!pytalloc-util,!tevent,!popt,!ldb,!pyldb-util \
+    --with-shared-modules=${_samba4_idmap_modules},${_samba4_pdb_modules},${_samba4_auth_modules},vfs_io_uring \
+    --disable-rpath-install \
+    --with-cluster-support \
+    --with-profiling-data \
+    --without-systemd
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
@@ -46,9 +67,9 @@ build() {
 smbclient() {
   pkgname=smbclient
   shortdesc=("Tools to access a server's filespace and printers via SMB")
-  longdesc=("The Samba package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients. Samba can also be configured as a Windows Domain Controller replacement, a file/print server acting as a member of a Windows Active Directory domain and a NetBIOS (rfc1001/1002) nameserver (which among other things provides LAN browsing support).")
+  longdesc=("The Samba package provides file and print services to SMB/CIFS clients and Windows networking to Linux clients.")
 }
 
 smbclient_prep() {
-  mkdir -p ${pkgdir}/usr/bin ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  mkdir -p ${pkgdir}/usr/bin ${pkgdir}/usr/lib
 }
