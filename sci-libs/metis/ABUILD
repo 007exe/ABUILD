@@ -1,17 +1,17 @@
 pkgname=metis
 pkgver=5.1.0.p10
 _pkgver=5.1.0-p10
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices")
+shortdesc=("A set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices.")
 longdesc=("METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices. The algorithms implemented in METIS are based on the multilevel recursive-bisection, multilevel k-way, and multi-constraint partitioning schemes developed in our lab.")
 
-source=("https://bitbucket.org/petsc/pkg-metis/get/v$_pkgver.tar.bz2")
+source=("https://bitbucket.org/petsc/pkg-metis/get/v${_pkgver}.tar.bz2")
 
-tags=("libs sci-mathematics")
+tags=("libs sci-libs")
 
-build_deps="cmake glibc"
+build_deps=("cmake glibc")
 
 build() {
   go_src_dir
@@ -20,12 +20,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSHARED=ON \
     -DMATH_LIB=m
-  cmake --build build
-  DESTDIR="$pkgdir" cmake --install build
-
-  install -m644 -D LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
-
-#Fix the location of the library for x64 systems. Not pretty but should work.
-  mkdir "$pkgdir"/usr/lib${LIBDIRSUFFIX}
-  cp "$pkgdir"/usr/lib/libmetis.so "$pkgdir"/usr/lib${LIBDIRSUFFIX}/libmetis.so
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -m644 -D LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
