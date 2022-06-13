@@ -1,58 +1,55 @@
 pkgname=ngspice
-pkgver=35
+pkgver=37
+_docver=36
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Mixed-level/Mixed-signal circuit simulator based on Spice3f5, Ciber1b1, and Xspice.")
 longdesc=("KiKit is a Python library, KiCAD plugin and a CLI tool to automate several tasks in a standard KiCAD workflow.")
 
-source=("https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/$pkgver/ngspice-$pkgver.tar.gz"
-"http://ngspice.sourceforge.net/docs/ngspice-$pkgver-manual.pdf")
+source=("https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/${pkgver}/ngspice-${pkgver}.tar.gz"
+"http://ngspice.sourceforge.net/docs/ngspice-${_docver}-manual.pdf")
 
-tags="develop dev-scheme"
+tags=("utils sci-electronics")
 
-build_deps="libxaw libedit gcc-libs"
+build_deps=("libxaw libedit gcc-libs")
 
 build() {
   go_src_dir
   burn_patches
-# FS#45230, create so lib
-# shared lib sets flags and modifies headers, needs dedicated pass
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --infodir=/usr/share/info \
     --with-readline=no \
     --enable-xspice \
     --enable-cider \
     --enable-openmp \
-    --enable-oldapps \
+    --disable-debug \
     --with-ngshared
   make -j${numjobs}
 
-#strip ./src/.libs/libngspice.so.0.0.0
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --infodir=/usr/share/info \
     --with-readline=no \
     --enable-xspice \
     --enable-cider \
-    --enable-oldapps \
+    --disable-debug \
     --enable-openmp
   make -j${numjobs}
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 
-  install -D -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -D -m644  ${srcache}/ngspice-$pkgver-manual.pdf "$pkgdir/usr/share/doc/$pkgname/manual.pdf"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m644  ${srcache}/ngspice-${_docver}-manual.pdf ${pkgdir}/usr/share/doc/${pkgname}/manual.pdf
 
-  install -Dm755 src/.libs/libngspice.so.0.0.1 "$pkgdir/usr/lib${LIBDIRSUFFIX}/libngspice.so.0.0.1"
-  ln -s "libngspice.so.0.0.1" "$pkgdir/usr/lib${LIBDIRSUFFIX}/libngspice.so.0"
-  ln -s "libngspice.so.0.0.1" "$pkgdir/usr/lib${LIBDIRSUFFIX}/libngspice.so"
+  install -Dm755 src/.libs/libngspice.so.0.0.4 ${pkgdir}/usr/lib/libngspice.so.0.0.4
+  ln -s libngspice.so.0.0.4 ${pkgdir}/usr/lib/libngspice.so.0
+  ln -s libngspice.so.0.0.4 ${pkgdir}/usr/lib/libngspice.so
 
-# FS#70563, probably remove on v35
-  install -Dm644 ngspice.pc "$pkgdir/usr/lib${LIBDIRSUFFIX}/pkgconfig/ngspice.pc"
-  install -Dm644 src/include/ngspice/sharedspice.h "$pkgdir/usr/include/ngspice/sharedspice.h"
+  install -Dm644 ngspice.pc ${pkgdir}/usr/lib/pkgconfig/ngspice.pc
+  install -Dm644 src/include/ngspice/sharedspice.h ${pkgdir}/usr/include/ngspice/sharedspice.h
 }
