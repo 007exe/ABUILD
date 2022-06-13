@@ -1,9 +1,9 @@
 pkgname=libgnomekbd
-pkgver=3.26.1+2+g8d02ebd
+pkgver=3.26.1+r5+g54da436
 strict_version=1
-_commit=8d02ebd17b75ff3be59d9d57674d50e069bb551b
+_commit=54da436258d79b683f57dfadf787bdf56ca58576
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Keyboard management library.")
 longdesc=("libgnomekbd offers an API to manage the keyboard in GNOME applications.")
@@ -17,11 +17,11 @@ build_deps=("gobject-introspection libxklavier gtk3 dconf")
 build() {
   go_src_dir
   burn_patches
-  git checkout $_commit
+  git checkout ${_commit}
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --disable-schemas-compile \
