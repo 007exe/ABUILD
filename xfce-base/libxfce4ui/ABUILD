@@ -20,13 +20,12 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
     --localstatedir=/var \
-    --libdir=/usr/lib \
     --disable-static \
-    --enable-startup-notification \
-    --with-vendor-info='AgiliaLinux' \
-    --disable-gladeui \
-    --disable-debug
+    --disable-debug \
+    --disable-gladeui2 \
+    --with-vendor-info='AgiliaLinux'
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
