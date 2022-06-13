@@ -1,14 +1,14 @@
 pkgname=cmocka
 pkgver=1.1.5
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Elegant unit testing framework for C with support for mock objects")
-longdesc=("cmocka is a unit testing framework for C with support for mock objects. It only requires the standard C library, works on a range of computing platforms (including embedded) and with different compilers.")
+shortdesc=("Unit testing framework for C.")
+longdesc=("Elegant unit testing framework for C with support for mock objects.")
 
 source=("https://cmocka.org/files/1.1/cmocka-${pkgver}.tar.xz")
 
-tags=("develop dev-util")
+tags=("utils dev-util")
 
 build_deps="glibc cmake"
 
@@ -19,7 +19,7 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DUNIT_TESTING=ON
   make -j${numjobs}
