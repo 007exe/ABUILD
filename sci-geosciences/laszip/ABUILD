@@ -1,16 +1,16 @@
 pkgname=laszip
 pkgver=3.4.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("ASPRS LAS lossless compression library.")
 longdesc=("LASzip - a free open source product of rapidlasso GmbH - quickly turns bulky LAS files into compact LAZ files without information loss.")
 
 source=("https://github.com/LASzip/LASzip/releases/download/${pkgver}/laszip-src-${pkgver}.tar.gz")
 
-tags="libs sci-libs"
+tags=("libs sci-geosciences")
 
-build_deps="cmake"
+build_deps=("cmake")
 
 build() {
   go_src_dir
@@ -19,8 +19,8 @@ build() {
   cd build
   cmake \
     -DCMAKE_INSTALL_PREFIX=/usr \
-      -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
-      ..
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    ..
   make -j${numjobs}
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
