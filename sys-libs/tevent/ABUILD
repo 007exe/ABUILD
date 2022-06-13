@@ -1,23 +1,25 @@
 pkgname=tevent
-pkgver=0.11.0
+pkgver=0.12.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Event system based on the talloc memory management library")
+shortdesc=("Event system based on the talloc memory management library.")
 longdesc=("Tevent is an event system based on the talloc memory management library. It is the core event system used in Samba.")
 
 source=("https://samba.org/ftp/tevent/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs sys-libs"
+tags=("libs sys-libs")
 
-build_deps="python cmocka talloc"
+build_deps=("python cmocka talloc")
+
+removedep=("python")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --bundled-libraries=NONE \
     --builtin-libraries=replace
   make -j${numjobs}
