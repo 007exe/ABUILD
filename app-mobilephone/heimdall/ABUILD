@@ -1,0 +1,32 @@
+pkgname=heimdall
+pkgver=1.4.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tool suite used to flash firmware (ROMs) onto Samsung Galaxy S devices.")
+longdesc=("Heimdall is a cross-platform open-source utility to flash firmware (aka ROMs) onto Samsung Galaxy S devices..")
+
+source=("https://gitlab.com/BenjaminDobell/Heimdall/-/archive/v${pkgver}/Heimdall-${pkgver}.tar.gz")
+
+tags=("utils app-mobilephone")
+
+build_deps=("cmake qt5-base")
+
+# NOTE: Это опциональная зависимость
+removedep=("qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake . \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -j${numjobs}
+
+  install -m644 -D ${filedir}/heimdall.desktop ${pkgdir}/usr/share/applications/heimdall.desktop
+  install -m644 -D LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+  install -d ${pkgdir}/usr/bin
+  install -Dm755 bin/* ${pkgdir}/usr/bin/
+  install -Dm644 heimdall/60-heimdall.rules ${pkgdir}/usr/lib/udev/rules.d/60-heimdall.rules
+}
