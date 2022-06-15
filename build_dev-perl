@@ -1,12 +1,12 @@
 #!/bin/sh
 
-PKG="perl-font-ttf
+MODULES="perl-xml-parser
+perl-font-ttf
 perl-locale-gettext
 perl-parse-yapp
 perl-sgmls
 perl-io-string
 perl-xml-simple
-perl-xml-parser
 perl-archive-zip
 perl-module-runtime
 perl-try-tiny
@@ -78,6 +78,7 @@ perl-datetime-timezone
 perl-file-listing
 perl-http-negotiate
 perl-mozilla-ca
+perl-dbi
 perl-file-rsyncp
 perl-io-dirent
 perl-text-iconv
@@ -132,16 +133,24 @@ perl-sub-quote
 perl-moo
 perl-parallel-forkmanager
 perl-dbi
-perl-dbd-mysql"
+perl-dbd-mysql
+perl-json"
 
-set -e
-for i in $PKG ; do
-	echo "===================================================="
-        echo "$i"
-	mpkg-conflicts $i
+CWD=~
+STARTD=`pwd`
+
+LOGFILE="$CWD/dev-perl.log"
+
+for i in $MODULES ; do
+    echo "`date` || Сборка пакета: $i" >> $LOGFILE
+    cd $STARTD/dev-perl/$i
+    if mkpkg -ba -wd ~/BUILD -si ; then
+            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+            cd $STARTD
+    else
+            echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+            cd $STARTD
+    fi
 done
-set +e
 
-echo "===================================================="
-echo "===================================================="
-echo "Проверка окончена"
+echo "============================= Завершено в `date` =============================" >> $LOGFILE
