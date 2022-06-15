@@ -1,5 +1,5 @@
 pkgname=python
-pkgver=3.10.4
+pkgver=3.10.5
 pkgbuild=1
 arch=("auto")
 
@@ -14,10 +14,13 @@ pkglist=("python-tests")
 # mpdecimal
 build_deps=("tk sqlite llvm gdb bzip2 expat gdbm libffi libnsl openssl zlib")
 
-# Следующие зависимости являются опциональными python-setuptools python-pip sqlite mpdecimal xz tk
-removedep=("ncurses libx11 tcl readline util-linux-ng libtirpc sqlite mpdecimal xz tk")
 
-# Настройка bash
+adddep=("libnsl")
+
+# NOTE: Это опциональные зависимости python-setuptools python-pip sqlite mpdecimal xz tk
+removedep=("libx11 tcl libtirpc sqlite mpdecimal xz tk")
+
+# NOTE: Настройка bash
 shopt -s extglob
 
 before_build(){
