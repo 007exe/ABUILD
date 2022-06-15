@@ -1,0 +1,19 @@
+#!/usr/bin/openrc-run
+
+description="udev manages device permission and symbolic links in /dev"
+
+depend() {
+    provide dev
+    need sysfs
+    keyword -vserver -lxc
+}
+
+start() {
+    ebegin "Starting the udev daemon"
+    udevd --daemon --resolve-names=never
+    udevadm trigger --action=add --type=subsystems
+    udevadm trigger --action=add --type=devices
+    udevadm trigger --action=change --type=devices
+    udevadm settle
+    eend $?
+}

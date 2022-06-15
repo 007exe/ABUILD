@@ -1,0 +1,13 @@
+#!/usr/bin/openrc-run
+
+description="Set up sysusers.d entries"
+
+depend() {
+	need localmount
+}
+
+start() {
+	ebegin "Setting up sysusers.d entries"
+	sysusers
+	eend $?
+}

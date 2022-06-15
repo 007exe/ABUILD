@@ -1,0 +1,15 @@
+#!/usr/bin/openrc-run
+
+description="Set up tmpfiles.d entries for /dev"
+
+depend() {
+	use dev-mount
+	before dev
+	keyword -prefix -vserver
+}
+
+start() {
+	ebegin "Setting up tmpfiles.d entries for /dev"
+	tmpfiles --create
+	eend $?
+}

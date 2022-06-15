@@ -1,0 +1,201 @@
+pkgname=udev
+pkgver=250.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Userspace device file manager.")
+longdesc=("User space device file manager extracted from systemd.")
+
+source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("base sys-fs")
+
+build_deps=("acl kmod util-linux libcap kbd gperf intltool meson docbook-xsl rsync python-jinja")
+
+adddep=("sysusers tmpfiles")
+
+pkglist=("sysusers tmpfiles eudev")
+
+_get_libudev() {
+    echo "$(readlink build/libudev.so.1)"
+}
+
+_inst_bin() {
+    local bin=${1}
+
+    install -Dm755 build/systemd-${bin}.standalone ${pkgdir}/usr/bin/${bin}
+    install -d ${pkgdir}/usr/lib/${bin}.d
+
+    install -d ${pkgdir}/usr/share/{doc/${pkgname},man/man{5,8}}
+
+    install -m644 build/man/${bin}.d.5 ${pkgdir}/usr/share/man/man5/
+    install -m644 build/man/systemd-${bin}.8 ${pkgdir}/usr/share/man/man8/${bin}.8
+
+    install -m644 LICENSE.* ${pkgdir}/usr/share/doc/${pkgname}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D mode=release \
+    -D standalone-binaries=true \
+    -D sysusers=true \
+    -D tmpfiles=true \
+    -D adm-group=true \
+    -D wheel-group=true \
+    -D gshadow=true \
+    -D hwdb=true \
+    -D blkid=true \
+    -D man=false \
+    -D tests=false \
+    -D dns-servers='' \
+    -D ntp-servers='' \
+    -D efi=false \
+    -D link-udev-shared=false \
+    -D libidn2=false \
+    -D libidn=false \
+    -D libcryptsetup=false \
+    -D idn=false \
+    -D gcrypt=false \
+    -D libiptc=false \
+    -D lz4=false \
+    -D p11kit=false \
+    -D seccomp=false \
+    -D xz=false \
+    -D timesyncd=false \
+    -D nss-systemd=false \
+    -D nss-resolve=false \
+    -D nss-mymachines=false \
+    -D nss-myhostname=false \
+    -D networkd=false \
+    -D machined=false \
+    -D timedated=false \
+    -D kernel-install=false \
+    -D resolve=false \
+    -D xdg-autostart=false
+
+  local _udev=() _man=() _ebin=()
+
+  _udev+=(
+        $(_get_libudev)
+        src/libudev/libudev.pc
+        udevadm
+        src/udev/{ata_id,cdrom_id,fido_id,mtd_probe,dmi_memory_id,scsi_id,v4l_id}
+        src/udev/udev.pc
+        rules.d/{50-udev-default.rules,64-btrfs.rules}
+        hwdb.d/60-autosuspend-chromiumos.hwdb
+    )
+
+  _ebin+=(
+        systemd-{sysusers,tmpfiles}.standalone
+        sysusers.d/basic.conf
+        tmpfiles.d/{etc,static-nodes-permissions,var}.conf
+    )
+
+  _man+=(
+        man/{sysusers,tmpfiles}.d.5
+        man/systemd-{sysusers,tmpfiles}.8
+        man/{libudev.3,udev.conf.5,hwdb.7,udev.7,udevadm.8}
+    )
+
+  ninja -C build ${_udev[@]} ${_ebin[@]} ${_man[@]}
+
+  install -d ${pkgdir}/etc/udev/{hwdb,rules}.d
+  mv -v src/udev/udev.conf ${pkgdir}/etc/udev
+
+  install -d ${pkgdir}/usr/bin
+  mv -v build/udevadm ${pkgdir}/usr/bin/udevadm
+  ln -sfv udevadm ${pkgdir}/usr/bin/udevd
+
+  install -d ${pkgdir}/usr/{share,lib}/pkgconfig
+  mv -v build/src/libudev/libudev.pc ${pkgdir}/usr/lib/pkgconfig
+  mv -v build/src/udev/udev.pc ${pkgdir}/usr/share/pkgconfig
+
+  install -d ${pkgdir}/usr/lib/udev
+  mv -v build/src/udev/{*_id,mtd_probe} ${pkgdir}/usr/lib/udev
+
+  mv -v build/hwdb.d ${pkgdir}/usr/lib/udev/
+  mv -v hwdb.d/{*.hwdb,README} ${pkgdir}/usr/lib/udev/hwdb.d/
+  mv -v build/rules.d ${pkgdir}/usr/lib/udev/
+  mv -v rules.d/{*.rules,README} ${pkgdir}/usr/lib/udev/rules.d/
+
+  install -d ${pkgdir}/usr/include
+  mv -v src/libudev/libudev.h ${pkgdir}/usr/include
+
+  install -d ${pkgdir}/usr/share/man/man{3,5,7,8}
+  mv -v build/man/libudev.3 ${pkgdir}/usr/share/man/man3/
+  mv -v build/man/udev.conf.5 ${pkgdir}/usr/share/man/man5/
+  mv -v build/man/udev.7 ${pkgdir}/usr/share/man/man7/
+  mv -v build/man/udevadm.8 ${pkgdir}/usr/share/man/man8/
+
+  install -d ${pkgdir}/usr/share/doc/${pkgname}
+  install -m644 LICENSE.* ${pkgdir}/usr/share/doc/${pkgname}
+
+  install -d ${pkgdir}/usr/lib
+  mv -v build/{libudev.so{,.1},$(_get_libudev)} ${pkgdir}/usr/lib/
+
+  mkdir -p ${pkgdir}/etc/{firmware,modprobe.d,init.d}
+
+# Копируем правила udev
+  cp -v ${filedir}/rules.d/*.rules ${pkgdir}/usr/lib/udev/rules.d/
+
+# Устанавливаем init скрипт и включаем его по умолчанию на уровне запуска sysinit
+  install -Dm755 ${filedir}/udev ${pkgdir}/etc/init.d/udev
+  install -dm0755 ${pkgdir}/etc/runlevels/sysinit
+  ln -snf /etc/init.d/udev ${pkgdir}/etc/runlevels/sysinit/udev
+}
+
+sysusers() {
+  pkgname=sysusers
+  shortdesc=("Declarative allocation of system users and groups.")
+  longdesc=("Systemd utility for handling /usr/lib/sysusers.d files.")
+}
+
+sysusers_prep() {
+  go_src_dir
+  _inst_bin sysusers
+
+  mv -v build/sysusers.d/basic.conf ${pkgdir}/usr/lib/sysusers.d
+  mv -v sysusers.d/README ${pkgdir}/usr/lib/sysusers.d
+
+# Устанавливаем init скрипт и включаем его по умолчанию на уровне запуска boot
+  install -Dm755 ${filedir}/sysusers ${pkgdir}/etc/init.d/sysusers
+  install -dm0755 ${pkgdir}/etc/runlevels/boot
+  ln -snf /etc/init.d/sysusers ${pkgdir}/etc/runlevels/boot/sysusers
+}
+
+tmpfiles() {
+  pkgname=tmpfiles
+  shortdesc=("Configuration for creation, deletion and cleaning of volatile and temporary files.")
+  longdesc=("Systemd utility for handling /usr/lib/tmpfiles.d files.")
+}
+
+tmpfiles_prep() {
+  go_src_dir
+  _inst_bin tmpfiles
+
+  install -d ${pkgdir}/etc/tmpfiles.d
+  mv -v build/tmpfiles.d ${pkgdir}/usr/lib/
+  mv -v tmpfiles.d/{{tmp,home,x11}.conf,README} ${pkgdir}/usr/lib/tmpfiles.d
+
+# Устанавливаем init скрипт и включаем его по умолчанию на уровне запуска boot
+  install -Dm755 ${filedir}/tmpfiles ${pkgdir}/etc/init.d/tmpfiles
+  install -dm0755 ${pkgdir}/etc/runlevels/boot
+  ln -snf /etc/init.d/tmpfiles ${pkgdir}/etc/runlevels/boot/tmpfiles
+}
+
+eudev() {
+  pkgname=eudev
+  shortdesc=("The userspace dev tools (udev) forked by Gentoo.")
+  longdesc=("This is a shell package designed to satisfy dependencies in the process of being replaced by udev.")
+  tags=("virtual sys-fs")
+  adddep=("udev")
+}
+
+eudev_prep() {
+  go_src_dir
+}
