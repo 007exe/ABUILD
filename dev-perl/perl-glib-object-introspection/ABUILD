@@ -9,7 +9,7 @@ source=("https://cpan.metacpan.org/authors/id/X/XA/XAOC/Glib-Object-Introspectio
 
 tags=("libs dev-perl")
 
-build_deps=("perl gobject-introspection perl-extutils-depends perl-extutils-pkgconfig perl-cairo-gobject glib-perl")
+build_deps=("perl gobject-introspection perl-extutils-depends perl-extutils-pkgconfig perl-cairo-gobject glib-perl pkgconf")
 
 adddep=("glib-perl")
 

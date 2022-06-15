@@ -9,7 +9,7 @@ source=("https://www.cpan.org/authors/id/D/DA/DANBERR/Net-DBus-${pkgver}.tar.gz"
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-xml-twig")
+build_deps=("perl perl-xml-twig pkgconf")
 
 adddep=("perl-xml-twig")
 

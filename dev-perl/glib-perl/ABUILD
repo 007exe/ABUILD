@@ -10,7 +10,7 @@ source=("https://downloads.sourceforge.net/sourceforge/gtk2-perl/Glib-${_pkgver}
 
 tags=("libs dev-perl")
 
-build_deps=("glib2 perl-extutils-depends perl-extutils-pkgconfig")
+build_deps=("glib2 perl-extutils-depends perl-extutils-pkgconfig pkgconf")
 
 build(){
   go_src_dir

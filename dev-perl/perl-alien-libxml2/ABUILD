@@ -9,7 +9,7 @@ source=("https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Libxml2-${pkgv
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-html-parser perl-sort-versions perl-test2-suite perl-uri libxml2 perl-alien-build")
+build_deps=("perl perl-html-parser perl-sort-versions perl-test2-suite perl-uri libxml2 perl-alien-build pkgconf")
 
 adddep=("libxml2 perl-alien-build")
 

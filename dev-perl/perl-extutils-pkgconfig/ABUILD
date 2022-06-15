@@ -9,7 +9,7 @@ source=("https://cpan.metacpan.org/authors/id/X/XA/XAOC/ExtUtils-PkgConfig-${pkg
 
 tags=("libs dev-perl")
 
-build_deps=("perl")
+build_deps=("perl pkgconf")
 
 build(){
   go_src_dir

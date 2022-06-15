@@ -9,7 +9,7 @@ source=("https://downloads.sourceforge.net/sourceforge/gtk2-perl/Cairo-${pkgver}
 
 tags=("libs dev-perl")
 
-build_deps=("perl cairo")
+build_deps=("perl cairo pkgconf")
 
 build(){
   go_src_dir
