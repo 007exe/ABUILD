@@ -1,6 +1,6 @@
 pkgname=laszip
 pkgver=3.4.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("ASPRS LAS lossless compression library.")
@@ -17,10 +17,9 @@ build() {
   burn_patches
   mkdir build
   cd build
-  cmake \
+  cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
-    ..
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
