@@ -1,16 +1,16 @@
 pkgname=libimagequant
 pkgver=2.17.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Library for high-quality conversion of RGBA images to 8-bit indexed-color (palette) images.")
+shortdesc=("Palette quantization library that powers pngquant and other PNG optimizers.")
 longdesc=("Library for high-quality conversion of RGBA images to 8-bit indexed-color (palette) images.")
 
 source=("https://github.com/ImageOptim/libimagequant/archive/$pkgver/libimagequant-$pkgver.tar.gz")
 
-tags="media-gfx libs"
+tags=("media-gfx libs")
 
-build_deps="gcc-libs"
+build_deps=("gcc-libs")
 
 build() {
   go_src_dir
@@ -18,10 +18,10 @@ build() {
   sed -r 's/^install:.*/install:/;/install.*STATICLIB/d' -i Makefile
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-openmp
   make -j${numjobs} shared imagequant.pc
-  make DESTDIR="$pkgdir" PREFIX=/usr install
-  install -Dm644 COPYRIGHT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  make DESTDIR=${pkgdir} PREFIX=/usr install
+  install -Dm644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
