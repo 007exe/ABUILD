@@ -1,6 +1,6 @@
 pkgname=git
-pkgver=2.35.0
-pkgbuild=2
+pkgver=2.36.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The fast distributed version control system.")
@@ -11,6 +11,9 @@ source=("https://mirrors.edge.kernel.org/pub/software/scm/git/git-$pkgver.tar.xz
 tags=("dev-vcs develop")
 
 build_deps=("curl expat perl openssl pcre2 grep shadow zlib")
+
+# NOTE: Это опциональные зависимости
+removedep=("tk python libsecret")
 
 config_files=("etc/conf.d/git-daemon")
 
