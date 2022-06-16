@@ -1,7 +1,7 @@
 pkgname=jbig2dec
 pkgver=0.19
 _gsver=gs9530
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Decoder implementation of the JBIG2 image compression format.")
@@ -19,7 +19,8 @@ build() {
   autoreconf -vfi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
