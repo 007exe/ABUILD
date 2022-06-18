@@ -1,28 +1,31 @@
 pkgname=gegl
-pkgver=0.4.34
+pkgver=0.4.36
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Graph based image processing framework.")
 longdesc=("This package provides the GEneric Graphics Library, which is a graph based image processing format.")
 
 source=("https://download.gimp.org/pub/gegl/${pkgver%.*}/gegl-${pkgver}.tar.xz")
 
-tags="libs media-libs"
-# poppler-glib libspiro
-build_deps="intltool ruby mesa glu ffmpeg exiv2 vala gobject-introspection meson python-gobject babl json-glib gexiv2 libraw openexr librsvg libtiff luajit jasper lensfun suitesparse poppler"
+tags=("libs media-libs")
+
+# libspiro
+build_deps=("intltool ruby mesa glu ffmpeg exiv2 vala gobject-introspection meson
+python-gobject babl json-glib gexiv2 libraw openexr librsvg libtiff luajit jasper
+lensfun suitesparse poppler poppler-glib")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir -p build
-  cd build
-  meson .. \
-    -Dprefix=/usr \
-    -Dlibdir=/usr/lib${LIBDIRSUFFIX} \
-    -Dworkshop=true \
-    -Dmrg=disabled \
-    -Dmaxflow=disabled
-  ninja
-  DESTDIR="${pkgdir}" ninja install
+  meson build \
+    -D buildtype=release \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D workshop=true \
+    -D mrg=disabled \
+    -D maxflow=disabled \
+    -D docs=false
+  ninja -C build -j${numjobs}
+  DESTDIR=${pkgdir} ninja install -C build
 }
