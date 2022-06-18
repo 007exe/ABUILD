@@ -1,23 +1,25 @@
 pkgname=babl
-pkgver=0.1.88
+pkgver=0.1.90
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Dynamic, any to any, pixel format conversion library.")
 longdesc=("The Babl package is a dynamic, any to any, pixel format translation library.")
 
 source=("https://download.gimp.org/pub/babl/${pkgver%.*}/babl-${pkgver}.tar.xz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="meson gobject-introspection vala glibc lcms2"
+build_deps=("meson gobject-introspection vala glibc lcms2")
 
 build() {
   go_src_dir
   burn_patches
+# https://gitlab.gnome.org/GNOME/babl/-/merge_requests/45
+  sed 's/Description/description/' -i meson.build
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib${LIBDIRSUFFIX}
+    -D libdir=/usr/lib
   ninja -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
