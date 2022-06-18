@@ -1,23 +1,24 @@
 pkgname=orc
 pkgver=0.4.32
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
-shortdesc=("The Oil Runtime Compiler")
-longdesc=("Orc is a library and set of tools for compiling and executing very simple programs that operate on arrays of data. The language is a generic assembly language that represents many of the features available in SIMD architectures, including saturated addition and subtraction, and many arithmetic operations.")
+shortdesc=("The Oil Runtime Compiler.")
+longdesc=("Orc is a library and set of tools for compiling and executing very simple programs that operate on arrays of data.")
 
 source=("https://gitlab.freedesktop.org/gstreamer/orc/-/archive/${pkgver}/orc-${pkgver}.tar.bz2")
 
-tags="develop dev-util"
+tags=("develop dev-lang")
 
-build_deps="glibc valgrind meson"
+build_deps=("glibc valgrind meson")
 
-build()
-{
+build(){
   go_src_dir
-  meson build -Dprefix=/usr
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
   meson compile -C build
   meson test -C build --print-errorlogs
-  DESTDIR="$pkgdir" meson install -C build
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 COPYING
+  DESTDIR=${pkgdir} meson install -C build
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
