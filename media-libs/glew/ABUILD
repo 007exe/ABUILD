@@ -1,24 +1,26 @@
 pkgname=glew
 pkgver=2.2.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("The OpenGL Extension Wrangler Library")
+shortdesc=("The OpenGL Extension Wrangler Library.")
 longdesc=("GLEW is the OpenGL Extension Wrangler Library.")
 
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tgz")
 
-tags="libs dev-libs compat32"
+tags=("libs media-libs")
 
-build_deps="libxmu libxi glu"
+build_deps=("libxmu libxi glu")
+
+adddep=("glu")
 
 build() {
   go_src_dir
   burn_patches
 
-  make -j${numjobs} || exit 1
-  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-  make install GLEW_DEST=${pkgdir} LIBDIR=$pkgdir/usr/lib${LIBDIRSUFFIX} INCDIR=/${pkgdir}/usr/include/GL || exit 1
+  make -j${numjobs}
+  mkdir -p ${pkgdir}/usr/lib/pkgconfig
+  make install GLEW_DEST=${pkgdir} LIBDIR=$pkgdir/usr/lib INCDIR=/${pkgdir}/usr/include/GL || exit 1
 
-  install -D -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
