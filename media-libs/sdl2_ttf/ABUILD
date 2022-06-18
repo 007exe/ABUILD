@@ -1,16 +1,18 @@
 pkgname=sdl2_ttf
 pkgver=2.0.18
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library that allows you to use TrueType fonts in your SDL applications (Version 2).")
-longdesc=("Library that allows you to use TrueType fonts in SDL applications")
+longdesc=("Library that allows you to use TrueType fonts in SDL applications.")
 
 source=("https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${pkgver}.tar.gz")
 
 tags=("media-libs libs")
 
-build_deps="cmake sdl2 freetype"
+build_deps=("cmake sdl2 freetype")
+
+adddep=("freetype")
 
 build() {
   go_src_dir
@@ -18,10 +20,10 @@ build() {
   autoreconf -vi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm644 COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
