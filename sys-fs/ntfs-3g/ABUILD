@@ -1,16 +1,16 @@
 pkgname=ntfs-3g
-pkgver=2021.8.22
+pkgver=2022.5.17
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Free and open source NTFS driver for Linux.")
+shortdesc=("NTFS filesystem driver and utilities.")
 longdesc=("The ntfs-3g package contains NTFS filesystem driver with read and write support. It provides safe and fast handling of MS Windows 10, 8.1, 8, 7 Vista, XP, 2000 and Server 2003 NTFS file systems. Most POSIX file system operations are supported.")
 
-source="http://tuxera.com/opensource/ntfs-3g_ntfsprogs-${pkgver}.tgz"
+source=("http://tuxera.com/opensource/ntfs-3g_ntfsprogs-${pkgver}.tgz")
 
-tags="base sys-fs"
+tags=("base sys-fs")
 
-build_deps="util-linux-ng fuse"
+build_deps=("util-linux fuse")
 
 build() {
   go_src_dir
@@ -19,7 +19,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbin=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --disable-static \
     --disable-ldconfig \
@@ -29,8 +29,8 @@ build() {
     --enable-posix-acls \
     --enable-extras
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib${LIBDIRSUFFIX} install
+  make DESTDIR=${pkgdir} rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib install
 
-  rm "${pkgdir}"/usr/share/man/man8/ntfsfallocate.8 # uninstalled binary
+  rm ${pkgdir}/usr/share/man/man8/ntfsfallocate.8
   ln -s /usr/bin/ntfs-3g ${pkgdir}/usr/bin/mount.ntfs
 }
