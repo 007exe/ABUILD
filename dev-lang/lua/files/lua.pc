@@ -4,10 +4,10 @@ R=%REL%
 prefix=/usr
 INSTALL_BIN=${prefix}/bin
 INSTALL_INC=${prefix}/include
-INSTALL_LIB=${prefix}/lib64
+INSTALL_LIB=${prefix}/lib
 INSTALL_MAN=${prefix}/man/man1
 INSTALL_LMOD=${prefix}/share/lua/${V}
-INSTALL_CMOD=${prefix}/lib64/lua/${V}
+INSTALL_CMOD=${prefix}/lib/lua/${V}
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
@@ -17,4 +17,4 @@ Description: An Extensible Extension Language
 Version: ${R}
 Requires: 
 Libs: -L${libdir} -llua -lm
-Cflags: -I${includedir} 
+Cflags: -I${includedir}
