@@ -1,0 +1,8 @@
+echo -e "\nThe following packages extend firefox capabilities:"
+echo -e "networkmanager: Location detection via available WiFi networks"
+echo -e "libnotify: Notification integration"
+echo -e "pulseaudio: Audio support"
+echo -e "speech-dispatcher: Text-to-Speech"
+echo -e "hunspell-en_US: Spell checking, American English"
+echo -e "xdg-desktop-portal: Screensharing with Wayland"
+echo -e " "
