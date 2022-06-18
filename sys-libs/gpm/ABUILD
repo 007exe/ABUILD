@@ -1,18 +1,18 @@
 pkgname=gpm
 pkgver=1.20.7
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("A mouse server for the Linux console")
-longdesc=("Gpm provides mouse support to text-based Linux applications like the emacs editor, the Midnight Commander file management system, and other programs.  Gpm also provides console cut-and-paste operations using the mouse and includes a program to allow pop-up menus to appear at the click of a mouse button.")
-
-tags=("base sys-libs")
+shortdesc=("A mouse server for the Linux console.")
+longdesc=("Gpm provides mouse support to text-based Linux applications like the emacs editor, the Midnight Commander file management system, and other programs.")
 
 source=("http://www.nico.schottelius.org/software/gpm/archives/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="bash procps"
+tags=("base sys-libs")
 
-config_files="etc/conf.d/gpm"
+build_deps=("bash procps-ng")
+
+config_files=("etc/conf.d/gpm")
 
 build() {
   go_src_dir
@@ -20,7 +20,8 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
@@ -28,6 +29,7 @@ build() {
   install -Dm0755 ${filedir}/gpm.initd ${pkgdir}/etc/init.d/gpm
   install -Dm0644 ${filedir}/gpm.confd ${pkgdir}/etc/conf.d/gpm
 
-  ( cd ${pkgdir}/usr/lib${LIBDIRSUFFIX} ; ln -s libgpm.so.2.* libgpm.so )
-  chmod 755 ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libgpm.so.*
+  cd ${pkgdir}/usr/lib
+  ln -s libgpm.so.2.* libgpm.so
+  chmod 0755 ${pkgdir}/usr/lib/libgpm.so.*
 }
