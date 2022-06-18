@@ -1,26 +1,26 @@
 pkgname=slang
 pkgver=2.3.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("The shared library for the S-Lang extension language")
-longdesc=("The S-Lang language was designed so that it can be easily embedded into a program to provide the program with a powerful extension language. The S-Lang library, provided in this package, provides the S-Lang extension language.")
+shortdesc=("The shared library for the S-Lang extension language.")
+longdesc=("The S-Lang language was designed so that it can be easily embedded into a program to provide the program with a powerful extension language.")
 
 tags=("libs sys-libs")
 
 source=("https://www.jedsoft.org/releases/slang/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="glibc pcre zlib"
+build_deps=("glibc pcre zlib")
 
-config_files="etc/slsh.rc"
+config_files=("etc/slsh.rc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --sysconfdir=/etc
-# Gathers only in one pot !!!!
+# Собирается только в одном потоке !!!!
   make -j1
   make DESTDIR=${pkgdir} install
 }
