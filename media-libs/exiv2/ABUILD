@@ -1,32 +1,36 @@
 pkgname=exiv2
 pkgver=0.27.5
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Exif, Iptc and XMP metadata manipulation library and tools")
+shortdesc=("Exif, Iptc and XMP metadata manipulation library and tools.")
 longdesc=("Exiv2 is a C++ library and a command line utility for managing image and video metadata.")
 
 source=("https://github.com/Exiv2/exiv2/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="cmake gtest ninja gcc-libs zlib expat gettext curl"
+build_deps=("cmake gtest ninja gcc-libs zlib expat gettext curl")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake .. \
+  cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
-    -DEXIV2_ENABLE_VIDEO=yes \
-    -DEXIV2_ENABLE_WEBREADY=yes \
-    -DEXIV2_ENABLE_CURL=yes \
-    -DEXIV2_BUILD_SAMPLES=no \
-    -G "Unix Makefiles"
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -ffat-lto-objects" \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DEXIV2_BUILD_SAMPLES=ON \
+    -DEXIV2_BUILD_UNIT_TESTS=ON \
+    -DEXIV2_ENABLE_VIDEO=ON \
+    -DEXIV2_ENABLE_NLS=ON \
+    -DEXIV2_ENABLE_XMP=ON \
+    -DEXIV2_ENABLE_CURL=ON \
+    -DEXIV2_ENABLE_WEBREADY=ON \
+    -DEXIV2_ENABLE_BMFF=ON \
+    -GNinja
+  ninja -C build -j${numjobs}
+  sed '/samples\/cmake_install.cmake/d' -i build/cmake_install.cmake
+  DESTDIR=${pkgdir} ninja -C build install
 }
-
