@@ -1,16 +1,18 @@
 pkgname=linux-pam
 pkgver=1.5.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc="A security tool which provides authentication for applications"
-longdesc="PAM (Pluggable Authentication Modules) is a system security tool that allows system administrators to set authentication policy without having to recompile programs that handle authentication."
+shortdesc=("A security tool which provides authentication for applications.")
+longdesc=("PAM (Pluggable Authentication Modules) is a system security tool that allows system administrators to set authentication policy without having to recompile programs that handle authentication.")
 
-tags=("base sys-libs compat32")
+source=("https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-${pkgver}.tar.xz")
 
-build_deps="db libtirpc flex docbook-xml docbook-xsl cracklib libaudit"
+tags=("base sys-libs")
 
-config_files="etc/security/access.conf
+build_deps=("db libtirpc flex docbook-xml docbook-xsl cracklib libaudit")
+
+config_files=("etc/security/access.conf
 etc/security/group.conf
 etc/security/limits.conf
 etc/security/namespace.conf
@@ -24,31 +26,33 @@ etc/pam.d/system-auth
 etc/pam.d/system-local-login
 etc/pam.d/system-login
 etc/pam.d/system-remote-login
-etc/pam.d/system-services"
-
-source=("https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz")
+etc/pam.d/system-services")
 
 build() {
-  cd $srcdir/Linux-PAM-$pkgver
+  go_src_dir
   burn_patches
+# Отключаем установку не нужных файлов файлов systemd
+  sed -e /service_DATA/d -i modules/pam_namespace/Makefile.am
+  autoreconf
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
     --sysconfdir=/etc \
     --enable-sconfigdir=/etc/security \
-    --enable-securedir=/usr/lib${LIBDIRSUFFIX}/security \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --sbindir=/usr/bin \
-    --disable-db \
-    --disable-prelude \
-    --disable-nis
-  make -j${numjobs} || make
-  make DESTDIR=$pkgdir SCONFIGDIR=/etc/security install
-  chmod +s "$pkgdir"/usr/bin/unix_chkpwd
+    --enable-securedir=/usr/lib/security \
+    --disable-db
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} SCONFIGDIR=/etc/security install
 
-# Until this stuff is not in other packages, let it provide from here:
+# Устанавливаем uid unix_chkpwd
+  chmod +s ${pkgdir}/usr/bin/unix_chkpwd
+
+  install -dm755 ${pkgdir}/etc/pam.d
+
+# FIXME: Пока эти модули не окажутся в других пакетах они будут находится здесь
+# NOTE: Возможно их стоит вынести в отдельный пакет или в пакет общей конфигурации etc
   for i in ${filedir}/pam.d/* ; do
     install -D $i ${pkgdir}/etc/pam.d/`basename $i`
   done
-  install -dm755 "$pkgdir/etc/pam.d"
-  rm -r ${pkgdir}/usr/lib
 }
