@@ -1,0 +1,24 @@
+pkgname=cbindgen
+pkgver=0.24.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A tool for generating C bindings to Rust code.")
+longdesc=("Cbindgen can be used to generate C bindings for Rust code.")
+
+tags=("develop dev-util")
+
+source=("https://github.com/eqrion/cbindgen/archive/v${pkgver}/cbindgen-${pkgver}.tar.gz")
+
+build_deps=("rust gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CARGO_PROFILE_RELEASE_LTO=true CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
+  export CARGO_PROFILE_RELEASE_DEBUG=2
+  cargo fetch --locked --target x86_64-unknown-linux-gnu
+  cargo build --release --frozen --all-targets
+  install -Dt ${pkgdir}/usr/bin target/release/cbindgen
+  install -Dt ${pkgdir}/usr/share/doc/${pkgname} -m644 README.md
+}
