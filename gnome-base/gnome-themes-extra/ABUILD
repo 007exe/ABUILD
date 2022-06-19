@@ -1,0 +1,33 @@
+pkgname=gnome-themes-extra
+pkgver=3.28
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("Extra Themes for GNOME Applications.")
+longdesc=("The GNOME Themes Extra package, formerly known as GNOME Themes Standard, contains various components of the default GNOME theme.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-themes-extra/-/archive/${pkgver}/gnome-themes-extra-${pkgver}.tar.gz")
+
+tags=("gnome-base gnome")
+
+build_deps=("intltool gtk2 gtk3 cantarell-fonts")
+
+adddep=("cantarell-fonts")
+
+# NOTE: Это опциональные зависимости
+removedep=("gtk-engines")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir m4
+  intltoolize
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-gtk2-engine \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
