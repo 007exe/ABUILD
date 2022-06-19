@@ -1,49 +1,46 @@
 pkgname=zsh
-pkgver=5.8
-pkgbuild=2
-arch=('auto')
+pkgver=5.9
+pkgbuild=1
+arch=("auto")
 
-shortdesc=("A shell with lots of features")
-longdesc=("Zsh is a UNIX command interpreter (shell) usable as an interactive login shell and as a shell script command processor. Of the standard shells, zsh most closely resembles ksh but includes many enhancements. Zsh has command-line editing, built-in spelling correction, programmable command completion, shell functions (with autoloading), a history mechanism, and a lots of other features")
+shortdesc=("A very advanced and programmable command interpreter (shell) for UNIX.")
+longdesc=("The zsh package contains a command interpreter (shell) usable as an interactive login shell and as a shell script command processor. Of the standard shells, zsh most closely resembles ksh but includes many enhancements.")
 
 source=("https://www.zsh.org/pub/zsh-${pkgver}"{,-doc}".tar.xz")
 
-tags="console app-shells"
+tags=("console app-shells")
 
-config_files="usr/share/zsh/zshrc"
+build_deps=("pcre libcap gdbm")
 
-build_deps="pcre libcap gdbm"
+config_files=("etc/zsh/zprofile")
 
 before_build(){
   go_src_dir
   burn_patches
-# Set correct keymap path
+# Задаём правильный путь к раскладке
   sed -i 's#/usr/share/keymaps#/usr/share/kbd/keymaps#g' Completion/Unix/Command/_loadkeys
 
-# Fix usb.ids path
+# Исправляем путь usb.ids
   sed -i 's#/usr/share/misc/usb.ids#/usr/share/hwdata/usb.ids#g' Completion/Linux/Command/_lsusb
 
-# Remove unneeded and conflicting completion scripts
+# Удаляем ненужные и конфликтующие сценарии bash-completion
   for _fpath in AIX BSD Cygwin Darwin Debian Mandriva openSUSE Redhat Solaris; do
     rm -rf Completion/$_fpath
     sed "s#\s*Completion/$_fpath/\*/\*##g" -i Src/Zle/complete.mdd
   done
   rm Completion/Linux/Command/_pkgtool
-}
 
-build() {
-  go_src_dir
   ./configure \
     --prefix=/usr \
     --bindir=/bin \
     --mandir=/usr/share/man \
     --htmldir=/usr/share/doc/zsh/html \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --enable-etcdir=/etc/zsh \
     --enable-zshenv=/etc/zsh/zshenv \
     --enable-zlogin=/etc/zsh/zlogin \
     --enable-zlogout=/etc/zsh/zlogout \
-    --enable-zprofile=/etc/zprofile \
+    --enable-zprofile=/etc/zsh/zprofile \
     --enable-zshrc=/etc/zsh/zshrc \
     --enable-maildir-support \
     --with-term-lib='ncursesw' \
@@ -57,11 +54,9 @@ build() {
     --enable-zsh-secure-free
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
-after_build() {
-    mkdir -p $pkgdir/etc/
-    echo "# This is the zsh profile file. It is set to call /etc/profile by default." > $pkgdir/etc/zprofile
-    echo "emulate sh -c 'source /etc/profile'" >> $pkgdir/etc/zprofile
-    echo "# This is your global zshrc file. Add whatever you need to be available to all users in here." > $pkgdir/usr/share/zsh/zshrc
+  mkdir -p ${pkgdir}/etc/zsh
+  echo "emulate sh -c 'source /etc/profile'" >> ${pkgdir}/etc/zsh/zprofile
+
+  install -D -m644 LICENCE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

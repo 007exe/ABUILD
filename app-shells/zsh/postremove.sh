@@ -1,1 +1,4 @@
-sed -i 's/\/bin\/zsh//g' etc/shells
+sed -i -r '/^(\/usr)?\/bin\/zsh$/d' etc/shells
+
+# Удаляем пустые строки
+sed -i '/^$/d' etc/shells

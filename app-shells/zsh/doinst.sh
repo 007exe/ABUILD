@@ -1,6 +1,5 @@
-if ! grep zsh etc/shells 1> /dev/null 2> /dev/null; then
-  echo "/bin/zsh" >> etc/shells
-fi
-if [ ! -e etc/zprofile ]; then
-  ( cd etc ; ln -sf profile zprofile )
-fi
+grep -qe '^/bin/zsh$' etc/shells || echo '/bin/zsh' >> etc/shells
+grep -qe '^/usr/bin/zsh$' etc/shells || echo '/usr/bin/zsh' >> etc/shells
+
+# Удаляем пустые строки
+sed -i '/^$/d' etc/shells
