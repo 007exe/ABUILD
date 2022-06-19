@@ -1,50 +1,29 @@
 pkgname=mupdf
-pkgver=1.18.0
+pkgver=1.19.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Lightweight PDF and XPS viewer")
+shortdesc=("Lightweight PDF and XPS viewer.")
 longdesc=("MuPDF is a lightweight PDF and XPS viewer.")
 
 source=("https://mupdf.com/downloads/archive/mupdf-${pkgver/_/}-source.tar.xz")
 
-tags="games games-board"
-# freeglut glu jbig2dec gumbo-parser
-build_deps="harfbuzz desktop-file-utils freetype libjpeg-turbo mesa openjpeg2 libxext"
+tags=("utils app-text")
 
-#pkglist="pkgname1 pkgname2"
-
-before_build() {
-  go_src_dir
-  sed -i '/MU.*_EXE. :/{
-        s/\(.(MUPDF_LIB)\)\(.*\)$/\2 | \1/
-        N
-        s/$/ -lmupdf -L$(OUT)/
-        }' Makefile
-
-cat > user.make << EOF &&
-USE_SYSTEM_FREETYPE := yes
-USE_SYSTEM_HARFBUZZ := yes
-USE_SYSTEM_JBIG2DEC := no
-USE_SYSTEM_JPEGXR := no # not used without HAVE_JPEGXR
-USE_SYSTEM_LCMS2 := no # need lcms2-art fork
-USE_SYSTEM_LIBJPEG := yes
-USE_SYSTEM_MUJS := no # build needs source anyways
-USE_SYSTEM_OPENJPEG := yes
-USE_SYSTEM_ZLIB := yes
-USE_SYSTEM_GLUT := no # need freeglut2-art fork
-USE_SYSTEM_CURL := yes
-USE_SYSTEM_GUMBO := no
-EOF
-
-  export XCFLAGS=-fPIC
-}
+build_deps=("desktop-file-utils freetype freeglut glu harfbuzz jbig2dec libjpeg-turbo mesa openjpeg2 libxext ")
 
 build() {
   go_src_dir
   burn_patches
+# Использовать системные библиотеки
+  rm -rf thirdparty/{freeglut,freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib}
+    CFLAGS+=' -fPIC'
+  CXXFLAGS+=' -fPIC'
+  export CFLAGS CXXFLAGS
+  USE_SYSTEM_LIBS='yes'
+  export USE_SYSTEM_LIBS
+  export CFLAGS+=' -ffat-lto-objects'
   make build=release libs apps shared=yes
-  unset XCFLAGS
+  make build=release prefix=${pkgdir}/usr install
+  find ${pkgdir}/usr/include ${pkgdir}/usr/share ${pkgdir}/usr/lib -type f -exec chmod 0644 {} +
 }
-
-#${filedir}
