@@ -1,0 +1,7 @@
+echo -e "\nThe following packages extend fcitx capabilities:"
+echo -e "enchant: for word predication support"
+echo -e "opencc: optional engine to do chinese convert"
+echo -e "gettext: for fcitx-po-parser"
+echo -e "fcitx-configtool: for configuration (GTK based)"
+echo -e "kcm-fcitx: for configuration under KDE"
+echo -e " "
