@@ -1,6 +1,6 @@
 pkgname=fakeroot
 pkgver=1.29
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Tool for simulating superuser privileges.")
@@ -12,7 +12,7 @@ tags=("utils sys-apps")
 
 build_deps=("glibc sed util-linux")
 
-adddep="sed util-linux bash coreutils"
+adddep=("sed util-linux bash coreutils")
 
 build() {
   go_src_dir
@@ -29,4 +29,8 @@ build() {
   echo '/usr/lib/libfakeroot' > ${pkgdir}/etc/ld.so.conf.d/fakeroot.conf
 
   install -Dm0644 README ${pkgdir}/usr/share/doc/${pkgname}/README
+
+# FIXME: По какимто причинам ldconfig не загружает библиотеки из подключённой директории
+  cd ${pkgdir}/usr/lib
+  ln -s libfakeroot/libfakeroot-0.so libfakeroot.so
 }
