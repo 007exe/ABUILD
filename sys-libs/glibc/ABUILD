@@ -2,10 +2,10 @@
 # NOTE: valgrind необходимо пересобрать при обновлениии glibc
 pkgname=glibc
 pkgver=2.35
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("GNU C Library")
+shortdesc=("GNU C Library.")
 longdesc=("The Glibc package contains the main C library. This library provides the basic routines for allocating memory, searching directories, opening and closing files, reading and writing files, string handling, pattern matching, arithmetic, and so on.")
 
 tags=("base sys-base")
