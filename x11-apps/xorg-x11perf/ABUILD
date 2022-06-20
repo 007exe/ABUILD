@@ -1,28 +1,28 @@
 pkgname=xorg-x11perf
 pkgver=1.6.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Simple X server performance benchmarker")
+shortdesc=("Simple X server performance benchmarker.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
-
-tags=('x11-apps xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/app/x11perf-${pkgver}.tar.bz2")
 
-build_deps="libx11 libxmu libxrender libxft libxext xorg-util-macros"
+tags=("x11-apps xorg")
+
+build_deps=("libx11 libxmu libxrender libxft libxext xorg-util-macros")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
