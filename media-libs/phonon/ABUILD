@@ -1,6 +1,6 @@
 pkgname=phonon
 pkgver=4.11.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The multimedia framework by KDE.")
@@ -18,7 +18,9 @@ removedep=("pulseaudio qt5-tools")
 build() {
   go_src_dir
   burn_patches
-  cmake -B build
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }
