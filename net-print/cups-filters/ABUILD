@@ -1,16 +1,20 @@
 pkgname=cups-filters
-pkgver=1.28.10
+pkgver=1.28.15
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("OpenPrinting CUPS Filters")
+shortdesc=("OpenPrinting CUPS Filters.")
 longdesc=("The CUPS Filters package contains backends, filters and other software that was once part of the core CUPS distribution but is no longer maintained by Apple Inc.")
 
-source=("https://www.openprinting.org/download/cups-filters/cups-filters-$pkgver.tar.xz")
+source=("https://www.openprinting.org/download/cups-filters/cups-filters-${pkgver}.tar.xz")
 
-tags="console net-print"
-# mupdf --enable-mutool
-build_deps="glib2 python lcms2 ghostscript poppler libcups>=2.2.6 qpdf ttf-dejavu"
+tags=("console net-print")
+
+# mupdf-tools --enable-mutool
+build_deps=("ghostscript python lcms2 poppler qpdf imagemagick liblouis ijs libcups")
+
+# NOTE: Это опциональные зависимости
+removedep=("ghostscript foomatic-db foomatic-db-engine foomatic-db-nonfree antiword docx2txt")
 
 build() {
   go_src_dir
@@ -19,25 +23,26 @@ build() {
   CXXFLAGS="$SLKCFLAGS -std=c++11 -fpermissive"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
+    --sbindir=/usr/bin \
     --localstatedir=/var \
-    --without-php \
-    --disable-avahi \
+    --with-rcdir=no \
+    --enable-avahi \
+    --with-browseremoteprotocols=DNSSD,CUPS \
+    --enable-auto-setup-driverless \
     --disable-mutool \
     --disable-static \
-    --enable-auto-setup-driverless \
-    --with-rcdir=no \
-    --with-browseremoteprotocols=cups
+    --with-test-font-path=/usr/share/fonts/TTF/DejaVuSans.ttf
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# use cups group from cups pkg FS#56818
-  chgrp -R 209 "${pkgdir}"/etc/cups
-  
+# использовать группу cups из cups pkg FS#56818
+  chgrp -R 209 ${pkgdir}/etc/cups
+
   install -Dm755 ${filedir}/cups-browsed.init ${pkgdir}/etc/init.d/cups-browsed
 
-# license
-  mkdir -p "${pkgdir}"/usr/share/licenses/${pkgname}
-  install -m644 "${srcdir}"/${pkgname}-${pkgver}/COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/
+  mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 ${srcdir}/${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

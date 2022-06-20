@@ -1,7 +1,7 @@
-#!/sbin/openrc-run
+#!/usr/bin/openrc-run
 
 pidfile="/var/run/cups-browsed.pid"
-command="/usr/sbin/cups-browsed"
+command="/usr/bin/cups-browsed"
 command_background="true"
 
 depend() {

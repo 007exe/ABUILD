@@ -1,0 +1,8 @@
+echo -e "\nThe following packages extend cups-filters capabilities:"
+echo -e "ghostscript: for non-PostScript printers to print with CUPS to convert PostScript to raster images"
+echo -e "foomatic-db: drivers use Ghostscript to convert PostScript to a printable form directly"
+echo -e "foomatic-db-engine: drivers use Ghostscript to convert PostScript to a printable form directly"
+echo -e "foomatic-db-nonfree: drivers use Ghostscript to convert PostScript to a printable form directly"
+echo -e "antiword: to convert MS Word documents"
+echo -e "docx2txt: to convert Microsoft OOXML text from DOCX files"
+echo -e " "
