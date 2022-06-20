@@ -1,28 +1,28 @@
 pkgname=icon-naming-utils
 pkgver=0.8.90
-pkgbuild=1
-arch=("auto")
+pkgbuild=2
+arch=("noarch")
 
 shortdesc=("Maps the new names of icons for Tango to the legacy names used by the GNOME and KDE desktops.")
 longdesc=("The icon-naming-utils package contains a Perl script used for maintaining backwards compatibility with current desktop icon themes, while migrating to the names specified in the Icon Naming Specification.")
 
+source=("https://sources.archlinux.org/other/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
 tags=("x11-misc libs")
 
-source=("https://sources.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.gz")
-
-build_deps="perl-xml-simple"
+build_deps=("perl-xml-simple")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
-    --libexecdir=/usr/lib$LIBDIRSUFFIX/icon-naming-utils \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/icon-naming-utils \
     --sysconfdir=/etc \
     --localstatedir=/var
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  mv "$pkgdir/usr/share/pkgconfig" "$pkgdir/usr/lib$LIBDIRSUFFIX/pkgconfig"
+  mv ${pkgdir}/usr/share/pkgconfig ${pkgdir}/usr/lib/pkgconfig
 }
