@@ -1,6 +1,6 @@
 pkgname=libdispatch
 pkgver=5.5.0
-pkgbuild=1
+pkgbuild=2
 strict_version=1
 arch=("auto")
 
@@ -28,6 +28,7 @@ build() {
     -GNinja \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBlocksRuntime_INCLUDE_DIR=/usr/include \
     -DBlocksRuntime_LIBRARIES=/usr/lib/libBlocksRuntime.so
   ninja -C build
