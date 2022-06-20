@@ -1,0 +1,29 @@
+pkgname=liblouis
+pkgver=3.22.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Open-source braille translator and back-translator.")
+longdesc=("An open-source braille translator and back-translator.")
+
+source=("https://github.com/liblouis/liblouis/releases/download/v${pkgver}/liblouis-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("help2man python perl glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-ucs4 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  cd python
+  LD_PRELOAD+=":${srcdir}/${pkgname}-${pkgver}/liblouis/.libs/liblouis.so"
+  python setup.py install --root=${pkgdir} --prefix=/usr --optimize=1
+}
