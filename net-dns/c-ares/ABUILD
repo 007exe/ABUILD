@@ -1,6 +1,6 @@
 pkgname=c-ares
 pkgver=1.18.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library that performs asynchronous DNS operations.")
@@ -16,10 +16,11 @@ build() {
   go_src_dir
   cmake -B build -S .\
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE='None' \
     -Wno-dev
   make VERBOSE=1 -C build
-  make DESTDIR="${pkgdir}" install -C build
-  install -vDm 644 "LICENSE.md" -t "${pkgdir}/usr/share/licenses/${pkgname}/"
-  install -vDm 644 {AUTHORS,CHANGES,{CONTRIBUTING,README}.md,RELEASE-NOTES} -t "${pkgdir}/usr/share/doc/${pkgname}/"
+  make DESTDIR=${pkgdir} install -C build
+  install -vDm 644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -vDm 644 {AUTHORS,CHANGES,{CONTRIBUTING,README}.md,RELEASE-NOTES} -t ${pkgdir}/usr/share/doc/${pkgname}/
 }
