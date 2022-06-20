@@ -1,0 +1,31 @@
+pkgname=file-roller
+pkgver=3.9.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Create and modify archives"
+
+source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags="xapps app-arch"
+
+build_deps="make gcc binutils itstool perl perl-xml-parser gettext gnome-doc-utils desktop-file-utils intltool p7zip bzip2 pkg-config file json-glib libnotify libarchive dconf docbook-xsl sed grep"
+
+adddep="p7zip bzip2 unrar cpio gzip lha tar xz zlib rpm"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/file-roller \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--disable-schemas-compile"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
