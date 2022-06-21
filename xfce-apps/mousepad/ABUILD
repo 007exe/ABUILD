@@ -1,25 +1,26 @@
 pkgname=mousepad
-pkgver=0.5.7
+pkgver=0.5.9
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Simple Xfce oriented text editor")
-longdesc=("Mousepad is a text editor for Xfce based on Leafpad. The initial reason for Mousepad was to provide printing support, which would have been difficult for Leafpad for various reasons.")
+shortdesc=("Simple Xfce oriented text editor.")
+longdesc=("Mousepad is a simple GTK+ 3 text editor for the Xfce desktop environment.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xfce xfce-base"
+tags=("xfce xfce-apps")
 
-build_deps="gtksourceview4 intltool desktop-file-utils"
+build_deps=("gtksourceview4 intltool desktop-file-utils")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/xfce4 \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --enable-dbus \
