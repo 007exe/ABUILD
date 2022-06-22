@@ -1,0 +1,37 @@
+pkgname=pipewire
+pkgver=0.3.52
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Low-latency audio/video router and processor.")
+longdesc=("The pipewire package contains a server and user-space API to handle multimedia pipelines.")
+
+source=("https://github.com/PipeWire/pipewire/archive/${pkgver}/pipewire-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+# rtkit
+build_deps=("alsa-lib bluez-libs avahi git dbus doxygen graphviz gst-plugins-base libcanberra
+libfdk-aac libfreeaptx libldac libpulse libsndfile libusb libx11 libxfixes lilv meson ncurses
+python-docutils sbc sdl2 valgrind webrtc-audio-processing")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D buildtype=release \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D bluez5-codec-lc3plus=disabled \
+    -D docs=enabled \
+    -D jack=disabled \
+    -D jack-devel=true \
+    -D libjack-path=/usr/lib \
+    -D libcamera=disabled \
+    -D udevrulesdir=/usr/lib/udev/rules.d \
+    -D roc=disabled \
+    -D session-managers=[]
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
