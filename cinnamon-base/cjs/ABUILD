@@ -1,0 +1,28 @@
+pkgname=cjs
+pkgver=5.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Javascript Bindings for Cinnamon.")
+longdesc=("Linux Mint's fork of gjs for Cinnamon.")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags=("cinnamon cinnamon-base")
+
+build_deps=("meson samurai gtk3 gobject-introspection js78")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  meson \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=/usr/lib \
+    -D buildtype=plain \
+    -D installed_tests=false ..
+  samu
+  DESTDIR=${pkgdir} samu install
+}

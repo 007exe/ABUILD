@@ -1,0 +1,30 @@
+pkgname=cinnamon-screensaver
+pkgver=5.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Screensaver for Cinnamon.")
+longdesc=("Screensaver designed to integrate well with the Cinnamon desktop.")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags=("cinnamon cinnamon-base")
+
+build_deps=("gobject-introspection meson samurai accountsservice cinnamon-desktop libgnomekbd python-cairo python-gobject python-setproctitle python-xapp xapp")
+
+adddep=("python-setproctitle python-gobject")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  meson \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=lib/cinnamon-screensaver \
+    --buildtype=plain ..
+  samu
+  DESTDIR=${pkgdir} samu install
+}
+

@@ -1,0 +1,32 @@
+pkgname=cinnamon-control-center
+pkgver=5.4.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Control Center for Cinnamon.")
+longdesc=("Cinnamons's main interface to configure various aspects of the desktop.")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("cinnamon cinnamon-base")
+
+build_deps=("meson samurai gnome-online-accounts cinnamon-settings-daemon cinnamon-menus colord libgnomekbd libmm-glib libnma networkmanager")
+
+# NOTE: Это опциональные зависимости
+removedep=("gnome-color-manager gnome-online-accounts")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  meson \
+    --prefix=/usr \
+    --libdir=/usr/lib ..
+  samu
+  DESTDIR=${pkgdir} samu install
+# https://github.com/linuxmint/Cinnamon/pull/7382#issuecomment-374894901
+  rm ${pkgdir}/usr/bin/cinnamon-control-center
+  rm ${pkgdir}/usr/share/cinnamon-control-center/ui/shell.ui
+}
+

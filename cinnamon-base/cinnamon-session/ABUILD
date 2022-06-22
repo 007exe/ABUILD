@@ -1,0 +1,28 @@
+pkgname=cinnamon-session
+pkgver=5.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Cinnamon Session Handler.")
+longdesc=("Linux desktop which provides advanced innovative features and a traditional user experience.")
+
+source=("https://github.com/linuxmint/cinnamon/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("cinnamon cinnamon-base")
+
+build_deps=("meson samurai xtrans cjs cinnamon-desktop libsm libcanberra xapp muffin")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  meson \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=lib/${pkgname} \
+    --buildtype=plain ..
+  samu
+  DESTDIR=${pkgdir} samu install
+}
+

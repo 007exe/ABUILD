@@ -1,0 +1,26 @@
+pkgname=cinnamon-menus
+pkgver=5.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cinnamon menu specifications.")
+longdesc=("Cinnamon's library for the Desktop Menu fd.o specification.")
+
+source=("https://github.com/linuxmint/cinnamon-menus/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("cinnamon cinnamon-base")
+
+build_deps=("gobject-introspection meson samurai glib2")
+
+build(){
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  meson \
+    --prefix=/usr \
+    --libdir=/usr/lib ..
+  samu
+  DESTDIR=${pkgdir} samu install
+}
+

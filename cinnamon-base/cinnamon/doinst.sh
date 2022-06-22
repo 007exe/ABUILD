@@ -1,0 +1,7 @@
+echo -e "\nThe following packages extend cinnamon capabilities:"
+echo -e "blueberry: Bluetooth support"
+echo -e "gnome-panel: fallback mode"
+echo -e "metacity: fallback mode"
+echo -e "system-config-printer: printer settings"
+echo -e "wget: cover download support in audio applet"
+echo -e " "

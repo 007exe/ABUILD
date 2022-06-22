@@ -1,0 +1,33 @@
+pkgname=nemo
+pkgver=5.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cinnamon file manager (Nautilus fork).")
+longdesc=("A file manager for Cinnamon, forked from Nautilus.")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("cinnamon cinnamon-base")
+
+build_deps=("meson samurai gobject-introspection intltool libgsf cinnamon-desktop dconf gvfs exempi libexif libnotify libxml2 python xapp")
+
+# NOTE: Это опциональные зависимости
+removedep=("ffmpegthumbnailer catdoc ghostscript libgsf libreoffice odt2txt poppler")
+
+build() {
+  go_src_dir
+  burn_patches
+# Конфликт с nautilus
+  sed -i '/^\[Desktop Entry/,/^\[Desktop Action/ s/^Name\(.*\)=.*/Name\1=Nemo/' data/nemo.desktop.in
+  mkdir build
+  cd build
+  meson \
+  --prefix=/usr \
+  --libdir=/usr/lib \
+  --libexecdir=lib/${pkgname} \
+  --buildtype=plain ..
+  samu
+  DESTDIR=${pkgdir} samu install
+}
+
