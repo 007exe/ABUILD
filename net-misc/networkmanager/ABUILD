@@ -1,5 +1,5 @@
 pkgname=networkmanager
-pkgver=1.38.0
+pkgver=1.38.2
 _pppver=2.4.9
 pkgbuild=1
 arch=("auto")
@@ -37,7 +37,6 @@ build() {
     -D modify_system=true \
     -D selinux=false \
     -D dist_version=${pkgver} \
-    -D session_tracking_consolekit=false \
     -D iwd=true \
     -D pppd_plugin_dir=/usr/lib/pppd/${_pppver} \
     -D nm_cloud_setup=true \
