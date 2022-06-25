@@ -1,5 +1,5 @@
 pkgname=audit
-pkgver=3.0.7
+pkgver=3.0.8
 pkgbuild=1
 arch=("auto")
 
@@ -37,13 +37,13 @@ build() {
     --enable-gssapi-krb5=yes \
     --with-libcap-ng=yes \
     --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   [ -n "${SOURCE_DATE_EPOCH}" ] && touch -h -d @$SOURCE_DATE_EPOCH bindings/swig/python/audit.py
-  make DESTDIR="${pkgdir}" INSTALL='install -p' install
+  make DESTDIR=${pkgdir} install
 
+# Создаём каталог для логов
   install -d ${pkgdir}/var/log/audit
-  rm -rf ${pkgdir}/etc/rc.d
-  rm -rf ${pkgdir}/etc/sysconfig
 }
 
 # NOTE: Это временный виртуальный пакет созданный при переименовании libaudit в audit.
