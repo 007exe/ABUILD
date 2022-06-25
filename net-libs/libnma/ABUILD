@@ -1,5 +1,5 @@
 pkgname=libnma
-pkgver=1.8.38
+pkgver=1.8.40
 pkgbuild=1
 arch=("auto")
 
