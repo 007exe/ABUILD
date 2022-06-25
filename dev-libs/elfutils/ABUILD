@@ -1,6 +1,6 @@
 pkgname=elfutils
-pkgver=0.186
-pkgbuild=3
+pkgver=0.187
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Handle ELF object files and DWARF debugging information.")
