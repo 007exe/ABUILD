@@ -1,8 +1,7 @@
 pkgname=cyrus-sasl
-pkgver=2.1.27
-pkgbuild=5
+pkgver=2.1.28
+pkgbuild=1
 arch=("auto")
-numjobs=1
 
 shortdesc=("The Simple Authentication and Security Layer.")
 longdesc=("SASL is the Simple Authentication and Security Layer, a method for adding authentication support to connection-based protocols. To use SASL, a protocol includes a command for identifying and authenticating a user to a server and for optionally negotiating protection of subsequent protocol interactions. If its use is negotiated, a security layer is inserted between the protocol and the connection.")
@@ -64,7 +63,7 @@ build() {
     --with-saslauthd \
     --with-gdbm \
     --with-dblib=gdbm
-  make -j${numjobs}
+  make -j1
   make DESTDIR=${pkgdir} sasldir=/usr/lib/sasl2 install
 
   mkdir -p $pkgdir/var/state/saslauthd
