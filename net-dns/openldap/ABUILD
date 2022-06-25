@@ -1,6 +1,6 @@
 pkgname=openldap
 pkgver=2.6.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Lightweight Directory Access Protocol (LDAP) client and server.")
@@ -17,7 +17,7 @@ etc/openldap/slapd.conf")
 
 # libsasl
 # wiredtiger --disable-wt
-build_deps=("libtool e2fsprogs util-linux-ng chrpath unixodbc e2fsprogs libsodium groff")
+build_deps=("libtool e2fsprogs util-linux chrpath unixodbc e2fsprogs libsodium groff")
 
 before_build() {
   go_src_dir
