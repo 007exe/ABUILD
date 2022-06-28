@@ -1,0 +1,120 @@
+pkgname=kernel-zen
+pkgver=5.18.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The zen Linux kernel and modules.")
+longdesc=("This is a Linux kernel with built-in support for most disk controllers and filesystems.")
+
+tags=("base sys-kernel")
+
+source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${pkgver}-zen1.tar.gz")
+
+custom_opts=("skip_gendeps no_strip skip_validate")
+
+skip_gendeps=1
+
+build_deps=("bc kmod cpio perl tar xz xmlto rsync diffutils ncurses bison flex elfutils
+python-sphinx python-sphinx_rtd_theme graphviz imagemagick")
+
+adddep=("coreutils kmod")
+
+before_build() {
+  go_src_dir
+  burn_patches
+
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*      Очистка древа исходного кода от мусора...      *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  make mrproper
+
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*     Копирование предыдущей конфигурации ядра...     *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  cat ${filedir}/defconfig-zen-x86_64 > .config
+
+# sudo modprobe configs
+# (or add configs to /etc/conf.d/modules if you always want it available).
+# zcat /proc/config.gz > .config
+# Оставит все настройки с старого файла .config, и установит новые настройки в их рекомендуемое значение (т.е. в значение по умолчанию):
+
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*         Применение настроек по умолчанию...         *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  make olddefconfig
+
+# Ручная настройка ядра
+  make menuconfig
+
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*     Сохранение нового конфигурационного файла...    *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*  Не забудь скрпировать новый конфигурационный файл  *"
+  echo "*     ~/${pkgver}-defconfig-x86_64 в каталог files    *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  cp .config ~/${pkgver}-defconfig-zen-x86_64
+}
+
+#################################################################################################################################
+
+build() {
+  go_src_dir
+  make -j${numjobs}
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*                  Установка ядра...                  *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  mkdir -p ${pkgdir}/boot
+  cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-linux-zen
+
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*              Установка модулей Ядра...              *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  make -j${numjobs} INSTALL_MOD_PATH=${pkgdir}/usr INSTALL_MOD_STRIP=1 modules_install
+
+  rm -rf ${pkgdir}/usr/lib/firmware
+  rm ${pkgdir}/usr/lib/modules/${pkgver}-zen1/{source,build}
+  ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${pkgver}-zen1/source
+  ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${pkgver}-zen1/build
+
+# Пост установочный скрипт
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*       Создание пост установочного скрипта...        *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
+  mkdir -p ${pkgdir}/install
+  cat << EOF > ${pkgdir}/install/doinst.sh
+if [ -x usr/bin/depmod ]; then
+  chroot . usr/bin/depmod -a ${pkgver} 1> /dev/null 2> /dev/null
+fi
+
+EOF
+}
