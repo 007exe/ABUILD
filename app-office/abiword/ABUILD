@@ -1,42 +1,41 @@
 pkgname=abiword
 pkgver=3.0.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Fully-featured word processor")
+shortdesc=("Fully-featured word processor.")
 longdesc=("AbiWord is a word processor which is useful for writing reports, letters and other formatted documents.")
 
-source=("https://www.abisource.com/downloads/$pkgname/$pkgver/source/$pkgname-$pkgver.tar.gz")
+source=("https://www.abisource.com/downloads/${pkgname}/${pkgver}/source/${pkgname}-${pkgver}.tar.gz")
 
-tags="xapps app-office"
+tags=("xapps app-office")
 
-build_deps="pkg-config boost gobject-introspection libwpd libwps python-gobject autoconf fribidi wv goffice librsvg enchant desktop-file-utils redland libical gtk-update-icon-cache loudmouth libwpg libwps libwmf link-grammar gtkmathview aiksaurus libxslt libsoup libots libgsf psiconv"
+# libwpd libwps goffice redland loudmouth libwpg libwps link-grammar gtkmathview aiksaurus libots psiconv
+build_deps=("pkgconf boost gobject-introspection python-gobject autoconf-archive fribidi librsvg
+enchant desktop-file-utils libical gtk-update-icon-cache libwmf libxslt libsoup libgsf wv")
 
-removedep=" mesa  libgl  udev libdrm fontconfig freetype "
+removedep=("mesa  libgl  udev libdrm fontconfig freetype")
 
-build()
-{
-
-go_src_dir
-
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---with-gtk2 \
---enable-clipart \
---enable-templates \
---enable-plugins \
---docdir=/usr/doc/${pkgname}-${pkgver} 
-
-make
-
-make DESTDIR=$pkgdir install
-
-}
-
-after_build()
-{
-find  ${pkgdir} -name \*.la -exec rm -f {} \;
+build(){
+  go_src_dir
+  burn_patches
+  sed -e "s/free_suggestions/free_string_list/" \
+    -e "s/_to_personal//" \
+    -e "s/in_session/added/" \
+    -i src/af/xap/xp/enchant_checker.cpp
+  libtoolize --force
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --disable-static \
+    --enable-shared \
+    --enable-clipart \
+    --enable-templates \
+    --enable-plugins \
+    --enable-introspection
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
