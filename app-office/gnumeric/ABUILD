@@ -1,0 +1,33 @@
+pkgname=gnumeric
+pkgver=1.12.52
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A GNOME Spreadsheet Program.")
+longdesc=("The Gnumeric package contains a spreadsheet program which is useful for mathematical analysis.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("xapps app-office")
+
+# ntltool psiconv pygobject-devel
+build_deps=("docbook-xml gobject-introspection python-gobject gtk-doc autoconf-archive yelp-tools perl")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-gobject perl yelp")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-schemas-compile \
+    --enable-introspection \
+    --disable-silent-rules
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
