@@ -1,0 +1,26 @@
+pkgname=zig
+pkgver=0.9.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A robust, optimal, and maintainable programming language.")
+longdesc=("A general-purpose programming language and toolchain for maintaining robust, optimal, and reusable software.")
+
+source=("https://ziglang.org/download/${pkgver}/zig-${pkgver}.tar.xz")
+
+tags=("develop dev-lang")
+
+build_deps=("clang cmake llvm lld")
+
+build(){
+  go_src_dir
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_PREFIX_PATH=/usr/lib/llvm13 \
+    -DZIG_PREFER_CLANG_CPP_DYLIB=ON \
+    .
+    cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
