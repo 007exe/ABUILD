@@ -1,0 +1,30 @@
+pkgname=ncdu
+pkgver=2.1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Disk usage analyzer with an ncurses interface.")
+longdesc=("Ncdu is a disk usage analyzer with an ncurses interface.")
+
+source=("https://dev.yorhel.nl/download/${pkgname}-${pkgver}.tar.gz")
+
+tags=("sys-fs console")
+
+build_deps=("ncurses zig")
+
+build(){
+  go_src_dir
+  burn_patches
+  zig build-exe \
+    -target x86_64-linux.5.10-gnu.2.34 -mcpu baseline \
+    -L /usr/local/lib -L /usr/lib \
+    -isystem /usr/local/include -isystem /usr/include \
+    ./src/main.zig ./src/ncurses_refs.c \
+    -lc -lncursesw \
+    -OReleaseSafe \
+    --name ncdu \
+    -D _DEFAULT_SOURCE -D _XOPEN_SOURCE=600 \
+    -fPIE \
+    -z relro -z now \
+    -fno-each-lib-rpath
+}
