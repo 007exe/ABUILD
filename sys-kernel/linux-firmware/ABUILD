@@ -1,22 +1,22 @@
 pkgname=linux-firmware
-pkgver=20210511
+pkgver=20220610
 pkgbuild=1
 arch=("fw")
 
-shortdesc=("Linux kernel firmware files")
+shortdesc=("Firmware files for Linux.")
 longdesc=("This package contains the firmware for in-kernel drivers that was previously included in the kernel. It is shared by all kernels >= 2.6.27-rc1.")
 
 tags=("sys-kernel base")
 
 source=("https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-$pkgver.tar.gz")
 
-build_deps="mkpkg"
+build_deps=("make")
 
-conflicts="kernel-firmware"
+conflicts=("kernel-firmware")
 
 build() {
   go_src_dir
-  make DESTDIR="${pkgdir}" FIRMWAREDIR=/lib/firmware install
+  make DESTDIR=${pkgdir} FIRMWAREDIR=/usr/lib/firmware install
 
-  install -Dt "${pkgdir}/usr/share/licenses/${pkgname}" -m644 LICEN* WHENCE
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICEN* WHENCE
 }
