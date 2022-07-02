@@ -1,0 +1,43 @@
+# NOTE: Пакет требует доработки, необходим хук
+pkgname=booster
+pkgver=0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fast and secure initramfs generator.")
+longdesc=("Initramfs is a specially crafted small root filesystem that mounted at the early stages of Linux OS boot process.")
+
+source=("https://github.com/anatol/booster/archive/${pkgver}.zip")
+
+tags=("base sys-kernel")
+
+# ruby-ronn-ng
+build_deps=("bash go")
+
+adddep=("bash")
+
+config_files=("etc/booster.yaml")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd generator
+  CGO_CPPFLAGS="${CPPFLAGS}" CGO_CFLAGS="${CFLAGS}" CGO_CXXFLAGS="${CXXFLAGS}" CGO_LDFLAGS="${LDFLAGS}" \
+  go build -trimpath \
+      -buildmode=pie \
+      -mod=readonly \
+      -modcacherw \
+      -ldflags "-linkmode external -extldflags \"${LDFLAGS}\""
+  cd ../init
+  CGO_ENABLED=0 go build -trimpath -mod=readonly -modcacherw
+  cd ..
+# ronn docs/manpage.md
+
+  mkdir ${pkgdir}/etc/
+  touch ${pkgdir}/etc/booster.yaml
+  install -Dp -m755 generator/generator ${pkgdir}/usr/bin/booster
+#  install -Dp -m644 docs/manpage.1 ${pkgdir}/usr/share/man/man1/booster.1
+  install -Dp -m755 init/init ${pkgdir}/usr/lib/booster/init
+  install -Dp -m755 packaging/arch/regenerate_images ${pkgdir}/usr/lib/booster/regenerate_images
+  install -Dp -m755 contrib/completion/bash ${pkgdir}/usr/share/bash-completion/completions/booster
+}
