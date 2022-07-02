@@ -312,6 +312,7 @@ gcc-go() {
   longdesc=("The gcc-go package provides support for compiling Go programs with the GNU Compiler Collection.")
   tags=("develop dev-lang")
   adddep=("gcc==${pkgver}")
+  conflicts=("go")
 }
 
 gcc-go_prep() {
