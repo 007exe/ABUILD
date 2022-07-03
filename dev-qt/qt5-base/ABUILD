@@ -1,5 +1,5 @@
 pkgname=qt5-base
-pkgver=5.15.4
+pkgver=5.15.5
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -23,13 +23,13 @@ pkglist=("qt5-xcb-private-headers")
 before_build(){
   go_src_dir
 # FIXME: Фатальная ошибка при попытке сборки lts версии
-# git checkout v${pkgver}-lts-lgpl
-  echo "***************************************************"
-  echo "*           Переключаюсь на 5.15.4 r146           *"
-  echo "*                                                 *"
-  echo "* коммит a19d88a641e09e1fa5532c73b86df3bf75acc741 *"
-  echo "***************************************************"
-  git checkout a19d88a641e09e1fa5532c73b86df3bf75acc741
+ git checkout v${pkgver}-lts-lgpl
+#  echo "***************************************************"
+#  echo "*           Переключаюсь на 5.15.4 r146           *"
+#  echo "*                                                 *"
+#  echo "* коммит a19d88a641e09e1fa5532c73b86df3bf75acc741 *"
+#  echo "***************************************************"
+#  git checkout a19d88a641e09e1fa5532c73b86df3bf75acc741
 }
 
 build() {

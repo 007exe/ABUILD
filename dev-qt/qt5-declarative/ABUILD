@@ -1,5 +1,5 @@
 pkgname=qt5-declarative
-pkgver=5.15.4
+pkgver=5.15.5
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -16,13 +16,13 @@ build_deps=("qt5-base python vulkan-headers git")
 before_build() {
   go_src_dir
 # FIXME: Фатальная ошибка при попытке сборки lts версии
-# git checkout v${pkgver}-lts-lgpl
-  echo "***************************************************"
-  echo "*           Переключаюсь на 5.15.4 r19            *"
-  echo "*                                                 *"
-  echo "* коммит 2454c808bfe99b50084aea59adb917e805c27afa *"
-  echo "***************************************************"
-  git checkout 2454c808bfe99b50084aea59adb917e805c27afa
+ git checkout v${pkgver}-lts-lgpl
+#  echo "***************************************************"
+#  echo "*           Переключаюсь на 5.15.4 r19            *"
+#  echo "*                                                 *"
+#  echo "* коммит 2454c808bfe99b50084aea59adb917e805c27afa *"
+#  echo "***************************************************"
+#  git checkout 2454c808bfe99b50084aea59adb917e805c27afa
 }
 
 build() {

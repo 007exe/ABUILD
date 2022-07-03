@@ -1,6 +1,6 @@
 #!/bin/bash
 
-QT_VERSION=5.15.4
+QT_VERSION=5.15.5
 
 # NOTE: После сборки qt5-base следует пересобрать qt5-webkit и qt5-webengine
 # WARNING: Пакет qt5-webengine собирается очень долго
