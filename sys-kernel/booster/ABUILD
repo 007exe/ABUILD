@@ -12,7 +12,7 @@ source=("https://github.com/anatol/booster/archive/${pkgver}.zip")
 tags=("base sys-kernel")
 
 # ruby-ronn-ng
-build_deps=("bash go")
+build_deps=("bash gcc-go")
 
 adddep=("bash")
 
