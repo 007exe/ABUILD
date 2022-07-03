@@ -38,10 +38,4 @@ build(){
   make -j${numjobs}
   install -d ${pkgdir}/etc/pam.d
   make install_prefix=${pkgdir} install
-
-  echo "NotShowIn=KDE;GNOME;" >> ${pkgdir}/usr/share/applications/xscreensaver-properties.desktop
-
-  chmod 755 ${pkgdir}/usr/bin/xscreensaver
 }
-
-
