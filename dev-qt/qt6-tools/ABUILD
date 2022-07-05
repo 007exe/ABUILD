@@ -1,5 +1,5 @@
 pkgname=qt6-tools
-pkgver=6.3.0
+pkgver=6.3.1
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -24,6 +24,7 @@ before_build() {
 build() {
   go_src_dir
   burn_patches
+  git submodule update --init --recursive
   cmake -B build -G Ninja \
     -DINSTALL_PUBLICBINDIR=usr/bin
   cmake --build build -j${numjobs}

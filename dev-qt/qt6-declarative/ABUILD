@@ -1,5 +1,5 @@
 pkgname=qt6-declarative
-pkgver=6.3.0
+pkgver=6.3.1
 strict_version=1
 pkgbuild=1
 arch=("auto")
