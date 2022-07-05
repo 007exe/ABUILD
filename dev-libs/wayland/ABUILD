@@ -1,12 +1,12 @@
 pkgname=wayland
-pkgver=1.20.0
-pkgbuild=2
+pkgver=1.21.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A computer display server protocol.")
 longdesc=("Wayland is a project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol.")
 
-source=("http://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.freedesktop.org/wayland/wayland/-/releases/${pkgver}/downloads/wayland-${pkgver}.tar.xz")
 
 tags=("dev-libs libs")
 
