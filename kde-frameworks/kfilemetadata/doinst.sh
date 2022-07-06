@@ -1,5 +1,4 @@
-echo -e "\n"
-echo -e "The following packages extend kfilemetadata capabilities:"
+echo -e "\nThe following packages extend kfilemetadata capabilities:"
 echo -e "catdoc: Extract text from Office 98 files"
 echo -e "kdegraphics-mobipocket: MOBI extractor"
 echo -e "libappimage: AppImage extractor"

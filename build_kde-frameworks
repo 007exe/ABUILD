@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KF5_VERSION=5.94.0
+KF5_VERSION=5.95.0
 
 LIST="
 extra-cmake-modules

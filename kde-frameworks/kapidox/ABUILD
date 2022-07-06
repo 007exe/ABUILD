@@ -1,19 +1,26 @@
 pkgname=kapidox
-pkgver=5.94.0
+pkgver=5.95.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Frameworks API Documentation Tools.")
 longdesc=("Framework for building KDE API documentation in a standard format and style.")
 
-source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+strict_version=1
+source=("git:https://github.com/KDE/${pkgname}.git")
+#source=("https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
+#source=("https://download.kde.org/stable/frameworks/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
-# qt5-doc
 build_deps=("python-build python-installer python-wheel python-setuptools qt5-base python-jinja python-yaml")
 
 adddep=("python-jinja python-yaml")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
 
 build() {
   go_src_dir

@@ -1,5 +1,4 @@
-echo -e "\n"
-echo -e "The following packages extend sonnet capabilities:"
+echo -e "\nThe following packages extend sonnet capabilities:"
 echo -e "hunspell: spell checking via hunspell' 'aspell: spell checking via aspell"
 echo -e "hspell: spell checking for Hebrew' 'libvoikko: Finnish support via Voikko"
 echo -e "qt5-declarative: QML bindings"

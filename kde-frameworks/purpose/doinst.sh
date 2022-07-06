@@ -1,5 +1,4 @@
-echo -e "\n"
-echo -e "The following packages extend purpose capabilities:"
+echo -e "\nThe following packages extend purpose capabilities:"
 echo -e "kdeconnect: sharing to smartphone via KDE Connect"
 echo -e "telegram-desktop: sharing via Telegram"
 echo -e "bluedevil: sharing via Bluetooth"

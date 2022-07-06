@@ -1,17 +1,24 @@
 pkgname=kcalendarcore
-pkgver=5.94.0
+pkgver=5.95.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The KDE calendar access library.")
 longdesc=("Library for interfacing with calendars.")
 
-source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+strict_version=1
+source=("git:https://github.com/KDE/${pkgname}.git")
+#source=("https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
+#source=("https://download.kde.org/stable/frameworks/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
-# qt5-doc
 build_deps=("extra-cmake-modules doxygen qt5-tools libical qt5-base")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
 
 build() {
   go_src_dir

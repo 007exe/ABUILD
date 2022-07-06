@@ -1,18 +1,26 @@
 pkgname=qqc2-desktop-style
-pkgver=5.94.0
+pkgver=5.95.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A style for Qt Quick Controls 2 to make it follow your desktop theme.")
 longdesc=("Style for QtQuickControls 2 that uses QWidget's QStyle for painting.")
 
-source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+strict_version=1
+source=("git:https://github.com/KDE/${pkgname}.git")
+#source=("https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
+#source=("https://download.kde.org/stable/frameworks/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
 build_deps=("extra-cmake-modules kirigami2 kiconthemes sonnet")
 
 adddep=("sonnet")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
 
 build() {
   go_src_dir
