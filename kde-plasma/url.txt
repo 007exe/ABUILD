@@ -1,0 +1,3 @@
+Зеркало на Яндекс
+
+https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz
