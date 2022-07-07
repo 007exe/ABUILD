@@ -1,12 +1,12 @@
 pkgname=dragon
-pkgver=22.04.1
+pkgver=22.04.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple video player.")
 longdesc=("A multimedia player where the focus is on simplicity, instead of features.")
 
-source=("https://download.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde kde-apps")
 
@@ -18,6 +18,7 @@ build() {
   go_src_dir
   burn_patches
   cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF

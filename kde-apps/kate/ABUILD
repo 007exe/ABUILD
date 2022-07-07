@@ -1,12 +1,12 @@
 pkgname=kate
-pkgver=22.04.1
+pkgver=22.04.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Advanced Text Editor.")
 longdesc=("The Kate package contains an advanced KF5 based graphical text editor.")
 
-source=("https://download.kde.org/stable/release-service/${pkgver}/src/kate-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-apps kde")
 
@@ -14,37 +14,20 @@ build_deps=("extra-cmake-modules kdoctools plasma-framework knewstuff ktextedito
 
 adddep=("hicolor-icon-theme")
 
-pkglist=("kwrite")
-
 build() {
   go_src_dir
   burn_patches
+
+# Удаляем конфликтующие файлы с пакетом kwrite
+  find po -type f -name "*po" -and -name "kwrite*" -delete
+  rm -rf po/*/docs/kwrite
+
   cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_TESTING=OFF
+    -DBUILD_TESTING=OFF \
+    -DBUILD_kwrite=FALSE
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
-
-  find ${pkgdir} -type f -name '*kwrite*' -exec rm {} \;
-  rm -r ${pkgdir}/usr/share/doc/HTML/*/kwrite
-}
-
-kwrite() {
-  pkgname=kwrite
-  shortdesc=("Text Editor.")
-  longdesc=("Simple text editor based on KDE Frameworks.")
-  adddep=("hicolor-icon-theme")
-}
-
-kwrite_prep() {
-  go_src_dir
-  DESTDIR=${pkgdir} cmake --install build
-
-  find ${pkgdir} -type f -name '*kate*' -exec rm {} \;
-  rm -r ${pkgdir}/usr/lib/qt/plugins/ktexteditor \
-        ${pkgdir}/usr/share/doc/HTML/*/{kate,katepart} \
-        ${pkgdir}/usr/share/katexmltools \
-        ${pkgdir}/usr/share/locale/*/LC_MESSAGES/{ktexteditorpreviewplugin,lspclient,tabswitcherplugin}.mo \
-        ${pkgdir}/usr/share/plasma/plasmoids
 }

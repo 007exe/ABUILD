@@ -1,0 +1,46 @@
+#!/bin/bash
+
+KDE_APPS_VERSION=22.04.3
+
+LIST="signon-kwallet-extension
+kaccounts-integration
+akonadi
+ark
+baloo-widgets
+dragon
+filelight
+kamera
+kate
+kwrite
+konsole
+libkcddb
+libkomparediff2
+yakuake
+analitza
+libkcompactdisc
+audiocd-kio
+cervisia
+ffmpegthumbs
+juk
+kalgebra
+kapptemplate
+kdegraphics-mobipocket
+"
+CWD=~
+STARTD=`pwd`
+
+LOGFILE="$CWD/kde-apps-$KDE_APPS_VERSION-build.log"
+
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+for i in $LIST ; do
+    cd $STARTD/$i
+    if mkpkg -ba -pod ~/mkpkg/packages/kde-apps -si -bv $KDE_APPS_VERSION -bb 1; then
+           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           cd $STARTD
+    else
+           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           cd $STARTD
+    fi
+done
+
+echo "============================= Завершено `date` =============================" >> $LOGFILE

@@ -1,12 +1,12 @@
 pkgname=konsole
-pkgver=22.04.1
+pkgver=22.04.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE terminal emulator.")
 longdesc=("The Konsole package is a KF5 based terminal emulator.")
 
-source=("https://download.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-apps kde")
 
@@ -16,7 +16,8 @@ build() {
   go_src_dir
   burn_patches
   cmake -B build \
-    MAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF
   cmake --build build -j${numjobs}
