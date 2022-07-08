@@ -1,22 +1,16 @@
 pkgname=qt5-graphicaleffects
 pkgver=5.15.5
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Graphical effects for use with Qt Quick 2.")
 longdesc=("Set of QML types for adding visual effects to user interfaces.")
 
-source=("git:https://invent.kde.org/qt/qt/qtgraphicaleffects.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtgraphicaleffects-everywhere-opensource-src-${pkgver}.tar.xz")
 
 tags=("qt5 dev-qt")
 
 build_deps=("git qt5-declarative")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}-lts-lgpl
-}
 
 build() {
   go_src_dir
@@ -26,10 +20,7 @@ build() {
   qmake ..
   make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
-
-  find ${pkgdir}/usr/lib -type f -name '*.prl' \
-    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
-
+  find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
   install -d ${pkgdir}/usr/share/licenses
   ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
