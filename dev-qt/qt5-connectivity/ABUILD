@@ -1,7 +1,6 @@
 pkgname=qt5-connectivity
 pkgver=5.15.5
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Provides access to Bluetooth hardware.")
@@ -9,17 +8,12 @@ longdesc=("The Qt Bluetooth enables connectivity between Bluetooth enabled devic
 
 tags=("qt5 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtconnectivity.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtconnectivity-everywhere-opensource-src-${pkgver}.tar.xz")
 
 build_deps=("qt5-declarative qt5-base bluez git")
 
-# NOTE: это опциональная зависимость
+# NOTE: Это опциональная зависимость
 removedep=("qt5-declarative")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}-lts-lgpl
-}
 
 build() {
   go_src_dir
@@ -29,9 +23,7 @@ build() {
   qmake ..
   make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
-
   find ${pkgdir}/usr/lib -type f -name '*.prl' -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d' {} \;
-
   install -d ${pkgdir}/usr/share/licenses
   ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
