@@ -1,7 +1,6 @@
 pkgname=qt5-imageformats
 pkgver=5.15.5
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Plugins for additional image formats: TIFF, MNG, TGA, WBMP.")
@@ -9,25 +8,18 @@ longdesc=("Additional format plugins for the Qt image I/O system.")
 
 tags=("qt5 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtimageformats.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtimageformats-everywhere-opensource-src-${pkgver}.tar.xz")
 
 build_deps=("qt5-base jasper libmng libwebp git")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}-lts-lgpl
-}
 
 build() {
   go_src_dir
   burn_patches
-
   mkdir -p build
   cd build
   qmake ..
   make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
-
   install -d ${pkgdir}/usr/share/licenses
   ln -s /usr/share/licenses/qt5-base ${pkgdir}/usr/share/licenses/${pkgname}
 }
