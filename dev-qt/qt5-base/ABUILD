@@ -1,13 +1,12 @@
 pkgname=qt5-base
 pkgver=5.15.5
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework")
 longdesc=("Qt5 is a cross-platform application framework that is widely used for developing application software with a graphical user interface (GUI) (in which cases Qt5 is classified as a widget toolkit), and also used for developing non-GUI programs such as command-line tools and consoles for servers. One of the major users of Qt is KDE Frameworks 5 (KF5).")
 
-source=("git:https://invent.kde.org/qt/qt/qtbase")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtbase-everywhere-opensource-src-${pkgver}.tar.xz")
 
 tags=("qt5 dev-qt")
 
@@ -19,18 +18,6 @@ xcb-util-keysyms xcb-util-renderutil xcb-util-wm gst-plugins-base-libs mariadb-l
 removedep=("qt5-svg qt5-wayland qt5-translations postgresql-libs mariadb-libs unixodbc libfbclient freetds gtk3 perl clang")
 
 pkglist=("qt5-xcb-private-headers")
-
-before_build(){
-  go_src_dir
-# FIXME: Фатальная ошибка при попытке сборки lts версии
- git checkout v${pkgver}-lts-lgpl
-#  echo "***************************************************"
-#  echo "*           Переключаюсь на 5.15.4 r146           *"
-#  echo "*                                                 *"
-#  echo "* коммит a19d88a641e09e1fa5532c73b86df3bf75acc741 *"
-#  echo "***************************************************"
-#  git checkout a19d88a641e09e1fa5532c73b86df3bf75acc741
-}
 
 build() {
   go_src_dir
@@ -55,11 +42,9 @@ build() {
     -system-harfbuzz \
     -no-mimetype-database \
     -no-use-gold-linker \
-    -reduce-relocations \
-    -no-strip
+    -reduce-relocations
   make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
-
   install -Dm644 LICENSE* -t ${pkgdir}/usr/share/licenses/qt5-base
 
 # Отбросьте QMAKE_PRL_BUILD_DIR, паоскольку он ссылаетесь на каталог сборки
