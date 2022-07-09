@@ -1,6 +1,6 @@
 pkgname=libxcomposite
 pkgver=0.4.5
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("X11 Composite extension library")
