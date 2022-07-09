@@ -1,7 +1,6 @@
 pkgname=qt6-connectivity
 pkgver=6.3.1
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Provides access to Bluetooth hardware.")
@@ -9,17 +8,12 @@ longdesc=("The Qt Bluetooth enables connectivity between Bluetooth enabled devic
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtconnectivity.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtconnectivity-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("cmake ninja qt6-declarative qt6-base bluez-libs git")
 
 # NOTE: это опциональная зависимость
 removedep=("qt6-declarative")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
