@@ -1,7 +1,6 @@
 pkgname=qt6-declarative
 pkgver=6.3.1
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Classes for QML and JavaScript languages.")
@@ -9,17 +8,12 @@ longdesc=("The QML and Quick modules for the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtdeclarative")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtdeclarative-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("cmake ninja python at-spi2-core qt6-shadertools qt6-languageserver qt6-base git")
 
 # NOTE: Это опциональная зависимость
 removedep=("qt6-languageserver")
-
-before_build() {
-  go_src_dir
- git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
