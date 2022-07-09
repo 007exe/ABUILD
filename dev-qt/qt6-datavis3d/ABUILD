@@ -1,7 +1,6 @@
 pkgname=qt6-datavis3d
 pkgver=6.3.1
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Qt Data Visualization module.")
@@ -9,17 +8,12 @@ longdesc=("3D data visualization library for the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtdatavis3d.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtdatavis3d-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("cmake ninja qt6-declarative git qt6-base")
 
 # NOTE: Это опциональная зависимость
 removedep=("qt6-declarative")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
