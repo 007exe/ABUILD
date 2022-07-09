@@ -1,8 +1,7 @@
 # FIXME: Почемуто ищет заголовки в /usr/local/include
 pkgname=qt6-multimedia
 pkgver=6.3.1
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Classes for audio, video, radio and camera functionality.")
@@ -10,17 +9,12 @@ longdesc=("Multimedia (audio, video, radio, camera) library for the Qt5 framewor
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtmultimedia.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtmultimedia-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("qt6-base gst-plugins-base git cmake ninja qt6-declarative qt6-shadertools libpulse")
 
 # NOTE: Это опциональные зависимости
 removedep=("qt6-declarative gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
