@@ -1,6 +1,6 @@
 pkgname=freetype
-pkgver=2.11.1
-pkgbuild=2
+pkgver=2.12.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Font rasterization library.")
