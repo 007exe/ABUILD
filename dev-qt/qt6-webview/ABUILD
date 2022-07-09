@@ -1,6 +1,5 @@
 pkgname=qt6-webview
 pkgver=6.3.0
-strict_version=1
 pkgbuild=1
 arch=("auto")
 
@@ -9,14 +8,9 @@ longdesc=("Module for displaying web content in a QML application using the Qt6 
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtwebview.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwebview-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("cmake ninja qt6-webengine git qt6-base")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
