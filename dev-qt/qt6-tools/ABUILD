@@ -1,7 +1,6 @@
 pkgname=qt6-tools
 pkgver=6.3.1
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework.")
@@ -9,22 +8,16 @@ longdesc=("A cross-platform application and UI framework (Development Tools, QtH
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qttools")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qttools-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("cmake ninja qt6-declarative clang llvm qt6-base")
 
 # NOTE: Это опциональные зависимости
 removedep=("qt6-declarative clang")
 
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
-
 build() {
   go_src_dir
   burn_patches
-  git submodule update --init --recursive
   cmake -B build -G Ninja \
     -DINSTALL_PUBLICBINDIR=usr/bin
   cmake --build build -j${numjobs}
@@ -35,7 +28,7 @@ build() {
   mkdir usr/bin
   while read _line; do
     ln -s $_line
-  done < ${srcdir}/qt6-tools_git_qttools.src/build/user_facing_tool_links.txt
+  done < ${srcdir}/qttools-everywhere-src-${pkgver}/build/user_facing_tool_links.txt
 
   install -d ${pkgdir}/usr/share/licenses
   ln -s /usr/share/licenses/qt6-base ${pkgdir}/usr/share/licenses/${pkgname}
