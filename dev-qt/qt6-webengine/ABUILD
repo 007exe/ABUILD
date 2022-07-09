@@ -2,24 +2,18 @@
 
 pkgname=qt6-webengine
 pkgver=6.3.0
-strict_version=1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides support for web applications using the Chromium browser project.")
 longdesc=("QtWebEngine integrates chromium's web capabilities into Qt. It ships with its own copy of ninja which it uses for the build if it cannot find a system copy, and various copies of libraries from ffmpeg, icu, libvpx, and zlib (including libminizip) which have been forked by the chromium developers.")
 
-source=("git:https://code.qt.io/qt/qtwebengine.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwebengine-everywhere-src-${pkgver}.tar.xz")
 
 tags=("qt6 dev-qt")
 
 build_deps=("qt6-webchannel qt6-positioning libxcomposite libxrandr libxkbfile libevent snappy nss libxslt minizip
 ffmpeg re2 libvpx libxtst ttf-font pciutils cmake ninja python-html5lib gperf jsoncpp qt6-tools nodejs qt6-websockets")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
