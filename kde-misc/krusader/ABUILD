@@ -6,13 +6,21 @@ arch=("auto")
 shortdesc=("Advanced twin panel (commander style) file manager.")
 longdesc=("Advanced twin-panel (commander-style) file-manager with many extras.")
 
-source=("https://download.kde.org/stable/krusader/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+strict_version=1
+source=("git:https://github.com/KDE/${pkgname}.git")
+#source=("https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
+#source=("https://download.kde.org/stable/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("xapps kde-misc")
 
 build_deps=("kparts extra-cmake-modules kdoctools")
 
 adddep=("hicolor-icon-theme")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
 
 build() {
   go_src_dir
