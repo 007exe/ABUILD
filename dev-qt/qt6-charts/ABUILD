@@ -1,7 +1,6 @@
 pkgname=qt6-charts
 pkgver=6.3.1
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Provides a set of easy to use chart components.")
@@ -9,14 +8,9 @@ longdesc=("Chart component library for the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtcharts.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtcharts-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("qt6-declarative cmake ninja git qt6-base")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
