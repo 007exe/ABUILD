@@ -1,5 +1,5 @@
 pkgname=fontconfig
-pkgver=2.13.96
+pkgver=2.14.0
 pkgbuild=1
 arch=("auto")
 
