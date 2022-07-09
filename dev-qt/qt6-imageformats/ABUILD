@@ -1,7 +1,6 @@
 pkgname=qt6-imageformats
 pkgver=6.3.1
-strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Plugins for additional image formats: TIFF, MNG, TGA, WBMP.")
@@ -9,14 +8,9 @@ longdesc=("Additional format plugins for the Qt image I/O system.")
 
 tags=("qt6 dev-qt")
 
-source=("git:https://invent.kde.org/qt/qt/qtimageformats.git")
+source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtimageformats-everywhere-src-${pkgver}.tar.xz")
 
 build_deps=("qt6-base jasper libwebp libmng git cmake ninja")
-
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
 
 build() {
   go_src_dir
