@@ -1,0 +1,23 @@
+pkgname=libptytty
+pkgver=2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for mostly OS-independent handling of pty/tty/utmp/wtmp/lastlog.")
+longdesc=("The libptytty package provides a library that allows for OS independent and secure pty/tty and utmp/wtmp/lastlog handling..")
+
+source=("http://dist.schmorp.de/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
