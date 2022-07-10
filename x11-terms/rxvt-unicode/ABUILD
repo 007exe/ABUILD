@@ -1,30 +1,29 @@
 pkgname=rxvt-unicode
-pkgver=9.26
+pkgver=9.30
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("An unicode enabled rxvt-clone terminal emulator (urxvt)")
+shortdesc=("An unicode enabled rxvt-clone terminal emulator (urxvt).")
 longdesc=("Rxvt-unicode is a clone of the well known terminal emulator rxvt, modified to store text in Unicode (either UCS-2 or UCS-4) and to use locale-correct input and output. It also supports mixing multiple fonts at the same time, including Xft fonts.")
 
 source=("http://dist.schmorp.de/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xapps x11-terms"
+tags=("apps x11-terms")
 
-build_deps="libxft libxt perl startup-notification libnsl"
+build_deps=("libxft libxt perl startup-notification libnsl libptytty")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-256-color \
     --enable-combining \
     --enable-fading \
     --enable-font-styles \
     --enable-iso14755 \
     --enable-keepscrolling \
-    --enable-lastlog \
     --enable-mousewheel \
     --enable-next-scroll \
     --enable-perl \
@@ -36,24 +35,18 @@ build() {
     --enable-startup-notification \
     --enable-transparency \
     --enable-unicode3 \
-    --enable-utmp \
-    --enable-wtmp \
     --enable-xft \
     --enable-xim \
     --enable-xterm-scroll \
     --disable-pixbuf \
     --disable-frills
-
   make -j${numjobs}
 
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  install -d "${pkgdir}/usr/share/terminfo"
-  export TERMINFO="${pkgdir}/usr/share/terminfo"
+  install -d ${pkgdir}/usr/share/terminfo
+  export TERMINFO=${pkgdir}/usr/share/terminfo
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
 # install *.desktop file
-  install -Dm644 ${filedir}/${pkgname}.desktop "${pkgdir}/usr/share/applications/${pkgname}.desktop"
+  install -Dm644 ${filedir}/${pkgname}.desktop ${pkgdir}/usr/share/applications/${pkgname}.desktop
 }
-
-
