@@ -1,5 +1,5 @@
 pkgname=oxygen-icons
-pkgver=5.95.0
+pkgver=5.96.0
 pkgbuild=1
 arch=("noarch")
 
@@ -7,9 +7,7 @@ arch=("noarch")
 shortdesc=("The Oxygen Icon Theme.")
 longdesc=("The oxygen icons 5 theme is a photo-realistic icon style, with a high standard of graphics quality.")
 
-#strict_version=1
-#source=("git:https://github.com/KDE/${pkgname}.git")
-source=("https://download.kde.org/stable/frameworks/${pkgver%.*}/oxygen-icons5-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}5-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
@@ -23,6 +21,7 @@ build() {
   go_src_dir
   burn_patches
   cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr
   cmake --build build
   DESTDIR=${pkgdir} cmake --install build
