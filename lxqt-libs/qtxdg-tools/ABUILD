@@ -1,0 +1,23 @@
+pkgname=qtxdg-tools
+pkgver=3.9.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("libqtxdg user tools.")
+longdesc=("User Tools from libqtxdg.")
+
+source=("https://github.com/lxqt/$pkgname/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs lxqt-libs")
+
+build_deps=("qt5-base libqtxdg cmake qt5-tools lxqt-build-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
