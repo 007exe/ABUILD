@@ -1,18 +1,21 @@
 pkgname=alsa-plugins
-pkgver=1.2.6
+pkgver=1.2.7.1
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
 shortdesc=("Advanced Linux Sound Architecture (ALSA) plugins")
 longdesc=("Advanced Linux Sound Architecture (ALSA) utilities. Modularized architecture with support for a large range of ISA and PCI cards. Fully compatible with OSS/Lite (kernel sound drivers), but contains many enhanced features.")
 
 source=("https://www.alsa-project.org/files/pub/plugins/$pkgname-$pkgver.tar.bz2")
 
-tags="libs media-sound"
-# libavtp
-build_deps="alsa-lib dbus dbus jack libpulse libsamplerate speexdsp ffmpeg"
+tags=("libs media-plugins")
 
-pkglist="pulseaudio-alsa"
+build_deps=("alsa-lib dbus dbus jack libpulse libsamplerate speexdsp ffmpeg libavtp")
+
+# NOTE: Это опциональные зависимости
+removedep=("dbus ffmpeg jack libavtp libsamplerate libpulse speexdsp")
+
+pkglist=("pulseaudio-alsa")
 
 build() {
   go_src_dir
@@ -20,23 +23,22 @@ build() {
   autoreconf -fvi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-maemo-plugin \
     --disable-static \
     --enable-maemo-resource-manager
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -Dt "$pkgdir/usr/share/doc/$pkgbase" -m644 doc/README* doc/*.txt
+  install -Dt ${pkgdir}/usr/share/doc/alsa-plugins -m644 doc/README* doc/*.txt
 
-# remove maemo plugin configuration (it overrides defaults for pcm and ctl),
-# until a better way is found to package default overrides:
+# Удаляем конфигурацию плагина maemo (она переопределяет значения по умолчанию для pcm и ctl),
+# пока не будет найден лучший способ упаковать переопределения по умолчанию:
 # https://bugs.archlinux.org/task/65440
-  rm -v "${pkgdir}/etc/alsa/conf.d/98-maemo.conf"
+  rm -v ${pkgdir}/etc/alsa/conf.d/98-maemo.conf
 
-# make a proper off-by-default config template out of the example file
-  mv -v "${pkgdir}/etc/alsa/conf.d/99-pulseaudio-default.conf.example" \
-    "${pkgdir}/usr/share/alsa/alsa.conf.d/99-pulseaudio-default.conf"
+# Создаём правильный шаблон конфигурации, отключенный по умолчанию, из файла примера
+  mv -v ${pkgdir}/etc/alsa/conf.d/99-pulseaudio-default.conf.example ${pkgdir}/usr/share/alsa/alsa.conf.d/99-pulseaudio-default.conf
 }
 
 pulseaudio-alsa() {
@@ -46,7 +48,6 @@ pulseaudio-alsa() {
 }
 
 pulseaudio-alsa_prep() {
-  mkdir -p "${pkgdir}/etc/alsa/conf.d"
-  ln -st "${pkgdir}/etc/alsa/conf.d" \
-    /usr/share/alsa/alsa.conf.d/99-pulseaudio-default.conf
+  mkdir -p ${pkgdir}/etc/alsa/conf.d
+  ln -st ${pkgdir}/etc/alsa/conf.d /usr/share/alsa/alsa.conf.d/99-pulseaudio-default.conf
 }
