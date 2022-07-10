@@ -1,0 +1,26 @@
+pkgname=lximage-qt
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt Image Viewer.")
+longdesc=("The LXQt image viewer and screenshot tool.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps lxqt-apps")
+
+build_deps=("lxqt-themes libfm-qt qt5-svg libexif libxfixes libfm-qt")
+
+# NOTE: Это опциональная зависимосить
+removedep=("qt5-imageformats")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
