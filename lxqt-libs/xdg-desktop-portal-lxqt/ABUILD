@@ -1,0 +1,24 @@
+pkgname=xdg-desktop-portal-lxqt
+pkgver=0.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A backend implementation for xdg-desktop-portal using Qt/KF5/libfm-qt")
+longdesc=("Backend implementation for xdg-desktop-portal using Qt/KF5/libfm-qt.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs lxqt-libs")
+
+build_deps=("qt5-base kwindowsystem xdg-desktop-portal libfm-qt cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
