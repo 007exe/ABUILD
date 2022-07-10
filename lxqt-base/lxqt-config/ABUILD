@@ -1,0 +1,25 @@
+pkgname=lxqt-config
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("LXQt system configuration.")
+longdesc=("LXQt system configuration control center.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("lxqt lxqt-base")
+
+build_deps=("lxqt-build-tools lxqt-themes liblxqt libkscreen libxcursor xf86-input-libinput qt5-svg libqtxdg")
+
+adddep=("lxqt-themes")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
