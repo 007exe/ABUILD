@@ -1,0 +1,8 @@
+echo -e "\n"
+echo -e "The following packages extend lxqt-panel capabilities:"
+echo -e "libpulse: Volume control plugin"
+echo -e "alsa-lib: Volume control plugin"
+echo -e "libstatgrab: CPU monitor and Network monitor plugins"
+echo -e "libsysstat: System Statistics plugin"
+echo -e "lm_sensors: Sensors plugin"
+echo -e " "
