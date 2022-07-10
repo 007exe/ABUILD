@@ -1,15 +1,12 @@
 pkgname=breeze-icons
-pkgver=5.95.0
+pkgver=5.96.0
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Breeze icon themes.")
 longdesc=("The Breeze Icons package contains the default icons for KDE Plasma 5 applications, but it can be used for other window environments.")
 
-strict_version=1
-source=("git:https://github.com/KDE/${pkgname}.git")
-#source=("https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
-#source=("https://download.kde.org/stable/frameworks/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
@@ -17,15 +14,11 @@ build_deps=("extra-cmake-modules qt5-base python-lxml")
 
 custom_opts=("skip_gendeps")
 
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
-
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBINARY_ICONS_RESOURCE=ON \
     -DBUILD_TESTING=OFF \
