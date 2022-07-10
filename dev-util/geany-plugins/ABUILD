@@ -1,24 +1,23 @@
 pkgname=geany-plugins
 pkgver=1.38
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Plugins for Geany")
-longdesc=("A collection of different plugins for Geany, a lightweight IDE")
+shortdesc=("Plugins for Geany.")
+longdesc=("A collection of different plugins for Geany, a lightweight IDE.")
 
 source=("http://plugins.geany.org/geany-plugins/${pkgname}-${pkgver}.tar.bz2")
 
-tags="dev-util utils"
+tags=("dev-util utils")
 
-build_deps="intltool geany webkit2gtk python vte lua51"
+build_deps=("intltool geany webkit2gtk python vte lua51")
 
-adddep="geany>=$pkgver"
+adddep=("geany>=$pkgver")
 
 build() {
   go_src_dir
   burn_patches
   autoreconf -fi
-# don't redefine bool
   sed -i 's/typedef unsigned int bool/#include <stdbool.h>/g' pretty-printer/src/PrettyPrinter.h
   ./configure \
     --prefix=/usr
