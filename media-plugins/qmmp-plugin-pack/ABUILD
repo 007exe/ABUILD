@@ -1,14 +1,14 @@
 pkgname=qmmp-plugin-pack
-pkgver=1.5.2
+pkgver=2.1.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qmmp Plugin Pack")
-longdesc=("A set of extra plugins for Qmmp")
+shortdesc=("Qmmp Plugin Pack.")
+longdesc=("A set of extra plugins for Qmmp.")
 
-source=("http://qmmp.ylsoftware.com/files/qmmp-plugin-pack/1.5/qmmp-plugin-pack-${pkgver}.tar.bz2")
+source=("http://qmmp.ylsoftware.com/files/qmmp-plugin-pack/${pkgver%.*}/qmmp-plugin-pack-${pkgver}.tar.bz2")
 
-tags=("xapps media-plugins")
+tags=("apps media-plugins")
 # libxmp
 build_deps=("cmake yasm qt5-tools taglib mpg123 qmmp")
 
@@ -19,7 +19,7 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=/usr/lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
     -DCMAKE_BUILD_TYPE=RELEASE \
     -DUSE_FFAP:BOOL=TRUE
   make -j${numjobs}
