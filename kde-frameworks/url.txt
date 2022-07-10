@@ -1,3 +1,0 @@
-зеркало на Яндекс
-
-https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/frameworks/${pkgver}/${pkgname}-${pkgver}.tar.xz
