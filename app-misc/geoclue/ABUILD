@@ -1,0 +1,32 @@
+pkgname=geoclue
+pkgver=2.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Modular geoinformation service built on the D-Bus messaging system.")
+longdesc=("GeoClue is a modular geoinformation service built on top of the D-Bus messaging system.")
+
+source=("https://gitlab.freedesktop.org/geoclue/geoclue/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs app-misc")
+
+# geocode-glib
+build_deps=("libsoup json-glib libmm-glib avahi gobject-introspection git vala meson gtk-doc libnotify meson")
+
+conflicts=("geoclue2")
+
+# NOTE: Это опциональная зависимость
+removedep=("libnotify")
+
+config_files=("etc/geoclue/geoclue.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
