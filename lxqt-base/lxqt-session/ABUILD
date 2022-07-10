@@ -1,0 +1,28 @@
+pkgname=lxqt-session
+pkgver=1.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("LXQt Session Manager.")
+longdesc=("The LXQt Session Manager.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("lxqt lxqt-base")
+
+build_deps=("liblxqt qtxdg-tools xdg-user-dirs libx11 eudev kwindowsystem libqtxdg procps-ng cmake lxqt-build-tools")
+
+adddep=("qtxdg-tools xdg-user-dirs eudev")
+
+# NOTE: Это опциональные зависимости
+removedep=("breeze-icons oxygen-icons sddm")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}

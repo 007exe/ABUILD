@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend lxqt-session capabilities:"
+echo -e "breeze-icons: Default icon theme"
+echo -e "oxygen-icons: Alternative icon theme"
+echo -e "sddm: The recommended display manager"
+echo -e " "
