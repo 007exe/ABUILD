@@ -1,6 +1,6 @@
 pkgname=opusfile
 pkgver=0.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library for opening, seeking, and decoding .opus files.")
