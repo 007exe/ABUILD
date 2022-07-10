@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend midori capabilities:"
+echo -e "gst-plugins-base: HTML5 OGG videos support"
+echo -e "gst-plugins-good: HTML5 H264 and WebM videos support"
+echo -e "gst-libav: HTML5 H264 videos support"
+echo -e " "

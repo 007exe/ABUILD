@@ -1,16 +1,20 @@
 pkgname=midori
 pkgver=9.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Lightweight web browser")
-longdesc=("Midori is a lightweight GTK+ 3 web browser based on WebKitGtk. It features tabs, windows and session management, bookmarks stored with XBEL, searchbox based on OpenSearch, and user scripts support.")
+shortdesc=("Lightweight web browser.")
+longdesc=("Midori is a lightweight GTK+ 3 web browser based on WebKitGtk.")
 
 source=("https://github.com/midori-browser/core/releases/download/v${pkgver}/midori-v${pkgver}.tar.gz")
 
-tags="www-client xapps"
+tags=("www-client apps")
+
 # zeitgeist
 build_deps=("cmake gobject-introspection intltool ninja vala libsoup webkit2gtk gcr libpeas gst-libav gst-plugins-good gst-plugins-base glib-networking libxss")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-base gst-plugins-good gst-libav")
 
 build() {
   go_src_dir
@@ -19,10 +23,10 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_C_FLAGS="$CFLAGS -fPIC -w" \
     -DVALA_CFLAGS="$CFLAGS -fPIC -w" \
     -G Ninja
   ninja
-  DESTDIR="$pkgdir" ninja install
+  DESTDIR=${pkgdir} ninja install
 }
