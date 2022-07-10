@@ -1,0 +1,24 @@
+pkgname=muparser
+pkgver=2.3.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A fast math parser library")
+longdesc=("Library for parsing mathematical expressions.")
+
+source=("https://github.com/beltoforion/muparser/archive/v${pkgver}-1/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("gcc-libs cmake")
+
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
