@@ -1,0 +1,22 @@
+pkgname=libstatgrab
+pkgver=0.92.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that provides cross platform access to statistics about the system on which it's run.")
+longdesc=("This is a library that provides cross platform access to statistics about the system on which it's run. It's written in C and presents a selection of useful interfaces which can be used to access key system statistics.")
+
+source=("https://www.mirrorservice.org/sites/ftp.i-scream.org/pub/i-scream/libstatgrab/libstatgrab-${pkgver}.tar.gz")
+
+tags=("libs sys-libs")
+
+build_deps=("ncurses perl")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
