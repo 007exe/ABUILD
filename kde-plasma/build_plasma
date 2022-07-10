@@ -1,0 +1,27 @@
+#!/bin/bash
+
+P_VERSION=5.25.2
+BUILD_VERSION=1
+
+LIST="libkscreen
+libksysguard"
+
+CWD=~
+STARTD=`pwd`
+
+LOGFILE="$CWD/kde-plasma-$P_VERSION-build.log"
+
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+
+for i in $LIST ; do
+    cd $STARTD/$i
+    if mkpkg -ba -pod ~/mkpkg/packages/kde-plasma -si -bv $P_VERSION -bb $BUILD_VERSION; then
+           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           cd $STARTD
+    else
+           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           cd $STARTD
+    fi
+done
+
+echo "============================= Завершено `date` =============================" >> $LOGFILE
