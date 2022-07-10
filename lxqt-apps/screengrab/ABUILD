@@ -1,0 +1,23 @@
+pkgname=screengrab
+pkgver=2.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt GUI Screenshot Utility")
+longdesc=("Crossplatform tool for grabbing screenshots of your desktop.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps lxqt-apps")
+
+build_deps=("qt5-base qt5-x11extras kwindowsystem libqtxdg libx11 libxcb libqtxdg cmake qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
