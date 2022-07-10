@@ -1,0 +1,25 @@
+pkgname=lxqt-powermanagement
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("LXQt power management daemon.")
+longdesc=("LXQt daemon for power management and auto-suspend.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("lxqt lxqt-base")
+
+build_deps=("qt5-svg qt5-x11extras upower kidletime solid hicolor-icon-theme libqtxdg lxqt-globalkeys cmake lxqt-build-tools")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
