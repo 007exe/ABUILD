@@ -1,0 +1,29 @@
+pkgname=xdg-desktop-portal
+pkgver=1.14.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Desktop integration portal")
+longdesc=("Desktop integration portals for sandboxed apps.")
+
+tags=("apps sys-apps")
+
+source=("https://github.com/flatpak/xdg-desktop-portal/releases/download/${pkgver}/xdg-desktop-portal-${pkgver}.tar.xz")
+
+# rtkit
+build_deps=("glib2 pipewire fuse3 python xmlto docbook-xsl libportal geoclue")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --without-systemd
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# FIXME: Несмотря на то что указанно не собирать с systemd всё равно создаются сервисы
+  rm -r ${pkgdir}/usr/lib/systemd
+}
