@@ -1,6 +1,6 @@
 pkgname=alsa-lib
-pkgver=1.2.6.1
-pkgbuild=2
+pkgver=1.2.7.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Config files for Advanced Linux Sound Architecture (ALSA).")
