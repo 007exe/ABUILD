@@ -1,0 +1,25 @@
+pkgname=obconf-qt
+pkgver=0.16.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt GUI Openbox Configuration Tool.")
+longdesc=("Openbox configuration tool. Qt port of ObConf.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps lxqt-apps")
+
+build_deps=("hicolor-icon-theme openbox qt5-x11extras lxqt-build-tools")
+
+adddep=("hicolor-icon-theme openbox")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
