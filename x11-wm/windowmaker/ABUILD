@@ -1,15 +1,17 @@
 pkgname=windowmaker
 pkgver=0.95.9
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("An X11 window manager with a NEXTSTEP look and feel")
+shortdesc=("The fast and light GNUstep window manager.")
+longdesc=("An X11 window manager with a NEXTSTEP look and feel.")
 
 source=("http://windowmaker.org/pub/source/release/WindowMaker-$pkgver.tar.gz")
 
-tags="xapps x11-wm"
-# giflib libmagick libbsd
-build_deps="libxinerama libxrandr libxmu libpng libxpm libxft libtiff"
+tags=("apps x11-wm")
+
+# libmagick
+build_deps="libxinerama libxrandr libxmu libpng libxpm libxft libtiff giflib libbsd"
 
 build() {
   go_src_dir
@@ -17,19 +19,18 @@ build() {
   export LINGUAS="be bg bs ca cs da de el es et fi fr fy gl hr hu hy it ja ko ms nl no pl pt ro ru sk sv tr uk zh_CN zh_TW"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-xinerama \
     --localedir=/usr/share/locale \
-    --with-gnustepdir=/usr/lib${LIBDIRSUFFIX}/GNUstep \
+    --with-gnustepdir=/usr/lib/GNUstep \
     --enable-usermenu \
     --enable-modelock \
     --enable-randr
-# Fight unused direct deps
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' -e 's/    if test "$export_dynamic" = yes && test -n "$export_dynamic_flag_spec"; then/      func_append compile_command " -Wl,-O1,--as-needed"\n      func_append finalize_command " -Wl,-O1,--as-needed"\n\0/' libtool
   make V=0
-  make DESTDIR="$pkgdir" install
-  install -D -m644 COPYING.WTFPL "$pkgdir/usr/share/licenses/$pkgname/COPYING.WTFPL"
-  install -D -m644 ${filedir}/wmaker.desktop "$pkgdir/usr/share/xsessions/wmaker.desktop"
+  make DESTDIR=${pkgdir} install
+  install -D -m644 COPYING.WTFPL ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.WTFPL
+  install -D -m644 ${filedir}/wmaker.desktop ${pkgdir}/usr/share/xsessions/wmaker.desktop
 }
 
