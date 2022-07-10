@@ -1,25 +1,34 @@
 pkgname=qmmp
-pkgver=1.5.3
+pkgver=2.1.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Qt-based Multimedia Player")
-longdesc=("Qt5-based audio player with winamp/xmms skins support")
+shortdesc=("Qt-based Multimedia Player.")
+longdesc=("Qt-based audio player with winamp/xmms skins support")
 
-source=("http://qmmp.ylsoftware.com/files/qmmp/1.5/qmmp-${pkgver}.tar.bz2")
+source=("http://qmmp.ylsoftware.com/files/qmmp/${pkgver%.*}/qmmp-${pkgver}.tar.bz2")
 
-tags=("xapps media-sound")
-# pipewire libmms projectm libgme libsidplayfp wildmidi
-build_deps=("cmake flac jack libmpcdec pulseaudio ffmpeg libcdio-paranoia libcddb libsamplerate libmodplug libsndfile wavpack mpg123 mesa faad2 opusfile qt5-tools qt5-base alsa-lib curl desktop-file-utils hicolor-icon-theme libmad libvorbis libogg libxkbcommon-x11 taglib xdg-utils")
+tags=("apps media-sound")
+
+# libmms projectm libsidplayfp
+build_deps=("libgme wildmidi cmake flac jack libmpcdec pulseaudio ffmpeg pipewire
+libcdio-paranoia libcddb libsamplerate libmodplug libsndfile wavpack mpg123 mesa
+faad2 opusfile qt6-tools qt6-base alsa-lib curl desktop-file-utils hicolor-icon-theme
+libmad libvorbis libogg libxkbcommon-x11 taglib xdg-utils")
 
 adddep=("hicolor-icon-theme")
+
+# NOTE: Это опциональные зависимости
+removedep=("mpg123 flac jack libmpcdec pulseaudio pipewire libcdio-paranoia libcddb
+libmms libmodplug libsndfile projectm faad2 libgme libsidplayfp opusfile wildmidi
+ffmpeg libsamplerat wavpack")
 
 build() {
   go_src_dir
   burn_patches
   cmake . \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DUSE_HAL:BOOL=FALSE
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
