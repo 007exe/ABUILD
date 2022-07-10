@@ -1,33 +1,25 @@
 pkgname=kcrash
-pkgver=5.95.0
+pkgver=5.96.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Support for application crash analysis and bug report from apps.")
 longdesc=("Framework for intercepting and handling application crashes.")
 
-strict_version=1
-source=("git:https://github.com/KDE/${pkgname}.git")
-#source=("https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
-#source=("https://download.kde.org/stable/frameworks/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
-# qt5-doc
 build_deps=("extra-cmake-modules doxygen qt5-tools kcoreaddons kwindowsystem")
 
 # NOTE: Это опциональная зависимость
 removedep=("drkonqi")
 
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}
-}
-
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF \
