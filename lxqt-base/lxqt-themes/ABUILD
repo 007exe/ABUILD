@@ -1,0 +1,24 @@
+pkgname=lxqt-themes
+pkgver=1.1.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("LXQt themes, graphics and icons.")
+longdesc=("LXQt theme "Plasma" is based on Breeze 5.0.0 theme by the KDE Visual Team.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("lxqt lxqt-base")
+
+build_deps=("lxqt-build-tools hicolor-icon-theme")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
