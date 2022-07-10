@@ -1,27 +1,32 @@
 pkgname=gimp
-pkgver=2.10.30
+pkgver=2.10.32
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("GNU Image Manipulation Program.")
 longdesc=("Whether you are a graphic designer, photographer, illustrator, or scientist, GIMP provides you with sophisticated tools to get your job done.")
 
 source=("http://download.gimp.org/pub/gimp/v${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xapps media-gfx"
-# poppler-glib libheif libmng libwmf
-build_deps="alsa-lib babl gegl curl ghostscript gtk-doc libmypaint intltool iso-codes dbus-glib mypaint-brushes poppler-data desktop-file-utils glib-networking hicolor-icon-theme openjpeg2 lcms2 libexif libgudev librsvg libwebp libxmu libxpm openexr gtk2 graphviz"
+tags=("apps media-gfx")
 
-adddep="hicolor-icon-theme"
+build_deps=("alsa-lib babl gegl curl ghostscript gtk-doc libmypaint intltool iso-codes dbus-glib
+mypaint-brushes poppler-data desktop-file-utils glib-networking hicolor-icon-theme openjpeg2 lcms2
+libexif libgudev librsvg libwebp libxmu libxpm openexr gtk2 graphviz libwmf libmng libheif poppler-glib")
+
+adddep=("hicolor-icon-theme")
+
+# NOTE: Это опциональные зависимости
+removedep=("gutenprint poppler-glib alsa-lib curl ghostscript gvfs")
 
 build() {
   go_src_dir
   burn_patches
   sed -i -e 's/mypaint-brushes-1.0/mypaint-brushes-2.0/' configure.ac || die #737794
-  autoreconf -vi
+  autoreconf -vi --force
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --libexecdir=/usr/bin \
     --enable-mp \
@@ -29,16 +34,15 @@ build() {
     --enable-gtk-doc \
     --disable-check-update \
     --disable-python \
-    --with-bug-report-url='https://bugs.archlinux.org/?string=gimp' \
     --with-openexr \
     --without-aa
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -D -m644 ${filedir}/linux.gpl "${pkgdir}/usr/share/gimp/2.0/palettes/Linux.gpl"
+  install -D -m644 ${filedir}/linux.gpl ${pkgdir}/usr/share/gimp/2.0/palettes/Linux.gpl
 
-  rm "${pkgdir}/usr/share/man/man1/gimp-console.1"
-  ln -s gimp-console-${pkgver%.*}.1.gz "${pkgdir}/usr/share/man/man1/gimp-console.1.gz"
-  ln -s gimptool-2.0 "${pkgdir}/usr/bin/gimptool"
-  ln -sf gimptool-2.0.1.gz "${pkgdir}/usr/share/man/man1/gimptool.1.gz"
+  rm ${pkgdir}/usr/share/man/man1/gimp-console.1
+  ln -s gimp-console-${pkgver%.*}.1.gz ${pkgdir}/usr/share/man/man1/gimp-console.1.gz
+  ln -s gimptool-2.0 ${pkgdir}/usr/bin/gimptool
+  ln -sf gimptool-2.0.1.gz ${pkgdir}/usr/share/man/man1/gimptool.1.gz
 }
