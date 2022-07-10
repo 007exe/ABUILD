@@ -1,0 +1,30 @@
+pkgname=qtermwidget
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt terminal emulator widget.")
+longdesc=("A terminal widget for Qt, used by QTerminal.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps lxqt-apps")
+
+build_deps=("qt5-base lxqt-build-tools python-pyqt5 pyqt-builder sip python-installer")
+
+# NOTE: Это опциональная зависимосить
+removedep=("python")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm644 README.md -t ${pkgdir}/usr/share/licenses/${pkgname}
+  cd pyqt
+  CXXFLAGS="-I$PWD/../lib -I$PWD/../build/lib" LDFLAGS="-L$PWD/../build" sip-wheel --verbose
+  python -m installer --destdir=${pkgdir} *.whl
+}
