@@ -1,0 +1,24 @@
+pkgname=libfm-qt
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Core library of PCManFM-Qt (Qt binding for libfm)")
+longdesc=("Qt Library for Building File Managers.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs lxqt-libs")
+
+build_deps=("liblxqt lxqt-build-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
