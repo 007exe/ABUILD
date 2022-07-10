@@ -1,24 +1,23 @@
 pkgname=pavucontrol-qt
-pkgver=0.17.0
+pkgver=1.1.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A Pulseaudio mixer in Qt (port of pavucontrol)")
 longdesc=("PulseAudio Volume Control (pavucontrol) is a simple Qt based volume control tool (mixer) for the PulseAudio sound server. In contrast to classic mixer tools, this one allows you to control both the volume of hardware devices and of each playback stream separately.")
 
 source=("https://github.com/lxqt/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.xz")
 
-tags="xapps media-sound"
+tags=("apps lxqt-apps")
 
-build_deps="qt5-base cmake"
+build_deps=("pulseaudio qt5-base cmake lxqt-build-tools")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir -p build
-  cd build
-  cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/usr
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
