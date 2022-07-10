@@ -1,14 +1,14 @@
 pkgname=mpv
 pkgver=0.34.1
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("A free, open source, and cross-platform media player")
+shortdesc=("A free, open source, and cross-platform media player.")
 longdesc=("Mpv is a movie player based on MPlayer and mplayer2. It supports a wide variety of video file formats, audio and video codecs, and subtitle types. Special input URL types are available to read input from a variety of sources other than disk files. Depending on platform, a variety of different video and audio output methods are supported.")
 
 source=("https://github.com/mpv-player/mpv/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags=("xapps media-video")
+tags=("apps media-video")
 
 build_deps=("libplacebo shaderc uchardet mujs rubberband libdvdnav ffnvcodec-headers lua52 libcdio libcdio-paranoia libdvdread python-docutils ladspa wayland-protocols vulkan-headers waf alsa-lib desktop-file-utils ffmpeg jack lcms2 libarchive libass libbluray libdrm libjpeg-turbo libglvnd libpulse libva libvdpau libx11 libxext libxinerama libxkbcommon libxrandr libxv mesa vulkan-icd-loader wayland xdg-utils zlib")
 
@@ -20,7 +20,7 @@ build(){
   ./bootstrap.py
   ./waf configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --confdir=/etc/mpv \
     --enable-libmpv-shared \
     --enable-html-build \
@@ -61,8 +61,7 @@ build(){
 # --enable-openal
 # --enable-egl-x11
   ./waf build
-  ./waf install --destdir="$pkgdir"
-  install -m0644 DOCS/{encoding.rst,tech-overview.txt} "$pkgdir"/usr/share/doc/mpv
-
-  install -m0644 TOOLS/lua/* -D -t "$pkgdir"/usr/share/mpv/scripts
+  ./waf install --destdir=${pkgdir}
+  install -m0644 DOCS/{encoding.rst,tech-overview.txt} ${pkgdir}/usr/share/doc/mpv
+  install -m0644 TOOLS/lua/* -D -t ${pkgdir}/usr/share/mpv/scripts
 }
