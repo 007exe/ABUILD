@@ -1,0 +1,23 @@
+pkgname=lxqt-globalkeys
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("LXQt daemon and library for global keyboard shortcuts registration.")
+longdesc=("Daemon and library for global keyboard shortcuts registration.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("lxqt lxqt-base")
+
+build_deps=("liblxqt lxqt-build-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
