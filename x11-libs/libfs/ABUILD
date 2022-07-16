@@ -1,14 +1,14 @@
 pkgname=libfs
 pkgver=1.0.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Library Interface to the X Font Server")
+shortdesc=("Library Interface to the X Font Server.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-tags=('x11-libs xserver')
+tags=("x11-libs xserver")
 
-build_deps="xorg-util-macros xorgproto xtrans"
+build_deps=("xorg-util-macros xorgproto xtrans")
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libFS-${pkgver}.tar.bz2")
 
@@ -17,7 +17,7 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --disable-static
   make -j${numjobs}
