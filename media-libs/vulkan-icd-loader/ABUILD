@@ -1,6 +1,6 @@
 # NOTE: Перед перед обновлением данного пакета следует обновить vulkan-headers
 pkgname=vulkan-icd-loader
-pkgver=1.3.208
+pkgver=1.3.221
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ source=("https://github.com/KhronosGroup/Vulkan-Loader/archive/v${pkgver}.tar.gz
 
 tags=("libs media-libs")
 
-build_deps=("cmake python-lxml libx11 libxrandr wayland vulkan-headers")
+build_deps=("cmake python-lxml libx11 libxrandr wayland vulkan-headers=${pkgver}")
 
 build() {
   go_src_dir
