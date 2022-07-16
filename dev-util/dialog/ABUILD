@@ -1,28 +1,26 @@
 pkgname=dialog
-pkgver=1.3-20210530
+pkgver=1.3-20220526
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A tool to display dialog boxes from shell scripts")
-longdesc=("Though similar in style to CDK, it is different, being a script-interpreter which provides a set of curses widgets. Widgets are objects whose appearance and behavior can be customized. There is a much-reduced variation of dialog, called lxdialog, which is used in Linux kernel configuration.")
+shortdesc=("A tool to display dialog boxes from shell scripts.")
+longdesc=("Though similar in style to CDK, it is different, being a script-interpreter which provides a set of curses widgets. Widgets are objects whose appearance and behavior can be customized.")
 
 source=("https://invisible-mirror.net/archives/dialog/${pkgname}-${pkgver//_/-}.tgz")
 
-tags="base sys-base"
+tags=("utils dev-util")
 
-build_deps="ncurses"
+build_deps=("ncurses")
 
-
-
-build()
-{
+build(){
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-ncursesw \
-    --enable-nls
+    --enable-nls \
+    --disable-static
   make -j${numjobs}
-  make DESTDIR=$pkgdir install-full
+  make DESTDIR=${pkgdir} install-full
 }
