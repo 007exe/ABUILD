@@ -1,22 +1,23 @@
 pkgname=libnl1
 pkgver=1.1.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Library for applications dealing with netlink sockets")
-longdesc=("libnl is a library for applications dealing with netlink sockets. The library provides an interface for raw netlink messaging and various netlink family specific interfaces.")
-
-tags=("dev-libs libs")
+shortdesc=("Library for applications dealing with netlink sockets.")
+longdesc=("libnl is a library for applications dealing with netlink sockets.")
 
 source=("https://www.infradead.org/~tgr/libnl/files/libnl-${pkgver}.tar.gz")
 
-build_deps="glibc"
+tags=("dev-libs libs")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
