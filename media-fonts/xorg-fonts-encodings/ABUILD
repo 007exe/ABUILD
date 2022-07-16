@@ -1,14 +1,14 @@
 pkgname=xorg-fonts-encodings
-pkgver=1.0.5
-pkgbuild=3
+pkgver=1.0.6
+pkgbuild=1
 arch=("noarch")
 
 shortdesc=("X.org font encoding files.")
 longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/font/encodings-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/font/encodings-${pkgver}.tar.xz")
 
-tags=("xorg-fonts xserver")
+tags=("xorg-fonts xorg")
 
 build_deps=("xorg-mkfontscale xorg-util-macros xorg-font-util")
 
