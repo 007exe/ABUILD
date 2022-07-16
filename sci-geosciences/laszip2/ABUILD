@@ -1,25 +1,25 @@
 pkgname=laszip2
 pkgver=2.2.0
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("ASPRS LAS lossless compression library. version 2")
+shortdesc=("ASPRS LAS lossless compression library.")
 longdesc=("LASzip - a free open source product of rapidlasso GmbH - quickly turns bulky LAS files into compact LAZ files without information loss.")
 
 source=("https://download.osgeo.org/laszip/${pkgname%2}-src-${pkgver}.tar.bz2")
 
-tags="libs sci-libs"
+tags=("libs sci-libs")
 
-build_deps="gcc-libs"
+build_deps=("gcc-libs")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
+    --libdir=/usr/lib/${pkgname} \
     --includedir=/usr/include/${pkgname}
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
-  rm -r "${pkgdir}"/usr/bin
+  make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/usr/bin
 }
