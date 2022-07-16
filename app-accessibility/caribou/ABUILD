@@ -1,6 +1,6 @@
 pkgname=caribou
 pkgver=0.4.21
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A text entry and UI navigation application (on-screen keyboard).")
@@ -20,14 +20,15 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --sysconfdir=/etc \
     --disable-static \
     --disable-maintainer-mode \
     --disable-docs \
-    --disable-schemas-compile \
-    --enable-gtk3-module \
-    --disable-gtk2-module PYTHON=/usr/bin/python3
-  make clean
+    --disable-schemas-compile
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
