@@ -1,35 +1,31 @@
 pkgname=dmapi
 pkgver=2.2.12
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("Data Management API runtime environment")
-longdesc=("Files required by system software using the Data Management API (DMAPI). This is used to implement the interface defined in the X/Open document:  Systems Management: Data Storage Managment (XDSM) API dated February 1997. This interface is implemented by the libdm library.")
+shortdesc=("Data Management API runtime environment.")
+longdesc=("Files required by system software using the Data Management API (DMAPI).")
+
+source=("https://sources.archlinux.org/other/packages/dmapi/${pkgname}-${pkgver}.tar.gz")
 
 tags=("base sys-apps")
 
-source=("https://sources.archlinux.org/other/packages/dmapi/$pkgname-$pkgver.tar.gz")
-
-build_deps="glibc xfsprogs autoconf"
+build_deps=("glibc xfsprogs autoconf")
 
 build() {
   go_src_dir
   burn_patches
-  [ "$CARCH" = "x86_64" ] && export CFLAGS="$CLFAGS -fPIC"
+  export CFLAGS="$CLFAGS -fPIC"
   export INSTALL_USER=root
   export INSTALL_GROUP=root
   export DEBUG=-DNDEBUG
   autoconf
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib
   make -j${numjobs}
-
-  make DIST_ROOT=$pkgdir install install-dev
-
-# the static lib
-  install -D -m644 libdm/.libs/libdm.a $pkgdir/usr/lib$LIBDIRSUFFIX/libdm.a
-
-# and the header file, please
-  install -D -m644 include/dmapi.h $pkgdir/usr/include/xfs/dmapi.h
+  make DIST_ROOT=${pkgdir} install install-dev
+  install -D -m644 libdm/.libs/libdm.a ${pkgdir}/usr/lib/libdm.a
+  install -D -m644 include/dmapi.h ${pkgdir}/usr/include/xfs/dmapi.h
+  rm -rf ${pkgdir}/usr/libexec
 }
