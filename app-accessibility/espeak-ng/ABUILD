@@ -1,14 +1,15 @@
 pkgname=espeak-ng
-pkgver=1.50
+pkgver=1.51.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Multi-lingual software speech synthesizer")
-longdesc=("Software speech synthesizer for English, and some other languages")
+shortdesc=("Multi-lingual software speech synthesizer.")
+longdesc=("Software speech synthesizer for English, and some other languages.")
 
 source=("https://github.com/espeak-ng/espeak-ng/archive/$pkgver/espeak-ng-$pkgver.tar.gz")
 
 tags=("console app-accessibility")
+
 # ruby-ronn-ng
 build_deps=("pcaudiolib")
 
@@ -18,10 +19,11 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-extdict-{ru,zh,zhy}
   make src/espeak-ng src/speak-ng
   make -j1
-  make DESTDIR="$pkgdir" install
-  mv "$pkgdir"/usr/share/vim/{addons,vimfiles}
+  make DESTDIR=${pkgdir} install
+  mv ${pkgdir}/usr/share/vim/{addons,vimfiles}
+  rm -r ${pkgdir}/usr/{include/espeak,share/vim/registry}
 }
