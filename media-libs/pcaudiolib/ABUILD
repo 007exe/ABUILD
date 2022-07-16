@@ -1,14 +1,14 @@
 pkgname=pcaudiolib
 pkgver=1.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Portable C Audio Library.")
 longdesc=("Portable C Audio Library.")
 
-tags=("libs media-libs")
+source=("https://github.com/espeak-ng/pcaudiolib/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-source=("https://github.com/espeak-ng/pcaudiolib/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+tags=("libs media-libs")
 
 build_deps=("alsa-lib libpulse")
 
@@ -17,7 +17,8 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
