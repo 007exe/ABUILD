@@ -1,16 +1,16 @@
 pkgname=libcroco
 pkgver=0.6.13
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("A CSS parsing library")
+shortdesc=("A CSS parsing library.")
 longdesc=("Libcroco is a standalone css2 parsing and manipulation library.")
+
+source=("https://gitlab.gnome.org/Archive/libcroco/-/archive/$pkgver/libcroco-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
-source=("https://gitlab.gnome.org/Archive/libcroco/-/archive/$pkgver/libcroco-$pkgver.tar.gz")
-
-build_deps="intltool git gtk-doc glib2 libxml2"
+build_deps=("intltool gtk-doc glib2 libxml2")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static \
     --enable-gtk-doc
   make -j${numjobs}
