@@ -1,26 +1,26 @@
 pkgname=xorg-xmodmap
-pkgver=1.0.10
+pkgver=1.0.11
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Utility for modifying keymaps and button mappings")
+shortdesc=("Utility for modifying keymaps and button mappings.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-build_deps="libx11 xorg-util-macros"
+source=("http://xorg.freedesktop.org/archive/individual/app/xmodmap-${pkgver}.tar.xz")
 
-tags=('x11-apps xserver')
+tags=("xorg xorg-apps")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xmodmap-${pkgver}.tar.bz2")
+build_deps=("libx11 xorg-util-macros")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
