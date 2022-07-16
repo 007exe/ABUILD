@@ -1,6 +1,6 @@
 pkgname=polkit
-pkgver=0.120
-pkgbuild=2
+pkgver=121
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Application development toolkit for controlling system-wide privileges.")
@@ -10,7 +10,7 @@ source=("https://www.freedesktop.org/software/polkit/releases/polkit-${pkgver}.t
 
 tags=("libs sys-auth")
 
-build_deps=("meson gtk-doc gobject-introspection glib2 linux-pam expat elogind js78")
+build_deps=("meson gtk-doc gobject-introspection glib2 linux-pam expat elogind js78 duktape")
 
 config_files=("etc/pam.d/polkit-1")
 
@@ -40,4 +40,13 @@ EOF
 
 # Удаляем бесполезные сервисы systemd
   rm -r ${pkgdir}/tmp
+
+  install -d -o root -g 102 -m 750 ${pkgdir}/{etc,usr/share}/polkit-1/rules.d
+  mv ${pkgdir}/{etc,usr/share}/polkit-1/rules.d/50-default.rules
+
+# Системный пользователь
+  install -Dm644 /dev/stdin "$pkgdir/usr/lib/sysusers.d/$pkgname.conf" <<END
+u polkitd 102 "PolicyKit daemon"
+m polkitd proc
+END
 }
