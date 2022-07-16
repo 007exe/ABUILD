@@ -1,32 +1,30 @@
 pkgname=libgssglue
 pkgver=0.4
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("A mechanism-switch gssapi library")
-longdesc=("libgssglue provides a gssapi interface, but does not implement any gssapi mechanisms itself; instead it calls other gssapi functions (e.g., those provided by MIT Kerberos), depending on the requested mechanism, to do the work.")
+shortdesc=("A mechanism-switch gssapi library.")
+longdesc=("Exports a gssapi interface which calls other random gssapi libraries.")
+
+source=("http://www.citi.umich.edu/projects/nfsv4/linux/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
-source=("http://www.citi.umich.edu/projects/nfsv4/linux/$pkgname/$pkgname-$pkgver.tar.gz")
+build_deps=("glibc autoconf pkgconf")
 
-build_deps="glibc autoconf pkg-config"
-
-config_files="etc/gssapi_mech.conf"
+config_files=("etc/gssapi_mech.conf")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  mkdir ${pkgdir}/etc
-  cat ${filedir}/gssapi_mech.conf | sed -e "s#lib/#lib${LIBDIRSUFFIX}/#g" > ${pkgdir}/etc/gssapi_mech.conf
+  install -Dm644 ${filedir}/gssapi_mech.conf ${pkgdir}/etc/gssapi_mech.conf
 
-# install license
-  install -Dm644 COPYING "$pkgdir"/usr/share/licenses/libgssglue/COPYING
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/libgssglue/COPYING
 }
 
