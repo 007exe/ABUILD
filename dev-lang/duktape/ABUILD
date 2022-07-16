@@ -1,0 +1,21 @@
+pkgname=duktape
+pkgver=2.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Embeddable Javascript engine.")
+longdesc=("Duktape is an embeddable Javascript engine, with a focus on portability and compact footprint..")
+
+source=("https://duktape.org/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop dev-lang")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS="$CFLAGS -DDUK_USE_FASTINT"
+  make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr DESTDIR=${pkgdir} install
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE.txt
+}
