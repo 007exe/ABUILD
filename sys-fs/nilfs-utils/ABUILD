@@ -1,16 +1,16 @@
 pkgname=nilfs-utils
-pkgver=2.2.8
-pkgbuild=2
+pkgver=2.2.9
+pkgbuild=1
 arch=("auto")
 
-shortdesc="Tools for nilfs filesystem"
-longdesc="NILFS is a log-structured file system supporting versioning of the entire file system and continuous snapshotting which allows users to even restore files mistakenly overwritten or destroyed just a few seconds ago."
+shortdesc=("A log-structured file system supporting continuous snapshotting.")
+longdesc=("A New Implementation of a Log-structured File System for Linux.")
 
 source=("http://nilfs.sourceforge.net/download/nilfs-utils-${pkgver}.tar.bz2")
 
-tags="sys-fs base"
+tags=("sys-fs base")
 
-build_deps="util-linux-ng"
+build_deps=("util-linux")
 
 build() {
   go_src_dir
@@ -19,8 +19,8 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-libmount
-  make
-  make DESTDIR="$pkgdir" sbindir=/usr/bin install LDCONFIG=/bin/true
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} sbindir=/usr/bin install LDCONFIG=/bin/true
 }
