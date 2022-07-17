@@ -1,20 +1,20 @@
 pkgname=python-distlib
-pkgver=0.3.4
-pkgbuild=2
+pkgver=0.3.5
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Low-level components of distutils2/packaging")
-longdesc=("Low-level components of distutils2/packaging")
+shortdesc=("Low-level components of distutils2/packaging.")
+longdesc=("Low-level components of distutils2/packaging, augmented with higher-level APIs for making packaging easier.")
 
-source=("https://files.pythonhosted.org/packages/source/d/distlib/distlib-${pkgver}.zip")
+source=("https://github.com/pypa/distlib/releases/download/${pkgver}/distlib-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python unzip")
+build_deps=("python unzip python-setuptools python-build python-installer python-wheel")
 
 build() {
   go_src_dir
   rm distlib/*.exe
-  python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
