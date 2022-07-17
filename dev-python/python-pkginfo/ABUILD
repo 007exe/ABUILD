@@ -1,16 +1,16 @@
 pkgname=python-pkginfo
-pkgver=1.8.2
+pkgver=1.8.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Query metadatdata from sdists / bdists / installed packages.")
-longdesc=("Query metadatdata from sdists / bdists / installed packages.")
+longdesc=("This package provides an API for querying the distutils metadata written in the PKG-INFO file inside a source distriubtion (an sdist) or a binary distribution (e.g., created by running bdist_egg).")
 
-source=("https://pypi.io/packages/source/p/pkginfo/pkginfo-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/p/pkginfo/pkginfo-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-wheel")
 
 build() {
   go_src_dir
