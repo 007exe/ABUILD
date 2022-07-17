@@ -1,6 +1,6 @@
 pkgname=python-charset-normalizer
-pkgver=2.0.10
-pkgbuild=2
+pkgver=2.1.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Encoding and language detection alternative to chardet.")
@@ -15,6 +15,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root=$pkgdir --optimize=1 --skip-build
-  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/python-charset-normalizer/
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/python-charset-normalizer/
 }
