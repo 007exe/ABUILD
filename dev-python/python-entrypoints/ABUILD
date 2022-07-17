@@ -1,20 +1,20 @@
 pkgname=python-entrypoints
 pkgver=0.4
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Discover and load entry points from installed packages.")
 longdesc=("Discover and load entry points from installed packages.")
 
-source=("https://github.com/takluyver/entrypoints/archive/$pkgver.tar.gz")
+source=("https://github.com/takluyver/entrypoints/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python")
+build_deps=("python python-build python-installer python-flit-core")
 
 build() {
   go_src_dir
-  _pyver=$(python --version | cut -c 8-10)
-  install -Dm644 entrypoints.py "$pkgdir/usr/lib/python$_pyver/site-packages/entrypoints.py"
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
