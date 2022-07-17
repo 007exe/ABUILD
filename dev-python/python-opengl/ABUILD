@@ -1,6 +1,6 @@
 pkgname=python-opengl
-pkgver=3.1.5
-pkgbuild=2
+pkgver=3.1.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python OpenGL bindings.")
@@ -16,5 +16,5 @@ adddep=("freeglut")
 
 build() {
   go_src_dir
-  python setup.py install --root="${pkgdir}" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 }
