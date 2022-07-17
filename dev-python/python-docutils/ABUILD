@@ -1,13 +1,12 @@
 pkgname=python-docutils
-pkgver=0.16
+pkgver=0.19
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX.")
 longdesc=("The purpose of the Docutils project is to create a set of tools for processing plaintext documentation into useful formats, such as HTML, XML, and LaTeX.")
 
-_name=docutils
-source=("https://downloads.sourceforge.net/$_name/$_name-$pkgver.tar.gz")
+source=("https://downloads.sourceforge.net/docutils/docutils-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
