@@ -1,10 +1,10 @@
 pkgname=python-nodeenv
-pkgver=1.6.0
-pkgbuild=2
+pkgver=1.7.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Node.js virtual environment builder.")
-longdesc=("Node.js virtual environment builder.")
+longdesc=("It creates an environment that has its own installation directories, that doesn't share libraries with other node.js virtual environments.")
 
 source=("https://github.com/ekalinin/nodeenv/archive/$pkgver.tar.gz")
 
@@ -17,6 +17,6 @@ adddep=("make")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
