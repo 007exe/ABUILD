@@ -1,21 +1,28 @@
 pkgname=python-sphinx
-pkgver=4.5.0
+pkgver=5.0.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python documentation generator.")
-longdesc=("Sphinx is a tool that facilitates the creation of beautiful documentation for Python projects from reStructuredText sources. It was originally created to format the new documentation for Python, but has since been cleaned up in the hope that it will be useful in many other projects.")
+longdesc=("Sphinx is a tool that facilitates the creation of beautiful documentation for Python projects from reStructuredText sources.")
 
-source=("https://pypi.org/packages/source/S/Sphinx/Sphinx-$pkgver.tar.gz")
+source=("https://pypi.org/packages/source/S/Sphinx/Sphinx-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
+build_deps=("python python-setuptools python-docutils python-setuptools python-babel python-imagesize
+python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme
+python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp
+python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
 
-adddep=("python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
+adddep=("python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments
+python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp
+python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath
+python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
 
 build() {
   go_src_dir
+  sed -i 's/0.19/0.20/' setup.py
   burn_patches
   make build
   export PYTHONHASHSEED=0
