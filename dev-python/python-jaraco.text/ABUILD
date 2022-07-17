@@ -1,0 +1,23 @@
+pkgname=python-jaraco.text
+pkgver=3.8.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Module for text manipulation.")
+longdesc=("Text utilities used by other projects by developer jaraco.")
+
+source=("https://files.pythonhosted.org/packages/source/j/jaraco.text/jaraco.text-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools-scm python-wheel
+python-jaraco.functools python-jaraco.context")
+
+adddep=("python-jaraco.functools python-jaraco.context")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
