@@ -1,5 +1,5 @@
 pkgname=python-pip
-pkgver=22.0.4
+pkgver=22.1.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,13 +10,17 @@ source=("https://github.com/pypa/pip/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("develop dev-python")
 
-build_deps=("python python-setuptools python-appdirs python-colorama python-html5lib python-packaging python-requests python-setuptools python-six python-toml python-cachecontrol python-distlib python-distro python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl python-contextlib2")
+build_deps=("python python-setuptools python-appdirs python-colorama python-html5lib python-packaging
+python-requests python-setuptools python-six python-toml python-cachecontrol python-distlib python-distro
+python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl python-contextlib2")
 
-adddep=("python-appdirs python-colorama python-html5lib python-packaging python-requests python-setuptools python-six python-toml python-cachecontrol python-distlib python-distro python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl python-contextlib2")
+adddep=("python-appdirs python-colorama python-html5lib python-packaging python-requests python-setuptools
+python-six python-toml python-cachecontrol python-distlib python-distro python-pep517 python-progress
+python-retrying python-resolvelib python-pyopenssl python-contextlib2")
 
 build(){
   go_src_dir
   python setup.py build
-  python setup.py install --prefix=/usr --root="$pkgdir"
-  install -D -m644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  python setup.py install --prefix=/usr --root=${pkgdir}
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
