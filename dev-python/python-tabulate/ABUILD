@@ -1,6 +1,6 @@
 pkgname=python-tabulate
-pkgver=0.8.9
-pkgbuild=2
+pkgver=0.8.10
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Pretty-print tabular data in Python, a library and a command-line utility.")
@@ -11,12 +11,12 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --optimize=1 --root="${pkgdir}"
-  install -vDm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}/"
-  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
