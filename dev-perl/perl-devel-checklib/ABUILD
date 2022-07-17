@@ -1,0 +1,19 @@
+pkgname=perl-devel-checklib
+pkgver=1.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Module to check if other perl modules are installed.")
+
+source=("https://search.cpan.org/CPAN/authors/id/M/MA/MATTN/Devel-CheckLib-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-capture-tiny")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make install DESTDIR=${pkgdir}
+}
