@@ -1,0 +1,22 @@
+pkgname=python-jaraco.functools
+pkgver=3.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Functools like those found in stdlib.")
+longdesc=("Additional functools in the spirit of stdlib's functools.")
+
+source=("https://files.pythonhosted.org/packages/source/j/jaraco.functools/jaraco.functools-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools-scm python-wheel python-more-itertools")
+
+adddep=("python-more-itertools")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
