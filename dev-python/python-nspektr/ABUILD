@@ -1,0 +1,24 @@
+pkgname=python-nspektr
+pkgver=0.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A distribution package dependency inspector.")
+longdesc=("Nspektr is a distribution package dependency inspector.")
+
+source=("https://github.com/jaraco/nspektr/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-wheel python-setuptools-scm python-jaraco.context python-jaraco.functools python-more-itertools python-packaging")
+
+adddep=("python-jaraco.context python-jaraco.functools python-more-itertools python-packaging")
+
+export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+
+build() {
+  go_src_dir
+  python -m build -wn
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
