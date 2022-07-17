@@ -1,20 +1,22 @@
 pkgname=python-fissix
-pkgver=21.6.6
-pkgbuild=2
+pkgver=21.11.13
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fork of lib2to3 with patch for Python issue33983 support.")
-longdesc=("Fork of lib2to3 with patch for Python issue33983 support.")
+longdesc=("Backport of latest lib2to3, with enhancements.")
 
 source=("https://pypi.python.org/packages/source/f/fissix/fissix-$pkgver.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-flit-core python-appdirs")
+
+adddep=("python-appdirs")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
