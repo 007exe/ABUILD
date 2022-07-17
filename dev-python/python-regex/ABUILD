@@ -1,20 +1,20 @@
 pkgname=python-regex
-pkgver=2021.11.10
-pkgbuild=2
+pkgver=2022.6.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Alternative python regular expression module.")
-longdesc=("Alternative python regular expression module.")
+longdesc=("This regex implementation is backwards-compatible with the standard re module, but offers additional functionality.")
 
 source=("https://files.pythonhosted.org/packages/source/r/regex/regex-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="${pkgdir}/" --optimize=1 --skip-build
-  install -Dm644 LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.txt
+  python -m build -wn
+  python -m installer --d ${pkgdir} dist/*.whl
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }
