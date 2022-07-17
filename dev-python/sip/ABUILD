@@ -1,5 +1,5 @@
 pkgname=sip
-pkgver=6.5.0
+pkgver=6.6.2
 pkgbuild=1
 arch=("auto")
 
@@ -17,5 +17,5 @@ adddep=("python-toml python-packaging python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --skip-build --root="$pkgdir" --optimize=1
+  python setup.py install --skip-build --root=${pkgdir} --optimize=1
 }
