@@ -1,6 +1,6 @@
 pkgname=python-pyqt5
-pkgver=5.15.6
-pkgbuild=2
+pkgver=5.15.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A set of Python bindings for the Qt5 toolkit")
@@ -9,13 +9,16 @@ longdesc=("Python bindings for the Qt framework")
 source=("https://pypi.python.org/packages/source/P/PyQt5/PyQt5-$pkgver.tar.gz")
 
 tags=("dev-python libs")
-#qt5-webkit
-build_deps=("python-pyqt5-sip qt5-base dbus-python sip pyqt-builder python-opengl qt5-serialport qt5-connectivity qt5-multimedia qt5-tools qt5-speech qt5-websockets qt5-xmlpatterns qt5-remoteobjects qt5-quick3d")
+
+# qt5-quick3d
+build_deps=("python-pyqt5-sip qt5-base dbus-python sip pyqt-builder python-opengl qt5-serialport qt5-connectivity
+qt5-multimedia qt5-tools qt5-speech qt5-websockets qt5-xmlpatterns qt5-remoteobjects qt5-webkit")
 
 adddep=("python-pyqt5-sip qt5-base")
 
-# Это опциональные зависимости.
-removedep=("qt5-serialport qt5-connectivity qt5-multimedia qt5-tools qt5-speech qt5-webkit qt5-websockets qt5-xmlpatterns qt5-remoteobjects qt5-quick3d")
+# NOTE: Это опциональные зависимости.
+removedep=("qt5-serialport qt5-connectivity qt5-multimedia qt5-tools qt5-speech qt5-webkit qt5-websockets
+qt5-xmlpatterns qt5-remoteobjects qt5-quick3d")
 
 build() {
   go_src_dir
