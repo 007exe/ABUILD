@@ -1,65 +1,63 @@
 pkgname=python-setuptools
-pkgver=60.6.0
+pkgver=63.2.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Easily build and distribute Python packages.")
 longdesc=("Download, build, install, upgrade, and uninstall Python packages -- easily! Homepage: http://pypi.python.org/pypi/setuptools")
 
-source=("https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python python-appdirs python-more-itertools python-ordered-set python-packaging python-pyparsing")
+build_deps=("python python-setuptools python-appdirs python-jaraco.text python-more-itertools
+python-nspektr python-ordered-set python-packaging python-pyparsing python-tomli python-validate-pyproject")
 
-adddep=("python-appdirs python-more-itertools python-ordered-set python-packaging python-pyparsing")
+adddep=("python-appdirs python-jaraco.text python-more-itertools python-nspektr python-ordered-set
+python-packaging python-pyparsing python-tomli python-validate-pyproject")
 
  export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
+ export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
-before_build(){
-  rm -r setuptools-$pkgver/{pkg_resources,setuptools}/{extern,_vendor}
+#before_build(){
+#  go_src_dir
+#  burn_patches
+#  cd ..
+#  rm -r setuptools-${pkgver}/{pkg_resources,setuptools}/{extern,_vendor}
 
-# Upstream devendoring logic is badly broken, see:
 # https://bugs.archlinux.org/task/58670
 # https://github.com/pypa/pip/issues/5429
 # https://github.com/pypa/setuptools/issues/1383
-# The simplest fix is to simply rewrite import paths to use the canonical
-# location in the first place
-  for _module in setuptools pkg_resources '' ; do
-      find setuptools-$pkgver -name \*.py -exec sed -i \
-          -e 's/from '$_module.extern' import/import/' \
-          -e 's/from '$_module.extern'./from /' \
-          -e 's/import '$_module.extern'./import /' \
-          -e "s/__import__('$_module.extern./__import__('/" \
-          {} +
-  done
+#  for _module in setuptools pkg_resources '' ; do
+#      find setuptools-${pkgver} -name \*.py -exec sed -i \
+#          -e 's/from '${_module}.extern' import/import/' \
+#          -e 's/from '${_module}.extern'./from /' \
+#          -e 's/import '${_module}.extern'./import /' \
+#          -e "s/__import__('$_module.extern./__import__('/" \
+#          {} +
+#  done
 
 # https://github.com/pypa/setuptools/issues/2466
-  sed -i '/ignore:lib2to3 package is deprecated:DeprecationWarning/a \    ignore:Creating a LegacyVersion has been deprecated and will be removed in the next major release:DeprecationWarning' \
-      setuptools-$pkgver/pytest.ini
+#  sed -i '/ignore:lib2to3 package is deprecated:DeprecationWarning/a \    ignore:Creating a LegacyVersion has been deprecated and will be removed in the next major release:DeprecationWarning' \
+#      setuptools-${pkgver}/pytest.ini
 
-# Remove post-release tag since we are using stable tags
-  sed -e '/tag_build = .post/d' \
-      -e '/tag_date = 1/d' \
-      -i setuptools-$pkgver/setup.cfg
+#  sed -e '/tag_build = .post/d' \
+#      -e '/tag_date = 1/d' \
+#      -i setuptools-${pkgver}/setup.cfg
 
-# 'Clean' installation is expected to fail since we removed bundled packages
-  sed -i '/^def test_clean_env_install/i @pytest.mark.xfail' setuptools-$pkgver/setuptools/tests/test_virtualenv.py
+#  sed -i '/^def test_clean_env_install/i @pytest.mark.xfail' setuptools-${pkgver}/setuptools/tests/test_virtualenv.py
 
-# Tests failed. Importing an unbundled new setuptools in a virtualenv does not work, but this won't
-# affect normal virtualenv usage (which don't have to import the unbundled setuptools in *current*
-# dir.
-  sed -e '/^def test_pip_upgrade_from_source/i @pytest.mark.xfail' \
-      -e '/^def test_test_command_install_requirements/i @pytest.mark.xfail' \
-      -e '/^def test_no_missing_dependencies/i @pytest.mark.xfail' \
-      -i setuptools-$pkgver/setuptools/tests/test_virtualenv.py
+#  sed -e '/^def test_pip_upgrade_from_source/i @pytest.mark.xfail' \
+#      -e '/^def test_test_command_install_requirements/i @pytest.mark.xfail' \
+#      -e '/^def test_no_missing_dependencies/i @pytest.mark.xfail' \
+#      -i setuptools-${pkgver}/setuptools/tests/test_virtualenv.py
 
-  cd "$srcdir"/setuptools-$pkgver
-  sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python3|" setuptools/command/easy_install.py
-}
+#  cd ${srcdir}/setuptools-${pkgver}
+#  sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python3|" setuptools/command/easy_install.py
+#}
 
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --prefix=/usr --root="$pkgdir" --optimize=1 --skip-build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
 }
