@@ -1,12 +1,12 @@
 pkgname=python-pytest
-pkgver=7.1.1
+pkgver=7.1.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple powerful testing with Python.")
-longdesc=("Simple powerful testing with Python.")
+longdesc=("The pytest framework makes it easy to write small, readable tests, and can scale to support complex functional testing for applications and libraries.")
 
-source=("https://files.pythonhosted.org/packages/source/p/pytest/pytest-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/p/pytest/pytest-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -20,8 +20,7 @@ build() {
   sed -i "/^\[metadata\]/a version = ${pkgver}
   /setuptools-scm/d" setup.cfg
   sed -i '/setuptools-scm\|wheel/d
-  /\[tool.setuptools_scm\]/,/^$/d
-  /_pytest.warning_types.PytestUnknownMarkWarning/a \    "ignore:Creating a LegacyVersion has been deprecated and will be removed in the next major release:DeprecationWarning",' pyproject.toml
+  /\[tool.setuptools_scm\]/,/^$/d' pyproject.toml
 
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
