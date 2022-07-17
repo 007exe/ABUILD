@@ -1,12 +1,12 @@
 pkgname=python-platformdirs
-pkgver=2.5.0
+pkgver=2.5.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A small Python module for determining appropriate platform-specific dirs, e.g. a user data dir.")
-longdesc=("A small Python module for determining appropriate platform-specific dirs, e.g. a user data dir.")
+longdesc=("When writing desktop application, finding the right location to store user data and configuration varies per platform.")
 
-source=("https://pypi.io/packages/source/p/platformdirs/platformdirs-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/p/platformdirs/platformdirs-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
