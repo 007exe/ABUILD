@@ -1,5 +1,5 @@
 pkgname=meson
-pkgver=0.62.1
+pkgver=0.63.0
 pkgbuild=1
 arch=("auto")
 
@@ -31,7 +31,7 @@ build() {
 # pip3 wheel -w dist --no-build-isolation --no-deps meson
 # pip3 install --no-index --find-links dist meson
 # по этому /usr/bin/meson использую из установки pip
-after_build(){
-  rm ${pkgdir}/usr/bin/meson
-  install -m755 ${filedir}/meson ${pkgdir}/usr/bin/
-}
+#after_build(){
+#  rm ${pkgdir}/usr/bin/meson
+#  install -m755 ${filedir}/meson ${pkgdir}/usr/bin/
+#}
