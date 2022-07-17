@@ -1,16 +1,17 @@
 pkgname=rofi
-pkgver=1.7.0
+pkgver=1.7.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A window switcher, application launcher and dmenu replacement.")
-longdesc=("Rofi is a dmenu replacement. Rofi, like dmenu, will provide the user with a textual list of options where one or more can be selected. This can either be, running an application, selecting a window or options provided by an external script.")
+longdesc=("Rofi is a dmenu replacement. Rofi, like dmenu, will provide the user with a textual list of options where one or more can be selected.")
 
-source=("https://github.com/DaveDavenport/rofi/releases/download/$pkgver/rofi-$pkgver.tar.xz")
+source=("https://github.com/DaveDavenport/rofi/releases/download/${pkgver}/rofi-${pkgver}.tar.xz")
 
-tags="utils x11-misc"
+tags=("apps x11-misc")
+
 # libxdg-basedir
-build_deps="startup-notification libxkbcommon-x11 xcb-util-wm xcb-util-xrm librsvg xcb-util-cursor"
+build_deps=("startup-notification libxkbcommon-x11 xcb-util-wm xcb-util-xrm librsvg xcb-util-cursor check")
 
 build() {
   go_src_dir
@@ -19,11 +20,11 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   make -j${numjobs}
-  make install install-man DESTDIR="$pkgdir"
+  make install install-man DESTDIR=${pkgdir}
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  install -dm755 "$pkgdir/usr/share/doc/$pkgname/examples"
-  install -Dm755 Examples/*.sh "$pkgdir/usr/share/doc/$pkgname/examples"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -dm755 ${pkgdir}/usr/share/doc/${pkgname}/examples
+  install -Dm755 Examples/*.sh ${pkgdir}/usr/share/doc/${pkgname}/examples
 }
