@@ -1,12 +1,12 @@
 pkgname=python-typing_extensions
-pkgver=4.1.0
-pkgbuild=2
+pkgver=4.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Backported and Experimental Type Hints for Python 3.5+")
 longdesc=("The typing module was added to the standard library in Python 3.5 on a provisional basis and will no longer be provisional in Python 3.7. However, this means users of Python 3.5 - 3.6 who are unable to upgrade will not be able to take advantage of new types added to the typing module, such as typing.Text or typing.Coroutine.")
 
-source=("https://github.com/python/typing/archive/refs/tags/$pkgver.tar.gz")
+source=("https://github.com/python/typing/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,6 +17,6 @@ build() {
   burn_patches
   cd typing_extensions
   python -m build --wheel --skip-dependency-check --no-isolation
-  python -m install --optimize=1 --destdir="${pkgdir}" dist/*.whl
-  install -Dm 644 ../LICENSE -t "${pkgdir}"/usr/share/licenses/python-typing_extensions/
+  python -m install --optimize=1 --destdir=${pkgdir} dist/*.whl
+  install -Dm 644 ../LICENSE -t ${pkgdir}/usr/share/licenses/python-typing_extensions/
 }
