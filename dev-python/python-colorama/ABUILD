@@ -1,12 +1,12 @@
 pkgname=python-colorama
-pkgver=0.4.4
-pkgbuild=2
+pkgver=0.4.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python API for cross-platform colored terminal text.")
-longdesc=("ANSI escape character sequences have long been used to produce colored terminal text and cursor positioning on Unix and Macs. Colorama makes this work on Windows, too. It also provides some shortcuts to help generate ANSI sequences, and works fine in conjunction with any other ANSI sequence generation library, such as Termcolor.")
+longdesc=("ANSI escape character sequences have long been used to produce colored terminal text and cursor positioning on Unix and Macs.")
 
-source=("https://github.com/tartley/colorama/archive/$pkgver.tar.gz")
+source=("https://github.com/tartley/colorama/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -15,6 +15,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }
