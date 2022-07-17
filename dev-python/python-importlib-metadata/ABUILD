@@ -1,12 +1,12 @@
 pkgname=python-importlib-metadata
 pkgver=4.8.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Library to access the metadata for a Python package.")
 longdesc=("importlib_metadata is a library which provides an API for accessing an installed packages metadata (see PEP 566), such as its entry points or its top-level name. This functionality intends to replace most uses of pkg_resources entry point API and metadata API. Along with importlib.resources in Python 3.7 and newer (backported as importlib_resources for older versions of Python), this can eliminate the need to use the older and less efficient pkg_resources package.")
 
-source=("https://github.com/python/importlib_metadata/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/python/importlib_metadata/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -14,12 +14,11 @@ build_deps=("python python-setuptools-scm python-toml python-wheel python-zipp")
 
 adddep=("python-zipp")
 
-build()
-{
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+
+build(){
   go_src_dir
-# remove pytest-perf warmup to be able to drop its dependency
   rm exercises.py
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 }
