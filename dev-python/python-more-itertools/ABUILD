@@ -1,12 +1,12 @@
 pkgname=python-more-itertools
-pkgver=8.12.0
+pkgver=8.13.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Implements a lazy string for python useful for use with get-text")
-longdesc=("The itertools library is a gem - you can compose elegant solutions for a variety of problems with its functions. More-itertools is a collection of building blocks, recipes, and routines for working with iterables.")
+shortdesc=("Implements a lazy string for python useful for use with get-text.")
+longdesc=("The itertools library is a gem - you can compose elegant solutions for a variety of problems with its functions.")
 
-source=("https://files.pythonhosted.org/packages/source/m/more-itertools/more-itertools-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/m/more-itertools/more-itertools-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
