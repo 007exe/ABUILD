@@ -1,6 +1,6 @@
 pkgname=python-flit-core
-pkgver=3.5.1
-pkgbuild=2
+pkgver=3.7.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simplified packaging of Python modules.")
@@ -14,7 +14,7 @@ build_deps=("python python-pip python-requests python-docutils python-tomli pyth
 
 adddep=("python-tomli python-tomli-w")
 
-pkglist="python-flit"
+pkglist=("python-flit")
 
 build() {
   go_src_dir
@@ -24,12 +24,11 @@ build() {
   cd ..
   PYTHONPATH=flit_core python -m flit build --format wheel
   cd flit_core
-  PIP_CONFIG_FILE=/dev/null pip install --isolated --root="${pkgdir}" --ignore-installed --no-deps dist/*.whl
-  install -Dm 644 ../LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+  install -Dm 644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-# installing tests to a subdir of your project might not conflict the toplevel, but
-# don't do it anyway...
-  rm -r "$pkgdir"/usr/lib/python*/site-packages/flit_core/tests/
+# Установка тестов во вложенный каталог проекта может не конфликтовать с верхним уровнем, но в любом случае не делайте этого...
+  rm -r ${pkgdir}/usr/lib/python*/site-packages/flit_core/tests/
 }
 
 python-flit() {
@@ -41,6 +40,6 @@ python-flit() {
 
 python-flit_prep() {
   go_src_dir
-  PIP_CONFIG_FILE=/dev/null pip install --isolated --root="${pkgdir}" --ignore-installed --no-deps dist/*.whl
-  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
