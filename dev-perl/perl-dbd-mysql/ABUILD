@@ -9,7 +9,7 @@ source=("https://search.cpan.org/CPAN/authors/id/D/DV/DVEEDEN/DBD-mysql-${pkgver
 
 tags=("dev-perl libs")
 
-build_deps=("perl perl-dbi mariadb-libs")
+build_deps=("perl perl-dbi mariadb-libs perl-devel-checklib")
 
 adddep=("perl-dbi")
 
