@@ -1,12 +1,12 @@
 pkgname=python-resolvelib
-pkgver=0.5.5
-pkgbuild=2
+pkgver=0.8.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Resolve abstract dependencies into concrete ones.")
-longdesc=("Resolve abstract dependencies into concrete ones.")
+longdesc=("ResolveLib at the highest level provides a Resolver class that includes dependency resolution logic.")
 
-source=("https://github.com/sarugaku/resolvelib/archive/$pkgver.tar.gz")
+source=("https://github.com/sarugaku/resolvelib/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -15,6 +15,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
