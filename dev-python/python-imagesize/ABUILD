@@ -1,12 +1,12 @@
 pkgname=python-imagesize
-pkgver=1.3.0
-pkgbuild=2
+pkgver=1.4.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Python library for determining image sizes")
-longdesc=("Python library for determining image sizes")
+shortdesc=("Python library for determining image sizes.")
+longdesc=("This module analyzes JPEG/JPEG 2000/PNG/GIF/TIFF/SVG/Netpbm/WebP image headers and returns image size or DIP.")
 
-source=("https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -16,6 +16,6 @@ build() {
   go_src_dir
   python setup.py build
   python -m unittest discover -v
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 LICENSE.rst "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.rst
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE.rst ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst
 }
