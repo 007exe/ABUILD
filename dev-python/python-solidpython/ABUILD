@@ -1,18 +1,21 @@
 pkgname=python-solidpython
-pkgver=1.1.1
-pkgbuild=2
+pkgver=1.1.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python frontend for solid modelling that compiles to OpenSCAD.")
 longdesc=("SolidPython is a generalization of Phillip Tiefenbacher's openscad module, found on Thingiverse. It generates valid OpenSCAD code from Python code with minimal overhead.")
 
-source=("https://github.com/SolidCode/SolidPython/archive/v$pkgver.tar.gz")
+source=("https://github.com/SolidCode/SolidPython/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-dephell python-euclid3 python-pypng python-prettytable python-regex python-setuptools python-dephell python-dephell-argparse")
+build_deps=("python python-setuptools python-euclid3 python-pypng python-prettytable
+python-regex python-setuptools python-dephell-argparse python-dephell python-charset-normalizer")
 
 adddep=("python-euclid3 python-pypng python-prettytable python-regex")
+
+export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
 build() {
   go_src_dir
