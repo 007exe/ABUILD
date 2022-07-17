@@ -1,0 +1,19 @@
+pkgname=python-trove-classifiers
+pkgver=2022.6.26
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Canonical source for classifiers on PyPI (pypi.org).")
+longdesc=("Canonical source for classifiers on PyPI (pypi.org)..")
+
+source=("https://github.com/pypa/trove-classifiers/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-calver python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+}
