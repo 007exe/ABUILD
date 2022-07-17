@@ -1,18 +1,20 @@
 pkgname=python-sphinx-theme-builder
-pkgver=0.2.0a12
-pkgbuild=2
+pkgver=0.2.0b1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python build backend for Sphinx themes.")
-longdesc=("Python build backend for Sphinx themes.")
+longdesc=("Streamline the Sphinx theme development workflow, by building upon existing standardised tools..")
 
-source=("https://github.com/pradyunsg/sphinx-theme-builder/archive/$pkgver.tar.gz")
+source=("https://github.com/pradyunsg/sphinx-theme-builder/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-dephell python-packaging python-tomli python-nodeenv python-setuptools python-pep621 python-rich")
+build_deps=("python python-setuptools python-dephell python-packaging python-tomli
+python-nodeenv python-pep621 python-rich python-m2r")
 
-adddep=("python-packaging python-tomli python-nodeenv python-setuptools python-pep621 python-rich")
+adddep=("python-packaging python-tomli python-nodeenv python-setuptools python-pep621
+python-rich")
 
 build() {
   go_src_dir
