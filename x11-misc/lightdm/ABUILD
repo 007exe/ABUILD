@@ -1,6 +1,6 @@
 pkgname=lightdm
 pkgver=1.30.0
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A lightweight display manager.")
@@ -8,7 +8,7 @@ longdesc=("The lightdm package contains a lightweight display manager based upon
 
 source=("https://github.com/canonical/lightdm/releases/download/${pkgver}/lightdm-${pkgver}.tar.xz")
 
-tags=("xapps x11-misc")
+tags=("apps x11-misc")
 
 build_deps=("glib2 gobject-introspection gtk-doc intltool itstool libgcrypt libx11 libxcb libxdmcp libxklavier linux-pam polkit qt5-base vala yelp-tools")
 
@@ -44,33 +44,31 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   make DESTDIR=${pkgdir} -C liblightdm-qt uninstall
-
   mkdir -p ${pkgdir}/etc/{pam.d,init.d,lightdm}
+
 # Openrc
   cp ${filedir}/lightdm.rc ${pkgdir}/etc/init.d/lightdm
   chmod 755 ${pkgdir}/etc/init.d/lightdm
-
   install -m 755 ${filedir}/Xsession ${pkgdir}/etc/lightdm/Xsession
+
 # PAM
   install -m 644 ${filedir}/lightdm.pam ${pkgdir}/etc/pam.d/lightdm
   install -m 644 ${filedir}/lightdm-autologin.pam ${pkgdir}/etc/pam.d/lightdm-autologin
   sed -i "s/pam_systemd/pam_elogind/" ${pkgdir}/etc/pam.d/*
 
-  ln -s /etc/X11/xinit/Xsession ${pkgdir}/usr/bin/lightdm-session
+  install -Dm 644 ${filedir}/lightdm.sysusers ${pkgdir}/usr/lib/sysusers.d/lightdm.conf
 
-  install -o lightdm -g lightdm -d ${pkgdir}/var/lib/lightdm-data
+  ln -s /etc/X11/xinit/Xsession ${pkgdir}/usr/bin/lightdm-session
 
 # Исправлено расположение конфигурации dbus
   mv ${pkgdir}/etc/dbus-1/system.d ${pkgdir}/usr/share/dbus-1/system.d
   rm -rf ${pkgdir}/etc/dbus-1
 
-# PolicyKit
-#  install -dm 750 -g 102 ${pkgdir}/usr/share/polkit-1/rules.d
-#  install -m 644 ${filedir}/lightdm.rules ${pkgdir}/usr/share/polkit-1/rules.d/lightdm.rules
-
-#  cp ${filedir}/lightdm.conf ${pkgdir}/etc/lightdm
-#  mkdir -p ${pkgdir}/usr/share/lightdm/themes
-#  cp -r ${filedir}/agilialinux ${pkgdir}/usr/share/lightdm/themes/
+  mkdir -p ${pkgdir}/run/lightdm
+  mkdir -p ${pkgdir}/var/cache/lightdm
+  mkdir -p ${pkgdir}/var/lib/lightdm
+  mkdir -p ${pkgdir}/var/lib/lightdm-data
+  mkdir -p ${pkgdir}/var/log/lightdm
 }
 
 liblightdm-qt5() {
