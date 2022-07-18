@@ -1,24 +1,23 @@
 pkgname=rp-pppoe
 pkgver=3.15
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("ADSL/PPPoE userspace driver")
-longdesc=("PPPoE (Point-to-Point Protocol over Ethernet) is a protocol used by many ADSL Internet Service Providers. Roaring Penguin has a free client for Linux systems to connect to PPPoE service providers.")
+shortdesc=("Roaring Penguin's Point-to-Point Protocol over Ethernet client.")
+longdesc=("PPPoE (Point-to-Point Protocol over Ethernet) is a protocol used by many ADSL Internet Service Providers.")
+
+source=("https://dianne.skoll.ca/projects/rp-pppoe/download/rp-pppoe-${pkgver}.tar.gz")
 
 tags=("network net-dialup")
 
-source=("https://dianne.skoll.ca/projects/rp-pppoe/download/rp-pppoe-$pkgver.tar.gz")
+build_deps=("ppp iproute2")
 
-build_deps="ppp iproute2"
+adddep=("ppp>=2.4.7")
 
-adddep="ppp>=2.4.7"
-
-config_files="etc/ppp/pppoe.conf
+config_files=("etc/ppp/pppoe.conf
 etc/ppp/firewall-standalone
 etc/ppp/firewall-masq
-etc/ppp/pppoe-server-options"
-
+etc/ppp/pppoe-server-options")
 
 build() {
   go_src_dir
@@ -27,16 +26,10 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-plugin
-  make PLUGIN_DIR="/usr/lib${LIBDIRSUFFIX}/rp-pppoe" all rp-pppoe.so
-  make -j${numjobs}
-  make PLUGIN_DIR="/usr/lib${LIBDIRSUFFIX}/rp-pppoe" DESTDIR=$pkgdir install
-
-#not necessary after moving the plugin
-  rm -rf ${pkgdir}/etc/ppp/plugins
-#changing config to the new path
-  sed -i 's/LINUX_PLUGIN=\/etc\/ppp\/plugins\/rp-pppoe.so/LINUX_PLUGIN=\/usr\/lib'${LIBDIRSUFFIX}'\/rp-pppoe\/rp-pppoe.so/g' ${pkgdir}/etc/ppp/pppoe.conf
+  make PLUGIN_DIR="/usr/lib/rp-pppoe" all rp-pppoe.so
+  make PLUGIN_DIR="/usr/lib/rp-pppoe" DESTDIR=${pkgdir} install
 
   install -Dm755 ${filedir}/pppoe-server.initd ${pkgdir}/etc/init.d/pppoe-server
 }
