@@ -1,0 +1,24 @@
+pkgname=ttf-droid
+pkgver=20121017
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("General-purpose fonts released by Google as part of Android")
+longdesc=("A font created by Ascender Corporation for use by the Open Handset Alliance platform, Android.")
+
+source=("https://sources.archlinux.org/other/community/ttf-droid/ttf-droid-${pkgver}.tar.xz")
+
+tags=("media-fonts fonts")
+
+build_deps=("tar")
+
+build() {
+  go_src_dir
+  install -dm755 ${pkgdir}/usr/share/fonts/TTF
+  for file in *
+  do
+      install -m644 ${file} ${pkgdir}/usr/share/fonts/TTF
+  done
+
+}
+
