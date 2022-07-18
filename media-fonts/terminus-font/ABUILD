@@ -3,14 +3,14 @@ pkgver=4.49.1
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Monospace bitmap font (for X11 and console)")
-longdesc=("A clean fixed font for the console and X11")
+shortdesc=("Monospace bitmap font (for X11 and console).")
+longdesc=("A clean fixed font for the console and X11.")
 
 source=("https://downloads.sourceforge.net/project/terminus-font/terminus-font-${pkgver%.1}/terminus-font-$pkgver.tar.gz")
 
-tags=("x11-fonts xserver")
+tags=("media-fonts fonts")
 
-build_deps=("xorg-bdftopcf python")
+build_deps=("tar")
 
 build() {
   go_src_dir
@@ -20,11 +20,11 @@ build() {
     --otbdir=/usr/share/fonts/misc \
     --psfdir=/usr/share/kbd/consolefonts
   make all otb
-  make DESTDIR="$pkgdir" install install-otb
+  make DESTDIR=${pkgdir} install install-otb
 
-  install -Dm644 75-yes-terminus.conf "$pkgdir/usr/share/fontconfig/conf.avail/75-yes-terminus.conf"
-  install -Dm644 OFL.TXT "$pkgdir/usr/share/licenses/terminus-font/LICENSE"
+  install -Dm644 75-yes-terminus.conf ${pkgdir}/usr/share/fontconfig/conf.avail/75-yes-terminus.conf
+  install -Dm644 OFL.TXT ${pkgdir}/usr/share/licenses/terminus-font/LICENSE
 
-  install -d "$pkgdir/usr/share/fontconfig/conf.default"
-  ln -sr "$pkgdir/usr/share/fontconfig/conf.avail/75-yes-terminus.conf" "$pkgdir/usr/share/fontconfig/conf.default/75-yes-terminus.conf"
+  install -d ${pkgdir}/usr/share/fontconfig/conf.default
+  ln -sr ${pkgdir}/usr/share/fontconfig/conf.avail/75-yes-terminus.conf ${pkgdir}/usr/share/fontconfig/conf.default/75-yes-terminus.conf
 }
