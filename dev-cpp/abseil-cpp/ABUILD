@@ -1,0 +1,29 @@
+pkgname=abseil-cpp
+pkgver=20211102.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Abseil Common Libraries (C++), LTS Branch.")
+longdesc=("Collection of C++ library code designed to augment the C++ standard library.")
+
+source=("https://github.com/abseil/abseil-cpp/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -Bbuild \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_CXX_FLAGS="-DNDEBUG" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+  cd build
+  cmake --build .
+  DESTDIR=${pkgdir} cmake --install .
+}
