@@ -8,9 +8,9 @@ longdesc=("The Xorg font packages provide some scalable fonts and supporting pac
 
 source=("http://xorg.freedesktop.org/archive/individual/font/encodings-${pkgver}.tar.xz")
 
-tags=("xorg-fonts xorg")
+tags=("media-fonts fonts")
 
-build_deps=("xorg-mkfontscale xorg-util-macros xorg-font-util")
+build_deps=("tar unzip")
 
 build() {
   go_src_dir
