@@ -1,0 +1,26 @@
+pkgname=rnnoise
+pkgver=0.4.1
+# NOTE: Коммити версии
+_commit=1cbdbcf1283499bbb2230a6b0f126eb9b236defd
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Recurrent neural network for audio noise reduction.")
+longdesc=("A noise suppression library based on a recurrent neural network.")
+
+source=("https://gitlab.xiph.org/xiph/rnnoise/-/archive/${_commit}/rnnoise-${_commit}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
