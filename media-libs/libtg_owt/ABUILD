@@ -1,0 +1,50 @@
+pkgname=libtg_owt
+_commit=10d5f4b
+pkgver=0.git14.${_commit}
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("WebRTC library.")
+longdesc=("WebRTC build for Telegram.")
+
+strict_version=1
+source=("git:https://github.com/desktop-app/tg_owt.git"
+        "git:https://chromium.googlesource.com/webm/libvpx.git"
+        "git:https://chromium.googlesource.com/libyuv/libyuv.git"
+        "git:https://github.com/PipeWire/pipewire.git")
+
+tags=("libs media-libs")
+
+build_deps=("libdrm git ninja unzip cmake protobuf libxrandr libxcomposite openssl glibc ffmpeg libva opus yasm libjpeg-turbo pipewire libxtst abseil-cpp libepoxy")
+
+before_build() {
+  cd ${srcdir}
+  mv ${srcdir}/libtg_owt_git_libvpx.git.src ${srcdir}/libvpx
+  mv ${srcdir}/libtg_owt_git_libyuv.git.src ${srcdir}/libyuv
+  mv ${srcdir}/libtg_owt_git_pipewire.git.src ${srcdir}/pipewire
+  mv ${srcdir}/libtg_owt_git_tg_owt.git.src ${srcdir}/tg_owt
+
+  cd tg_owt
+  git submodule init
+  git config submodule.src/third_party/libvpx/source/libvpx.url ${srcdir}/libvpx
+  git config submodule.src/third_party/libyuv.url ${srcdir}/libyuv
+  git config submodule.src/third_party/pipewire.url ${srcdir}/pipewire
+  git submodule update
+
+  burn_patches
+}
+
+build() {
+  cd ${srcdir}/tg_owt
+  export CFLAGS+=" -ffat-lto-objects"
+  export CXXFLAGS+=" -ffat-lto-objects -I/usr/include/libdrm"
+  cmake -B build \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=OFF
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
