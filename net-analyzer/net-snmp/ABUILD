@@ -1,19 +1,19 @@
 pkgname=net-snmp
-pkgver=5.9.1
+pkgver=5.9.3
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A collection of SNMP protocol tools and libraries")
-longdesc=("SNMP (Simple Network Management Protocol) is a protocol used for network management. The NET-SNMP project includes various SNMP tools: an extensible agent, an SNMP library, tools for requesting or setting information from SNMP agents, tools for generating and handling SNMP traps, a version of the netstat command which uses SNMP, and a Tk/Perl mib browser. This package contains the snmpd and snmptrapd daemons, documentation, etc.")
+shortdesc=("Software for generating and retrieving SNMP data.")
+longdesc=("A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6.")
 
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="network net-misc"
+tags=("network net-misc")
 
-build_deps="libnsl lm_sensors libpcap pciutils pcre python-setuptools"
+build_deps=("libnsl lm_sensors libpcap pciutils pcre python-setuptools")
 
-config_files="etc/conf.d/snmpd
-etc/conf.d/snmptrapd"
+config_files=("etc/conf.d/snmpd
+etc/conf.d/snmptrapd")
 
 build() {
   go_src_dir
@@ -21,9 +21,10 @@ build() {
   autoreconf -i
   ./configure \
     --prefix=/usr \
+    --sbindir=/usr/bin \
     --sysconfdir=/etc \
     --mandir=/usr/share/man \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --enable-ucd-snmp-compatibility \
     --enable-ipv6 \
     --with-libwrap \
@@ -36,14 +37,14 @@ build() {
     --with-mib-modules="host misc/ipfwacc ucd-snmp/diskio tunnel ucd-snmp/dlmod ucd-snmp/lmsensorsMib" \
     --with-persistent-directory="/var/net-snmp"
   make NETSNMP_DONT_CHECK_VERSION=1 -j${numjobs}
-  make DESTDIR="${pkgdir}" INSTALL_PREFIX="${pkgdir}" INSTALLDIRS=vendor install
+  make DESTDIR=${pkgdir} INSTALL_PREFIX=${pkgdir} INSTALLDIRS=vendor install
 
   mkdir -p ${pkgdir}/etc/{init.d,conf.d}
 
-  install -D -m755 "${filedir}/init.d/snmpd" "${pkgdir}/etc/init.d/snmpd"
-  install -D -m755 "${filedir}/init.d/snmptrapd" "${pkgdir}/etc/init.d/snmptrapd"
-  install -D -m755 "${filedir}/conf.d/snmpd" "${pkgdir}/etc/conf.d/snmpd"
-  install -D -m755 "${filedir}/conf.d/snmptrapd" "${pkgdir}/etc/conf.d/snmptrapd"
+  install -D -m755 ${filedir}/init.d/snmpd ${pkgdir}/etc/init.d/snmpd
+  install -D -m755 ${filedir}/init.d/snmptrapd ${pkgdir}/etc/init.d/snmptrapd
+  install -D -m755 ${filedir}/conf.d/snmpd ${pkgdir}/etc/conf.d/snmpd
+  install -D -m755 ${filedir}/conf.d/snmptrapd ${pkgdir}/etc/conf.d/snmptrapd
 
-  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

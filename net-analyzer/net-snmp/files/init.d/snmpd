@@ -1,7 +1,4 @@
-#!/sbin/runscript
-# Copyright 1999-2009 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/net-snmp/files/snmpd.init,v 1.1 2009/10/16 08:51:05 gengor Exp $
+#!/usr/bin/runscript
 
 opts="${opts} reload"
 
@@ -22,7 +19,7 @@ checkconfig() {
 start() {
 	checkconfig || return 1
 	ebegin "Starting ${SVCNAME}"
-	start-stop-daemon --start --quiet --exec /usr/sbin/snmpd \
+	start-stop-daemon --start --quiet --exec /usr/bin/snmpd \
 		-- -p ${SNMPD_PIDFILE} ${SNMPD_FLAGS}
 	eend $?
 }

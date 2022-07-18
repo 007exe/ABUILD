@@ -1,7 +1,4 @@
-#!/sbin/runscript
-# Copyright 1999-2009 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/net-snmp/files/snmptrapd.init,v 1.1 2009/10/16 08:51:05 gengor Exp $
+#!/usr/bin/runscript
 
 depend() {
 	use logger
@@ -12,7 +9,7 @@ SNMPTRAPD_PIDFILE="${SNMPTRAPD_PIDFILE:-/var/run/snmptrapd.pid}"
 
 start() {
 	ebegin "Starting ${SVCNAME}"
-	start-stop-daemon --start --quiet --exec /usr/sbin/snmptrapd \
+	start-stop-daemon --start --quiet --exec /usr/bin/snmptrapd \
 		-- -p ${SNMPTRAPD_PIDFILE} ${SNMPTRAPD_FLAGS}
 	eend $?
 }
