@@ -6,9 +6,9 @@ arch=("auto")
 shortdesc=("X.Org authorization settings program.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-tags=("x11-apps xserver")
-
 source=("http://xorg.freedesktop.org/releases/individual/app/xauth-${pkgver}.tar.xz")
+
+tags=("xorg xorg-apps")
 
 build_deps=("xorg-util-macros libxmu")
 
