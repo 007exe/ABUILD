@@ -1,16 +1,16 @@
 pkgname=vsftpd
-pkgver=3.0.4
+pkgver=3.0.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Very Secure File Transfer Protocol Daemon")
-longdesc=("A Very Secure FTP Daemon - written from scratch - by Chris One Man Security Audit Team Evans.")
+shortdesc=("Very Secure File Transfer Protocol Daemon.")
+longdesc=("The vsftpd package contains a very secure and very small FTP daemon. This is useful for serving files over a network.")
+
+source=("https://security.appspot.com/downloads/${pkgname}-${pkgver}.tar.gz")
 
 tags=("net-ftp network")
 
-source=("https://security.appspot.com/downloads/$pkgname-$pkgver.tar.gz")
-
-build_deps="glibc openssl libcap linux-pam libnsl"
+build_deps=("glibc openssl libcap linux-pam libnsl")
 
 config_files=("etc/vsftpd.conf
 etc/pam.d/vsftpd
@@ -19,28 +19,23 @@ etc/pam.d/vsftpd
 build() {
   go_src_dir
   burn_patches
-# build-time config
   sed -e 's|^#undef VSF_BUILD_SSL$|#define VSF_BUILD_SSL|' -i builddefs.h
   sed -e 's|/usr/share/empty|/var/empty|g' -i tunables.c vsftpd.conf.5 INSTALL
   sed -e 's|/usr/local/sbin/vsftpd|/usr/bin/vsftpd|' -i EXAMPLE/INTERNET_SITE/${pkgname}.xinetd
 
-# fix linking to openssl 1.1
   sed -e 's|SSL_library_init|SSL_CTX_new|' -i vsf_findlibs.sh
 
-  make LIBS="-lcap -lpam -lwrap -lssl -lcrypto" LINK='' CFLAGS="${CFLAGS} ${CPPFLAGS}" LDFLAGS="${LDFLAGS}" -j${numjobs}
-}
+  make LINK='' CFLAGS="${CFLAGS} ${CPPFLAGS}" LDFLAGS="${LDFLAGS}"
 
-after_build() {
-  go_src_dir
   cat vsftpd.conf.5 | gzip -9c > vsftpd.conf.5.gz
   cat vsftpd.8 | gzip -9c > vsftpd.8.gz
 
-  install -D -m755 vsftpd "${pkgdir}/usr/sbin/vsftpd"
-  install -D -m644 vsftpd.conf "${pkgdir}/etc/vsftpd.conf"
-  install -D -m644 vsftpd.8.gz "${pkgdir}/usr/share/man/man8/vsftpd.8.gz"
-  install -D -m644 vsftpd.conf.5.gz "${pkgdir}/usr/share/man/man5/vsftpd.conf.5.gz"
-  install -D -m644 RedHat/vsftpd.log "${pkgdir}/etc/logrotate.d/vsftpd"
-  install -D -m644 RedHat/vsftpd.pam "${pkgdir}/etc/pam.d/vsftpd"
-  install -D -m755 $filedir/init.d/vsftpd "${pkgdir}/etc/init.d/vsftpd"
-  install -d -m755 "${pkgdir}/usr/share/empty"
+  install -D -m755 vsftpd ${pkgdir}/usr/bin/vsftpd
+  install -D -m644 vsftpd.conf ${pkgdir}/etc/vsftpd.conf
+  install -D -m644 vsftpd.8.gz ${pkgdir}/usr/share/man/man8/vsftpd.8.gz
+  install -D -m644 vsftpd.conf.5.gz ${pkgdir}/usr/share/man/man5/vsftpd.conf.5.gz
+  install -D -m644 RedHat/vsftpd.log ${pkgdir}/etc/logrotate.d/vsftpd
+  install -D -m644 RedHat/vsftpd.pam ${pkgdir}/etc/pam.d/vsftpd
+  install -D -m755 ${filedir}/init.d/vsftpd ${pkgdir}/etc/init.d/vsftpd
+  install -d -m755 ${pkgdir}/usr/share/empty
 }
