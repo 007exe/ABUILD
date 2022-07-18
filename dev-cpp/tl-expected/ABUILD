@@ -1,0 +1,24 @@
+pkgname=tl-expected
+pkgver=1.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++11/14/17 std::expected with functional-style extensions.")
+longdesc=("Single header implementation of std::expected with functional-style extensions.")
+
+source=("https://github.com/TartanLlama/expected/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("cmake catch")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ../COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
