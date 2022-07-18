@@ -3,17 +3,17 @@ pkgver=1.4.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("XOrg initialisation program")
+shortdesc=("Xorg initialisation program.")
 longdesc=("The xinit package contains a usable script to start the xserver.")
-
-tags=('x11-apps xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/app/xinit-${pkgver}.tar.bz2")
 
-build_deps="libx11 xorg-xauth xorg-xrdb xorg-xmodmap"
+tags=("xorg xorg-apps")
 
-config_files="etc/X11/xinit/xserverrc
-etc/X11/xinit/xinitrc"
+build_deps=("libx11 xorg-xauth xorg-xrdb xorg-xmodmap")
+
+config_files=("etc/X11/xinit/xserverrc
+etc/X11/xinit/xinitrc")
 
 build() {
   go_src_dir
@@ -21,12 +21,13 @@ build() {
   autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --with-xinitdir=/etc/X11/xinit
+    --libdir=/usr/lib \
+    --with-xinitdir=/etc/X11/xinit \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m644 "${filedir}/xserverrc" "${pkgdir}/etc/X11/xinit/xserverrc"
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m644 ${filedir}/xserverrc ${pkgdir}/etc/X11/xinit/xserverrc
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
