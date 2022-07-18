@@ -8,7 +8,7 @@ longdesc=("Default fontset for GNOME Shell.")
 
 source=("https://download.gnome.org/sources/$pkgname/${pkgver:0:5}/${pkgname}-${pkgver}.tar.xz")
 
-tags=("media-fonts utils")
+tags=("media-fonts fonts")
 
 build_deps=("meson")
 
