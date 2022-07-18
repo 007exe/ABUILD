@@ -1,18 +1,20 @@
 pkgname=bdf-unifont
-pkgver=13.0.06
+pkgver=14.0.04
 pkgbuild=1
 arch=("noarch")
 
-shortdesc="Tools and glyph descriptions in a very simple text format"
-longdesc="Unifont is a Unicode font with a glyph for every visible Unicode Basic Multilingual Plane code point and more, with supporting utilities to modify the font. This package contains tools and glyph descriptions."
+shortdesc=("GNU Unifont Glyphs.")
+longdesc=("Unifont is a Unicode font with a glyph for every visible Unicode Basic Multilingual Plane code point and more, with supporting utilities to modify the font.")
 
-#adddep="fontconfig encodings font-util"
-tags=("x11-fonts xserver")
+source=("https://ftp.gnu.org/gnu/unifont/unifont-${pkgver}/unifont-${pkgver}.bdf.gz"
+"http://unifoundry.com/LICENSE.txt")
 
-source=("https://ftp.gnu.org/gnu/unifont/unifont-${pkgver}/unifont-${pkgver}.bdf.gz")
-build_deps="mkpkg gzip"
+tags=("media-fonts fonts")
+
+build_deps=("gzip")
 
 build() {
   gzip -d --force ${srcache}/unifont-${pkgver}.bdf.gz
   install -Dm0644 ${srcache}/unifont-${pkgver}.bdf ${pkgdir}/usr/share/fonts/misc/unifont.bdf
+  install -Dm644 ${srcache}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }
