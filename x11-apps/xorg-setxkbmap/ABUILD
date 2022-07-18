@@ -6,11 +6,13 @@ arch=("auto")
 shortdesc=("Set the keyboard using the X Keyboard Extension.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-tags=("x11-apps xserver")
-
 source=("http://xorg.freedesktop.org/archive/individual/app/setxkbmap-${pkgver}.tar.xz")
 
-build_deps=("libxkbfile xorg-util-macros")
+tags=("xorg xorg-apps")
+
+build_deps=("libxkbfile xorg-util-macros xorg-xrandr libxkbfile")
+
+adddep=("xorg-xrandr")
 
 build() {
   go_src_dir
