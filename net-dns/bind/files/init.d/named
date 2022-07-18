@@ -1,7 +1,4 @@
-#!/sbin/openrc-run
-# Copyright 1999-2009 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dns/bind/files/named.init-r7,v 1.2 2010/02/25 19:03:31 robbat2 Exp $
+#!/usr/bin/openrc-run
 
 opts="start stop reload restart"
 
@@ -26,7 +23,7 @@ _mount() {
 	from=$1
 	to=$2
 	shift 2
-	
+
 	opts="${*}"
 	shift $#
 
@@ -39,7 +36,7 @@ _mount() {
 
 _umount() {
 	local dir=$1
-	
+
 	if [[ -n $(grep "${dir}" /proc/mounts) ]];
 	then
 		einfo "umount ${dir}"
@@ -51,7 +48,7 @@ checkconfig() {
 	if [ ! -f ${CHROOT}/etc/named.conf ] ; then
 		eerror "No ${CHROOT}/etc/named.conf file exists!"
 	fi
-	
+
 	# In case someone have $CPU set in /etc/conf.d/named
 	if [ ${CPU} ] ; then
 		CPU="-n ${CPU}"
