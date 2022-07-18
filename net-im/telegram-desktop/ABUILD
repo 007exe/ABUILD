@@ -1,0 +1,37 @@
+pkgname=telegram-desktop
+pkgver=4.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Official Telegram Desktop client.")
+longdesc=("Official desktop client for Telegram.")
+
+source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz")
+
+tags=("apps net-im")
+
+# tl-expected microsoft-gsl
+build_deps=("hunspell ffmpeg hicolor-icon-theme lz4 minizip openal ttf-opensans
+qt6-imageformats qt6-svg qt6-wayland qt6-5compat xxhash glibmm rnnoise pipewire
+libxtst libxrandr jemalloc abseil-cpp libdispatch cmake ninja python range-v3
+meson extra-cmake-modules wayland-protocols plasma-wayland-protocols libtg_owt")
+
+adddep=("hicolor-icon-theme ttf-opensans")
+
+# NOTE: Это опциональные зависимости
+removedep=("webkit2gtk xdg-desktop-portal")
+
+build() {
+  go_src_dir
+  burn_patches
+# NOTE: https://github.com/telegramdesktop/tdesktop/blob/8fab9167beb2407c1153930ed03a4badd0c2b59f/snap/snapcraft.yaml#L87-L88
+  cmake -B build \
+    -G Ninja \
+    -DCMAKE_INSTALL_PREFIX="/usr" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DTDESKTOP_API_ID=611335 \
+    -DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  rm -rf ${pkgdir}/build
+}
