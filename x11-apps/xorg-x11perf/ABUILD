@@ -8,7 +8,7 @@ longdesc=("The Xorg applications provide the expected applications available in 
 
 source=("http://xorg.freedesktop.org/archive/individual/app/x11perf-${pkgver}.tar.bz2")
 
-tags=("x11-apps xorg")
+tags=("xorg xorg-apps")
 
 build_deps=("libx11 libxmu libxrender libxft libxext xorg-util-macros")
 
