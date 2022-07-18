@@ -1,0 +1,30 @@
+pkgname=catch
+pkgver=2.13.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Modern C++ header-only framework for unit-tests.")
+longdesc=("Modern, C++-native, header-only, test framework for unit-tests, TDD and BDD.")
+
+source=("https://github.com/catchorg/Catch2/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("cmake python")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS+=" ${CPPFLAGS}"
+  export CXXFLAGS+=" ${CPPFLAGS}"
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCATCH_USE_VALGRIND=OFF \
+    -DCATCH_BUILD_EXAMPLES=OFF \
+    -DCATCH_ENABLE_COVERAGE=OFF \
+    -DCATCH_ENABLE_WERROR=OFF \
+    -DBUILD_TESTING=ON
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
