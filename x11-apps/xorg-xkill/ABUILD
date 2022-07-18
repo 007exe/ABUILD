@@ -3,24 +3,24 @@ pkgver=1.0.5
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Kill a client by its X resource")
+shortdesc=("Kill a client by its X resource.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-tags=('x11-apps xserver')
+source=("http://xorg.freedesktop.org/archive/individual/app/xkill-${pkgver}.tar.gz")
+
+tags=("xorg xorg-apps")
 
 build_deps="libx11 libxmu xorg-util-macros"
-
-source=("http://xorg.freedesktop.org/archive/individual/app/xkill-${pkgver}.tar.gz")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
