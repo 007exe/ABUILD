@@ -8,7 +8,7 @@ longdesc=("Macro used for X.org development.")
 
 source=("http://xorg.freedesktop.org/releases/individual/util/util-macros-${pkgver}.tar.bz2")
 
-tags=("x11-utils xserver")
+tags=("xorg-misc xorg")
 
 build_deps=("make")
 
@@ -16,7 +16,8 @@ build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
