@@ -1,0 +1,47 @@
+pkgname=ttf-opensans
+pkgver=1.101
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Sans-serif typeface commissioned by Google.")
+longdesc=("Open Sans is a humanist sans serif typeface designed by Steve Matteson, Type Director of Ascender Corp.")
+
+tags=("media-fonts fonts")
+
+build_deps=("tar unzip")
+
+_commit='beaec0837bd21524b57ecb435158f9011fc03999'
+_raw="https://cdn.rawgit.com/google/fonts/${_commit}/apache/opensans"
+
+source=("${_raw}/OpenSans-Bold.ttf"
+        "${_raw}/OpenSans-BoldItalic.ttf"
+        "${_raw}/OpenSans-ExtraBold.ttf"
+        "${_raw}/OpenSans-ExtraBoldItalic.ttf"
+        "${_raw}/OpenSans-Italic.ttf"
+        "${_raw}/OpenSans-Light.ttf"
+        "${_raw}/OpenSans-LightItalic.ttf"
+        "${_raw}/OpenSans-Regular.ttf"
+        "${_raw}/OpenSans-SemiBold.ttf"
+        "${_raw}/OpenSans-SemiBoldItalic.ttf"
+        "${_raw}condensed/OpenSansCondensed-Bold.ttf"
+        "${_raw}condensed/OpenSansCondensed-Light.ttf"
+        "${_raw}condensed/OpenSansCondensed-LightItalic.ttf")
+
+build() {
+  cd ${srcdir}
+  cp ${srcache}/OpenSans-Bold.ttf .
+  cp ${srcache}/OpenSans-BoldItalic.ttf .
+  cp ${srcache}/OpenSans-ExtraBold.ttf .
+  cp ${srcache}/OpenSans-ExtraBoldItalic.ttf .
+  cp ${srcache}/OpenSans-Italic.ttf .
+  cp ${srcache}/OpenSans-Light.ttf .
+  cp ${srcache}/OpenSans-LightItalic.ttf .
+  cp ${srcache}/OpenSans-Regular.ttf .
+  cp ${srcache}/OpenSans-SemiBold.ttf .
+  cp ${srcache}/OpenSans-SemiBoldItalic.ttf .
+  cp ${srcache}/OpenSansCondensed-Bold.ttf .
+  cp ${srcache}/OpenSansCondensed-Light.ttf .
+  cp ${srcache}/OpenSansCondensed-LightItalic.ttf .
+  install -dm 755 ${pkgdir}/usr/share/fonts/TTF
+  install -m 644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
+}
