@@ -1,0 +1,30 @@
+pkgname=range-v3
+pkgver=0.12.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Experimental range library for C++11/14/17.")
+longdesc=("Range library for C++14/17/20, basis for C++20's std::ranges.")
+
+source=("https://github.com/ericniebler/range-v3/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("cmake ninja")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -Bbuild \
+    -GNinja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DRANGE_V3_TESTS=OFF \
+    -DRANGE_V3_HEADER_CHECKS=OFF \
+    -DRANGE_V3_EXAMPLES=OFF \
+    -DRANGE_V3_PERF=OFF
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  mv ${pkgdir}/usr/include/module.modulemap ${pkgdir}/usr/include/range-v3.modulemap
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
