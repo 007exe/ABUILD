@@ -1,27 +1,28 @@
 pkgname=ttf-xo-fonts
-pkgver=20210924 # The fake version, the original is unversioned
+# Поддельная версия, оригинал не имеет версии
+pkgver=20220717
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("The original XO_Fonts fonts are designed with modern typography trends in mind and are available to the developer community for free to use and modify. ")
+shortdesc=("The family of original free fonts HO_Fonts for use in any applications and on any platforms.")
 longdesc=("The original XO_Fonts fonts are designed with modern typography trends in mind and are available to the developer community for free to use and modify. ")
 
-source=("https://myoffice.ru/wp-content/themes/template/fonts_page/files/all_fonts_myoffice.zip")
+source=("https://myoffice.ru/files/fonts/all_fonts_myoffice.zip")
 
-tags="media-fonts xserver"
+tags=("media-fonts fonts")
 
-build_deps="unzip"
+build_deps=("tar unzip")
 
 build() {
-  install -dm755 "${pkgdir}"/usr/share/fonts/TTF
-  install -m644 ${srcdir}/XO_Caliburn/XO_Caliburn/TTF/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Courser/XO_Courser/TTF/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Oriel/XO_Oriel/TTF/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Symbol/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_SymbolM/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Tahion/XO_Tahion/TTF/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Thames/XO_Thames/TTF/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Trebizond/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Verbena/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 ${srcdir}/XO_Windy/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
+  install -dm755 ${pkgdir}/usr/share/fonts/TTF
+  install -m644 ${srcdir}/XO_Caliburn/XO_Caliburn/TTF/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Courser/XO_Courser/TTF/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Oriel/XO_Oriel/TTF/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Symbol/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_SymbolM/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Tahion/XO_Tahion/TTF/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Thames/XO_Thames/TTF/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Trebizond/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Verbena/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcdir}/XO_Windy/*.ttf ${pkgdir}/usr/share/fonts/TTF/
 }
