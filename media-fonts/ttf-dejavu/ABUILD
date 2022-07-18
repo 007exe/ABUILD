@@ -3,27 +3,28 @@ pkgver=2.37
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Font family based on the Bitstream Vera Fonts with a wider range of characters")
+shortdesc=("Font family based on the Bitstream Vera Fonts with a wider range of characters.")
 longdesc=("The DejaVu fonts are modifications of the Bitstream Vera fonts designed to extend this original for greater coverage of Unicode.")
 
 source=("http://sourceforge.net/projects/dejavu/files/dejavu/${pkgver}/dejavu-fonts-ttf-${pkgver}.tar.bz2")
 
-tags="media-fonts xserver"
+tags=("media-fonts fonts")
 
-build_deps="mkpkg"
+# fontforge
+build_deps=("perl-font-ttf")
 
 build() {
   go_src_dir
   install -v -d -m755 ${pkgdir}/usr/share/fonts/TTF
   install -v -m644 ttf/*.ttf ${pkgdir}/usr/share/fonts/TTF
 
-  mkdir -p "$pkgdir/etc/fonts/conf.avail"
-  mkdir -p "$pkgdir/etc/fonts/conf.d"
+  mkdir -p ${pkgdir}/etc/fonts/conf.avail
+  mkdir -p ${pkgdir}/etc/fonts/conf.d
 
   for file in fontconfig/* ; do
-    cp -a $file ${pkgdir}/etc/fonts/conf.avail
-    ( cd ${pkgdir}/etc/fonts/conf.d ; ln -sf ../conf.avail/$file . )
+    cp -a ${file} ${pkgdir}/etc/fonts/conf.avail
+    ( cd ${pkgdir}/etc/fonts/conf.d ; ln -sf ../conf.avail/${file} . )
   done
 
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 LICENSE
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
 }
