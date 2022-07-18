@@ -1,27 +1,28 @@
 pkgname=xorg-twm
-pkgver=1.0.11
+pkgver=1.0.12
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Tab Window Manager for the X Window System")
+shortdesc=("Tab Window Manager for the X Window System.")
 longdesc=("The twm package contains a very minimal window manager.")
-
-tags=('x11-apps xserver')
 
 source=("https://xorg.freedesktop.org/releases/individual/app/twm-${pkgver}.tar.xz")
 
-build_deps="libxmu xorg-util-macros"
+tags=("xorg-apps xorg")
 
-config_files="usr/share/X11/twm/system.twmrc"
+build_deps=("libxmu xorg-util-macros")
+
+config_files=("usr/share/X11/twm/system.twmrc")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
