@@ -3,25 +3,25 @@ pkgver=1.0.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Query configuration information of DRI drivers")
+shortdesc=("Query configuration information of DRI drivers.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
-
-tags=('x11-apps xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/app/xdriinfo-${pkgver}.tar.bz2")
 
-build_deps="libx11 libglvnd xorg-util-macros xorgproto"
+tags=("xorg xorg-apps")
+
+build_deps=("libx11 libglvnd xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
