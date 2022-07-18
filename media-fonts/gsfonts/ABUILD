@@ -3,14 +3,14 @@ pkgver=20200910
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("(URW)++ base 35 font set")
+shortdesc=("(URW)++ base 35 font set.")
 longdesc=("These fonts are used by the GhostScript interpreter.")
-
-tags=("console media-fonts")
 
 source=("https://github.com/ArtifexSoftware/urw-base35-fonts/archive/refs/tags/${pkgver}.tar.gz")
 
-build_deps=("mkpkg")
+tags=("media-fonts fonts")
+
+build_deps=("tar")
 
 build() {
   go_src_dir
