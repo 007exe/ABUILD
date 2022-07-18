@@ -8,13 +8,13 @@ longdesc=("Bitstream Vera ttf fonts.")
 
 source=("https://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="media-fonts xserver"
+tags=("media-fonts fonts")
 
-build_deps="mkpkg"
+build_deps=("tar")
 
 build() {
   go_src_dir
-  install -d "${pkgdir}"/usr/share/fonts/TTF
-  install -m644 *.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -Dm644 COPYRIGHT.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -d ${pkgdir}/usr/share/fonts/TTF
+  install -m644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -Dm644 COPYRIGHT.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
