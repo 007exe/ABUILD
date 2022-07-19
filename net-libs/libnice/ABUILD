@@ -1,5 +1,5 @@
 pkgname=libnice
-pkgver=0.1.18
+pkgver=0.1.19
 pkgbuild=1
 arch=("auto")
 
