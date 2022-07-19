@@ -50,8 +50,10 @@ build() {
 # Установим корректные права на каталоги и файлы
   chown messagebus ${pkgdir}/var/lib/dbus
 
-# Установка скрипта OpenRC
+# Установка скрипта OpenRC и включаем его по умолчанию на уровне запуска default
   install -Dm755 ${filedir}/dbus.init ${pkgdir}/etc/init.d/dbus
+  install -dm0755 ${pkgdir}/etc/runlevels/default
+  ln -snf /etc/init.d/dbus ${pkgdir}/etc/runlevels/default/dbus
 
 # Создание директории для сокета
   mkdir -p ${pkgdir}/run/dbus
@@ -62,6 +64,6 @@ build() {
   cd ${pkgdir}/etc
   ln -sv /var/lib/dbus/machine-id
 
-#  echo 'u dbus 81 "System Message Bus"' |
-#  install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/dbus.conf
+  echo 'u dbus 81 "System Message Bus"' |
+  install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/dbus.conf
 }
