@@ -1,6 +1,6 @@
 pkgname=libsoup3
-pkgver=3.0.6
-pkgbuild=2
+pkgver=3.0.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("HTTP client/server library for GNOME.")
