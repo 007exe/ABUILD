@@ -1,6 +1,6 @@
 pkgname=sbc
-pkgver=1.5
-pkgbuild=2
+pkgver=2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Bluetooth Subband Codec (SBC) library.")
@@ -8,9 +8,9 @@ longdesc=("Audio codec to connect bluetooth HQ audio devices as headphones or lo
 
 source=("https://www.kernel.org/pub/linux/bluetooth/sbc-${pkgver}.tar.xz")
 
-tags="libs dev-libs compat32"
+tags=("libs dev-libs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
