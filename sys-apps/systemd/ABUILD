@@ -1,5 +1,6 @@
+# NOTE: Мне крайне не нравится идея использовать части systemd. Всёткаи придётся переводить дистрибутив на systemd так как это решит ряд проблем.
 pkgname=udev
-pkgver=250.5
+pkgver=251.3
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +9,7 @@ longdesc=("User space device file manager extracted from systemd.")
 
 source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags=("base sys-fs")
+tags=("base sys-apps")
 
 build_deps=("acl kmod util-linux libcap kbd gperf intltool meson docbook-xsl rsync python-jinja")
 
@@ -149,6 +150,8 @@ build() {
   ln -snf /etc/init.d/udev ${pkgdir}/etc/runlevels/sysinit/udev
 }
 
+##################################################################################################
+
 sysusers() {
   pkgname=sysusers
   shortdesc=("Declarative allocation of system users and groups.")
@@ -162,11 +165,15 @@ sysusers_prep() {
   mv -v build/sysusers.d/basic.conf ${pkgdir}/usr/lib/sysusers.d
   mv -v sysusers.d/README ${pkgdir}/usr/lib/sysusers.d
 
+  install -Dm0755 ${filedir}/sysusers.sh ${pkgdir}/etc/mpkg/hooks/sysusers.sh
+
 # Устанавливаем init скрипт и включаем его по умолчанию на уровне запуска boot
   install -Dm755 ${filedir}/sysusers ${pkgdir}/etc/init.d/sysusers
   install -dm0755 ${pkgdir}/etc/runlevels/boot
   ln -snf /etc/init.d/sysusers ${pkgdir}/etc/runlevels/boot/sysusers
 }
+
+##################################################################################################
 
 tmpfiles() {
   pkgname=tmpfiles
@@ -187,6 +194,8 @@ tmpfiles_prep() {
   install -dm0755 ${pkgdir}/etc/runlevels/boot
   ln -snf /etc/init.d/tmpfiles ${pkgdir}/etc/runlevels/boot/tmpfiles
 }
+
+##################################################################################################
 
 eudev() {
   pkgname=eudev
