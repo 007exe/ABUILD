@@ -1,5 +1,5 @@
 pkgname=lilv
-pkgver=0.24.12
+pkgver=0.24.14
 pkgbuild=1
 arch=("auto")
 
