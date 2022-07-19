@@ -1,10 +1,10 @@
 pkgname=libshout
-pkgver=2.4.5
+pkgver=2.4.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for accessing a shoutcast/icecast server.")
-longdesc=("library for connecting and sending data to icecast servers")
+longdesc=("library for connecting and sending data to icecast servers.")
 
 source=("https://downloads.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
