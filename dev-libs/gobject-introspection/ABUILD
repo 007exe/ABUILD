@@ -1,6 +1,6 @@
 pkgname=gobject-introspection
 pkgver=1.72.0
-_glibver=2.72.2
+_glibver=2.72.3
 pkgbuild=2
 arch=("auto")
 
