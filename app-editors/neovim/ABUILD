@@ -1,0 +1,38 @@
+pkgname=neovim
+pkgver=0.7.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Vim-fork focused on extensibility and agility.")
+longdesc=("Fork of Vim aiming to improve user experience, plugins, and GUIs.")
+
+source=("https://github.com/neovim/neovim/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-editors console")
+
+# lua51-mpack lua51-lpeg patchelf libtermkey unibilium libvterm01 libluv tree-sitter
+build_deps=("cmake ninja gperf libuv luajit msgpack-c")
+
+build() {
+  go_src_dir
+  burn_patches
+# Neovim пока не поддерживает libvterm 0.2
+  export PKG_CONFIG_PATH="/usr/lib/libvterm01/pkgconfig"
+# GCC12
+# https://github.com/neovim/neovim/issues/19125
+  CFLAGS+=" -fno-strict-aliasing"
+  cmake -Bbuild \
+    -GNinja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -W no-dev
+  cmake --build build --verbose
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 neovim-$pkgver/LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -Dm644 neovim-$pkgver/runtime/nvim.desktop -t ${pkgdir}/usr/share/applications/
+  install -Dm644 neovim-$pkgver/runtime/nvim.appdata.xml -t ${pkgdir}/usr/share/metainfo/
+  install -Dm644 neovim-$pkgver/runtime/nvim.png -t ${pkgdir}/usr/share/pixmaps/
+
+# NOTE: Удалить когда neovim начнёт поддерживать libvterm >= 0.2.0
+  patchelf --add-rpath '/usr/lib/libvterm01' ${pkgdir}/usr/bin/nvim
+}
