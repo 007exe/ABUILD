@@ -1,6 +1,6 @@
 pkgname=libvpx
-pkgver=1.11.0
-pkgbuild=2
+pkgver=1.12.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("VP8 and VP9 codec.")
