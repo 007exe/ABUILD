@@ -1,6 +1,6 @@
 pkgname=pulseaudio
-pkgver=15.0
-pkgbuild=2
+pkgver=16.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("PulseAudio sound server.")
@@ -10,11 +10,13 @@ source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver
 
 tags=("libs media-sound")
 
-pkglist="libpulse pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc pulseaudio-rtp pulseaudio-zeroconf"
-
-build_deps=("libcap attr dbus openssl orc check meson valgrind tdb libsndfile doxygen libxtst libsm gtk3 libxcb libasyncns sbc fftw lirc avahi bluez jack speexdsp libnsl")
+build_deps=("libcap attr dbus openssl orc check meson valgrind tdb libsndfile doxygen libxtst
+libsm gtk3 libxcb libasyncns sbc fftw lirc avahi bluez jack speexdsp libnsl")
 
 adddep=("libpulse=$pkgver alsa-utils libnsl")
+
+pkglist=("libpulse pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc
+pulseaudio-rtp pulseaudio-zeroconf")
 
 config_files=("etc/pulse/daemon.conf
 etc/pulse/default.pa
@@ -98,10 +100,10 @@ pulseaudio-bluetooth() {
 }
 
 pulseaudio-bluetooth_prep() {
-  mkdir -p $pkgdir/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/libbluez5-util.so $pkgdir/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-bluetooth-{discover,policy}.so $pkgdir/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-bluez5-{discover,device}.so $pkgdir/usr/lib/pulse-${pkgver}/modules
+  mkdir -p $pkgdir/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/libbluez5-util.so ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-bluetooth-{discover,policy}.so ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-bluez5-{discover,device}.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
 pulseaudio-equalizer() {
@@ -112,8 +114,8 @@ pulseaudio-equalizer() {
 }
 
 pulseaudio-equalizer_prep() {
-  mkdir -p $pkgdir/usr/{bin,lib/pulse-${pkgver}/modules}
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-equalizer-sink.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
+  mkdir -p $pkgdir/usr/{bin,lib/pulseaudio/modules}
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-equalizer-sink.so ${pkgdir}/usr/lib/pulseaudio/modules
   mv ${p_pkgdir}/usr/bin/qpaeq ${pkgdir}/usr/bin
 }
 
@@ -125,9 +127,9 @@ pulseaudio-jack() {
 }
 
 pulseaudio-jack_prep() {
-  mkdir -p $pkgdir/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-jack-{sink,source}.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-jackdbus-detect.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
+  mkdir -p $pkgdir/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-jack-{sink,source}.so ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-jackdbus-detect.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
 pulseaudio-lirc() {
@@ -138,8 +140,8 @@ pulseaudio-lirc() {
 }
 
 pulseaudio-lirc_prep() {
-  mkdir -p ${pkgdir}/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-lirc.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
+  mkdir -p ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-lirc.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
 pulseaudio-rtp() {
@@ -150,10 +152,10 @@ pulseaudio-rtp() {
 }
 
 pulseaudio-rtp_prep() {
-  mkdir -p $pkgdir/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/lib{rtp,raop}.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-rtp-{send,recv}.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-raop-sink.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
+  mkdir -p $pkgdir/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/lib{rtp,raop}.so ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-rtp-{send,recv}.so ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-raop-sink.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
 pulseaudio-zeroconf() {
@@ -164,8 +166,8 @@ pulseaudio-zeroconf() {
 }
 
 pulseaudio-zeroconf_prep() {
-  mkdir -p $pkgdir/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/libavahi-wrap.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-zeroconf-{publish,discover}.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
-  mv ${p_pkgdir}/usr/lib/pulse-${pkgver}/modules/module-raop-discover.so ${pkgdir}/usr/lib/pulse-${pkgver}/modules
+  mkdir -p $pkgdir/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/libavahi-wrap.so ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-zeroconf-{publish,discover}.so ${pkgdir}/usr/lib/pulseaudio/modules
+  mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-raop-discover.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
