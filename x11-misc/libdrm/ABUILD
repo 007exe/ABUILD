@@ -1,14 +1,14 @@
 pkgname=libdrm
-pkgver=2.4.110
+pkgver=2.4.112
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Userspace interface to kernel DRM services.")
-longdesc=("X.Org libdrm library.")
+shortdesc=("X.Org libdrm library.")
+longdesc=("Userspace interface to kernel DRM services.")
 
 source=("https://dri.freedesktop.org/$pkgname/$pkgname-$pkgver.tar.xz")
 
-tags=("libs x11-misc")
+tags=("libs xorg-misc")
 
 build_deps=("python-docutils meson libpciaccess")
 
