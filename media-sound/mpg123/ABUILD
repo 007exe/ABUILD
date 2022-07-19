@@ -10,7 +10,7 @@ source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${p
 
 tags=("media-sound libs")
 
-build_deps=("sdl jack libpulse libltdl alsa-lib")
+build_deps=("sdl2 jack libpulse libltdl alsa-lib")
 
 build() {
   go_src_dir
