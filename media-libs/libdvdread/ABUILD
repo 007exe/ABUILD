@@ -1,6 +1,6 @@
 pkgname=libdvdread
-pkgver=6.1.2
-pkgbuild=2
+pkgver=6.1.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides a simple foundation for reading DVD video disks.")
