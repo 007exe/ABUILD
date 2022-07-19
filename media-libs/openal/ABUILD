@@ -1,5 +1,5 @@
 pkgname=openal
-pkgver=1.22.0
+pkgver=1.22.2
 strict_version=1
 pkgbuild=1
 arch=("auto")
