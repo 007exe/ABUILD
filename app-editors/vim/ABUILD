@@ -1,10 +1,10 @@
 pkgname=vim
-pkgver=8.2.4464
+pkgver=9.0.0057
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Vim package contains a powerful text editor.")
-longdesc=("Vi Improved, a highly configurable, improved version of the vi text editor")
+longdesc=("The Vim package, which is an abbreviation for VI IMproved, contains a vi clone with extra features as compared to the original vi.")
 
 source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz"
 "ftp://ftp.vim.org/pub/vim/runtime/spell/ru.cp1251.spl"
@@ -24,7 +24,6 @@ tags=("app-editors console")
 
 build_deps=("glibc libgcrypt gpm python ruby gawk tcl pcre zlib acl ncurses")
 
-config_files=("etc/vimrc")
 
 build() {
   go_src_dir
@@ -64,6 +63,4 @@ build() {
   install -Dm 644 ${srcache}/en.utf-8.sug ${pkgdir}/share/vim/vimfiles/spell/en.utf-8.sug
 
   install -Dm 644 runtime/doc/uganda.txt ${pkgdir}/usr/share/licenses/vim/license.txt
-
-  install -Dm 644 ${filedir}/vimrc ${pkgdir}/etc/vimrc
 }
