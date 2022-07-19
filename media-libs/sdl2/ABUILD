@@ -1,6 +1,6 @@
 pkgname=sdl2
-pkgver=2.0.20
-pkgbuild=2
+pkgver=2.0.22
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2).")
@@ -10,8 +10,8 @@ source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
 
 tags=("media-libs libs")
 
-# pipewire
-build_deps=("alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake jack ninja libxss ibus fcitx libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb")
+build_deps=("alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake
+jack ninja libxss ibus fcitx libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb pipewire")
 
 adddep=("libxext libxrender libx11 libxcursor libibus hidapi libusb")
 
