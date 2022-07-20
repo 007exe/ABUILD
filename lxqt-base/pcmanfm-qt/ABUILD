@@ -12,10 +12,10 @@ tags=("lxqt lxqt-base")
 
 build_deps=("desktop-file-utils libfm-qt lxmenu-data lxqt-build-tools qt5-translations")
 
-adddep=("qt5-translations")
+adddep=("qt5-translations gvfs")
 
 # NOTE: Это опциональные зависимости
-removedep=("gvfs gvfs-mtp lxqt-archiver")
+removedep=("gvfs-mtp lxqt-archiver")
 
 build() {
   go_src_dir
