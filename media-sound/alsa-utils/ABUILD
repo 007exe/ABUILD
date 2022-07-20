@@ -1,5 +1,5 @@
 pkgname=alsa-utils
-pkgver=1.2.6
+pkgver=1.2.7
 pkgbuild=1
 arch=("auto")
 
@@ -34,4 +34,3 @@ build() {
 
   install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
 }
-
