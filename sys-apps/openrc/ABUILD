@@ -1,6 +1,6 @@
 pkgname=openrc
-pkgver=0.44.10
-pkgbuild=2
+pkgver=0.45.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("OpenRC manages the services, startup and shutdown of a host.")
@@ -10,9 +10,9 @@ source=("https://github.com/OpenRC/openrc/archive/${pkgver}.tar.gz")
 
 tags=("base sys-apps")
 
-build_deps=("glibc kernel-headers")
+build_deps=("glibc kernel-headers meson libcap ncurses linux-pam")
 
-adddep=("etc sed grep sysvinit")
+adddep=("etc sed grep")
 
 config_files=("etc/rc.conf
 etc/conf.d/keymaps
@@ -25,15 +25,32 @@ etc/conf.d/hostname
 etc/conf.d/bootmisc
 etc/conf.d/localmount
 etc/conf.d/network
-etc/conf.d/urandom
+etc/conf.d/seedrng
 etc/conf.d/dmesg")
 
 build() {
   go_src_dir
   burn_patches
-  export BRANDING="AgiliaLinux"
-  make  LIBNAME=lib LIBEXECDIR=/lib/rc -j${numjobs} OS=Linux
-  make install DESTDIR=${pkgdir} LIBNAME=lib LIBEXECDIR=/lib/rc OS=Linux
+  meson build \
+    -D buildtype=release \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D sbindir=bin \
+    -D branding=\"AgiliaLinux\" \
+    -D os=Linux \
+    -D shell=/usr/bin/bash \
+    -D bash-completions=true \
+    -D zsh-completions=true \
+    -D split-usr=true \
+    -D sysvinit=true \
+    -D termcap=ncurses \
+    -D pam=true \
+    -D newnet=true \
+    -D audit=enabled
+#  meson configure build
+  meson compile -C build
+  meson install --destdir ${pkgdir} -C build
 
   install -m755 ${filedir}/consolefont ${pkgdir}/etc/init.d/consolefont
 
@@ -47,9 +64,6 @@ build() {
 
 # Не стирать tmp
   sed -i 's/wipe_tmp="YES"/wipe_tmp="NO"/g' ${pkgdir}/etc/conf.d/bootmisc
-
-# Путь для urandom seed
-  sed -i 's/urandom_seed=.*/urandom_seed="\/etc\/random-seed"/g' ${pkgdir}/etc/conf.d/urandom
 
 # Шрифт консоли по умолчанию
   sed -i 's/default8x16/cyr-sun16/g' ${pkgdir}/etc/conf.d/consolefont
