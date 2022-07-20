@@ -1,14 +1,14 @@
 pkgname=shadow
 pkgver=4.11.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Password and account management tool suite with support for shadow files and PAM.")
-longdesc=("The Shadow package contains programs for handling passwords in a secure way.")
+shortdesc=("Utilities to deal with user accounts.")
+longdesc=("Password and account management tool suite with support for shadow files and PAM.")
 
 tags=("base sys-apps")
 
-build_deps=("linux-pam acl libaudit libcap-ng libcap")
+build_deps=("linux-pam acl audit libcap-ng libcap")
 
 source=("https://github.com/shadow-maint/shadow/releases/download/v${pkgver}/shadow-${pkgver}.tar.xz")
 
