@@ -1,37 +1,45 @@
 pkgname=mc
-pkgver=4.8.27
-srcver=${pkgver//_/-}
+pkgver=4.8.28
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A file manager that emulates Norton Commander")
-longdesc=("Midnight Commander is a visual shell much like a file manager, only with way more features.  It is text mode, but also includes mouse support if you are running GPM.  Its coolest feature is the ability to ftp, view tar, zip files, and poke into RPMs for specific files.")
-
-tags=('console app-misc')
+shortdesc=("A file manager that emulates Norton Commander.")
+longdesc=("Midnight Commander is a visual shell much like a file manager, only with way more features.")
 
 source=("http://www.midnight-commander.org/downloads/mc-${pkgver}.tar.bz2")
 
-build_deps="glibc e2fsprogs glib2 gpm libssh2 slang which unzip"
+tags=("console app-misc")
 
-config_files="etc/mc/edit.indent.rc
+build_deps=("glibc e2fsprogs glib2 gpm libssh2 slang which libxt libx11 unzip")
+
+adddep=("which")
+
+# NOTE: Это опциональные зависимости
+removedep=("aspell cabextract cdparanoia cdrkit cvs gawk mtools p7zip
+perl python python-boto python-pytz samba unace unarj unrar unzip zip")
+
+config_files=("etc/mc/edit.indent.rc
 etc/mc/filehighlight.ini
 etc/mc/mc.ext
 etc/mc/mc.keymap
 etc/mc/sfs.ini
 etc/mc/mc.menu
-etc/mc/mcedit.menu"
+etc/mc/mcedit.menu")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-vfs-smb \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
     --with-screen=slang \
     --with-x
-  make -j${numjobs} || make
-  make DESTDIR=$pkgdir install
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-  rm "${pkgdir}"/etc/mc/mc.keymap && cp "${pkgdir}"/etc/mc/mc{.default,}.keymap
+# Меняем символическую ссылку mc.keymap на целевой файл, чтобы исправить механизм резервного копирования
+  rm ${pkgdir}/etc/mc/mc.keymap
+  cp ${pkgdir}/etc/mc/mc{.default,}.keymap
 }
