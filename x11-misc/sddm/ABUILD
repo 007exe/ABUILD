@@ -3,12 +3,12 @@ pkgver=0.19.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("QML based X11 and Wayland display manager.")
-longdesc=("Simple Desktop Display Manager.")
+shortdesc=("Simple Desktop Display Manager.")
+longdesc=("QML based X11 and Wayland display manager.")
 
 source=("https://github.com/$pkgname/${pkgname}/archive/v${pkgver}.tar.gz")
 
-tags=("xapps x11-apps")
+tags=("xapps x11-misc")
 
 build_deps=("extra-cmake-modules python-docutils qt5-tools qt5-declarative xorg-xauth xorg-server")
 
@@ -26,8 +26,9 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_LIBEXECDIR=/usr/lib/sddm \
     -DUSE_ELOGIND=ON \
-    -DNO_SYSTEMD=ON \
+    -DNO_SYSTEMD=OFF \
     -DDBUS_CONFIG_DIR=/usr/share/dbus-1/system.d \
+    -DDBUS_CONFIG_FILENAME=sddm_org.freedesktop.DisplayManager.conf \
     -DBUILD_MAN_PAGES=ON \
     -DUID_MAX=60513
   cmake --build build -j${numjobs}
@@ -35,4 +36,16 @@ build() {
 
   install -Dm755 ${filedir}/sddm.initd ${pkgdir}/etc/init.d/sddm
   install -Dm644 ${filedir}/sddm.confd ${pkgdir}/etc/conf.d/sddm
+
+# Системные пользователи
+  install -Dm644 ${filedir}/sddm.sysusers ${pkgdir}/usr/lib/sysusers.d/sddm.conf
+  install -Dm644 ${filedir}/sddm.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/sddm.conf
+
+  install -d ${pkgdir}/usr/lib/sddm/sddm.conf.d
+  ${pkgdir}/usr/bin/sddm --example-config > ${pkgdir}/usr/lib/sddm/sddm.conf.d/default.conf
+# Не устанавливайте ПУТЬ в sddm.conf
+  sed -r 's|DefaultPath=.*|DefaultPath=/usr/local/sbin:/usr/local/bin:/usr/bin|g' -i ${pkgdir}/usr/lib/sddm/sddm.conf.d/default.conf
+
+# Отменить установку метода ввода https://github.com/sddm/sddm/issues/952
+  sed -e "/^InputMethod/s/qtvirtualkeyboard//" -i ${pkgdir}/usr/lib/sddm/sddm.conf.d/default.conf
 }
