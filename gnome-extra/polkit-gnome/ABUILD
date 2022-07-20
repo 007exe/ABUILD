@@ -3,10 +3,10 @@ pkgver=0.105
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("Legacy polkit authentication agent for GNOME")
+shortdesc=("Legacy polkit authentication agent for GNOME.")
 longdesc=("The Polkit GNOME package provides an Authentication Agent for Polkit that integrates well with the GNOME Desktop environment.")
 
-source=("https://download.gnome.org/sources/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz")
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs sys-auth")
 
@@ -17,7 +17,8 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/${pkgname} \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --disable-static
