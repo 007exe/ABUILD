@@ -1,55 +1,78 @@
 pkgname=vlc
-pkgver=3.0.16
-buildver=1
+pkgver=3.0.17.4
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Multi-platform MPEG, VCD/DVD, and DivX player")
-longdesc=("VLC is a media player, streamer, and encoder. It can play from many inputs, such as files, network streams, capture devices, desktops, or DVD, SVCD, VCD, and audio CD. It can use most audio and video codecs (MPEG 1/2/4, H264, VC-1, DivX, WMV, Vorbis, AC3, AAC, etc.), and it can also convert to different formats and/or send streams through the network.")
+shortdesc=("Multi-platform MPEG, VCD/DVD, and DivX player.")
+longdesc=("Media player and framework with support for most multimedia files and streaming.")
 
 source=("https://download.videolan.org/vlc/${pkgver}/vlc-${pkgver}.tar.xz")
 
-tags=("xapps media-video")
-# live-media libdc1394 libcaca libgme xosd twolame aalib libmicrodns smbclient vcdimager protobuf libshout zvbi libkate libtiger sdl_image libgoom2 projectm chromaprint aribb24 aribb25 pcsclite a52dec libdvbpsi libdca libmatroska libmpeg2 libta libupnp
-build_deps=("gst-plugins-base-libs libnotify libbluray flac libavc1394 gtk3 librsvg avahi libmtp libdvdcss libssh2 mesa libnfs mpg123 libdvdread libdvdnav libogg libmodplug libvpx libvorbis speex opus libtheora libpng libjpeg-turbo libass libpulse alsa-lib jack libsamplerate libsoxr lirc aom srt dav1d libxpm libproxy lua52 libidn taglib libmpcdec ffmpeg faad2 libmad xcb-util-keysyms libxinerama libsecret libarchive qt5-base qt5-x11extras qt5-svg freetype fribidi harfbuzz fontconfig libxml2 gnutls libplacebo wayland-protocols")
+tags=("apps media-video")
+# live-media xosd smbclient vcdimager libtiger sdl_image libgoom2 projectm aribb24 aribb25 pcsclite libdvbpsi libmatroska libupnp libta
+build_deps=("gst-plugins-base-libs libnotify libbluray flac libavc1394 gtk3 librsvg avahi chromaprint libdca
+libmtp libdvdcss libssh2 mesa libnfs mpg123 libdvdread libdvdnav libogg libmodplug libvpx libkate a52dec libmpeg2
+libvorbis speex opus libtheora libpng libjpeg-turbo libass libpulse alsa-lib jack protobuf libshout zvbi
+libsamplerate libsoxr lirc aom srt dav1d libxpm libproxy lua52 libidn taglib libmpcdec aalib libmicrodns
+ffmpeg faad2 libmad xcb-util-keysyms libxinerama libsecret libarchive qt5-base qt5-x11extras libgme twolame
+qt5-svg freetype fribidi harfbuzz fontconfig libxml2 gnutls libplacebo wayland-protocols libdc1394 libcaca")
+
+# NOTE: Это опциональные зависимости
+removedep=("avahi aom gst-plugins-base-libs dav1d libdvdcss libavc1394 libdc1394 kwallet libva-vdpau-driver
+libva-intel-driver libbluray flac twolame libgme vcdimager libmtp systemd-libs smbclient libcdio gnu-free-fonts
+ttf-dejavu libssh2 libnfs mpg123 protobuf libmicrodns lua52-socket libdvdread libdvdnav libogg libshout libmodplug
+libvpx libvorbis speex opus libtheora libpng libjpeg-turbo librsvg x264 x265 zvbi libass libkate libtiger sdl_image
+srt aalib libcaca libpulse alsa-lib jack libsamplerate libsoxr lirc libgoom2 projectm ncurses libnotify gtk3 aribb24
+aribb25 pcsclit")
 
 build() {
   go_src_dir
   burn_patches
+  autoreconf -vf
+# FIX: https://trac.videolan.org/vlc/ticket/25036
+  export LUAC=/usr/bin/luac5.2
+  export LUA_LIBS="$(pkg-config --libs lua5.2)"
+  export CPPFLAGS="$(pkg-config --cflags lua52)"
+  export RCC=/usr/bin/rcc-qt5
+  export CXXFLAGS+=" -std=c++11"
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --with-kde-solid=/usr/share/solid/actions/ \
     --disable-rpath \
+    --disable-live555 \
+    --disable-smbclient \
+    --disable-dvbpsi \
+    --disable-matroska \
+    --disable-libva \
+    --disable-tiger \
+    --disable-goom \
+    --disable-upnp \
+    --disable-vpx \
     --enable-nls \
     --enable-archive \
-    --enable-live555 \
     --enable-dc1394 \
     --enable-dv1394 \
     --enable-dvdread \
     --enable-dvdnav \
     --enable-bluray \
     --disable-opencv \
-    --enable-smbclient \
     --enable-sftp \
     --enable-nfs \
     --enable-realrtsp \
-    --enable-dvbpsi \
     --enable-gme \
     --enable-ogg \
     --enable-shout \
-    --enable-matroska \
     --enable-mod \
     --enable-mpc \
     --enable-mad \
     --enable-mpg123 \
     --enable-gst-decode \
     --enable-avcodec \
-    --enable-libva \
     --enable-avformat \
     --enable-postproc \
     --enable-faad \
-    --enable-vpx \
     --enable-twolame \
     --disable-fdkaac \
     --enable-a52 \
@@ -68,7 +91,6 @@ build() {
     --enable-zvbi \
     --enable-libass \
     --enable-kate \
-    --enable-tiger \
     --enable-vdpau \
     --enable-wayland \
     --enable-sdl-image \
@@ -92,11 +114,9 @@ build() {
     --enable-libtar \
     --enable-ncurses \
     --enable-lirc \
-    --enable-goom \
     --enable-projectm \
     --enable-avahi \
     --enable-mtp \
-    --enable-upnp \
     --enable-microdns \
     --enable-libxml2 \
     --disable-libgcrypt \
