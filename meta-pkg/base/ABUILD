@@ -1,5 +1,5 @@
 pkgname=base
-pkgver=20220530
+pkgver=20220719
 pkgbuild=1
 arch=("noarch")
 
@@ -12,8 +12,9 @@ build_deps=("mkpkg")
 
 # NOTE: etc - Файлы конфигурации системы
 
-adddep=("bash bzip2 coreutils dracut etc eudev file findutils gawk gcc-libs gettext glibc grep gzip inetutils iproute2
-iputils kbd lsb-release mpkg-console openrc pciutils procps-ng psmisc sed shadow sysvinit tar util-linux xz iana-etc")
+adddep=("bash bzip2 coreutils dracut etc eudev file findutils gawk gcc-libs
+gettext glibc grep gzip inetutils iproute2 iputils kbd lsb-release mpkg-console
+openrc pciutils procps-ng psmisc sed shadow tar util-linux xz iana-etc sysusers")
 
 build() {
   echo "done"
