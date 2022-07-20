@@ -1,6 +1,6 @@
 pkgname=xfce4-settings
-pkgver=4.16.2
-pkgbuild=2
+pkgver=4.16.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Settings manager of the Xfce desktop.")
