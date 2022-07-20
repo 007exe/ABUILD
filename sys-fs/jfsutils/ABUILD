@@ -3,22 +3,22 @@ pkgver=1.1.15
 pkgbuild=2
 arch=("auto")
 
-shortdesc="IBM JFS utility programs"
-longdesc="The jfsutils package contains a number of utilities for creating, checking, modifying, and correcting any inconsistencies in JFS filesystems."
+shortdesc=("IBM JFS utility programs.")
+longdesc=("The jfsutils package contains a number of utilities for creating, checking, modifying, and correcting any inconsistencies in JFS filesystems.")
+
+source=("http://jfs.sourceforge.net/project/pub/${pkgname}-${pkgver}.tar.gz")
 
 tags=("base sys-fs")
 
-build_deps="util-linux-ng"
-
-source=("http://jfs.sourceforge.net/project/pub/${pkgname}-${pkgver}.tar.gz")
+build_deps=("util-linux")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --sbindir=/sbin \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
