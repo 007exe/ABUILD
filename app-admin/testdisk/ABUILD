@@ -4,21 +4,22 @@ pkgbuild=2
 arch=('auto')
 
 shortdesc=("Tool to check and undelete partition.")
-longdesc=("Checks and undeletes partitions + PhotoRec, signature based recovery tool")
+longdesc=("Checks and undeletes partitions + PhotoRec, signature based recovery tool.")
 
-source=("https://www.cgsecurity.org/$pkgname-$pkgver.tar.bz2")
+source=("https://www.cgsecurity.org/${pkgname}-${pkgver}.tar.bz2")
 
-tags="utils app-admin"
-#libjpeg progsreiserfs ntfsprogs
-build_deps="openssl"
+tags=("utils app-admin")
+
+build_deps=("openssl libjpeg-turbo ntfs-3g")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --without-ewf \
-    --enable-sudo
+    --enable-sudo \
+    --disable-qt
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
