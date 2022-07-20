@@ -1,6 +1,6 @@
 pkgname=zita-alsa-pcmi
-pkgver=0.4.0
-pkgbuild=2
+pkgver=0.5.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides easy access to ALSA PCM devices.")
