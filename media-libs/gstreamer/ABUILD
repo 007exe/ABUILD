@@ -1,5 +1,5 @@
 pkgname=gstreamer
-pkgver=1.20.2
+pkgver=1.20.3
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -11,10 +11,25 @@ source=("git:https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
 "https://gstreamer.freedesktop.org/src/gstreamer-docs/gstreamer-docs-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
-# qt5-wayland
-build_deps=("git meson valgrind libunwind gobject-introspection bash-completion gtk3 libcap python glib2 cdparanoia graphene libvisual opus libtheora libxv sdl2 qt5-base qt5-tools zlib libglvnd wayland wayland-protocols libx11 libgudev libdrm mesa orc nasm v4l-utils aalib flac jack lame libcaca libdv mpg123 libraw1394 libavc1394 libiec61883 qt5-declarative qt5-x11extras libpulse libshout taglib twolame libvpx wavpack cairo libsoup3 opencv vulkan-icd-loader vulkan-headers vulkan-validation-layers shaderc libltc bluez-libs libavtp libbs2b bzip2 chromaprint libdca faac faad2 libfdk-aac fluidsynth libgme libkate liblrdf ladspa libde265 lilv lv2 libmicrodns mjpegtools libmpcdec neon openal libdvdnav rtmpdump sbc soundtouch spandsp libsrtp svt-hevc zvbi libnice webrtc-audio-processing wildmidi zxing-cpp zbar nettle libxml2 gsm libopenmpt wpewebkit libldac libfreeaptx qrencode json-glib libva libxkbcommon-x11 a52dec opencore-amr libcdio libdvdread libmpeg2 libsidplay x264 ffmpeg libxrandr python-gobject")
 
-pkglist=("gst-plugins-bad-libs gst-plugins-base-libs gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugin-gtk gst-plugin-msdk gst-plugin-opencv gst-plugin-qmlgl gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
+build_deps=("git meson valgrind libunwind gobject-introspection bash-completion gtk3
+libcap python glib2 cdparanoia graphene libvisual opus libtheora libxv sdl2 qt5-base
+qt5-tools zlib libglvnd wayland wayland-protocols libx11 libgudev libdrm mesa orc nasm
+v4l-utils aalib flac jack lame libcaca libdv mpg123 libraw1394 libavc1394 libiec61883
+qt5-declarative qt5-x11extras libpulse libshout taglib twolame libvpx wavpack cairo
+libsoup3 opencv vulkan-icd-loader vulkan-headers vulkan-validation-layers shaderc
+libltc bluez-libs libavtp libbs2b bzip2 chromaprint libdca faac faad2 libfdk-aac
+fluidsynth libgme libkate liblrdf ladspa libde265 lilv lv2 libmicrodns mjpegtools
+libmpcdec neon openal libdvdnav rtmpdump sbc soundtouch spandsp libsrtp svt-hevc zvbi
+libnice webrtc-audio-processing wildmidi zxing-cpp zbar nettle libxml2 gsm libopenmpt
+wpewebkit libldac libfreeaptx qrencode json-glib libva libxkbcommon-x11 a52dec
+opencore-amr libcdio libdvdread libmpeg2 libsidplay x264 ffmpeg libxrandr python-gobject
+qt5-wayland")
+
+pkglist=("gst-plugins-bad-libs gst-plugins-base-libs gst-plugins-base gst-plugins-good
+gst-plugins-bad gst-plugin-gtk gst-plugin-msdk gst-plugin-opencv gst-plugin-qmlgl
+gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server
+gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
 
 _install() {
   local src dir
