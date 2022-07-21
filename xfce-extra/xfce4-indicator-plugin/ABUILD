@@ -1,0 +1,27 @@
+pkgname=xfce4-indicator-plugin
+pkgver=2.4.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A panel plugin that uses indicator-applet to show new messages.")
+
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("xfce xfce-extra")
+
+build_deps=("xfce4-panel intltool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
