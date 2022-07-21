@@ -8,7 +8,7 @@ longdesc=("Xfce4-pulseaudio-plugin is a panel plugin for controlling an audio ou
 
 source=("http://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/${pkgver%.*}/xfce4-pulseaudio-plugin-$pkgver.tar.bz2")
 
-tags=("xfce xfce-extra")
+tags=("xfce xfce-apps")
 
 build_deps=("xfce4-panel libpulse libkeybinder3 libnotify intltool dbus-glib xfce4-dev-tools")
 
