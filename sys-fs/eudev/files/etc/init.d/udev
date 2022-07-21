@@ -1,7 +1,4 @@
-#!/sbin/openrc-run
-# Copyright 1999-2013 Gentoo Foundation
-# AgiliaLinux 20021
-# Distributed under the terms of the GNU General Public License v2
+#!/usr/bin/openrc-run
 
 command_args="--daemon ${udev_opts}"
 description="udev manages device permissions and symbolic links in /dev"

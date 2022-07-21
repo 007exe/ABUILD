@@ -1,14 +1,14 @@
 pkgname=eudev
 pkgver=3.2.11
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("The userspace dev tools (udev) forked by Gentoo")
+shortdesc=("The userspace dev tools (udev) forked by Gentoo.")
 longdesc=("The Eudev package contains programs for dynamic creation of device nodes.")
 
 source=("https://github.com/eudev-project/eudev/releases/download/v${pkgver}/eudev-${pkgver}.tar.gz")
 
-tags=('base sys-fs')
+tags=("base sys-fs")
 
 build_deps=("kmod util-linux openssl xz zstd gperf")
 
@@ -36,7 +36,13 @@ build(){
 
   mkdir -p ${pkgdir}/etc/{firmware,modprobe.d,udev/rules.d/,init.d}
   mkdir -p ${pkgdir}/usr/lib/udev/rules.d
+
   install -Dm755 ${filedir}/etc/init.d/* ${pkgdir}/etc/init.d
+
+# Включаем init скрипт по умолчанию на уровне запуска sysinit
+  install -dm0755 ${pkgdir}/etc/runlevels/sysinit
+  ln -snf /etc/init.d/udev ${pkgdir}/etc/runlevels/sysinit/udev
+
   cp -r ${filedir}/etc/conf.d ${pkgdir}/etc
   install -Dm755 ${filedir}/helpers/* ${pkgdir}/usr/lib/udev/
 
