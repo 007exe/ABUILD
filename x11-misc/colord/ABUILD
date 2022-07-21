@@ -8,7 +8,7 @@ longdesc=("Colord is a system service that makes it easy to manage, install, and
 
 source=("http://www.freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
 
-tags=("xapps x11-misc")
+tags=("apps x11-misc")
 
 build_deps=("lcms2 dbus glib2 sqlite gobject-introspection vala bash-completion meson gtk-doc docbook-xsl libgusb polkit")
 
@@ -30,4 +30,8 @@ build() {
     -D man=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
+
+# Системный пользователь
+  echo 'u colord - "Color management daemon" /var/lib/colord' |
+    install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/colord.conf
 }
