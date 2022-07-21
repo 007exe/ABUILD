@@ -22,7 +22,7 @@ build(){
   sed -i 's|/etc/sysconfig|/etc/conf.d|' prog/{detect/sensors-detect,init/{sensord,lm_sensors}.service}
   sed -i 's/EnvironmentFile=/EnvironmentFile=-/' prog/init/lm_sensors.service
 
-  make PREFIX=/usr LIBDIR=/usr/lib MANDIR=/usr/share/man DESTDIR=$pkgdir install
+  make PREFIX=/usr SBINDIR=/usr/bin LIBDIR=/usr/lib MANDIR=/usr/share/man DESTDIR=$pkgdir install
 
   mkdir -p ${pkgdir}/etc/init.d
   cp ${filedir}/lm_sensors ${pkgdir}/etc/init.d
