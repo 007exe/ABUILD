@@ -8,7 +8,7 @@ longdesc=("xfce-taskmanager is a small taskmanager based on the Xfce libraries."
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce xfce-extra")
+tags=("xfce xfce-apps")
 
 build_deps=("libwnck3 libxmu intltool")
 
