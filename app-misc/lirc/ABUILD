@@ -23,6 +23,7 @@ build() {
   automake -ac
   ./configure \
     --prefix=/usr \
+    --sbindir=/usr/bin \
     --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
