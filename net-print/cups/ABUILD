@@ -1,5 +1,5 @@
 pkgname=cups
-pkgver=2.4.1
+pkgver=2.4.2
 pkgbuild=1
 arch=("auto")
 
@@ -88,6 +88,11 @@ build() {
 
 # Коментируем ненужную запись PageLogFormat
   sed -i -e 's:PageLogFormat:#PageLogFormat:' ${pkgdir}/etc/cups/cupsd.conf*
+
+# Системные пользователи и группы
+  install -Dm644 ${filedir}/cups.sysusers ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
+  sed -i "s:#User 209:User 209:" ${pkgdir}/etc/cups/cups-files.conf{,.default}
+  sed -i "s:#Group 209:Group 209:" ${pkgdir}/etc/cups/cups-files.conf{,.default}
 }
 
 libcups() {
