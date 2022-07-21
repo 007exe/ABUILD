@@ -1,5 +1,5 @@
 pkgname=sudo
-_sudover=1.9.10
+_sudover=1.9.11p3
 pkgver=${_sudover/p/.p}
 pkgbuild=1
 arch=("auto")
@@ -7,11 +7,12 @@ arch=("auto")
 shortdesc=("Give certain users the ability to run some commands as root.")
 longdesc=("The Sudo package allows a system administrator to give certain users (or groups of users) the ability to run some (or all) commands as root or another user while logging the commands and arguments.")
 
-source=("http://www.sudo.ws/sudo/dist/sudo-$_sudover.tar.gz")
+#source=("http://www.sudo.ws/sudo/dist/sudo-$_sudover.tar.gz")
+source=("https://github.com/sudo-project/sudo/archive/refs/tags/SUDO_${_sudover//./_}.tar.gz")
 
 tags=("console sys-auth")
 
-build_deps=("glibc linux-pam libaudit zlib")
+build_deps=("glibc linux-pam audit zlib")
 
 config_files=("etc/sudoers")
 
