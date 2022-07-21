@@ -6,13 +6,14 @@ arch=("auto")
 shortdesc=("Modern file manager for Xfce.")
 longdesc=("Thunar is the Xfce file manager, a GTK+ 3 GUI to organise the files on your computer.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
-
 tags=("xfce xfce-base")
 
-build_deps=("desktop-file-utils libexif hicolor-icon-theme libnotify libgudev exo libxfce4util libxfce4ui libpng intltool gobject-introspection xfce4-panel")
+source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-addep=("hicolor-icon-theme")
+build_deps=("desktop-file-utils libexif hicolor-icon-theme libnotify libgudev exo libxfce4util
+libxfce4ui libpng intltool gobject-introspection xfce4-panel")
+
+addep=("hicolor-icon-theme thunar-volman")
 
 removedep=("xfce4-panel")
 
