@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Simple ALSA volume control for xfce4-panel.")
 longdesc=("Simple ALSA volume control for xfce4-panel.")
 
-source=("https://github.com/equeim/xfce4-alsa-plugin/archive/refs/tags/$pkgver.tar.gz")
+source=("https://github.com/equeim/xfce4-alsa-plugin/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("xfce xfce-extra")
 
