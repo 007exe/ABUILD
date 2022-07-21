@@ -1,0 +1,22 @@
+pkgname=catfish
+pkgver=4.16.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Versatile file searching tool.")
+longdesc=(".")
+
+source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("xfce xfce-apps")
+
+build_deps=("dbus-python gtk3 python-cairo python-gobject python-pexpect xdg-utils xfconf intltool python-distutils-extra")
+
+adddep=("dbus-python python-cairo python-gobject python-pexpect xdg-utils xfconf")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+}
