@@ -8,7 +8,7 @@ longdesc=("Parole is a DVD/CD/music player for Xfce that uses GStreamer.")
 
 source=("https://archive.xfce.org/src/apps/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
-tags=("xfce xfce-extra")
+tags=("xfce xfce-apps")
 
 build_deps=("dbus-glib gst-plugins-base gst-plugins-good libnotify libxfce4ui intltool python")
 
