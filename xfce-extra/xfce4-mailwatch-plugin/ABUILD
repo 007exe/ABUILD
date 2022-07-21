@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Multi-protocol, multi-mailbox mail watcher for the Xfce4 panel.")
 longdesc=("Mailwatch is a mail watcher plugin for the Xfce4 panel.")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
