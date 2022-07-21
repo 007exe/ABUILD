@@ -1,0 +1,38 @@
+#!/bin/bash
+
+LIST="libxfce4util
+xfconf
+libxfce4ui
+exo
+garcon
+thunar
+thunar-volman
+tumbler
+xfce4-appfinder
+xfce4-panel
+xfce4-power-manager
+xfce4-session
+xfce4-settings
+xfdesktop
+xfwm4
+xfwm4-themes
+"
+CWD=~
+STARTD=`pwd`
+
+LOGFILE="$CWD/xfce4_base-build.log"
+
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+
+for i in $LIST ; do
+    cd $STARTD/$i
+    if mkpkg -ba -pod ~/mkpkg/packages/xfce-base -si; then
+           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           cd $STARTD
+    else
+           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           cd $STARTD
+    fi
+done
+
+echo "============================= Завершено `date` =============================" >> $LOGFILE
