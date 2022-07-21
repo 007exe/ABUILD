@@ -1,6 +1,6 @@
 pkgname=util-linux
 pkgver=2.38
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Miscellaneous system utilities for Linux.")
@@ -13,8 +13,6 @@ tags=("base sys-apps")
 build_deps=("eudev linux-pam acl shadow coreutils asciidoctor")
 
 adddep=("coreutils")
-
-pkglist=("util-linux-ng")
 
 config_files=("etc/pam.d/chfn
 etc/pam.d/chsh
@@ -67,22 +65,7 @@ build() {
   install -m0644 ${filedir}/pam.d/su-l ${pkgdir}/etc/pam.d/su-l
 
   install -Dm0644 ${filedir}/udev/60-rfkill.rules ${pkgdir}/usr/lib/udev/rules.d/60-rfkill.rules
-}
 
-# NOTE: Это временный виртуальный пакет созданный при переименовании util-linux-ng в util-linux.
-# следующие пакеты зависят от util-linux-ng
-# chafa cryptsetup e2fsprogs eudev fakeroot glib2 hwloc imagemagick libblockdev libsm libxaw libxmu libxpm libxt lvm2 ngspice ntfs-3g openldap parted sysvinit thunar-archive-plugin
-# thunar-media-tags-plugin udisks volume_key wget xfce4-clipman-plugin xfce4-datetime-plugin xfce4-dict xfce4-diskperf-plugin xfce4-eyes-plugin xfce4-genmon-plugin xfce4-kbdleds-plugin
-# xfce4-mailwatch-plugin xfce4-mpc-plugin xfce4-notes-plugin xfce4-notifyd xfce4-panel xfce4-power-manager xfce4-screenshooter xfce4-timer-plugin xfce4-verve-plugin xfce4-xkb-plugin 
-# xfwm4
-# Как только эти пакеты перестанут требовать util-linux-ng этот пакет следует удалить.
-
-util-linux-ng() {
-  pkgname=util-linux-ng
-  shortdesc=("This is a temporary virtual package created for compatibility when renaming util-linux-ng.")
-  adddep=("util-linux")
-}
-
-multipkgname1_prep() {
-  echo "The virtual package util-linux-ng has been created."
+# Системный пользователь
+  install -Dm0644 ${filedir}/util-linux.sysusers ${pkgdir}/usr/lib/sysusers.d/util-linux.conf
 }
