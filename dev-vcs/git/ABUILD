@@ -1,5 +1,5 @@
 pkgname=git
-pkgver=2.37.0
+pkgver=2.37.1
 pkgbuild=1
 arch=("auto")
 
@@ -62,4 +62,7 @@ build() {
 # OpenRC
   install -Dm755 ${filedir}/git-daemon.initd ${pkgdir}/etc/init.d/git-daemon
   install -Dm644 ${filedir}/git-daemon.confd ${pkgdir}/etc/conf.d/git-daemon
+
+# Системные пользователи и группы
+  install -D -m 0644 ${filedir}/git-sysusers.conf ${pkgdir}/usr/lib/sysusers.d/git.conf
 }

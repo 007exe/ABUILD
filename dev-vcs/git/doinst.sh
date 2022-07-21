@@ -1,4 +1,5 @@
-echo -e "\nThe following packages extend git capabilities:"
+echo -e "\n"
+echo -e "The following packages extend git capabilities:"
 echo -e "tk: gitk and git gui"
 echo -e "perl-libwww: git svn"
 echo -e "perl-term-readkey: git svn and interactive.singlekey setting"
@@ -12,3 +13,10 @@ echo -e "python: git svn & git p4"
 echo -e "subversion: git svn"
 echo -e "libsecret: libsecret credential helper"
 echo -e " "
+
+# Устанавливаем git-shell допустимой оболочкой
+grep -qe '^/bin/git-shell$' etc/shells || echo '/bin/git-shell' >> etc/shells
+grep -qe '^/usr/bin/git-shell$' etc/shells || echo '/usr/bin/git-shell' >> etc/shells
+
+# Удаляем пустые строки
+sed -i '/^$/d' etc/shells
