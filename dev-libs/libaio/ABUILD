@@ -1,10 +1,10 @@
 pkgname=libaio
-pkgver=0.3.112
-pkgbuild=4
+pkgver=0.3.113
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Linux-native asynchronous I/O facility (aio) library.")
-longdesc=("The libaio package is an asynchronous I/O facility ("async I/O", or "aio") that has a richer API and capability set than the simple POSIX async I/O facility. This library, libaio, provides the Linux-native API for async I/O. The POSIX async I/O facility requires this library in order to provide kernel-accelerated async I/O capabilities, as do applications which require the Linux-native async I/O API.")
+longdesc=("Asynchronous input/output library that uses the kernels native interface.")
 
 source=("https://releases.pagure.org/libaio/${pkgname}-${pkgver}.tar.gz")
 
