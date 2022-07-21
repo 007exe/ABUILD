@@ -1,0 +1,27 @@
+pkgname=featherpad
+pkgver=1.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Lightweight Qt plain text editor.")
+longdesc=("Lightweight Qt Plain-Text Editor for Linux.")
+
+source=("https://github.com/tsujan/FeatherPad/releases/download/V${pkgver}/FeatherPad-${pkgver}.tar.xz")
+
+tags=("app-editors apps")
+
+build_deps=("cmake ninja qt5-tools hicolor-icon-theme hunspell qt5-svg qt5-translations")
+
+adddep=("hicolor-icon-theme qt5-translations")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -G Ninja \
+    -DCMAKE_INSTALL_PREFIX='/usr' \
+    -DENABLE_QT5=ON
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 ${filedir}/featherpad.appdata.xml ${pkgdir}/usr/share/metainfo/featherpad.appdata.xml
+}
