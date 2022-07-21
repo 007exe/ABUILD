@@ -18,9 +18,9 @@ build() {
   set -e
   cd gptsync
   make -f Makefile.unix
-  mkdir -p ${pkgdir}/usr/sbin
-  cp gptsync ${pkgdir}/usr/sbin/
-  cp showpart ${pkgdir}/usr/sbin/
+  mkdir -p ${pkgdir}/usr/bin
+  cp gptsync ${pkgdir}/usr/bin/
+  cp showpart ${pkgdir}/usr/bin/
   mkdir -p ${pkgdir}/usr/man/man8
   cp gptsync.8 ${pkgdir}/usr/man/man8
   gzip ${pkgdir}/usr/man/man8/gptsync.8
