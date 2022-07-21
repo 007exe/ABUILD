@@ -8,7 +8,7 @@ longdesc=("A set of additional themes for the Xfwm window manager.")
 
 source=("https://archive.xfce.org/src/art/${pkgname}/4.10/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce x11-themes")
+tags=("xfce xfce-base")
 
 build_deps=("mkpkg")
 
