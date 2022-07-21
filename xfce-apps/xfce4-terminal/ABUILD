@@ -8,7 +8,7 @@ longdesc=("Xfce4 Terminal is a GTK+3 terminal emulator. This is useful for runni
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce x11-terms")
+tags=("xfce xfce-apps")
 
 build_deps=("libxfce4ui vte intltool")
 
