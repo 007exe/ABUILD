@@ -1,0 +1,30 @@
+pkgname=thunar-vcs-plugin
+pkgver=0.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SVN and GIT integration for Thunar.")
+longdesc=("Adds Subversion and GIT actions to the context menu of thunar.")
+
+source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+
+tags=("xfce xfce-extra")
+
+build_deps=("intltool xfce4-dev-tools subversion")
+
+adddep=("thunar hicolor-icon-theme subversion")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/xfce4 \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
