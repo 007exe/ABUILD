@@ -53,4 +53,8 @@ build() {
 
 # OpenRC init
   install -D -m755 ${filedir}/avahi.init ${pkgdir}/etc/init.d/avahi
+
+# Системный пользователь
+  echo 'u avahi - "Avahi mDNS/DNS-SD daemon"' |
+    install -Dm644 /dev/stdin "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
 }
