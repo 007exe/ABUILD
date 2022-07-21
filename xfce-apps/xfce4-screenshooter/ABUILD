@@ -8,7 +8,7 @@ longdesc=("This application allows you to capture the entire screen, the active 
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce xfce-extra")
+tags=("xfce xfce-apps")
 
 build_deps=("libxss libxklavier libwnck3 garcon dbus-glib python python-gobject intltool")
 
