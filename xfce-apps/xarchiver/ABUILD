@@ -8,7 +8,7 @@ longdesc=("XArchiver is a GTK+ archive manager with support for tar, xz, bzip2, 
 
 source=("https://github.com/ib/xarchiver/archive/${pkgver}/xarchiver-${pkgver}.tar.gz")
 
-tags=("xfce xfce-extra")
+tags=("xfce xfce-apps")
 
 build_deps=("gtk3 docbook-xsl intltool xmlto")
 
