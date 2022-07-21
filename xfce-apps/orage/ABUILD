@@ -1,0 +1,29 @@
+pkgname=orage
+pkgver=4.16.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Calendar for Xfce Desktop Environment.")
+longdesc=("A simple calendar application with reminders for Xfce.")
+
+source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+
+tags="xfce xfce-apps"
+
+build_deps=("xfce4-panel libnotify dbus-glib libical")
+
+adddep=("xfce4-panel libnotify dbus-glib libical")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/xfce4 \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-debug
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
