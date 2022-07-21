@@ -16,11 +16,9 @@ smmsp:x:25:25:smmsp:/var/spool/clientmqueue:/bin/false
 mysql:x:27:27:MySQL:/var/lib/mysql:/bin/false
 rpc:x:32:32:RPC portmap user:/:/bin/false
 sshd:x:33:33:sshd:/:/bin/false
-gdm:x:42:42:GDM:/var/state/gdm:/bin/false
 oprofile:x:51:51:oprofile:/:/bin/false
 apache:x:80:80:User for Apache:/srv/httpd:/bin/false
 messagebus:x:81:81:User for D-BUS:/var/run/dbus:/bin/false
 haldaemon:x:82:82:User for HAL:/var/run/hald:/bin/false
 pop:x:90:90:POP:/:/bin/false
 nobody:x:99:99:nobody:/:/bin/false
-kdm:x:135:135:KDE Display Manager:/var/lib/kdm:/sbin/nologin

@@ -1,5 +1,5 @@
 pkgname=etc
-pkgver=20220611
+pkgver=20220721
 pkgbuild=1
 arch=("noarch")
 
@@ -20,6 +20,7 @@ build() {
     cp -rv ${filedir}/${dir} ${pkgdir}/
   done
   chmod 755 ${pkgdir}/etc/profile.d/{lang.csh.new,lang.sh.new}
+
+# Системные пользователи и группы
+  install -D -m 0644 ${filedir}/def_sysusers.conf ${pkgdir}/usr/lib/sysusers.d/def_sysusers.conf
 }
-
-
