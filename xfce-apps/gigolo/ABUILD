@@ -1,0 +1,25 @@
+pkgname=gigolo
+pkgver=0.5.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fontend to easily manage connections to remote filesystems using GIO/GVfs.")
+
+source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("xfce xfce-apps")
+
+build_deps=("intltool gvfs")
+
+adddep=("gvfs")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
