@@ -26,6 +26,8 @@ kalgebra
 kapptemplate
 kdegraphics-mobipocket
 kcalc
+kpmcore
+partitionmanager
 "
 CWD=~
 STARTD=`pwd`

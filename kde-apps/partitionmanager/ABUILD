@@ -1,0 +1,26 @@
+pkgname=partitionmanager
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utility for management of disks, partitions and file systems.")
+longdesc=("A KDE utility that allows you to manage disks, partitions, and file systems.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde kde-apps")
+
+build_deps=("extra-cmake-modules kdoctools kpmcore kio")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}

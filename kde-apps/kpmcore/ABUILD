@@ -1,0 +1,28 @@
+pkgname=kpmcore
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for managing partitions.")
+longdesc=("Library for managing partitions.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("extra-cmake-modules smartmontools kcoreaddons kwidgetsaddons ki18n polkit-qt qca-qt5")
+
+# NOTE: Это опциональные зависимости
+removedep=("e2fsprogs xfsprogs jfsutils reiserfsprogs ntfs-3g dosfstools fatresize f2fs-tools exfat-utils exfatprogs nilfs-utils udftools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
