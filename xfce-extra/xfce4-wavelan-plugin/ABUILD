@@ -1,12 +1,12 @@
 pkgname=xfce4-wavelan-plugin
-pkgver=0.6.2
+pkgver=0.6.3
 pkgbuild=2
 arch=("auto")
 
 shortdesc=("Plugin to monitor wifi connectivity for the Xfce4 panel.")
 longdesc=("A plugin for the Xfce panel that monitors a wireless LAN interface. It displays stats for signal state, signal quality and network name (SSID).")
 
-source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
