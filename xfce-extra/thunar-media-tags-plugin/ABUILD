@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Adds special features for media files to the Thunar File Manager.")
 longdesc=("The thunar-media-tags-plugin is a plugin for the Thunar File Manager, which adds ID3/OGG tag support to the bulk rename dialog.")
 
-source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/thunar-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
