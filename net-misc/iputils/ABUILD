@@ -1,23 +1,26 @@
 pkgname=iputils
-pkgver=20210202
+pkgver=20211215
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Network monitoring tools including ping")
-longdesc=("The iputils package contains ping, a basic networking tool. The ping command sends a series of ICMP protocol ECHO_REQUEST packets to a specified network host and can tell you if that machine is alive and receiving network traffic.")
-
-tags=("network net-misc")
+shortdesc=("Network monitoring tools including ping.")
+longdesc=("The iputils package contains ping, a basic networking tool.")
 
 source=("https://github.com/iputils/iputils/archive/${pkgver}.tar.gz")
 
-build_deps="perl-sgmls docbook-xsl meson libcap libidn2"
+tags=("network net-misc")
+
+build_deps=("perl-sgmls docbook-xsl meson libcap libidn2 iproute2")
 
 build() {
   go_src_dir
   burn_patches
   mkdir -p build
   cd build
-  meson --prefix=/usr --sbindir=/usr/bin --mandir=/usr/share/man -DBUILD_RARPD=true -DBUILD_TFTPD=true ..
+  meson .. \
+    -D prefix=/usr \
+    -D sbindir=bin \
+    -D BUILD_RARPD=true
   ninja
-  DESTDIR="$pkgdir" ninja install
+  DESTDIR=${pkgdir} ninja install
 }
