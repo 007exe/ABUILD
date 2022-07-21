@@ -1,5 +1,5 @@
 pkgname=modemmanager
-pkgver=1.18.8
+pkgver=1.18.10
 pkgbuild=1
 arch=("auto")
 
@@ -21,6 +21,7 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
+    --sbindir=/usr/bin \
     --libdir=/usr/lib \
     --sysconfdir=/etc \
     --mandir=/usr/share/man \
