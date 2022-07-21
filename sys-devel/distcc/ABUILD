@@ -1,7 +1,7 @@
 pkgname=distcc
 pkgver=3.4
 pkgbuild=2
-_gccver=11.2.0
+_gccver=12.1.0
 arch=("auto")
 
 shortdesc=("Distributed compilation service for C, C++ and Objective-C.")
@@ -31,7 +31,9 @@ build() {
     --mandir=/usr/share/man \
     --enable-rfc2553 \
     --sysconfdir=/etc \
-    --with-gtk
+    --with-gtk \
+    --without-libiberty \
+    --disable-Werror
   make -j${numjobs} WERROR_CFLAGS= INCLUDESERVER_PYTHON=/usr/bin/python
   make DESTDIR=${pkgdir} INCLUDESERVER_PYTHON=/usr/bin/python install
 
@@ -45,4 +47,7 @@ build() {
   for bin in "${_targets[@]}"; do
     ln -sf ../../bin/${pkgname} ${pkgdir}/usr/lib/${pkgname}/${bin}
   done
+
+# Системный пользователь и группы
+  install -Dm644 ${filedir}/sysusers.conf ${pkgdir}/usr/lib/sysusers.d/distccd.conf
 }
