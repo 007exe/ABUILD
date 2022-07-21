@@ -1,6 +1,6 @@
 pkgname=xfce4-wavelan-plugin
 pkgver=0.6.3
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plugin to monitor wifi connectivity for the Xfce4 panel.")
