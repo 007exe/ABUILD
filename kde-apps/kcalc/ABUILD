@@ -1,0 +1,22 @@
+pkgname=kcalc
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("KDE calculator.")
+longdesc=("Scientific Calculator.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde kde-apps")
+
+build_deps=("extra-cmake-modules kdoctools mpfr kxmlgui knotifications")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DBUILD_TESTING=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}

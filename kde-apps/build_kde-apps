@@ -25,6 +25,7 @@ juk
 kalgebra
 kapptemplate
 kdegraphics-mobipocket
+kcalc
 "
 CWD=~
 STARTD=`pwd`
