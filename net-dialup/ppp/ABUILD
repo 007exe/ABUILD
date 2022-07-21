@@ -48,7 +48,7 @@ build(){
 
   install -D -m755 ${filedir}/pon ${pkgdir}/usr/bin/pon
   install -D -m755 ${filedir}/poff ${pkgdir}/usr/bin/poff
-  install -D -m755 ${filedir}/plog ${pkgdir}/usr/sbin/plog
+  install -D -m755 ${filedir}/plog ${pkgdir}/usr/bin/plog
   install -D -m600 etc.ppp/pap-secrets ${pkgdir}/etc/ppp/pap-secrets
   install -D -m600 etc.ppp/chap-secrets ${pkgdir}/etc/ppp/chap-secrets
   install -D -m644 ${filedir}/pon.1 ${pkgdir}/usr/share/man/man1/pon.1
