@@ -1,19 +1,19 @@
 pkgname=ranger
 pkgver=1.9.3
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Simple, vim-like file manager")
-longdesc=("")
+shortdesc=("Simple, vim-like file manager.")
+longdesc=("A vim-inspired file manager for the console.")
 
 source=("https://ranger.github.io/ranger-${pkgver}.tar.gz")
 
-tags="console app-misc"
+tags=("console app-misc")
 
-build_deps="python"
+build_deps=("python")
 
 build() {
   go_src_dir
   burn_patches
-  python setup.py install --root="${pkgdir}" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 }
