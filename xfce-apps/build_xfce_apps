@@ -1,0 +1,38 @@
+#!/bin/bash
+
+LIST="gigolo
+orage
+ristretto
+xfburn
+xfce4-panel-profiles
+xfce4-screenshooter
+xfce4-terminal
+xfmpc
+catfish
+mousepad
+parole
+xarchiver
+xfce4-notifyd
+xfce4-screensaver
+xfce4-taskmanager
+xfdashboard
+"
+CWD=~
+STARTD=`pwd`
+
+LOGFILE="$CWD/xfce4_apps-build.log"
+
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+
+for i in $LIST ; do
+    cd $STARTD/$i
+    if mkpkg -ba -pod ~/mkpkg/packages/xfce-apps -si; then
+           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           cd $STARTD
+    else
+           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           cd $STARTD
+    fi
+done
+
+echo "============================= Завершено `date` =============================" >> $LOGFILE
