@@ -1,6 +1,6 @@
 pkgname=libbytesize
-pkgver=2.6
-pkgbuild=2
+pkgver=2.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A tiny library providing a C class for working with arbitrary big sizes in bytes.")
