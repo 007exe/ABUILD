@@ -6,9 +6,9 @@ arch=("auto")
 shortdesc=("Automatic management of removeable devices in Thunar.")
 longdesc=("The Thunar Volume Manager is an extension for the Thunar file manager, which enables automatic management of removable drives and media.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce xfce-extra")
+tags=("xfce xfce-base")
 
 build_deps=("libxfce4ui intltool")
 
