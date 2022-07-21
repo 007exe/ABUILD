@@ -8,7 +8,7 @@ longdesc=("xfce4-screensaver is a screen saver and locker that aims to have simp
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce xfce-extra")
+tags=("xfce xfce-apps")
 
 build_deps=("xfce4-panel intltool libxscrnsaver")
 
