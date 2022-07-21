@@ -1,6 +1,6 @@
 pkgname=fribidi
-pkgver=1.0.11
-pkgbuild=3
+pkgver=1.0.12
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Free Implementation of the Unicode Bidirectional Algorithm.")
