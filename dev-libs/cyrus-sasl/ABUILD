@@ -30,6 +30,7 @@ build() {
 
   ./configure \
     --prefix=/usr \
+    --sbin=/usr/bin \
     --libdir=/usr/lib \
     --with-plugindir=/usr/lib/sasl2 \
     --with-configdir=/etc/sasl2:/etc/sasl \
