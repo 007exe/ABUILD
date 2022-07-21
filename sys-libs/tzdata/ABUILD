@@ -1,33 +1,37 @@
 pkgname=tzdata
-pkgver=2021c
+pkgver=2022a
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Sources for time zone and daylight saving time data")
+shortdesc=("Sources for time zone and daylight saving time data.")
 longdesc=("The Time Zone Database contains code and data that represent the history of local time for many representative locations around the globe.")
-
-tags=("libs sys-libs")
 
 source=("https://data.iana.org/time-zones/releases/${pkgname}${pkgver}.tar.gz")
 
-build_deps="mkpkg"
+tags=("libs sys-libs")
+
+build_deps=("glibc")
 
 timezones=('africa' 'antarctica' 'asia' 'australasia'
            'europe' 'northamerica' 'southamerica'
            'etcetera' 'backward' 'factory')
 
 build(){
-# install tzdata stuff
-  zic -b fat -d "${pkgdir}"/usr/share/zoneinfo ${timezones[@]}
-  zic -b fat -d "${pkgdir}"/usr/share/zoneinfo/posix ${timezones[@]}
-  zic -b fat -d "${pkgdir}"/usr/share/zoneinfo/right -L leapseconds ${timezones[@]}
+#  sed -i "s:sbin:bin:g" Makefile
+#  make LFLAGS="${LDFLAGS} ${LTOFLAGS}"
+#  make DESTDIR=${pkgdir} install
 
-# This creates the posixrules file. We use New York because POSIX requires the daylight savings time rules to be in accordance with US rules.
-  zic -b fat -d "${pkgdir}"/usr/share/zoneinfo -p America/New_York
+# Установка tzdata
+  zic -b fat -d ${pkgdir}/usr/share/zoneinfo ${timezones[@]}
+  zic -b fat -d ${pkgdir}/usr/share/zoneinfo/posix ${timezones[@]}
+  zic -b fat -d ${pkgdir}/usr/share/zoneinfo/right -L leapseconds ${timezones[@]}
+# Используем Нью-Йорк, потому что POSIX требует, чтобы правила перехода на летнее время соответствовали правилам США.
+  zic -b fat -d ${pkgdir}/usr/share/zoneinfo -p America/New_York
 
-# zone.tab is depricated and will go soon
-  install -m444 -t "${pkgdir}"/usr/share/zoneinfo iso3166.tab zone1970.tab zone.tab
+# zone.tab устарел и скоро исчезнет
+  install -m444 -t ${pkgdir}/usr/share/zoneinfo iso3166.tab zone1970.tab zone.tab
 
-# install license
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+#  rm ${pkgdir}/etc/localtime
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
