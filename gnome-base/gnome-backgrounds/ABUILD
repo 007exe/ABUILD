@@ -1,18 +1,16 @@
 pkgname=gnome-backgrounds
-pkgver=41.0
+pkgver=42.0
 pkgbuild=1
 arch=('noarch')
 
-shortdesc=("Background images and data for GNOME")
-longdesc=("The GNOME Backgrounds package contains a collection of graphics files which can be used as backgrounds in the GNOME Desktop environment. Additionally, the package creates the proper framework and directory structure so that you can add your own files to the collection.")
-_tarver=${pkgver/rc/.rc}
-source=("https://download.gnome.org/sources/$pkgname/${_tarver%%.*}/$pkgname-$_tarver.tar.xz")
+shortdesc=("Background images and data for GNOME.")
+longdesc=("The GNOME Backgrounds package contains a collection of graphics files which can be used as backgrounds in the GNOME Desktop environment.")
 
-patch_opts=("")
+source=("https://download.gnome.org/sources/$pkgname/${pkgver%%.*}/${pkgname}-${pkgver}.tar.xz")
 
-tags="themes x11-themes"
+tags=("gnome gnome-base")
 
-build_deps="glib2 meson"
+build_deps=("glib2 meson")
 
 build() {
   go_src_dir
@@ -20,5 +18,5 @@ build() {
   meson build \
     --prefix=/usr
   meson compile -C build
-  DESTDIR="$pkgdir" meson install -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
