@@ -1,0 +1,26 @@
+pkgname=telepathy-glib
+pkgver=0.24.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GLib bindings for the Telepathy D-Bus protocol.")
+longdesc=("GLib bindings for the Telepathy D-Bus protocol.")
+
+source=("https://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("network net-libs")
+
+build_deps=("dbus-glib libxslt vala gobject-introspection python")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/telepathy \
+    --enable-vala-bindings \
+    --enable-static=no
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
