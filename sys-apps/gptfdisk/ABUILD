@@ -1,0 +1,27 @@
+pkgname=gptfdisk
+pkgver=1.0.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A text-mode partitioning tool that works on GUID Partition Table (GPT) disks.")
+longdesc=("The gptfdisk package is a set of programs for creation and maintenance of GUID Partition Table (GPT) disk drives. A GPT partitioned disk is required for drives greater than 2 TB and is a modern replacement for legacy PC-BIOS partitioned disk drives that use a Master Boot Record (MBR)")
+
+source=("https://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils sys-apps")
+
+build_deps=("gcc-libs popt util-linux ncurses")
+
+build(){
+  go_src_dir
+  burn_patches
+
+# https://sourceforge.net/p/gptfdisk/discussion/939590/thread/bc29ca06f8/
+  sed -i '/^#include /s:ncursesw/::' gptcurses.cc
+
+  make -j${numjobs}
+  install -d ${pkgdir}/usr/{bin,share/{doc/gdisk,man/man8}}
+  install -t ${pkgdir}/usr/bin {,c,s}gdisk fixparts
+  install -m644 -t ${pkgdir}/usr/share/man/man8 {{,c,s}gdisk,fixparts}.8
+  install -m644 -t ${pkgdir}/usr/share/doc/gdisk README NEWS
+}
