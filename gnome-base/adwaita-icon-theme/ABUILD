@@ -8,7 +8,7 @@ longdesc=("The Adwaita Icon Theme package contains an icon theme for Gtk+ 3 appl
 
 source=("https://download.gnome.org/sources/adwaita-icon-theme/${pkgver%.*}/adwaita-icon-theme-${pkgver}.tar.xz")
 
-tags=("themes x11-themes")
+tags=("themes gnome-base")
 
 build_deps=("gtk3 hicolor-icon-theme gtk-update-icon-cache librsvg")
 
