@@ -1,0 +1,29 @@
+pkgname=xapian-core
+pkgver=1.4.20
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Open source search engine library.")
+longdesc=("Xapian Probabilistic Information Retrieval library.")
+
+source=("https://oligarchy.co.uk/xapian/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("dev-libs libs")
+
+build_deps=("util-linux bash gcc-libs glibc zlib")
+
+adddep=("bash")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vfi
+  CXXFLAGS=${CXXFLAGS/-Wp,-D_GLIBCXX_ASSERTIONS}
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -vDm 644 {AUTHORS,ChangeLog,HACKING,NEWS,README} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
