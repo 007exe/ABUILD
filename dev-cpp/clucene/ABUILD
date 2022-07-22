@@ -1,0 +1,35 @@
+pkgname=clucene
+pkgver=2.3.3.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ port of the high-performance text search engine Lucene.")
+longdesc=("High-performance, full-featured text search engine based off of lucene in C++.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-core-${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("cmake boost gcc-libs zlib")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DENABLE_ASCII_MODE=OFF \
+    -DENABLE_PACKAGING=OFF \
+    -DBUILD_CONTRIBS_LIB:BOOL=ON \
+    -DLIB_DESTINATION:PATH=/usr/lib \
+    -DLUCENE_SYS_INCLUDES:PATH=/usr/lib \
+    -DDISABLE_MULTITHREADING=OFF
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rfv ${pkgdir}/usr/lib/CLuceneConfig.cmake
+  cd ${pkgdir}/usr/include//CLucene
+  ln -s /usr/lib/CLucene/clucene-config.h .
+}
