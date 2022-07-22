@@ -17,13 +17,13 @@ config_files=("etc/pam.d/polkit-1")
 build(){
   go_src_dir
   burn_patches
-  mkdir build
   meson build \
-    -D prefix=/usr \
     -D man=true \
-    -D session_tracking=libelogind \
+    -D prefix=/usr \
+    -D os_type=redhat \
+    -D buildtype=release \
     -D systemdsystemunitdir=/tmp   \
-    -D buildtype=release
+    -D session_tracking=libelogind
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 
@@ -41,11 +41,11 @@ EOF
 # Удаляем бесполезные сервисы systemd
   rm -r ${pkgdir}/tmp
 
-  install -d -o root -g 102 -m 750 ${pkgdir}/{etc,usr/share}/polkit-1/rules.d
+#  install -d -o root -g 102 -m 750 ${pkgdir}/{etc,usr/share}/polkit-1/rules.d
   mv ${pkgdir}/{etc,usr/share}/polkit-1/rules.d/50-default.rules
 
-# Системный пользователь
-  install -Dm644 /dev/stdin "$pkgdir/usr/lib/sysusers.d/$pkgname.conf" <<END
+# Системный пользователь и группы
+  install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf <<END
 u polkitd 102 "PolicyKit daemon"
 m polkitd proc
 END
