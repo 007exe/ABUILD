@@ -3,21 +3,23 @@
 depend() {
 	need dbus
 
-	# Убедимся, что elogind включен, прежде чем xdm запустит любой dm
+	# Make sure elogind is up before xdm starts any dm
 	before xdm
+
+	use logger
 }
 
 start() {
 	ebegin "Starting elogind"
 
 	start-stop-daemon --start --quiet \
-		--pidfile "${ELOGIND_PIDFILE}" \
-		--exec "${ELOGIND_EXEC}" -- --daemon
+		--pidfile /run/elogind.pid \
+		--exec /usr/lib/elogind/elogind -- --daemon
 	eend $?
 }
 
 stop() {
 	ebegin "Stopping elogind"
-	start-stop-daemon --stop --quiet --pidfile "${ELOGIND_PIDFILE}"
+	start-stop-daemon --stop --quiet --pidfile /run/elogind.pid
 	eend $?
 }

@@ -1,10 +1,10 @@
 pkgname=elogind
 pkgver=246.10
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("The systemd project's logind, extracted to a standalone package.")
-longdesc=("elogind is the systemd project's logind, extracted out to be a standalone daemon.")
+shortdesc=("Standalone logind fork.")
+longdesc=("The systemd project's logind, extracted to a standalone package.")
 
 source=("https://github.com/elogind/elogind/archive/v${pkgver}/elogind-${pkgver}.tar.gz")
 
@@ -12,34 +12,59 @@ tags=("base sys-base")
 
 build_deps=("meson dbus linux-pam docbook-xml docbook-xsl libxslt")
 
+adddep=("dbus")
+
 config_files=("etc/elogind/logind.conf")
 
 build() {
   go_src_dir
   burn_patches
 # Разрешаем сборку без установленного polkit
-  sed -i '/Disable polkit/,+8 d' meson.build &&
-  mkdir build
-  cd build
-  meson \
+#  sed -i '/Disable polkit/,+8 d' meson.build &&
+  meson build \
+    -D man=auto \
+    -D pam=true \
+    -D acl=true \
+    -D utmp=true \
+    -D html=false \
+    -D smack=true \
     -D prefix=/usr \
     -D buildtype=release \
+    -D pamlibdir=/etc/pam.d \
+    -D nobody-group=nogroup \
+    -D halt-path=/usr/bin/halt \
+    -D default-hierarchy=legacy \
     -D cgroup-controller=openrc \
+    -D reboot-path=/usr/bin/reboot \
+    -D docdir=/usr/share/doc/elogind \
     -D rootlibexecdir=/usr/lib/elogind \
+    -D poweroff-path=/usr/bin/poweroff \
+    -D default-kill-user-processes=false \
     -D udevrulesdir=/usr/lib/udev/rules.d \
     -D dbuspolicydir=/etc/dbus-1/system.d \
-    -D man=auto
-  ninja
-  DESTDIR=${pkgdir} ninja install
+    -D bashcompletiondir=/usr/share/bash-completion/completions
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
 
   ln -sfv  libelogind.pc ${pkgdir}/usr/lib/pkgconfig/libsystemd.pc
   ln -sfvn elogind ${pkgdir}/usr/include/systemd
 
+# Устанавливаем init скрипт и включаем его по умолчанию на уровне запуска boot
+  install -Dm755 ${filedir}/elogind.init ${pkgdir}/etc/init.d/elogind
+  install -dm0755 ${pkgdir}/etc/runlevels/boot
+  ln -snf /etc/init.d/elogind ${pkgdir}/etc/runlevels/boot/elogind
+
+  install -Dm644 ${filedir}/elogind.conf ${pkgdir}/etc/conf.d/elogind.conf
+
+# Каждому пользователю необходимо будет зарегистрировать сеанс пользователя с помощью Linux-PAM при входе в систему.
   cp ${filedir}/system-session.pam ${pkgdir}/etc/pam.d/system-session
   rm ${pkgdir}/etc/pam.d/elogind-user
   cp ${filedir}/elogind-user.pam ${pkgdir}/etc/pam.d/elogind-user
 
   mkdir -p ${pkgdir}/etc/elogind/{logind.conf.d,sleep.conf.d}
 
-  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ../LICENSE*
+# Добавим файл политики login1, который позволяет пользователям из группы "power" выключать/перезагружать компьютер:
+  install -Dm644 ${filedir}/10-enable-elogind-power.rules ${pkgdir}/usr/share/polkit-1/rules.d/10-enable-elogind-power.rules
+
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE*
 }
