@@ -1,0 +1,46 @@
+pkgname=adwaita-qt5
+pkgver=1.4.1
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A style to bend Qt applications to look like they belong into GNOME Shell.")
+longdesc=("A style to bend Qt5 applications to look like they belong into GNOME Shell.")
+
+source=("https://github.com/FedoraQt/adwaita-qt/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("themes x11-themes")
+
+build_deps=("cmake qt5-x11extras qt6-base")
+
+adddep=("qt5-x11extras")
+
+pkglist=("qt6")
+
+build() {
+  cd ${srcdir}
+  cmake -B build-qt5 -S adwaita-qt-$pkgver \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DUSE_QT6=OFF
+  cmake --build build-qt5 -j${numjobs}
+
+  cmake -B build-qt6 -S adwaita-qt-$pkgver \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DUSE_QT6=ON
+  cmake --build build-qt6 -j${numjobs}
+
+  DESTDIR=${pkgdir} cmake --install build-qt5
+}
+
+qt6() {
+  pkgname=adwaita-qt6
+  shortdesc=("A style to bend Qt applications to look like they belong into GNOME Shell.")
+  longdesc=("A style to bend Qt6 applications to look like they belong into GNOME Shell.")
+  adddep=("qt6-base")
+}
+
+qt6_prep() {
+  cd ${srcdir}
+  DESTDIR=${pkgdir} cmake --install build-qt6
+}
