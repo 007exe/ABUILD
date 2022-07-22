@@ -1,0 +1,24 @@
+pkgname=libsigsegv
+pkgver=2.14
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Page fault detection library.")
+longdesc=("Library for handling page faults in user mode.")
+
+source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-shared
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
