@@ -3,14 +3,14 @@ pkgver=0.17
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Freedesktop.org Hicolor icon theme")
+shortdesc=("Freedesktop.org Hicolor icon theme.")
 longdesc=("The hicolor-icon-theme package contains a default fallback theme for implementations of the icon theme specification.")
-
-tags=("libs x11-themes")
 
 source=("https://icon-theme.freedesktop.org/releases/hicolor-icon-theme-${pkgver}.tar.xz")
 
-build_deps="bash coreutils"
+tags=("themes x11-themes")
+
+build_deps=("mkpkg")
 
 build() {
   go_src_dir
