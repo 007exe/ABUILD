@@ -1,0 +1,26 @@
+pkgname=libatomic_ops
+pkgver=7.6.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Implementation for atomic memory update operations.")
+longdesc=("Provides semi-portable access to hardware provided atomic memory operations.")
+
+source=("https://github.com/ivmai/libatomic_ops/releases/download/v$pkgver/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("glibc")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --enable-shared
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
