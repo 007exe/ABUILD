@@ -1,0 +1,65 @@
+pkgname=gnome-icon-theme
+pkgver=3.12.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Standard Themes for GNOME Applications.")
+longdesc=("The GNOME Icon Theme package contains an assortment of non-scalable icons of different sizes and themes.")
+
+source=("https://download.gnome.org/sources/gnome-icon-theme/${pkgver:0:4}/gnome-icon-theme-${pkgver}.tar.xz"
+"https://download.gnome.org/sources/gnome-icon-theme-extras/${pkgver:0:4}/gnome-icon-theme-extras-${pkgver}.tar.xz"
+"https://download.gnome.org/sources/gnome-icon-theme-symbolic/${pkgver:0:4}/gnome-icon-theme-symbolic-${pkgver}.tar.xz")
+
+tags=("gnome-extra themes")
+
+pkglist=("extras symbolic")
+
+build_deps=("icon-naming-utils")
+
+adddep=("gtk-update-icon-cache hicolor-icon-theme")
+
+skip_gendeps=1
+
+build() {
+  cd ${srcdir}/gnome-icon-theme-${pkgver}
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
+extras() {
+  pkgname=gnome-icon-theme-extras
+  shortdesc=("Extra GNOME icons for specific devices and file types.")
+  longdesc=("The GNOME Icon Theme Extras package contains extra icons for the GNOME Desktop.")
+  arch=("noarch")
+  tags=("gnome-extra themes")
+  adddep=("gtk-update-icon-cache hicolor-icon-theme")
+  skip_gendeps=1
+}
+
+extras_prep() {
+  cd ${srcdir}/gnome-icon-theme-extras-${pkgver}
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
+symbolic() {
+  pkgname=gnome-icon-theme-symbolic
+  shortdesc=("Symbolic icons for GNOME default icon theme.")
+  longdesc=("The GNOME Icon Theme Symbolic package contains symbolic icons for the default GNOME icon theme.")
+  arch=("noarch")
+  tags=("gnome-extra themes")
+  adddep=("gtk-update-icon-cache hicolor-icon-theme")
+  skip_gendeps=1
+}
+
+symbolic_prep() {
+  cd ${srcdir}/gnome-icon-theme-symbolic-${pkgver}
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
