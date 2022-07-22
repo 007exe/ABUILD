@@ -1,23 +1,23 @@
 pkgname=ed
-pkgver=1.17
+pkgver=1.18
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("The GNU line editor")
-longdesc=("Ed is a line-oriented text editor, used to create, display, and modify text files (both interactively and via shell scripts). For most purposes, ed has been replaced in normal usage by full-screen editors (emacs and vi, for example).")
-
-tags=("base sys-base")
+shortdesc=("The GNU line editor.")
+longdesc=("Ed is a line-oriented text editor, used to create, display, and modify text files (both interactively and via shell scripts).")
 
 source=("https://ftp.gnu.org/gnu/ed/$pkgname-$pkgver.tar.lz")
 
-build_deps="glibc lzip"
+tags=("base sys-apps")
+
+build_deps=("glibc lzip")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --docdir=/usr/share/doc \
     --mandir=/usr/share/man \
     "CPPFLAGS=$CPPFLAGS" \
