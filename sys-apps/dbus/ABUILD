@@ -10,7 +10,7 @@ source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.xz")
 
 tags=("base sys-apps")
 
-build_deps=("libaudit libcap-ng expat libaudit xmlto docbook-xsl python yelp-tools doxygen elogind autoconf-archive")
+build_deps=("audit libcap-ng expat xmlto docbook-xsl python yelp-tools doxygen elogind autoconf-archive")
 
 removedep=("libx11")
 
@@ -31,12 +31,17 @@ build() {
     --enable-x11-autolaunch \
     --enable-libaudit \
     --enable-inotify \
+    --enable-shared=yes \
+    --enable-elogind \
     --disable-doxygen-docs \
     --disable-xml-docs \
+    --disable-systemd \
+    --disable-apparmor \
+    --disable-selinux \
     --disable-static \
     --runstatedir=/run \
     --with-systemduserunitdir=no \
-    --with-systemdsystemunitdir=no \
+    --with-systemdsystemunitdir \
     --with-console-auth-dir=/run/console/ \
     --with-system-pid-file=/run/dbus/pid \
     --with-system-socket=/run/dbus/system_bus_socket \
