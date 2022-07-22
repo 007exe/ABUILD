@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# NOTE: Этот скрипт предназначен для организации очереди сборки пакетов
+# WARNING: Скрипт не умеер разделять мультипакеты на категории
+
+LIST="app-editors/bluefish
+dev-cpp/clucene
+dev-db/libiodbc
+dev-libs/libatomic_ops
+dev-libs/libpwquality
+dev-libs/libsigsegv
+dev-libs/xapian-core
+net-fs/sshfs
+net-libs/telepathy-glib
+sys-apps/gptfdisk
+"
+
+STARTD=`pwd`
+LOGFILE=~/build.log
+
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+
+for i in $LIST ; do
+    cd $STARTD/$i
+    CATEGORY="$(echo $i | cut -d '/' -f 1)"
+    if mkpkg -ba -pod ~/repository/$CATEGORY -si; then
+           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           cd $STARTD
+    else
+           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           cd $STARTD
+    fi
+done
+
+echo "============================= Завершено `date` =============================" >> $LOGFILE
