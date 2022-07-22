@@ -1,0 +1,33 @@
+pkgname=bluefish
+pkgver=2.2.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A powerful HTML editor for experienced web designers and programmers.")
+longdesc=("Bluefish is a GTK+ text editor targeted towards programmers and web designers, with many options to write websites, scripts and programming code. Bluefish supports many programming and markup languages, and it focuses on editing dynamic and interactive websites.")
+
+source=("https://www.bennewitz.com/${pkgname}/stable/source/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("develop app-editors")
+
+build_deps=("gucharmap intltool gtk3 enchant python")
+
+# NOTE: Это опциональная зависимость
+removedep=("gucharmap")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-spell-check \
+    --disable-update-databases \
+    --disable-xml-catalog-update
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
