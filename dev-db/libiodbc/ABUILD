@@ -1,0 +1,30 @@
+pkgname=libiodbc
+pkgver=3.52.15
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Independent Open DataBase Connectivity for Linux.")
+longdesc=("libiodbc is an API to ODBC compatible databases.")
+
+source=("http://downloads.sourceforge.net/iodbc/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-db libs")
+
+build_deps=("bash chrpath")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --includedir=/usr/include/libiodbc \
+    --disable-gui \
+    --disable-static \
+    --disable-libodbc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  chrpath -d ${pkgdir}/usr/bin/iodbctest{,w}
+  rm -rf ${pkgdir}/usr/share/libiodbc/
+}
