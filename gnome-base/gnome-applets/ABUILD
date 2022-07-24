@@ -1,0 +1,31 @@
+pkgname=gnome-applets
+pkgver=3.44.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Small applications for the GNOME Panel.")
+longdesc=("Applets for the GNOME Flashback Panel.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("gnome gnome-base")
+
+build_deps=("cpupower gnome-panel libgtop tracker3 upower itstool")
+
+# NOTE: Это опциональные зависимости
+removedep=("tracker3")
+
+build(){
+  go_src_dir
+  burn_patches
+  sed -i '/^dbus_confdir =/ s/sysconfdir/datadir/' gnome-applets/cpufreq/cpufreq-selector/Makefile.am
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-schemas-compile \
+    --enable-compile-warnings=minimum
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,28 @@
+pkgname=gnome-games
+pkgver=40.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple game launcher for GNOME.")
+longdesc=("This package contains awesome games for GNOME desktop, which may be interest for all categories of users, from 5-years-old childrens to his grandmas.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs gnome-libs")
+
+build_deps=("grilo libarchive libhandy libmanette retro-gtk tracker3 appstream-glib meson vala")
+
+# NOTE: Это опциональные зависимости
+removedep=("libretro-beetle-pce-fast libretro-beetle-psx libretro-blastem libretro-citra
+libretro-flycast libretro-gambatte libretro-mgba libretro-nestopia libretro-parallel-n64 libretro-picodrive")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson  build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
