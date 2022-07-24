@@ -1,0 +1,38 @@
+pkgname=wireshark
+pkgver=3.6.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Network traffic and protocol analyzer/sniffer.")
+longdesc=("The Wireshark package contains a network protocol analyzer, also known as a sniffer.")
+
+source=("https://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("network net-analyzer")
+
+# libmaxminddb bcg729
+build_deps=("glibc cmake ninja c-ares qt5-tools qt5-svg qt5-multimedia krb5 libpcap libssh libxml2 libnghttp2 snappy
+lz4 spandsp gnutls lua52 python libcap libnl glib2 libgcrypt sbc desktop-file-utils libxslt zstd zlib gcc-libs brotli
+asciidoctor doxygen minizip speexdsp opus")
+
+adddep=("hicolor-icon-theme desktop-file-utils")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed 's| Rev Unknown from unknown||' -i tools/make-version.pl
+  cmake \
+    -B build \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_RPATH= \
+    -DCMAKE_SKIP_RPATH=ON \
+    -Wno-dev
+  ninja -C build -v -j${numjobs}
+  DESTDIR=${pkgdir} ninja -C build install
+
+# Системные пользователи и группы
+  install -Dm 644 ${filedir}/wireshark.sysusers ${pkgdir}/usr/lib/sysusers.d/wireshark.conf
+}
