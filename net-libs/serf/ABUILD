@@ -1,0 +1,23 @@
+pkgname=serf
+pkgver=1.3.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("High-performance asynchronous HTTP client library.")
+
+source=("https://www.apache.org/dist/serf/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs net-libs")
+
+build_deps=("apr-util scons")
+
+build() {
+  go_src_dir
+  burn_patches
+  scons CFLAGS="${CFLAGS}" \
+        LINKFLAGS="${LDFLAGS}" \
+        PREFIX=/usr GSSAPI=/usr/bin/krb5-config
+  install -d ${pkgdir}/usr
+  scons install --install-sandbox=${pkgdir}
+}
+
