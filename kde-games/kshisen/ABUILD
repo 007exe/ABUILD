@@ -1,13 +1,12 @@
-pkgname=kajongg
+pkgname=kshisen
 pkgver=4.14.3
 pkgbuild=1
-arch=('auto')
+arch=('auto') build_deps="kdelibs"
 
-shortdesc="the ancient Chinese board game for 4 players"
+shortdesc="a solitaire-like game played using the standard set of Mahjong tiles"
 
 source=("http://download.kde.org/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="doxygen kdelibs"
 tags="kde-misc kde4"
 
 BUILD_SYSTEM="cmake"

@@ -1,13 +1,13 @@
-pkgname=kajongg
+pkgname=kubrick
 pkgver=4.14.3
 pkgbuild=1
-arch=('auto')
+arch=('auto') 
+build_deps="kdelibs" 
 
-shortdesc="the ancient Chinese board game for 4 players"
+shortdesc="3-D game based on Rubik's Cube"
 
 source=("http://download.kde.org/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="doxygen kdelibs"
 tags="kde-misc kde4"
 
 BUILD_SYSTEM="cmake"

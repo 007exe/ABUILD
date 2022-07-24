@@ -1,13 +1,13 @@
-pkgname=kajongg
+pkgname=kfourinline
 pkgver=4.14.3
 pkgbuild=1
 arch=('auto')
 
-shortdesc="the ancient Chinese board game for 4 players"
+shortdesc="KFourInLine is a board game for two players based on the Connect-Four game"
 
 source=("http://download.kde.org/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="doxygen kdelibs"
+build_deps="kdelibs"
 tags="kde-misc kde4"
 
 BUILD_SYSTEM="cmake"

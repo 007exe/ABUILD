@@ -1,14 +1,15 @@
-pkgname=kajongg
+pkgname=libkdegames
 pkgver=4.14.3
 pkgbuild=1
 arch=('auto')
 
-shortdesc="the ancient Chinese board game for 4 players"
+shortdesc="libkdegames contains common code and data for many KDE games"
 
 source=("http://download.kde.org/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-build_deps="doxygen kdelibs"
 tags="kde-misc kde4"
+build_deps="kdelibs"
+
 
 BUILD_SYSTEM="cmake"
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \

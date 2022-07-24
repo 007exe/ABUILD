@@ -1,9 +1,9 @@
-pkgname=kajongg
+pkgname=kbounce
 pkgver=4.14.3
 pkgbuild=1
 arch=('auto')
 
-shortdesc="the ancient Chinese board game for 4 players"
+shortdesc="a single player arcade game with the elements of puzzle"
 
 source=("http://download.kde.org/stable/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
