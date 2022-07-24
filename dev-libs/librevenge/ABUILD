@@ -1,0 +1,26 @@
+pkgname=librevenge
+pkgver=0.0.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("library for REVerses ENGineered formats filters.")
+longdesc=("librevenge is a base library for writing document import filters.")
+
+source=("https://sourceforge.net/projects/libwpd/files/librevenge/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("boost doxygen cppunit")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-werror \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
