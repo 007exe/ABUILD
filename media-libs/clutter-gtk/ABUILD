@@ -1,0 +1,26 @@
+pkgname=clutter-gtk
+pkgver=1.8.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Clutter integration with GTK+.")
+longdesc=("The Clutter Gtk package is a library providing facilities to integrate Clutter into GTK+ applications.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs media-libs")
+
+# FIXME: Пакетный менеджер не находит пакет object-introspection хотя он присутствует
+build_deps=("clutter gtk-doc meson")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson  build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D enable_docs=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
