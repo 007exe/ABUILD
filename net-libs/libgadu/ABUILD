@@ -1,0 +1,23 @@
+pkgname=libgadu
+pkgver=1.12.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Client-side library for the Gadu-Gadu protocol.")
+
+source=("https://github.com/wojtekka/libgadu/archive/${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("gnutls protobuf-c")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
