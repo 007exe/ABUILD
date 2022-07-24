@@ -1,0 +1,24 @@
+pkgname=terminator
+pkgver=2.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Terminal emulator that supports tabs and grids.")
+longdesc=("Multiple GNOME terminals in one window.")
+
+source=("https://github.com/gnome-terminator/terminator/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("x11-terms apps")
+
+build_deps=("gsettings-desktop-schemas libkeybinder3 libnotify python-cairo python-configobj dbus-python
+python-psutil python-gobject vte xdg-utils intltool python-pip python-setuptools python-wheel")
+
+adddep="python-cairo python-configobj dbus-python python-psutil python-gobject xdg-utils"
+
+build(){
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --skip-build --root=${pkgdir} --optimize=1
+  rm -f ${pkgdir}/usr/share/icons/hicolor/icon-theme.cache
+}
