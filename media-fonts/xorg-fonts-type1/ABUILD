@@ -1,0 +1,41 @@
+pkgname=xorg-fonts-type1
+pkgver=1.0.4
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X.org Type1 fonts.")
+
+source=("https://xorg.freedesktop.org/releases/individual/font/font-adobe-utopia-type1-${pkgver}.tar.bz2
+        https://xorg.freedesktop.org/releases/individual/font/font-bh-type1-1.0.3.tar.bz2
+        https://xorg.freedesktop.org/releases/individual/font/font-bitstream-type1-1.0.3.tar.bz2
+        https://xorg.freedesktop.org/releases/individual/font/font-ibm-type1-1.0.3.tar.bz2
+        https://xorg.freedesktop.org/releases/individual/font/font-xfree86-type1-${pkgver}.tar.bz2")
+
+tags=("media-fonts fonts")
+
+build_deps=("xorg-util-macros xorg-mkfontscale")
+
+build(){
+  cd ${srcdir}
+  for dir in *; do
+    if [ -d ${dir} ]; then
+      pushd ${dir}
+      ./configure --prefix=/usr \
+        --with-fontdir=/usr/share/fonts/Type1
+      make
+      popd
+    fi
+  done
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+
+  for dir in *; do
+    if [ -d ${dir} ]; then
+      pushd ${dir}
+      make DESTDIR=${pkgdir} install
+      install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.${dir%-*}
+      popd
+    fi
+  done
+  rm -f ${pkgdir}/usr/share/fonts/Type1/fonts.*
+}
