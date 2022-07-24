@@ -1,0 +1,24 @@
+pkgname=unrar
+pkgver=6.1.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The RAR uncompression program.")
+longdesc=("The UnRar package contains a RAR extraction utility used for extracting files from RAR archives.")
+
+source=("https://www.rarlab.com/rar/unrarsrc-${pkgver}.tar.gz")
+
+tags=("console app-arch")
+
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+# Использовать системные флагни
+  sed -e '/CXXFLAGS=/d' -e '/LDFLAGS=/d' -i makefile
+  export LDFLAGS+=' -pthread'
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 license.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
