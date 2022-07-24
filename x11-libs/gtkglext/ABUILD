@@ -1,0 +1,27 @@
+pkgname=gtkglext
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Opengl extensions for gtk2.")
+longdesc=("GL extensions for Gtk+ 2.0.")
+
+source=("https://downloads.sourceforge.net/sourceforge/gtkglext/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs x11-libs")
+
+build_deps=("gtk2 libxmu python")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed '/AC_PATH_XTRA/d' -i configure.in
+  autoreconf -vi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
