@@ -1,0 +1,24 @@
+pkgname=libgnt
+pkgver=2.14.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GLib Ncurses Toolkit.")
+longdesc=("Pidgin's GLib Ncurses Toolkit.")
+
+source=("https://downloads.sourceforge.net/project/pidgin/libgnt/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop dev-libs")
+
+build_deps=("meson gtk-doc glib2 libxml2 ncurses")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D python2=false
+  ninja -C build -j${numjobs}
+  DESTDIR=${pkgdir} meson install -C build
+}
