@@ -1,0 +1,27 @@
+pkgname=krename
+pkgver=5.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Powerful batch file renamer.")
+longdesc=("A very powerful batch file renamer.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde kde-misc")
+
+# podofo
+build_deps=("extra-cmake-modules kio kjs exiv2 taglib hicolor-icon-theme")
+
+removedep=("hicolor-icon-theme")
+
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
