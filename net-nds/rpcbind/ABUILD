@@ -1,0 +1,40 @@
+pkgname=rpcbind
+pkgver=1.2.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Portmap replacement which supports RPC over various protocols.")
+
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("network net-nds")
+
+build_deps=("bash glibc libtirpc")
+
+conflicts=("portmap")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --with-rpcuser=rpc \
+    --enable-warmstarts \
+    --with-statedir=/var/lib/rpcbind \
+    --enable-rmtcalls \
+    --without-systemdsystemunitdir 
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m644 man/rpcinfo.8 ${pkgdir}/usr/share/man/man8/
+
+# Системные пользователи и группы
+  install -Dm644 ${filedir}/tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/rpcbind.conf
+  install -Dm644 ${filedir}/sysusers.d "${pkgdir}"/usr/lib/sysusers.d/rpcbind.conf
+  
+# open-rc init
+  install -D -m 0644 ${filedir}/rpcbind.confd ${pkgdir}/etc/conf.d/rpcbind
+  install -D -m 0755 ${filedir}/rpcbind.initd ${pkgdir}/etc/init.d/rpcbind
+}
