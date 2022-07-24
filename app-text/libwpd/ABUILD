@@ -1,0 +1,25 @@
+pkgname=libwpd
+pkgver=0.10.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("WordPerfect Document import/export library.")
+longdesc=("Library for importing WordPerfect (tm) documents.")
+
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs app-text")
+
+build_deps=("gcc-libs zlib librevenge libgsf doxygen boost")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
