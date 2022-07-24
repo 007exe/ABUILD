@@ -1,0 +1,49 @@
+#!/usr/bin/openrc-run
+
+extra_started_commands="reload"
+
+depend() {
+	need net
+	use logger dns mysql postgresql antivirus
+}
+
+check_configuration() {
+	if [ ! -e /etc/proftpd/proftpd.conf ] ; then
+		eerror "To execute the ProFTPD server you need a /etc/proftpd/proftpd.conf configuration"
+		eerror "file. In /etc/proftpd you can find a sample configuration."
+		return 1
+	fi
+	/usr/bin/proftpd -t &>/dev/null
+	if [ $? -ne 0 ] ; then
+		eerror "The ProFTPD configuration file /etc/proftpd/proftpd.conf is invalid! You have to"
+		eerror "fix your configuration in order to run the ProFTPD server. For more information"
+		eerror "you may execute the ProFTPD configuration check '/usr/bin/proftpd -t'."
+		return 2
+	fi
+}
+
+start() {
+	checkpath -d /var/run/proftpd
+	[ "${RC_CMD}" = "restart" ] || check_configuration || return 1
+	ebegin "Starting ProFTPD"
+	start-stop-daemon --start --quiet \
+		--exec /usr/bin/proftpd \
+		--pidfile /var/run/proftpd/proftpd.pid
+	eend $?
+}
+
+stop() {
+	[ "${RC_CMD}" != "restart" ] || check_configuration || return 1
+	ebegin "Stopping ProFTPD"
+	start-stop-daemon --stop --quiet --retry 20 \
+		--pidfile /var/run/proftpd/proftpd.pid
+	eend $?
+}
+
+reload() {
+	check_configuration || return 1
+	ebegin "Reloading ProFTPD"
+	start-stop-daemon --quiet --signal HUP \
+		--pidfile /var/run/proftpd/proftpd.pid
+	eend $?
+}
