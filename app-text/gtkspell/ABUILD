@@ -1,0 +1,27 @@
+pkgname=gtkspell
+pkgver=2.0.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Spell checking widget for GTK.")
+longdesc=("Provides word-processor-style highlighting and replacement of misspelled words in a GtkTextView widget.")
+
+source=("https://downloads.sourceforge.net/sourceforge/gtkspell/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-text libs")
+
+build_deps=("gtk2 enchant intltool gtk-doc")
+
+build() {
+  go_src_dir
+  burn_patches
+  gtkdocize
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
