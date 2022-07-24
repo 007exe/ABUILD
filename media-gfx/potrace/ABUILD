@@ -1,0 +1,24 @@
+pkgname=potrace
+pkgver=1.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utility for tracing a bitmap (input: PBM,PGM,PPM,BMP; output: EPS,PS,PDF,SVG,DXF,PGM,Gimppath,XFig).")
+longdesc=("Potrace is a tool for transforming a bitmap (PBM, PGM, PPM, or BMP format) into one of several vector file formats.")
+
+source=("http://potrace.sourceforge.net/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils media-gfx")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --with-libpotrace
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
