@@ -1,0 +1,18 @@
+pkgname=ttf-roboto
+pkgver=2.138
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Google's signature family of fonts.")
+longdesc=("Standard font for Android 4.0 (Ice Cream Sandwich) and later.")
+
+source=("https://github.com/google/roboto/releases/download/v${pkgver}/roboto-unhinted.zip")
+
+tags=("media-fonts fonts")
+
+build_deps=("unzip")
+
+build() {
+  cd ${srcdir}
+  install -Dm644 *.ttf -t ${pkgdir}/usr/share/fonts/TTF
+}
