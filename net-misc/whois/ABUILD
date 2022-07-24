@@ -1,0 +1,26 @@
+pkgname=whois
+pkgver=5.5.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Intelligent WHOIS client.")
+longdesc=("Whois is a client-side application which queries the whois directory service for information pertaining to a particular domain name.")
+
+source=("https://github.com/rfc1036/whois/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("network net-misc")
+
+build_deps=("perl libidn2")
+
+config_files=("etc/whois.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  make \
+    CONFIG_FILE=/etc/whois.conf \
+    CFLAGS="$CFLAGS $CPPFLAGS" \
+    HAVE_ICONV=1
+  make prefix=/usr BASEDIR=${pkgdir} install-whois
+  install -Dm644 whois.conf -t ${pkgdir}/etc
+}
