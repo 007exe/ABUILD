@@ -1,0 +1,20 @@
+pkgname=traceroute
+pkgver=2.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tracks the route taken by packets over an IP network.")
+longdesc=("The Traceroute package contains a program which is used to display the network route that packets take to reach a specified host.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("network net-analyzer")
+
+build_deps=("glibc")
+
+build(){
+  go_src_dir
+  burn_patches
+  make CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
+  make prefix=/usr DESTDIR="${pkgdir}" install
+}
