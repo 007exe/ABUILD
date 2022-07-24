@@ -1,0 +1,28 @@
+pkgname=farstream
+pkgver=0.2.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Farstream (formerly Farsight) - Audio/Video Communications Framework.")
+longdesc=("Audio/video conferencing framework specifically designed for instant messengers.")
+
+source=("https://freedesktop.org/software/${pkgname}/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("net-libs libs")
+
+build_deps=("gst-plugins-base-libs libnice gobject-introspection python gtk-doc")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-good gst-plugins-bad")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --enable-gtk-doc \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
