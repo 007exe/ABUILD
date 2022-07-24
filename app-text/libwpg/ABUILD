@@ -1,0 +1,23 @@
+pkgname=libwpg
+pkgver=0.3.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for importing and converting Corel WordPerfect(tm) Graphics images.")
+
+source=("https://downloads.sourceforge.net/libwpg/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs app-text")
+
+build_deps=("libwpd perl librevenge doxygen")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
