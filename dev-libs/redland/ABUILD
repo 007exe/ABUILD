@@ -1,0 +1,85 @@
+pkgname=redland
+pkgver=1.0.17
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("High-level interface for the Resource Description Framework.")
+longdesc=("Redland is a set of free software C libraries that provide support for the Resource Description Framework (RDF).")
+
+source=("http://download.librdf.org/source/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("rasqal raptor db postgresql-libs mariadb-libs unixodbc sqlite")
+
+pkglist=("storage-mysql storage-postgresql storage-virtuoso storage-sqlite")
+
+build(){
+  go_src_dir
+  burn_patches
+
+  ./configure \
+    --prefix=/usr \
+    --enable-release \
+    --disable-static \
+    --with-raptor=system \
+    --with-rasqal=system \
+    --with-sqlite=3 \
+    --with-bdb=no
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/lib/redland
+}
+
+storage-mysql() {
+ pkgname=redland-storage-mysql
+ shortdesc=("MySQL storage support for Redland.")
+ tags=("dev-libs libs")
+ adddep=(redland)
+
+}
+
+storage-mysql_prep() {
+  go_src_dir
+  install -dm755 ${pkgdir}/usr/lib/redland
+  install -m755 src/.libs/librdf_storage_mysql.so ${pkgdir}/usr/lib/redland/librdf_storage_mysql.so
+}
+
+storage-postgresql() {
+ pkgname=redland-storage-postgresql
+ shortdesc=("PostgreSQL storage support for Redland")
+ tags=("dev-libs libs")
+ adddep=(redland)
+}
+
+storage-postgresql_prep() {
+  go_src_dir
+  install -dm755 ${pkgdir}/usr/lib/redland
+  install -m755 src/.libs/librdf_storage_postgresql.so ${pkgdir}/usr/lib/redland/
+}
+
+storage-virtuoso() {
+ pkgname=redland-storage-virtuoso
+ shortdesc=("Virtuoso storage support for Redland")
+ tags=("dev-libs libs")
+ adddep=(redland db)
+}
+
+storage-virtuoso_prep() {
+  go_src_dir
+  install -dm755 ${pkgdir}/usr/lib/redland
+  install -m755 src/.libs/librdf_storage_virtuoso.so ${pkgdir}/usr/lib/redland/
+}
+
+storage-sqlite() {
+ pkgname=redland-storage-sqlite
+ shirtdesc=("SQLite storage support for Redland")
+ tags=("dev-libs libs")
+ adddep=(redland sqlite db)
+}
+
+storage-sqlite_prep() {
+  go_src_dir
+  install -dm755 ${pkgdir}/usr/lib/redland
+  install -m755 src/.libs/librdf_storage_sqlite.so ${pkgdir}/usr/lib/redland/
+}
