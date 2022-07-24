@@ -1,0 +1,29 @@
+pkgname=pidgin-libnotify
+pkgver=0.14
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Pidgin plugin that enables popups when someone logs in or messages you.")
+longdesc=("pidgin-libnotify provides popups for pidgin via a libnotify interface.")
+
+source=("https://downloads.sourceforge.net/gaim-libnotify/${pkgname}-${pkgver}.tar.gz")
+
+tags=("x11-plugins network")
+
+build_deps=("libnotify intltool pidgin")
+
+adddep=("pidgin")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-deprecated
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 ${filedir}/pidgin-libnotify.metainfo.xml ${pkgdir}/usr/share/metainfo/pidgin-libnotify.metainfo.xml
+}
