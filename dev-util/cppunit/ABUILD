@@ -1,0 +1,25 @@
+pkgname=cppunit
+pkgver=1.15.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C++ unit testing framework.")
+longdesc=("CppUnit is the C++ port of the famous JUnit framework for unit testing.")
+
+source=("https://dev-www.libreoffice.org/src/${pkgname}-${pkgver}.tar.gz")
+
+tags=("develop dev-util")
+
+build_deps=("gcc-libs doxygen")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
