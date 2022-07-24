@@ -1,0 +1,20 @@
+pkgname=ttf-liberation
+pkgver=2.1.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Font family which aims at metric compatibility with Arial, Times New Roman, and Courier New.")
+longdesc=("The Liberation Fonts is font collection which aims to provide document layout compatibility as usage of Times New Roman, Arial, Courier New.")
+
+source=("https://github.com/liberationfonts/liberation-fonts/archive/${pkgver}/liberation-fonts-${pkgver}.tar.gz")
+
+tags=("media-fonts fonts")
+
+build_deps=("fontforge python-fonttools")
+
+build() {
+  go_src_dir
+  make build
+  install -Dm644 -t ${pkgdir}/usr/share/fonts/${pkgname#ttf-} liberation-fonts-ttf-${pkgver}/*.ttf
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
+}
