@@ -1,0 +1,24 @@
+pkgname=libcdr
+pkgver=0.1.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("CorelDraw file format importer library for LibreOffice.")
+longdesc=("Libcdr is a library that parses the file format of CorelDRAW documents of all versions.")
+
+source=("https://dev-www.libreoffice.org/src/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs media-libs")
+
+build_deps=("libwpd lcms2 icu librevenge libwpg boost doxygen cppunit")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
