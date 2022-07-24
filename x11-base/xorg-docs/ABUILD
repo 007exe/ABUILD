@@ -1,0 +1,29 @@
+pkgname=xorg-docs
+pkgver=1.7.2
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X.org documentation.")
+longdesc=("X.org documentation.")
+
+source=("https://xorg.freedesktop.org/archive/individual/doc/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("xorg-docs xorg")
+
+build_deps=("tar")
+
+adddep=("man-db")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  cd ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -vsf /usr/share/doc/xorg-docs/License.xml .
+}
+
