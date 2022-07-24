@@ -1,0 +1,38 @@
+pkgname=fluxbox
+pkgver=1.3.7
+strict_version=1
+_commit=1d19662c8975e881b4fa6465a8305be3ea5282ee
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A lightweight and highly-configurable window manager.")
+longdesc=("The Fluxbox package contains a window manager.")
+
+#source=("https://github.com/fluxbox/fluxbox/archive/refs/tags/Release-${pkgver//./_}.tar.gz")
+source=("git:https://github.com/fluxbox/fluxbox.git")
+
+tags=("x11-wm apps")
+
+build_deps=("fontconfig imlib2 fribidi libxft libxinerama libxpm libxrandr")
+
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
+build(){
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --enable-imlib2 \
+    --enable-nls \
+    --enable-xft \
+    --enable-xinerama
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m0644 ${filedir}/fluxbox.desktop ${pkgdir}/usr/share/xsessions/fluxbox.desktop
+  install -D -m0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
