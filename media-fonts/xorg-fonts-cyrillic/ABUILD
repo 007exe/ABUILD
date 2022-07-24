@@ -1,0 +1,43 @@
+pkgname=xorg-fonts-cyrillic
+pkgver=1.0.3
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X.org cyrillic fonts.")
+longdesc=("X.Org Winitzki cyrillic font.")
+
+source=("https://xorg.freedesktop.org/releases/individual/font/font-cronyx-cyrillic-${pkgver}.tar.bz2
+        https://xorg.freedesktop.org/releases/individual/font/font-misc-cyrillic-${pkgver}.tar.bz2
+        https://xorg.freedesktop.org/releases/individual/font/font-screen-cyrillic-1.0.4.tar.bz2
+        https://xorg.freedesktop.org/releases/individual/font/font-winitzki-cyrillic-${pkgver}.tar.bz2")
+
+tags=("media-fonts fonts")
+
+build_deps=("xorg-util-macros xorg-mkfontscale xorg-bdftopcf")
+
+adddep=("xorg-fonts-alias-cyrillic")
+
+build() {
+  cd "${srcdir}"
+  for dir in *; do
+    if [ -d ${dir} ]; then
+      pushd ${dir}
+      ./configure --prefix=/usr \
+              --with-fontdir=/usr/share/fonts/cyrillic
+      make
+      popd
+    fi
+  done
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+
+  for dir in *; do
+    if [ -d ${dir} ]; then
+      pushd ${dir}
+      make DESTDIR=${pkgdir} install
+      install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.${dir%-*}
+      popd
+    fi    
+  done
+  rm -f ${pkgdir}/usr/share/fonts/*/fonts.*
+}
