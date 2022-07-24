@@ -1,0 +1,30 @@
+pkgname=postfix
+pkgver=3.7.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fast, easy to administer, secure mail server.")
+longdesc=("The Postfix package contains a Mail Transport Agent (MTA). This is useful for sending email to other users of your host machine.")
+
+source=("https://de.postfix.org/ftpmirror/official/${pkgname}-${pkgver}.tar.gz")
+
+tags=("server mail-mta")
+
+# libldap libsasl tinycdb
+build_deps=("db icu libnsl lmdb mariadb-libs openssl pcre2 postgresql-libs sqlite zlib")
+
+conflicts="sendmail"
+
+build(){
+  go_src_dir
+  burn_patches
+  CCARGS=''
+  make CCARGS="-DNO_NIS -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl \
+    -DHAS_LDAP -DHAS_SQLITE -DHAS_MYSQL -I/usr/include/mysql \
+    -DHAS_PGSQL -I/usr/include/postgresql -DHAS_CDB -DUSE_TLS \
+    -I/usr/include/openssl/" \
+  AUXLIBS="-lsasl2 -lssl -lcrypto </path/to/CDB>/libcdb.a -lpq -lm -lmysqlclient -lz -lsqlite3 -lpthread -lldap -llber" \
+     makefiles &&
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

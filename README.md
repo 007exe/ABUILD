@@ -81,7 +81,8 @@ lxqt-base            | Основные пакеты LXQT.
 lxqt-libs            | Бибилиотеки LXQT.
 mate-base            | Основные пакеты MATE.
 mate-extra           | Дополнительные пакеты для среды MATE.
-mate-libs            | Библиотеки MATE. 
+mate-libs            | Библиотеки MATE.
+mail-mta             | Почтовые программы.
 media-fonts          | Шрифты.
 media-gfx            | Пакеты, связанные с графикой.
 media-libs           | Мультимедиа библиотеки.
