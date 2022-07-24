@@ -1,0 +1,31 @@
+pkgname=goocanvas
+pkgver=3.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cairo canvas widget for GTK.")
+longdesc=("Canvas widget for GTK+ using the cairo 2D library for drawing.")
+
+source=("https://gitlab.gnome.org/GNOME/goocanvas/-/archive/${pkgver}/goocanvas-${pkgver}.tar.gz")
+
+tags=("libs x11-libs")
+
+build_deps=("gobject-introspection gtk-doc python-gobject gtk3")
+
+build() {
+  go_src_dir
+  burn_patches
+# Исправлено создание документов
+  cp docs/goocanvas2-docs.sgml docs/goocanvas3-docs.sgml
+  cp docs/goocanvas2-overrides.txt docs/goocanvas3-overrides.txt
+  cp docs/goocanvas2-sections.txt docs/goocanvas3-sections.txt
+  cp docs/goocanvas2.types docs/goocanvas3.types
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
