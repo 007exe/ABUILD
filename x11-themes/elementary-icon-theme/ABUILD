@@ -1,0 +1,23 @@
+pkgname=elementary-icon-theme
+pkgver=7.0.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Named, vector icons for elementary OS.")
+
+source=("https://github.com/elementary/icons/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("themes x11-themes")
+
+build_deps=("librsvg meson xorg-xcursorgen")
+
+adddep=("hicolor-icon-theme")
+
+build(){
+  go_src_dir
+  meson build \
+    -D prefix=/usr \
+    -D volume_icons=false
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+}
