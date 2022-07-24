@@ -1,0 +1,24 @@
+pkgname=ttf-inconsolata
+pkgver=3.000
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Sans-serif monotype font for code listings.")
+longdesc=("Monospace font for pretty code listings and for the terminal.")
+
+source=("https://github.com/googlefonts/Inconsolata/releases/download/v${pkgver}/fonts_ttf.zip"
+        "https://github.com/googlefonts/Inconsolata/releases/download/v${pkgver}/OFL.txt"
+        "https://github.com/googlefonts/Inconsolata/releases/download/v${pkgver}/FONTLOG.txt")
+
+tags=("media-fonts fonts")
+
+build_deps=("tar")
+
+build(){
+  go_src_dir
+  install -d ${pkgdir}/usr/share/fonts/TTF
+  install -Dm644 ttf/*.ttf ${pkgdir}/usr/share/fonts/TTF
+  install -Dm644 ${srcache}/OFL.txt ${pkgdir}/usr/share/licenses/${pkgname}/OFL.txt
+  install -Dm644 ${srcache}/FONTLOG.txt ${pkgdir}/usr/share/doc/${pkgname}/FONTLOG.txt
+  install -Dm644 ${filedir}/75-ttf-inconsolata.conf ${pkgdir}/usr/share/fontconfig/conf.avail/75-ttf-inconsolata.conf
+}
