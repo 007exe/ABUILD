@@ -1,0 +1,85 @@
+pkgname=pidgin
+pkgver=2.14.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Multi-protocol instant messaging client.")
+longdesc=("Pidgin is a Gtk+ instant messaging client that can connect with a wide range of networks including Bonjour, ICQ, GroupWise, Jabber/XMPP, IRC, Gadu-Gadu, SILC, SIMPLE, and Zephyr.")
+
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("net-im apps")
+
+# libsm
+build_deps=("startup-notification gtkspell libxss nss libidn libgadu python cyrus-sasl
+hicolor-icon-theme farstream tk libnsl avahi ca-certificates intltool dbus-glib libgnt")
+
+adddep=("libpurple==${pkgver} hicolor-icon-theme")
+
+# NOTE: Это опциональные зависимости
+removedep=("aspell")
+
+pkglist=("finch libpurple")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-schemas-install \
+    --disable-gevolution \
+    --disable-meanwhile \
+    --disable-gnutls \
+    --enable-cyrus-sasl \
+    --disable-doxygen \
+    --enable-nm \
+    --with-system-ssl-certs=/etc/ssl/certs
+  make -j${numjobs}
+  make -C libpurple DESTDIR=${pkgdir} install-libLTLIBRARIES
+  make -C pidgin DESTDIR=${pkgdir} install
+  make -C doc DESTDIR=${pkgdir} install
+
+# Удаление файлов предоставляемых другими пакетами
+  make -C libpurple DESTDIR=${pkgdir} uninstall-libLTLIBRARIES
+  rm ${pkgdir}/usr/share/man/man1/finch.1
+}
+
+
+libpurple() {
+  pkgname=libpurple
+  shortdesc=("IM library extracted from Pidgin")
+  longdesc=("Pidgin is a Gtk+ instant messaging client that can connect with a wide range of networks including Bonjour, ICQ, GroupWise, Jabber/XMPP, IRC, Gadu-Gadu, SILC, SIMPLE, and Zephyr.")
+  tags=("net-libs libs")
+# NOTE: Это опциональные зависимости
+  removedep=("avahi ca-certificates python-dbus tk")
+}
+
+libpurple_prep(){
+  go_src_dir
+  for _dir in libpurple share/sounds share/ca-certs m4macros po; do
+    make -C ${_dir} DESTDIR=${pkgdir} install
+  done
+}
+
+finch() {
+  pkgname=finch
+  shortdesc=("A ncurses-based messaging client.")
+  longdesc=("Pidgin is a Gtk+ instant messaging client that can connect with a wide range of networks including Bonjour, ICQ, GroupWise, Jabber/XMPP, IRC, Gadu-Gadu, SILC, SIMPLE, and Zephyr.")
+  tags=("net-im console")
+  adddep="libpurple==${pkgver}"
+}
+
+finch_prep(){
+  go_src_dir
+  make -C libpurple DESTDIR=${pkgdir} install-libLTLIBRARIES
+
+  make -C finch DESTDIR=${pkgdir} install
+  make -C doc DESTDIR=${pkgdir} install
+
+# Удаление файлов предоставляемых другими пакетами
+  make -C libpurple DESTDIR=${pkgdir} uninstall-libLTLIBRARIES
+
+  rm ${pkgdir}/usr/share/man/man1/pidgin.1
+}
