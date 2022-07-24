@@ -1,0 +1,29 @@
+pkgname=telepathy-logger
+pkgver=0.8.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Telepathy framework logging daemon.")
+longdesc=("The Telepathy Logger package is a headless observer client that logs information received by the Telepathy framework. It features pluggable backends to log different sorts of messages in different formats..")
+
+source=("https://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("network net-im")
+
+build_deps=("telepathy-glib sqlite libxml2 dconf intltool gobject-introspection libxslt python")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/telepathy \
+    --enable-call \
+    --disable-static \
+    --disable-scrollkeeper \
+    --disable-schemas-compile
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
