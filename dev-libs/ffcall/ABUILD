@@ -1,0 +1,29 @@
+pkgname=ffcall
+pkgver=2.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C library for implementing foreign function calls in embedded interpreters.")
+longdesc=("Build foreign function call interfaces in embedded interpreter.")
+
+source=("https://ftp.gnu.org/gnu/libffcall/libffcall-${pkgver}.tar.gz")
+
+tags=("develop dev-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=" -ffat-lto-objects" \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-shared \
+    --disable-static \
+    --mandir=/usr/share/man $CONFIGFLAG
+# NOTE: Собирается только в одном потоке
+  make -j1
+  install -d ${pkgdir}/usr/share/{man,doc/ffcall}
+  make DESTDIR=${pkgdir} htmldir=/usr/share/doc/ffcall install
+}
