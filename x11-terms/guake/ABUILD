@@ -1,0 +1,24 @@
+pkgname=guake
+pkgver=3.9.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Drop-down terminal for GNOME")
+longdesc=("Guake is a top-down terminal for Gnome (in the style of Yakuake for KDE, Tilda or the terminal used in Quake).")
+
+source=("https://github.com/Guake/guake/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("xapps x11-terms")
+
+build_deps=("dbus-python python-yaml python-gobject python-cairo python-pbr vte libkeybinder3 libnotify libutempter libwnck3 python-setuptools-scm")
+
+adddep=("dbus-python python-yaml python-gobject python-cairo python-pbr")
+
+build(){
+  go_src_dir
+  burn_patches
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+  make -j${numjobs}
+  sed -i '/-m pip install -r requirements.txt/d' Makefile
+  make DESTDIR=${pkgdir} PREFIX='/usr' COMPILE_SCHEMA=0 install
+}
