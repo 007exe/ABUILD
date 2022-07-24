@@ -1,0 +1,29 @@
+pkgname=qwt
+pkgver=6.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt Widgets for Technical Applications.")
+longdesc=("2D plotting library for Qt5")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs x11-libs")
+
+build_deps=("qt5-base qt5-svg qt5-tools")
+
+build(){
+  go_src_dir
+  sed -e '/^\s*QWT_INSTALL_PREFIX/ s|=.*|= /usr|' \
+      -e '/^QWT_INSTALL_DOCS/ s|/doc|/share/doc/qwt|' \
+      -e '/^QWT_INSTALL_HEADERS/ s|include|&/qwt|' \
+      -e '/^QWT_INSTALL_PLUGINS/ s|plugins/designer|lib/qt/&|' \
+      -e '/^QWT_INSTALL_FEATURES/ s|features|lib/qt/mkspecs/&|' \
+      -i qwtconfig.pri
+  qmake-qt5 qwt.pro
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+
+  mv ${pkgdir}/usr/share/doc/qwt/man ${pkgdir}/usr/share
+  install -Dm 644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
