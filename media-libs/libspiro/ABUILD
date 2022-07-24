@@ -1,0 +1,26 @@
+pkgname=libspiro
+pkgver=20200505
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simplifies the drawing of beautiful curves.")
+longdesc=("Spiro is the creation of Raph Levien (ppedit 20070504, GPL2+). It simplifies the drawing of beautiful curves.")
+
+source=("https://github.com/fontforge/libspiro/releases/download/${pkgver}/libspiro-dist-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  automake --foreign -Wall
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 libspiro.pc ${pkgdir}/usr/lib/pkgconfig/libspiro.pc
+}
