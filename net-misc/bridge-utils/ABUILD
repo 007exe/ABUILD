@@ -1,0 +1,29 @@
+pkgname=bridge-utils
+pkgver=1.7.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utilities for configuring the Linux ethernet bridge.")
+longdesc=("The bridge-utils package contains a utility needed to create and manage bridge devices. This is useful in setting up networks for a hosted virtual machine (VM).")
+
+source=("https://mirrors.edge.kernel.org/pub/linux/utils/net/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("net-misc network")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  aclocal
+  autoconf
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
+    --sysconfdir=/etc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
+
