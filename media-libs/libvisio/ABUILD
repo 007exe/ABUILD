@@ -1,0 +1,24 @@
+pkgname=libvisio
+pkgver=0.1.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library parsing the file format of MS Visio documents.")
+longdesc=("Library providing ability to interpret and import visio diagrams.")
+
+source=("https://dev-www.libreoffice.org/src/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs media-libs")
+
+build_deps=("libwpd libwpg libxml2 icu librevenge boost gperf doxygen cppunit")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
