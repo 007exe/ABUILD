@@ -1,0 +1,33 @@
+pkgname=gtk-engines
+pkgver=2.21.0
+_commit=e23eb81ade8c815dcd4da026ab7a2b7307a4f326
+strict_version=1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Theme engines for GTK+ 2.")
+
+#source=("https://gitlab.gnome.org/Archive/gtk-engines/-/archive/GTK_ENGINES_${pkgver//./_}/gtk-engines-GTK_ENGINES_${pkgver//./_}.tar.gz")
+source=("git:https://gitlab.gnome.org/Archive/gtk-engines.git")
+
+tags=("themes x11-themes")
+
+build_deps=("intltool gnome-common gtk2")
+
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
+build() {
+  go_src_dir
+#  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-animation
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
