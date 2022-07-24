@@ -1,0 +1,29 @@
+pkgname=rasqal
+pkgver=0.9.33
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library handling RDF query syntaxes, construction and execution.")
+longdesc=("Rasqal is a C library that handles Resource Description Framework (RDF) query language syntaxes, query construction, and execution of queries returning results as bindings, boolean, RDF graphs/triples or syntaxes.")
+
+tags=("dev-libs libs")
+
+source=("https://download.librdf.org/source/$pkgname-$pkgver.tar.gz")
+
+build_deps=("gtk-doc raptor util-linux glibc libgcrypt libgpg-error mpfr pcre")
+
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --enable-release
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -vDm 644 {ChangeLog*,README,NEWS} -t ${pkgdir}/usr/share/doc/${pkgname}/
+}
