@@ -1,0 +1,22 @@
+pkgname=tilda
+pkgver=1.5.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Gtk based drop down terminal for Linux and Unix.")
+longdesc=("A drop down terminal, similar to the consoles found in first person shooters.")
+
+source=("https://github.com/lanoxx/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz")
+
+tags=("x11-terms apps")
+
+build_deps=("vte confuse python")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
