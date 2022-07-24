@@ -1,0 +1,28 @@
+pkgname=gdl
+pkgver=3.40.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNOME Docking Library.")
+longdesc=("The GDL package provides a library that is useful for docking objects in GTK+ applications.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("gtk-doc intltool gobject-introspection gtk3")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var\
+    --disable-static \
+    --enable-gtk-doc
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
