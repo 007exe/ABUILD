@@ -1,0 +1,22 @@
+pkgname=perl-text-csv
+pkgver=2.01
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Comma-separated values manipulator.")
+
+source=("https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/Text-CSV-${pkgver}.tar.gz")
+
+tags=("dev-perl libs")
+
+build_deps=("perl")
+
+unset PERL5LIB PERL_MM_OPT PERL_MB_OPT PERL_LOCAL_LIB_ROOT
+
+build(){
+  go_src_dir
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  perl Makefile.PL
+  make -j${numjobs}
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
