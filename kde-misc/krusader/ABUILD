@@ -11,7 +11,7 @@ source=("git:https://github.com/KDE/${pkgname}.git")
 #source=("https://github.com/KDE/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
 #source=("https://download.kde.org/stable/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
-tags=("xapps kde-misc")
+tags=("apps kde-misc")
 
 build_deps=("kparts extra-cmake-modules kdoctools")
 
