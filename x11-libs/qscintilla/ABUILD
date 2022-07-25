@@ -1,0 +1,110 @@
+pkgname=qscintilla-qt5
+pkgver=2.13.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A port to Qt5 of Neil Hodgson's Scintilla C++ editor class.")
+longdesc=("Qt port of Neil Hodgson's Scintilla C++ editor control.")
+
+source=("https://www.riverbankcomputing.com/static/Downloads/QScintilla/${pkgver}/QScintilla_src-${pkgver}.tar.gz")
+
+tags=("libs x11-libs")
+
+build_deps=("python-pyqt5 qt5-tools qt6-tools sip pyqt-builder python-pyqt6")
+
+pkglist=("python-qscintilla-qt5 qscintilla-qt6 python-qscintilla-qt6")
+
+build() {
+  cd ${srcdir}
+  cp -r ${srcdir}/QScintilla_src-${pkgver}{,-qt5}
+
+  cd ${srcdir}/QScintilla_src-${pkgver}-qt5/src
+  export QMAKEFEATURES=$PWD/src/features/
+  qmake-qt5
+  make -j${numjobs}
+
+  cd ../designer
+  qmake-qt5 INCLUDEPATH+=../src QMAKE_LIBDIR+=../src
+  make -j${numjobs}
+
+  cd ../Python
+  mv pyproject{-qt5,}.toml
+  sip-build \
+    --no-make \
+    --qsci-features-dir ../src/features \
+    --qsci-include-dir ../src \
+    --qsci-library-dir ../src \
+    --api-dir /usr/share/qt/qsci/api/python
+  cd build
+  make -j${numjobs}
+
+  cd ${srcdir}/QScintilla_src-${pkgver}/src
+  export QMAKEFEATURES=$PWD/src/features/
+  qmake6
+  make -j${numjobs}
+
+  cd ../designer
+  qmake6 INCLUDEPATH+=../src QMAKE_LIBDIR+=../src
+  make -j${numjobs}
+
+  cd ../Python
+  mv pyproject{-qt6,}.toml
+  sip-build \
+    --no-make \
+    --qsci-features-dir ../src/features \
+    --qsci-include-dir ../src \
+    --qsci-library-dir ../src \
+    --qmake=/usr/bin/qmake6
+  cd build
+  make -j${numjobs}
+
+  cd ${srcdir}/QScintilla_src-${pkgver}-qt5/src
+  make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+
+  cd ../designer
+  make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+
+}
+
+####################################################################################
+
+python-qscintilla-qt5() {
+  pkgname=python-qscintilla-qt5
+  shortdesc=("Python bindings for QScintilla2.")
+  tags=("libs dev-python")
+  adddep=("qscintilla-qt5 python-pyqt5")
+}
+
+python-qscintilla-qt5_prep() {
+  cd ${srcdir}/QScintilla_src-${pkgver}-qt5/Python/build
+  make INSTALL_ROOT=${pkgdir} install
+}
+
+####################################################################################
+
+qscintilla-qt6() {
+  pkgname=qscintilla-qt6
+  shortdesc=("A port to Qt6 of Neil Hodgson's Scintilla C++ editor class.")
+}
+
+qscintilla-qt6_prep() {
+  cd ${srcdir}/QScintilla_src-${pkgver}/src
+  make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+
+  cd ../designer
+  make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+}
+
+####################################################################################
+
+python-qscintilla-qt6() {
+  pkgname=python-qscintilla-qt6
+  shortdesc=("Python bindings for QScintilla2.")
+  tags=("libs dev-python")
+  adddep=("qscintilla-qt6 python-pyqt6")
+}
+
+python-qscintilla-qt6_prep() {
+  cd ${srcdir}/QScintilla_src-${pkgver}/Python/build
+  make INSTALL_ROOT=${pkgdir} install
+}
