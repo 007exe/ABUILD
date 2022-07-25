@@ -1,0 +1,23 @@
+pkgname=pps-tools
+pkgver=1.0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("LinuxPPS user-space tools.")
+longdesc=("User-space tools for LinuxPPS.")
+
+source=("https://github.com/ago/pps-tools/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("net-misc console")
+
+build_deps=("bash")
+
+adddep=("bash")
+
+build() {
+  go_src_dir
+  burn_patches
+  LDLIBS=-lm make
+  install -dm755 ${pkgdir}/usr/bin ${pkgdir}/usr/include/sys
+  LDLIBS=-lm make DESTDIR=${pkgdir} install
+}
