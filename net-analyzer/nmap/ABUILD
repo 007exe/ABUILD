@@ -1,0 +1,35 @@
+pkgname=nmap
+pkgver=7.92
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utility for network discovery and security auditing.")
+longdesc=("Nmap is a utility for network exploration and security auditing. It supports ping scanning, port scanning and TCP/IP fingerprinting.")
+
+source=("https://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("network net-analyzer")
+
+build_deps=("glibc pcre openssl lua libpcap libssh2 zlib gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+
+  rm -rf liblua libpcap libpcre macosx mwin32 libssh2 libz
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-libpcap=/usr \
+    --with-libpcre=/usr \
+    --with-zlib=/usr \
+    --with-libssh2=/usr \
+    --with-liblua=/usr \
+    --without-ndiff \
+    --without-zenmap
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm 644 README.md docs/nmap.usage.txt -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE docs/3rd-party-licenses.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
