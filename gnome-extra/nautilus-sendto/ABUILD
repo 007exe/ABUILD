@@ -1,0 +1,22 @@
+pkgname=nautilus-sendto
+pkgver=3.8.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Easily send files via mail.")
+longdesc=("A nautilus extension for sending files to locations.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("gnome gnome-extra")
+
+build_deps=("(gobject-introspection meson appstream-glib glib2")
+
+build() {
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
