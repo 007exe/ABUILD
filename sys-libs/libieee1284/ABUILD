@@ -1,0 +1,28 @@
+pkgname=libieee1284
+pkgver=0.2.11
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library to query devices using IEEE1284.")
+longdesc=("A library to query devices connected in parallel port.")
+
+source=("https://github.com/twaugh/libieee1284/archive/V${pkgver//\./_}.zip")
+
+tags=("sys-libs libs")
+
+build_deps=("python xmlto docbook-xml docbook-xsl")
+
+# NOTE: Это опциональные зависимости
+removedep=("python")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./bootstrap
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --with-python
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
