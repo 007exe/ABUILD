@@ -1,0 +1,42 @@
+pkgname=cifs-utils
+pkgver=6.15
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("CIFS filesystem user-space tools.")
+longdesc=("The cifs-utils package provides a means for mounting SMB/CIFS shares on a Linux system.")
+
+source=("https://download.samba.org/pub/linux-cifs/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("net-fs network")
+
+# libwbclient (smbclient)
+build_deps=("libcap keyutils krb5 talloc linux-pam python-docutils smbclient")
+
+#adddep=("libwbclient")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's|cd \$(ROOTSBINDIR)|cd $(DESTDIR)$(ROOTSBINDIR)|g' -i Makefile.am
+  autoreconf -i
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-libcap=yes \
+    --sbindir=/usr/bin \
+    --disable-systemd
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  mkdir -p ${pkgdir}/etc/request-key.d
+  install -m 644 contrib/request-key.d/cifs.idmap.conf ${pkgdir}/etc/request-key.d
+  install -m 644 contrib/request-key.d/cifs.spnego.conf ${pkgdir}/etc/request-key.d
+
+# Установить uid mount.cifs, чтобы включить none root mounting из fstab
+  chmod +s ${pkgdir}/usr/bin/mount.cifs
+
+# fix idmap-plugin #42052
+  mkdir -p ${pkgdir}/etc/cifs-utils
+  ln -s /usr/lib/cifs-utils/idmapwb.so ${pkgdir}/etc/cifs-utils/idmap-plugin
+}
