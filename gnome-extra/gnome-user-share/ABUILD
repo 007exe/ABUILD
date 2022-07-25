@@ -1,0 +1,26 @@
+pkgname=gnome-user-share
+pkgver=3.34.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Easy to use user-level file sharing for GNOME.")
+longdesc=("Personal file sharing for the GNOME desktop.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("gnome gnome-extra")
+
+build_deps=("mod_dnssd dconf gtk3 libnotify libcanberra libnautilus-extension meson yelp-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D httpd=/usr/bin/httpd \
+    -D modules_path=/usr/lib/httpd/modules \
+    -D nautilus_extension=true
+  ninja -C build -j${numjobs}
+  DESTDIR=${pkgdir} meson install -C build
+}
