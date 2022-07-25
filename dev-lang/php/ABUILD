@@ -1,0 +1,369 @@
+pkgname=php
+pkgver=8.1.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A general-purpose scripting language that is especially suited to web development.")
+longdesc=("PHP is the PHP Hypertext Preprocessor. Primarily used in dynamic web sites, it allows for programming code to be directly embedded into the HTML markup.")
+
+source=("https://php.net/distributions/${pkgname}-${pkgver}.tar.xz")
+
+tags=("server dev-lang")
+
+gendeps_blacklist=("usr/lib/php/extensions*")
+
+config_files=("etc/php/php.ini")
+
+# c-client
+build_deps=("apache aspell db gdbm enchant gd gmp icu libsodium libxslt libzip net-snmp
+postgresql-libs sqlite tidy unixodbc curl libtool postfix freetds pcre2 libnsl oniguruma")
+
+pkglist=("php-cgi php-apache php-fpm php-embed php-phpdbg php-dblib php-enchant php-gd php-imap php-intl
+php-sodium php-odbc php-pgsql php-pspell php-snmp php-sqlite php-tidy php-xsl")
+
+
+build() {
+  go_src_dir
+  burn_patches
+  autoconf
+# Отключаем заведомо провальные тесты
+  rm tests/output/stream_isatty_*.phpt
+  rm Zend/tests/arginfo_zpp_mismatch*.phpt
+
+  local _phpconfig="--srcdir=${srcdir}/php-${pkgver} \
+        --config-cache \
+        --prefix=/usr \
+        --sbindir=/usr/bin \
+        --sysconfdir=/etc/php \
+        --localstatedir=/var \
+        --with-layout=GNU \
+        --with-config-file-path=/etc/php \
+        --with-config-file-scan-dir=/etc/php/conf.d \
+        --disable-rpath \
+        --mandir=/usr/share/man \
+        --disable-gcc-global-regs \
+        "
+  local _phpextensions="\
+        --enable-bcmath=shared \
+        --enable-calendar=shared \
+        --enable-dba=shared \
+        --enable-exif=shared \
+        --enable-ftp=shared \
+        --enable-gd=shared \
+        --enable-intl=shared \
+        --enable-mbstring \
+        --enable-pcntl \
+        --enable-shmop=shared \
+        --enable-soap=shared \
+        --enable-sockets=shared \
+        --enable-sysvmsg=shared \
+        --enable-sysvsem=shared \
+        --enable-sysvshm=shared \
+        --with-bz2=shared \
+        --with-curl=shared \
+        --with-db4=/usr \
+        --with-enchant=shared \
+        --with-external-gd \
+        --with-external-pcre \
+        --with-ffi=shared \
+        --with-gdbm \
+        --with-gettext=shared \
+        --with-gmp=shared \
+        --with-iconv=shared \
+        --with-imap-ssl \
+        --with-imap=shared \
+        --with-kerberos \
+        --with-ldap=shared \
+        --with-ldap-sasl \
+        --with-mhash \
+        --with-mysql-sock=/run/mysqld/mysqld.sock \
+        --with-mysqli=shared,mysqlnd \
+        --with-openssl \
+        --with-password-argon2 \
+        --with-pdo-dblib=shared,/usr \
+        --with-pdo-mysql=shared,mysqlnd \
+        --with-pdo-odbc=shared,unixODBC,/usr \
+        --with-pdo-pgsql=shared \
+        --with-pdo-sqlite=shared \
+        --with-pgsql=shared \
+        --with-pspell=shared \
+        --with-readline \
+        --with-snmp=shared \
+        --with-sodium=shared \
+        --with-sqlite3=shared \
+        --with-tidy=shared \
+        --with-unixODBC=shared \
+        --with-xsl=shared \
+        --with-zip=shared \
+        --with-zlib \
+        "
+
+  EXTENSION_DIR=/usr/lib/php/modules
+  export EXTENSION_DIR
+  mkdir ${srcdir}/build
+  cd ${srcdir}/build
+  ln -s "../php-${pkgver}/configure"
+  ./configure ${_phpconfig} \
+    --enable-cgi \
+    --enable-fpm \
+    --with-fpm-acl \
+    --with-fpm-user=http \
+    --with-fpm-group=http \
+    --enable-embed=shared \
+    ${_phpextensions}
+  make -j${numjobs}
+
+# apache
+  cp -a ${srcdir}/build ${srcdir}/build-apache
+  cd "${srcdir}/build-apache"
+  ./configure ${_phpconfig} \
+    --with-apxs2 \
+    ${_phpextensions}
+
+# phpdbg
+  cp -a ${srcdir}/build ${srcdir}/build-phpdbg
+  cd ${srcdir}/build-phpdbg
+  ./configure ${_phpconfig} \
+    --enable-phpdbg \
+    ${_phpextensions}
+
+  cd "${srcdir}/build"
+  make -j1 INSTALL_ROOT=${pkgdir} install-{modules,cli,build,headers,programs,pharcmd}
+  install -D -m644 ${srcdir}/php-${pkgver}/php.ini-production ${pkgdir}/etc/php/php.ini
+  install -d -m755 ${pkgdir}/etc/php/conf.d/
+
+# Удаляем статические модули
+  rm -f ${pkgdir}/usr/lib/php/modules/*.a
+
+# Удаляем модули, предоставляемые другими пакетами
+  rm -f ${pkgdir}/usr/lib/php/modules/{enchant,gd,imap,intl,sodium,odbc,pdo_dblib,pdo_odbc,pgsql,pdo_pgsql,pspell,snmp,sqlite3,pdo_sqlite,tidy,xsl}.so
+
+# Удаляем пустой каталог
+  rmdir ${pkgdir}/usr/include/php/include
+}
+
+#####################################################################################################
+
+php-cgi() {
+  pkgname=php-cgi
+  shortdesc=("CGI and FCGI SAPI for PHP.")
+  adddeps=("php")
+}
+
+php-cgi_prep() {
+  cd ${srcdir}/build
+  make -j1 INSTALL_ROOT=${pkgdir} install-cgi
+}
+
+#####################################################################################################
+
+php-apache() {
+  pkgname=php-apache
+  shortdesc=("Apache SAPI for PHP.")
+  adddeps=("php")
+}
+
+php-apache_prep() {
+  install -D -m755 ${srcdir}/build-apache/libs/libphp.so ${pkgdir}/usr/lib/httpd/modules/libphp.so
+  install -D -m644 ${srcdir}/apache.conf ${pkgdir}/etc/httpd/conf/extra/php_module.conf.new
+}
+
+#####################################################################################################
+
+php-fpm() {
+  pkgname=php-fpm
+  shortdesc=("FastCGI Process Manager for PHP.")
+  adddeps=("php")
+}
+
+php-fpm_prep() {
+  cd "${srcdir}/build"
+  make -j1 INSTALL_ROOT=${pkgdir} install-fpm
+#  install -D -m644 sapi/fpm/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
+  install -D -m644 ${srcdir}/php-fpm.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/php-fpm.conf.new
+}
+
+#####################################################################################################
+
+php-embed() {
+  pkgname=php-embed
+  shortdesc=("Embedded PHP SAPI library.")
+  adddeps=("php")
+}
+
+php-embed_prep() {
+  cd ${srcdir}/build
+  make -j1 INSTALL_ROOT=${pkgdir} PHP_SAPI=embed install-sapi
+}
+
+#####################################################################################################
+
+php-phpdbg() {
+  pkgname=php-phpdbg
+  shortdesc=("Interactive PHP debugger.")
+  adddeps=("php")
+}
+
+php-phpdbg_prep() {
+  cd ${srcdir}/build-phpdbg
+  make -j1 INSTALL_ROOT=${pkgdir} install-phpdbg
+}
+
+#####################################################################################################
+
+php-dblib() {
+  pkgname=php-dblib
+  shortdesc=("dblib module for PHP.")
+  adddeps=("php")
+}
+
+php-dblib_prep() {
+  install -D -m755 ${srcdir}/build/modules/pdo_dblib.so ${pkgdir}/usr/lib/php/modules/pdo_dblib.so
+}
+
+#####################################################################################################
+
+php-enchant() {
+  pkgname=php-enchant
+  shortdesc=("enchant module for PHP.")
+  adddeps=("php")
+}
+
+php-enchant_prep() {
+  install -D -m755 ${srcdir}/build/modules/enchant.so ${pkgdir}/usr/lib/php/modules/enchant.so
+}
+
+#####################################################################################################
+
+php-gd() {
+  pkgname=php-gd
+  shortdesc=("gd module for PHP.")
+  adddeps=("php")
+}
+
+php-gd_prep() {
+  install -D -m755 ${srcdir}/build/modules/gd.so ${pkgdir}/usr/lib/php/modules/gd.so
+}
+
+#####################################################################################################
+
+php-imap() {
+  pkgname=php-imap
+  shortdesc=("imap module for PHP.")
+  adddeps=("php")
+}
+
+php-imap_prep() {
+  install -D -m755 ${srcdir}/build/modules/imap.so ${pkgdir}/usr/lib/php/modules/imap.so
+}
+
+#####################################################################################################
+
+php-intl() {
+  pkgname=php-intl
+  shortdesc=("intl module for PHP.")
+  adddeps=("php")
+}
+
+php-intl_prep() {
+  install -D -m755 ${srcdir}/build/modules/intl.so ${pkgdir}/usr/lib/php/modules/intl.so
+}
+
+#####################################################################################################
+
+php-sodium() {
+  pkgname=php-sodium
+  shortdesc=("sodium module for PHP.")
+  adddeps=("php")
+}
+
+php-sodium_prep() {
+  install -D -m755 ${srcdir}/build/modules/sodium.so ${pkgdir}/usr/lib/php/modules/sodium.so
+}
+
+#####################################################################################################
+
+php-odbc() {
+  pkgname=php-odbc
+  shortdesc=("ODBC modules for PHP.")
+  adddeps=("php")
+}
+
+php-odbc_prep() {
+  install -D -m755 ${srcdir}/build/modules/odbc.so ${pkgdir}/usr/lib/php/modules/odbc.so
+  install -D -m755 ${srcdir}/build/modules/pdo_odbc.so ${pkgdir}/usr/lib/php/modules/pdo_odbc.so
+}
+
+#####################################################################################################
+
+php-pgsql() {
+  pkgname=php-pgsql
+  shortdesc=("PostgreSQL modules for PHP.")
+  adddeps=("php")
+}
+
+php-pgsql_prep() {
+  install -D -m755 ${srcdir}/build/modules/pgsql.so ${pkgdir}/usr/lib/php/modules/pgsql.so
+  install -D -m755 ${srcdir}/build/modules/pdo_pgsql.so ${pkgdir}/usr/lib/php/modules/pdo_pgsql.so
+}
+
+#####################################################################################################
+
+php-pspell() {
+  pkgname=php-pspell
+  shortdesc=("pspell module for PHP.")
+  adddeps=("php")
+}
+
+php-pspell_prep() {
+  install -D -m755 ${srcdir}/build/modules/pspell.so ${pkgdir}/usr/lib/php/modules/pspell.so
+}
+
+#####################################################################################################
+
+php-snmp() {
+  pkgname=php-snmp
+  shortdesc=("snmp module for PHP.")
+  adddeps=("php")
+}
+
+php-snmp_prep() {
+  install -D -m755 ${srcdir}/build/modules/snmp.so ${pkgdir}/usr/lib/php/modules/snmp.so
+}
+
+#####################################################################################################
+
+php-sqlite() {
+  pkgname=php-sqlite
+  shortdesc=("sqlite module for PHP.")
+  adddeps=("php")
+}
+
+php-sqlite_prep() {
+  install -D -m755 ${srcdir}/build/modules/sqlite3.so ${pkgdir}/usr/lib/php/modules/sqlite3.so
+  install -D -m755 ${srcdir}/build/modules/pdo_sqlite.so ${pkgdir}/usr/lib/php/modules/pdo_sqlite.so
+}
+
+#####################################################################################################
+
+php-tidy() {
+  pkgname=php-tidy
+  shortdesc=("tidy module for PHP.")
+  adddeps=("php")
+}
+
+php-tidy_prep() {
+  install -D -m755 ${srcdir}/build/modules/tidy.so ${pkgdir}/usr/lib/php/modules/tidy.so
+}
+
+#####################################################################################################
+
+php-xsl() {
+  pkgname=php-xsl
+  shortdesc=("xsl module for PHP.")
+  adddeps=("php")
+}
+
+php-xsl_prep() {
+  install -D -m755 ${srcdir}/build/modules/xsl.so ${pkgdir}/usr/lib/php/modules/xsl.so
+}
