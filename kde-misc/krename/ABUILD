@@ -8,7 +8,7 @@ longdesc=("A very powerful batch file renamer.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("kde kde-misc")
+tags=("apps kde-misc")
 
 # podofo
 build_deps=("extra-cmake-modules kio kjs exiv2 taglib hicolor-icon-theme")
