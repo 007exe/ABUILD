@@ -1,0 +1,48 @@
+pkgname=gpsd
+pkgver=3.24
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GPS daemon and library to support USB/serial GPS devices.")
+longdesc=("LASzip - a free open source product of rapidlasso GmbH - quickly turns bulky LAS files into compact LAZ files without information loss.")
+
+source=("https://download-mirror.savannah.gnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs sci-libs")
+
+build_deps=("python libusb bluez-libs pps-tools scons docbook-xsl qt5-base python-gobject python-cairo python-pyserial gtk3")
+
+# NOTE: Это опциональные зависимости
+removedep=("gtk3 php php-gd python-cairo python-gobject python-pyserial qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  export LINKFLAGS="${LDFLAGS}"
+  _pythonpath=`python -c "from sysconfig import get_path; print(get_path('platlib'))"`
+  scons prefix=/usr \
+        systemd=yes \
+        gpsd_group=uucp \
+        python_libdir=$_pythonpath \
+        sbindir=/usr/bin \
+        qt_versioned=5
+  scons build
+  export DESTDIR=${pkgdir}
+
+  scons install
+  install -Dm755 gpsinit -t ${pkgdir}/usr/bin
+
+  install -Dm755 ${filedir}/gpsd.init ${pkgdir}/etc/init.d/gpsd
+
+  install -Dm644 ${filedir}/gpsd.conf ${pkgdir}/etc/default/gpsd
+
+  install -Dm644 gpsd-${pkgver}/gpsd.rules ${pkgdir}/usr/lib/udev/rules.d/25-gpsd-usb.rules
+
+  install -Dm755 gpsd.hotplug -t ${pkgdir}/usr/lib/udev/
+
+  sed -e 's|/local||' -i packaging/X11/*.desktop
+
+  install -Dm644 packaging/X11/*.desktop -t ${pkgdir}/usr/share/applications/
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
