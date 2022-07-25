@@ -1,0 +1,37 @@
+pkgname=at
+pkgver=3.2.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("AT and batch delayed command scheduling utility and daemon.")
+longdesc=("The at package provide delayed job execution and batch processing.")
+
+source=("http://software.calhariz.com/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz")
+
+tags=("console sys-process")
+
+build_deps=("linux-pam flex")
+
+config_files=("etc/at.deny
+etc/pam.d/atd
+var/spool/atd/.SEQ")
+
+build(){
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --with-jobdir=/var/spool/atd \
+    --with-atspool=/var/spool/atd \
+    --without-pam \
+    --disable-systemd
+  CFLAGS="$CFLAGS -w" make -j${numjobs}
+  make IROOT=${pkgdir} docdir=/usr/share/doc install
+
+  install -D -m644 ${filedir}/atd.pam ${pkgdir}/etc/pam.d/atd
+
+# open-rc init
+  install -D -m755 ${filedir}/atd.init ${pkgdir}/etc/init.d/atd
+}
