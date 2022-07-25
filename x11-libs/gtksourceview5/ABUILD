@@ -1,0 +1,25 @@
+pkgname=gtksourceview5
+pkgver=5.4.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A text widget adding syntax highlighting and more to GNOME.")
+longdesc=("The GtkSourceView package contains libraries used for extending the GTK+ text functions to include syntax highlighting.")
+
+source=("https://gitlab.gnome.org/GNOME/gtksourceview/-/archive/${pkgver}/gtksourceview-${pkgver}.tar.gz")
+
+tags=("libs x11-libs")
+
+build_deps=("gtk4 libxml2 pcre2 gobject-introspection vala gi-docgen meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D gtk_doc=true
+  meson compile -C build -j${numjobs}
+  meson install -C build --destdir ${pkgdir}
+}
