@@ -1,0 +1,18 @@
+pkgname=ttf-hack
+pkgver=3.003
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Typeface designed for source code.")
+longdesc=("A hand groomed and optically balanced typeface based on Bitstream Vera Mono.")
+
+source=("https://github.com/source-foundry/Hack/releases/download/v${pkgver}/Hack-v${pkgver}-ttf.tar.xz")
+
+tags=("media-fonts fonts")
+
+build_deps=("tar unzip")
+
+build() {
+  go_src_dir
+  install -Dm644 -t ${pkgdir}/usr/share/fonts/TTF Hack-*.ttf
+}
