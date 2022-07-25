@@ -1,0 +1,24 @@
+pkgname=libqaccessibilityclient
+pkgver=0.4.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Helper library to make writing accessibility tools easier.")
+longdesc=("Library for writing accessibility clients such as screen readers.")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs kde-misc")
+
+build_deps=("qt5-base extra-cmake-modules")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
