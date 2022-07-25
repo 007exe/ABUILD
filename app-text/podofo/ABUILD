@@ -1,0 +1,31 @@
+pkgname=podofo
+pkgver=0.9.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C++ library to work with the PDF file format.")
+longdesc=("PoDoFo is a C++ library to work with the PDF file format.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs app-text")
+
+build_deps=("lua openssl fontconfig libtiff libidn libjpeg-turbo cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p test/TokenizerTest/objects
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DFREETYPE_INCLUDE_DIR=/usr/include/freetype2 \
+    -DPODOFO_BUILD_SHARED=1 \
+    -DPODOFO_HAVE_JPEG_LIB=1 \
+    -DPODOFO_HAVE_PNG_LIB=1 \
+    -DPODOFO_HAVE_TIFF_LIB=1
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
