@@ -1,0 +1,52 @@
+pkgname=nfs-utils
+pkgver=1.2.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("NFS client and server daemons.")
+longdesc=("The NFS Utilities package contains the userspace server and client tools necessary to use the kernel's NFS abilities. NFS is a protocol that allows sharing file systems over the network..")
+
+source=("https://www.kernel.org/pub/linux/utils/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("net-fs network")
+
+build_deps=("libevent sqlite rpcsvc-proto device-mapper")
+
+# NOTE: Это опциональные зависимости
+removedep=("sqlite python")
+
+config_files=("etc/exports
+etc/nfs.conf
+etc/nfsmount.conf
+etc/idmapd.conf
+var/lib/nfs/etab
+var/lib/nfs/rmtab")
+
+build() {
+  go_src_dir
+  burn_patches
+# Исправляем жестко закодированный путь sbin в соответствии с нашими потребностями
+  sed -i "s|sbindir = /sbin|sbindir = /usr/bin|g" utils/*/Makefile.am
+#  sed -i "s|sbin|bin|" utils/nfsidmap/id_resolver.conf
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --sbindir=/usr/bin \
+    --disable-nfsv4 \
+    --disable-gss
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m 644 ${filedir}/exports ${pkgdir}/etc/exports
+
+# конфигурационный файл для похитителей в новых ядрах
+  install -D -m 644 utils/nfsidmap/id_resolver.conf ${pkgdir}/etc/request-key.d/id_resolver.conf
+
+  mkdir ${pkgdir}/etc/exports.d
+  mkdir -m 555 ${pkgdir}/var/lib/nfs/rpc_pipefs
+  mkdir ${pkgdir}/var/lib/nfs/v4recovery
+
+  install -D -m 644 support/nfsidmap/idmapd.conf ${pkgdir}/etc/idmapd.conf
+}
