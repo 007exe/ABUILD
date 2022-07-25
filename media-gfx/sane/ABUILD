@@ -1,0 +1,65 @@
+pkgname=sane
+pkgver=1.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Scanner Access Now Easy.")
+longdesc=("Scanner Access Now Easy - Backends")
+
+source=("https://gitlab.com/sane-project/backends/-/archive/${pkgver}/backends-${pkgver}.tar.gz")
+
+tags=("apps media-gfx")
+
+build_deps=("bash cairo gcc-libs glibc libgphoto2 libnl libpng libxml2 libieee1284
+net-snmp openssl v4l-utils autoconf-archive avahi curl glib2 libjpeg-turbo libtiff
+libusb poppler-glib python")
+
+adddep=("bash")
+
+build() {
+  go_src_dir
+  burn_patches
+# https://gitlab.com/sane-project/backends/-/issues/440
+  echo ${pkgver} > .tarball-version
+  echo ${pkgver} > .version
+  autoreconf -fiv
+  ./configure --prefix=/usr \
+    --disable-locking \
+    --disable-rpath \
+    --docdir="/usr/share/doc/${pkgname}" \
+    --enable-pthread \
+    --localstatedir=/var \
+    --sbindir=/usr/bin \
+    --sysconfdir=/etc \
+    --with-avahi \
+    --with-libcurl \
+    --with-pic \
+    --with-poppler-glib \
+    --with-systemd \
+    --with-usb
+  sed -e 's/ -shared / -Wl,-O1,--as-needed\0/g' -i libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -vdm 755 ${pkgdir}/usr/lib/udev/rules.d/
+  tools/sane-desc -m udev+hwdb -s doc/descriptions/ > ${pkgdir}/usr/lib/udev/rules.d/65-${pkgname}.rules
+  tools/sane-desc -m udev+hwdb -s doc/descriptions-external/ >> ${pkgdir}/usr/lib/udev/rules.d/65-${pkgname}.rules
+
+  install -vdm 755 ${pkgdir}/usr/lib/udev/hwdb.d/
+  tools/sane-desc -m hwdb -s doc/descriptions/ > ${pkgdir}/usr/lib/udev/hwdb.d/20-${pkgname}.hwdb
+
+  printf "\n" >> ${pkgdir}/usr/lib/udev/hwdb.d/20-${pkgname}.hwdb
+  tools/sane-desc -m hwdb -s doc/descriptions-external/ >> ${pkgdir}/usr/lib/udev/hwdb.d/20-${pkgname}.hwdb
+
+  install -vDm 644 ${filedir}/66-${pkgname}d.rules ${pkgdir}/usr/lib/udev/rules.d/
+
+  install -vDm 644 ${filedir}/${pkgname}.sysusers ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
+
+  rm -rvf ${pkgdir}/usr/share/doc/${pkgname}/ChangeLogs/
+
+  cd ${pkgdir}
+  [[ /usr/bin/true ]] && backup=( ${backup[@]} $(find "etc/${pkgname}.d/" -type f) )
+
+  install -Dm755 ${filedir}/saned.initd ${pkgdir}/etc/init.d/saned
+  install -Dm644  ${filedir}/saned.initd ${pkgdir}/etc/conf.d/saned
+}
