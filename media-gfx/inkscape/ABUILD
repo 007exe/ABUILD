@@ -1,0 +1,33 @@
+pkgname=inkscape
+pkgver=1.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Professional vector graphics editor.")
+longdesc=("Inkscape is a what you see is what you get Scalable Vector Graphics editor. It is useful for creating, viewing and changing SVG images.")
+
+source=("https://gitlab.com/inkscape/inkscape/-/archive/INKSCAPE_${pkgver//./_}/inkscape-INKSCAPE_${pkgver//./_}.tar.gz")
+
+tags=("apps media-gfx")
+# graphicsmagick
+build_deps=("dbus-glib double-conversion gc gsl gspell gtkmm3 lcms2 potrace lib2geom
+libjpeg-turbo libxslt poppler-glib python python-lxml python-numpy cmake boost libcdr libvisio")
+
+adddep=("python-lxml python-numpy")
+
+# NOTE: Это опциональные зависимости
+removedep=("fig2dev gvfs pstoedit scour texlive-core")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  export PKG_CONFIG_PATH='/usr/lib/imagemagick6/pkgconfig'
+  cmake -Bbuild \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DWITH_DBUS=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --build build --target install
+}
