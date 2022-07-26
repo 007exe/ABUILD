@@ -1,0 +1,26 @@
+pkgname=kcachegrind
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Frontend for Cachegrind by KDE.")
+longdesc=("Visualization of Performance Profiling Data.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("extra-cmake-modules kdoctools qt5-tools kio")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
