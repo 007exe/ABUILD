@@ -8,7 +8,7 @@ longdesc=("CVS frontend by KDE.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("kde kde-apps")
+tags=("apps kde-apps")
 
 build_deps=("kdesu kparts hicolor-icon-theme kinit extra-cmake-modules kdoctools")
 
