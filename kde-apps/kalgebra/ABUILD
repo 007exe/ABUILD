@@ -8,9 +8,10 @@ longdesc=("MathML-based 2D and 3D graph calculator by KDE.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("kde-apps kde")
+tags=("apps kde-apps")
 
-build_deps=("analitza kio qt5-webengine")
+# qt5-webengine
+build_deps=("analitza kio")
 
 build() {
   go_src_dir
