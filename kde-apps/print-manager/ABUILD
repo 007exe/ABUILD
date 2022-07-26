@@ -1,0 +1,29 @@
+pkgname=print-manager
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A tool for managing print jobs and printers.")
+longdesc=("Manage print jobs and printers in Plasma.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("kcmutils kirigami2 extra-cmake-modules kdoctools plasma-framework")
+
+# NOTE: Это опциональные зависимости
+removedep=("system-config-printer")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
