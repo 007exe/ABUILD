@@ -1,0 +1,28 @@
+pkgname=kmousetool
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("KDE program that clicks the mouse for you.")
+longdesc=("Clicks the mouse for you, reducing the effects of RSI.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("knotifications kxmlgui phonon extra-cmake-modules kdoctools libxt")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
