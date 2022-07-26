@@ -8,7 +8,7 @@ longdesc=("The Kate package contains an advanced KF5 based graphical text editor
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("kde-apps kde")
+tags=("apps kde-apps")
 
 build_deps=("extra-cmake-modules kdoctools plasma-framework knewstuff ktexteditor kactivities kuserfeedback hicolor-icon-theme")
 
