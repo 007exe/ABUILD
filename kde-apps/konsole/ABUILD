@@ -8,7 +8,7 @@ longdesc=("The Konsole package is a KF5 based terminal emulator.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("kde-apps kde")
+tags=("apps kde-apps")
 
 build_deps=("extra-cmake-modules kdoctools knotifyconfig kpty kparts knewstuff")
 
