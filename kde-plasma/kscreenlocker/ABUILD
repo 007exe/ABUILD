@@ -1,0 +1,28 @@
+pkgname=kscreenlocker
+pkgver=5.25.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library and components for secure lock screen architecture.")
+longdesc=("Library and components for secure lock screen architecture.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("plasma kde-plasma")
+
+build_deps=("layer-shell-qt kidletime kwayland kdeclarative perl extra-cmake-modules kdoctools kcmutils libxcursor")
+
+# NOTE: Это опциональные зависимости
+removedep=("kcmutils")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
