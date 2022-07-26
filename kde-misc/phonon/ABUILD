@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("The multimedia framework by KDE.")
 longdesc=("Phonon is the multimedia API for KDE. It replaces the old aRts package. Phonon needs either the GStreamer or VLC backend.")
 
-tags=("libs media-libs")
+tags=("libs kde-misc")
 
 source=("https://download.kde.org/stable/phonon/${pkgver}/phonon-${pkgver}.tar.xz")
 
