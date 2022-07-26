@@ -1,0 +1,26 @@
+pkgname=libkmahjongg
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Mahjongg library based on Qt/KDE Frameworks.")
+longdesc=("Common code, backgrounds and tile sets for games using Mahjongg tiles.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("kconfigwidgets kcompletion qt5-svg extra-cmake-modules")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
