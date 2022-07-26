@@ -8,7 +8,7 @@ longdesc=("Storage service for PIM data and libraries for PIM apps.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("kde kde-apps")
+tags=("apps kde-apps")
 
 build_deps=("extra-cmake-modules postgresql qt5-tools kitemmodels kaccounts-integration doxygen mariadb")
 
