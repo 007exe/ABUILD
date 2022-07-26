@@ -1,0 +1,30 @@
+pkgname=dolphin
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("KDE File Manager.")
+longdesc=("Plasma filemanager focusing on usability.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+# kio-extras
+build_deps=("baloo-widgets knewstuff kcmutils kparts kactivities kuserfeedback extra-cmake-modules kdoctools")
+
+# NOTE: Это опциональные зависимости
+removedep=("kde-cli-tools ffmpegthumbs kdegraphics-thumbnailers konsole purpose")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
