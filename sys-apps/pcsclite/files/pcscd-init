@@ -1,0 +1,20 @@
+#!/usr/bin/openrc-run
+
+name="PC/SC Daemon"
+
+pidfile=/run/pcscd/pcscd.pid
+
+command=/usr/bin/pcscd
+command_args="${EXTRA_OPTS}"
+
+start_stop_daemon_args="--user pcscd:pcscd"
+
+depend() {
+	need localmount
+	after udev openct dbus
+	use logger
+}
+
+start_pre() {
+	checkpath -q -d -m 0755 -o pcscd:pcscd /run/pcscd
+}
