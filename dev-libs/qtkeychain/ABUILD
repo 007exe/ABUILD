@@ -1,0 +1,48 @@
+pkgname=qtkeychain-qt5
+pkgver=0.13.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt5 API for storing passwords securely.")
+longdesc=("Provides support for secure credentials storage.")
+
+source=("https://github.com/frankosterfeld/qtkeychain/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("libsecret cmake qt5-tools qt6-tools")
+
+# NOTE: Это опциональные зависимости
+removedep=("kwallet")
+
+pkglist=("qtkeychain-qt6")
+
+build() {
+  cd ${srcdir}
+  cmake -B build-qt5 -S qtkeychain-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_WITH_QT6=OFF
+  cmake --build build-qt5 -j${numjobs}
+
+  cmake -B build-qt6 -S qtkeychain-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_WITH_QT6=ON
+  cmake --build build-qt6 -j${numjobs}
+
+  DESTDIR=${pkgdir} cmake --install build-qt5
+  install -Dm644 ${srcdir}/qtkeychain-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+qtkeychain-qt6() {
+  pkgname=qtkeychain-qt6
+  shortdesc=("Qt6 API for storing passwords securely.")
+  longdesc=("Provides support for secure credentials storage.")
+}
+
+qtkeychain-qt6_prep() {
+  cd ${srcdir}
+  DESTDIR=${pkgdir} cmake --install build-qt6
+  install -Dm644 ${srcdir}/qtkeychain-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
