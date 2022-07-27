@@ -1,0 +1,30 @@
+pkgname=sox
+pkgver=14.4.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Swiss Army knife of sound processing tools.")
+longdesc=("The swiss army knife of sound processing programs.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("console media-sound")
+# ibao
+build_deps=("libmad libid3tag wavpack libpulse opusfile twolame libltdl file libsndfile libpng lame opencore-amr gsm")
+
+# NOTE: Это опциональные зависимости
+removedep=("libao libmad libid3tag wavpack libpulse opusfile twolame")
+
+build() {
+  go_src_dir
+  sed -e 's|man1/sox.1 soxeffect.7|man1/sox.1.gz soxeffect.7.gz|' -i Makefile.in
+  burn_patches
+  sed -e '/hcom/d' -i src/tests.sh
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-dyn-default
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
