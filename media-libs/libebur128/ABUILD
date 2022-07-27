@@ -1,0 +1,25 @@
+pkgname=libebur128
+pkgver=1.2.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library implementing the EBU R128 loudness standard.")
+longdesc=("A library that implements the EBU R 128 standard for loudness normalisation.")
+
+source=("https://github.com/jiixyj/${pkgname}/archive/v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_STATIC_LIBS=OFF
+  cmake --build build 
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
