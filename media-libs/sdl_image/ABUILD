@@ -1,0 +1,38 @@
+pkgname=sdl_image
+pkgver=1.2.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Image file loading library.")
+longdesc=("A simple library to load images of various formats as SDL surfaces.")
+
+source=("https://www.libsdl.org/projects/SDL_image/release/SDL_image-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+build_deps=("sdl libpng libjpeg-turbo libtiff zlib")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-jpg-shared \
+    --disable-png-shared \
+    --disable-tif-shared \
+    --disable-webp-shared \
+    --enable-bmp \
+    --enable-lbm \
+    --enable-pcx \
+    --enable-pnm \
+    --enable-tga \
+    --enable-xcf \
+    --enable-xpm \
+    --enable-xv \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
