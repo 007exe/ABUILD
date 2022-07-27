@@ -1,0 +1,26 @@
+pkgname=kpimtextedit
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A textedit with PIM-specific features.")
+longdesc=("Extended text editor for PIM applications.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("kio syntax-highlighting extra-cmake-modules qt5-tools doxygen")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
