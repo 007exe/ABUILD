@@ -1,0 +1,26 @@
+pkgname=kcalutils
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The KDE calendar utility library.")
+longdesc=("Library providing utility functions for the handling of calendar data.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("kcalendarcore kidentitymanagement grantlee extra-cmake-modules doxygen qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
