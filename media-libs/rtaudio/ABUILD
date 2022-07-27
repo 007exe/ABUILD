@@ -1,0 +1,30 @@
+pkgname=rtaudio
+pkgver=5.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A set of cross-platform C++ classes for realtime audio I/O")
+longdesc=("A set of C++ classes that provide a common API for realtime audio input/output.")
+
+source=("https://github.com/thestk/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("alsa-lib doxygen gcc-libs glibc jack meson libpulse")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D core=disabled \
+    -D dsound=disabled \
+    -D asio=disabled \
+    -D wasapi=disabled \
+    -D docs=false \
+    -D install_docs=false
+  meson compile -C build -j${numjobs}
+  meson install -C build --destdir ${pkgdir}
+}
