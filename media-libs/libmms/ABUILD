@@ -1,0 +1,24 @@
+pkgname=libmms
+pkgver=0.6.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MMS stream protocol library.")
+longdesc=("Library for accessing Microsoft Media Server (MMS) media streaming protocol.")
+
+source=("https://download.sourceforge.net/libmms/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
