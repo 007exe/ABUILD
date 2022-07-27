@@ -1,0 +1,28 @@
+pkgname=sdl
+pkgver=1.2.15
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard.")
+longdesc=("The Simple DirectMedia Layer (SDL for short) is a cross-platform library designed to make it easy to write multimedia software, such as games and emulators..")
+
+source=("http://www.libsdl.org/release/SDL-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+build_deps=("alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake
+jack ninja libxss ibus fcitx libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb pipewire")
+
+adddep=("libxext libxrender libx11 libxcursor libibus hidapi libusb")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e '/_XData32/s:register long:register _Xconst long:' -i src/video/x11/SDL_x11sym.h
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
