@@ -1,0 +1,27 @@
+pkgname=avrdude
+pkgver=7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("AVR Downloader/UploaDEr.")
+longdesc=("Download/upload/manipulate the ROM and EEPROM contents of AVR microcontrollers.")
+
+source=("https://download.savannah.gnu.org/releases/avrdude/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils dev-embedded")
+
+build_deps=("readline libftdi libusb-compat elfutils")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --sysconfdir=/etc \
+    --enable-linuxgpio \
+    --enable-linuxspi
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
