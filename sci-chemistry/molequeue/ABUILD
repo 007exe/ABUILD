@@ -1,0 +1,22 @@
+pkgname=molequeue
+pkgver=0.9.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Abstract, manage and coordinate execution of tasks.")
+longdesc=("Desktop integration of high performance computing resources.")
+
+source=("https://github.com/OpenChemistry/molequeue/archive/${pkgver}.tar.gz")
+
+tags=("libs sci-chemistry")
+
+build_deps=("qt5-base cmake")
+
+build() {
+  mkdir -p ${srcdir}/build
+  cd ${srcdir}/build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/LICENSE  -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
