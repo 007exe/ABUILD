@@ -1,0 +1,29 @@
+pkgname=umbrello
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("UML modeller.")
+longdesc=("KDE UML Modeller.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("kdelibs4support qt5-webkit extra-cmake-modules kdoctools
+kdesignerplugin kdevelop-pg-qt llvm kinit doxygen kdevelop-php")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_UNITTESTS=OFF \
+    -DBUILD_KF5=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
