@@ -1,0 +1,25 @@
+pkgname=movit
+pkgver=1.6.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The modern video toolkit.")
+longdesc=("High-performance, high-quality video filters for the GPU.")
+
+source=("https://movit.sesse.net/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-video")
+
+build_deps=("fftw libepoxy eigen gtest sdl2")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --disable-static
+  make -j${numjobs} GTEST_DIR=/usr/src/googletest
+  make DESTDIR=${pkgdir} install
+}
