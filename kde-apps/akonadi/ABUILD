@@ -39,6 +39,6 @@ libakonadi() {
 libakonadi_prep() {
   go_src_dir
 # Находится в пакете akonadi
-  DESTDIR=${pkgdir cmake --install build
+  DESTDIR=${pkgdir} cmake --install build
   rm -r ${pkgdir}/usr/bin
 }
