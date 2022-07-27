@@ -1,0 +1,55 @@
+pkgname=avr-binutils
+pkgver=2.38
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNU Binary Utilities for ATMEL AVR architecture.")
+longdesc=("A set of programs to assemble and manipulate binary and object files for the AVR architecture.")
+
+source=("https://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2")
+
+tags=("develop dev-embedded")
+
+build_deps=("glibc zlib")
+
+build(){
+  go_src_dir
+  burn_patches
+# https://bugs.archlinux.org/task/34629
+  sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
+
+  config_guess=$(./config.guess)
+
+  mkdir ${srcdir}/build
+  cd ${srcdir}/build
+  ${srcdir}/binutils-${pkgver}/configure \
+    --prefix=/usr \
+    --with-lib-path=/usr/lib:/usr/local/lib \
+    --enable-ld=default \
+    --enable-gold \
+    --enable-plugins \
+    --enable-threads \
+    --with-pic \
+    --disable-werror \
+    --disable-multilib \
+    --build=${config_guess} \
+    --target=avr \
+    $CONFIGFLAG
+# Проверка среды хоста и проверк, доступны ли все необходимые инструменты для компиляции Binutils.
+  make configure-host
+
+  make tooldir=/usr
+  make prefix=${pkgdir}/usr tooldir=${pkgdir}/usr install
+
+  for bin in ar as nm objcopy objdump ranlib strip readelf; do
+        rm ${pkgdir}/usr/bin/${bin}
+  done
+
+  rm ${pkgdir}/usr/lib/bfd-plugins/libdep.so
+
+  for info in as bfd binutils gprof ld ctf-spec; do
+        mv ${pkgdir}/usr/share/info/${info}.info ${pkgdir}/usr/share/info/avr-${info}.info
+  done
+
+  rm -r ${pkgdir}/usr/share/locale
+}
