@@ -1,0 +1,28 @@
+pkgname=kdevelop-php
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("PHP plugin for KDevelop.")
+longdesc=("PHP language and documentation plugin for KDevelop.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/kdev-php-${pkgver}.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("extra-cmake-modules kdoctools kdevelop-pg-qt")
+
+adddep=("kdevelop")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
