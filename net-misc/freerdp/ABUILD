@@ -1,0 +1,43 @@
+pkgname=freerdp
+pkgver=2.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Free implementation of the Remote Desktop Protocol.")
+longdesc=("Free implementation of the Remote Desktop Protocol (RDP).")
+
+source=("https://github.com/${pkgname}/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags=("network net-misc")
+
+build_deps=("dbus-glib glibc gstreamer gst-plugins-base-libs libcups libgssglue libx11 libxcursor libxext
+libxdamage libxfixes libxkbcommon libxi libxinerama libxkbfile libxrandr libxrender libxtst openssl
+pcsclite wayland alsa-lib cmake docbook-xsl ffmpeg icu krb5 libjpeg-turbo libpulse libusb linux-pam xmlto xorgproto")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DPROXY_PLUGINDIR=/usr/lib/freerdp2/server/proxy/plugins \
+    -DWITH_DSP_FFMPEG=ON \
+    -DWITH_FFMPEG=ON \
+    -DWITH_PULSE=ON \
+    -DWITH_CUPS=ON \
+    -DWITH_PCSC=ON \
+    -DWITH_ICU=ON \
+    -DWITH_JPEG=ON \
+    -DWITH_SERVER=ON \
+    -DWITH_SWSCALE=ON \
+    -DWITH_CHANNELS=ON \
+    -DWITH_CLIENT_CHANNELS=ON \
+    -DWITH_SERVER_CHANNELS=ON \
+    -DCHANNEL_URBDRC_CLIENT=ON \
+    -Wno-dev
+  make VERBOSE=1 -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+
+  install -vDm 644 {ChangeLog,README.md} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
