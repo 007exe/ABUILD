@@ -1,0 +1,25 @@
+pkgname=libvncserver
+pkgver=0.9.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("library for creating vnc servers.")
+longdesc=("Cross-platform C libraries that allow you to easily implement VNC server or client functionality.")
+
+source=("https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("sdl2 cmake libpng libjpeg-turbo gnutls openssl libnsl")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake . \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DWITH_FFMPEG=OFF \
+    -DWITH_GTK=OFF
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
