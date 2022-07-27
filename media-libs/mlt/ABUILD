@@ -1,0 +1,31 @@
+pkgname=mlt
+pkgver=7.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An open source multimedia framework.")
+longdesc=("Open source multimedia framework for television broadcasting.")
+
+source=("https://github.com/mltframework/mlt/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+# sdl_image
+build_deps=("libebur128 cmake ladspa frei0r-plugins libdv libsamplerate sox ffmpeg vidstab
+qt5-svg jack libexif python swig movit eigen opencv rubberband gdk-pixbuf pango rtaudio imagemagick")
+
+# NOTE: Это опциональные зависимости
+removedep=("sdl_image sdl2 libsamplerate sox ffmpeg vid.stab qt5-svg jack ladspa libexif
+frei0r-plugins movit opencv rubberband gdk-pixbuf pango rtaudio python")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DMOD_OPENCV=ON \
+    -DSWIG_PYTHON=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
