@@ -1,0 +1,24 @@
+pkgname=spglib
+pkgver=1.16.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C library for finding and handling crystal symmetries.")
+longdesc=("Spglib is a C library for finding and handling crystal symmetries.")
+
+source=("https://github.com/atztogo/spglib/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("sci-libs libs")
+
+build_deps=("gcc-libs cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
