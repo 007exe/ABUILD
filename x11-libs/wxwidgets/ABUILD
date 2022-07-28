@@ -1,0 +1,155 @@
+pkgname=wxwidgets-gtk3
+pkgver=3.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GTK+3 implementation of wxWidgets API for GUI.")
+longdesc=("wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base.")
+
+tags=("libs x11-libs")
+
+source=("https://github.com/wxWidgets/wxWidgets/releases/download/v${pkgver}/wxWidgets-${pkgver}.tar.bz2")
+
+build_deps=("cmake gst-plugins-base glu webkit2gtk libnotify qt5-base sdl2 libmspack")
+
+adddep=("wxwidgets-common")
+
+# NOTE: Это опциональные зависимости
+removedep=("webkit2gtk")
+
+pkglist=("wxwidgets-common wxwidgets-qt5")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd ${srcdir}
+
+  echo " "
+  echo "*******************************"
+  echo "*                             *"
+  echo "* -= Сборка wxWidgets-gtk3 =- *"
+  echo "*                             *"
+  echo "*******************************"
+  echo " "
+
+  cmake -B build-gtk3 -S wxWidgets-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
+    -DwxBUILD_TOOLKIT=gtk3 \
+    -DwxUSE_OPENGL=ON \
+    -DwxUSE_REGEX=sys\
+    -DwxUSE_ZLIB=sys \
+    -DwxUSE_EXPAT=sys \
+    -DwxUSE_LIBJPEG=sys \
+    -DwxUSE_LIBPNG=sys \
+    -DwxUSE_LIBTIFF=sys \
+    -DwxUSE_LIBLZMA=sys \
+    -DwxUSE_LIBMSPACK=ON \
+    -DwxUSE_PRIVATE_FONTS=ON
+  cmake --build build-gtk3 -j${numjobs}
+
+  echo " "
+  echo "******************************"
+  echo "*                            *"
+  echo "* -= Сборка wxWidgets-qt5 =- *"
+  echo "*                            *"
+  echo "******************************"
+  echo " "
+
+  cmake -B build-qt5 -S wxWidgets-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
+    -DwxBUILD_TOOLKIT=qt \
+    -DwxUSE_OPENGL=ON \
+    -DwxUSE_REGEX=sys \
+    -DwxUSE_ZLIB=sys \
+    -DwxUSE_EXPAT=sys \
+    -DwxUSE_LIBJPEG=sys \
+    -DwxUSE_LIBPNG=sys \
+    -DwxUSE_LIBTIFF=sys \
+    -DwxUSE_LIBLZMA=sys \
+    -DwxUSE_LIBMSPACK=ON \
+    -DwxUSE_PRIVATE_FONTS=ON
+  cmake --build build-qt5 -j${numjobs}
+
+# Запуск configure для создания Makefile, cmake не устанавливает переводы
+  echo " "
+  echo "**************************"
+  echo "*                        *"
+  echo "* -= Сборка переводов =- *"
+  echo "*                        *"
+  echo "**************************"
+  echo " "
+
+  cd wxWidgets-${pkgver}
+  ./configure --prefix=/usr
+
+  echo " "
+  echo "**********************************"
+  echo "*                                *"
+  echo "* -= Установка wxWidgets-gtk3 =- *"
+  echo "*                                *"
+  echo "**********************************"
+  echo " "
+
+  cd ${srcdir}
+  DESTDIR=${pkgdir} cmake --install build-gtk3
+  rm -r ${pkgdir}/usr/{include,lib/cmake,lib/libwx_base*,bin/wxrc*}
+
+  install -Dm644 wxWidgets-${pkgver}/docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+wxwidgets-common() {
+  pkgname=wxwidgets-common
+  shortdesc=("Qt5 implementation of wxWidgets API for GUI.")
+  longdesc=("wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base.")
+  adddep=("wxwidgets-common")
+}
+
+wxwidgets-common_prep() {
+  cd ${srcdir}
+
+  echo " "
+  echo "************************************"
+  echo "*                                  *"
+  echo "* -= Установка wxWidgets-common =- *"
+  echo "*                                  *"
+  echo "************************************"
+  echo " "
+
+  DESTDIR=${pkgdir} cmake --install build-gtk3
+  rm -r ${pkgdir}/usr/{bin/wx-config,lib/{wx,libwx_gtk*}}
+  install -Dm644 wxWidgets-${pkgver}/wxwin.m4 -t ${pkgdir}/usr/share/aclocal
+
+  make DESTDIR=${pkgdir} -C wxWidgets-${pkgver} locale_install
+
+  install -Dm644 ${srcdir}/wxWidgets-${pkgver}/docs/licence.txt ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+}
+
+wxwidgets-qt5() {
+  pkgname=wxwidgets-qt5
+  shortdesc=("Qt5 implementation of wxWidgets API for GUI.")
+  longdesc=("wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base.")
+  adddep=("wxwidgets-common")
+}
+
+wxwidgets-qt5_prep() {
+  cd ${srcdir}
+
+  echo " "
+  echo "*********************************"
+  echo "*                               *"
+  echo "* -= Установка wxWidgets-qt5 =- *"
+  echo "*                               *"
+  echo "*********************************"
+  echo " "
+
+  DESTDIR=${pkgdir} cmake --install build-qt5
+
+  rm -r ${pkgdir}/usr/{include,lib/cmake,lib/libwx_base*,bin/wxrc*}
+
+# Конфликт с wx-gtk3
+  mv ${pkgdir}/usr/bin/wx-config{,-qt}
+
+  install -Dm644 ${srcdir}/wxWidgets-${pkgver}/docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
