@@ -1,6 +1,6 @@
 pkgname=hdf5
-pkgver=1.12.1
-pkgbuild=2
+pkgver=1.12.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("General purpose library and file format for storing scientific data.")
