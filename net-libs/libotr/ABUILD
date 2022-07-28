@@ -1,0 +1,29 @@
+pkgname=libotr
+pkgver=4.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Off-the-Record Messaging Library and Toolkit.")
+longdesc=("(OTR) Messaging allows you to have private conversations over instant messaging.")
+
+source=("https://otr.cypherpunks.ca/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+# NOTE: По хорошему требует libgcrypt
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -s -i
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --with-pic \
+    --disable-rpath \
+    --disable-static
+  make all -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
