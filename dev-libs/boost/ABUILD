@@ -1,10 +1,10 @@
 pkgname=boost
-pkgver=1.78.0
-pkgbuild=2
+pkgver=1.79.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Free peer-reviewed portable C++ source libraries runtime libraries")
-longdesc=("Boost provides a set of free peer-reviewed portable C++ source libraries. It includes libraries for linear algebra, pseudorandom number generation, multithreading, image processing, regular expressions and unit testing.")
+shortdesc=("Free peer-reviewed portable C++ source libraries development headers.")
+longdesc=("Boost provides a set of free peer-reviewed portable C++ source libraries.")
 
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${pkgver//./_}.tar.bz2")
 
@@ -12,13 +12,12 @@ tags=("develop dev-libs")
 
 build_deps=("icu python python-numpy bzip2 zlib openmpi zstd")
 
-before_build(){
-  go_src_dir
-# https://github.com/bfgroup/b2/issues/104
-  patch -Np1 -d tools/build <$startdir/patches/$pkgname-b2-fix-lib-install.patch
-# https://github.com/boostorg/ublas/pull/97
-  patch -Np2 -i $startdir/patches/$pkgname-ublas-c++20-iterator.patch
-}
+adddep=("boost-libs=${pkgver}")
+
+# NOTE: Это опциональные зависимости
+removedep=("python")
+
+pkglist=("boost-libs")
 
 build() {
   go_src_dir
@@ -26,8 +25,8 @@ build() {
 
   pushd tools/build
   ./bootstrap.sh --cxxflags="$CXXFLAGS $LDFLAGS"
-  ./b2 install --prefix=${pkgdir}/usr
-  ln -s b2 ${pkgdir}/usr/bin/bjam
+  ./b2 install --prefix=${srcdir}/fakeinstall
+  ln -s b2 ${srcdir}/fakeinstall/bin/bjam
   popd
 
   ./bootstrap.sh --with-toolset=gcc --with-icu --with-python=python3
@@ -36,8 +35,8 @@ build() {
   echo "using mpi ;" >>project-config.jam
 
 # Boostbook нужен QuickBook
-  install -dm755 ${pkgdir}/usr/share/boostbook
-  cp -a tools/boostbook/{xsl,dtd} ${pkgdir}/usr/share/boostbook/
+  install -dm755 ${srcdir}/fakeinstall/share/boostbook
+  cp -a tools/boostbook/{xsl,dtd} ${srcdir}/fakeinstall/share/boostbook/
 
   ./b2 install \
     variant=release \
@@ -53,18 +52,39 @@ build() {
     --layout=system \
     $JOBS \
     \
-    --prefix=${pkgdir}/usr/ \
-    --libdir=${pkgdir}/usr/lib
+    --prefix=${srcdir}/fakeinstall
+
+  install -d ${pkgdir}/usr/lib
+  cp -a ${srcdir}/fakeinstall/lib/*.a ${pkgdir}/usr/lib/
+  cp -a ${srcdir}/fakeinstall/lib/cmake ${pkgdir}/usr/lib/
+  cp -a ${srcdir}/fakeinstall/{bin,include,share} ${pkgdir}/usr/
+
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ${srcdir}/boost_${pkgver//./_}/LICENSE_1_0.txt
+}
+
+boost-libs() {
+  pkgname=boost-libs
+  shortdesc=("Free peer-reviewed portable C++ source libraries runtime libraries.")
+  longdesc=("Boost provides a set of free peer-reviewed portable C++ source libraries.")
+  # NOTE: Это опциональные зависимости
+  removedep=("openmpi")
+}
+
+boost-libs_prep() {
+  install -dm755 ${pkgdir}/usr/lib
+  cp -a ${srcdir}/fakeinstall/lib/*.so* ${pkgdir}/usr/lib/
 
 # https://github.com/boostorg/mpi/issues/112
   install -d ${pkgdir}/usr/lib/python3.10/site-packages/boost
   touch ${pkgdir}/usr/lib/python3.10/site-packages/boost/__init__.py
   python -m compileall -o 0 -o 1 -o 2 ${pkgdir}/usr/lib/python3.10/site-packages/boost
+  cp ${srcdir}/fakeinstall/lib/boost-python3.10/mpi.so \
+    ${pkgdir}/usr/lib/python3.10/site-packages/boost/mpi.so
 
 # https://github.com/boostorg/python/issues/203#issuecomment-391477685
   for _lib in python numpy; do
     ln -srL ${pkgdir}/usr/lib/libboost_${_lib}3{10,}.so
   done
 
-  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE_1_0.txt
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ${srcdir}/boost_${pkgver//./_}/LICENSE_1_0.txt
 }
