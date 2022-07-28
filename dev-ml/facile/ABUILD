@@ -1,0 +1,24 @@
+pkgname=facile
+pkgver=1.1.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Functional Constraint Library.")
+longdesc=("OCaml constraint programming library on integer & integer set finite domains.")
+
+source=("https://github.com/Emmanuel-PLF/facile/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-ml")
+
+# ocaml-compiler-libs
+build_deps=("ocaml")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd lib
+  OCAMLC=ocamlc
+  OCAMLMLI=ocamlc
+  make -j${numjobs}
+  install -Dm644 facile.cmxa facile.cmi facile.cma facile.a -t ${pkgdir}/usr/lib/ocaml/facile
+}

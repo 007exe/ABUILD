@@ -1,0 +1,24 @@
+pkgname=libkolabxml
+pkgver=1.1.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Kolab XML Format Schema Definitions Library.")
+longdesc=("Kolab XML Format Schema Definitions Library.")
+
+source=("https://mirror.kolabenterprise.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("cmake boost swig xerces-c xsd")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTS=OFF \
+    -DBoost_NO_BOOST_CMAKE=ON
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
