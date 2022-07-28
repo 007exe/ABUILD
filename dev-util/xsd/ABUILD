@@ -1,0 +1,33 @@
+pkgname=xsd
+pkgver=4.1.0.a11
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An open-source, cross-platform W3C XML Schema to C++ data binding compiler.")
+longdesc=("CodeSynthesis XSD is an open-source, cross-platform W3C XML Schema to C++ data binding compiler.")
+
+#source=("https://www.codesynthesis.com/download/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}+dep.tar.bz2")
+source=("https://codesynthesis.com/~boris/tmp/${pkgname}/${pkgver}/xsd-${pkgver}+dep.tar.bz2")
+
+tags=("utils dev-util")
+
+build_deps=("xerces-c")
+
+adddep=("xerces-c")
+
+build() {
+  go_src_dir
+  burn_patches
+  CXX=g++
+  CC=gcc
+  CXXFLAGS="-O2 -std=c++14 -fPIC -pie -Wl,-z,now"
+  LDFLAGS=" -g -fPIC -pie -Wl,-z,now"
+  BOOST_LINK_SYSTEM=y
+  EXTERNAL_LIBCUTL=y
+  make -j${numjobs} verbose=1
+  make install_prefix=${pkgdir}/usr install
+
+# Конфликт с mono
+  mv ${pkgdir}/usr/bin/xsd{,cxx}
+  mv ${pkgdir}/usr/share/man/man1/xsd{,cxx}.1
+}
