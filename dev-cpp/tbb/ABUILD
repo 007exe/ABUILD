@@ -15,10 +15,14 @@ build_deps=("cmake inetutils ninja python swig gcc-libs hwloc")
 build() {
   go_src_dir
   burn_patches
+# Отключем предупреждения которые считаются ошибками
+  export CXXFLAGS="$CXXFLAGS -Wno-error=uninitialized -Wno-error=address"
   cmake -GNinja \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DTBB4PY_BUILD=ON .
+    -DTBB4PY_BUILD=ON \
+    -DTBB_ENABLE_IPO=OFF \
+    -DTBB_STRICT=OFF .
   ninja all python_build -j${numjobs}
   DESTDIR=${pkgdir} ninja install
 }
