@@ -1,0 +1,31 @@
+pkgname=okular
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Document Viewer.")
+longdesc=("Universal document viewer based on KDE Frameworks.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+# discount chmlib
+build_deps=("djvulibre libspectre libkexiv2 poppler-qt5 kpty kactivities threadweaver kjs kparts
+purpose phonon extra-cmake-modules ebook-tools kdegraphics-mobipocket kdoctools khtml")
+
+# NOTE: Это опциональные зависимости
+removedep=("kdegraphics-mobipocket libzip khtml chmlib calligra unrar unarchiver kde-cli-tools plasma-workspace")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
