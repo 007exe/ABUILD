@@ -6,9 +6,11 @@ arch=("auto")
 shortdesc=("Professional vector graphics editor.")
 longdesc=("Inkscape is a what you see is what you get Scalable Vector Graphics editor. It is useful for creating, viewing and changing SVG images.")
 
-source=("https://gitlab.com/inkscape/inkscape/-/archive/INKSCAPE_${pkgver//./_}/inkscape-INKSCAPE_${pkgver//./_}.tar.gz")
+#source=("https://gitlab.com/inkscape/inkscape/-/archive/INKSCAPE_${pkgver//./_}/inkscape-INKSCAPE_${pkgver//./_}.tar.gz")
+source=("https://media.inkscape.org/dl/resources/file/inkscape-${pkgver}.tar.xz")
 
 tags=("apps media-gfx")
+
 # graphicsmagick
 build_deps=("dbus-glib double-conversion gc gsl gspell gtkmm3 lcms2 potrace lib2geom
 libjpeg-turbo libxslt poppler-glib python python-lxml python-numpy cmake boost libcdr libvisio")
