@@ -24,9 +24,13 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
+    --enable-largefile \
     --enable-shared \
+    --without-frozenpaths \
+    --with-perl-options=INSTALLDIRS=vendor \
     --with-modules \
     --with-perl \
+    --without-jp2 \
     --with-quantum-depth=16 \
     --with-threads
   make -j${numjobs}
