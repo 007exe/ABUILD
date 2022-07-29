@@ -1,0 +1,29 @@
+pkgname=kdeplasma-addons
+pkgver=5.25.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Extra Plasma applets and engines.")
+longdesc=("All kind of addons to improve your Plasma experience.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("plasma kde-plasma")
+
+# qt5-webengine
+build_deps=("plasma-workspace kunitconversion extra-cmake-modules")
+
+# NOTE: Это опциональные зависимости
+removedep=("purpose quota-tools qt5-webengine")
+
+build() {
+  go_src_dir
+  burn_patches
+    cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
