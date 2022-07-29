@@ -1,0 +1,21 @@
+pkgname=perl-yaml-syck
+pkgver=1.34
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fast, lightweight YAML loader and dumper.")
+
+tags=("dev-perl libs")
+
+source=("https://www.cpan.org/authors/id/T/TO/TODDR/YAML-Syck-${pkgver}.tar.gz")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  burn_patches
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
