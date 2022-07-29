@@ -1,21 +1,39 @@
 #!/bin/bash
 
-P_VERSION=5.25.2
+P_VERSION=5.25.3
 BUILD_VERSION=1
 
 LIST="libkscreen
-libksysguard"
+libksysguard
+bluedevil
+kdecoration
+kde-gtk-config
+oxygen-sounds
+ksystemstats
+kactivitymanagerd
+milou
+layer-shell-qt
+kscreenlocker
+breeze
+kwin
+plasma-integration
+kwayland-integration
+plasma-workspace
+kde-cli-tools
+kdeplasma-addons
+systemsettings
+kgamma5"
 
 CWD=~
 STARTD=`pwd`
 
-LOGFILE="$CWD/kde-plasma-$P_VERSION-build.log"
+LOGFILE="$CWD/build.log"
 
-echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+echo "============================= Начало сборки kde-plasma $P_VERSION `date` =============================" >> $LOGFILE
 
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -pod ~/mkpkg/packages/kde-plasma -si -bv $P_VERSION -bb $BUILD_VERSION; then
+    if mkpkg -ba -pod ~/repository/kde-plasma -si -bv $P_VERSION -bb $BUILD_VERSION; then
            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
@@ -24,4 +42,4 @@ for i in $LIST ; do
     fi
 done
 
-echo "============================= Завершено `date` =============================" >> $LOGFILE
+echo "============================= kde-plasma $P_VERSION завершено `date` =============================" >> $LOGFILE
