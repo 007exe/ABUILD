@@ -1,0 +1,53 @@
+pkgname=plasma-workspace
+pkgver=5.25.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("KDE Plasma Workspace.")
+longdesc=("KDE Plasma workspace.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("plasma kde-plasma")
+
+build_deps=("knotifyconfig ksystemstats ktexteditor libqalculate appstream-qt xorg-xrdb xorg-xsetroot
+kactivitymanagerd kholidays xorg-xmessage milou prison kwin plasma-integration kpeople kactivities-stats
+libkscreen kquickcharts kuserfeedback accountsservice qt5-tools extra-cmake-modules kdoctools gpsd baloo
+networkmanager-qt plasma-wayland-protocols kunitconversion kinit qt5-wayland kwayland-integration xorg-xwayland")
+
+# kio-extras kio-fuse kde-cli-tools
+adddep=("oxygen-sounds")
+
+# NOTE: Это опциональные зависимости
+removedep=("plasma-workspace-wallpapers gpsd networkmanager-qt kdepim-addons appmenu-gtk-module baloo discover")
+
+config_files=("etc/pam.d/kde")
+
+pkglist=("plasma-wayland-session")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 ${filedir}/kde.pam ${pkgdir}/etc/pam.d/kde
+# plasma-wayland скрипт
+  rm -r ${pkgdir}/usr/share/wayland-sessions
+}
+
+plasma-wayland-session() {
+  pkgname=plasma-wayland-session
+  shortdesc=("Plasma Wayland session.")
+  longdesc=("KDE Plasma workspace.")
+  adddep=("plasma-workspace qt5-wayland kwayland-integration xorg-xwayland")
+}
+
+plasma-wayland-session_prep() {
+  go_src_dir
+  install -Dm644 build/login-sessions/plasmawayland.desktop ${pkgdir}/usr/share/wayland-sessions/plasmawayland.desktop
+}
