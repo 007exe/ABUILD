@@ -1,0 +1,29 @@
+pkgname=kde-cli-tools
+pkgver=5.25.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tools based on KDE Frameworks 5 to better interact with the system.")
+longdesc=("Tools based on KDE Frameworks 5 to better interact with the system.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("plasma kde-plasma")
+
+build_deps=("kdesu kcmutils kactivities extra-cmake-modules kdoctools plasma-workspace")
+
+# NOTE: Это опциональные зависимости
+removedep=("plasma-workspace")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  ln -s /usr/lib/kf5/kdesu ${pkgdir}/usr/bin/
+}
