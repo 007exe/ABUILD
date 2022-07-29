@@ -8,9 +8,22 @@ longdesc=("The QML and Quick modules for the Qt5 framework.")
 
 tags=("qt5 dev-qt")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtdeclarative-everywhere-opensource-src-${pkgver}.tar.xz")
+#source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtdeclarative-everywhere-opensource-src-${pkgver}.tar.xz")
+strict_version=1
+source=("git:https://invent.kde.org/qt/qt/qtdeclarative.git")
 
 build_deps=("qt5-base python vulkan-headers git")
+
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}-lts-lgpl
+#  echo "***************************************************"
+#  echo "*           Переключаюсь на 5.15.4 r19            *"
+#  echo "*                                                 *"
+#  echo "* коммит 2454c808bfe99b50084aea59adb917e805c27afa *"
+#  echo "***************************************************"
+#  git checkout 2454c808bfe99b50084aea59adb917e805c27afa
+}
 
 build() {
   go_src_dir

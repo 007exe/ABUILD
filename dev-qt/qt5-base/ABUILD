@@ -3,10 +3,12 @@ pkgver=5.15.5
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("A cross-platform application and UI framework")
+shortdesc=("A cross-platform application and UI framework.")
 longdesc=("Qt5 is a cross-platform application framework that is widely used for developing application software with a graphical user interface (GUI) (in which cases Qt5 is classified as a widget toolkit), and also used for developing non-GUI programs such as command-line tools and consoles for servers. One of the major users of Qt is KDE Frameworks 5 (KF5).")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtbase-everywhere-opensource-src-${pkgver}.tar.xz")
+#source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtbase-everywhere-opensource-src-${pkgver}.tar.xz")
+strict_version=1
+source=("git:https://invent.kde.org/qt/qt/qtbase.git")
 
 tags=("qt5 dev-qt")
 
@@ -19,6 +21,18 @@ removedep=("qt5-svg qt5-wayland qt5-translations postgresql-libs mariadb-libs un
 
 pkglist=("qt5-xcb-private-headers")
 
+before_build(){
+  go_src_dir
+# FIXME: Фатальная ошибка при попытке сборки lts версии
+ git checkout v${pkgver}-lts-lgpl
+#  echo "***************************************************"
+#  echo "*           Переключаюсь на 5.15.4 r146           *"
+#  echo "*                                                 *"
+#  echo "* коммит a19d88a641e09e1fa5532c73b86df3bf75acc741 *"
+#  echo "***************************************************"
+#  git checkout a19d88a641e09e1fa5532c73b86df3bf75acc741
+}
+
 build() {
   go_src_dir
   burn_patches
@@ -26,9 +40,9 @@ build() {
     -confirm-license \
     -opensource -v \
     -prefix /usr \
+    -libdir /usr/lib \
     -docdir /usr/share/doc/qt \
     -headerdir /usr/include/qt \
-    -libdir /usr/lib \
     -archdatadir /usr/lib/qt \
     -datadir /usr/share/qt \
     -sysconfdir /etc/xdg \
@@ -40,9 +54,14 @@ build() {
     -no-rpath \
     -dbus-linked \
     -system-harfbuzz \
+    -journald \
     -no-mimetype-database \
     -no-use-gold-linker \
-    -reduce-relocations
+    -no-reduce-relocations \
+    -no-strip \
+    -ltcg
+# Нет флага настройки для статических библиотек fat с l на
+  bin/qmake CONFIG+=fat-static-lto -- -redo
   make -j${numjobs}
   make INSTALL_ROOT=${pkgdir} install
   install -Dm644 LICENSE* -t ${pkgdir}/usr/share/licenses/qt5-base
