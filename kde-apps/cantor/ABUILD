@@ -1,0 +1,30 @@
+pkgname=cantor
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("KDE Frontend to Mathematical Software.")
+longdesc=("Interface for doing mathematics and scientific computing.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("analitza libspectre kpty ktexteditor knewstuff libqalculate qt5-xmlpatterns
+qt5-tools poppler-qt5 extra-cmake-modules python kdoctools luajit qt5-webengine r julia")
+
+# NOTE: Это опциональные зависимости
+removedep=("maxima octave r luajit python sagemath julia")
+
+build() {
+  go_src_dir
+  burn_patches
+    cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
