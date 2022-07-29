@@ -2,7 +2,12 @@
 
 KDE_APPS_VERSION=22.04.3
 
-LIST="signon-kwallet-extension
+LIST="libkdcraw
+libkexiv2
+libkmahjongg
+libksane
+libktorrent
+signon-kwallet-extension
 kaccounts-integration
 akonadi
 ark
@@ -22,22 +27,106 @@ audiocd-kio
 cervisia
 ffmpegthumbs
 juk
-kalgebra
 kapptemplate
 kdegraphics-mobipocket
 kcalc
 kpmcore
 partitionmanager
-"
+k3b
+kamoso
+kbruch
+kcolorchooser
+kcron
+kde-dev-scripts
+kde-dev-utils
+kdeedu-data
+kdegraphics-thumbnailers
+kdesdk-kioslaves
+kdesdk-thumbnailers
+kdf
+kfloppy
+kgeography
+kiten
+kqtquickcharts
+krfb
+kruler
+ksystemlog
+kteatime
+ktimer
+lokalize
+poxml
+print-manager
+rocs
+step
+svgpart
+sweeper
+zeroconf-ioslave
+kio-extras
+dolphin
+dolphin-plugins
+kalgebra
+gwenview
+kcachegrind
+kcharselect
+kig
+klettres
+kmag
+kmix
+kmousetool
+kmouth
+kmplot
+kolourpaint
+kompare
+ktouch
+kturtle
+kwalletmanager
+cantor
+kdenetwork-filesharing
+ktorrent
+marble
+okular
+kget
+kmime
+kmbox
+grantleetheme
+akonadi-contacts
+kcalutils
+ksmtp
+libkgapi
+kmailtransport
+akonadi-calendar
+akonadi-mime
+akonadi-search
+akonadi-notes
+kgpg
+libkeduvocdocument
+kwordquiz
+parley
+kdevelop
+kdevelop-php
+umbrello
+krdc
+kdenlive
+kalzium
+kpimtextedit
+kldap
+kimap
+libkdepim
+pimcommon
+kdepim-runtime
+kidentitymanagement
+libkleo
+kopete"
+
 CWD=~
 STARTD=`pwd`
 
-LOGFILE="$CWD/kde-apps-$KDE_APPS_VERSION-build.log"
+LOGFILE="$CWD/build.log"
 
-echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+echo "============================= Начало kde-apps $KDE_APPS_VERSION сборки `date` =============================" >> $LOGFILE
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -pod ~/mkpkg/packages/kde-apps -si -bv $KDE_APPS_VERSION -bb 1; then
+    if mkpkg -ba -pod ~/repository/kde-apps -si -bv $KDE_APPS_VERSION -bb 1; then
            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
