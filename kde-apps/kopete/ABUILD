@@ -1,0 +1,28 @@
+pkgname=kopete
+pkgver=22.04.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Instant Messenger.")
+longdesc=("Multi-protocol IM client based on KDE Frameworks.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+# mediastreamer libotr
+build_deps=("knotifyconfig kcmutils ktexteditor kcontacts qca-qt5 kdelibs4support libkleo khtml
+libidn extra-cmake-modules libgadu jsoncpp kdoctools kdesignerplugin kdnssd kinit kidentitymanagement")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
