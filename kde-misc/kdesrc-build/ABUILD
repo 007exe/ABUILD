@@ -1,0 +1,28 @@
+pkgname=kdesrc-build
+pkgver=22.07
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A script to build KDE software from KDE's source repositories.")
+longdesc=("A script to build KDE software from KDE's source repositories.")
+
+source=("https://github.com/KDE/kdesrc-build/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("develop kde-misc")
+
+build_deps=("perl-libwww perl-xml-parser dialog perl-json perl-io-socket-ssl perl-net-ssleay perl-yaml-syck")
+
+removedep=("perl-libwww perl-xml-parser dialog perl-json perl-io-socket-ssl perl-net-ssleay perl-yaml-syck cmake")
+
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -d ${pkgdir}/usr/share/doc/samples
+  install -Dm644 kdesrc-buildrc-kf5-sample ${pkgdir}/usr/share/doc/samples/
+  install -Dm644 kf5-{applications,frameworks,kdepim,qt5,workspace}-build-include ${pkgdir}/usr/share/doc/samples/
+}
