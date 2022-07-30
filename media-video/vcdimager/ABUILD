@@ -1,0 +1,25 @@
+pkgname=vcdimager
+pkgver=2.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNU VCDimager.")
+longdesc=("A full-featured mastering suite for authoring disassembling and analyzing Video CD's and Super Video CD.")
+
+source=("https://ftp.gnu.org/gnu/vcdimager/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils media-video")
+
+build_deps=("libcdio libxml2 popt")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
