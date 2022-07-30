@@ -1,0 +1,34 @@
+pkgname=kinfocenter
+pkgver=5.25.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A utility that provides information about a computer system.")
+longdesc=("Utility providing information about the computer hardware.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("plasma kde-plasma")
+
+# vulkan-tools
+build_deps=("systemsettings glu xorg-xdpyinfo dmidecode extra-cmake-modules
+plasma-framework kdoctools wayland-utils mesa-utils fwupd aha")
+
+# vulkan-tools
+adddep=("wayland-utils mesa-utils fwupd aha")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+# Устанавливаем логотип дистрибутива
+  install -Dm644 ${filedir}/kcm-about-distrorc ${pkgdir}/etc/xdg/
+  install -Dm644 ${filedir}/logo_agilia.png ${pkgdir}/usr/share/kinfocenter/
+}
