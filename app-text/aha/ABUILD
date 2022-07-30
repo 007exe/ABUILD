@@ -1,0 +1,20 @@
+pkgname=aha
+pkgver=0.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Ansi HTML Adapter: convert ANSI escape sequences to HTML.")
+longdesc=("Converts ANSI escape sequences of a unix terminal to HTML code.")
+
+source=("https://github.com/theZiz/aha/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  make PREFIX=${pkgdir}/usr install
+}
