@@ -1,0 +1,31 @@
+pkgname=plasma-desktop
+pkgver=5.25.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("KDE Plasma Desktop.")
+longdesc=("KDE Plasma Desktop.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("plasma kde-plasma")
+
+# packagekit-qt5
+build_deps=("gawk kdelibs4support polkit-kde-agent kmenuedit systemsettings baloo xdg-user-dirs libibus
+extra-cmake-modules kdoctools xf86-input-evdev xf86-input-synaptics xf86-input-libinput xorg-server-devel
+scim kdesignerplugin kaccounts-integration intltool kinit")
+
+# NOTE: Это опциональные зависимости
+removedep=("plasma-nm powerdevil kscreen ibus scim kaccounts-integration packagekit-qt5")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
