@@ -1,0 +1,25 @@
+pkgname=socat
+pkgver=1.7.4.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Multipurpose relay.")
+longdesc=("Multipurpose relay (SOcket CAT).")
+
+source=("http://www.dest-unreach.org/socat/download/${pkgname}-${pkgver}.tar.gz")
+
+tags=("network net-misc")
+
+build_deps=("glibc readline openssl bash net-tools procps-ng")
+
+adddep=("bash")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
