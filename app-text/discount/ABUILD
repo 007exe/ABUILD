@@ -1,0 +1,30 @@
+pkgname=discount
+pkgver=2.2.7.b
+_pkgver=2.2.7b
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Markdown implementation written in C.")
+longdesc=("A Markdown-to HTML translator written in C.")
+
+source=("https://github.com/Orc/discount/archive/v${_pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs app-text")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure.sh \
+    --prefix=/usr \
+    --enable-all-features \
+    --with-fenced-code \
+    --github-checkbox \
+    --shared
+  make -j${numjobs}
+# Исправлен вызов ldconfig
+  sed -e 's|/sbin/ldconfig|/sbin/ldconfig -n|' -i librarian.sh
+  make DESTDIR=${pkgdir} install.everything
+  install -Dm644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
