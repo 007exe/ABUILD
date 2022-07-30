@@ -1,0 +1,49 @@
+pkgname=transcode
+pkgver=1.1.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A video/DVD ripper and encoder for the terminal/console.")
+longdesc=("Utilities for transcoding video and audio codecs in different containers.")
+
+source=("https://sources.archlinux.org/other/community/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("utils media-video")
+
+build_deps=("gawk imagemagick lzo libdvdread mjpegtools sdl libmpeg2 libxaw a52dec alsa-lib libtheora lame libvorbis")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's|freetype/ftglyph.h|freetype2/freetype/ftglyph.h|' -i filter/subtitler/load_font.c
+   autoreconf -vi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-libmpeg2convert \
+    --enable-imagemagick \
+    --enable-mjpegtools \
+    --enable-freetype2 \
+    --enable-libmpeg2 \
+    --enable-libjpeg \
+    --enable-libxml2 \
+    --enable-theora \
+    --enable-vorbis \
+    --enable-libdv \
+    --enable-lame \
+    --enable-xvid \
+    --enable-x264 \
+    --enable-alsa \
+    --enable-mmx \
+    --enable-ogg \
+    --enable-v4l \
+    --enable-lzo \
+    --enable-sdl \
+    --enable-a52 \
+    --disable-sse \
+    --disable-sse2 \
+    --disable-ffmpeg \
+    --disable-altivec
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
