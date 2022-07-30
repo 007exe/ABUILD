@@ -1,0 +1,61 @@
+pkgname=fwupd
+pkgver=1.8.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple daemon to allow session software to update firmware.")
+longdesc=("Aims to make updating firmware on Linux automatic, safe and reliable.")
+
+source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
+
+tags=("sys-apps utils")
+
+# libsmbios tpm2-tss flashrom libjcat fwupd-efi libcbor noto-fonts-cjk gnu-efi-libs
+build_deps=("libxmlb efivar python libgusb polkit gcab bluez gnutls libarchive curl json-glib libgudev libmm-glib
+libqmi protobuf-c meson valgrind gobject-introspection gi-docgen python-cairo noto-fonts python-gobject vala
+bash-completion python-pillow help2man")
+
+# libsmbios tpm2-tss flashrom libjcat fwupd-efi libcbor
+adddep=("shared-mime-info hicolor-icon-theme libxmlb efivar python libgusb polkit gcab bluez gnutls libarchive curl
+json-glib libgudev libmm-glib libqmi protobuf-c")
+
+# NOTE: Это опциональные зависимости
+removedep=("udisks")
+
+config_files=("etc/fwupd/daemon.conf
+etc/fwupd/redfish.conf
+etc/fwupd/remotes.d/fwupd-tests.conf
+etc/fwupd/remotes.d/lvfs-testing.conf
+etc/fwupd/remotes.d/lvfs.conf
+etc/fwupd/remotes.d/vendor-directory.conf
+etc/fwupd/remotes.d/vendor.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D b_lto=false \
+    -D docs=enabled \
+    -D gresource_quirks=disabled \
+    -D plugin_intel_spi=true \
+    -D supported_build=enabled \
+    -D efi_binary=false \
+    -D systemd=false
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+
+# Режим исправления в соответствии с polkit
+    install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
+
+# Удаление тестов
+    rm -r ${pkgdir}/usr/share/installed-tests/
+    mv ${pkgdir}/usr/bin/{,fwupd-}dbxtool
+    mv ${pkgdir}/usr/share/man/man1/{,fwupd-}dbxtool.1
+
+# Удаление модулей module-load config так, как она встроена
+#    rm ${pkgdir}/usr/lib/modules-load.d/fwupd-msr.conf
+#    rmdir ${pkgdir}/usr/lib/modules-load.d
+}
+
