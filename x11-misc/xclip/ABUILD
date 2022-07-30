@@ -1,0 +1,22 @@
+pkgname=xclip
+pkgver=0.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Command-line interface to the X11 clipboard.")
+
+source=("https://github.com/astrand/xclip/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("apps x11-misc")
+
+build_deps=("libxmu")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./bootstrap
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
