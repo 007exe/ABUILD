@@ -1,0 +1,26 @@
+pkgname=dvd+rw-tools
+pkgver=7.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("dvd burning tools.")
+longdesc=("A set of tools for DVD+RW/-RW drives.")
+
+source=("http://fy.chalmers.se/~appro/linux/DVD+RW/tools/${pkgname}-${pkgver}.tar.gz")
+
+tags=("console app-cdr")
+
+# cdrkit
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+
+  install -m755 -d ${pkgdir}/usr/bin
+  install -m755 -d ${pkgdir}/usr/share/man/man1
+
+  install -m755 growisofs dvd+rw-booktype dvd+rw-format dvd+rw-mediainfo dvd-ram-control ${pkgdir}/usr/bin/
+  install -m644 growisofs.1 ${pkgdir}/usr/share/man/man1/growisofs.1
+}
