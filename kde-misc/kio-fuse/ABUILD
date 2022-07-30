@@ -1,0 +1,24 @@
+pkgname=kio-fuse
+pkgver=5.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("FUSE interface for KIO.")
+longdesc=("FUSE interface for KIO.")
+
+tags=("libs kde-misc")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+build_deps=("kio fuse3 extra-cmake-modules")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
