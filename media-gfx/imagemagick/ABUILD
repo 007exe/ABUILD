@@ -1,17 +1,17 @@
 pkgname=imagemagick
-pkgver=7.1.0.32
+pkgver=7.1.0.44
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An image viewing/manipulation program.")
 longdesc=("ImageMagick is a collection of tools and libraries to read, write, and manipulate an image in various image formats. Image processing operations are available from the command line. Bindings for Perl and C++ are also available.")
 
-source=("https://download.imagemagick.org/ImageMagick/download/releases/$_tarname.tar.xz")
-
-tags=("media-gfx xapps")
-
 _relname=ImageMagick-${pkgver%%.*}
 _tarname=ImageMagick-${pkgver%.*}-${pkgver##*.}
+
+source=("https://imagemagick.org/archive/$_tarname.tar.xz")
+
+tags=("media-gfx xapps")
 
 build_deps=("ghostscript openexr libwmf librsvg libxml2 openjpeg2 libraw opencl-headers libwebp libzip libjxl highway chrpath ocl-icd glu libheif jbigkit lcms2 libxext liblqr libraqm libpng djvulibre")
 
