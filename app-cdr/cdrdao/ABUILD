@@ -1,0 +1,28 @@
+pkgname=cdrdao
+pkgver=1.2.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Records audio/data CD-Rs in disk-at-once (DAO) mode.")
+longdesc=("Burn CDs in disk-at-once mode -- with optional GUI frontend.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("console app-cdr")
+
+build_deps=("gcc-libs lame libmad libvorbis libao")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --sysconfdir=/etc \
+    --without-xdao --with-lame \
+    --with-ogg-support --with-mp3-support \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
