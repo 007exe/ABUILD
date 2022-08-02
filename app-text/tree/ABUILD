@@ -1,19 +1,19 @@
 pkgname=tree
-pkgver=1.8.0
-pkgbuild=2
+pkgver=2.0.2
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Utility which displays a tree view of directory contents")
-longdesc=("The tree utility recursively displays the contents of directories in a tree-like format. Tree is basically a UNIX port of the tree DOS utility.")
-
-tags=("base app-text")
+shortdesc=("Utility which displays a tree view of directory contents.")
+longdesc=("The tree utility recursively displays the contents of directories in a tree-like format.")
 
 source=("http://deb.debian.org/debian/pool/main/t/tree/${pkgname}_${pkgver}.orig.tar.gz")
 
-build_deps="glibc"
+tags=("utils app-text")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
   make -j${numjobs}
-  make prefix="${pkgdir}/usr" MANDIR="${pkgdir}/usr/share/man/man1" LIBDIR="/usr/lib$LIBDIRSUFFIX" install
+  make prefix=${pkgdir}/usr MANDIR=${pkgdir}/usr/share/man/man1 LIBDIR=/usr/lib install
 }
