@@ -1,6 +1,6 @@
 pkgname=openldap
-pkgver=2.6.2
-pkgbuild=2
+pkgver=2.6.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Lightweight Directory Access Protocol (LDAP) client and server.")

@@ -1,8 +1,8 @@
 #!/usr/bin/openrc-run
 
 depend() {
-	need net.lo
-	before hald avahi-daemon
+	need
+	before hald avahi
 }
 
 start() {
