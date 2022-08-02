@@ -1,6 +1,6 @@
 pkgname=ninja
-pkgver=1.10.2
-pkgbuild=2
+pkgver=1.11.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Small build system with a focus on speed.")
