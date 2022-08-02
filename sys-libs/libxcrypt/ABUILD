@@ -28,4 +28,5 @@ echo "============================================================"
 #    --disable-failure-tokens
 #  make -j${numjobs}
 #  make DESTDIR=$pkgdir install
+ERROR
 }
