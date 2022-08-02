@@ -1,53 +1,36 @@
 pkgname=smplayer
-pkgver=20.4.2
+pkgver=22.7.0
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
-shortdesc=("SMPlayer is a GUI media player based on Qt 4, using mplayer as its backend")
+shortdesc=("Great Qt GUI front-end for mplayer/mpv.")
+longdesc=("Media player with built-in codecs that can play virtually all video and audio formats.")
 
-source=("http://downloads.sourceforge.net/smplayer/smplayer-${pkgver}.tar.bz2")
+source=("https://github.com/smplayer-dev/${pkgname}/releases/download/v$pkgver/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xapps media-video"
+tags=("apps media-video")
 
-build_deps="qt4"
+build_deps=("qt5-tools glibc qt5-base mpv libx11 zlib gcc-libs")
 
-adddep="MPlayer"
+adddep=("mpv hicolor-icon-theme")
 
-before_build(){
-  go_src_dir
-
-  # Fix invalid PNG icons to work with libpng 1.6
-  # http://sourceforge.net/p/smplayer/bugs/571/
-  #find -name '*.png' -exec optipng -quiet -force -fix {} +
-
-  # NO_DEBUG_ON_CONSOLE
-  sed -i 's:#\(DEFINES += NO_DEBUG_ON_CONSOLE\):\1:' src/smplayer.pro
-
-  # Docs
-  smdoc="/share/doc/packages/smplayer"
-  if [ -n "`cat ./Makefile | grep DOC_PATH | grep $smdoc`" ]; then
-     sed -i "/^DOC_PATH=/s|$smdoc|/doc/${pkgname}-${pkgver}|" ./Makefile || exit 1
-  fi
-}
+# NOTE: Это опциональные зависимости
+removedep=("smplayer-themes smplayer-skins smtube youtube-dl yt-dlp mplayer")
 
 build() {
   go_src_dir
   burn_patches
-
-  sed -i "s|translations/smplayer_gl.ts|#translations/smplayer_gl.ts|" \
-         src/smplayer.pro
-
-  make PREFIX=/usr -j${numjobs}
-  make PREFIX=/usr DESTDIR=${pkgdir} install
-
-  if [ ! -d ${pkgdir}/usr/share/pixmaps ]; then
-     install -dm755 ${pkgdir}/usr/share/pixmaps
-     ln -s /usr/share/icons/hicolor/64x64/apps/smplayer.png ${pkgdir}/usr/share/pixmaps/
-  fi
-
-  sed -i 's|Exec=smplayer %U|Exec=smplayer %F|' \
-         ${pkgdir}/usr/share/applications/smplayer.desktop
-
-  sed -i 's|Exec=smplayer -add-to-playlist %U|Exec=smplayer -add-to-playlist %F|' \
-         ${pkgdir}/usr/share/applications/smplayer_enqueue.desktop
+  sed '/gzip -9/d' -i Makefile
+  export CXXFLAGS="${CXXFLAGS} ${CPPFLAGS}"
+  make \
+    PREFIX=/usr \
+    DOC_PATH="\\\"/usr/share/doc/smplayer\\\"" \
+    QMAKE_OPTS=DEFINES+=NO_DEBUG_ON_CONSOLE \
+    CFLAGS_EXTRA="${CFLAGS} ${CPPFLAGS} ${LDFLAGS}" \
+    all
+  make \
+    PREFIX=/usr \
+    DOC_PATH=/usr/share/doc/smplayer \
+    DESTDIR=${pkgdir} \
+    install
 }
