@@ -3,20 +3,22 @@ pkgver=0.16
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Attempts to detect a laptop")
+shortdesc=("Attempts to detect a laptop.")
 longdesc=("laptop-detect attempts to determine whether it is being run on a laptop or a desktop and appraises its caller of this. Returns 0 if laptop, 1 otherwise.")
+
+#source=("git:https://gitlab.com/debiants/laptop-detect.git")
+source=("https://gitlab.com/debiants/laptop-detect/-/archive/debian/${pkgver}/laptop-detect-debian-${pkgver}.tar.bz2")
 
 tags=("utils app-admin")
 
-build_deps="mkpkg"
-adddep="dmidecode"
+build_deps=("bash")
 
-source=("git:https://gitlab.com/debiants/laptop-detect.git")
-#source=("https://gitlab.com/debiants/laptop-detect/-/archive/debian/$pkgver/laptop-detect-debian-$pkgver.tar.bz2")
+adddep=("dmidecode")
 
 build() {
   go_src_dir
+  sed -e "s/@VERSION@/$pkgver/g" < laptop-detect.in > laptop-detect
   install -Dm0755 laptop-detect.in ${pkgdir}/usr/bin/laptop-detect
   install -Dm644 laptop-detect.1 -t ${pkgdir}/usr/share/man/man1/
-  install -Dm644 debian/copyright -t ${pkgdir}/usr/share/licenses/$pkgname/
+  install -Dm644 debian/copyright -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
