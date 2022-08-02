@@ -5,5 +5,5 @@ command="/usr/bin/cups-browsed"
 command_background="true"
 
 depend() {
-	need cupsd avahi-daemon
+	need cupsd avahi
 }
