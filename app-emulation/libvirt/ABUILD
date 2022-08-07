@@ -1,0 +1,123 @@
+pkgname=libvirt
+pkgver=8.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C toolkit to manipulate virtual machines.")
+longdesc=("API for controlling virtualization engines (openvz,kvm,qemu,virtualbox,xen,etc).")
+
+source=("https://libvirt.org/sources/$pkgname-$pkgver.tar.xz")
+
+tags=("app-emulation libs")
+
+# open-iscsi libiscsi ceph-libs glusterfs qemu-base
+build_deps=("meson libxslt python-docutils lvm2 rpcsvc-proto dnsmasq
+iproute2 libpciaccess yajl fuse3 gnutls parted libssh libxml2 numactl polkit")
+
+config_files=("etc/libvirt/libvirt-admin.conf
+etc/libvirt/libvirt.conf
+etc/libvirt/libvirtd.conf
+etc/libvirt/lxc.conf
+etc/libvirt/nwfilter/allow-arp.xml
+etc/libvirt/nwfilter/allow-dhcp-server.xml
+etc/libvirt/nwfilter/allow-dhcpv6-server.xml
+etc/libvirt/nwfilter/allow-dhcp.xml
+etc/libvirt/nwfilter/allow-dhcpv6.xml
+etc/libvirt/nwfilter/allow-incoming-ipv4.xml
+etc/libvirt/nwfilter/allow-incoming-ipv6.xml
+etc/libvirt/nwfilter/allow-ipv6.xml
+etc/libvirt/nwfilter/allow-ipv4.xml
+etc/libvirt/nwfilter/clean-traffic-gateway.xml
+etc/libvirt/nwfilter/clean-traffic.xml
+etc/libvirt/nwfilter/no-arp-ip-spoofing.xml
+etc/libvirt/nwfilter/no-arp-mac-spoofing.xml
+etc/libvirt/nwfilter/no-arp-spoofing.xml
+etc/libvirt/nwfilter/no-ip-multicast.xml
+etc/libvirt/nwfilter/no-ipv6-multicast.xml
+etc/libvirt/nwfilter/no-ip-spoofing.xml
+etc/libvirt/nwfilter/no-ipv6-spoofing.xml
+etc/libvirt/nwfilter/no-mac-spoofing.xml
+etc/libvirt/nwfilter/no-mac-broadcast.xml
+etc/libvirt/nwfilter/no-other-l2-traffic.xml
+etc/libvirt/nwfilter/no-other-rarp-traffic.xml
+etc/libvirt/nwfilter/qemu-announce-self-rarp.xml
+etc/libvirt/nwfilter/qemu-announce-self.xml
+etc/libvirt/qemu.conf
+etc/libvirt/qemu-lockd.conf
+etc/libvirt/qemu/networks/default.xml
+etc/libvirt/virtchd.conf
+etc/libvirt/virtinterfaced.conf
+etc/libvirt/virtlockd.conf
+etc/libvirt/virtlogd.conf
+etc/libvirt/virt-login-shell.conf
+etc/libvirt/virtlxcd.conf
+etc/libvirt/virtnetworkd.conf
+etc/libvirt/virtnodedevd.conf
+etc/libvirt/virtnwfilterd.conf
+etc/libvirt/virtproxyd.conf
+etc/libvirt/virtqemud.conf
+etc/libvirt/virtsecretd.conf
+etc/libvirt/virtstoraged.conf
+etc/libvirt/virtvboxd.conf
+etc/logrotate.d/libvirtd
+etc/logrotate.d/libvirtd.lxc
+etc/logrotate.d/libvirtd.qemu
+etc/sasl2/libvirt.conf")
+
+# NOTE: Это опциональные зависимости
+removedep=("gettext openbsd-netcat dmidecode dnsmasq radvd iptables-nft qemu-desktop qemu-emulators-full lvm2 open-iscsi swtpm")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|/sysconfig/|/conf.d/|g' \
+    src/remote/libvirtd.service.in \
+    tools/{libvirt-guests.service,libvirt-guests.sh,virt-pki-validate}.in \
+    docs/manpages/libvirt-guests.rst \
+    src/locking/virtlockd.service.in \
+    src/logging/virtlogd.service.in
+  sed -i 's|/usr/libexec/qemu-bridge-helper|/usr/lib/qemu/qemu-bridge-helper|g' \
+    src/qemu/qemu.conf.in \
+    src/qemu/test_libvirtd_qemu.aug.in
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D libexecdir=lib/libvirt \
+    -D runstatedir=/run \
+    -D qemu_user=libvirt-qemu \
+    -D qemu_group=libvirt-qemu \
+    -D netcf=disabled \
+    -D openwsman=disabled \
+    -D apparmor=disabled \
+    -D apparmor_profiles=disabled \
+    -D selinux=disabled \
+    -D wireshark_dissector=disabled \
+    -D driver_bhyve=disabled \
+    -D driver_hyperv=disabled \
+    -D driver_libxl=disabled \
+    -D driver_vz=disabled \
+    -D sanlock=disabled \
+    -D secdriver_apparmor=disabled \
+    -D secdriver_selinux=disabled \
+    -D storage_sheepdog=disabled \
+    -D storage_vstorage=disabled \
+    -D dtrace=disabled \
+    -D numad=disabled \
+    -D storage_zfs=enabled \
+    -D storage_rbd=enabled
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+
+  mkdir -p ${pkgdir}/etc/init.d
+  cat ${filedir}/libvirtd.init > ${pkgdir}/etc/init.d/libvirtd
+  chmod 755 ${pkgdir}/etc/init.d/libvirtd
+
+  mkdir -p ${pkgdir}/etc/conf.d
+  cat ${filedir}/libvirtd.confd > ${pkgdir}/etc/conf.d/libvirtd
+  chmod 644 ${pkgdir}/etc/conf.d/libvirtd
+
+  mkdir -p ${pkgdir}/etc/polkit-1/localauthority/50-local.d
+  cat ${filedir}/org.libvirt.unix.manage.pkla > ${pkgdir}/etc/polkit-1/localauthority/50-local.d/org.libvirt.unix.manage.pkla
+  chmod 700 ${pkgdir}/etc/polkit-1/localauthority
+}
