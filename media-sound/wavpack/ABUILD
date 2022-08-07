@@ -1,6 +1,6 @@
 pkgname=wavpack
-pkgver=5.4.0
-pkgbuild=2
+pkgver=5.5.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Audio compression format with lossless, lossy and hybrid compression modes.")
