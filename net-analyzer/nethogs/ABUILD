@@ -1,0 +1,34 @@
+pkgname=nethogs
+pkgver=0.8
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A net top tool which displays traffic used per process instead of per IP or interface"
+
+source=("http://cdnetworks-kr-1.dl.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.0.tar.gz")
+
+
+tags="net-misc console"
+
+build_deps=" libpcap ncurses"
+
+
+build()
+{
+go_src_dir
+burn_patches
+
+  make || return 1
+  
+    install -d -m 755 $pkgdir/usr/bin || exit 1
+
+	install -m 755 nethogs $pkgdir/usr/bin || exit 1
+
+	install -d -m 755 $pkgdir/usr/man/man8 || exit 1
+
+	install -m 644 nethogs.8 $pkgdir/usr/man/man8 || exit 1
+
+
+}
+
+
