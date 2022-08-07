@@ -1,0 +1,25 @@
+pkgname=python-feedparser
+pkgver=6.0.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Parse RSS and Atom feeds in Python.")
+longdesc=("feedparser - Parse Atom and RSS feeds in Python.")
+
+source=("https://github.com/kurtmckee/feedparser/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+# python-sgmllib3k
+build_deps=("libxml2 python python-setuptools")
+
+# python-sgmllib3k
+adddep=("libxml2")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/license
+}
