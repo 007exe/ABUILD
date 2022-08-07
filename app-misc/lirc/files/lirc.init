@@ -1,7 +1,7 @@
 #!/usr/bin/openrc-run
 
 depend() {
-	need lircd
+	need
 }
 
 start() {

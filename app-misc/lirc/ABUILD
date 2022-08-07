@@ -33,4 +33,8 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -Dm0755 ${filedir}/lirc.init ${pkgdir}/etc/init.d/lirc
+
+  install -Dm644 ${filedir}/irexec-confd ${pkgdir}/etc/conf.d/irexec
+  install -Dm644 ${filedir}/lircd.conf.4 ${pkgdir}/etc/conf.d/lircd
+  install -Dm644 ${filedir}/modprobed.lirc ${pkgdir}/etc/modprobe.d/lirc.conf
 }
