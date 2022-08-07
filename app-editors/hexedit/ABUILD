@@ -1,0 +1,17 @@
+pkgname=hexedit
+pkgver=1.2.13
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Simple hex editor"
+source=("http://rigaux.org/${pkgname}-${pkgver}.src.tgz")
+tags="develop app-editors"
+build_deps="ncurses"
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/man"
