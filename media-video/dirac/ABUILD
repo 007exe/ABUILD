@@ -1,0 +1,33 @@
+pkgname=dirac
+pkgver=1.0.2
+pkgbuild=3
+arch=('auto')
+
+shortdesc="dirac (free video compression format codec)"
+longdesc=("Dirac is an advanced royalty-free video compression format designed for a wide range of uses, from delivering low-resolution web content to broadcasting HD and beyond, to near-lossless studio editing."
+"Homepage: http://diracvideo.org/")
+
+source=("http://downloads.sourceforge.net/project/dirac/dirac-codec/Dirac-${pkgver}/dirac-${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build_deps="make gcc gcc-g++ sed grep coreutils doxygen"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--docdir=/usr/doc/${pkgname}-${pkgver}"
+
+after_build(){
+  cp -a ${pkgdir}/usr/share/doc/${pkgname}/* ${pkgdir}/usr/doc/${pkgname}-${pkgver}/
+  rm -rf ${pkgdir}/usr/share
+}
