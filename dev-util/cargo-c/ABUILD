@@ -1,10 +1,10 @@
 pkgname=cargo-c
-pkgver=0.9.8
+pkgver=0.9.11
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A cargo subcommand to build and install C-ABI compatibile dynamic and static libraries.")
-longdesc=("Helper program to build and install c-like libraries.")
+shortdesc=("Helper program to build and install c-like libraries.")
+longdesc=("A cargo subcommand to build and install C-ABI compatibile dynamic and static libraries.")
 
 source=("https://github.com/lu-zero/cargo-c/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
