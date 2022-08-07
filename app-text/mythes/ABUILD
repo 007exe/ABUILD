@@ -1,0 +1,31 @@
+pkgname=mythes
+pkgver=1.2.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="MyThes is a simple thesaurus that uses a structured text data file and an index file with binary search to lookup words and phrases and return information on part of speech, meanings, and synonyms"
+source=("http://downloads.sourceforge.net/sourceforge/hunspell/${pkgname}-${pkgver}.tar.gz")
+tags="libs dev-libs"
+build_deps="glibc perl hunspell"
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build()
+{
+  # run the example program:
+  ./example th_en_US_new.idx th_en_US_new.dat checkme.lst
+  # run the example program with stemming and morphological generation:
+  # e.g. to check mouse, mice, rodents, eats, eaten, ate, eating etc. words
+  ./example morph.idx morph.dat morph.lst morph.aff morph.dic
+}
