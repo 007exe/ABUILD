@@ -1,8 +1,8 @@
 # NOTE: порядок сборки инструментов: linux-api-headers->glibc->binutils->gcc->binutils->glibc
 # NOTE: valgrind необходимо пересобрать при обновлениии glibc
 pkgname=glibc
-pkgver=2.35
-pkgbuild=2
+pkgver=2.36
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("GNU C Library.")
