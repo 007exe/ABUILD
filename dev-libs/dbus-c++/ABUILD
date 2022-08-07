@@ -22,6 +22,7 @@ build() {
     --libdir=/usr/lib \
     --disable-static \
     --disable-ecore \
+    --disable-examples \
     --enable-glib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
