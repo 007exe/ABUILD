@@ -1,0 +1,37 @@
+pkgname=pypy
+pkgver=7.3.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python implementation written in Python, JIT enabled.")
+
+source="https://downloads.python.org/pypy/pypy2.7-v${pkgver}-src.zip"
+
+tags=("libs dev-python")
+
+# pypy
+build_deps=("tk sqlite mercurial expat bzip2 gdbm openssl libffi zlib ncurses")
+
+adddep=("expat bzip2 gdbm openssl libffi zlib ncurses")
+
+build() {
+  go_src_dir
+  cd pypy/goal
+  sed -i "s/, 'linux', 'linux2'//" targetpypystandalone.py
+  pypy ../../rpython/bin/rpython -Ojit --shared targetpypystandalone
+  PYTHONPATH=../.. ./pypy-c ../../lib_pypy/pypy_tools/build_cffi_imports.py
+  pypy pypy/tool/release/package.py --archive-name pypy --targetdir .
+  mkdir unpacked
+  tar xf pypy.tar.bz2 -C unpacked
+  cd unpacked
+  install -Dm755 pypy/bin/pypy ${pkgdir}/opt/pypy/bin/pypy
+  install -Dm755 pypy/bin/libpypy-c.so ${pkgdir}/opt/pypy/bin/libpypy-c.so
+  cp -r pypy/include pypy/lib_pypy pypy/lib-python pypy/site-packages ${pkgdir}/opt/pypy/
+  cd ..
+  mkdir -p ${pkgdir}/usr/bin ${pkgdir}/usr/lib
+  ln -s /opt/pypy/bin/pypy ${pkgdir}/usr/bin/pypy
+  ln -s /opt/pypy/bin/libpypy-c.so ${pkgdir}/usr/lib/libpypy-c.so
+  install -Dm644 README.rst ${pkgdir}/opt/pypy/README.rst
+  install -Dm644 LICENSE ${pkgdir}/opt/pypy/LICENSE
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/pypy/LICENSE
+}
