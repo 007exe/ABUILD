@@ -1,0 +1,87 @@
+pkgname=nginx
+pkgver=1.7.4
+pkgbuild=2
+shortdesc="lightweight HTTP server and IMAP/POP3 proxy server"
+longdesc="lightweight HTTP server and IMAP/POP3 proxy server"
+arch=('auto')
+build_deps=('pcre' 'zlib' 'openssl')
+tags=("server www-servers")
+
+config_files="etc/nginx/nginx.conf
+etc/nginx/sites-available/default
+etc/nginx/koi-win
+etc/nginx/koi-utf
+etc/nginx/win-utf
+etc/nginx/mime.types
+etc/nginx/scgi_params
+etc/nginx/uwsgi_params
+etc/nginx/fastcgi_params
+etc/nginx/fastcgi.conf
+etc/logrotate.d/nginx"
+source="http://nginx.org/download/nginx-${pkgver}.tar.gz"
+
+nginx_home=/var/lib/nginx
+nginx_tmp_path=${nginx_home}
+nginx_log_path=/var/log/nginx
+
+NGINX_MODULES_STD="access auth_basic autoindex browser charset empty_gif fastcgi
+geo gzip limit_req limit_conn map memcached proxy referer rewrite scgi ssi
+split_clients upstream_ip_hash userid uwsgi"
+NGINX_MODULES_OPT="addition auth_request dav degradation flv geoip gunzip gzip_static
+image_filter mp4 perl random_index realip secure_link spdy stub_status sub xslt"
+NGINX_MODULES_OPT_ENABLED=("gunzip gzip_static perl xslt")
+NGINX_MODULES=''
+for mod in $NGINX_MODULES_OPT_ENABLED; do
+    NGINX_MODULES="$NGINX_MODULES --with-http_${mod}_module"
+done
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr/ \
+    --conf-path=/etc/nginx/nginx.conf \
+    --pid-path=/run/nginx.pid \
+    --lock-path=/run/lock/nginx.lock \
+    --user=www-data \
+    --group=www-data \
+    --http-log-path=${nginx_log_path}/access.log \
+    --error-log-path=${nginx_log_path}/error.log \
+    --http-client-body-temp-path=${nginx_tmp_path}/client-body \
+    --http-proxy-temp-path=${nginx_tmp_path}/proxy \
+    --http-fastcgi-temp-path=${nginx_tmp_path}/fastcgi \
+    --http-scgi-temp-path=${nginx_tmp_path}/scgi \
+    --http-uwsgi-temp-path=${nginx_tmp_path}/uwsgi \
+    --with-ipv6 \
+    --with-pcre-jit \
+    --with-file-aio \
+    --with-http_ssl_module \
+    $NGINX_MODULES"
+
+after_build() {
+  go_src_dir
+  install -Dm644 contrib/vim/ftdetect/nginx.vim \
+	"$pkgdir"/usr/share/vim/vimfiles/ftdetect/nginx.vim
+  install -Dm644 contrib/vim/syntax/nginx.vim \
+	"$pkgdir"/usr/share/vim/vimfiles/syntax/nginx.vim
+  install -Dm644 contrib/vim/indent/nginx.vim \
+	"$pkgdir"/usr/share/vim/vimfiles/indent/nginx.vim
+
+  mkdir -p $pkgdir/etc/nginx/sites-{available,enabled}
+  install -Dm644 $filedir/nginx.conf $pkgdir/etc/nginx/nginx.conf
+  install -Dm644 $filedir/default.conf $pkgdir/etc/nginx/sites-available/default
+  ln -s ../sites-available/default $pkgdir/etc/nginx/sites-enabled/default
+  rm $pkgdir/etc/nginx/*.default
+
+  install -d "$pkgdir"/${nginx_tmp_path}
+  install -dm700 "$pkgdir"/${nginx_tmp_path}/proxy
+
+  chmod 750 "$pkgdir"/var/log/nginx
+  chown www-data:www-data "$pkgdir"/var/log/nginx
+
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+  install -D -m644 "$filedir"/nginx.logrotate "$pkgdir"/etc/logrotate.d/nginx
+  install -D -m755 "$filedir"/nginx.initd $pkgdir/etc/init.d/nginx
+  mkdir -p $pkgdir/usr/share/nginx
+  mv $pkgdir/usr/html $pkgdir/usr/share/nginx/html
+  rm -rf $pkgdir/var/run
+}
+
