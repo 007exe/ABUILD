@@ -1,0 +1,55 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru 
+
+pkgname=urbanterror
+pkgver=4.2.014
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A team-based tactical shooter based on the Quake 3 Engine"
+
+source=("https://github.com/Barbatos/ioq3-for-UrbanTerror-4/archive/release-${pkgver}.tar.gz")
+
+tags="games games-fps"
+
+build_deps="sdl openal curl"
+
+adddep="urbanterror-data=>${pkgver} openal curl"
+
+custom_opts="no_copydoc"
+
+#===================================
+before_build(){
+  cd ${srcdir}/ioq3-for-UrbanTerror-4-release-${pkgver}
+  sed -i 's|"Quake III Arena"|"Urban Terror"|g' \
+         code/q3_ui/ui_mods.c \
+         code//q3_ui/ui_servers2.c
+  sed -i 's|"/.q3a"|"/.urbanterror"|g' \
+         code/sys/sys_unix.c \
+         code/unix/unix_shared.c
+  echo "End before_build"
+}
+
+#===================================
+build(){
+  cd ${srcdir}/ioq3-for-UrbanTerror-4-release-${pkgver}
+  make
+  echo "End build"
+}
+
+#===================================
+after_build(){
+  cd ${srcdir}/ioq3-for-UrbanTerror-4-release-${pkgver}
+  install -dm755 ${pkgdir}/usr/doc/${pkgname}-${pkgver}
+  install -Dm644 ./{COPYING.txt,ChangeLog,README,id-readme.txt,md4-readme.txt,ioUrbanTerror_README.txt} \
+                ${pkgdir}/usr/doc/${pkgname}-${pkgver}
+
+  # Copy binaries.
+  install -Dm755 build/release-linux-*/Quake3-UrT-Ded.* ${pkgdir}/usr/bin/ioUrTded
+  install -Dm755 build/release-linux-*/Quake3-UrT.* ${pkgdir}/usr/bin/ioUrbanTerror
+
+  # Copy launch scripts.
+  install -Dm755 ${filedir}/urbanterror.sh ${pkgdir}/usr/bin/urbanterror
+  install -Dm755 ${filedir}/urbanterror-server.sh ${pkgdir}/usr/bin/urbanterror-server
+  install -Dm644  code/unix/iourbanterror.png ${pkgdir}/usr/share/pixmaps/urbanterror.png
+  echo "End after_build"
+}

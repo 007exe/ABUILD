@@ -1,0 +1,22 @@
+pkgname=openttd-opengfx
+pkgver=0.5.1
+pkgbuild=1
+arch=('noarch')
+
+shortdesc="OpenGFX is an open source graphics base set designed to be used by OpenTTD"
+longdesc=("OpenGFX is an open source graphics base set for OpenTTD which can completely replace the TTD base set. The main goal of OpenGFX therefore is to provide a set of free base graphics which make it possible to play OpenTTD without requiring the (copyrighted) files from the TTD CD. This potentially increases the OpenTTD fanbase and makes it a true free game. http://wiki.openttd.org/OpenGFX_Readme")
+source=("http://bundles.openttdcoop.org/opengfx/releases/${pkgver}/opengfx-${pkgver}.zip n")
+tags="games-misc games"
+build_deps="binutils tar"
+adddep="openttd"
+docs="*.txt"
+
+build() {
+  cd $srcdir
+  unzip ${srcache}/opengfx-${pkgver}.zip
+  tar xf opengfx-${pkgver}.tar
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share/openttd/data/
+  cp *.grf ${pkgdir}/usr/share/openttd/data/ || exit 1
+  cp *.obg ${pkgdir}/usr/share/openttd/data/ || exit 1
+}
