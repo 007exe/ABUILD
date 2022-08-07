@@ -1,0 +1,75 @@
+pkgname=avogadrolibs
+pkgver=1.97.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Advanced molecule editor and visualizer 2 - libraries.")
+longdesc=("Libraries that provide 3D rendering, visualization, analysis and data processing useful in computational chemistry, molecular modeling, bioinformatics, materials science, and related areas.")
+
+source=("https://github.com/OpenChemistry/avogadrolibs/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("sci-libs libs")
+
+# avogadro-molecules avogadro-crystals
+# libmsym -DUSE_LIBMSYM=OFF
+# genxrdpattern -DUSE_SYSTEM_GENXRDPATTERN=ON
+# vtk -DUSE_VTK=ON
+build_deps=("molequeue glew spglib hdf5 cmake eigen boost python mmtf-cpp pybind11 qt5-tools qt5-svg tbb openmpi")
+
+# NOTE: Это опциональные зависимости
+removedep=("avogadrolibs-qt5")
+
+pkglist=("avogadrolibs-qt5")
+
+before_build() {
+  mkdir -p ${srcdir}/crystals ${srcdir}/molecules
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_C_CLAFS="$CFLAGS -ffat-lto-objects" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -ffat-lto-objects" \
+    -DENABLE_TRANSLATIONS=ON \
+    -DUSE_HDF5=ON \
+    -DUSE_PYTHON=ON \
+    -DUSE_VTK=OFF \
+    -DUSE_LIBMSYM=OFF \
+    -DUSE_SYSTEM_GENXRDPATTERN=OFF \
+    -DUSE_SPGLIB=OFF \
+    -DUSE_PROTOCALL=OFF \
+    -DBUILD_GPL_PLUGINS=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  rm -r ${pkgdir}/usr/lib/libAvogadroQt* \
+        ${pkgdir}/usr/lib/libAvogadroMoleQueue* \
+        ${pkgdir}/usr/lib/libAvogadroVtk* \
+        ${pkgdir}/usr/include/avogadro/{molequeue,qt*,vtk} \
+        ${pkgdir}/usr/lib/avogadro2/{scripts,staticplugins}
+
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+
+# Перемещаем модуль python в нужное место
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  mkdir -p "$pkgdir${site_packages}"
+  mv ${pkgdir}/usr/lib/avogadro "$pkgdir${site_packages}"
+}
+
+avogadrolibs-qt5() {
+  pkgname=avogadrolibs-qt5
+  shortdesc=("Qt 5 modules for Avogadro.")
+  longdesc=("Libraries that provide 3D rendering, visualization, analysis and data processing useful in computational chemistry, molecular modeling, bioinformatics, materials science, and related areas.")
+  adddep=("avogadrolibs")
+}
+
+avogadrolibs-qt5_prep() {
+  go_src_dir
+  DESTDIR=${pkgdir} cmake --install build/avogadro/molequeue
+  DESTDIR=${pkgdir} cmake --install build/avogadro/qtgui
+  DESTDIR=${pkgdir} cmake --install build/avogadro/qtopengl
+  DESTDIR=${pkgdir} cmake --install build/avogadro/qtplugins
+  DESTDIR=${pkgdir} cmake --install build/avogadro/vtk
+}
