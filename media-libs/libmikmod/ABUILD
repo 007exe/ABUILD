@@ -1,0 +1,37 @@
+#ABUILD created by: NK, nk-man at yandex.ru 
+pkgname=libmikmod
+pkgver=3.3.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A portable sound library"
+
+longdesc=("Mikmod is a module player and library supporting many formats, including mod, s3m, it, and xm. Originally a player for MS-DOS, MikMod has been ported to other platforms, such as Unix, Macintosh, BeOS, and Java(!!). Homepage: http://sourceforge.net/projects/mikmod/")
+
+source=("http://downloads.sourceforge.net/mikmod/${pkgname}-${pkgver}.tar.gz")
+
+tags="media-libs libs"
+
+build_deps="make gcc glibc alsa-lib grep sed pkg-config binutils kernel-headers"
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--infodir=/usr/info \
+--enable-alsa \
+--enable-af \
+--enable-esd \
+--enable-oss \
+--enable-sam9407 \
+--enable-ultra \
+--enable-dl \
+--enable-threads"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
