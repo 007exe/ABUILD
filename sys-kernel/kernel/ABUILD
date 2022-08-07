@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=5.18.12
+pkgver=5.19.0
 pkgbuild=1
 arch=("auto")
 
@@ -65,7 +65,7 @@ before_build() {
   make olddefconfig
 
 # Ручная настройка ядра
-  make menuconfig
+#  make menuconfig
 
   echo "*******************************************************"
   echo "*                                                     *"
@@ -79,7 +79,7 @@ before_build() {
   echo "*******************************************************"
   echo ""
 
-  cp .config ~/${pkgver}-defconfig-x86_64
+  cp .config ~/defconfig-x86_64
 }
 
 #################################################################################################################################
