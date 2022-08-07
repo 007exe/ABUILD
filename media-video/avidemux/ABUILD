@@ -1,0 +1,34 @@
+pkgname=avidemux
+pkgver=2.6.8
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Avidemux (Video editor)"
+
+source=("http://download.berlios.de/${pkgname}/${pkgname}_${pkgver}.tar.gz")
+
+numjobs=1
+
+tags="xapps media-video"
+
+build_deps="sdl libdca libmad faad2 opencore-amr libvorbis faac lame twolame libmpeg2 xvidcore x264"
+
+adddep="sdl libdca libmad faad2 opencore-amr libvorbis faac lame twolame libmpeg2 xvidcore x264"
+
+
+build()
+{
+  go_src_dir
+ bash bootStrap.bash
+    sed -i -e 's/avidemux2_gtk/avidemux3_qt4/g' avidemux2.desktop
+    sed -i -e 's/avidemux2/avidemux/g' "$pkgname"2.desktop
+
+
+    cp -r install/usr/ "$pkgdir"/
+
+    install -Dm644 "$pkgname"_icon.png "$pkgdir"/usr/share/pixmaps/"$pkgname"2.png
+
+    desktop-file-install "$pkgname"2.desktop --dir "$pkgdir"/usr/share/applications/"$pkgname".desktop
+  
+}
+
