@@ -1,0 +1,28 @@
+pkgname=dfu-util
+pkgver=0.1
+pkgbuild=2
+arch=('auto')
+
+shortdesc="DFU Utility"
+
+source=("git:git://git.openezx.org/dfu-util.git")
+tags="dev-embedded utils"
+before_build() {
+	autoreconf --install --force
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--mandir=/usr/man \
+	--program-prefix= \
+	--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
