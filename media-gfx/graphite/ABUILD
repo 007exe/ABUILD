@@ -24,12 +24,12 @@ build() {
 # Исправлен нежелательный флаг -O3 (взят из Debian)
   find . -type f ! -name "rules" ! -name "changelog" -exec sed -i -e 's/\-O3//g' {} \;
   make -j${numjobs}
-  make -j1 docs
+#  make -j1 docs
   make DESTDIR=${pkgdir} install
 
   mkdir -p ${pkgdir}/usr/share/doc/graphite2/api
 #  cp -vrf doc/doxygen/{html,latex/refman.pdf} ${pkgdir}/usr/share/doc/graphite2/api
-  cp -vrf doc/{GTF,manual}.html ${pkgdir}/usr/share/doc/graphite2
+#  cp -vrf doc/{GTF,manual}.html ${pkgdir}/usr/share/doc/graphite2
 
   mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 ${srcdir}/graphite2-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
