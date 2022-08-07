@@ -1,0 +1,45 @@
+pkgname=gsmartcontrol
+pkgver=0.8.7
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A graphical user interface for the smartctl hard disk drive health inspection tool"
+
+source=("http://downloads.sourceforge.net/project/gsmartcontrol/${pkgver}/gsmartcontrol-${pkgver}.tar.bz2")
+
+tags="xapps app-admin"
+
+build_deps="make gcc gcc-g++ coreutils gtkmm grep"
+
+adddep="smartmontools gnome-icon-theme"
+
+before_build(){
+  go_src_dir
+  # Modify desktop file
+  sed -i "s|^Exec=.*|Exec="@prefix@/bin/gsmartcontrol_polkit"|" \
+         data/gsmartcontrol.desktop.in
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+after_build(){
+  # Install launcher script
+  install -m755 "${filedir}"/gsmartcontrol_polkit \
+                "${pkgdir}/usr/bin/gsmartcontrol_polkit"
+
+  # Install policy file
+  install -Dm644 "${filedir}"/org.archlinux.pkexec.gsmartcontrol.policy \
+                "${pkgdir}/usr/share/polkit-1/actions/org.archlinux.pkexec.gsmartcontrol.policy"
+}
