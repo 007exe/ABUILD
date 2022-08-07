@@ -1,0 +1,19 @@
+pkgname=libmirage
+pkgver=1.5.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="CDEmu image library"
+
+source=("http://downloads.sourceforge.net/sourceforge/cdemu/${pkgname}-${pkgver}.tar.bz2")
+
+tags="libs sys-fs"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_KEYS="--prefix=/usr \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib${LIBDIRSUFFIX}"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
