@@ -66,6 +66,7 @@ dev-util             | Различные утилиты для разработ
 dev-vcs              | Утилиты, ориентированные на контроль версий.
 cinnamon             | Основные пакеты Cinnamon.
 cinnamon-extra       | Дополнительные пакеты Cinnamon.
+games-engines        | Игровые движки.
 games-misc           | Различные игры.
 games-util           | Различные утилиты связанные с играми.
 gnome-base           | Основные пакеты GNOME.
