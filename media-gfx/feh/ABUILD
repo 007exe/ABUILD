@@ -1,21 +1,21 @@
 pkgname=feh
-pkgver=3.7.2
+pkgver=3.9
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Fast and light imlib2-based image viewer")
-longdesc=("Feh is a fast, lightweight image viewer which uses Imlib2. It is commandline-driven and supports multiple images through slideshows, thumbnail browsing or multiple windows, and montages or index prints.")
+shortdesc=("Fast and light imlib2-based image viewer.")
+longdesc=("Feh is a fast, lightweight image viewer which uses Imlib2.")
 
 source=(" https://feh.finalrewind.org/feh-${pkgver}.tar.bz2")
 
-tags="media-gfx xapps"
+tags=("media-gfx apps")
 
-build_deps="libxt curl libxinerama imlib2 libexif"
+build_deps=("libxt curl libxinerama imlib2 libexif")
 
 build() {
   go_src_dir
   burn_patches
   make PREFIX=/usr help=1 exif=1 stat64=1 inotify=1
-  make PREFIX=/usr DESTDIR="${pkgdir}" install
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
