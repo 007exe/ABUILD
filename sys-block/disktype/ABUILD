@@ -1,0 +1,28 @@
+pkgname=disktype
+pkgver=0.9
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Detects the content format of a disk or disk image by checking for signatures of file systems, partition tables, and boot codes."
+
+source=("http://cdnetworks-kr-2.dl.sourceforge.net/project/disktype/disktype/9/${pkgname}-9.tar.gz")
+
+tags="utils app-admin" 
+build_deps=" glibc-solibs mkpkg"
+
+
+build()
+{
+go_src_dir
+
+make || exit 1
+
+mkdir -p $pkgdir/usr/bin || exit 1
+
+cp -Rf  $srcdir/$pkgname-9/disktype  $pkgdir/usr/bin || exit 1
+
+
+
+}
+
+
