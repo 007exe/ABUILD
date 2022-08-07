@@ -1,0 +1,78 @@
+pkgname=squid
+pkgver=3.2.2
+pkgbuild=1
+arch=("auto")
+shortdesc=("HTTP/FTP proxy")
+longdesc=("Squid is a high-performance proxy caching server for web clients, supporting FTP, gopher, and HTTP data objects.")
+tags=("server net-misc")
+
+tree=`echo $pkgver | cut -d . -f 1-2`
+source=("http://www.squid-cache.org/Versions/v3/${tree}/squid-${pkgver}.tar.bz2")
+
+config_files="etc/conf.d/squid
+etc/squid/mime.conf
+etc/squid/squid.conf
+etc/squid/cachemgr.conf
+etc/squid/msntauth.conf"
+
+build_deps="libcap openssl linux-pam perl libtool"
+
+build() {
+	go_src_dir
+	burn_patches
+	set -e
+
+	CFLAGS="$SLKCFLAGS" \
+		CXXFLAGS="$SLKCFLAGS" \
+		./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib${LIBDIRSUFFIX} \
+		--sysconfdir=/etc/squid \
+		--localstatedir=/var/lib/squid \
+		--datadir=/usr/share/squid \
+		--mandir=/usr/man \
+		--enable-carp \
+		--enable-icmp \
+		--enable-delay-pools \
+		--enable-useragent-log \
+		--enable-referer-log \
+		--enable-wccp \
+		--enable-wccpv2 \
+		--enable-kill-parent-hack \
+		--enable-snmp \
+		--enable-arp-acl \
+		--enable-ssl \
+		--enable-htcp \
+		--enable-ipf-trasparent \
+		--enable-linux-netfilter \
+		--enable-x-accelerator-vary \
+		--enable-follow-x-forwarded-for \
+		--enable-default-err-language=Russian-1251 \
+		--enable-err-language="Russian-1251 English" \
+		--enable-auth \
+		--enable-auth-basic \
+		--enable-auth-ntlm \
+		--enable-auth-digest \
+		--enable-auth-negotiate \
+		--enable-basic-auth-helpers="DB LDAP MSNT NCSA POP3 PAM SASL SMB YP getpwnam multi-domain-NTLM" \
+		--enable-ntlm-auth-helpers="fakeauth no_check" \
+		--enable-digest-auth-helpers="ldap password" \
+		--enable-negotiate-auth-helpers="squid_kerb_auth" \
+		--enable-external-acl-helpers="ip_user ldap_group session unix_group wbinfo_group" \
+		--with-large-files \
+		--disable-ipv6
+
+	make -j${numjobs} all
+	make install DESTDIR=${pkgdir}
+
+	# OpenRC init
+	install -Dm0755 ${filedir}/squid.init ${pkgdir}/etc/init.d/squid
+	install -Dm0644 ${filedir}/squid.conf ${pkgdir}/etc/conf.d/squid
+
+	chown nobody:nobody ${pkgdir}/var/lib/squid/logs
+	chown nobody:nobody ${pkgdir}/var/lib/squid
+
+	set +e
+
+}
+

@@ -1,0 +1,92 @@
+#ABUILD created by: NK, nk-man at yandex.ru 
+pkgname=privoxy
+pkgver=3.0.21
+pkgbuild=3
+arch=('auto')
+
+shortdesc="a non-caching web proxy"
+#-ruler---|--------------------------------------------------------------------------|
+#longdesc=("Privoxy is a non-caching web proxy with advanced filtering capabilities for enhancing privacy, modifying web page data and HTTP headers, controlling access, and removing ads and other obnoxious Internet junk. Privoxy has a flexible configuration and can be customized to suit individual needs and tastes. It has application for both stand-alone systems and multi-user networks. Privoxy is Free Software and licensed under the GNU GPLv2. Privoxy is an associated project of Software in the Public Interest (SPI). Homepage: http://www.privoxy.org")
+
+source=("http://downloads.sourceforge.net/project/ijbswa/Sources/${pkgver}%20%28stable%29/privoxy-${pkgver}-stable-src.tar.gz")
+tags="net-misc network"
+build_deps="pcre zlib autoconf"
+
+before_build()
+{
+  echo ""
+  ## privoxy user & group *MUST* exist before package creation
+  # See http://slackbuilds.org/uid_gid.txt for current recomendations.
+  getent group privoxy >/dev/null 2>&1 || ( echo "Make group: groupadd -g 206 privoxy" && exit 1 )
+  getent passwd privoxy >/dev/null 2>&1 || ( echo "Make user: useradd -u 206 -g 206 -c 'Web Proxy' -d /dev/null -s /bin/false privoxy" && exit 1 )
+
+  go_src_dir
+
+  # Put the docs where we tell them to go.
+  # Also fix their permissions.
+  sed -i \
+    -e "/^DOC_DEST/s/= .*/= @docdir@/" \
+    -e "/^RA_MODE/s/0664/0644/" \
+  GNUmakefile.in
+}
+
+build()
+{
+  go_src_dir
+  burn_patches
+
+  export LDFLAGS="$SLKLDFLAGS"
+  export CXXFLAGS="$SLKCFLAGS"
+  export CFLAGS="$SLKCFLAGS"
+
+  autoheader
+  autoconf
+
+  ./configure \
+	--prefix=/usr \
+	--sysconfdir=/etc/$pkgname \
+	--localstatedir=/var \
+	--libdir=/usr/lib${LIBDIRSUFFIX} \
+	--disable-static \
+	--mandir=/usr/man \
+	--program-prefix= \
+	--program-suffix= \
+	--docdir=/usr/doc/${pkgname}-${pkgver} \
+	--datarootdir=/usr \
+	--with-user=privoxy \
+	--with-group=privoxy || exit 1
+
+  make -j${numjobs} || make || exit 1
+  make DESTDIR=$pkgdir install || exit 1
+}
+
+after_build()
+{
+  install -Dm755 $filedir/privoxy.initd \
+	$pkgdir/etc/init.d/privoxy || exit 1
+
+  install -Dm0644 $filedir/privoxy.logrotate \
+	$pkgdir/etc/logrotate.d/privoxy.new || exit 1
+
+  # config
+  if [ -f $pkgdir/etc/privoxy/config ]; then
+    mv -v $pkgdir/etc/privoxy/config $pkgdir/usr/doc/${pkgname}-${pkgver}/config.orig-${pkgver}
+  elif [ -f $pkgdir/etc/privoxy/config.new ]; then
+    mv -v $pkgdir/etc/privoxy/config.new $pkgdir/usr/doc/${pkgname}-${pkgver}/config.orig-${pkgver}
+  fi
+
+  install -m 644 $filedir/config.tor $pkgdir/etc/privoxy/config.new || exit 1
+
+  # Make .new files so we don't clobber the existing configuration.
+  # The makefile already adds the .new extension to some files,
+  # perhaps those are the only ones that are meant to be edited?
+  find $pkgdir/etc/privoxy -name '*.new' -prune -o -type f -exec mv {} {}.new \;
+
+  # Don't clobber the logfile either.
+  if [ -f $pkgdir/var/log/privoxy/logfile ]; then
+    mv -v $pkgdir/var/log/privoxy/logfile $pkgdir/var/log/privoxy/logfile.new
+  fi
+
+  # Remove this directory since it's empty 
+  rmdir -v $pkgdir/var/run
+}
