@@ -1,0 +1,30 @@
+pkgname=iftop
+pkgver=1.0pre4
+pkgbuild=1
+arch=('auto')
+
+shortdesc="display bandwidth usage on an interface"
+source=("http://www.ex-parrot.com/~pdw/iftop/download/${pkgname}-${pkgver}.tar.gz")
+
+tags="net-misc console"
+
+build_deps="libpcap ncurses"
+
+        
+             BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+               
+               BUILD_KEYS="--prefix=/usr \
+               --sysconfdir=/etc \
+               --localstatedir=/var \
+               --libdir=/usr/lib${LIBDIRSUFFIX} \
+               --disable-static \
+               --mandir=/usr/man \
+               --disable-edebug   \
+               --program-prefix= \
+               --program-suffix= \
+               --enable-nls"
+                
+                INSTALL_KEYS="DESTDIR=$pkgdir"
+                 
