@@ -1,0 +1,38 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru
+pkgname=ghc
+pkgver=7.6.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="ghc (The Glasgow Haskell Compiler)"
+
+source=("http://www.haskell.org/ghc/dist/${pkgver}/${pkgname}-${pkgver}-src.tar.bz2")
+
+tags="develop dev-lang"
+
+build_deps="ghc perl libxslt"
+
+adddep=""
+
+before_build(){
+  go_src_dir
+  cp ${filedir}/build.mk mk/build.mk
+  sed -i -e "s:pkgver:${pkgver}:g" mk/build.mk
+  echo "End before_build"
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix= \
+--docdir=/usr/doc/${pkgname}-${pkgver}"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
