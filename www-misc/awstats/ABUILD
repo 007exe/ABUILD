@@ -1,0 +1,49 @@
+#ABUILD created by: SirAnthony, anthony at adsorbtion.org
+pkgname=awstats
+pkgver=7.1.1
+pkgbuild=1
+arch=('noarch')
+shortdesc="Log analyzer"
+source=("http://www.awstats.org/files/${pkgname}-${pkgver}.tar.gz")
+tags="server www-misc"
+build_deps="perl"
+adddep="perl"
+
+docroot=/var/www/htdocs
+awuser=root
+awgroup=apache
+
+docs="README.TXT docs/*"
+
+before_build()
+{
+    go_src_dir
+    # Patch httpd_conf file supplied by awstats to correct paths
+    sed s:@DOCROOT@:$docroot: ${patchdir}/httpd-awstats.conf.patch | patch -p0
+    # Patch awstats_configure.pl file -- see patch header for details
+    sed s:@DOCROOT@:$docroot: ${patchdir}/awstats_configure.pl.patch | patch -p0
+}
+
+build()
+{
+    go_src_dir
+    mkdir -p ${pkgdir}/${docroot}/awstats
+    mkdir -p ${pkgdir}/etc/awstats ${pkgdir}/etc/httpd/extra
+
+    cp -a tools wwwroot ${pkgdir}/${docroot}/awstats
+    install -m 0644 wwwroot/cgi-bin/awstats.model.conf ${pkgdir}/etc/awstats
+    cat tools/httpd_conf >> ${pkgdir}/etc/httpd/extra/httpd-awstats.conf.new
+}
+
+
+after_build()
+{
+    go_src_dir
+    # Awstats cannot work proper as symlink
+    mkdir -p ${pkgdir}/usr/bin
+    sed s:@DOCROOT@:$docroot: ${filedir}/awstats > ${pkgdir}/usr/bin/awstats
+    chmod +x ${pkgdir}/usr/bin/awstats
+
+    # Change ownership and perms
+    chown -R $awuser:$awgroup ${pkgdir}/${docroot}/awstats
+}
