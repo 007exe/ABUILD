@@ -1,6 +1,6 @@
 pkgname=isl
-pkgver=0.24
-pkgbuild=2
+pkgver=0.25
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for manipulating sets and relations of integer points bounded by linear constraints.")
@@ -26,5 +26,5 @@ build() {
   install -dm755 ${pkgdir}/usr/share/gdb/auto-load/usr/lib/
   mv ${pkgdir}/usr/lib/libisl.so.*-gdb.py ${pkgdir}/usr/share/gdb/auto-load/usr/lib/
 
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
