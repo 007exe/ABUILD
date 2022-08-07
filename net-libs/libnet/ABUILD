@@ -1,0 +1,25 @@
+pkgname=libnet
+pkgver=1.2-rc3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A library which provides API for commonly used low-level net functions"
+
+source=("http://downloads.sourceforge.net/libnet-dev/${pkgname}-${pkgver}.tar.gz")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="network net-libs"
+build_deps="mkpkg"
+
+
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+BUILD_SYSTEM='autotools'
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX"
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
+
