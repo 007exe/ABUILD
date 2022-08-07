@@ -1,0 +1,43 @@
+pkgname=partimage
+pkgver=0.6.9
+pkgbuild=5
+arch=('auto')
+
+shortdesc="Partition Image saves partitions in many formats to an image file"
+
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+
+#short and long tags / длинный и короткий тег
+tags="utils app-admin"
+
+
+build_deps="libaudit newt"
+adddep=""
+
+
+before_build()
+{
+go_src_dir
+burn_patches
+}
+
+build()
+{
+
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--enable-pam 
+ 
+  make
+ 
+  make pamfile
+
+ make DESTDIR="${pkgdir}" install
+
+  install -Dm0644 partimaged.pam "${pkgdir}/etc/pam.d/partimaged"
+}
