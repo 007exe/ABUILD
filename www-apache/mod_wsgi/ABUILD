@@ -1,0 +1,26 @@
+pkgname=mod_wsgi
+pkgver=3.4
+pkgbuild=1
+arch=('auto')
+
+shortdesc="mod_wsgi module for apache"
+#-ruler---|--------------------------------------------------------------------------|
+longdesc=("The aim of mod_wsgi is to implement a simple to use Apache module which can host any Python application which supports the Python WSGI  interface. The module would be suitable for use in hosting high performance production web sites, as well as your average self managed personal sites running on web hosting services. "
+)
+source=("http://modwsgi.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
+tags="www-misc server"
+build_deps="httpd python"
+adddep="httpd"
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
