@@ -1,28 +1,25 @@
 pkgname=libmatroska
-pkgver=1.4.1
-pkgbuild=4
-arch=('auto')
+pkgver=1.6.3
+pkgbuild=1
+arch=("auto")
 
-shortdesc="libmatroska (an extensible open standard Audio/Video container)"
+shortdesc=("Matroska library.")
+longdesc=("Extensible multimedia container format based on EBML.")
 
-source=("http://dl.matroska.org/downloads/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://github.com/Matroska-Org/libmatroska/archive/refs/tags/release-${pkgver}.tar.gz")
 
+tags=("libs media-libs")
 
-tags="libs media-libs" 
-
-build_deps="libebml"
+build_deps=("libebml")
 
 build(){
-
-go_src_dir
-
-burn_patches
-
-cd make/linux
-
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-make sharedlib -j${numjobs} || exit 1
-make prefix=$pkgdir/usr libdir=$pkgdir/usr/lib${LIBDIRSUFFIX} install || exit 1
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --build build --target install
 }
