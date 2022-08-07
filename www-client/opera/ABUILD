@@ -26,4 +26,7 @@ build() {
   install -Dm644 ${filedir}/eula.html ${pkgdir}/usr/share/licenses/${pkgname}/eula.html
   install -Dm644 ${filedir}/terms.html ${pkgdir}/usr/share/licenses/${pkgname}/terms.html
   install -Dm644 ${filedir}/privacy.html ${pkgdir}/usr/share/licenses/${pkgname}/privacy.html
+
+  sed -e "s/%pkgname%/$pkgname/g" -i ${pkgdir}/usr/bin/${pkgname}
+  sed -e "s/%operabin%/$pkgname\/$pkgname/g" -i ${pkgdir}/usr/bin/${pkgname}
 }
