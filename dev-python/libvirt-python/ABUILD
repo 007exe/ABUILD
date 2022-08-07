@@ -1,0 +1,21 @@
+pkgname=libvirt-python
+pkgver=8.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("libvirt python binding.")
+
+source=("https://libvirt.org/sources/python/libvirt-python-${pkgver}.tar.gz")
+
+tags=("dev-python apps")
+
+build_deps=("python python-setuptools libvirt")
+
+adddep=("libvirt")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+}
