@@ -1,5 +1,5 @@
 pkgname=orca
-pkgver=42.0
+pkgver=42.3
 pkgbuild=1
 arch=("auto")
 
