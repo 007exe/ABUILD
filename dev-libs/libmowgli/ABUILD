@@ -1,0 +1,31 @@
+#ABUILD created by/создан: Coldead, firedead117 at gmail.com 
+
+pkgname=libmowgli
+pkgver=1.0.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="libmowgli (A useful collection of routines for programming)"
+
+longdesc=("libmowgli is a class library containing performance and 
+usability oriented extensions to C. libmowgli was written by Patrick 
+McFarland, William Pitcock, Jonathan Schleifer, Pippijn van Steenhoven, 
+and Jilles Tjoelker.")
+
+source=("http://distfiles.atheme.org/${pkgname}-${pkgver}.tar.bz2")
+
+tags="libs dev-libs"
+
+build_deps="make gcc kernel-headers binutils grep"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
