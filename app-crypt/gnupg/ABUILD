@@ -1,5 +1,5 @@
 pkgname=gnupg
-pkgver=2.2.35
+pkgver=2.2.36
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,9 @@ source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("app-crypt network")
 
-# libldap pcsclite pinentry
-build_deps=("libusb-compat libgpg-error libgcrypt bzip2 readline gnutls sqlite zlib glibc libassuan libksba npth")
+# libldap
+build_deps=("libusb-compat libgpg-error libgcrypt bzip2 readline
+gnutls sqlite zlib glibc libassuan libksba npth pcsclite pinentry")
 
 build() {
   go_src_dir
