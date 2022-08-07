@@ -1,5 +1,5 @@
 pkgname=binutils
-pkgver=2.38
+pkgver=2.39
 pkgbuild=1
 arch=("auto")
 
@@ -12,14 +12,12 @@ build_deps=("glibc elfutils flex gcc-libs")
 
 source=("http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2")
 
-before_build(){
+build(){
   go_src_dir
   sed -i '/^development=/s/true/false/' bfd/development.sh
   burn_patches
   mkdir -p ${srcdir}/binutils-build
-}
 
-build() {
   cd ${srcdir}/binutils-build
   ${srcdir}/binutils-${pkgver}/configure \
     --prefix=/usr \
@@ -30,7 +28,6 @@ build() {
     --enable-gold \
     --enable-64-bit-bfd \
     --enable-multilib \
-    --enable-lto \
     --enable-plugins \
     --enable-relro \
     --enable-targets=x86_64-pep,bpf-unknown-none \
@@ -44,18 +41,17 @@ build() {
     --disable-libdecnumber \
     --disable-readline \
     --disable-sim \
+    --with-debuginfod \
     --with-system-zlib \
     --with-lib-path=/usr/lib:/usr/local/lib \
     --with-pic
-  make -O tooldir=/usr
-  make DESTDIR=${pkgdir} install
-#FIXME: libiberty.a
-  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib/
-  rm -r ${pkgdir}/usr/lib64
+  make -j${numjobs} -O tooldir=/usr
+  make -j1 DESTDIR=${pkgdir} install
+
+# Устанавливаем новую версию libiberty
+  install -m644 libiberty/pic/libiberty.a ${pkgdir}/usr/lib
 
 # Удаляем ненужные файлы
   rm -f ${pkgdir}/usr/share/man/man1/{dlltool,nlmconv,windres,windmc}*
-
-# Удаляем бесполезные статические библиотеки
-  rm -f ${pkgdir}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a
+  rm -fv ${pkgdir}/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes}.a
 }
