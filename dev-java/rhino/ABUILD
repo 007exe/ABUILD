@@ -1,0 +1,17 @@
+#ABUILD created by: khvalera, khvalera at narod.ru
+pkgname=rhino
+
+pkgver=1.7R3
+pkgbuild=2
+arch=('noarch')
+
+shortdesc="Mozilla's implementation of JavaScript in Java"
+source="ftp://ftp.mozilla.org/pub/mozilla.org/js/${pkgname}${pkgver%.*}_${pkgver#*.}.zip"
+tags="libs dev-java"
+build_deps="apache-ant"
+
+build(){
+  go_src_dir
+  install -m755 -d ${pkgdir}/usr/share/java
+  install -m644 js.jar ${pkgdir}/usr/share/java/
+}
