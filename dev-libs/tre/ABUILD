@@ -1,0 +1,29 @@
+pkgname=tre
+pkgver=0.8.0
+pkgbuild=2
+arch=('auto')
+
+shortdesc="The free and portable approximate regex matching library."
+
+source=("http://laurikari.net/tre/${pkgname}-${pkgver}.tar.bz2")
+
+
+tags="app-admin
+utils"
+
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+
