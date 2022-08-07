@@ -1,6 +1,6 @@
 pkgname=chafa
-pkgver=1.8.0
-pkgbuild=2
+pkgver=1.12.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Image-to-text converter supporting a wide range of symbols and palettes, transparency, animations, etc.")
