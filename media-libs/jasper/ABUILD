@@ -1,6 +1,6 @@
 pkgname=jasper
-pkgver=2.0.33
-pkgbuild=2
+pkgver=3.0.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Software-based implementation of the codec specified in the emerging JPEG-2000 Part-1 standard.")
@@ -41,6 +41,5 @@ build() {
   make -C build-shared
   make -C build-static DESTDIR=${pkgdir} install
   make -C build-shared DESTDIR=${pkgdir} install
-  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
-
