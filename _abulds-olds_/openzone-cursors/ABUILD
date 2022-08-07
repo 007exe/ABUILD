@@ -1,0 +1,28 @@
+pkgname=openzone-cursors
+pkgver=1.2.3
+pkgbuild=1
+arch=('noarch')
+
+shortdesc="OpenZone X11 cursor theme"
+
+source=("http://opendesktop.org/CONTENT/content-files/111343-OpenZone-${pkgver}.tar.xz")
+
+tags="themes x11-themes"
+
+build_deps="tar"
+
+build(){
+  mkdir -p ${pkgdir}/usr/share/icons
+  cd ${pkgdir}/usr/share/icons
+  for theme in Black Black_Slim White White_Slim Ice Ice_Slim Fire Fire_Slim; do
+      echo ${srcdir}/OpenZone/OpenZone_${theme}-${pkgver}.tar.xz
+      tar -xpJf ${srcdir}/OpenZone/OpenZone_${theme}-${pkgver}.tar.xz
+  done
+}
+
+
+after_build(){
+  cd ${pkgdir}
+  find . -type d -exec chmod 755 {} \;
+  find . -type f -exec chmod 644 {} \;
+}

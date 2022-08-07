@@ -1,0 +1,30 @@
+pkgname=libgnomeui
+pkgver=2.24.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc="The GNOME User Interface Libraries"
+longdesc=("This package contains the shared library for the base GNOME library functions (User Interface functions).")
+
+source=("ftp://ftp.gnome.org/pub/GNOME/sources/$pkgname/2.24/$pkgname-$pkgver.tar.bz2")
+
+tags="libs gnome-base"
+
+build_deps="make libbonoboui pkg-config gcc coreutils sed grep gtk-doc perl perl-xml-parser intltool"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib$LIBDIRSUFFIX/libgnomeui \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+

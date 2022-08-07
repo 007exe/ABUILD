@@ -1,0 +1,39 @@
+#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
+pkgname=fbida
+pkgver=2.09
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Applications for viewing and editing images"
+longdesc=("The fbida project contains a few applications for viewing and editing images, with the main focus being photos. The applications are:"
+"fbi: a image viewer for the linux framebuffer console."
+"fbgs: script for viewing ps/pdf files on the framebuffer console."
+"ida: X11 application for viewing and editing images."
+"exiftran: does lossless transformations of JPEG images with EXIF data."
+"thumbnail.cgi: extract EXIF thumbnails from jpeg images."
+"fbida home: http://linux.bytesex.org/fbida/"
+)
+
+source=("http://dl.bytesex.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+tags="xapps media-gfx"
+build_deps="giflib libtiff libexif lesstif libpng fontconfig curl"
+
+docs="Changes INSTALL VERSION"
+
+build()
+{
+	go_src_dir
+	burn_patches
+	sed -e 's:DGifOpenFileName,ungif:DGifOpenFileName,gif:' \
+	    -e 's:-lungif:-lgif:' -i GNUmakefile
+	make config prefix=/usr
+	make prefix=/usr
+	make STRIP="" prefix=/usr DESTDIR=${pkgdir} install
+}
+
+
+after_build()
+{
+    go_src_dir
+    cp thumbnail.cgi ${pkgdir}/usr/bin/
+}

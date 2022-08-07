@@ -1,0 +1,30 @@
+pkgname=libbonoboui
+pkgver=2.24.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc="The Bonobo UI Library"
+
+longdesc=("This package contains the Bonobo UI library")
+
+source=("ftp://ftp.gnome.org/pub/GNOME/sources/$pkgname/2.24/$pkgname-$pkgver.tar.bz2")
+
+tags="libs gnome-base"
+
+build_deps="make pkg-config gcc coreutils sed grep gtk-doc perl perl-xml-parser intltool"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+

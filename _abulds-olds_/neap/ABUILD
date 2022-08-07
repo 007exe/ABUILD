@@ -1,0 +1,21 @@
+pkgname=neap
+pkgver=0.6.2
+pkgbuild=2
+arch=('noarch')
+
+shortdesc="A simple pager that runs in the notification area / systray of your panel."
+
+source=("http://neap.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
+
+tags="xapps x11-misc"
+adddep="python>=2.6.4 pygtk>=2.16.0 python-xlib>=0.15rc1"
+
+build() {
+	go_src_dir
+	burn_patches
+	set -e
+
+	install -D -m 755 neap ${pkgdir}/usr/bin/neap
+	set +e
+}
+

@@ -1,0 +1,29 @@
+#ABUILD created by/создан: Ben, ivan29m at rambler.ru 
+pkgname=ntrack
+pkgver=017
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Network Connectivity Tracking library"
+
+source=("https://launchpadlibrarian.net/189578825/ntrack-017.tar.gz")
+
+tags=("kde4 kde-base")
+build_deps="gcc"
+
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+

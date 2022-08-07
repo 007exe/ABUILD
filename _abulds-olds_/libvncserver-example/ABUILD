@@ -1,0 +1,44 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru 
+
+pkgname=libvncserver
+pkgver=0.9.10
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A cross-platform C libraries that allow you to easily implement VNC server"
+
+source=("https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${pkgver}.tar.gz")
+
+tags="libs net-libs"
+
+build_deps="libjpeg zlib gnutls"
+adddep="libjpeg zlib gnutls"
+
+pkglist="example"
+
+#===================================
+example() {
+ pkgname=libvncserver-example
+ shortdesc="Example libvncserver"
+}
+
+#===================================
+example_prep() {
+  go_src_dir
+  rm -R examples/.deps
+  rm -R examples/.libs
+  install -d -m 755 ${pkgdir}/usr/share/libvncserver
+  cp -R examples ${pkgdir}/usr/share/libvncserver
+  echo "End example"
+}
+
+#===================================
+build() {
+  go_src_dir
+  ./autogen.sh
+  ./configure --prefix=/usr \
+             --libdir=/usr/lib${LIBDIRSUFFIX}
+  make
+  make DESTDIR="${pkgdir}" install
+  echo "End build"
+}

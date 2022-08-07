@@ -1,0 +1,25 @@
+#ABUILD created by/создан: Drakmail, coder at dps.ru 
+
+pkgname=beanshell
+pkgver=2.1.7
+pkgbuild=1
+arch=('noarch')
+
+shortdesc="Small, free, embeddable, source level Java interpreter written in Java"
+longdesc=("Small, free, embeddable, source level Java interpreter with 
+object based scripting language features written in Java")
+
+source=("https://beanshell2.googlecode.com/files/bsh-${pkgver}.jar n")
+
+tags="utils dev-java"
+
+build_deps="coreutils"
+
+adddep="jre"
+
+build(){
+  go_src_dir
+  burn_patches
+  install -m755 -d ${pkgdir}/usr/share/java/
+  install -D -m644 ${srcache}/${loc_source_arr} ${pkgdir}/usr/share/java/bsh.jar
+}

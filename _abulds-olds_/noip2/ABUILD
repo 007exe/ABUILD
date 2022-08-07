@@ -1,0 +1,72 @@
+#----------------------------- General vars --------------------------------------
+#------------------------- Основные переменные -----------------------------------
+pkgname=noip2
+pkgver=2.1.9
+pkgbuild=4
+arch=('auto')
+
+shortdesc="Dynamic Update Cient provided by No-IP.com"
+#-ruler---|--------------------------------------------------------------------------|
+#longdesc=("Keep your current IP address in sync with your No-IP host or domain with No-IP.com. The dynamic DNS update client contiually checks forIP address changes in the background and automatically updates DNS whenever it changes.")
+
+source=("http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz")
+
+patch_opts=("")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+
+tags="net-dns network"     	#short and long tags / длинный и короткий тег
+build_deps="" 			#
+
+provides=""
+conflicts=""
+
+adddep="gawk dcron"
+removedep=""
+
+#numjobs=1 #Set number of jobs while compliling, otherwise it'll be autodetected
+
+docs="COPYING README.FIRST" #* LEEME.PRIMERO LISEZMOI.ENPREMIER"
+#additional files should be copied into /usr/docs/${pkgname} dir from sources
+
+gendeps_blacklist=
+
+#----------------------------- Make PKG --------------------------------------
+#-------------------------- Сборка пакета ------------------------------------
+
+#ran before function build()
+#запускается перед сборкой
+#before_build()
+#{
+#
+#}
+
+build()
+{
+#go_src_dir
+cd $srcdir/noip-$pkgver-1
+
+burn_patches
+
+sed -i \
+ -e "s:\(#define CONFIG_FILEPATH\).*:\1 \"/etc\":" \
+ -e "s:\(#define CONFIG_FILENAME\).*:\1 \"/etc/no-ip2.conf\":" \
+ noip2.c || exit 1
+
+make PREFIX=/usr CONFDIR=/etc || exit 1
+}
+                                                                                                    
+#ran after function build() 
+#после сборки
+after_build()
+{
+echo ""
+
+install -Dm755 $srcdir/noip-$pkgver-1/noip2 $pkgdir/usr/bin/noip2 || exit 1
+
+install -Dm755 ${filedir}/noip2.start ${pkgdir}/etc/init.d/noip2 || exit 1
+sed -i -e "s|/sbin/noip2|/bin/noip2|" ${pkgdir}/etc/init.d/noip2 || exit 1
+
+rm -fv $pkgdir/usr/doc/$pkgname-$pkgver/README.FIRST?* || exit 1
+}

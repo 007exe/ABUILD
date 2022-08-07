@@ -1,0 +1,32 @@
+#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
+
+pkgname=purple-plugin-pack
+pkgver=2.7.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Plugin pack for Pidgin"
+longdesc=("The Purple Plugin Pack was originally created by Gary Kramlich and Stu Tomlinson as a way to distribute their ever growing lists of simple Pidgin plugins. It has since grown from its origins of about 6 plugins to nearly 50. Also, many more developers have continued to add to it, including John Bailey, Peter Lawler, Sadrul Habib Chowdhury, and most recently Richard Laager.")
+
+source=("https://www.guifications.org/attachments/download/201/purple-plugin-pack-${pkgver}.tar.bz2")
+
+tags="network net-im"
+
+build_deps=""
+
+adddep=""
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"

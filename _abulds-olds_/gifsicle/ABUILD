@@ -1,0 +1,24 @@
+pkgname=gifsicle
+pkgver=1.70
+pkgbuild=1
+arch="auto"
+
+shortdesc=("Command-line tool to create and edit GIF images, including animation")
+longdesc=("Gifsicle is a UNIX command-line tool for creating, editing, and getting information about GIF images and animations. Making a GIF animation with gifsicle is easy: 
+% gifsicle --delay=10 --loop *.gif > anim.gif")
+source=("http://www.lcdf.org/gifsicle/gifsicle-${pkgver}.tar.gz")
+tags="console media-gfx"
+build_deps="libX11"
+
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+--bindir=/usr/bin \
+--sbindir=/usr/sbin \
+--libexecdir=/usr/libexec \
+--includedir=/usr/include \
+--mandir=/usr/man \
+--infodir=/usr/info \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--sysconfdir=/etc \
+--localstatedir=/var"
+

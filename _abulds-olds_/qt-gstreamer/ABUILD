@@ -1,0 +1,22 @@
+pkgname=qt-gstreamer
+pkgver=1.2.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A set of libraries and plugins providing C++ bindings for GStreamer"
+source=("http://gstreamer.freedesktop.org/src/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags="libs media-libs"
+
+build_deps="doxygen"
+
+
+BUILD_SYSTEM="cmake"
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=RELEASE \
+-DLIB_DIR=lib${LIBDIRSUFFIX} \
+-DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DQTGSTREAMER_STATIC=OFF \
+-DQTGSTREAMER_EXAMPLES=OFF \
+../"
+

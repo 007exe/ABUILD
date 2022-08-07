@@ -1,0 +1,41 @@
+
+pkgname=libtextcat
+pkgver=2.2
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Library that implements N-gram-based text categorization"
+
+source=("http://software.wise-guys.nl/download/${pkgname}-${pkgver}.tar.gz")
+
+tags="libs dev-libs"
+
+build_deps="make gcc sed grep binutils coreutils"
+
+before_build(){
+  autoreconf -fi
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+after_build(){
+  install -dm755 ${pkgdir}/usr/share/libtextcat/{LM,ShortTexts}
+  install -m644 ${filedir}/fpdb.conf ${pkgdir}/usr/share/libtextcat
+  install -m644 langclass/conf.txt ${pkgdir}/usr/share/libtextcat
+  install -m644 langclass/LM/*.lm ${pkgdir}/usr/share/libtextcat/LM
+  install -m644 langclass/ShortTexts/*.txt ${pkgdir}/usr/share/libtextcat/ShortTexts
+  sed -i 's|LM|/usr/share/libtextcat/LM|' ${pkgdir}/usr/share/libtextcat/conf.txt
+}

@@ -1,0 +1,35 @@
+pkgname=live555
+pkgver=2011.03.14
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Live555 (C++ libraries for multimedia streaming)"
+
+source=("http://www.live555.com/liveMedia/public/live.${pkgver}.tar.gz")
+
+tags="libs media-libs"
+
+build() {
+	go_src_dir
+	burn_patches
+	set -e
+
+	sed -i -e "s|-O2|${SLKCFLAGS}|g" config.linux
+	./genMakefiles linux
+	LDFLAGS="$SLKLDFLAGS" \
+		CFLAGS="$SLKCFLAGS" \
+		CXXFLAGS="$SLKCFLAGS" \
+		make -j${numjobs} || exit 1
+
+	for dir in BasicUsageEnvironment UsageEnvironment groupsock liveMedia; do
+		mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/live-media/$dir
+		cp -r $dir/*.a $dir/include ${pkgdir}/usr/lib${LIBDIRSUFFIX}/live-media/$dir
+	done
+
+	mkdir -p $pkgdir/usr/bin
+	for testprog in `find testProgs -type f -perm 755`; do
+		install $testprog ${pkgdir}/usr/bin
+	done
+	set +e
+}
+

@@ -1,0 +1,31 @@
+#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
+pkgname=gprename
+pkgver=2.7
+pkgbuild=2
+arch=('auto')
+
+shortdesc="A GTK2 batch renamer for files and directories"
+#-ruler---|--------------------------------------------------------------------------|
+longdesc=("GPRename is a complete batch renamer for files and directories and is licensed under the terms of the GNU General Public Licence version 3."
+"Homepage: http://gprename.sourceforge.net/"
+)
+source=("http://sourceforge.net/projects/gprename/files/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+tags="xapps app-misc"
+build_deps="perl-gtk2 perl-libintl perl-locale-gettext"
+
+build()
+{
+  go_src_dir
+  cd trunk
+  burn_patches
+  sed '30s/install: uninstall/install:/' -i Makefile
+  make install DESTDIR=${pkgdir}/usr PREFIX=/usr
+}
+
+after_build()
+{
+  cd ${srcdir}/${pkgname}/trunk
+  # Fix icon link in $pkgname.desktop file
+  sed 's#/usr/local#/usr#' -i ${pkgdir}/usr/bin/$pkgname
+  sed 's#/usr/local#/usr#' -i ${pkgdir}/usr/share/applications/$pkgname*.*
+}

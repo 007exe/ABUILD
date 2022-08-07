@@ -1,0 +1,26 @@
+pkgname=ntfsfixboot
+pkgver=1.0
+pkgbuild=7
+arch=('auto')
+
+shortdesc="A program to fix an NTFS partition boot sector"
+
+source=("http://jaist.dl.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+
+tags="app-admin utils"
+
+
+build()
+{
+
+go_src_dir
+
+#gcc -g -Wall ntfsfixboot.c -o ntfsfixboot
+
+sed '/gcc -Wall -o $(TARGET) \$</ s/$/ $(CFLAGS)/' -i Makefile
+make
+mkdir -p "$pkgdir/usr/bin"
+install -m755 "$srcdir/ntfsfixboot-1.0/ntfsfixboot" "$pkgdir/usr/bin"
+
+}

@@ -1,0 +1,48 @@
+pkgname=partclone
+pkgver=0.2.70
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Back up and restore used-blocks of a partition"
+
+source=("http://free.nchc.org.tw/drbl-core/src/unstable/partclone-${pkgver}.tar.gz")
+
+
+tags="utils app-admin"
+
+adddep="e2fsprogs reiserfsprogs dosfstools ncurses ntfsprogs"
+build_deps="e2fsprogs reiserfsprogs dosfstools ntfsprogs"
+
+build() 
+{
+
+go_src_dir
+
+./configure --prefix=/usr \
+--bindir=/usr/bin \
+--sbindir=/usr/sbin \
+--datarootdir=/usr/share \
+--libexecdir=/usr/libexec \
+--includedir=/usr/include \
+--mandir=/usr/man \
+--infodir=/usr/info \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--enable-extfs \
+--enable-fat \
+--enable-hfsp \
+--enable-btrfs \
+--enable-ncursesw \
+--enable-ntfs
+
+
+make DESTDIR=$pkgdir install
+
+}
+
+after_build(){
+
+mv -f  ${pkgdir}/share/${pkgname} ${pkgdir}/usr/share/
+rm -rf ${pkgdir}/share
+}

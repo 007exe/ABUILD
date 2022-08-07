@@ -1,0 +1,25 @@
+pkgname=nomacs
+pkgver=2.4.2
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A Qt image viewer"
+
+source=("http://softlayer-ams.dl.sourceforge.net/project/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver-source.tar.bz2")
+tags="media-gfx xapps"
+ build_deps="exiv2 opencv libraw"
+
+
+build() {
+  
+go_src_dir
+
+cmake . -DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=RELEASE \
+-DLIB_DIR=lib${LIBDIRSUFFIX} \
+-DLIB_SUFFIX=${LIBDIRSUFFIX}
+
+  make
+  make DESTDIR="$pkgdir/" install
+}
+

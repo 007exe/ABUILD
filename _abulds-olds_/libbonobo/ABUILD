@@ -1,0 +1,45 @@
+pkgname=libbonobo
+pkgver=2.32.1
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Bonobo CORBA interfaces library"
+
+longdesc=("Bonobo is a set of language and system independent CORBA interfaces for creating reusable components, controls and creating compound documents.
+
+The Bonobo distribution includes a Gtk+ based implementation of the Bonobo interfaces, enabling developers to create reusable components and applications that can be used to form more complex documents. ")
+
+source=("http://ftp.gnome.org/pub/gnome/sources/libbonobo/${pkgver%.*}/libbonobo-${pkgver}.tar.gz")
+
+tags="libs dev-libs"
+
+build_deps="make gcc flex coreutils binutils sed grep perl perl-xml-parser intltool gettext procps pkg-config gtk-doc"
+
+before_build(){
+  go_src_dir
+  sed -i "s#-DG_DISABLE_DEPRECATED##" activation-server/Makefile.in
+}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/bonobo \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+after_build(){
+  rm -f ${pkgdir}/etc/bonobo-activation/*
+  install -m644 "${filedir}/bonobo-activation-config.xml" "${pkgdir}/etc/bonobo-activation/"
+  if [ "${LIBDIRSUFFIX}" = "64" ]; then 
+     sed -i "s|/usr/lib/bonobo/servers|/usr/lib64/bonobo/servers|" "${pkgdir}"/etc/bonobo-activation/bonobo-activation-config.xml
+  fi
+}

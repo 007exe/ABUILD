@@ -1,0 +1,25 @@
+pkgname=drbl
+pkgver=2.7.32
+pkgbuild=1
+arch=('auto')
+
+shortdesc="DRBL (Diskless Remote Boot in Linux) is a free software, open source solution to managing the deployment of the GNU/Linux operating system across many clients"
+
+source=("http://free.nchc.org.tw/drbl-core/src/unstable/drbl-${pkgver}.tar.bz2")
+
+
+tags="app-admin utils"
+
+adddep="bash bc"
+
+
+build()
+{
+
+go_src_dir
+
+make DESTDIR=$pkgdir install  
+
+}
+
+

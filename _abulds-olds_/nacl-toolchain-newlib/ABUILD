@@ -1,0 +1,42 @@
+pkgname=nacl-toolchain-newlib
+pkgver=9513
+binutilsver=2.20.1
+newlibver=1.20.0
+gccver=4.4.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Native Client newlib-based toolchain (only for compiling IRT)"
+
+source=("http://mirrors.usc.edu/pub/gnu/binutils/binutils-${binutilsver}.tar.bz2"
+"ftp://sources.redhat.com/pub/newlib/newlib-${newlibver}.tar.gz"
+"http://mirrors.usc.edu/pub/gnu/gcc/gcc-${gccver}/gcc-${gccver}.tar.bz2"
+"http://commondatastorage.googleapis.com/nativeclient-archive2/x86_toolchain/r$pkgver/nacltoolchain-buildscripts-r$pkgver.tar.gz"
+"http://commondatastorage.googleapis.com/nativeclient-archive2/x86_toolchain/r$pkgver/naclbinutils-$binutilsver-r$pkgver.patch.bz2"
+"http://commondatastorage.googleapis.com/nativeclient-archive2/x86_toolchain/r$pkgver/naclnewlib-$newlibver-r$pkgver.patch.bz2"
+"http://commondatastorage.googleapis.com/nativeclient-archive2/x86_toolchain/r$pkgver/naclgcc-$gccver-r$pkgver.patch.bz2")
+
+tags="develop dev-lang"
+custom_opts="no_strip"
+
+build() {
+	set -e
+	cd ${srcdir}/
+	mkdir -p ${srcdir}/SRC
+	mv ${srcdir}/binutils-${binutilsver} ${srcdir}/SRC/binutils
+	mv ${srcdir}/newlib-${newlibver} ${srcdir}/SRC/newlib
+	mv ${srcdir}/gcc-${gccver} ${srcdir}/SRC/gcc
+	patch -d ${srcdir}/SRC -p0 < ${srcache}/naclbinutils-${binutilsver}-r${pkgver}.patch
+	patch -d ${srcdir}/SRC -p0 < ${srcache}/naclnewlib-${newlibver}-r${pkgver}.patch
+	patch -d ${srcdir}/SRC -p0 < ${srcache}/naclgcc-${gccver}-r${pkgver}.patch
+	echo "Go to make sex with your Sweetie, or "Build the Eiffel Tower with chopsticks" (or self-abuse XD), or, or... {insert here "which takes a long time"}... this take a very LONG, LONG TIME"
+	make PREFIX="${srcdir}"/build CANNED_REVISION="yes" build-with-newlib
+	set +e
+}
+
+
+after_build() {
+	mkdir ${pkgdir}/opt
+	mv ${srcdir}/build/ ${pkgdir}/opt/${pkgname}
+}
+

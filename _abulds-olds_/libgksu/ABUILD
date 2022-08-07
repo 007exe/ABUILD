@@ -1,0 +1,53 @@
+pkgname=libgksu
+pkgver=2.0.12
+pkgbuild=11
+arch=('auto')
+
+shortdesc="su/sudo library"
+longdesc=("This is library which provides simple program interface for su/sudo")
+
+source=("http://people.debian.org/~kov/gksu/${pkgname}-${pkgver}.tar.gz")
+
+tags="x11-libs libs"
+build_deps="gcc automake binutils gettext pkg-config intltool grep sed kernel-headers perl"
+
+build() {
+  go_src_dir
+  burn_patches
+
+  sed -e "s|=gksu.png|=gksu|" -i gksu-properties/gksu-properties.desktop.in
+
+  touch NEWS README
+
+  intltoolize --force --copy --automake
+
+  autoreconf -fi
+  if [ "$LIBDIRSUFFIX" = "64" ] ; then
+     patch -p1 --verbose < ${filedir}/libgksu-fix-helper-path.patch
+  fi
+     SLKCFLAGS="$SLKCFLAGS -DHAVE_GNOME"
+     CFLAGS="$SLKCFLAGS" ./configure --prefix=/usr \
+                                     --sysconfdir=/etc \
+                                     --libdir=/usr/lib${LIBDIRSUFFIX} \
+                                     --libexecdir=/usr/lib$LIBDIRSUFFIX/gksu \
+                                     --docdir=/usr/doc \
+                                     --mandir=/usr/man \
+                                     --localstatedir=/var \
+                                     --disable-static
+
+  make -j${numjobs}
+
+  make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
+  rm -f ${pkgdir}/usr/lib${LIBDIRSUFFIX}/*.a
+  install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
+  gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" --domain libgksu ${pkgdir}/etc/gconf/schemas/*.schemas
+  rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+  # Locale
+  for i in po/*.po ; do
+      L_FILE=`echo ${i} | sed -e 's/\.po$//g'`
+      msgfmt -o $L_FILE.gmo $L_FILE.po
+      mkdir -p ${pkgdir}/usr/share/locale/`basename $L_FILE`/LC_MESSAGES
+      cp -v $L_FILE.gmo ${pkgdir}/usr/share/locale/`basename $L_FILE`/LC_MESSAGES/libgksu.mo
+  done
+}
+

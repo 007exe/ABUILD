@@ -1,0 +1,23 @@
+pkgname=obtheme
+pkgver=2010.03.01.1
+pkgbuild=3
+arch=('noarch')
+
+shortdesc="obtheme (A GUI theme editor for Openbox)"
+
+
+source=("http://xyne.archlinux.ca/src/${pkgname}-${pkgver}.tar.gz")
+
+tags="xapps x11-misc"
+adddep="python>=2.6.4 gtk+2>=2.18.5 pygtk>=2.16.0 fuse-python>=0.2.1"
+
+
+build() {
+	go_src_dir
+	burn_patches
+	set -e
+
+	install -D -m755 $srcdir/$pkgname/$pkgname $pkgdir/usr/bin/${pkgname}
+	set +e
+}
+

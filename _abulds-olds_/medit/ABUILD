@@ -1,0 +1,28 @@
+pkgname=medit
+pkgver=1.1.97
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Text edit 5+!"
+
+source=("http://jaist.dl.sourceforge.net/project/mooedit/medit/unstable-1.1.9x/${pkgname}-${pkgver}-devel.tar.bz2")
+
+
+tags="app-editors xapps"
+
+
+build()
+{
+go_src_dir
+./configure --prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--with-python \
+--enable-shared \
+--enable-nls 
+
+make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,21 @@
+pkgname=cdemu-client
+pkgver=1.5.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="CDemu - a virtual CD/DVD drive for Linux. Client part"
+
+adddep="cdemu-daemon"
+
+source=("http://downloads.sourceforge.net/sourceforge/cdemu/${pkgname}-${pkgver}.tar.bz2")
+
+tags="libs sys-fs"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_KEYS="--prefix=/usr \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib${LIBDIRSUFFIX}"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

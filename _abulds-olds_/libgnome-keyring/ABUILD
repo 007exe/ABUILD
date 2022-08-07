@@ -1,0 +1,35 @@
+#ABUILD created by/создан: khvalera, khvalera at narod.ru 
+
+pkgname=libgnome-keyring
+pkgver=3.12.0
+pkgbuild=1
+arch=('auto')
+
+shortdesc="library for GNOME keyring"
+longdesc=("gnome-keyring is a daemon in the session, similar to ssh-agent, and other appli
+ cations can use it to store passwords and other sensitive information.The progr
+ am can manage several keyrings, each with its own master password, and there is
+  also a session keyring which is never stored to disk, but forgotten when the s
+ ession ends.")
+
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags="libs gnome-base"
+
+build_deps="make gcc glib2 libgcrypt intltool gobject-introspection vala gettext gtk-doc binutils grep kernel-headers"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/gnome-keyring \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"

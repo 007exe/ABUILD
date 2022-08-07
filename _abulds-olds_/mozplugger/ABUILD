@@ -1,0 +1,28 @@
+pkgname=mozplugger
+pkgver=2.1.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A Mozilla & Firefox multimedia plugin."
+
+source=("http://mozplugger.mozdev.org/files/mozplugger-$pkgver.tar.gz")
+
+
+tags="console media-plugins "
+
+build_deps="gcc"
+
+
+build(){
+  go_src_dir
+   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+    make
+     install -Dm644 ${filedir}/mozpluggerrc "$pkgdir/etc/mozpluggerrc"
+       install -d "$pkgdir/usr/bin/"
+         install -m755 mozplugger-{helper,controller,linker,update} "$pkgdir/usr/bin/"
+           install -Dm755 mozplugger.so "$pkgdir/usr/lib/mozilla/plugins/mozplugger.so"
+             install -Dm644 mozplugger.7 "$pkgdir/usr/share/man/man7/mozplugger.7"
+  
+}
+
+

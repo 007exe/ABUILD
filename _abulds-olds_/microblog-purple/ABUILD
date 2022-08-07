@@ -1,0 +1,18 @@
+pkgname=microblog-purple
+pkgver=0.3.0
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Purple microblogging plugin"
+longdesc=("Libpurple plug-in supporting microblog services like Twitter")
+source=("http://microblog-purple.googlecode.com/files/mbpurple-$pkgver.tar.gz")
+tags="libs net-im"
+build_deps="libpurple"
+
+build()
+{
+  go_src_dir
+  burn_patches
+  make -j${numjobs} || exit 1
+  make DESTDIR=$pkgdir install || exit 1
+}

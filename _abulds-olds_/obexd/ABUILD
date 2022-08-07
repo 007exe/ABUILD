@@ -1,0 +1,43 @@
+pkgname=obexd
+pkgver=0.48
+pkgbuild=1
+arch=('auto')
+
+shortdesc="D-Bus service providing high-level OBEX client and server side functionality"
+
+longdesc=("http://www.bluez.org/")
+
+source=("http://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.bz2")
+
+tags="network net-misc"
+
+build_deps="make gcc coreutils binutils sed grep pkg-config bluez libical openobex"
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib$LIBDIRSUFFIX/obexd \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+after_build(){
+  cd "${srcdir}/${pkgname}-${pkgver}/client"
+  install -m755 -d "${pkgdir}/usr/lib$LIBDIRSUFFIX/obexd"
+  install -m755 -d "${pkgdir}/usr/share/dbus-1/services"
+  install -m755 obex-client "${pkgdir}/usr/lib$LIBDIRSUFFIX/obexd/"
+  install -m644 obex-client.service "${pkgdir}/usr/share/dbus-1/services/"
+  cd "${srcdir}/${pkgname}-${pkgver}/src"
+  install -m755 -d "${pkgdir}/usr/lib$LIBDIRSUFFIX/obexd"
+  install -m755 -d "${pkgdir}/usr/share/dbus-1/services"
+  install -m755 obexd "${pkgdir}/usr/lib$LIBDIRSUFFIX/obexd/"
+  install -m644 obexd.service "${pkgdir}/usr/share/dbus-1/services/"
+}
