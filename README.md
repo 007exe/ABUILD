@@ -83,6 +83,7 @@ lxqt-libs            | Бибилиотеки LXQT.
 mate-base            | Основные пакеты MATE.
 mate-extra           | Дополнительные пакеты для среды MATE.
 mate-libs            | Библиотеки MATE.
+mail-client          | Почтовые клиенты.
 mail-filter          | Программы для фильтрации почты.
 mail-mta             | Почтовые программы.
 media-fonts          | Шрифты.
