@@ -1,0 +1,22 @@
+pkgname=dblatex
+pkgver=0.3.12
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Transform DocBook using TeX macros.")
+longdesc=("DocBook (XML and SGML) to DVI, PDF, PostScript converter using latex.")
+
+source=("https://downloads.sourceforge.net/project/dblatex/dblatex/${pkgname}-${pkgver}/${pkgname}3-${pkgver}.tar.bz2")
+
+tags=("app-text develop")
+
+# texlive-core texlive-htmlxml texlive-latexextra texlive-pictures texlive-science
+build_deps=("docbook-xsl docbook-xml libxslt python")
+
+adddep=("docbook-xsl docbook-xml libxslt python")
+
+build(){
+  go_src_dir
+  burn_patches
+  python setup.py install --root ${pkgdir} --catalogs=/etc/xml/docbook-xml
+}
