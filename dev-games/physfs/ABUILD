@@ -1,0 +1,29 @@
+pkgname=physfs
+pkgver=2.0.3
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A library to provide abstract access to various archives"
+source=("http://icculus.org/physfs/downloads/${pkgname}-${pkgver}.tar.bz2")
+tags="libs dev-libs"
+build_deps="cmake doxygen zlib"
+docs="docs/html/*"
+
+BUILD_SYSTEM="cmake"
+BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
+-DCMAKE_BUILD_TYPE=Release \
+-DMAN_INSTALL_DIR=/usr/man \
+-DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX}\
+-DPHYSFS_BUILD_TEST=OFF \
+-DPHYSFS_BUILD_WX_TEST=OFF"
+
+after_build(){
+  go_src_dir
+  doxygen
+  mkdir -p ${pkgdir}/usr/man/man3
+  install -D -m644 docs/man/man3/* "${pkgdir}/usr/man/man3"
+  for i in author Deinit description extension Free Init major Malloc minor opaque patch Realloc url ; do
+    mv "${pkgdir}/usr/man/man3/$i.3" "${pkgdir}/usr/man/man3/PHYSFS_$i.3"
+  done
+}
