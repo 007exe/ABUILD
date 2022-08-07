@@ -1,0 +1,29 @@
+pkgname=foremost
+pkgver=1.5.7
+pkgbuild=3
+arch=('auto')
+
+shortdesc="A console tool for data and files recover"
+
+source=("http://foremost.sourceforge.net/pkg/$pkgname-$pkgver.tar.gz")
+
+patch_opts=("foremost-makefile.diff 0")
+
+#----------------------------- AgiliaLinux vars --------------------------------------
+#--------------------- Специфичные для AgiliaLinux ------------------------------
+#short and long tags / длинный и короткий тег
+tags="app-admin utils"
+
+
+build()
+{
+go_src_dir
+burn_patches
+  cd ${srcdir}/$pkgname-$pkgver
+
+    install -d ${pkgdir}/{etc,{usr/bin,usr/share/man/man8}} || return 1
+      make || return 1
+            make DESTDIR=${pkgdir} install || return 1
+
+}
+
