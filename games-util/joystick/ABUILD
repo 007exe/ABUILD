@@ -1,0 +1,44 @@
+#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
+pkgname=joystick
+pkgver=1.4.6
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Testing and calibration tools for joysticks"
+#-ruler---|--------------------------------------------------------------------------|
+longdesc=("Useful tools for using joysticks:"
+"jscal       - joystick calibration program"
+"jstest      - joystick test program"
+"inputattach - input line discipline attach program"
+"fftest      - force feedback test program"
+"ffset       - tests the force feedback driver"
+"ffmvforce   - sets the gain and the autocenter of a force-feedback device"
+"ffcfstress  - force feedback: constant force stress test"
+)
+
+source=("http://sourceforge.net/projects/linuxconsole/files/linuxconsoletools-${pkgver}.tar.bz2")
+tags="utils games-util"
+build_deps="gcc sdl"
+
+build()
+{
+    go_src_dir
+    burn_patches
+    make
+}
+
+
+after_build()
+{
+    go_src_dir
+    (cd utils
+      mkdir -p $pkgdir/usr/bin/
+      install -m 755 jscal $pkgdir/usr/bin/
+      install -m 755 jstest $pkgdir/usr/bin/
+      install -m 755 inputattach $pkgdir/usr/bin/
+      install -m 755 fftest $pkgdir/usr/bin/
+      install -m 755 ffset $pkgdir/usr/bin/
+      install -m 755 ffmvforce $pkgdir/usr/bin/
+      install -m 755 ffcfstress $pkgdir/usr/bin/
+    )
+}
