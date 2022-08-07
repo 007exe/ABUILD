@@ -1,0 +1,47 @@
+pkgname=apcupsd
+pkgver=3.14.12
+pkgbuild=2
+arch=('auto')
+
+shortdesc="Power mangement and controlling most of APC's UPS models"
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+tags="sys-power utils"
+build_deps="pkg-config gcc gd"
+
+config_files='/etc/apcupsd/apcupsd.conf
+/etc/apcupsd/hosts.conf
+/etc/apcupsd/multimon.conf'
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc/apcupsd \
+--localstatedir=/var \
+--sbindir=/sbin \
+--with-lock-dir=/run/apcupsd \
+--with-pid-dir=/run/apcupsd \
+--with-log-dir=/var/log \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--libexecdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
+--disable-static \
+--mandir=/usr/man \
+--enable-usb \
+--enable-net \
+--with-upstype=usb \
+--with-upscable=usb \
+--with-serial-dev=/dev/usb/hid/hiddev[0-9] \
+--enable-pthreads \
+--enable-cgi \
+--with-cgi-bin=/var/www/apcupsd/cgi-bin"
+
+INSTALL_KEYS="DESTDIR=${pkgdir}"
+
+after_build(){
+  install -Dm755 ${filedir}/apcupsd ${pkgdir}/etc/init.d/apcupsd
+  install -Dm755 ${filedir}/apcupsd.powerfail ${pkgdir}/etc/init.d/apcupsd.powerfail
+  install -Dm644 ${filedir}/apcupsd.conf ${pkgdir}/etc/apcupsd
+  install -Dm644 ${filedir}/apcupsd-udev.rules \
+	  ${pkgdir}/etc/udev/rules.d/60-${pkgname}.rules
+  rm -rf ${pkgdir}/etc/rc.d ${pkgdir}/usr/share/hal
+}
