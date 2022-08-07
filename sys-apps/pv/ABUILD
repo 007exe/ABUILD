@@ -1,0 +1,22 @@
+pkgname=pv
+pkgver=1.4.6
+pkgbuild=2
+arch=('auto')
+
+shortdesc="pv - Pipe Viewer - is a terminal-based tool for monitoring the progress of data through a pipeline"
+source=("http://www.ivarch.com/programs/sources/$pkgname-$pkgver.tar.bz2")
+tags="console app-admin "
+build_deps="glibc"
+
+BUILD_SYSTEM="autotools"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--mandir=/usr/man \
+--program-prefix= \
+--program-suffix="
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
