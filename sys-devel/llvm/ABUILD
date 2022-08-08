@@ -1,6 +1,5 @@
 pkgname=llvm
-pkgver=14.0.3
-_ocaml_ver=4.13.1
+pkgver=14.0.6
 pkgbuild=1
 arch=("auto")
 
@@ -12,12 +11,11 @@ source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver
 
 tags=("develop sys-devel")
 
-build_deps=("libffi python python-setuptools python-psutil python-sphinx ocaml ocaml-ctypes ocaml-findlib
-cmake ninja libedit ncurses libxml2 python-recommonmark python-commonmark")
-
-pkglist=("llvm_libs llvm_ocaml")
+build_deps=("libffi python python-setuptools python-psutil python-sphinx cmake ninja libedit ncurses libxml2 python-recommonmark python-commonmark")
 
 adddep=("llvm-libs perl")
+
+pkglist=("llvm_libs")
 
 build() {
   cd ${srcdir}/llvm-project-llvmorg-${pkgver}/llvm
@@ -29,20 +27,24 @@ build() {
   cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_DOCDIR=share/doc \
     -DLLVM_HOST_TRIPLE=x86_64-pc-linux-gnu \
     -DLLVM_BUILD_LLVM_DYLIB=ON \
     -DLLVM_LINK_LLVM_DYLIB=ON \
     -DLLVM_INSTALL_UTILS=ON \
     -DLLVM_ENABLE_RTTI=ON \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DLLVM_USE_PERF=ON \
     -DLLVM_ENABLE_FFI=ON \
     -DLLVM_BUILD_TESTS=ON \
     -DLLVM_BUILD_DOCS=ON\
     -DLLVM_ENABLE_SPHINX=ON \
+    -DLLVM_ENABLE_BINDINGS=OFF \
     -DLLVM_ENABLE_DOXYGEN=OFF \
+    -DLLVM_INCLUDE_BENCHMARKS=OFF \
     -DSPHINX_WARNINGS_AS_ERRORS=OFF \
     -DLLVM_BINUTILS_INCDIR=/usr/include
-  ninja all
-  ninja all ocaml_doc
+  ninja
   DESTDIR=${pkgdir} ninja install
 
 # Включаем lit для запуска тестов на основе lit в других проектах
@@ -50,22 +52,17 @@ build() {
   python3 setup.py install --root=${pkgdir} -O1
   popd
 
-# Удаляем документацию
-  rm -r ${pkgdir}/usr/share/doc/LLVM/${pkgname}/html/{_sources,.buildinfo}
-
 # Эти библиотеки находятся в llvm-libs
   mv -f ${pkgdir}/usr/lib/lib{LLVM,LTO,Remarks}*.so* ${srcdir}
   mv -f ${pkgdir}/usr/lib/LLVMgold.so ${srcdir}
-
-# Эти библиотеки находятся в отдельном пакете
-  rm -rf ${srcdir}/ocaml.{lib,doc}
-  mv ${pkgdir}/usr/lib/ocaml ${srcdir}/ocaml.lib
-  mv ${pkgdir}/usr/share/doc/LLVM/${pkgname}/ocaml-html ${srcdir}/ocaml.doc
 
 # Требуется для мультибиблиотек (https://bugs.archlinux.org/task/29951)
 # Взято из Fedora
   mv ${pkgdir}/usr/include/llvm/Config/llvm-config{,-64}.h
   cp ${filedir}/llvm-config.h ${pkgdir}/usr/include/llvm/Config/llvm-config.h
+
+# Удаляем документацию
+  rm -r ${pkgdir}/usr/share/doc/llvm/html/{_sources,.buildinfo}
 
   install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
@@ -90,23 +87,6 @@ llvm_libs_prep() {
 # https://bugs.archlinux.org/task/28479
   install -d ${pkgdir}/usr/lib/bfd-plugins
   ln -s ../LLVMgold.so ${pkgdir}/usr/lib/bfd-plugins/LLVMgold.so
-
-  install -Dm644 ${srcdir}/llvm-project-llvmorg-${pkgver}/llvm/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-llvm_ocaml() {
-  pkgname=llvm-ocaml
-  shortdesc=("Objective-CAML bindings for LLVM")
-  longdesc=("Objective-CAML bindings for LLVM.")
-  tags=("develop dev-ml")
-  adddep=("ocaml>=$_ocaml_ver ocaml-ctypes llvm=${pkgver} llvm-libs=${pkgver}")
-}
-
-llvm_ocaml_prep() {
-  go_src_dir
-  install -d ${pkgdir}/{usr/lib,usr/share/doc/LLVM/llvm/ocaml-html}
-  cp -a ${srcdir}/ocaml.lib ${pkgdir}/usr/lib/ocaml
-  cp -a ${srcdir}/ocaml.doc ${pkgdir}/usr/share/doc/LLVM/llvm/ocaml-html
 
   install -Dm644 ${srcdir}/llvm-project-llvmorg-${pkgver}/llvm/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
