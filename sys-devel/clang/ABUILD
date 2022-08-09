@@ -1,10 +1,10 @@
 pkgname=clang
-pkgver=14.0.3
+pkgver=14.0.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A C language family front-end for LLVM")
-longdesc=("The goal of the Clang project is to create a new C, C++, Objective C and Objective C++ front-end for the LLVM compiler. Its tools are built as libraries and designed to be loosely-coupled and extensible.")
+shortdesc=("A C language family front-end for LLVM.")
+longdesc=("The goal of the Clang project is to create a new C, C++, Objective C and Objective C++ front-end for the LLVM compiler.")
 
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-$pkgver.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
