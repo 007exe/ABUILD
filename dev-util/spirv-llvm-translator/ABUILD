@@ -16,17 +16,20 @@ build() {
   go_src_dir
   burn_patches
   cmake -B build  \
-    -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
     -DCMAKE_SKIP_RPATH=ON \
     -DLLVM_INCLUDE_TESTS=ON \
+    -DCCACHE_ALLOWED="OFF" \
+    -DLLVM_BUILD_TOOLS="ON" \
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
     -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr/include/spirv/ \
     -Wno-dev
-  make -C build
+  make -C build -j${numjobs}
   make -C build DESTDIR=${pkgdir} install
   install -Dm644 LICENSE.TXT -t ${pkgdir}/usr/share/licenses/${pkgname}/
+
+  install -Dm755 build/tools/llvm-spirv/llvm-spirv -t ${pkgdir}/usr/bin
 }
