@@ -1,5 +1,5 @@
 pkgname=compiler-rt
-pkgver=14.0.3
+pkgver=14.0.6
 pkgbuild=1
 arch=("auto")
 
@@ -20,6 +20,12 @@ build(){
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_SKIP_RPATH=ON \
+    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
+    -DCOMPILER_RT_BUILD_MEMPROF=OFF \
+    -DCOMPILER_RT_BUILD_ORC=OFF \
+    -DCOMPILER_RT_BUILD_PROFILE=OFF \
+    -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+    -DCOMPILER_RT_BUILD_XRAY=OFF \
     -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/${pkgver}
   ninja
   DESTDIR=${pkgdir} ninja install
