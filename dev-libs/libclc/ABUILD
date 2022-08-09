@@ -1,5 +1,5 @@
 pkgname=libclc
-pkgver=14.0.3
+pkgver=14.0.6
 pkgbuild=1
 arch=("noarch")
 
@@ -13,12 +13,12 @@ tags=("develop dev-libs")
 build_deps=("clang llvm cmake ninja python spirv-llvm-translator")
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}.src
-  mkdir build
-  cd build
+  mkdir -p ${srcdir}/${pkgname}-${pkgver}.src/build
+  cd ${srcdir}/${pkgname}-${pkgver}.src/build
   cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLLVM_CONFIG=/usr/bin/llvm-config
   ninja
   DESTDIR=${pkgdir} ninja install
   install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
