@@ -1,5 +1,5 @@
 pkgname=libffado
-pkgver=2.4.5
+pkgver=2.4.6
 pkgbuild=1
 arch=("auto")
 
