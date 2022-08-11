@@ -3,20 +3,20 @@ pkgver=0.0.28
 pkgbuild=2
 arch=("auto")
 
-shortdesc="A tool for converting XML files to various formats"
-longdesc="This is a package for converting XML files to various formats using XSL stylesheets."
-
-tags=("app-text develop")
+shortdesc=("A tool for converting XML files to various formats.")
+longdesc=("This is a package for converting XML files to various formats using XSL stylesheets.")
 
 source=("https://releases.pagure.org/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="make gcc docbook-xsl libxslt glibc-solibs coreutils bash infozip sed grep"
+tags=("app-text develop")
+
+build_deps=("make gcc docbook-xsl libxslt glibc coreutils bash infozip sed grep")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --sysconfdir=/etc
   make -j${numjobs}
