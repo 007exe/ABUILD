@@ -1,17 +1,20 @@
 pkgname=texlive-core
-pkgver=2021.62793
-_revnr=${pkgver#2021.}
+pkgver=2022.63035
+_revnr=${pkgver#2022.}
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("TeX Live core distribution.")
 longdesc=("A complete TeX distribution.")
 
-source=("https://sources.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip")
+source=("https://sources.archlinux.org/other/texlive/${pkgname}-${pkgver}-src.zip")
 
 tags=("app-text tex")
 
 build_deps=("perl")
+
+# texlive-bin
+adddep=("perl")
 
 config_files=("etc/texmf/web2c/texmf.cnf
 etc/texmf/chktex/chktexrc
@@ -26,28 +29,257 @@ etc/texmf/web2c/mktex.cnf
 etc/texmf/xdvi/XDvi")
 
 build(){
-  go_src_dir
-  burn_patches
-  ./configure \
-    --prefix=/usr \
-    --bindir=/usr/bin \
-    --disable-native-texlive-build \
-    --disable-static \
-    --enable-shared \
-    --disable-dvisvgm \
-    --with-system-cairo \
-    --with-system-fontconfig \
-    --with-system-freetype2 \
-    --with-system-gmp \
-    --with-system-graphite2 \
-    --with-system-harfbuzz \
-    --with-system-icu \
-    --with-system-libgs \
-    --with-system-libpaper \
-    --with-system-libpng \
-    --with-system-mpfr \
-    --with-system-pixman \
-    --with-system-zlib
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cd ${srcdir}
+   echo -n "   --> извлечение всех пакетов... "
+   for p in *.tar.xz; do
+     bsdtar -xf $p
+   done
+   echo "выполнено"
+   rm -rf source doc
+
+# Установка пакетов
+   install -m755 -d ${pkgdir}/var/lib/texmf/arch/installedpkgs
+   sed -i '/^#/d' CONTENTS
+   install -m644 CONTENTS ${pkgdir}/var/lib/texmf/arch/installedpkgs/${pkgname}_${_revnr}.pkgs
+   install -m644 ${filedir}/${pkgname}.maps ${pkgdir}/var/lib/texmf/arch/installedpkgs/
+   install -m644 ${filedir}/${pkgname}.fmts ${pkgdir}/var/lib/texmf/arch/installedpkgs/
+   install -m755 -d ${pkgdir}/usr/share
+   wanteddirs=$(for d in *; do test -d $d && [[ $d != texmf* ]] && [[ $d != texlive-man ]] && echo $d; done) || true
+   for dir in $wanteddirs; do
+     find $dir -type d -exec install -d -m755 ${pkgdir}/usr/share/texmf-dist/'{}' \;
+     find $dir -type f -exec install -m644 '{}' ${pkgdir}/usr/share/texmf-dist/'{}' \;
+   done
+   find texmf-dist -type d -exec install -d -m755 ${pkgdir}/usr/share/'{}' \;
+   find texmf-dist -type f -exec install -m644 '{}' ${pkgdir}/usr/share/'{}' \;
+   find texmf-dist -type f -executable -exec chmod 755 ${pkgdir}/usr/share/'{}' \;
+
+# Создание древа texmf
+  echo "   --> Создание древа /etc/texmf"
+  install -d -m755 ${pkgdir}/etc/texmf/web2c
+  install -d -m755 ${pkgdir}/etc/texmf/chktex
+  install -d -m755 ${pkgdir}/etc/texmf/dvips/config
+  install -d -m755 ${pkgdir}/etc/texmf/dvipdfmx
+  install -d -m755 ${pkgdir}/etc/texmf/tex/generic/config
+  install -d -m755 ${pkgdir}/etc/texmf/tex/generic/tex-ini-files
+  install -d -m755 ${pkgdir}/etc/texmf/ttf2pk
+  install -d -m755 ${pkgdir}/etc/texmf/xdvi
+
+  install -d -m755 ${pkgdir}/usr/share/fontconfig/conf.avail
+  install -m644 ${filedir}/09-texlive-fonts.conf ${pkgdir}/usr/share/fontconfig/conf.avail/
+
+# Удаляем документацию которая уже находится в texlive-bin
+  rm -rf ${pkgdir}/usr/share/texmf-dist/doc/man
+
+# Копирование конфигурационных файлов в древо $TEXMFCONFIG
+  cp -a ${pkgdir}/usr/share/texmf-dist/chktex/chktexrc ${pkgdir}/etc/texmf/chktex/
+  cp -a ${pkgdir}/usr/share/texmf-dist/web2c/mktex.cnf ${pkgdir}/etc/texmf/web2c/
+  cp -a ${pkgdir}/usr/share/texmf-dist/web2c/updmap-hdr.cfg ${pkgdir}/etc/texmf/web2c/
+  cp -a ${pkgdir}/usr/share/texmf-dist/web2c/fmtutil-hdr.cnf ${pkgdir}/etc/texmf/web2c/fmtutil.cnf
+  cp -a ${pkgdir}/usr/share/texmf-dist/dvips/config/config.ps ${pkgdir}/etc/texmf/dvips/config/
+  cp -a ${pkgdir}/usr/share/texmf-dist/dvipdfmx/dvipdfmx.cfg ${pkgdir}/etc/texmf/dvipdfmx/
+  cp -a ${pkgdir}/usr/share/texmf-dist/tex/generic/tex-ini-files/pdftexconfig.tex ${pkgdir}/etc/texmf/tex/generic/tex-ini-files/
+  cp -a ${pkgdir}/usr/share/texmf-dist/tex/generic/config/language.dat ${pkgdir}/etc/texmf/tex/generic/config/
+  cp -a ${pkgdir}/usr/share/texmf-dist/tex/generic/config/language.def ${pkgdir}/etc/texmf/tex/generic/config/
+  cp -a ${pkgdir}/usr/share/texmf-dist/ttf2pk/ttf2pk.cfg ${pkgdir}/etc/texmf/ttf2pk/
+  cp -a ${pkgdir}/usr/share/texmf-dist/xdvi/XDvi ${pkgdir}/etc/texmf/xdvi/
+
+# Удаляем предупреждение относящиеся к language.{dat,def}
+  sed -i -e '/DO NOT EDIT/,+3 d' ${pkgdir}/etc/texmf/tex/generic/config/language.*
+
+# Замена texmf.cnf
+  rm -f ${pkgdir}/usr/share/texmf-dist/web2c/texmf.cnf
+  install -m644 ${filedir}/texmf.cnf ${pkgdir}/etc/texmf/web2c/texmf.cnf
+
+# Создание символической ссылки на texmf.cnf
+  ln -sf /etc/texmf/web2c/texmf.cnf ${pkgdir}/usr/share/texmf-dist/web2c/texmf.cnf
+
+# Замена texmfcnf.lua
+  install -m644 ${filedir}/texmfcnf.lua ${pkgdir}/usr/share/texmf-dist/web2c/texmfcnf.lua
+
+# Установка библиотек Perl
+  mv ${pkgdir}/usr/share/texmf-dist/tlpkg ${pkgdir}/usr/share
+  rm -rf ${pkgdir}/usr/share/tlpkg/tlpobj
+
+# Удаление upstream updmap.cfg: он содержит слишком много карт.
+  rm ${pkgdir}/usr/share/texmf-dist/web2c/updmap.cfg
+
+# Удаление fmtutil.cnf будет сгенерировани новый
+  rm ${pkgdir}/usr/share/texmf-dist/web2c/fmtutil.cnf
+
+# Очистка пакета
+  rm -rf ${pkgdir}/usr/share/texmf-dist/scripts/context/stubs/mswin/
+
+# Привязки
+_linked_scripts="
+a2ping/a2ping.pl
+accfonts/mkt1font
+accfonts/vpl2ovp
+accfonts/vpl2vpl
+adhocfilelist/adhocfilelist.sh
+albatross/albatross.sh
+arara/arara.sh
+attachfile2/pdfatfi.pl
+bundledoc/arlatex
+bundledoc/bundledoc
+checkcites/checkcites.lua
+checklistings/checklistings.sh
+chklref/chklref.pl
+chktex/chkweb.sh
+chktex/deweb.pl
+cjk-gs-integrate/cjk-gs-integrate.pl
+clojure-pamphlet/pamphletangler
+cluttex/cluttex.lua
+context/perl/mptopdf.pl
+context/stubs/unix/context
+context/stubs/unix/contextjit
+context/stubs/unix/luatools
+context/stubs/unix/mtxrun
+context/stubs/unix/mtxrunjit
+context/stubs/unix/texexec
+context/stubs/unix/texmfstart
+ctan-o-mat/ctan-o-mat.pl
+ctanbib/ctanbib
+ctanify/ctanify
+ctanupload/ctanupload.pl
+de-macro/de-macro
+dosepsbin/dosepsbin.pl
+dtxgen/dtxgen
+dviasm/dviasm.py
+dviinfox/dviinfox.pl
+epstopdf/epstopdf.pl
+findhyph/findhyph
+fontools/afm2afm
+fontools/autoinst
+fontools/ot2kpx
+fragmaster/fragmaster.pl
+git-latexdiff/git-latexdiff
+installfont/installfont-tl
+jfmutil/jfmutil.pl
+ketcindy/ketcindy.sh
+latex-git-log/latex-git-log
+latex-papersize/latex-papersize.py
+latex2man/latex2man
+latex2nemeth/latex2nemeth
+latexdiff/latexdiff-vc.pl
+latexdiff/latexdiff.pl
+latexdiff/latexrevise.pl
+latexfileversion/latexfileversion
+latexindent/latexindent.pl
+latexmk/latexmk.pl
+latexpand/latexpand
+light-latex-make/llmk.lua
+ltxfileinfo/ltxfileinfo
+ltximg/ltximg.pl
+luafindfont/luafindfont.lua
+luaotfload/luaotfload-tool.lua
+lwarp/lwarpmk.lua
+make4ht/make4ht
+match_parens/match_parens
+mf2pt1/mf2pt1.pl
+mkjobtexmf/mkjobtexmf.pl
+optexcount/optexcount
+pdfbook2/pdfbook2
+pdfcrop/pdfcrop.pl
+pdfjam/pdfjam
+pdflatexpicscale/pdflatexpicscale.pl
+pdftex-quiet/pdftex-quiet
+pdfxup/pdfxup
+pfarrei/a5toa4.tlu
+pfarrei/pfarrei.tlu
+pkfix-helper/pkfix-helper
+pkfix/pkfix.pl
+ps2eps/ps2eps.pl
+purifyeps/purifyeps
+pythontex/depythontex.py
+pythontex/pythontex.py
+simpdftex/simpdftex
+spix/spix.py
+srcredact/srcredact.pl
+sty2dtx/sty2dtx.pl
+tex4ebook/tex4ebook
+tex4ht/ht.sh
+tex4ht/htcontext.sh
+tex4ht/htlatex.sh
+tex4ht/htmex.sh
+tex4ht/httex.sh
+tex4ht/httexi.sh
+tex4ht/htxelatex.sh
+tex4ht/htxetex.sh
+tex4ht/mk4ht.pl
+tex4ht/xhlatex.sh
+texcount/texcount.pl
+texdef/texdef.pl
+texdiff/texdiff
+texdirflatten/texdirflatten
+texdoc/texdoc.tlu
+texdoctk/texdoctk.pl
+texfot/texfot.pl
+texlive-extra/allcm.sh
+texlive-extra/allneeded.sh
+texlive-extra/dvi2fax.sh
+texlive-extra/dvired.sh
+texlive-extra/e2pall.pl
+texlive-extra/fontinst.sh
+texlive-extra/kpsetool.sh
+texlive-extra/kpsewhere.sh
+texlive-extra/ps2frag.sh
+texlive-extra/pslatex.sh
+texlive-extra/texconfig-dialog.sh
+texlive-extra/texconfig-sys.sh
+texlive-extra/texconfig.sh
+texlive-extra/texlinks.sh
+texlive-extra/xelatex-unsafe.sh
+texlive-extra/xetex-unsafe.sh
+texlive/fmtutil-sys.sh
+texlive/fmtutil-user.sh
+texlive/fmtutil.pl
+texlive/mktexlsr
+texlive/mktexmf
+texlive/mktexpk
+texlive/mktextfm
+texlive/rungs.tlu
+texlive/updmap-sys.sh
+texlive/updmap-user.sh
+texlive/updmap.pl
+texliveonfly/texliveonfly.py
+texloganalyser/texloganalyser
+texlogfilter/texlogfilter
+texlogsieve/texlogsieve
+texplate/texplate.sh
+thumbpdf/thumbpdf.pl
+typeoutfileinfo/typeoutfileinfo.sh
+xindex/xindex.lua
+xindy/texindy.pl
+xindy/xindy.pl
+"
+  install -m755 -d ${pkgdir}/usr/bin
+  install -m755 -d ${pkgdir}/usr/share/man/man1
+  for _script in ${_linked_scripts}; do
+      _scriptbase=$(basename $_script)
+      _scriptbase=${_scriptbase%.*}
+      ln -s /usr/share/texmf-dist/scripts/${_script} ${pkgdir}/usr/bin/${_scriptbase}
+      if [[ -f ${srcdir}/texlive-man/man1/${_scriptbase}.1 ]]; then
+          install -m644 ${srcdir}/texlive-man/man1/${_scriptbase}.1 ${pkgdir}/usr/share/man/man1/
+      fi
+  done
+  ln -s /usr/share/texmf-dist/scripts/listings-ext/listings-ext.sh ${pkgdir}/usr/bin/listings-ext.sh
+
+# Создание символьных ссылок
+  ln -s allcm ${pkgdir}/usr/bin/allec
+  ln -s cluttex ${pkgdir}/usr/bin/cllualatex
+  ln -s cluttex ${pkgdir}/usr/bin/clxelatex
+  ln -s epstopdf ${pkgdir}/usr/bin/repstopdf
+  ln -s fmtutil ${pkgdir}/usr/bin/mktexfmt
+  ln -s kpsetool ${pkgdir}/usr/bin/kpsepath
+  ln -s kpsetool ${pkgdir}/usr/bin/kpsexpand
+  ln -s luaotfload-tool ${pkgdir}/usr/bin/mkluatexfontdb
+  ln -s mktexlsr ${pkgdir}/usr/bin/texhash
+  ln -s pdfcrop ${pkgdir}/usr/bin/rpdfcrop
+  ln -s texdef ${pkgdir}/usr/bin/latexdef
+
+# NOTE: Документация
+# svn://tug.org/texlive/tags/texlive-2022.0/Master/texmf-dist/doc/man#revision=${_revnr}
+#  for _scriptbase in allec kpsepath kpsexpand mktexfmt texhash; do
+#      install -m644 ${srcdir}/texlive-man/man1/${_scriptbase}.1 ${pkgdir}/usr/share/man/man1/
+#  done
 }
