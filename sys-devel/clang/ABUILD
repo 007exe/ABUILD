@@ -16,11 +16,12 @@ build_deps=("llvm cmake ninja python-sphinx python")
 
 adddep=("gcc compiler-rt")
 
-before_build(){
+build(){
   mv ${srcdir}/clang-${pkgver}.src ${srcdir}/clang
   mv ${srcdir}/llvm-${pkgver}.src ${srcdir}/llvm
   cd ${srcdir}/clang
   mv ${srcdir}/clang-tools-extra-${pkgver}.src tools/extra
+  burn_patches
   mkdir build
   cd build
   cmake ..  -G Ninja \
