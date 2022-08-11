@@ -1,20 +1,18 @@
 pkgname=poppler
-pkgver=22.03.0
+pkgver=22.07.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("PDF rendering library based on xpdf 3.0")
-longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+shortdesc=("PDF rendering library based on xpdf 3.0.")
+longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files.")
 
 source=("http://poppler.freedesktop.org/poppler-${pkgver}.tar.xz")
 
 tags=("app-text libs")
 
-# poppler-qt6
-pkglist=("poppler-glib poppler-qt5")
+pkglist=("poppler-glib poppler-qt5 poppler-qt6")
 
-# qt6-base
-build_deps="libjpeg-turbo gcc-libs cairo fontconfig openjpeg2 lcms2 gobject-introspection icu gtk-doc curl cmake python boost nss gtk3 qt5-base"
+build_deps=("libjpeg-turbo gcc-libs cairo fontconfig openjpeg2 lcms2 gobject-introspection icu gtk-doc curl cmake python boost nss gtk3 qt5-base qt6-base")
 
 removedep=("freetype libpng libtiff zlib nspr")
 
@@ -43,7 +41,7 @@ build() {
 poppler-glib() {
   pkgname=poppler-glib
   shortdesc=("Poppler glib bindings.")
-  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files.")
   adddep=("poppler=${pkgver}")
   removedep=("cairo freetype gcc-libs")
 }
@@ -61,7 +59,7 @@ poppler-glib_prep() {
 poppler-qt5() {
   pkgname=poppler-qt5
   shortdesc=("Poppler Qt5 bindings.")
-  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files.")
   adddep=("poppler=${pkgver}")
   removedep=("freetype lcms2 gcc-libs")
 }
@@ -77,7 +75,7 @@ poppler-qt5_prep() {
 poppler-qt6() {
   pkgname=poppler-qt6
   shortdesc=("Poppler Qt6 bindings.")
-  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files. This is useful for providing PDF rendering functionality as a shared library.")
+  longdesc=("The Poppler package contains a PDF rendering library and command line tools used to manipulate PDF files.")
   adddep=("poppler=${pkgver}")
   removedep=("freetype lcms2 gcc-libs")
 }
