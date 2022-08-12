@@ -1,5 +1,5 @@
 pkgname=mesa
-pkgver=22.0.1
+pkgver=22.1.6
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,9 @@ longdesc=("Mesa is an OpenGL compatible 3D graphics library.")
 
 tags=("media-libs libs")
 
-build_deps=("python-mako libxml2 libx11 xorgproto libdrm libxshmfence libxxf86vm libxdamage zstd elfutils llvm clang valgrind cmake meson libvdpau vulkan-icd-loader wayland glslang libva libclc libglvnd libunwind wayland-protocols lm_sensors llvm-libs libxcb python expat elfutils libomxil-bellagio")
+build_deps=("python-mako libxml2 libx11 xorgproto libdrm libxshmfence libxxf86vm libxdamage zstd elfutils llvm
+clang valgrind cmake meson libvdpau vulkan-icd-loader wayland glslang libva libclc libglvnd libunwind
+wayland-protocols lm_sensors llvm-libs libxcb python expat elfutils libomxil-bellagio")
 
 pkglist=("vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau")
 
@@ -63,6 +65,10 @@ mesa-vdpau() {
 build() {
   go_src_dir
   burn_patches
+  CFLAGS+=' -g1'
+  CXXFLAGS+=' -g1'
+  CFLAGS+=' -mtls-dialect=gnu'
+  CXXFLAGS+=' -mtls-dialect=gnu'
   meson build \
     -D prefix=/usr \
     -D libdir=lib \
