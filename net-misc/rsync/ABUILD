@@ -1,18 +1,18 @@
 pkgname=rsync
-pkgver=3.2.3
-pkgbuild=2
-arch=('auto')
+pkgver=3.2.5pre2
+pkgbuild=1
+arch=("auto")
 
-shortdesc=("A program for synchronizing files over a network")
-longdesc=("Rsync uses a quick and reliable algorithm to very quickly bring remote and host files into sync.  Rsync is fast because it just sends the differences in the files over the network (instead of sending the complete files). Rsync is often used as a very powerful mirroring process or just as a more capable replacement for the rcp command. A technical report which describes the rsync algorithm is included in this package.")
+shortdesc=("A program for synchronizing files over a network.")
+longdesc=("Rsync uses a quick and reliable algorithm to very quickly bring remote and host files into sync.")
 
-tags=('network net-misc')
+source=("https://github.com/WayneD/rsync/archive/refs/tags/v${pkgver}.tar.gz")
 
-source=(http://rsync.samba.org/ftp/rsync/${pkgname}-${pkgver}.tar.gz)
+tags=("network net-misc")
 
-build_deps="acl lz4 openssl perl popt xxhash zlib zstd python-commonmark"
+build_deps=("acl lz4 openssl perl popt xxhash zlib zstd python-commonmark")
 
-config_files="etc/rsyncd.conf"
+config_files=("etc/rsyncd.conf")
 
 build() {
   go_src_dir
@@ -25,8 +25,7 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-# Init, logrotate, configs
-  install -Dm0644 ${filedir}/rsyncd.conf "$pkgdir/etc/rsyncd.conf"
+  install -Dm0644 ${filedir}/rsyncd.conf ${pkgdir}/etc/rsyncd.conf
   install -Dm755 ${filedir}/rsyncd.init.d ${pkgdir}/etc/init.d/rsyncd
   install -Dm644 ${filedir}/rsyncd.conf.d ${pkgdir}/etc/conf.d/rsyncd.new
   install -Dm644 ${filedir}/rsyncd.logrotate ${pkgdir}/etc/logrotate.d/rsyncd
