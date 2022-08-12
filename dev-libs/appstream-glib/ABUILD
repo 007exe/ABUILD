@@ -1,5 +1,5 @@
 pkgname=appstream-glib
-pkgver=0.7.18
+pkgver=0.8.1
 pkgbuild=1
 arch=("auto")
 
