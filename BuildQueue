@@ -3,17 +3,23 @@
 # NOTE: Этот скрипт предназначен для организации очереди сборки пакетов
 # WARNING: Скрипт не умеер разделять мультипакеты на категории
 
-LIST="app-editors/bluefish
-dev-cpp/clucene
-dev-db/libiodbc
-dev-libs/libatomic_ops
-dev-libs/libpwquality
-dev-libs/libsigsegv
-dev-libs/xapian-core
-net-fs/sshfs
-net-libs/telepathy-glib
-sys-apps/gptfdisk
-"
+LIST="dev-lang/rust
+media-libs/libjxl
+media-libs/libquvi
+media-gfx/graphicsmagick
+app-text/mupdf
+app-text/podofo
+dev-util/vulkan-tools
+media-libs/mesa"
+#sci-libs/avogadrolibs
+#media-libs/opencv
+#dev-embedded/avr-gcc
+#dev-embedded/avr-libc
+#libnma-gtk4
+#net-vpn/networkmanager-pptp
+#pkcs11-helper
+#net-vpn/openvpn
+#net-vpn/networkmanager-openvpn"
 
 STARTD=`pwd`
 LOGFILE=~/build.log
@@ -29,7 +35,10 @@ for i in $LIST ; do
     else
            echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
            cd $STARTD
+          # exit
     fi
 done
 
 echo "============================= Завершено `date` =============================" >> $LOGFILE
+
+#sudo poweroff
