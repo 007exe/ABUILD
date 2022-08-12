@@ -1,0 +1,27 @@
+pkgname=ocaml-stdlib-shims
+pkgver=0.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Shim to substitute Pervasives with Stdlib before 4.08.")
+longdesc=("Compiling against this library allows to replace your uses of Pervasives with Stdlib before 4.08.")
+
+source=("https://github.com/ocaml/stdlib-shims/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-ml")
+
+build_deps=("dune ocaml")
+
+build() {
+  go_src_dir
+  burn_patches
+  dune build -p stdlib-shims --verbose
+  DESTDIR=${pkgdir} dune install --prefix /usr --libdir /usr/lib/ocaml
+
+  install -dm755 ${pkgdir}/usr/share/doc/${pkgname}
+  mv ${pkgdir}/usr/doc/stdlib-shims/* ${pkgdir}/usr/share/doc/${pkgname}/
+  rm -r ${pkgdir}/usr/doc/
+
+  install -dm755 ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -sf /usr/share/doc/${pkgname}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
