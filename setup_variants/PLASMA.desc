@@ -1,0 +1,8 @@
+desc: KDE Plasma 5
+full: KDE Plasma 5 is the fifth version of the KDE desktop based on the Qt 5 framework. This version continues the development of the ideas laid down in the fourth version of KDE, is characterized by an updated appearance, many new features and less resource consumption.
+desc[ru]: KDE Plasma 5
+full[ru]: KDE Plasma 5 - пятая версия рабочего стола KDE, основанная на фреймворке Qt 5. Эта версия продолжает развитие идей, заложенных в четвёртой версии KDE, характеризуется обновленным внешним видом, многими новыми возможностями и меньшим потреблением ресурсов.
+hasDM
+hasX11
+hardware: 4Gb RAM, 2.5Ghz CPU
+hardware[ru]: 4Гб ОЗУ, 2.5ГГц ЦПУ
