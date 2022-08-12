@@ -18,9 +18,9 @@ build() {
   go_src_dir
   burn_patches
   pkg/pkg.ml build --pkg-name topkg
-  opam-installer --prefix="${pkgdir}/usr" \
-    --libdir="${pkgdir}$(ocamlc -where)" \
-    --docdir="${pkgdir}/usr/share/doc"
+  opam-installer --prefix=${pkgdir}/usr \
+    --libdir=${pkgdir}$(ocamlc -where) \
+    --docdir=${pkgdir}/usr/share/doc
   install -dm755 ${pkgdir}/usr/share/licenses/${pkgname}
   mv ${pkgdir}/usr/share/doc/topkg/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
