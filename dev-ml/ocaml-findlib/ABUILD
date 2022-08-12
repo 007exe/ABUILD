@@ -10,12 +10,11 @@ source=("http://download.camlcity.org/download/findlib-$pkgver.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps="ocaml"
+build_deps=("ocaml")
 
-adddep=("ocaml=4.13.1")
+adddep=("ocaml")
 
-build()
-{
+build(){
   go_src_dir
   burn_patches
   ./configure \
