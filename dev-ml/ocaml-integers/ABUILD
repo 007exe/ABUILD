@@ -1,5 +1,5 @@
 pkgname=ocaml-integers
-pkgver=0.5.1
+pkgver=0.7.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,17 +10,18 @@ source=("https://github.com/ocamllabs/$pkgname/archive/$pkgver.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("dune ocaml-topkg ocaml-findlib ocaml ocamlbuild opam")
+build_deps=("dune ocaml-topkg ocaml-findlib ocaml ocamlbuild opam ocaml-stdlib-shims")
 
 build() {
   go_src_dir
   burn_patches
   dune build --profile release
-  opam-installer --prefix=${pkgdir}/usr \
-		 --libdir=${pkgdir}$(ocamlc -where) \
-		 --docdir=${pkgdir}/usr/share/doc \
-		 --stubsdir=${pkgdir}$(ocamlc -where)/stublibs \
-		 ./_build/default/integers.install
+  opam-installer \
+    --prefix=${pkgdir}/usr \
+    --libdir=${pkgdir}$(ocamlc -where) \
+    --docdir=${pkgdir}/usr/share/doc \
+    --stubsdir=${pkgdir}$(ocamlc -where)/stublibs \
+    ./_build/default/integers.install
 
   install -Dm644 LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
