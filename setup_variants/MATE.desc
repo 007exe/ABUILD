@@ -1,0 +1,8 @@
+desc: MATE
+full: MATE - this desktop environment is a continuation of gnome2. It provides an intuitive and attractive desktop environment using the traditional design for Linux and other Unix-like operating systems.
+desc[ru]: MATE
+full[ru]: MATE - это среда рабочего стола является продолжением gnome2. Она обеспечивает интуитивно понятную и привлекательную среду рабочего стола, используя традиционное оформление для Linux и других Unix-подобных операционных систем.
+hasX11
+hasDM
+hardware: 4Gb RAM, any CPU
+hardware[ru]: 4Гб ОЗУ, любой процессор
