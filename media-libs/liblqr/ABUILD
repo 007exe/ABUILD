@@ -3,10 +3,10 @@ pkgver=0.4.2
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("A seam-carving C/C++ library called Liquid Rescale.")
-longdesc=("Easy to use C/C++ seam carving library.")
+shortdesc=("Easy to use C/C++ seam carving library.")
+longdesc=("A seam-carving C/C++ library called Liquid Rescale.")
 
-source=("http://liblqr.wdfiles.com/local--files/en%3Adownload-page/${pkgname}-1-${pkgver}.tar.bz2")
+source=("https://liblqr.wikidot.com/local--files/en:download-page/${pkgname}-1-${pkgver}.tar.bz2")
 
 tags=("libs media-libs")
 
