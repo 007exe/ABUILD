@@ -1,5 +1,5 @@
 pkgname=ocaml
-pkgver=4.13.1
+pkgver=4.14.0
 pkgbuild=1
 arch=("auto")
 
