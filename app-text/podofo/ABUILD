@@ -20,7 +20,6 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
     -DFREETYPE_INCLUDE_DIR=/usr/include/freetype2 \
     -DPODOFO_BUILD_SHARED=1 \
     -DPODOFO_HAVE_JPEG_LIB=1 \
