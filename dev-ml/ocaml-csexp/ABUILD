@@ -12,13 +12,13 @@ tags=("libs dev-ml")
 
 build_deps=("ocaml ocaml-findlib ocaml-result dune")
 
-adddep=("ocaml>=4.13.1")
+adddep=("ocaml")
 
 build(){
   go_src_dir
   burn_patches
   dune build -p csexp
-  DESTDIR=${pkgdir} dune install --prefix /usr --libdir lib/ocaml
+  dune install --destdir=${pkgdir} --prefix /usr --libdir /usr/lib/ocaml
 
   install -dm755 ${pkgdir}/usr/share/
   mv ${pkgdir}/usr/doc ${pkgdir}/usr/share/
