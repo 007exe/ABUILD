@@ -12,13 +12,13 @@ tags=("dev-ml libs")
 
 build_deps=("ocaml dune")
 
-adddep=("ocaml>=4.13.1")
+adddep=("ocaml")
 
 build() {
   go_src_dir
   burn_patches
-  dune build
-  DESTDIR=${pkgdir} dune install --prefix "/usr" --libdir "lib/ocaml"
+  dune build -p bigarray-compat
+  DESTDIR=${pkgdir} dune install --prefix /usr --libdir /usr/lib/ocaml
 
   install -dm755 ${pkgdir}/usr/share/
   mv ${pkgdir}/usr/doc ${pkgdir}/usr/share/
