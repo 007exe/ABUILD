@@ -1,9 +1,8 @@
 desc: i3-wm
-full: i3 is a tiling window manager, completely written from scratch. i3 is primarily targeted at advanced users and developers. This is a minimal installation including i3-wm, i3status,
-dmenu and xterm. I3-gaps is present in the repository; when you install it, it will replace i3-wm. 
+full: i3 is a tiling window manager for x11, based on wmii and written in C. It supports tiling, stack and table layout, which is processed dynamically. The configuration is carried out via a plain text file, and the i3 extension is possible using a UNIX domain socket and an IPC interface based on json from many programming languages. This is a minimal installation that includes i3-wm, i3status, dmenu and xterm. I3-gaps is present in the repository when it is installed, it will replace i3-wm. 
 desc[ru]: i3-wm
-full[ru]: i3 это тайловый оконный менеджер, полностью написанный с нуля. i3 в первую очередь ориентирован на опытных пользователей и разработчиков. Это минимальная установка включающая в себя i3-wm, i3status,
-dmenu и xterm. В репозитории присутствует i3-gaps при его установке он заменит i3-wm.
+full[ru]: i3 - это тайлинговый оконный менеджер для x11, созданный на основе wmii и написанный на C. Он поддерживает тайлинговую, стековую и табличную раскладку, которая обрабатывается динаммически. Конфигурация осуществляется через обычный текстовый файл, а расширение i3 возможно с помощью сокета домена UNIX и IPC-интерфейса на основе json из многих языков прогрммирования. Это минимальная установка включающая в себя i3-wm, i3status, dmenu и xterm. В репозитории присутствует i3-gaps при его установке он заменит i3-wm.
 hasX11
+hasDM
 hardware: any computer
 hardware[ru]: любой компьютер
