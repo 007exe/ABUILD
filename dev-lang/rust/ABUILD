@@ -1,6 +1,6 @@
 pkgname=rust
-pkgver=1.59.0
-_llvm_ver=14.0.0
+pkgver=1.63.0
+_llvm_ver=14.0.6
 pkgbuild=1
 arch=("auto")
 
