@@ -1,0 +1,39 @@
+pkgname=lablgtk3
+pkgver=3.1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An Objective Caml interface to gtk3.")
+longdesc=("LablGTK uses the rich type system of Objective Caml 3 to provide a strongly typed, yet very comfortable, object-oriented interface to gtk+.")
+
+source=("https://github.com/garrigue/lablgtk/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("libs dev-ml")
+
+# ocaml-cairo gtkspell3
+build_deps=("ocaml gtk3 gtksourceview3 ocaml-findlib dune")
+
+_dune_release_pkgs=('lablgtk3' 'lablgtk3-gtkspell3' 'lablgtk3-sourceview3')
+dune_release_pkgs_comma() {
+  # dune build needs a comma separated list of packages
+  local dune_release_pkgs='dummy'
+  for _pkg in "${_dune_release_pkgs[@]}"; do
+    dune_release_pkgs+=",${_pkg}"
+  done
+  dune_release_pkgs="${dune_release_pkgs#dummy,}"
+  echo "${dune_release_pkgs}"
+}
+
+build(){
+  go_src_dir
+  burn_patches
+  export OCAMLPATH="$(ocamlfind printconf destdir)"
+  LABLGTK_EXTRA_FLAGS=-fcommon dune build -p $(dune_release_pkgs_comma)
+
+  for _pkg in "${_dune_release_pkgs[@]}"; do
+      dune install "${_pkg}" --destdir="${pkgdir}" --prefix="/usr" --libdir="$(ocamlfind printconf destdir)"
+  done
+
+  install -dm755 ${pkgdir}/usr/share/
+  mv ${pkgdir}/usr/doc ${pkgdir}/usr/share/
+}

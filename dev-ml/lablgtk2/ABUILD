@@ -1,0 +1,37 @@
+pkgname=lablgtk2
+pkgver=2.18.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An Objective Caml interface to gtk2.")
+longdesc=("LablGTK uses the rich type system of Objective Caml 3 to provide a strongly typed, yet very comfortable, object-oriented interface to gtk+.")
+
+source=("https://github.com/garrigue/lablgtk/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-ml")
+
+# camlp5
+build_deps=("ocaml gtk2 librsvg")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --without-gnomeui \
+    --without-gnomecanvas \
+    --without-panel \
+    --without-gtkspell \
+    --without-gtksourceview \
+    --without-gtksourceview2 \
+    --without-glade
+  sed -e "s|-O|$CFLAGS|" \
+      -e "s|-shared|& -ccopt \"$LDFLAGS\"|" \
+      -e "s|(CAMLMKLIB)|& -ldopt \"$LDFLAGS\"|" \
+      -i src/Makefile
+  make world
+  make opt
+  make DESTDIR=${pkgdir} old-install
+  install -m644 META ${pkgdir}/usr/lib/ocaml/lablgtk2/
+}
