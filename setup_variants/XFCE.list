@@ -30,7 +30,6 @@ openrc
 mpkg-console
 kernel
 ntfs-3g
-sysvinit
 lsb-release
 dracut
 dhcpcd
@@ -39,6 +38,7 @@ inetutils
 less
 sudo
 grep
+sysusers
 
 # Console-Apps
 openssh
@@ -92,16 +92,15 @@ xorg-xwud
 xorg-xinit
 xorg-fonts-alias-100dpi
 xorg-fonts-alias-75dpi
-#xf86-input-evdev
 xf86-video-vesa
 
 # Fonts
 ttf-bitstream-vera
 ttf-dejavu
+ttf-droid
+ttf-opensans
 ttf-xo-fonts
 ttf-cascadia-code
-woff2-cascadia-code
-otf-cascadia-code
 
 # X11-Apps
 lxdm
@@ -160,3 +159,4 @@ xfce4-weather-plugin
 xfce4-whiskermenu-plugin
 xfce4-xkb-plugin
 xfce4-terminal
+xfwm4-themes

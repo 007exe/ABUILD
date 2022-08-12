@@ -1,8 +1,8 @@
-desc: XFCE Desktop
-full: Desktop based on XFCE. Good lightweight environment.
-desc[ru]: XFCE десктоп
-full[ru]: Десктоп на базе XFCE. Хорошее легковесное окружение.
+desc: XFCE
+full: Xfce is an undemanding desktop environment for UNIX-like systems. Its developers focus on ensuring high performance and low consumption of system resources, without forgetting about the external attractiveness and convenience for the user.
+desc[ru]: XFCE
+full[ru]: Xfce- нетребовательная к ресурсам окружение рабочего стола для UNIX-подобных систем. Её разработчики делают акцент на обеспечении быстродействия и низкого потребления системных ресурсов, не забывая о внешней привлекательности и удобстве для пользователя.
 hasDM
 hasX11
-hardware: 512Mb RAM, 1Ghz CPU
-hardware[ru]: 512Мб ОЗУ, 1ГГц ЦПУ
+hardware: 4Gb RAM, 2Ghz CPU
+hardware[ru]: 4Гб ОЗУ, 2ГГц ЦПУ
