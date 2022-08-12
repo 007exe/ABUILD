@@ -1,0 +1,30 @@
+iso_name=AgiliaLinux_2022
+arch=x86_64
+package_list="ftp://192.168.1.55/repository/setup_variants/XFCE.list"
+
+REPO="file:///home/chip/Yandex.Disk/Testing_x86_64/repository/"
+
+iso_title="AgiliaLinux $arch"
+add_to_list="fakeroot fakechroot testdisk agilia-gui-installer agilia-text-installer linux-firmware networkmanager network-manager-applet doublecmd-gtk2 python-pyxdg midori glib-networking gparted slim mpv alsa-firmware alsa-lib alsa-oss alsa-plugins alsa-topology-conf alsa-ucm-conf alsa-utils zita-alsa-pcmi jack qmmp qmmp-plugin-pack xterm xorg-fonts-misc"
+remove_from_list="gcc lxdm clang dracut tumbler xfce4-alsa-plugin xfce4-artwork xfce4-cpufreq-plugin xfce4-cpugraph-plugin xfce4-dict xfce4-diskperf-plugin xfce4-eyes-plugin xfce4-fsguard-plugin xfce4-genmon-plugin xfce4-kbdleds-plugin xfce4-mailwatch-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notes-plugin xfce4-places-plugin xfce4-screensaver xfce4-sensors-plugin xfce4-smartbookmark-plugin xfce4-systemload-plugin xfce4-time-out-plugin xfce4-verve-plugin"
+
+do_minimize=1
+empty_root_password=1
+# Поскольку существуют проблемы с добавлением пользователя просто его отключаем
+no_user=1
+#empty_user_password=1
+#pseudoroot_user=1
+custom_actions() {
+	echo "Here can be some custom actions you need to perform."
+	# Also, you can use plugins like this:
+	#. ${plugindir}/remove_extra_locales
+	#. ${plugindir}/sudo_nopasswd
+	#. ${plugindir}/sudo_installer
+	#. ${plugindir}/gdm-autologin
+        cp ${filedir}/xinitrc ${NODE}/root/.xinitrc
+        chmod 755 ${NODE}/root/.xinitrc
+        chown root:root ${NODE}/root/.xinitrc
+        rm ${NODE}/etc/slim.conf
+        cp ${filedir}/slim.conf ${NODE}/etc/slim.conf
+        chown root:root ${NODE}/etc/slim.conf
+}

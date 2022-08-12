@@ -1,0 +1,27 @@
+iso_name=AgiliaLinux_2022
+arch=x86_64
+package_list="ftp://192.168.1.55/repository/setup_variants/OPENBOX.list"
+
+REPO="file:///home/chip/Yandex.Disk/Testing_x86_64/repository/"
+
+iso_title="AgiliaLinux $arch"
+add_to_list="fakeroot fakechroot testdisk agilia-gui-installer-qt5 agilia-text-installer networkmanager network-manager-applet doublecmd-gtk2 python-pyxdg midori glib-networking gparted mpv alsa-firmware alsa-lib alsa-oss alsa-plugins alsa-topology-conf alsa-ucm-conf alsa-utils zita-alsa-pcmi jack qmmp qmmp-plugin-pack"
+remove_from_list="gcc clang"
+
+do_minimize=1
+#pseudoroot_user=1
+empty_root_password=1
+# Поскольку существуют проблемы с добавлением пользователя просто его отключаем
+no_user=1
+#empty_user_password=1
+custom_actions() {
+	echo "Here can be some custom actions you need to perform."
+	# Also, you can use plugins like this:
+	#. ${plugindir}/remove_extra_locales
+	#. ${plugindir}/sudo_nopasswd
+	#. ${plugindir}/sudo_installer
+	#. ${plugindir}/gdm-autologin
+	mkdir -p ${NODE}/root/.config/openbox/
+	echo "guisetup_lang &" >> ${NODE}/root/.config/openbox/autostart
+	chown root:root ${NODE}/root/.config
+}

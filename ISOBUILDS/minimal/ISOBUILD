@@ -1,0 +1,22 @@
+# Minimal ISO isobuild
+date=`date -u +%Y%m%d`
+iso_name=AgiliaLinux-MINIMAL
+arch=x86_64
+package_list="ftp://192.168.1.55/repository/setup_variants/MINIMAL.list"
+
+REPO="file:///home/chip/Yandex.Disk/Testing_x86_64/repository/"
+
+iso_title="AgiliaLinux minimal $arch snapshot $date"
+add_to_list="fakeroot fakechroot testdisk agilia-text-installer networkmanager dbus"
+
+do_minimize=1
+#pseudoroot_user=1
+empty_root_password=1
+no_user=1
+#empty_user_password=1
+
+custom_actions() {
+	echo "Here can be some custom actions you need to perform."
+	# Also, you can use plugins like this:
+#	. ${plugindir}/remove_extra_locales
+}
