@@ -1,5 +1,5 @@
 pkgname=dune
-pkgver=2.9.3
+pkgver=3.4.1
 pkgbuild=1
 arch=("auto")
 
@@ -12,17 +12,31 @@ tags=("libs dev-ml")
 
 build_deps=("glibc ocaml ocaml-csexp ocaml-findlib")
 
-adddep=("ocaml>=4.13.1 ocaml-csexp ocaml-findlib")
+adddep=("ocaml ocaml-csexp ocaml-findlib")
+
+_dune_release_pkgs=('dune' 'dune-action-plugin' 'dune-build-info' 'dune-configurator' 'dune-glob' 'dune-private-libs' 'dune-site' 'dyn' 'stdune' 'ordering' 'xdg' 'fiber')
 
 build() {
   go_src_dir
+  ./configure --libdir /usr/lib/ocaml
   make dune.exe
-  ./dune.exe build -p dune,dune-action-plugin,dune-build-info,dune-configurator,dune-glob,dune-private-libs,dune-site --profile dune-bootstrap
 
-  DESTDIR=${pkgdir} ./dune.exe install --prefix "/usr" --libdir=$(ocamlfind printconf destdir)
+  local dune_release_pkgs='dummy'
+  for _pkg in "${_dune_release_pkgs[@]}"; do
+    dune_release_pkgs+=",${_pkg}"
+  done
+  dune_release_pkgs="${dune_release_pkgs#dummy,}"
+  echo "Building packages: ${dune_release_pkgs}"
 
-  rm -r ${pkgdir}/usr/doc
-  install -dm755 ${pkgdir}/usr/share
-  mv ${pkgdir}/usr/{man,share/}
+  ./dune.exe build -p "${dune_release_pkgs}" --profile dune-bootstrap
 
+  for _pkg in "${_dune_release_pkgs[@]}"; do
+    ./dune.exe install "${_pkg}" --destdir="${pkgdir}" --prefix="/usr" --libdir="$(ocamlfind printconf destdir)"
+  done
+
+  install -d "${pkgdir}"/usr/share
+  mv "${pkgdir}"/usr/{doc,share/}
+  mv "${pkgdir}"/usr/{man,share/}
+  install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
+  ln -s /usr/share/doc/pp/LICENSE.md "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
