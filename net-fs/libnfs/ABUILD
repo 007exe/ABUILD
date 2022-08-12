@@ -1,12 +1,12 @@
 pkgname=libnfs
-pkgver=5.0.1
+pkgver=5.0.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Client library for accessing NFS shares.")
 longdesc=("LIBNFS is a client library for accessing NFS shares over a network.")
 
-source=("https://github.com/sahlberg/$pkgname/archive/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/sahlberg/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-fs")
 
