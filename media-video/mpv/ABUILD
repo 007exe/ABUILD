@@ -10,7 +10,10 @@ source=("https://github.com/mpv-player/mpv/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("apps media-video")
 
-build_deps=("libplacebo shaderc uchardet mujs rubberband libdvdnav ffnvcodec-headers lua52 libcdio libcdio-paranoia libdvdread python-docutils ladspa wayland-protocols vulkan-headers waf alsa-lib desktop-file-utils ffmpeg jack lcms2 libarchive libass libbluray libdrm libjpeg-turbo libglvnd libpulse libva libvdpau libx11 libxext libxinerama libxkbcommon libxrandr libxv mesa vulkan-icd-loader wayland xdg-utils zlib")
+build_deps=("libplacebo shaderc uchardet mujs rubberband libdvdnav ffnvcodec-headers lua52 libcdio libcdio-paranoia
+libdvdread python-docutils ladspa wayland-protocols vulkan-headers waf alsa-lib desktop-file-utils ffmpeg jack lcms2
+libarchive libass libbluray libdrm libjpeg-turbo libglvnd libpulse libva libvdpau libx11 libxext libxinerama libxkbcommon
+libxrandr libxv mesa vulkan-icd-loader wayland xdg-utils zlib")
 
 adddep=("hicolor-icon-theme")
 
