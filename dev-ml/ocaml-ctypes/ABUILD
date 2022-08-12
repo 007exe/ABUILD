@@ -1,5 +1,5 @@
 pkgname=ocaml-ctypes
-pkgver=0.20.0
+pkgver=0.20.1
 pkgbuild=1
 arch=("auto")
 
@@ -12,7 +12,7 @@ tags=("dev-ml libs")
 
 build_deps=("ocaml ocaml-findlib ocaml-integers libffi ocaml-bigarray-compat")
 
-adddep=("ocaml>=4.13.1 libffi ocaml-integers ocaml-bigarray-compat")
+adddep=("ocaml libffi ocaml-integers ocaml-bigarray-compat")
 
 build() {
   go_src_dir
