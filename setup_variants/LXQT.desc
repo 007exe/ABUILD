@@ -1,0 +1,8 @@
+desc: LXQt
+full: LXQt is a lightweight desktop environment. It is focused on being a classic desktop with a modern look and feel.
+desc[ru]: LXQt
+full[ru]: LXQt - это лёгкая среда рабочего стола. Она ориентирована на то, чтобы быть классическим рабочим столом с современным внешним видом и ощущениями.
+hasX11
+hasDM
+hardware: 4Gb RAM, any CPU
+hardware[ru]: 4Гб ОЗУ, любой процессор
