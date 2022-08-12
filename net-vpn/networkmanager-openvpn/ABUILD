@@ -1,28 +1,35 @@
-
 pkgname=networkmanager-openvpn
-pkgver=0.9.8.4
+pkgver=1.8.18
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
-shortdesc=("NetworkManager OpenVPN plugin")
+shortdesc=("NetworkManager OpenVPN plugin.")
+longdesc=("NetworkManager VPN plugin for OpenVPN.")
 
 source=("http://ftp.gnome.org/pub/GNOME/sources/NetworkManager-openvpn/${pkgver%.*.*}/NetworkManager-openvpn-${pkgver}.tar.xz")
 
-tags="xapps net-misc"
+tags=("apps net-vpn")
 
-adddep="ppp>=2.4.5 openvpn"
+# libnma-gtk4
+build_deps=("libsecret openvpn libnma intltool python networkmanager")
 
-build_deps="make gcc pkg-config gettext intltool binutils coreutils grep sed"
+adddep=("libsecret openvpn networkmanager")
 
 build() {
   go_src_dir
-  ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --libdir=/usr/lib${LIBDIRSUFFIX} \
-              --libexecdir=/usr/lib${LIBDIRSUFFIX}/networkmanager \
-              --enable-more-warnings=yes \
-              --disable-static
-  make
-  make DESTDIR="${pkgdir}" install
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib/networkmanager \
+    --with-gtk4 \
+    --localstatedir=/var \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  echo 'u nm-openvpn - "NetworkManager OpenVPN"' |
+    install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
 }
 
