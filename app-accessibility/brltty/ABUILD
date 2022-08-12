@@ -1,83 +1,47 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=brltty
-pkgver=4.3
+pkgver=6.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Braille display driver for Linux/Unix"
-#longdesc=(""
-#)
+shortdesc=("Braille display driver for Linux/Unix.")
+longdesc=("Daemon that provides access to the Linux/Unix console for a blind person.")
 
-source=("http://mielke.cc/$pkgname/releases/$pkgname-$pkgver.tar.gz")
+source=("https://brltty.app/archive/${pkgname}-${pkgver}.tar.bz2")
 
-patch_opts=("")
+tags=("accessibility app-accessibility")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="accessibility app-accessibility"
+# java-environment strip-nondeterminism festival
+build_deps=("alsa-lib at-spi2-atk at-spi2-core atk bluez-libs cython dbus
+dracut espeak-ng expat gcc-libs glibc glib2 gpm icu liblouis libspeechd
+libxaw ncurses ocaml-ctypes ocaml-findlib pcre2 polkit python-setuptools
+speech-dispatcher")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---enable-gpm \
---disable-java-bindings \
---disable-caml-bindings \
---with-screen-driver=a2"
-
-INSTALL_KEYS="INSTALL_ROOT=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-	set -e
-	mkdir $pkgdir/etc/init.d
-	mkdir $pkgdir/etc/conf.d
-	install -Dm755 $filedir/brltty $pkgdir/etc/init.d/
-	install -Dm644 $filedir/brltty.conf $pkgdir/etc/conf.d/brltty.conf
-	set +e
+build(){
+  go_src_dir
+  burn_patches
+  ./autogen
+  CFLAGS+=" -ffat-lto-objects"
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --mandir=/usr/share/man \
+    --with-scripts-directory=/usr/lib/brltty \
+    --with-tables-directory=/usr/share/brltty \
+    --with-writable-directory=/run/brltty \
+    --enable-gpm \
+    --disable-stripping
+  make -j1
+  find . -type f -iname "*.jar" -exec strip-nondeterminism {} \;
+  make -j1 INSTALL_ROOT=${pkgdir} install
+  make -j1 INSTALL_ROOT=${pkgdir} install-systemd
+  make -j1 INSTALL_ROOT=${pkgdir} install-udev
+  make -j1 INSTALL_ROOT=${pkgdir} install-dracut
+  make -j1 INSTALL_ROOT=${pkgdir} install-polkit
+  install -vDm 644 Documents/brltty.conf -t ${pkgdir}/etc/
+  install -vdm 750 -o root -g 102 ${pkgdir}/usr/share/polkit-1/rules.d
+  mkdir ${pkgdir}/etc/init.d
+  mkdir ${pkgdir}/etc/conf.d
+  install -Dm755 ${filedir}/brltty ${pkgdir}/etc/init.d/
+  install -Dm644 ${filedir}/brltty.conf ${pkgdir}/etc/conf.d/brltty.conf
 }
