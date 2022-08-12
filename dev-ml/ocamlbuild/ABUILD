@@ -1,12 +1,12 @@
 pkgname=ocamlbuild
-pkgver=0.14.0
-pkgbuild=2
+pkgver=0.14.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Build tool, that has built-in rules for building OCaml library and programs.")
 longdesc=("Generic build tool with built-in rules for building OCaml library and programs.")
 
-source=("https://github.com/ocaml/${pkgname}/archive/$pkgver.tar.gz")
+source=("https://github.com/ocaml/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
