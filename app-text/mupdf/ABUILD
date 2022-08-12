@@ -10,14 +10,14 @@ source=("https://mupdf.com/downloads/archive/mupdf-${pkgver/_/}-source.tar.xz")
 
 tags=("utils app-text")
 
-build_deps=("desktop-file-utils freetype freeglut glu harfbuzz jbig2dec libjpeg-turbo mesa openjpeg2 libxext ")
+build_deps=("desktop-file-utils freetype freeglut glu harfbuzz jbig2dec libjpeg-turbo mesa openjpeg2 libxext")
 
 build() {
   go_src_dir
   burn_patches
 # Использовать системные библиотеки
   rm -rf thirdparty/{freeglut,freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib}
-    CFLAGS+=' -fPIC'
+  CFLAGS+=' -fPIC'
   CXXFLAGS+=' -fPIC'
   export CFLAGS CXXFLAGS
   USE_SYSTEM_LIBS='yes'
