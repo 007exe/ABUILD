@@ -1,0 +1,25 @@
+pkgname=yandex-browser
+pkgver=22.7.3.811_1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The web browser from Yandex.")
+longdesc=("Yandex Browser is a browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier.")
+
+source=("https://repo.yandex.ru/yandex-browser/rpm/stable/x86_64/yandex-browser-stable-${pkgver//_/-}.x86_64.rpm")
+
+tags=("www-client apps")
+
+# harfbuzz-icu
+build_deps=("binutils curl ttf-liberation jq alsa-lib gtk2 gtk3 gtk4 snappy
+opus flac nss libxss libxkbfile wget xdg-utils polkit dbus-glib python rpm")
+
+adddep=("binutils curl ttf-liberation jq alsa-lib gtk2 gtk3 gtk4 snappy opus flac nss libxss libxkbfile wget xdg-utils polkit dbus-glib python")
+
+build() {
+  cd ${srcdir}
+  cp -dr --no-preserve=ownership opt usr ${pkgdir}/
+
+  install -D -m0644 ${pkgdir}/opt/yandex/browser/product_logo_128.png ${pkgdir}/usr/share/pixmaps/${pkgname}.png
+  chmod 4755 ${pkgdir}/opt/yandex/browser/yandex_browser-sandbox
+}
