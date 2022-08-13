@@ -1,5 +1,5 @@
 pkgname=cronie
-pkgver=1.6.0
+pkgver=1.6.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,9 @@ source=("https://github.com/cronie-crond/cronie/releases/download/${pkgname}-${p
 
 tags=("base sys-process")
 
-build_deps="glibc"
+build_deps=("glibc linux-pam run-parts")
+
+adddep=("run-parts")
 
 config_files=("etc/cron.deny
 etc/pam.d/crond
