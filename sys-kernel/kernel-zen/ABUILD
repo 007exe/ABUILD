@@ -1,5 +1,6 @@
 pkgname=kernel-zen
-pkgver=5.18.12
+pkgver=5.19.0
+_pkgver=5.19
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +9,7 @@ longdesc=("This is a Linux kernel with built-in support for most disk controller
 
 tags=("base sys-kernel")
 
-source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${pkgver}-zen1.tar.gz")
+source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${_pkgver}-zen1.tar.gz")
 
 custom_opts=("skip_gendeps no_strip skip_validate")
 
@@ -98,7 +99,7 @@ build() {
   make -j${numjobs} INSTALL_MOD_PATH=${pkgdir}/usr INSTALL_MOD_STRIP=1 modules_install
 
   rm -rf ${pkgdir}/usr/lib/firmware
-  rm ${pkgdir}/usr/lib/modules/${pkgver}-zen1/{source,build}
+  rm -f ${pkgdir}/usr/lib/modules/${pkgver}-zen1/{source,build}
   ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${pkgver}-zen1/source
   ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${pkgver}-zen1/build
 
