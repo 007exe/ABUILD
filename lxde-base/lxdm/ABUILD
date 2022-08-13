@@ -10,7 +10,7 @@ source=("https://downloads.sourceforge.net/lxde/lxdm-$pkgver.tar.xz")
 
 tags=("xapps lxde-base")
 
-build_deps=("gtk3 xorg-server intltool iso-codes")
+build_deps=("gtk3 xorg-server intltool iso-codes pkgconf")
 
 config_files=("etc/lxdm/lxdm.conf
 etc/pam.d/lxdm
