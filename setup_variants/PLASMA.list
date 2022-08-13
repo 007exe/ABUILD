@@ -67,24 +67,6 @@ ttf-opensans
 ttf-xo-fonts
 ttf-cascadia-code
 
-# LXQt-base
-lxqt-about
-lxqt-config
-lxqt-notificationd
-lxqt-panel
-lxqt-powermanagement
-lxqt-runner
-lxqt-sudo
-pcmanfm-qt
-lxqt-admin
-lxqt-globalkeys
-lxqt-openssh-askpass
-lxqt-policykit
-lxqt-qtplugin
-lxqt-session
-lxqt-themes
-breeze-icons
-
 # KDE PLASMA
 bluedevil
 breeze
