@@ -1,0 +1,24 @@
+pkgname=directx-headers
+pkgver=1.606.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("DirectX headers for using D3D12.")
+
+source=("https://github.com/microsoft/DirectX-Headers/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("dev-util develop")
+
+build_deps=("meson")
+
+build() {
+  go_src_dir
+  export CXXFLAGS="$CXXFLAGS -fno-lto"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D build-test=false
+  ninja -C build
+  DESTDIR=${pkgdir} meson install -C build
+  install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
+}
