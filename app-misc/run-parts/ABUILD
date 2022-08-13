@@ -1,0 +1,25 @@
+pkgname=run-parts
+pkgver=5.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("run scripts or programs in a directory.")
+
+source=("https://clint.pages.debian.net/debianutils-tarballs/artifacts/debianutils-${pkgver}.tar.gz")
+
+tags=("console app-misc")
+
+build_deps=("glibc")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make run-parts
+  install -D -m755 run-parts ${pkgdir}/usr/bin/run-parts
+  install -D -m644 run-parts.8 ${pkgdir}/usr/share/man/man8/run-parts.8
+  for l in po4a/*/run-parts.8; do
+      install -D -m644  ${l} ${pkgdir}/usr/share/man/${l:5:2}/man8/run-parts.8
+  done
+}
