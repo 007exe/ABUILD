@@ -1,5 +1,5 @@
 pkgname=nss
-pkgver=3.78
+pkgver=3.81
 pkgbuild=1
 arch=("auto")
 
@@ -65,4 +65,8 @@ build(){
 
   ln -s pkcs11/p11-kit-trust.so ${pkgdir}${libdir}/p11-kit-trust.so
   ln -sf p11-kit-trust.so ${pkgdir}${libdir}/libnssckbi.so
+
+# NOTE: ca-certificates-mozilla
+# Mozilla's set of trusted CA certificates
+#  install -Dm644 ca-bundle.trust.p11-kit ${pkgdir}/usr/share/ca-certificates/trust-source/mozilla.trust.p11-kit
 }
