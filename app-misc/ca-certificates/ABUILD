@@ -15,8 +15,6 @@ adddep=("bash coreutils findutils p11-kit ca-certificates-mozilla")
 
 build(){
   cd ${filedir}
-#  cp ${filedir}/update-ca-trust ${srcdir}/update-ca-trust
-#  cp ${filedir}/update-ca-trust.8.txt ${filedir}/update-ca-trust.8.txt
   asciidoc -v -d manpage -b docbook update-ca-trust.8.txt
 #  xsltproc --nonet -o update-ca-trust.8 /etc/asciidoc/docbook-xsl/manpage.xsl update-ca-trust.8.xml
 
@@ -24,9 +22,15 @@ build(){
 #  install -Dt ${pkgdir}/usr/share/man/man8 -m644 update-ca-trust.8
 
   install -d ${pkgdir}/{etc,usr/share}/ca-certificates/trust-source/{anchors,blocklist}
+
+# Каталоги, используемые update-ca-trust (он же trust extract-compat)
   install -d ${pkgdir}/etc/{ssl/certs/{edk2,java},ca-certificates/extracted}
 
+# Ссылка на совместимость для OpenSSL с использованием /etc/ssl в качестве CAdir, используемого предпочтительнее, чем отдельные ссылки в /etc/ssl/certs
   ln -sr ${pkgdir}/etc/ca-certificates/extracted/tls-ca-bundle.pem ${pkgdir}/etc/ssl/cert.pem
+
+# Ссылка на совместимость для устаревших пакетов
+  ln -sr ${pkgdir}/etc/ca-certificates/extracted/tls-ca-bundle.pem ${pkgdir}/etc/ssl/certs/ca-certificates.crt
 
 # MPKG hooks
   install -Dm0755 ${filedir}/update-ca-trust.sh ${pkgdir}/etc/mpkg/hooks/update-ca-trust.sh
