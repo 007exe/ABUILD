@@ -1,0 +1,29 @@
+pkgname=botan
+pkgver=2.19.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ crypto library.")
+longdesc=("Crypto library written in C++.")
+
+tags=("libs dev-libs")
+
+source=("https://botan.randombit.net/releases/Botan-${pkgver}.tar.xz")
+
+build_deps=("python boost")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure.py \
+    --prefix=/usr \
+    --with-bzip \
+    --with-lzma \
+    --with-zlib \
+    --with-boost \
+    --with-sqlite3 \
+    --with-os-feature=getrandom
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 license.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
