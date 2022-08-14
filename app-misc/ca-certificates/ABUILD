@@ -11,7 +11,7 @@ tags=("network net-misc")
 
 build_deps=("asciidoc p11-kit")
 
-adddep=("bash coreutils findutils p11-kit")
+adddep=("bash coreutils findutils p11-kit ca-certificates-mozilla")
 
 build(){
   cd ${filedir}
@@ -27,4 +27,7 @@ build(){
   install -d ${pkgdir}/etc/{ssl/certs/{edk2,java},ca-certificates/extracted}
 
   ln -sr ${pkgdir}/etc/ca-certificates/extracted/tls-ca-bundle.pem ${pkgdir}/etc/ssl/cert.pem
+
+# MPKG hooks
+  install -Dm0755 ${filedir}/update-ca-trust.sh ${pkgdir}/etc/mpkg/hooks/update-ca-trust.sh
 }
