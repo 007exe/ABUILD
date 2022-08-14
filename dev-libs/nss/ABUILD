@@ -13,8 +13,22 @@ tags=("libs net-libs")
 # mercurial
 build_deps=("nspr sqlite zlib p11-kit gyp perl python gyp")
 
+pkglist=("ca-certificates-mozilla")
+
 build(){
   go_src_dir
+  
+  cp ${filedir}/certdata2pem.py certdata2pem.py
+  cp ${filedir}/bundle.sh bundle.sh
+  
+  mkdir -p certs
+  ln -srft certs nss/lib/ckfw/builtins/{certdata.txt,nssckbi.h}
+  
+  cd certs
+  ../certdata2pem.py
+
+  cd ..
+  ./bundle.sh
 
   cd nss
   ./build.sh \
@@ -65,8 +79,14 @@ build(){
 
   ln -s pkcs11/p11-kit-trust.so ${pkgdir}${libdir}/p11-kit-trust.so
   ln -sf p11-kit-trust.so ${pkgdir}${libdir}/libnssckbi.so
+}
 
-# NOTE: ca-certificates-mozilla
-# Mozilla's set of trusted CA certificates
-#  install -Dm644 ca-bundle.trust.p11-kit ${pkgdir}/usr/share/ca-certificates/trust-source/mozilla.trust.p11-kit
+ca-certificates-mozilla() {
+  pkgname=ca-certificates-mozilla
+  shortdesc=("Mozilla set of trusted CA certificates.")
+}
+
+ca-certificates-mozilla_prep() {
+  go_src_dir
+  install -Dm644 ca-bundle.trust.p11-kit ${pkgdir}/usr/share/ca-certificates/trust-source/mozilla.trust.p11-kit
 }
