@@ -1,6 +1,5 @@
 pkgname=kernel-zen
-pkgver=5.19.0
-_pkgver=5.19
+pkgver=5.19.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +8,14 @@ longdesc=("This is a Linux kernel with built-in support for most disk controller
 
 tags=("base sys-kernel")
 
-source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${_pkgver}-zen1.tar.gz")
+kernel_ver=`echo $pkgver | sed -e s/_/-/g`
+if [ "$kernel_ver" = "`echo $kernel_ver | sed 's/\.0$//g'` | sed -e s/lts//g" ] ; then
+    srcver=$kernel_ver
+else
+    srcver=`echo $kernel_ver | sed 's/\.0$//g' | sed 's/lts//g'`
+fi
+
+source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${srcver}-zen1.tar.gz")
 
 custom_opts=("skip_gendeps no_strip skip_validate")
 
@@ -18,7 +24,7 @@ skip_gendeps=1
 build_deps=("bc kmod cpio perl tar xz xmlto rsync diffutils ncurses bison flex elfutils
 python-sphinx python-sphinx_rtd_theme graphviz imagemagick")
 
-adddep=("coreutils kmod")
+adddep=("coreutils kmod dracut")
 
 before_build() {
   go_src_dir
@@ -66,12 +72,12 @@ before_build() {
   echo "*******************************************************"
   echo "*                                                     *"
   echo "*  Не забудь скрпировать новый конфигурационный файл  *"
-  echo "*     ~/${pkgver}-defconfig-x86_64 в каталог files    *"
+  echo "*       ~/defconfig-zen-x86_64 в каталог files        *"
   echo "*                                                     *"
   echo "*******************************************************"
   echo ""
 
-  cp .config ~/${pkgver}-defconfig-zen-x86_64
+  cp .config ~/defconfig-zen-x86_64
 }
 
 #################################################################################################################################
