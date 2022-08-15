@@ -1,5 +1,5 @@
 pkgname=lvm2
-pkgver=2.03.15
+pkgver=2.03.16
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ source=("https://github.com/lvmteam/lvm2/archive/v${pkgver//./_}.tar.gz")
 
 tags=("base sys-fs")
 
-build_deps=("readline eudev libaio util-linux-ng glibc")
+build_deps=("readline eudev libaio util-linux glibc")
 
 adddep=("device-mapper>=${pkgver}")
 
