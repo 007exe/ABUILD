@@ -10,7 +10,7 @@ tags=("media-libs libs")
 
 build_deps=("python-mako libxml2 libx11 xorgproto libdrm libxshmfence libxxf86vm libxdamage zstd elfutils llvm
 clang valgrind cmake meson libvdpau vulkan-icd-loader wayland glslang libva libclc libglvnd libunwind
-wayland-protocols lm_sensors llvm-libs libxcb python expat elfutils libomxil-bellagio")
+wayland-protocols lm_sensors llvm-libs libxcb python expat elfutils libomxil-bellagio directx-headers")
 
 pkglist=("vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau")
 
