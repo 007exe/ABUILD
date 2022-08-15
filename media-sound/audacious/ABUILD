@@ -1,27 +1,29 @@
 pkgname=audacious
-pkgver=2.5.4
+pkgver=4.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Lightweight, GTK2-based advanced audio player focused on audio quality"
-longdesc=("Audacious is a media player, based on Beep Media Player, which is in turn based on the X Multimedia System (XMMS). It is used to play audio and other kinds of media files. By default 
-Audacious can play MPEG audio, Ogg Vorbis, RIFF wav, most module formats, and a few other formats. Audacious can be extended through plugins to play a number of other audio and video formats."
-)
+shortdesc=("Lightweight and versatile audio player.")
+longdesc=("Lightweight, advanced audio player focused on audio quality.")
 
-source=("http://distfiles.audacious-media-player.org/$pkgname-$pkgver.tar.bz2")
+source=("https://distfiles.audacious-media-player.org/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xapps media-sound"
+tags=("apps media-sound")
 
-before_build()
-{
-	[[ $ARCH == x86_64 ]] && extraopts='' || extraopts='--disable-sse2'
-}
+build_deps=("qt5-base qt5-svg glib2 libguess libsm desktop-file-utils python")
+
+adddep=("libguess libsm audacious-plugins hicolor-icon-theme desktop-file-utils")
 
 build(){
-	go_src_dir
-	./configure --prefix=/usr $extraopts \
-		--libdir=/usr/lib$LIBDIRSUFFIX
-	make -j${numjobs}
-	make DESTDIR=$pkgdir install        
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-gtk \
+    --with-buildstamp='AgiliaLinux'
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 contrib/audacious.appdata.xml -t ${pkgdir}/usr/share/metainfo
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
-
