@@ -1,16 +1,30 @@
-pkgname=libnma
+pkgname=libnma-common
 pkgver=1.8.40
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("NetworkManager GUI client library.")
+shortdesc=("NetworkManager GUI client library (common files).")
 longdesc=("The libnma package contains an implementation of the NetworkManager GUI functions.")
 
 source=("https://download.gnome.org/sources/libnma/${pkgver%.*}/libnma-${pkgver}.tar.xz")
 
 tags=("libs net-libs")
 
-build_deps=("gcr gtk3 iso-codes networkmanager vala mobile-broadband-provider-info gobject-introspection gtk-doc meson")
+build_deps=("gcr gtk3 gtk4 iso-codes networkmanager vala mobile-broadband-provider-info gobject-introspection gtk-doc meson")
+
+pkglist=("libnma libnma-gtk4")
+
+adddep=("libnma iso-codes mobile-broadband-provider-info dconf")
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
 
 build() {
   go_src_dir
@@ -18,7 +32,45 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libnma_gtk4=false
+    -D libnma_gtk4=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
+
+  cd ${pkgdir}
+
+  _pick gtk3 usr/lib/libnma.so*
+  _pick gtk3 usr/lib/pkgconfig/libnma.pc
+  _pick gtk3 usr/lib/girepository-1.0/NMA-*
+  _pick gtk3 usr/share/gir-1.0/NMA-*
+  _pick gtk3 usr/share/vala/vapi/libnma.*
+
+  _pick gtk4 usr/lib/libnma-gtk4.so*
+  _pick gtk4 usr/lib/pkgconfig/libnma-gtk4.pc
+  _pick gtk4 usr/lib/girepository-1.0/NMA4-*
+  _pick gtk4 usr/share/gir-1.0/NMA4-*
+  _pick gtk4 usr/share/vala/vapi/libnma-gtk4.*
+}
+
+libnma() {
+  pkgname=libnma
+  shortdesc=("NetworkManager GUI client library (GTK3).")
+  longdesc=("The libnma package contains an implementation of the NetworkManager GUI functions.")
+  adddep=("libnma-common=${pkgver} gtk3 gcr")
+}
+
+libnma_prep() {
+  cd ${srcdir}
+  mv gtk3/* ${pkgdir}
+}
+
+libnma-gtk4() {
+  pkgname=libnma-gtk4
+  shortdesc=("NetworkManager GUI client library (GTK4).")
+  longdesc=("The libnma package contains an implementation of the NetworkManager GUI functions.")
+  adddep=("libnma-common=${pkgver} gtk4")
+}
+
+libnma-gtk4_prep() {
+  cd ${srcdir}
+  mv gtk4/* ${pkgdir}
 }
