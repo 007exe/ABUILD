@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend seamonkey capabilities:"
+echo -e "networkmanager: Location detection via available WiFi networks"
+echo -e "libnotify: Notification integration"
+echo -e "pulseaudio: Audio support"
+echo -e " "

@@ -1,100 +1,42 @@
-#ABUILD created by: SirAnthony, anthony at adsorbtion.org
-
-# Package metadata
 pkgname=seamonkey
-pkgver=2.32.1
+pkgver=2.53.13
 pkgbuild=1
 arch=("auto")
-build_deps=('pkg-config python yasm mesa autoconf nss nspr sqlite gtk+2 libnotify infozip infozip libvpx')
 
-shortdesc=('open-source web browser suite')
-longdesc=("The SeaMonkey browser suite.  SeaMonkey features a state-of-the-art web browser and powerful email client, as well as a WYSIWYG web page composer and a feature-rich IRC chat client."
-"Visit the SeaMonkey project at this URL:  http://www.mozilla.org/projects/seamonkey/")
+shortdesc=("SeaMonkey internet suite.")
+longdesc=("SeaMonkey features a state-of-the-art web browser and powerful email client, as well as a WYSIWYG web page composer and a feature-rich IRC chat client.")
 
-source=("http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.bz2")
-tags=("xapps www-client")
+source=("https://archive.mozilla.org/pub/seamonkey/releases/${pkgver}/source/seamonkey-${pkgver}.source.tar.xz")
 
-docs="LEGAL"
-pkglist="devel"
-numjobs=1
+tags=("apps www-client")
 
-before_build() {
-  go_src_dir
-  sed "${filedir}/mozconfig" \
-    -e "s,%%LIBDIR%%,${LIBDIRSUFFIX},g" \
-    -e "s,%%VERSION%%,${pkgver},g" \
-    -e "s,%%ARCH%%,${ARCH},g" > ".mozconfig" || exit 1
-}
+build_deps=("autoconf2.13 clang imake llvm mesa python python-setuptools rust yasm unzip zip nasm
+dbus-glib gtk3 hunspell icu libevent libpulse libvpx libxt mime-types nss sqlite startup-notification")
+
+# NOTE: Это опциональные зависимости
+removedep=("networkmanager libnotify pulseaudio")
 
 build() {
   go_src_dir
   burn_patches
-  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib${LIBDIRSUFFIX}/seamonkey-$pkgver"
-  make -j${numjobs} -f client.mk build
+  cp ${filedir}/mozconfig .mozconfig
+  cat >> .mozconfig <<EOF
+  ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
+  ac_add_options --with-google-safebrowsing-api-keyfile=${PWD@Q}/google-api-key
+  ac_add_options --with-mozilla-api-keyfile=${PWD@Q}/mozilla-api-key
+EOF
+  ./mach build
+  DESTDIR=${pkgdir} INSTALL_SDK= ./mach install
+  rm -rf ${pkgdir}/usr/lib/seamonkey/{dictionaries,hyphenation}
+  ln -s /usr/share/hunspell ${pkgdir}/usr/lib/seamonkey/dictionaries
+  ln -s /usr/share/hyphen ${pkgdir}/usr/lib/seamonkey/hyphenation
+  
+  install -Dm644 comm/suite/branding/seamonkey/default128.png ${pkgdir}/usr/share/pixmaps/seamonkey.png
+  
+  install -Dm644 toolkit/mozapps/installer/linux/rpm/mozilla.desktop ${pkgdir}/usr/share/applications/seamonkey.desktop
+  
+  sed -i 's/@MOZ_APP_DISPLAYNAME@/SeaMonkey internet suite/' ${pkgdir}/usr/share/applications/seamonkey.desktop
+  
+  sed -i 's/@MOZ_APP_NAME@/seamonkey/' ${pkgdir}/usr/share/applications/seamonkey.desktop
 }
 
-after_build() {
-  go_src_dir
-
-  make -f client.mk DESTDIR="$pkgdir" install
-
-  # This remains the standard plugin directory for all browsers.
-  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
-
-  mkdir -p ${pkgdir}/usr/share/applications
-  cp -a ${filedir}/*.desktop ${pkgdir}/usr/share/applications
-  mkdir -p ${pkgdir}/usr/share/pixmaps
-  cp -a ${filedir}/*.png ${pkgdir}/usr/share/pixmaps
-
-  # Install russian langpack
-  ( cd ${pkgdir}/usr/lib/seamonkey-${pkgver}/distribution/extensions/
-    wget -c http://ftp.mozilla.org/pub/mozilla.org/${pkgname}/releases/${pkgver}/langpack/${pkgname}-${pkgver}.ru.langpack.xpi
-  )
-
-  # Install russian dictonaries & locale
-  ( cd ${pkgdir}/usr/lib/seamonkey-${pkgver}/
-    mkdir -p ./dictionaries/
-    cp ${filedir}/ru.{aff,dic} ./dictionaries/
-    echo 'ru' > update.locale
-  )
-}
-
-
-devel() {
-  pkgname=seamonkey-devel
-  shortdesc="Development libs and headers from seamonkey package"
-  adddep="seamonkey"
-}
-
-devel_prep() {
-  go_src_dir
-
-  mkdir -p ${pkgdir}/usr/{lib${LIBDIRSUFFIX},share}
-  mv ${p_pkgdir}/usr/include ${pkgdir}/usr/
-  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}-${pkgver} \
-     ${pkgdir}/usr/lib${LIBDIRSUFFIX}/
-  mv ${p_pkgdir}/usr/share/idl ${pkgdir}/usr/share/
-
-  # Create a more generic include files symlink:
-  ( cd ${pkgdir}/usr/include
-    if [ ! -e seamonkey ]; then
-      ln -sf seamonkey-${pkgver} seamonkey
-    fi
-  )
-
-  # Install pkgconfig files:
-  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-  for file in ${filedir}/pkgconfig/* ; do
-    cat $file \
-      | sed -e "s/@LIB@/lib${LIBDIRSUFFIX}/" \
-      -e "s/@VERSION@/$pkgver/" \
-      > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/$(basename $file)
-  done
-
-  # Add symlinks for the pkgconfig files:
-  ( cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-    ln -s seamonkey-js.pc js.pc
-    ln -s seamonkey-plugin.pc plugin.pc
-    ln -s seamonkey-xpcom.pc xpcom.pc
-  )
-}
