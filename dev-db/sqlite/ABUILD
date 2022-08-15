@@ -9,12 +9,12 @@ longdesc=("The SQLite package is a software library that implements a self-conta
 
 tags=("libs dev-db")
 
-build_deps=("tcl readline zlib")
+build_deps=("tcl readline zlib unzip")
 
 source=("http://sqlite.org/2022/sqlite-autoconf-${_amalgamationver}.tar.gz"
-        "http://www.sqlite.org/2022/sqlite-doc-${_amalgamationver}.zip")
+"http://www.sqlite.org/2022/sqlite-doc-${_amalgamationver}.zip")
 
-pkglist="sqlite-doc"
+pkglist=("sqlite-doc")
 
 build() {
   go_src_dir
