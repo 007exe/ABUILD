@@ -11,8 +11,7 @@ source=("https://gitlab.gnome.org/GNOME/NetworkManager-pptp/-/archive/${pkgver}/
 
 tags=("apps net-vpn")
 
-# pptpclient
-build_deps=("libsecret ppp=$_pppver intltool python libnma-gtk4")
+build_deps=("libsecret ppp=$_pppver intltool python libnma-gtk4 pptpclient")
 
 build() {
   go_src_dir
