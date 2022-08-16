@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend networkmanager-openvpn capabilities:"
+echo -e "libnma: GUI support (GTK 3)"
+echo -e "libnma-gtk4: GUI support (GTK 4)"
+echo -e " "

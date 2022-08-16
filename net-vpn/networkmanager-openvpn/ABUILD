@@ -6,18 +6,22 @@ arch=("auto")
 shortdesc=("NetworkManager OpenVPN plugin.")
 longdesc=("NetworkManager VPN plugin for OpenVPN.")
 
-source=("http://ftp.gnome.org/pub/GNOME/sources/NetworkManager-openvpn/${pkgver%.*.*}/NetworkManager-openvpn-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/NetworkManager-openvpn/-/archive/${pkgver}/NetworkManager-openvpn-${pkgver}.tar.gz")
 
 tags=("apps net-vpn")
 
-# libnma-gtk4
-build_deps=("libsecret openvpn libnma intltool python networkmanager")
+build_deps=("libsecret openvpn libnma libnma-common intltool python networkmanager libnma-gtk4")
 
 adddep=("libsecret openvpn networkmanager")
+
+# NOTE: Это опциональные зависимости
+removedep=("libnma libnma-gtk4")
 
 build() {
   go_src_dir
   burn_patches
+  intltoolize --automake --copy
+  autoreconf -fvi
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -25,11 +29,12 @@ build() {
     --libexecdir=/usr/lib/networkmanager \
     --with-gtk4 \
     --localstatedir=/var \
+    --disable-more-warnings \
+    --without-libnm-glib \
     --disable-static
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  echo 'u nm-openvpn - "NetworkManager OpenVPN"' |
-    install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
+  echo 'u nm-openvpn - "NetworkManager OpenVPN"' install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
 }
 
