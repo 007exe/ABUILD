@@ -1,0 +1,30 @@
+pkgname=pptpclient
+pkgver=1.10.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux client for PPTP.")
+longdesc=("Client for the proprietary Microsoft Point-to-Point Tunneling Protocol, PPTP.")
+
+source=("https://downloads.sourceforge.net/sourceforge/pptpclient/pptp-${pkgver}.tar.gz")
+
+tags=("network net-dialup")
+
+build_deps=("ppp iproute2 perl")
+
+adddep=("ppp iproute2 perl")
+
+config_files=("etc/ppp/options.pptp")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e "/CFLAGS  =/ c\CFLAGS = ${CFLAGS}" Makefile
+  sed -i -e "/LDFLAGS =/ c\LDFLAGS = ${LDFLAGS}" Makefile
+# Настройка ip-адреса
+  sed -i 's#/bin/ip#/usr/bin/ip#' routing.c
+# FIX: /usr/bin
+  sed -i "/BINDIR/s#/sbin#/bin#" Makefile
+  make
+  make DESTDIR=${pkgdir} install
+}
