@@ -1,5 +1,5 @@
 pkgname=kirigami2
-pkgver=5.96.0
+pkgver=5.97.0
 pkgbuild=1
 arch=("auto")
 
