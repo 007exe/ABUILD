@@ -1,0 +1,28 @@
+pkgname=pkcs11-helper
+pkgver=1.29.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("PKCS#11 helper library.")
+longdesc=("A library that simplifies the interaction with PKCS11 providers for end-user applications using a simple API and optional OpenSSL engine.")
+
+source=("https://github.com/OpenSC/${pkgname}/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("libs dev-libs")
+
+build_deps=("gnutls nss openssl")
+
+build() {
+  go_src_dir
+  burn_patches
+  libtoolize
+  aclocal
+  autoheader
+  automake --add-missing
+  autoreconf -v
+  ./configure --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -D -m0644 COPYING* ${pkgdir}/usr/share/licenses/${pkgname}/
+}
