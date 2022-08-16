@@ -1,0 +1,24 @@
+pkgname=libguess
+pkgver=1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("High-speed character set detection library.")
+longdesc=("libguess - a high-speed character set detection library.")
+
+tags=("libs dev-libs")
+
+source=("https://sources.archlinux.org/other/packages/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/libguess/COPYING
+}
