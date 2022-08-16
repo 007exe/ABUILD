@@ -1,18 +1,18 @@
 pkgname=network-manager-applet
-pkgver=1.25.0
+pkgver=1.28.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Applet for managing network connections")
+shortdesc=("Applet for managing network connections.")
 longdesc=("The NetworkManager Applet provides a tool and a panel applet used to configure wired and wireless network connections through GUI. It's designed for use with any desktop environment that uses GTK+, such as Xfce and LXDE.")
 
-source=("https://gitlab.gnome.org/GNOME/network-manager-applet/-/archive/${pkgver}-dev/network-manager-applet-${pkgver}-dev.tar.gz")
+source=("https://gitlab.gnome.org/GNOME/network-manager-applet/-/archive/${pkgver}/network-manager-applet-${pkgver}-dev.tar.gz")
 
-tags="xapps net-misc"
+tags=("network net-misc")
 
-adddep="networkmanager ppp"
+build_deps=("libsecret libnotify libmm-glib gobject-introspection gtk-doc meson libnma libnma-common libgudev")
 
-build_deps="libsecret libnotify libmm-glib gobject-introspection gtk-doc meson libnma libgudev"
+adddep=("networkmanager ppp")
 
 build() {
   go_src_dir
@@ -22,5 +22,5 @@ build() {
     -D appindicator=no \
     -D selinux=false
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
