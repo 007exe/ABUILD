@@ -1,5 +1,5 @@
 pkgname=webkit2gtk
-pkgver=2.36.1
+pkgver=2.36.6
 pkgbuild=1
 arch=("auto")
 
@@ -30,7 +30,6 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_LIBEXECDIR=lib \
-    -ENABLE_JOURNALD_LOG=OFF \
     -DCMAKE_SKIP_RPATH=ON \
     -DENABLE_GTKDOC=OFF \
     -DENABLE_MINIBROWSER=ON \
