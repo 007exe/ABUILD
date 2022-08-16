@@ -1,19 +1,20 @@
 pkgname=acpid
-pkgver=2.0.32
-pkgbuild=3
+pkgver=2.0.33
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("A daemon for delivering ACPI power management events with netlink support")
-longdesc=("The acpid (Advanced Configuration and Power Interface event daemon) is a completely flexible, totally extensible daemon for delivering ACPI events. It listens on netlink interface and when an event occurs, executes programs to handle the event. The programs it executes are configured through a set of configuration files, which can be dropped into place by packages or by the user.")
-
-tags=('base sys-power')
+shortdesc=("Daemon for Advanced Configuration and Power Interface.")
+longdesc=("A daemon for delivering ACPI power management events with netlink support.")
 
 source=("http://downloads.sourceforge.net/sourceforge/acpid2/$pkgname-$pkgver.tar.xz")
 
+tags=("base sys-power")
+
 build_deps="glibc"
-config_files="etc/acpi/acpi_handler.sh
+
+config_files=("/etc/acpi/default.sh
 etc/conf.d/acpid
-etc/acpi/events/default"
+etc/acpi/events/default")
 
 build() {
   go_src_dir
@@ -21,17 +22,14 @@ build() {
     --prefix=/usr \
     --sbindir=/usr/bin
   make -j${numjobs}
-  make DESTDIR="$pkgdir" install
-}
+  make DESTDIR=${pkgdir} install
 
-after_build(){
   mkdir -p $pkgdir/etc/acpi/events
-  zcat $filedir/acpi_handler.sh.gz > $pkgdir/etc/acpi/acpi_handler.sh
-  chmod 755 $pkgdir/etc/acpi/acpi_handler.sh
-  zcat $filedir/default.gz > $pkgdir/etc/acpi/events/default
+  install -Dm755 ${filedir}/acpid-1.0.6-default.sh $pkgdir/etc/acpi/default.sh
+  install -Dm644 ${filedir}/acpid-default ${pkgdir}/etc/acpi/events/default
 
-# Add OpenRC scripts
-  install -Dm644 $filedir/acpid $pkgdir/etc/conf.d/acpid
-  install -Dm755 $filedir/acpid.init $pkgdir/etc/init.d/acpid
+# OpenRC скрипт
+  install -Dm644 ${filedir}/acpid ${pkgdir}/etc/conf.d/acpid
+  install -Dm755 ${filedir}/acpid.init ${pkgdir}/etc/init.d/acpid
 }
 
