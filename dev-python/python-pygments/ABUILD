@@ -1,10 +1,10 @@
 pkgname=python-pygments
-pkgver=2.12.0
+pkgver=2.13.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Syntax highlighting package written in Python.")
-longdesc=("Pygments is a syntax highlighting package written in Python. It is a generic syntax highlighter for general use in all kinds of software such as forum systems, wikis or other applications that need to prettify source code.")
+longdesc=("Pygments is a syntax highlighting package written in Python.")
 
 source=("https://github.com/pygments/pygments/archive/$pkgver.tar.gz")
 
