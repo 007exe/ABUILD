@@ -15,18 +15,25 @@ build_deps=("glibc kernel-headers meson libcap ncurses linux-pam")
 adddep=("etc sed grep")
 
 config_files=("etc/rc.conf
-etc/conf.d/keymaps
-etc/conf.d/hwclock
-etc/conf.d/consolefont
-etc/conf.d/modules
-etc/conf.d/fsck
-etc/conf.d/staticroute
-etc/conf.d/hostname
+etc/conf.d/agetty
 etc/conf.d/bootmisc
+etc/conf.d/consolefont
+etc/conf.d/devfs
+etc/conf.d/dmesg
+etc/conf.d/fsck
+etc/conf.d/hostname
+etc/conf.d/hwclock
+etc/conf.d/keymaps
+etc/conf.d/killprocs
 etc/conf.d/localmount
+etc/conf.d/modules
+etc/conf.d/mtab
+etc/conf.d/net-online
+etc/conf.d/netmount
 etc/conf.d/network
 etc/conf.d/seedrng
-etc/conf.d/dmesg")
+etc/conf.d/staticroute
+etc/conf.d/swap")
 
 build() {
   go_src_dir
@@ -48,7 +55,7 @@ build() {
     -D pam=true \
     -D newnet=true \
     -D audit=enabled
-#  meson configure build
+  meson configure build
   meson compile -C build
   meson install --destdir ${pkgdir} -C build
 
