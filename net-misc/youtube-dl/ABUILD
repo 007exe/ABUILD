@@ -1,69 +1,25 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=youtube-dl
-pkgver=
+pkgver=2021.12.17
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Command line youtube video downloader"
-#longdesc=(""
-#)
+shortdesc=("Download videos from YouTube.com.")
+longdesc=("A command-line program to download videos from YouTube.com and a few more sites.")
 
-source=("git:https://github.com/rg3/youtube-dl.git")
+source=("https://github.com/ytdl-org/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("net-misc console")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="www-misc console"
+build_deps=("python python-setuptools ffmpeg rtmpdump")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep="python"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-build()
-{
-go_src_dir
-burn_patches
-make 
-mkdir -p ${pkgdir}/usr/bin/
-cp ./youtube-dl ${pkgdir}/usr/bin/
+build(){
+  go_src_dir
+  burn_patches
+  sed -i 's|etc/bash_completion.d|share/bash-completion/completions|' setup.py
+  sed -i 's|etc/fish/completions|share/fish/vendor_completions.d|' setup.py
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  mv ${pkgdir}/usr/share/bash-completion/completions/${pkgname}.bash-completion ${pkgdir}/usr/share/bash-completion/completions/${pkgname}
+  install -Dm644 ${pkgname}.zsh ${pkgdir}/usr/share/zsh/site-functions/_${pkgname}
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
-
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
