@@ -1,5 +1,5 @@
 pkgname=cifs-utils
-pkgver=6.15
+pkgver=7.0
 pkgbuild=1
 arch=("auto")
 
