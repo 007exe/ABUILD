@@ -16,23 +16,16 @@ build() {
   go_src_dir
   burn_patches
   autoreconf -fi
-  find -name .0*~ -delete
-  CFLAGS+=" -pthread -Oz -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -pthread"
+  CFLAGS+=" -pthread"
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
     --datadir=/usr/share/file \
     --enable-fsect-man5 \
-    --enable-libseccomp \
-    --enable-bzlib \
-    --enable-xzlib \
-    --enable-zlib
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-#  make -j${numjobs}
-#  make DESTDIR=${pkgdir} install
-  make -C src magic.h
-  make -C src file
-  make -C src DESTDIR=${pkgdir} install
+    --enable-libseccomp
+#  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
