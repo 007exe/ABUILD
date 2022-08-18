@@ -74,11 +74,12 @@ build() {
 
   rm -r ${pkgdir}/usr/lib/python3*
 
-  CFLAGS="${CFLAGS} -fno-lto" CXXFLAGS="${CXXFLAGS} -fno-lto" LDFLAGS="${LDFLAGS} -fno-lto" \
-  cmake -B build-cuda ${_opts} \
-    -DWITH_CUDA=ON \
-    -DWITH_CUDNN=ON
-  cmake --build build-cuda
+# Сборка opencv-cuda
+#  CFLAGS="${CFLAGS} -fno-lto" CXXFLAGS="${CXXFLAGS} -fno-lto" LDFLAGS="${LDFLAGS} -fno-lto" \
+#  cmake -B build-cuda ${_opts} \
+#    -DWITH_CUDA=ON \
+#    -DWITH_CUDNN=ON
+#  cmake --build build-cuda
 
 }
 
@@ -86,7 +87,7 @@ opencv-samples() {
   pkgname=opencv-samples
   shortdesc=("Open Source Computer Vision Library samples.")
   longdesc=("The opencv package contains graphics libraries mainly aimed at real-time computer vision.")
-#  adddep=("opencv")
+  adddep=("opencv")
 }
 
 opencv-samples_prep() {
@@ -108,25 +109,25 @@ python-opencv_prep() {
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
-opencv-cuda() {
-  pkgname=opencv-cuda
-  shortdesc=("Open Source Computer Vision Library with CUDA support.")
-  longdesc=("The opencv package contains graphics libraries mainly aimed at real-time computer vision.")
-  provides=("opencv")
-  conflicts=("opencv=${pkgver}")
-}
+#opencv-cuda() {
+#  pkgname=opencv-cuda
+#  shortdesc=("Open Source Computer Vision Library with CUDA support.")
+#  longdesc=("The opencv package contains graphics libraries mainly aimed at real-time computer vision.")
+#  provides=("opencv")
+#  conflicts=("opencv=${pkgver}")
+#}
 
-multipkgname1_prep() {
-  go_src_dir
-  DESTDIR=${pkgdir} cmake --install build-cuda
-  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+#opencv-cuda_prep() {
+#  go_src_dir
+#  DESTDIR=${pkgdir} cmake --install build-cuda
+#  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 
 # Предоставляет пакет samples
-  rm -r ${pkgdir}/usr/share/opencv4/samples
+#  rm -r ${pkgdir}/usr/share/opencv4/samples
 
 # Cимволические ссылки Java, необходимые некоторым бинарным блобам
 #  ln -sr ${pkgdir}/usr/share/java/{opencv4/opencv-${pkgver//./},opencv}.jar
 #  ln -sr ${pkgdir}/usr/lib/{libopencv_java${pkgver//./},libopencv_java}.so
 
-  rm -r ${pkgdir}/usr/lib/python3*
-}
+#  rm -r ${pkgdir}/usr/lib/python3*
+#}
