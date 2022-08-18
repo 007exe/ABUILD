@@ -1,5 +1,9 @@
+# ERROR: Could not install packages due to an OSError: [Errno 13] Отказано в доступе: '/usr/bin/a2x'
+# Consider using the `--user` option or check the permissions.
+# Что бы не получить данную ошибку удали этот пакет перед сборкой
 pkgname=asciidoc
 pkgver=10.2.0
+#pkgver=9.0.5
 pkgbuild=1
 arch=("noarch")
 
@@ -20,7 +24,13 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --sysconfdir=/etc
+    --docdir /usr/share/doc/${pkgname}
+  make build
   make manpages
   make install DESTDIR=${pkgdir}
+  make DESTDIR=${pkgdir} docs
+  install -Dm0644 -t ${pkgdir}/usr/share/man/man1/ doc/*.1
+# asciidocapi устарел, но все еще включен в 10.x на временной основе
+  local _platlib="$(python -c 'import sysconfig; print(sysconfig.get_paths()["platlib"])')"
+  install -Dm0644 -t ${pkgdir}/${_platlib}/${pkgname}/ asciidoc/api.py
 }
