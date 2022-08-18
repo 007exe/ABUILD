@@ -1,5 +1,5 @@
 pkgname=gtk4
-pkgver=4.6.6
+pkgver=4.6.7
 pkgbuild=1
 arch=("auto")
 
