@@ -1,7 +1,5 @@
-# NOTE: Этот пакет собирается очень долго и требует много оперативной памяти
-
 pkgname=qt6-webengine
-pkgver=6.3.0
+pkgver=6.3.1
 pkgbuild=1
 arch=("auto")
 
@@ -13,22 +11,19 @@ source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*
 tags=("qt6 dev-qt")
 
 build_deps=("qt6-webchannel qt6-positioning libxcomposite libxrandr libxkbfile libevent snappy nss libxslt minizip
-ffmpeg re2 libvpx libxtst ttf-font pciutils cmake ninja python-html5lib gperf jsoncpp qt6-tools nodejs qt6-websockets")
+ffmpeg re2 libvpx libxtst pciutils cmake ninja python-html5lib gperf jsoncpp qt6-tools nodejs qt6-websockets pipewire")
+
+# NOTE: Это опциональные зависимости
+removedep=("pipewire")
 
 build() {
-  go_src_dir
-  burn_patches
-  cmake -B build -G Ninja \
+  cd ${srcdir}
+  cmake -B build -S qtwebengine-everywhere-src-${pkgver} -G Ninja \
     -DCMAKE_TOOLCHAIN_FILE=/usr/lib/cmake/Qt6/qt.toolchain.cmake \
     -DQT_FEATURE_webengine_system_ffmpeg=ON \
     -DQT_FEATURE_webengine_system_icu=ON \
-    -DQT_FEATURE_webengine_system_libevent=ON \
-    -DQT_FEATURE_webengine_system_libxslt=ON \
-    -DQT_FEATURE_webengine_proprietary_codecs=ON \
-    -DQT_FEATURE_webengine_kerberos=ON \
-    -DQT_FEATURE_webengine_webrtc_pipewire=OFF \
-    -DQT_FEATURE_webengine_full_debug_info=ON
-  cmake --build build -j${numjobs}
+    -DQT_FEATURE_webengine_system_libevent=ON
+  cmake --build build
   DESTDIR=${pkgdir} cmake --install build
-  install -Dm644 src/3rdparty/chromium/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.chromium
+  install -Dm644 ${srcdir}/qtwebengine-everywhere-src-${pkgver}/src/3rdparty/chromium/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.chromium
 }
