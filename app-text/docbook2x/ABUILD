@@ -1,0 +1,33 @@
+pkgname=docbook2x
+pkgver=0.8.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tools to convert docbook to man and info.")
+longdesc=("A software package that converts DocBook documents into the traditional Unix man page format and the GNU Texinfo format.")
+
+source=("http://downloads.sourceforge.net/$pkgname/docbook2X-$pkgver.tar.gz")
+
+tags=("app-text console")
+
+# jade perl-xml-sax-expat
+build_deps=("glibc perl-sgmls perl-xml-parser perl-xml-sax libxslt")
+
+# perl-xml-sax-expat
+adddep=("perl-sgmls perl-xml-parser perl-xml-sax")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.ac || die 'sed on configure.ac failed'
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --program-transform-name 's,docbook2,db2x_docbook2,'
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -D -m0644 COPYING "$pkgdir"/usr/share/licenses/${pkgname}/license
+  sed -i 's|http://docbook2x.sf.net/latest|/usr/share/docbook2X|g' ${pkgdir}/usr/bin/db2x_xsltproc
+}
