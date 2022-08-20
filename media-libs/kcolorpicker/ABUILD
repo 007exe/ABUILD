@@ -1,0 +1,24 @@
+pkgname=kcolorpicker
+pkgver=0.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt based Color Picker with popup menu.")
+longdesc=("Qt based color picker with popup menu.")
+
+source=("https://github.com/ksnip/kColorPicker/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
