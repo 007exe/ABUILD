@@ -1,0 +1,24 @@
+pkgname=leptonica
+pkgver=1.82.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C library for image processing and analysis.")
+longdesc=("Software that is broadly useful for image processing and image analysis applications.")
+
+source=("https://github.com/DanBloomberg/leptonica/archive/${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("giflib libjpeg-turbo libpng libtiff zlib libwebp openjpeg2")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
