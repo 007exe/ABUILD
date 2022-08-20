@@ -1,0 +1,60 @@
+pkgname=julia
+pkgver=1.7.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("High-level, high-performance, dynamic programming language.")
+longdesc=("High-performance programming language for technical computing.")
+
+source=("https://github.com/JuliaLang/julia/releases/download/v${pkgver}/${pkgname}-${pkgver}-full.tar.gz")
+
+tags=("develop dev-lang")
+
+# libgit2 openblas openlibm libblastrampoline patchelf libwhich
+build_deps=("cblas fftw hicolor-icon-theme libunwind libutf8proc suitesparse mbedtls
+pcre2 llvm-libs p7zip cmake gcc-fortran python llvm")
+
+# NOTE: Это опциональные зависимости
+removedep=("gnuplot")
+
+config_files=("etc/julia/startup.jl")
+
+_buildopts="prefix=/usr \
+    bindir=/usr/bin \
+    sysconfdir=/etc \
+    libexecdir=/usr/lib \
+    USE_BINARYBUILDER=0 \
+    USE_SYSTEM_CSL=1 \
+    USE_SYSTEM_LLVM=1 \
+    USE_SYSTEM_LIBUNWIND=1 \
+    USE_SYSTEM_PCRE=1 \
+    USE_SYSTEM_BLAS=1 \
+    USE_SYSTEM_LAPACK=1 \
+    USE_SYSTEM_GMP=1 \
+    USE_SYSTEM_MPFR=1 \
+    USE_SYSTEM_LIBSUITESPARSE=1 \
+    USE_SYSTEM_LIBBLASTRAMPOLINE=1 \
+    USE_SYSTEM_LIBWHICH=1 \
+    USE_SYSTEM_DSFMT=0 \
+    USE_SYSTEM_LIBUV=0 \
+    USE_SYSTEM_UTF8PROC=1 \
+    USE_SYSTEM_LIBGIT2=1 \
+    USE_SYSTEM_LIBSSH2=1 \
+    USE_SYSTEM_MBEDTLS=1 \
+    USE_SYSTEM_CURL=1 \
+    USE_SYSTEM_PATCHELF=1 \
+    USE_SYSTEM_ZLIB=1 \
+    USE_SYSTEM_P7ZIP=1 \
+    USE_SYSTEM_OPENLIBM=1 \
+    MARCH=x86-64"
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's|0.22314355f0 + 3.1415927f0im|0.22314355f0 - 3.1415927f0im|' -i stdlib/LinearAlgebra/test/lu.jl
+  make -j${numjobs} release VERBOSE=1 JLDFLAGS=${LDFLAGS} $_buildopts
+  make DESTDIR=${pkgdir} install $_buildopts
+  ln -s /usr/lib/libopenblas.so ${pkgdir}/usr/lib/julia/libopenblas64_.so
+  rm ${pkgdir}/usr/lib/julia/libccalltest.so.debug
+  install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
