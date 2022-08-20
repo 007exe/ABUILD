@@ -1,0 +1,23 @@
+pkgname=kimageannotator
+pkgver=0.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tool for annotating images.")
+longdesc=("Tool for annotating images.")
+
+source=("https://github.com/ksnip/kImageAnnotator/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("qt5-svg kcolorpicker cmake qt5-tools")
+
+build() {
+  go_src_dir
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
