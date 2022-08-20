@@ -1,5 +1,5 @@
 pkgname=kalzium
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,8 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("apps kde-apps")
 
-build_deps=("kparts knewstuff kplotting kunitconversion qt5-script avogadrolibs-qt5
+# avogadrolibs-qt5
+build_deps=("kparts knewstuff kplotting kunitconversion qt5-script
 openbabel extra-cmake-modules kdoctools eigen ocaml facile python")
 
 adddep=("hicolor-icon-theme")

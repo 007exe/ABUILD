@@ -1,5 +1,5 @@
 pkgname=gwenview
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("apps kde-apps")
 
-build_deps=("kactivities baloo libkdcraw kparts kitemmodels cfitsio phonon purpose perl extra-cmake-modules kdoctools")
+build_deps=("kactivities baloo libkdcraw kparts kitemmodels cfitsio phonon purpose perl kimageannotator extra-cmake-modules kdoctools")
 
 # NOTE: Это опциональные зависимости
 removedep=("qt5-imageformats kimageformats kamera")

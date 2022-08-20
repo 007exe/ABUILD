@@ -1,5 +1,5 @@
 pkgname=kalgebra
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("apps kde-apps")
 
-# qt5-webengine
-build_deps=("analitza kio")
+build_deps=("analitza kio qt5-webengine")
 
 build() {
   go_src_dir

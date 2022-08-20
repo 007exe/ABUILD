@@ -1,5 +1,5 @@
 pkgname=libksane
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("libs kde-apps")
 
-build_deps=("ktextwidgets kwallet sane extra-cmake-modules")
+build_deps=("ktextwidgets kwallet ksanecore extra-cmake-modules")
 
 build() {
   go_src_dir

@@ -1,11 +1,10 @@
 #!/bin/bash
 
-KDE_APPS_VERSION=22.04.3
+KDE_APPS_VERSION=22.08.0
 
 LIST="libkdcraw
 libkexiv2
 libkmahjongg
-libksane
 libktorrent
 signon-kwallet-extension
 kaccounts-integration
@@ -75,6 +74,8 @@ kmix
 kmousetool
 kmouth
 kmplot
+ksanecore
+libksane
 kolourpaint
 kompare
 ktouch
@@ -116,7 +117,65 @@ pimcommon
 kdepim-runtime
 kidentitymanagement
 libkleo
-kopete"
+kopete
+calendarsupport
+akonadi-calendar-tools
+messagelib
+mailcommon
+akonadi-import-wizard
+akonadiconsole
+akregator
+elisa
+eventviews
+falkon
+grantlee-editor
+incidenceeditor
+kaccounts-providers
+kaddressbook
+kalarm
+kalendar
+kbackup
+kdebugsettings
+kdeconnect
+libksieve
+ktnef
+kitinerary
+kdepim-addons
+kdialog
+keditbookmarks
+kfind
+khelpcenter
+kimagemapeditor
+kio-zeroconf
+kleopatra
+kmail-account-wizard
+mbox-importer
+pim-data-exporter
+pim-sieve-editor
+kmail
+libkdegames
+knights
+knotes
+konqueror
+zanshin
+korganizer
+kontact
+kontactinterface
+kontrast
+konversation
+kopeninghours
+kosmindoormap
+kpkpass
+kpublictransport
+libgravatar
+mailimporter
+markdownpart
+minuet
+pim-data-exporter
+pim-sieve-editor
+skanlite
+skanpage
+spectacle"
 
 CWD=~
 STARTD=`pwd`
@@ -126,7 +185,7 @@ LOGFILE="$CWD/build.log"
 echo "============================= Начало kde-apps $KDE_APPS_VERSION сборки `date` =============================" >> $LOGFILE
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -pod ~/repository/kde-apps -si -bv $KDE_APPS_VERSION -bb 1; then
+    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/kde-apps -si -bv $KDE_APPS_VERSION -bb 1; then
            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else

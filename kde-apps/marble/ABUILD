@@ -1,5 +1,5 @@
 pkgname=marble-common
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("libs kde-apps")
 
-# qt5-webengine libwlocate shapelib plasma-workspace
+# libwlocate shapelib
 build_deps=("extra-cmake-modules gpsd kdoctools knewstuff kparts krunner
-phonon qt5-serialport qt5-tools protobuf")
+phonon qt5-serialport qt5-tools protobuf qt5-webengine plasma-workspace")
 
 adddep=("")
 

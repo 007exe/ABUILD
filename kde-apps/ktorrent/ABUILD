@@ -1,5 +1,5 @@
 pkgname=ktorrent
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,8 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("apps kde-apps")
 
-# qt5-webengine plasma-workspace
 build_deps=("libktorrent kcmutils knotifyconfig kparts phonon extra-cmake-modules
-kdoctools boost kdnssd taglib syndication kplotting geoip")
+kdoctools boost kdnssd taglib syndication kplotting geoip qt5-webengine plasma-workspace")
 
 # NOTE: Это опциональные зависимости
 removedep=("plasma-workspace kdnssd taglib geoip syndication kplotting")

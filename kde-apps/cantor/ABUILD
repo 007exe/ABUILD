@@ -1,5 +1,5 @@
 pkgname=cantor
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("apps kde-apps")
 
+# julia
 build_deps=("analitza libspectre kpty ktexteditor knewstuff libqalculate qt5-xmlpatterns
-qt5-tools poppler-qt5 extra-cmake-modules python kdoctools luajit qt5-webengine r julia")
+qt5-tools poppler-qt5 extra-cmake-modules python kdoctools luajit qt5-webengine r")
 
 # NOTE: Это опциональные зависимости
 removedep=("maxima octave r luajit python sagemath julia")

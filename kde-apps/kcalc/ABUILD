@@ -1,5 +1,5 @@
 pkgname=kcalc
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -17,6 +17,6 @@ build() {
   burn_patches
   cmake -B build \
     -DBUILD_TESTING=OFF
-  cmake --build build
+  cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }

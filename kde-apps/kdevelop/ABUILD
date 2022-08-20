@@ -1,5 +1,5 @@
 pkgname=kdevelop
-pkgver=22.04.3
+pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -21,6 +21,6 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF
-  cmake --build build
+  cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }
