@@ -1,0 +1,25 @@
+pkgname=khelpcenter
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Application to show KDE Applications documentation.")
+longdesc=("Application to read documentation for KDE Plasma, Applications, Utilities.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("khtml kdoctools xapian-core grantlee perl extra-cmake-modules")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
