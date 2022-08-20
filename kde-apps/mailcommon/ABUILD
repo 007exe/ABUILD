@@ -1,0 +1,26 @@
+pkgname=mailcommon
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Common mail library.")
+longdesc=("KDE PIM library providing support for mail applications.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("mailimporter messagelib phonon extra-cmake-modules qt5-tools doxygen")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
