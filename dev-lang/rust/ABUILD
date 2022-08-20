@@ -1,5 +1,5 @@
 pkgname=rust
-pkgver=1.63.0
+pkgver=1.62.1
 _llvm_ver=14.0.6
 pkgbuild=1
 arch=("auto")
@@ -12,10 +12,8 @@ source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz"
 
 tags=("develop dev-lang")
 
-# musl lib32-gcc-libs rust
+# musl lib32-gcc-libs
 build_deps=("llvm=$_llvm_ver libffi perl python curl cmake ninja")
-
-pkglist=("rust-docs")
 
 build() {
   cd ${srcdir}/rustc-${pkgver}-src
@@ -38,6 +36,7 @@ vendor = true
 tools = ["cargo", "rls", "clippy", "rustfmt", "analysis", "src", "rust-demangler"]
 sanitizers = true
 profiler = true
+docs = false
 
 [install]
 prefix = "/usr"
@@ -52,32 +51,13 @@ rpath = false
 [target.x86_64-unknown-linux-gnu]
 llvm-config = "/usr/bin/llvm-config"
 END
-
   export RUST_BACKTRACE=1
-  export RUST_COMPILER_RT_ROOT=${srcdir}/compiler-rt-$_llvm_ver.src
+  export RUST_COMPILER_RT_ROOT=${srcdir}/compiler-rt-${_llvm_ver}.src
   [[ -d $RUST_COMPILER_RT_ROOT ]]
   export LIBGIT2_NO_PKG_CONFIG=1 #749381
   export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
-
-  DESTDIR=${pkgdir} python ./x.py install
-
+  DESTDIR=${pkgdir} python ./x.py install -j${numjobs}
   install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE*
-
   install -d ${pkgdir}/usr/share/bash-completion/
   mv ${pkgdir}/etc/bash_completion.d ${pkgdir}/usr/share/bash-completion/completions
-}
-
-rust-docs() {
-  pkgname=rust-docs
-  shortdesc=("Documentation for the Rust programming language")
-  longdesc=("The Rust programming language is designed to be a safe, concurrent, practical language.")
-  arch=("noarch")
-  custom_opts=no_strip
-}
-
-rust-docs_prep() {
-  cd ${srcdir}/rustc-${pkgver}-src
-  install -d ${pkgdir}/usr/share/doc
-  mv ${p_pkgdir}/usr/share/doc ${pkgdir}/usr/share/
-  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE*
 }
