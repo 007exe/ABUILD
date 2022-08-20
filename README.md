@@ -81,9 +81,9 @@ gnome-base           | Основные пакеты GNOME.
 gnome-extra          | Дополнительные неосновные пакеты GNOME.
 gnome-libs           | Библиотеки GNOME.
 gui-libs             | Разные библиотеки, которые поддерживают различные оконные менеджеры.
-kde-apps             | Пакеты, выпущенные KDE как часть KDE Applications имеющие единый цикл разработки.
 kde-frameworks       | Основные пакеты KDE Frameworks.
 kde-games            | Коллекция игр KDE.
+kde-gear             | Пакеты, выпущенные KDE как часть KDE Gear и имеющие единый цикл разработки.
 kde-misc             | Различные программы и библиотеки KDE имеющие не зависимый цикл разработки от KDE Applications.
 kde-plasma           | Основные пакеты KDE Plasma.
 lxde-base            | Основные пакеты для LXDE, облегченной среды рабочего стола X11.
