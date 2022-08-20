@@ -1,0 +1,24 @@
+pkgname=kjots
+pkgver=5.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A note taking application for KDE.")
+longdesc=("Note taking utility by KDE.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("utils kde-misc")
+
+build_deps=("kontactinterface akonadi akonadi-notes kpimtextedit grantlee extra-cmake-modules kdoctools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
