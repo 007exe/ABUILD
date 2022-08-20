@@ -8,7 +8,7 @@ longdesc=("Container application to unify several major PIM applications within 
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 # kjots
 build_deps=("extra-cmake-modules kdoctools akregator kaddressbook kmail knotes korganizer zanshin")

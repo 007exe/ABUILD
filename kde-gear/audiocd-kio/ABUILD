@@ -8,7 +8,7 @@ longdesc=("kioslave for accessing audio CDs.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-multimedia")
 
 build_deps=("extra-cmake-modules kdoctools kcmutils libkcddb libkcompactdisc lame")
 

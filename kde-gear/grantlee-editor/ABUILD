@@ -8,7 +8,7 @@ longdesc=("Utilities and tools to manage themes in KDE PIM applications.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("messagelib ktexteditor extra-cmake-modules kdoctools")
 

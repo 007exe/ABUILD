@@ -8,7 +8,7 @@ longdesc=("The Ark package is a KF5 archive tool. It is a graphical front end to
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-utilities")
 
 build_deps=("extra-cmake-modules kdoctools kparts kpty libarchive libzip kitemmodels hicolor-icon-theme")
 

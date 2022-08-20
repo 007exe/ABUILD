@@ -8,7 +8,7 @@ longdesc=("Application to manage alarms and other timer based alerts for the des
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("extra-cmake-modules kdoctools phonon kidletime knotifyconfig pimcommon kmailtransport kholidays kcalutils")
 

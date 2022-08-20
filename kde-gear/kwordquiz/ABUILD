@@ -8,7 +8,7 @@ longdesc=("Powerful flashcard and vocabulary learning program.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-education")
 
 build_deps=("knotifyconfig libkeduvocdocument knewstuff phonon extra-cmake-modules kdoctools")
 

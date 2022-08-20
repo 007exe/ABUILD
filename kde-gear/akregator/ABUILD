@@ -8,7 +8,7 @@ longdesc=("News feed aggregator.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("kontactinterface messagelib knotifyconfig kuserfeedback extra-cmake-modules kdoctools")
 

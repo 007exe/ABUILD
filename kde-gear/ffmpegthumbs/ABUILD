@@ -8,7 +8,7 @@ longdesc=("FFmpeg based thumbnail generator for video files.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-multimedia")
 
 build_deps=("extra-cmake-modules kio ffmpeg taglib")
 

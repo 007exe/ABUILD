@@ -8,7 +8,7 @@ longdesc=("Library for akonadi calendar integration.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("kmailtransport kcalutils akonadi-contacts extra-cmake-modules")
 

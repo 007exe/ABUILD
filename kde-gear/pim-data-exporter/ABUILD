@@ -8,7 +8,7 @@ longdesc=("Assistant to backup and archive PIM data and configuration.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("calendarsupport mailcommon kuserfeedback extra-cmake-modules kdoctools")
 

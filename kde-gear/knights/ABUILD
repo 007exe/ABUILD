@@ -8,7 +8,7 @@ longdesc=("Chess board by KDE with XBoard protocol support.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("games kde-games")
 
 build_deps=("libkdegames kplotting plasma-framework extra-cmake-modules kdoctools")
 

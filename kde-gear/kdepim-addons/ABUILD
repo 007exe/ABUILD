@@ -8,7 +8,7 @@ longdesc=("Plugins for KDE Personal Information Management Suite.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("incidenceeditor ktnef libksieve akonadi-import-wizard poppler-qt5 kitinerary kontactinterface discount extra-cmake-modules kdoctools kaddressbook")
 

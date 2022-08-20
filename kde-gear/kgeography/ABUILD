@@ -8,7 +8,7 @@ longdesc=("Geography learning tool.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-education")
 
 build_deps=("kxmlgui extra-cmake-modules kdoctools python")
 

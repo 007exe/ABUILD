@@ -8,7 +8,7 @@ longdesc=("KDE Interactive Geometry tool.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-education")
 
 build_deps=("ktexteditor qt5-xmlpatterns python extra-cmake-modules kdoctools boost")
 

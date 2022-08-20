@@ -8,7 +8,7 @@ longdesc=("These plugins allow KDE software to create thumbnails for advanced gr
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-graphics")
 
 build_deps=("libkexiv2 libkdcraw kio ghostscript kdegraphics-mobipocket extra-cmake-modules")
 

@@ -8,7 +8,7 @@ longdesc=("Mail transport service.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-gear")
 
 build_deps=("akonadi-mime ksmtp libkgapi qtkeychain-qt5 extra-cmake-modules qt5-tools doxygen")
 

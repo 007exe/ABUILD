@@ -3,12 +3,12 @@ pkgver=22.08.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A QtQuick plugin to render beautiful and interactive charts.")
-longdesc=("Qt Quick plugin for beautiful and interactive charts.")
+shortdesc=("Qt Quick plugin for beautiful and interactive charts.")
+longdesc=("A QtQuick plugin to render beautiful and interactive charts.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-gear")
 
 build_deps=("extra-cmake-modules qt5-declarative")
 

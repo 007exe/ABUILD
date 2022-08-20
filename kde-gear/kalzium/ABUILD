@@ -8,7 +8,7 @@ longdesc=("Periodic table of the elements.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-education")
 
 # avogadrolibs-qt5
 build_deps=("kparts knewstuff kplotting kunitconversion qt5-script

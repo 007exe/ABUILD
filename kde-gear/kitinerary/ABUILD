@@ -8,7 +8,7 @@ longdesc=("Data Model and Extraction System for Travel Reservation information."
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("kmime kpkpass kcalendarcore kcontacts poppler libphonenumber zxing-cpp extra-cmake-modules qt5-tools doxygen")
 

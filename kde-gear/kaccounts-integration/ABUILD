@@ -8,7 +8,7 @@ longdesc=("Small system to administer web accounts for the sites and services ac
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-gear")
 
 # signon-plugin-oauth2 signon-ui
 build_deps=("extra-cmake-modules kdoctools kcmutils signon-kwallet-extension")

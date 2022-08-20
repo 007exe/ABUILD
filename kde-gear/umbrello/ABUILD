@@ -8,7 +8,7 @@ longdesc=("KDE UML Modeller.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kdesdk kde-gear")
 
 build_deps=("kdelibs4support qt5-webkit extra-cmake-modules kdoctools
 kdesignerplugin kdevelop-pg-qt llvm kinit doxygen kdevelop-php")

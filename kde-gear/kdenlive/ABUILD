@@ -8,7 +8,7 @@ longdesc=("A non-linear video editor for Linux using the MLT video framework.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-multimedia")
 
 build_deps=("qt5-networkauth knewstuff knotifyconfig kfilemetadata purpose mlt
 extra-cmake-modules kdoctools v4l-utils doxygen qt5-tools frei0r-plugins")

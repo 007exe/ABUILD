@@ -8,7 +8,7 @@ longdesc=("Manage print jobs and printers in Plasma.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-utilities")
 
 build_deps=("kcmutils kirigami2 extra-cmake-modules kdoctools plasma-framework")
 

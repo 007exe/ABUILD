@@ -8,7 +8,7 @@ longdesc=("Full-featured burning and ripping application based on KDE Frameworks
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-multimedia")
 
 build_deps=("libkcddb kcmutils knotifyconfig libmad kfilemetadata knewstuff libmpcdec
 libdvdread libburn libsamplerate qt5-webkit extra-cmake-modules kdoctools")

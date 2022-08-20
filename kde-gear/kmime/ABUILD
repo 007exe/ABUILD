@@ -8,7 +8,7 @@ longdesc=("Library for handling mail messages and newsgroup articles.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("extra-cmake-modules doxygen qt5-tools ki18n kcodecs")
 

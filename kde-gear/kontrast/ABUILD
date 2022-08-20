@@ -8,7 +8,7 @@ longdesc=("Tool to check contrast for colors that allows verifying that your col
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-accessibility")
 
 build_deps=("kirigami2 kdeclarative qt5-svg extra-cmake-modules")
 

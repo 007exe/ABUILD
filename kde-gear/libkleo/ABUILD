@@ -8,7 +8,7 @@ longdesc=("Library for encryption handling.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("qgpgme kitemmodels kpimtextedit extra-cmake-modules qt5-tools boost doxygen")
 

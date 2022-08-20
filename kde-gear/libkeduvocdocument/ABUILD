@@ -8,7 +8,7 @@ longdesc=("Common libraries for KDE Edu applications.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("kio kdeedu-data extra-cmake-modules kdoctools")
 

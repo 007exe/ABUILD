@@ -8,7 +8,7 @@ longdesc=("Library for managing partitions.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("extra-cmake-modules smartmontools kcoreaddons kwidgetsaddons ki18n polkit-qt qca-qt5")
 

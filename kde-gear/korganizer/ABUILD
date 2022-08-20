@@ -8,7 +8,7 @@ longdesc=("Organizational assistant, providing calendars and other similar funct
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("kdepim-runtime kontactinterface incidenceeditor kuserfeedback extra-cmake-modules kdoctools qt5-tools")
 

@@ -8,7 +8,7 @@ longdesc=("File finder utility based on KDE Frameworks.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-utilities")
 
 build_deps=("kio kfilemetadata extra-cmake-modules kdoctools")
 

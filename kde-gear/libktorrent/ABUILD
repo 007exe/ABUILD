@@ -8,7 +8,7 @@ longdesc=("BitTorrent library based on KDE Frameworks.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("extra-cmake-modules boost doxygen")
 

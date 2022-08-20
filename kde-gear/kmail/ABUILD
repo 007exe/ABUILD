@@ -8,7 +8,7 @@ longdesc=("Email client, supporting POP3 and IMAP mailboxes.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-pim")
 
 build_deps=("kdepim-runtime kmail-account-wizard akonadi-import-wizard mbox-importer
 pim-data-exporter pim-sieve-editor kontactinterface ktnef extra-cmake-modules kdoctools")

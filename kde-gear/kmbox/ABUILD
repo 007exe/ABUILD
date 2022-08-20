@@ -8,7 +8,7 @@ longdesc=("Library for accessing mail storages in MBox format.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("kmime extra-cmake-modules doxygen qt5-tools")
 

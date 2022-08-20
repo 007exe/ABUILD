@@ -8,7 +8,7 @@ longdesc=("VNC-compatible server to share Plasma desktops.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-network")
 
 build_deps=("libepoxy kdnssd kxmlgui kwallet libvncserver pipewire kcompletion kwayland
 xdg-desktop-portal extra-cmake-modules kdoctools plasma-wayland-protocols")

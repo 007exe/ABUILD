@@ -8,7 +8,7 @@ longdesc=("Shared icons, artwork and data files for educational applications.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-gear")
 
 build_deps=("extra-cmake-modules qt5-base")
 

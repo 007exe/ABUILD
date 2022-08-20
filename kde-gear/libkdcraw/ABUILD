@@ -8,7 +8,7 @@ longdesc=("Digital camera raw image library wrapper.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("qt5-base libraw extra-cmake-modules")
 

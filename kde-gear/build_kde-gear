@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KDE_APPS_VERSION=22.08.0
+KDE_GEAR_VERSION=22.08.0
 
 LIST="libkdcraw
 libkexiv2
@@ -40,7 +40,6 @@ kde-dev-scripts
 kde-dev-utils
 kdeedu-data
 kdegraphics-thumbnailers
-kdesdk-kioslaves
 kdesdk-thumbnailers
 kdf
 kfloppy
@@ -59,7 +58,6 @@ rocs
 step
 svgpart
 sweeper
-zeroconf-ioslave
 kio-extras
 dolphin
 dolphin-plugins
@@ -171,21 +169,21 @@ libgravatar
 mailimporter
 markdownpart
 minuet
-pim-data-exporter
-pim-sieve-editor
 skanlite
 skanpage
-spectacle"
+spectacle
+kwave
+kirigami-gallery"
 
 CWD=~
 STARTD=`pwd`
 
 LOGFILE="$CWD/build.log"
 
-echo "============================= Начало kde-apps $KDE_APPS_VERSION сборки `date` =============================" >> $LOGFILE
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/kde-apps -si -bv $KDE_APPS_VERSION -bb 1; then
+    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/kde-gear -si -bv $KDE_GEAR_VERSION -bb 1; then
            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else

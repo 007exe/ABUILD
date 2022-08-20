@@ -8,7 +8,7 @@ longdesc=("Common libraries for KDE PIM.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("libkdepim kimap kldap akonadi-contacts akonadi-search purpose kpimtextedit extra-cmake-modules qt5-tools doxygen")
 

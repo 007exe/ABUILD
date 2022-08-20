@@ -8,7 +8,7 @@ longdesc=("Visualise disk usage with interactive map of concentric, segmented ri
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-utilities")
 
 build_deps=("extra-cmake-modules kdoctools kio hicolor-icon-theme")
 

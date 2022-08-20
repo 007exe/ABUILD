@@ -8,7 +8,7 @@ longdesc=("KIO plugins present a filesystem-like view of arbitrary data.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-network")
 
 build_deps=("kio kdnssd libssh smbclient libmtp phonon syntax-highlighting kdsoap-ws-discovery-client
 libxcursor extra-cmake-modules kdoctools gperf taglib libappimage openexr kactivities-stats")

@@ -6,10 +6,9 @@ arch=("auto")
 shortdesc=("Library for interacting with IMAP servers.")
 longdesc=("Job-based API for interacting with IMAP servers.")
 
-
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs kde-apps")
+tags=("libs kde-gear")
 
 build_deps=("kmime kio extra-cmake-modules doxygen qt5-tools")
 

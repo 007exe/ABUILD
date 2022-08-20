@@ -8,10 +8,9 @@ longdesc=("Advanced download manager by KDE.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-network")
 
-# plasma-workspace
-build_deps=("qca-qt5 qgpgme extra-cmake-modules boost libktorrent kdoctools libmms")
+build_deps=("qca-qt5 qgpgme extra-cmake-modules boost libktorrent kdoctools libmms plasma-workspace")
 
 # NOTE: Это опциональные зависимости
 removedep=("libktorrent libmms")

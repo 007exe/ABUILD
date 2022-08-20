@@ -8,7 +8,7 @@ longdesc=("A program to view the differences between files.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kdesdk kde-gear")
 
 build_deps=("libkomparediff2 ktexteditor extra-cmake-modules kdoctools")
 

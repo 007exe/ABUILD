@@ -8,11 +8,10 @@ longdesc=("Universal document viewer based on KDE Frameworks.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("apps kde-apps")
+tags=("kde kde-graphics")
 
-# discount
 build_deps=("djvulibre libspectre libkexiv2 poppler-qt5 kpty kactivities threadweaver kjs kparts
-purpose phonon extra-cmake-modules ebook-tools kdegraphics-mobipocket kdoctools khtml chmlib")
+purpose phonon extra-cmake-modules ebook-tools kdegraphics-mobipocket kdoctools khtml chmlib discount")
 
 # NOTE: Это опциональные зависимости
 removedep=("kdegraphics-mobipocket libzip khtml chmlib calligra unrar unarchiver kde-cli-tools plasma-workspace")
