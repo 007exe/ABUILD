@@ -1,0 +1,30 @@
+pkgname=libphonenumber
+pkgver=8.12.52
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for parsing, formatting, and validating international phone numbers.")
+longdesc=("Google's common library for parsing, formatting, and validating international phone numbers.")
+
+source=("https://github.com/google/libphonenumber/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("icu protobuf boost-libs abseil-cpp boost cmake gtest")
+
+adddep=("icu protobuf boost-libs abseil-cpp")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd cpp
+  CXXFLAGS+=" -Wno-error=deprecated-declarations"
+  CXXFLAGS+=" -Wno-error=unused-variable"
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_CXX_STANDARD=17
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
