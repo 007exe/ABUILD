@@ -1,0 +1,26 @@
+pkgname=libkdegames
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Base library common to many KDE games.")
+longdesc=("Common code and data for many KDE games.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("kdeclarative kdnssd knewstuff extra-cmake-modules")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
