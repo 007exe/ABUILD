@@ -1,0 +1,30 @@
+pkgname=kdeconnect
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Adds communication between KDE and your smartphone.")
+longdesc=("Adds communication between KDE Plasma and your smartphone.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-kde-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("kcmutils kwayland libfakekey qca-qt5 kpeoplevcard pulseaudio-qt qqc2-desktop-style hicolor-icon-theme extra-cmake-modules kdoctools")
+
+adddep=("hicolor-icon-theme")
+
+# NOTE: Это опциональные зависимости
+removedep=("sshfs python-nautilus qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
