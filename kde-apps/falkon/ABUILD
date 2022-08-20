@@ -1,0 +1,29 @@
+pkgname=falkon
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cross-platform QtWebEngine browser.")
+longdesc=("Cross-platform web browser using QtWebEngine.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+# libgnome-keyring pyside2 shiboken2
+build_deps=("qt5-webengine qt5-x11extras qt5-svg karchive extra-cmake-modules qt5-tools kio purpose")
+
+# NOTE: Это опциональные зависимости
+removedep=("kio purpose libgnome-keyring pyside2")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
