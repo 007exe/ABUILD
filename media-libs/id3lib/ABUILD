@@ -1,0 +1,30 @@
+pkgname=id3lib
+pkgver=3.8.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Id3 library for C/C++.")
+longdesc=("Library for reading, writing, and manipulating ID3v1 and ID3v2 tags.")
+
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("zlib gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  libtoolize -fc
+  aclocal
+  autoconf
+  automake --add-missing --copy
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+#  install -d ${pkgdir}/usr/share/man/man1
+#  cp doc/man/* ${pkgdir}/usr/share/man/man1
+}
