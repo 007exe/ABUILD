@@ -3,16 +3,24 @@ pkgver=0.3.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Silicon Graphics Audio File Library")
-longdesc=("Audiofile is a library to handle various audio file formats, and is used by the esound daemon. You can also use it to develop your own audiofile applications.")
+shortdesc=("Silicon Graphics Audio File Library.")
+longdesc=("An elegant API for accessing audio files.")
+
+source=("https://audiofile.68k.org/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-source=("http://audiofile.68k.org/$pkgname-$pkgver.tar.gz")
+build_deps=("gcc-libs alsa-lib flac")
 
-build_deps="glibc-solibs alsa-lib flac"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+  install -vDm 644 {AUTHORS,ChangeLog,NEWS,NOTES,README,TODO} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
