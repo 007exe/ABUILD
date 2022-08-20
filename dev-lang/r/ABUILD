@@ -1,0 +1,80 @@
+pkgname=r
+pkgver=4.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Language and environment for statistical computing and graphics.")
+longdesc=("Language and environment for statistical computing and graphics.")
+
+source=("https://cran.r-project.org/src/base/R-${pkgver%%.*}/R-$pkgver.tar.gz")
+
+tags=("develop dev-lang")
+
+# jdk-openjdk
+build_deps=("lapack libtiff pcre2 perl libxmu pango zip unzip curl icu which gcc-fortran tk texlive-core")
+
+# NOTE: Это опциональные зависимости
+removedep=("tk texlive-bin gcc-fortran openblas")
+
+config_files=("etc/R/Makeconf
+etc/R/Renviron
+etc/R/ldpaths
+etc/R/repositories
+etc/R/javaconf")
+
+build() {
+  go_src_dir
+  burn_patches
+# Правильная установка каталог texmf в makefile
+  sed -i 's|$(rsharedir)/texmf|${datarootdir}/texmf|' share/Makefile.in
+  CFLAGS+=" -ffat-lto-objects" \
+  CXXFLAGS+=" -ffat-lto-objects" \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc/R \
+    --datarootdir=/usr/share \
+    rsharedir=/usr/share/R/ \
+    rincludedir=/usr/include/R/ \
+    rdocdir=/usr/share/doc/R/ \
+    --with-x \
+    --enable-R-shlib \
+    --enable-memory-profiling \
+    --with-lapack \
+    --with-blas \
+    F77=gfortran \
+    LIBnn=lib
+  make -j${numjobs}
+  make pdf info
+  cd src/nmath/standalone
+  make shared
+  go_src_dir
+  make DESTDIR=${pkgdir} install install-pdf install-info
+# Установка libRmath.so
+  cd src/nmath/standalone
+  make DESTDIR=${pkgdir} install
+# Скрипты-оболочки Fixup R.
+  sed -i "s|$pkgdir ||" "${pkgdir}/usr/bin/R"
+  rm "$pkgdir"/usr/lib/R/bin/R
+  cd "$pkgdir"/usr/lib/R/bin
+  ln -s ../../../bin/R
+# Установка freedesktop.org совместимостей
+  install -Dm644 ${filedir}/r.desktop -t ${pkgdir}/usr/share/applications
+  install -Dm644 ${filedir}/r.png -t ${pkgdir}/usr/share/pixmaps
+# Пеермещение каталогов конфигурации в /etc и создание символических ссылок
+  install -d "$pkgdir"/etc/R
+  cd "$pkgdir"/usr/lib/R/etc
+  for _i in *; do
+    mv -f $_i "$pkgdir"/etc/R
+    ln -s /etc/R/$_i $_i
+  done
+# Установка файла ld.so.conf.d, чтобы другие приложения могли получить доступ к общей библиотеке
+  install -Dm644 ${filedir}/R.conf -t ${pkgdir}/etc/ld.so.conf.d
+
+  for _f in ${pkgdir}/usr/lib/R/library/*/DESCRIPTION; do
+    _pkg=$(grep Package: $_f | cut -d' ' -f2 | tr '[:upper:]' '[:lower:]')
+    _ver=$(grep Version $_f | cut -d' ' -f2)
+    _prov="r-$_pkg=${_ver/-/.}"
+    provides+=($_prov)
+  done
+}
