@@ -1,0 +1,30 @@
+pkgname=kdepim-addons
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Addons for KDE PIM applications.")
+longdesc=("Plugins for KDE Personal Information Management Suite.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("incidenceeditor ktnef libksieve akonadi-import-wizard poppler-qt5 kitinerary kontactinterface discount extra-cmake-modules kdoctools kaddressbook")
+
+adddep=("incidenceeditor ktnef libksieve akonadi-import-wizard poppler-qt5 kitinerary kontactinterface discount")
+
+# NOTE: Это опциональные зависимости
+removedep=("grammalecte")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
