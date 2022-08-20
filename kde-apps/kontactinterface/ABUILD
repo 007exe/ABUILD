@@ -1,0 +1,29 @@
+pkgname=kontactinterface
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Kontact Plugin Interface Library.")
+longdesc=("Library for embedding KParts in a Kontact component.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs kde-apps")
+
+build_deps=("kparts extra-cmake-modules doxygen qt5-tools")
+
+# NOTE: Это опциональные зависимости
+removedep=("kleopatra kdepim-addons")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
