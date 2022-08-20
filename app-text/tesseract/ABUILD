@@ -1,0 +1,23 @@
+pkgname=tesseract
+pkgver=5.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An OCR program.")
+longdesc=("An OCR Engine, originally developed at HP, now open source.")
+
+source=("https://github.com/tesseract-ocr/tesseract/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+build_deps=("icu cairo pango asciidoc libpng libtiff libjpeg-turbo zlib giflib gcc-libs curl libarchive leptonica")
+
+build() {
+  go_src_dir
+  burn_patches
+  [ -x configure ] || ./autogen.sh
+  [ -f Makefile ] || ./configure --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} training-install
+}
