@@ -1,0 +1,27 @@
+pkgname=minuet
+pkgver=22.08.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A KDE Software for Music Education.")
+longdesc=("Music Education software by KDE.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps kde-apps")
+
+build_deps=("fluidsynth qt5-quickcontrols2 qt5-svg ki18n kcrash")
+
+adddep=("hicolor-icon-theme extra-cmake-modules kdoctools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
