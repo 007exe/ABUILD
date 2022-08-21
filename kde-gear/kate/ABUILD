@@ -14,20 +14,16 @@ build_deps=("extra-cmake-modules kdoctools plasma-framework knewstuff ktextedito
 
 adddep=("hicolor-icon-theme")
 
+conflicts=("kwrite")
+
 build() {
   go_src_dir
   burn_patches
-
-# Удаляем конфликтующие файлы с пакетом kwrite
-  find po -type f -name "*po" -and -name "kwrite*" -delete
-  rm -rf po/*/docs/kwrite
-
   cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_TESTING=OFF \
-    -DBUILD_kwrite=FALSE
+    -DBUILD_TESTING=OFF
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }
