@@ -1,16 +1,16 @@
 pkgname=gcc
-pkgver=12.1.1
+pkgver=12.2.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The GNU Compiler Collection - C and C++ frontends.")
 longdesc=("GCC is the collection of GNU compilers. This package contains the parts of the compiler collection that are required to compile C and C ++ code. Other packages add support for Ada, Fortran, Objective-C and Go.")
 
-#source=("https://sourceware.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.xz")
+source=("https://sourceware.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.xz")
 
-strict_version=1
-_commit=681c73db9bd156f9b65a73ccc6c4a0a697fe70d6
-source=("git:https://sourceware.org/git/gcc.git")
+#strict_version=1
+#_commit=681c73db9bd156f9b65a73ccc6c4a0a697fe70d6
+#source=("git:https://sourceware.org/git/gcc.git")
 
 tags=("develop sys-devel")
 
@@ -22,11 +22,11 @@ pkglist=("gcc-libs gcc-ada gcc-d gcc-fortran gcc-go gcc-objc")
 
 TARGET=x86_64-pc-linux-gnu
 
-_libdir=usr/lib/gcc/$TARGET/${pkgver%%+*}
+_libdir=usr/lib/gcc/${TARGET}/${pkgver%%+*}
 
 before_build() {
   go_src_dir
-  git checkout ${_commit}
+#  git checkout ${_commit}
   burn_patches
 # Исправление ошибки, связанную с libasan.a
   sed -e '/static.*SIGSTKSZ/d' \
@@ -42,16 +42,16 @@ before_build() {
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
   mkdir -p gcc-build
 
-  mv ${srcdir}/gcc_git_gcc.git.src ${srcdir}/gcc-${pkgver}
+#  mv ${srcdir}/gcc_git_gcc.git.src ${srcdir}/gcc-${pkgver}
 }
 
 build() {
   cd ${srcdir}/gcc-${pkgver}/gcc-build
+#    --libexecdir=/usr/lib \
 
   ../configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --mandir=/usr/share/man \
     --infodir=/usr/share/info \
     --enable-lto \
@@ -186,61 +186,19 @@ gcc-libs_prep() {
 
   make -C ${TARGET}/libgcc DESTDIR=${pkgdir} install-shared
   rm -f ${pkgdir}/$_libdir/libgcc_eh.a
-echo "******************************************************"
-echo " установка libgfortran"
-echo "******************************************************"
   make -C ${TARGET}/libgfortran        DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка libgo"
-echo "******************************************************"
   make -C ${TARGET}/libgo              DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка libgomp"
-echo "******************************************************"
   make -C ${TARGET}/libgomp            DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка libitm"
-echo "******************************************************"
   make -C ${TARGET}/libitm             DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка libquadmath"
-echo "******************************************************"
   make -C ${TARGET}/libquadmath        DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка asan"
-echo "******************************************************"
   make -C ${TARGET}/libsanitizer/asan  DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка lsan"
-echo "******************************************************"
   make -C ${TARGET}/libsanitizer/lsan  DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка ubsan"
-echo "******************************************************"
   make -C ${TARGET}/libsanitizer/ubsan DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка tsan"
-echo "******************************************************"
   make -C ${TARGET}/libsanitizer/tsan  DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка libstdc++-v3"
-echo "******************************************************"
   make -C ${TARGET}/libstdc++-v3/src   DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка libvtv"
-echo "******************************************************"
   make -C ${TARGET}/libvtv             DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-echo "******************************************************"
-echo " установка libobjc"
-echo "******************************************************"
   make -C ${TARGET}/libobjc            DESTDIR=${pkgdir} install-libs
-echo "******************************************************"
-echo " установка libstdc++-v3/po"
-echo "******************************************************"
   make -C ${TARGET}/libstdc++-v3/po    DESTDIR=${pkgdir} install
-echo "******************************************************"
-echo " установка libphobos"
-echo "******************************************************"
   make -C ${TARGET}/libphobos          DESTDIR=${pkgdir} install
 
   rm -rf ${pkgdir}/$_libdir/include/d/
