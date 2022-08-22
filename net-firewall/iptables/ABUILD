@@ -19,7 +19,6 @@ build(){
     --prefix=/usr \
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-devel \
     --enable-bpf-compiler \
