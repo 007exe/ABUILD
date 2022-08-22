@@ -31,7 +31,6 @@ build() {
     --prefix=/usr \
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/audit \
     --sysconfdir=/etc \
     --with-python=yes \
     --enable-gssapi-krb5=yes \
