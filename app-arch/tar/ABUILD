@@ -33,8 +33,7 @@ build() {
   cd ${srcdir}/tar-${pkgver}
   export FORCE_UNSAFE_CONFIGURE=1
   ./configure \
-    --prefix=/usr \
-    --libexecdir=/usr/lib/tar
+    --prefix=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
