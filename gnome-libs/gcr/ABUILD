@@ -1,5 +1,5 @@
 pkgname=gcr
-pkgver=3.41.0
+pkgver=3.41.1
 pkgbuild=1
 arch=("auto")
 
