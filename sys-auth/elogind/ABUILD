@@ -37,7 +37,6 @@ build() {
     -D cgroup-controller=openrc \
     -D reboot-path=/usr/bin/reboot \
     -D docdir=/usr/share/doc/elogind \
-    -D rootlibexecdir=/usr/lib/elogind \
     -D poweroff-path=/usr/bin/poweroff \
     -D default-kill-user-processes=false \
     -D udevrulesdir=/usr/lib/udev/rules.d \
