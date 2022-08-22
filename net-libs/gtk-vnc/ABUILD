@@ -18,8 +18,7 @@ build() {
   meson build \
     -D buildtype=release \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D libexecdir=lib
+    -D libdir=/usr/lib
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   install -Dt ${pkgdir}/usr/bin build/examples/gvncviewer
