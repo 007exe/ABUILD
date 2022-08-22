@@ -1,5 +1,5 @@
 pkgname=chromium
-pkgver=33.0.1750.152
+pkgver=104.0.5112.79
 _toolchains_rev=12526
 _glibc_version=12421
 pkgbuild=1
