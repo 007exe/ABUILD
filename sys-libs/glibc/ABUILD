@@ -34,7 +34,6 @@ build() {
   ../configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --with-headers=/usr/include \
     --without-cvs \
     --with-__thread \
