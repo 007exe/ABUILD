@@ -22,7 +22,6 @@ build() {
     -D buildtype=release \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D bluez5-codec-lc3plus=disabled \
     -D docs=enabled \
     -D jack=disabled \
