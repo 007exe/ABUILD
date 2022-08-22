@@ -19,7 +19,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D ipv6=true \
     -D xvfb=false \
     -D xdmcp=false \

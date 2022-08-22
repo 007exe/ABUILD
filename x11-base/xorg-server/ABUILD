@@ -26,7 +26,6 @@ build() {
 #  meson build \
 #    -D prefix=/usr \
 #    -D libdir=/usr/lib \
-#    -D libexecdir=lib \
 #    -D sysconfdir=/etc/X11 \
 #    -D sbindir=bin \
 #    -D module_dir=/usr/lib/xorg/modules \
@@ -56,7 +55,6 @@ build() {
     --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libexecdir=/usr/lib \
     --with-pic \
     --with-int10=x86emu \
     --with-xkb-output=/var/lib/xkb \
