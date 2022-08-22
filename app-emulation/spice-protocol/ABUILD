@@ -17,8 +17,7 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D libexecdir=lib
+    -D libdir=/usr/lib
   ninja -v -C build
   DESTDIR=${pkgdir} ninja -C build install
 

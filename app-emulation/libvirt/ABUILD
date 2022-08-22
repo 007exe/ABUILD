@@ -76,14 +76,11 @@ build() {
     docs/manpages/libvirt-guests.rst \
     src/locking/virtlockd.service.in \
     src/logging/virtlogd.service.in
-  sed -i 's|/usr/libexec/qemu-bridge-helper|/usr/lib/qemu/qemu-bridge-helper|g' \
     src/qemu/qemu.conf.in \
     src/qemu/test_libvirtd_qemu.aug.in
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
-    -D libexecdir=lib/libvirt \
     -D runstatedir=/run \
     -D qemu_user=libvirt-qemu \
     -D qemu_group=libvirt-qemu \

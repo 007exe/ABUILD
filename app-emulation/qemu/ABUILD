@@ -20,7 +20,6 @@ BUILD_KEYS="--prefix=/usr \
   --audio-drv-list='alsa sdl' \
   --enable-docs \
   --enable-mixemu \
-  --libexecdir=/usr/lib${LIBDIRSUFFIX}/qemu \
   --disable-gtk \
   --enable-linux-aio \
   --enable-seccomp \
