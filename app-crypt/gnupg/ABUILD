@@ -22,8 +22,6 @@ build() {
     --prefix=/usr \
     --sbindir=/usr/bin \
     --enable-maintainer-mode \
-    --libexecdir=/usr/lib/gnupg \
-    --enable-maintainer-mode \
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
