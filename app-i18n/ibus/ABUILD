@@ -30,7 +30,6 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/ibus \
     --sysconfdir=/etc \
     --enable-dconf \
     --enable-wayland \
