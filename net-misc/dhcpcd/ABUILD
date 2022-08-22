@@ -26,7 +26,6 @@ build() {
     --runstatedir=/run \
     --privsepuser=dhcpcd \
     --dbdir=/var/lib/dhcpcd \
-    --libexecdir=/usr/lib/dhcpcd \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install

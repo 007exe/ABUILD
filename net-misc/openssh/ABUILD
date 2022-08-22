@@ -9,8 +9,9 @@ longdesc=("The OpenSSH package contains ssh clients and the sshd daemon. This is
 source=("https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz")
 
 tags=("net-misc network")
+
 #ldns libxcrypt libfido2
-build_deps="kernel-headers linux-pam inetutils glibc krb5 openssl libedit zlib"
+build_deps=("linux-pam inetutils glibc krb5 openssl libedit zlib")
 
 config_files=("etc/ssh/ssh_config
 etc/ssh/sshd_config
@@ -22,7 +23,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libexecdir=/usr/lib/ssh \
     --sysconfdir=/etc/ssh \
     --disable-strip \
     --with-libedit \

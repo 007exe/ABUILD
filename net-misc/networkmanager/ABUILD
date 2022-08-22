@@ -29,7 +29,6 @@ build() {
     -D prefix=/usr \
     -D sbindir=bin \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D systemdsystemunitdir=no \
     -D systemd_journal=false \
     -D session_tracking=elogind \
