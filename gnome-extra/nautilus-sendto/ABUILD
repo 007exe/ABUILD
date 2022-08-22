@@ -15,8 +15,7 @@ build_deps=("(gobject-introspection meson appstream-glib glib2")
 build() {
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D libexecdir=lib
+    -D libdir=/usr/lib
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 }
