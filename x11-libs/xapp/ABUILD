@@ -1,5 +1,5 @@
 pkgname=xapp
-pkgver=2.2.8
+pkgver=2.2.14
 pkgbuild=1
 arch=("auto")
 
@@ -20,7 +20,6 @@ build(){
   meson .. \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=lib \
     --buildtype=plain
     samu
   DESTDIR=${pkgdir} samu install
