@@ -18,7 +18,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D media_server=true \
     -D gtk_doc=true \
     -D man=true

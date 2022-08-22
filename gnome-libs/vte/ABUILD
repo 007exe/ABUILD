@@ -1,7 +1,7 @@
 pkgname=vte
 pkgver=0.68.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Virtual Terminal Emulator widget.")
 longdesc=("The VTE package contains a termcap file implementation for terminal emulators..")
@@ -23,7 +23,6 @@ build() {
     -D buildtype=release \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     -D b_lto=false \
     -D_systemd=false \
     -D docs=false
@@ -39,7 +38,8 @@ vte-common(){
 
 vte-common_prep(){
   go_src_dir
-  mkdir -p $pkgdir/usr/lib
+  mkdir -p $pkgdir/usr/libexec
   mv ${p_pkgdir}/etc ${pkgdir}
-  mv ${p_pkgdir}/usr/lib/vte-urlencode-cwd ${pkgdir}/usr/lib
+  mv ${p_pkgdir}/usr/libexec/vte-urlencode-cwd ${pkgdir}/usr/libexec
+  rm -r ${p_pkgdir}/usr/libexec
 }

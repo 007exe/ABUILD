@@ -20,7 +20,6 @@ build(){
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D docs=false \
     -D man=false \
     -D systemd_user_services=false
