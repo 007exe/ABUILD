@@ -1,5 +1,5 @@
 pkgname=proj
-pkgver=9.0.0
+pkgver=9.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -18,7 +18,6 @@ build() {
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DCMAKE_INSTALL_LIBEXECDIR=lib \
     -DUSE_EXTERNAL_GTEST=ON
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
