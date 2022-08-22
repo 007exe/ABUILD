@@ -6,7 +6,7 @@
 # в пост установочные скрипты пакетов которые это требуют
 
 pkgname=appstream
-pkgver=0.15.3
+pkgver=0.15.4
 pkgbuild=1
 arch=("auto")
 
@@ -26,7 +26,6 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libexecdir=lib \
     -D qt=true \
     -D vapi=true \
     -D compose=true
@@ -49,5 +48,6 @@ appstream-qt_prep() {
   meson install --destdir ${pkgdir} -C build
 
 # Предоставляется пакетом appstream
-  rm -r ${pkgdir}{/etc,/usr/{bin,include/appstream{,-compose},lib/{appstreamcli-compose,girepository-1.0,libappstream*,pkgconfig},share}}
+  rm -r ${pkgdir}{/etc,/usr/{bin,include/appstream{,-compose},lib/{girepository-1.0,libappstream*,pkgconfig},share}}
+  rm -r ${pkgdir}/usr/libexec/appstreamcli-compose
 }
