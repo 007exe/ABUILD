@@ -1,5 +1,5 @@
 pkgname=cinnamon-screensaver
-pkgver=5.4.0
+pkgver=5.4.2
 pkgbuild=1
 arch=("auto")
 
@@ -22,7 +22,6 @@ build() {
   meson \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=lib/cinnamon-screensaver \
     --buildtype=plain ..
   samu
   DESTDIR=${pkgdir} samu install

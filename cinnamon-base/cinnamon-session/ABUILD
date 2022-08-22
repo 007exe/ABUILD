@@ -20,7 +20,6 @@ build() {
   meson \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=lib/${pkgname} \
     --buildtype=plain ..
   samu
   DESTDIR=${pkgdir} samu install

@@ -1,5 +1,5 @@
 pkgname=muffin
-pkgver=5.4.1
+pkgver=5.4.5
 pkgbuild=1
 arch=("auto")
 
@@ -17,8 +17,7 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D libexecdir=lib
+    -D libdir=/usr/lib
   meson compile -C build
   meson install --destdir=${pkgdir} -C build
 }

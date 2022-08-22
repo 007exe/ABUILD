@@ -1,5 +1,5 @@
 pkgname=cinnamon-control-center
-pkgver=5.4.2
+pkgver=5.4.6
 pkgbuild=1
 arch=("auto")
 

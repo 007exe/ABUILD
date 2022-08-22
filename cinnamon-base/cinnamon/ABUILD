@@ -1,5 +1,5 @@
 pkgname=cinnamon
-pkgver=5.4.2
+pkgver=5.4.9
 pkgbuild=1
 arch=("auto")
 
@@ -32,8 +32,7 @@ build() {
   cd build
   meson .. \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    --libexecdir=lib/cinnamon
+    --libdir=/usr/lib
   samu
   DESTDIR=${pkgdir} samu install
 }

@@ -1,5 +1,5 @@
 pkgname=cinnamon-settings-daemon
-pkgver=5.4.0
+pkgver=5.4.4
 pkgbuild=1
 arch=("auto")
 
@@ -23,7 +23,6 @@ build() {
   meson \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/${pkgname} \
     --buildtype=plain ..
   samu
   DESTDIR=${pkgdir} samu install

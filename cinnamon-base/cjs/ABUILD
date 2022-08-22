@@ -1,5 +1,5 @@
 pkgname=cjs
-pkgver=5.4.0
+pkgver=5.4.1
 pkgbuild=1
 arch=("auto")
 
@@ -20,7 +20,6 @@ build() {
   meson \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=/usr/lib \
     -D buildtype=plain \
     -D installed_tests=false ..
   samu
