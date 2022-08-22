@@ -28,7 +28,6 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib \
     --sysconfdir=/etc \
-    --libexecdir=/usr/bin \
     --enable-mp \
     --enable-gimp-console \
     --enable-gtk-doc \
