@@ -17,8 +17,7 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    --libexecdir=/usr/lib
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 

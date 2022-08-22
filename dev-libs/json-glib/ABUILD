@@ -17,7 +17,6 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libexecdir=/usr/lib \
     -D man=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}

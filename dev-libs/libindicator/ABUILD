@@ -27,7 +27,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/libindicator \
     --localstatedir=/var \
     --sysconfdir=/etc \
     --with-gtk=3 \
@@ -42,7 +41,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/libindicator \
     --localstatedir=/var \
     --sysconfdir=/etc \
     --with-gtk=2 \

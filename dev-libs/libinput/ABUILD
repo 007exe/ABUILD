@@ -21,7 +21,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=lib \
-    -D libexecdir=lib \
     -D b_lto=false \
     -D udev-dir=/usr/lib/udev \
     -D tests=false \
