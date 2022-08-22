@@ -18,7 +18,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D maintainer-mode=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
