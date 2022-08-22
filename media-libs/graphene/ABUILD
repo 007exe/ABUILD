@@ -18,7 +18,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D gtk_doc=true \
     -D installed_tests=false
   meson compile -C build

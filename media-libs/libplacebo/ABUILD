@@ -20,7 +20,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D tests=true \
     -D vulkan=disabled \
     -D glslang=enabled \

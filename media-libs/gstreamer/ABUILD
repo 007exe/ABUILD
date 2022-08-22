@@ -60,7 +60,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D devtools=disabled \
     -D doc=disabled \
     -D examples=disabled \
@@ -111,8 +110,8 @@ build() {
     usr/lib/girepository-1.0/Gst{,Base,Check,Controller,Net}-1.0.typelib
     usr/share/gir-1.0/Gst{,Base,Check,Controller,Net}-1.0.gir
 
-    usr/lib/gstreamer-1.0/gst-{completion,ptp}-helper usr/lib/gstreamer-1.0/gst-{hotdoc-plugins,plugin}-scanner
-    usr/lib/gstreamer-1.0/gst-plugins-doc-cache-generator
+    usr/libexec/gstreamer-1.0/gst-{completion,ptp}-helper usr/libexec/gstreamer-1.0/gst-{hotdoc-plugins,plugin}-scanner
+    usr/libexec/gstreamer-1.0/gst-plugins-doc-cache-generator
     usr/lib/gstreamer-1.0/libgstcoreelements.so
     usr/lib/gstreamer-1.0/libgstcoretracers.so
 

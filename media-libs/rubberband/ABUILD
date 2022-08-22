@@ -21,7 +21,6 @@ build() {
   meson \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D fft=fftw \
     -D resampler=libsamplerate build
 #    -D extra_include_dirs="/usr/lib/jvm/java-${java_major}-openjdk/include,/usr/lib/jvm/java-${java_major}-openjdk/include/linux" \

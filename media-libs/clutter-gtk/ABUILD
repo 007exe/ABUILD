@@ -19,7 +19,6 @@ build(){
   meson  build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D enable_docs=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}

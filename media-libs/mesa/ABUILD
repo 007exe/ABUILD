@@ -72,7 +72,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=lib \
-    -D libexecdir=lib \
     -D b_ndebug=true \
     -D platforms=x11,wayland \
     -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,crocus,zink,d3d12 \

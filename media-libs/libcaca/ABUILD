@@ -19,7 +19,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --mandir=/usr/share/man \
     --enable-shared \
     --disable-csharp \
