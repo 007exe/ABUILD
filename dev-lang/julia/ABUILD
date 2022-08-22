@@ -22,7 +22,6 @@ config_files=("etc/julia/startup.jl")
 _buildopts="prefix=/usr \
     bindir=/usr/bin \
     sysconfdir=/etc \
-    libexecdir=/usr/lib \
     USE_BINARYBUILDER=0 \
     USE_SYSTEM_CSL=1 \
     USE_SYSTEM_LLVM=1 \
