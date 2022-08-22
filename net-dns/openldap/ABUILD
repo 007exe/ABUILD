@@ -43,7 +43,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var/lib/openldap \
     --sbindir=/usr/bin \
