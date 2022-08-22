@@ -21,7 +21,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --localstatedir=/var \
     --sysconfdir=/etc \
     --disable-static \

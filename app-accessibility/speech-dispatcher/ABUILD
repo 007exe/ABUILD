@@ -37,7 +37,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/speech-dispatcher/ \
     --sysconfdir=/etc \
     --disable-static \
     --with-ibmtts=no \
