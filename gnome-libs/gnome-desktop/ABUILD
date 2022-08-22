@@ -1,5 +1,5 @@
 pkgname=gnome-desktop
-pkgver=42.1
+pkgver=42.4
 pkgbuild=1
 arch=("auto")
 
@@ -21,7 +21,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D gnome_distributor="AgiliaLinux" \
     -D gtk_doc=true \
     -D debug_tools=false \
