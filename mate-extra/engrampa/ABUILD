@@ -20,7 +20,6 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/${pkgname} \
     --disable-packagekit
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}

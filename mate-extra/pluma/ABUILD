@@ -19,7 +19,6 @@ build() {
   PYTHON=/usr/bin/python
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/${pkgname} \
     --enable-gtk-doc=no \
     --enable-python
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool

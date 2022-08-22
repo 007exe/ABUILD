@@ -25,7 +25,6 @@ build() {
   sed -i 's|/usr/share/javascript/mathjax|/usr/share/mathjax2|' backend/epub/epub-document.c
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/${pkgname} \
     --enable-djvu \
     --enable-dvi \
     --enable-epub \

@@ -22,7 +22,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libexecdir=/usr/lib/${pkgname} \
     --with-upower \
     --enable-polkit \
     --enable-ipv6
