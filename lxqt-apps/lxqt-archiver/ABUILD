@@ -21,7 +21,6 @@ build() {
   cmake -B build \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBEXECDIR=lib \
     -DCMAKE_INSTALL_LIBDIR=lib
   make -C build -j${numjobs}
   make -C build DESTDIR=${pkgdir} install
