@@ -1,5 +1,5 @@
 pkgname=libinih
-pkgver=55
+pkgver=56
 pkgbuild=1
 arch=("auto")
 
@@ -18,7 +18,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D default_library=shared \
     -D distro_install=true \
     -D with_INIReader=true
