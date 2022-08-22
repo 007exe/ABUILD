@@ -22,7 +22,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libexecdir=/usr/lib \
     --localstatedir=/var \
     --without-x \
     --without-sound \
