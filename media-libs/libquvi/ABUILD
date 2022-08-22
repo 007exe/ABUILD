@@ -22,8 +22,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
-    --disable-static
+    --with-manual
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
