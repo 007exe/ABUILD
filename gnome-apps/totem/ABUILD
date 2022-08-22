@@ -12,7 +12,7 @@ longdesc=("Movie player for the GNOME desktop based on GStreamer.")
 source=("git:https://gitlab.gnome.org/GNOME/totem.git"
 "git:https://gitlab.gnome.org/GNOME/libgd.git")
 
-tags=("gnome media-video")
+tags=("gnome gnome-apps")
 
 # libnautilus-extension python-pylint appstream-glib
 build_deps=("iso-codes libpeas gsettings-desktop-schemas python-gobject gnome-desktop
@@ -37,7 +37,6 @@ build() {
   cd ${srcdir}/totem_git_totem.git.src
   meson build \
     -D prefix=/usr \
-    -D libexecdir=lib \
     -D sbindir=bin \
     -D buildtype=plain \
     -D b_lto=true \
