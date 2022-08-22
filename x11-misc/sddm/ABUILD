@@ -24,7 +24,6 @@ build() {
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DCMAKE_INSTALL_LIBEXECDIR=/usr/lib/sddm \
     -DUSE_ELOGIND=ON \
     -DNO_SYSTEMD=OFF \
     -DDBUS_CONFIG_DIR=/usr/share/dbus-1/system.d \

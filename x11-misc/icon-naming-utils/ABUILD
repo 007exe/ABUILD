@@ -3,10 +3,10 @@ pkgver=0.8.90
 pkgbuild=2
 arch=("noarch")
 
-shortdesc=("Maps the new names of icons for Tango to the legacy names used by the GNOME and KDE desktops.")
-longdesc=("The icon-naming-utils package contains a Perl script used for maintaining backwards compatibility with current desktop icon themes, while migrating to the names specified in the Icon Naming Specification.")
+shortdesc=("Utils to help with the transition to the new freedesktop.org naming scheme.")
+longdesc=("Maps the new names of icons for Tango to the legacy names used by the GNOME and KDE desktops.")
 
-source=("https://sources.archlinux.org/other/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("http://tango.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
 
 tags=("x11-misc libs")
 
@@ -18,11 +18,11 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/icon-naming-utils \
     --sysconfdir=/etc \
     --localstatedir=/var
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
+  mkdir -p ${pkgdir}/usr/lib
   mv ${pkgdir}/usr/share/pkgconfig ${pkgdir}/usr/lib/pkgconfig
 }

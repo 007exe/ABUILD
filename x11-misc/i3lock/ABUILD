@@ -1,5 +1,5 @@
 pkgname=i3lock
-pkgver=2.14
+pkgver=2.14.1
 pkgbuild=1
 arch=("auto")
 
@@ -20,8 +20,7 @@ build(){
   sed -i -e 's:login:system-auth:' pam/i3lock
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D libexecdir=lib
+    -D libdir=/usr/lib
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 

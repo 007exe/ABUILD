@@ -18,7 +18,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=/usr/lib \
     -D buildtype=release \
     -D daemon_user=colord \
     -D vapi=true \

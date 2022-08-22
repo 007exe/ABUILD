@@ -20,7 +20,6 @@ build(){
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib \
     --sysconfdir=/etc
   make VERSION=${pkgver}
   make VERSION=${pkgver} DESTDIR=${pkgdir} install
