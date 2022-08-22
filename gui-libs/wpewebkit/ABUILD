@@ -1,6 +1,6 @@
 pkgname=wpewebkit
-pkgver=2.36.1
-pkgbuild=2
+pkgver=2.36.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Web content engine for embedded devices.")
@@ -29,7 +29,6 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DCMAKE_INSTALL_LIBEXECDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
     -DUSE_SOUP2=OFF \
     -DENABLE_GTKDOC=ON \
