@@ -1,32 +1,33 @@
 pkgname=qtcreator
-pkgver=6.0.2
+pkgver=8.0.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Lightweight, cross-platform integrated development environment.")
 longdesc=("Lightweight IDE for C++/QML development centering around Qt.")
 
-source=("https://download.qt.io/official_releases/qtcreator/${pkgver%.*}/$pkgver/qt-creator-opensource-src-$pkgver.tar.xz")
+source=("https://github.com/qt-creator/qt-creator/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("dev-qt develop")
-# qt6-webengine
-build_deps=("cmake llvm python qt6-tools qt6-svg qt6-quick3d qt6-serialport qt6-shadertools qt6-5compat clang clazy yaml-cpp")
+
+# qt6-webengine clazy
+build_deps=("cmake llvm python qt6-tools qt6-svg qt6-quick3d qt6-serialport qt6-shadertools qt6-5compat clang yaml-cpp")
 
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBEXECDIR=lib \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DWITH_DOCS=ON \
     -DBUILD_DEVELOPER_DOCS=ON \
     -DBUILD_QBS=OFF \
     -DQTC_CLANG_BUILDMODE_MATCH=ON
-  cmake --build build
+  cmake --build build -j${numjobs}
   cmake --build build --target docs
-  DESTDIR="$pkgdir" cmake --install build
+  DESTDIR=${pkgdir} cmake --install build
 # Установка документации
-  cp -r build/share/doc "$pkgdir"/usr/share
+  cp -r build/share/doc ${pkgdir}/usr/share
 
-  install -Dm644 LICENSE.GPL3-EXCEPT "$pkgdir"/usr/share/licenses/qtcreator/LICENSE.GPL3-EXCEPT
+  install -Dm644 LICENSE.GPL3-EXCEPT ${pkgdir}/usr/share/licenses/qtcreator/LICENSE.GPL3-EXCEPT
 }
