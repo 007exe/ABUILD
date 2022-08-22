@@ -30,7 +30,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --with-default-dri=3
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
