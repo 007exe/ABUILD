@@ -3,7 +3,7 @@ pkgver=2.9.4
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("Disk Management Service, version 2")
+shortdesc=("Disk Management Service, version 2.")
 longdesc=("The UDisks package provides a daemon, tools and libraries to access and manipulate disks and storage devices.")
 
 source=("https://github.com/storaged-project/udisks/archive/udisks-$pkgver.tar.gz")
@@ -23,7 +23,6 @@ build() {
     --sysconfdir=/etc \
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --localstatedir=/var \
     --disable-static \
     --enable-gtk-doc

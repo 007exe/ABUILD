@@ -22,7 +22,6 @@ build(){
     --sysconfdir=/etc \
     --libdir=/usr/lib \
     --config-cache \
-    --with-rootlibexecdir=/usr/lib/udev \
     --enable-split-usr \
     --with-rootrundir=/run \
     --enable-hwdb \
