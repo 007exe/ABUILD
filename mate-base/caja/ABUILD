@@ -1,5 +1,5 @@
 pkgname=caja
-pkgver=1.26.0
+pkgver=1.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -17,7 +17,6 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/${pkgname} \
     --enable-introspection \
     --disable-update-mimedb
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
