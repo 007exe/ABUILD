@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Extended attribute support library for ACL support.")
 longdesc=("The attr package contains utilities to administer the extended attributes on filesystem objects.")
 
-source=("http://download.savannah.gnu.org/releases/attr/attr-$pkgver.tar.xz")
+source=("http://download.savannah.gnu.org/releases/attr/attr-${pkgver}.tar.xz")
 
 tags=("base sys-apps")
 
@@ -21,7 +21,6 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --enable-shared \
     --enable-lib64 \
     --disable-static

@@ -42,7 +42,6 @@ build() {
     -D buildtype=release \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D sbindir=bin \
     -D branding=\"AgiliaLinux\" \
     -D os=Linux \

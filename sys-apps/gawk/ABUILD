@@ -19,7 +19,6 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --without-libsigsegv
   make -j${numjobs}

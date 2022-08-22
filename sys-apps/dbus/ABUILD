@@ -24,7 +24,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/dbus-1.0 \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --enable-user-session \
@@ -63,8 +62,8 @@ build() {
 # Создание директории для сокета
   mkdir -p ${pkgdir}/run/dbus
 
-  chown -v root:messagebus ${pkgdir}/usr/lib/dbus-1.0/dbus-daemon-launch-helper
-  chmod -v 4750 ${pkgdir}/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+  chown -v root:messagebus ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
+  chmod -v 4750 ${pkgdir}/usr/libexec/dbus-daemon-launch-helper
 
   cd ${pkgdir}/etc
   ln -sv /var/lib/dbus/machine-id

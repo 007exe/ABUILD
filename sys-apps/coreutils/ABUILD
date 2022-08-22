@@ -20,7 +20,6 @@ build() {
 # Поскольку сборка выполняется в среде fakeroot, следует снять ряд ограничений.
   FORCE_UNSAFE_CONFIGURE=1 ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib \
     --enable-no-install-program=groups,hostname,kill,uptime \
     --enable-install-program=arch \
     --enable-largefile \

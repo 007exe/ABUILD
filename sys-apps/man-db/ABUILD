@@ -22,7 +22,6 @@ build(){
     --sysconfdir=/etc \
     --sbindir=/usr/bin \
     --enable-cache-owner=root \
-    --libexecdir=/usr/lib \
     --with-db=gdbm \
     --disable-setuid \
     --enable-mandirs=GNU \
