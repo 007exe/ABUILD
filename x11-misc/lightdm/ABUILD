@@ -1,5 +1,5 @@
 pkgname=lightdm
-pkgver=1.30.0
+pkgver=1.32.0
 pkgbuild=1
 arch=("auto")
 
@@ -32,7 +32,6 @@ build() {
   export MOC5=moc-qt5
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/lightdm \
     --localstatedir=/var \
     --sbindir=/usr/bin \
     --sysconfdir=/etc \
@@ -61,7 +60,7 @@ build() {
   ln -s /etc/X11/xinit/Xsession ${pkgdir}/usr/bin/lightdm-session
 
 # Исправлено расположение конфигурации dbus
-  mv ${pkgdir}/etc/dbus-1/system.d ${pkgdir}/usr/share/dbus-1/system.d
+#  mv ${pkgdir}/etc/dbus-1/system.d ${pkgdir}/usr/share/dbus-1/system.d
   rm -rf ${pkgdir}/etc/dbus-1
 
   mkdir -p ${pkgdir}/run/lightdm
