@@ -1,6 +1,6 @@
 pkgname=tumbler
-pkgver=4.16.0
-pkgbuild=2
+pkgver=4.16.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("D-Bus service for applications to request thumbnails.")
@@ -25,7 +25,6 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/xfce4 \
     --disable-static \
     --disable-debug \
     --disable-gstreamer-thumbnailer

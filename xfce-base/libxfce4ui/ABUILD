@@ -10,7 +10,7 @@ source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgve
 
 tags=("xfce xfce-base")
 
-build_deps=("libxfce4util gtk3 xfconf libsm startup-notification libgtop libepoxy hicolor-icon-theme intltool gobject-introspection vala")
+build_deps=("libxfce4util gtk3 xfconf libsm startup-notification libgtop libepoxy intltool gobject-introspection vala")
 
 adddep=("hicolor-icon-theme")
 
@@ -20,7 +20,6 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libexecdir=/usr/lib \
     --localstatedir=/var \
     --disable-static \
     --disable-debug \
