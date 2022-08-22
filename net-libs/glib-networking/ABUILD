@@ -1,5 +1,5 @@
 pkgname=glib-networking
-pkgver=2.72.0
+pkgver=2.72.2
 pkgbuild=1
 arch=("auto")
 
@@ -22,7 +22,6 @@ build() {
   meson setup .. \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D sysconfdir=/etc \
     -D localstatedir=/var \
     -D buildtype=release
