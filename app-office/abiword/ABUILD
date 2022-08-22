@@ -10,9 +10,9 @@ source=("https://www.abisource.com/downloads/${pkgname}/${pkgver}/source/${pkgna
 
 tags=("xapps app-office")
 
-# libwpd libwps goffice redland loudmouth libwpg libwps link-grammar gtkmathview aiksaurus libots psiconv
-build_deps=("pkgconf boost gobject-introspection python-gobject autoconf-archive fribidi librsvg
-enchant desktop-file-utils libical gtk-update-icon-cache libwmf libxslt libsoup libgsf wv")
+# goffice  loudmouth  libwps link-grammar gtkmathview aiksaurus libots psiconv
+build_deps=("pkgconf boost gobject-introspection python-gobject autoconf-archive fribidi librsvg enchant
+desktop-file-utils libical gtk-update-icon-cache libwmf libxslt libsoup libgsf wv libwpd redland libwpg")
 
 removedep=("mesa  libgl  udev libdrm fontconfig freetype")
 
@@ -28,7 +28,6 @@ build(){
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --disable-static \
     --enable-shared \
     --enable-clipart \
