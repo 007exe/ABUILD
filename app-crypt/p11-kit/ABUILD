@@ -20,13 +20,12 @@ build() {
   meson build \
     -D buildtype=release \
     -D prefix=/usr \
-    -D libexecdir=lib \
     -D man=true \
     -D gtk_doc=true \
     -D systemd=disabled \
     -D trust_paths=/etc/ca-certificates/trust-source:/usr/share/ca-certificates/trust-source
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
-  ln -srf ${pkgdir}/usr/bin/update-ca-trust ${pkgdir}/usr/lib/p11-kit/trust-extract-compat
+  ln -srf ${pkgdir}/usr/libexec/p11-kit/trust-extract-compat ${pkgdir}/usr/bin/update-ca-certificates
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
