@@ -36,7 +36,6 @@ build() {
     --sysconfdir=/etc \
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/samba \
     --localstatedir=/var \
     --with-configdir=/etc/samba \
     --with-lockdir=/var/cache/samba \

@@ -20,8 +20,7 @@ build() {
   cd build
   meson .. \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D libexecdir=lib
+    -D libdir=/usr/lib
   ninja -j${numjobs}
   DESTDIR=${pkgdir} ninja install
 }
