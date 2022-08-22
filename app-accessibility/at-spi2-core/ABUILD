@@ -1,5 +1,5 @@
 pkgname=at-spi2-core
-pkgver=2.44.0
+pkgver=2.44.1
 pkgbuild=1
 arch=("auto")
 
@@ -17,7 +17,6 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libexecdir=/usr/lib \
     -D buildtype=release \
     -D default_bus=dbus-broker \
     -D systemd_user_dir=/tmp \
