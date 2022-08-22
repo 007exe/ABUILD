@@ -19,7 +19,6 @@ build() {
   sed -i 's/install_dir: systemd_userunitdir,//' service/meson.build
   meson build \
     -D prefix=/usr \
-    -D libexecdir=lib \
     -D gtk_doc=true
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build

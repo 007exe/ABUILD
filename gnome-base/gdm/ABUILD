@@ -21,7 +21,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D ipv6=true \
     -D gdm-xsession=true \
     -D systemd-journal=false \

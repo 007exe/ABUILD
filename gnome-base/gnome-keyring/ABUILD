@@ -20,7 +20,6 @@ build() {
     --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libexecdir=/usr/lib \
     --with-pam-dir=/usr/lib/security \
     --disable-static \
     --disable-schemas-compile
