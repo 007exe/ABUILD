@@ -16,6 +16,8 @@ build() {
   go_src_dir
   burn_patches
   cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTING=OFF
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
