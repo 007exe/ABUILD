@@ -1,5 +1,5 @@
 pkgname=bluez
-pkgver=5.64
+pkgver=5.65
 pkgbuild=1
 arch=("auto")
 
@@ -27,7 +27,6 @@ build() {
     --mandir=/usr/share/man \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libexecdir=/usr/lib \
     --with-dbusconfdir=/usr/share \
     --enable-btpclient \
     --enable-midi \
