@@ -47,7 +47,6 @@ before_build() {
 
 build() {
   cd ${srcdir}/gcc-${pkgver}/gcc-build
-#    --libexecdir=/usr/lib \
 
   ../configure \
     --prefix=/usr \

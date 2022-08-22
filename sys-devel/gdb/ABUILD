@@ -22,7 +22,6 @@ build() {
   ../configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --disable-nls \
     --enable-source-highlight \
     --enable-tui \
