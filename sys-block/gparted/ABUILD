@@ -25,7 +25,6 @@ build() {
     --prefix=/usr \
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/gparted \
     --enable-online-resize \
     --enable-libparted-dmraid \
     --enable-xhost-root
