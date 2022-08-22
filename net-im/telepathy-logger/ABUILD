@@ -19,7 +19,6 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib \
     --sysconfdir=/etc \
-    --libexecdir=/usr/lib/telepathy \
     --enable-call \
     --disable-static \
     --disable-scrollkeeper \

@@ -12,11 +12,11 @@ tags=("network net-im")
 
 build_deps=("telepathy-glib dconf networkmanager libxslt python gtk-doc")
 
-before_build(){
-
+build(){
+  go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/telepathy \
     --with-connectivity=nm \
     --enable-gtk-doc \
     --disable-upower \
