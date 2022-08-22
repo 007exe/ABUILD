@@ -17,7 +17,6 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libexecdir=/usr/lib/${pkgname} \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --enable-introspection
