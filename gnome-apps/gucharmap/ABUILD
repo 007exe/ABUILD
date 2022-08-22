@@ -19,7 +19,6 @@ build() {
     --strip \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libexecdir=lib \
     -D docs=false \
     -D ucd_path=/usr/share/unicode
   meson compile -C build
