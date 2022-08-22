@@ -26,7 +26,6 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/networkmanager \
     --with-gtk4 \
     --localstatedir=/var \
     --disable-more-warnings \

@@ -21,9 +21,8 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libexecdir=/usr/lib \
     --disable-static \
-     --with-gtk4 \
+    --with-gtk4 \
     --with-pppd-plugin-dir=/usr/lib/pppd/$_pppver
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
