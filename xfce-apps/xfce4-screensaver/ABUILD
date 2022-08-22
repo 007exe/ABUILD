@@ -22,7 +22,6 @@ build() {
     --sysconfdir=/etc \
     --localstatedir=/var \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --disable-static \
     --disable-debug \
     --enable-pam
