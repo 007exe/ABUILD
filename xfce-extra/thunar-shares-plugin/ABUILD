@@ -10,7 +10,7 @@ source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/$pkgn
 
 tags=("xfce xfce-extra")
 
-build_deps=("intltool xfce4-dev-tools samba")
+build_deps=("intltool samba")
 
 adddep=("thunar hicolor-icon-theme")
 
@@ -22,7 +22,6 @@ build() {
     --sysconfdir=/etc \
     --localstatedir=/var \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib/xfce4 \
     --disable-static \
     --disable-debug
   make -j${numjobs}

@@ -19,7 +19,6 @@ build() {
     --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libexecdir=/usr/lib \
     --libdir=/usr/lib \
     --disable-static \
     --disable-debug
