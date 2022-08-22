@@ -1,6 +1,6 @@
 pkgname=apcupsd
-pkgver=3.14.12
-pkgbuild=2
+pkgver=3.14.14
+pkgbuild=1
 arch=('auto')
 
 shortdesc="Power mangement and controlling most of APC's UPS models"
@@ -22,8 +22,7 @@ BUILD_KEYS="--prefix=/usr \
 --with-lock-dir=/run/apcupsd \
 --with-pid-dir=/run/apcupsd \
 --with-log-dir=/var/log \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---libexecdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
+--libdir=/usr/lib \
 --disable-static \
 --mandir=/usr/man \
 --enable-usb \
