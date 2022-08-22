@@ -1,5 +1,5 @@
 pkgname=avr-gcc
-pkgver=12.1.0
+pkgver=12.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -13,14 +13,15 @@ tags=("develop dev-embedded")
 build_deps=("avr-binutils gcc-libs libmpc isl zstd")
 
 build(){
-  go_src_dir
-  burn_patches
+  mkdir ${srcdir}/build
+  cd ${srcdir}/build
+
   export CFLAGS_FOR_TARGET='-O2 -pipe'
   export CXXFLAGS_FOR_TARGET='-O2 -pipe'
   CFLAGS=${CFLAGS/-Werror=format-security/}
   CXXFLAGS=${CXXFLAGS/-Werror=format-security/}
 
-  ./configure \
+  ${srcdir}/gcc-${pkgver}/configure \
     --disable-install-libiberty \
     --disable-libssp \
     --disable-libstdcxx-pch \
@@ -58,7 +59,7 @@ build(){
 # Удаление отладочных символов из библиотек; без этого размер пакета увеличится до ~ 500 МБ.
   find ${pkgdir}/usr/lib -type f -name "*.a" -exec /usr/bin/avr-strip --strip-debug '{}' \;
 
-  install -Dm644 COPYING.RUNTIME  ${pkgdir}/usr/share/licenses/avr-gcc/RUNTIME.LIBRARY.EXCEPTION
+  install -Dm644 ${srcdir}/gcc-${pkgver}/COPYING.RUNTIME  ${pkgdir}/usr/share/licenses/avr-gcc/RUNTIME.LIBRARY.EXCEPTION
 
   rm -r ${pkgdir}/usr/share/man/man7
   rm -r ${pkgdir}/usr/share/info
