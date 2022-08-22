@@ -28,7 +28,6 @@ build() {
     --with-jdk=/usr/lib/jvm/default \
     --with-gnome-keyring \
     --with-kwallet \
-    --with-apache-libexecdir=/usr/lib/httpd/modules \
     --with-ruby-sitedir=/usr/lib/ruby/vendor_ruby \
     --disable-static
   make -j${numjobs}
