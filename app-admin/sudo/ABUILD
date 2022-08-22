@@ -23,7 +23,6 @@ build() {
     --prefix=/usr \
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
-    --libexecdir=/usr/lib \
     --disable-env-reset \
     --with-logfac=auth \
     --with-pam \
