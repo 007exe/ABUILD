@@ -1,5 +1,5 @@
 pkgname=glslang
-pkgver=11.10.0
+pkgver=11.11.0
 pkgbuild=1
 arch=("auto")
 
