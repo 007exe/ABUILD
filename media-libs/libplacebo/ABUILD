@@ -1,4 +1,3 @@
-# FIXME: Не находит заголовки Vulkan vulkan=enabled
 pkgname=libplacebo
 pkgver=4.208.0
 pkgbuild=1
@@ -26,6 +25,7 @@ build() {
     -D shaderc=enabled \
     -D lcms=enabled \
     -D d3d11=disabled \
+    -D vulkan=enabled \
     -D vulkan-registry=/usr/share/vulkan/registry/vk.xml
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
