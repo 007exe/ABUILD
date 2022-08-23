@@ -1,4 +1,5 @@
 # NOTE: Перед перед обновлением данного пакета следует обновить vulkan-headers
+# Attention: Перед сборкой очисти кеш исходников поскольку vulkan-headers имеет архив с такойже версией который будит ошибюочно собран
 pkgname=vulkan-icd-loader
 pkgver=1.3.221
 pkgbuild=1
@@ -16,6 +17,7 @@ build_deps=("cmake python-lxml libx11 libxrandr wayland vulkan-headers=${pkgver}
 build() {
   go_src_dir
   burn_patches
+echo "Attention: Перед сборкой очисти кеш исходников поскольку vulkan-headers имеет архив с такойже версией который будит ошибюочно собран"
   rm -rf build ; mkdir build ; cd build
   cmake -DCMAKE_INSTALL_PREFIX=/usr \
     -DVULKAN_HEADERS_INSTALL_DIR=/usr \
