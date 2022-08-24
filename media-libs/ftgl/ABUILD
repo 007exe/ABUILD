@@ -1,75 +1,31 @@
-#ABUILD created by/создан: CyberMix, mos.mix at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=ftgl
-pkgver=2.1.3_rc5
-pkgbuild=2
-arch=('auto')
+pkgver=2.4.0
+pkgbuild=1
+arch=("auto")
 
-shortdesc="FTGL is a library to simplify rendering fonts in OpenGL."
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("FTGL is a free cross-platform Open Source C++ library that uses Freetype2 to simplify rendering fonts in OpenGL applications. FTGL supports bitmaps, pixmaps, texture maps, outlines, polygon mesh, and extruded polygon rendering modes."
-)
+shortdesc=("OpenGL library to use arbitrary fonts.")
+longdesc=("library to use arbitrary fonts in OpenGL applications.")
 
-source=("http://downloads.sourceforge.net/project/ftgl/FTGL%20Source/2.1.3~rc5/ftgl-2.1.3-rc5.tar.gz")
+source=("https://github.com/frankheckenbach/ftgl/archive/refs/tags/v${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("libs media-libs")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="libs x11-libs"
+build_deps=("freetype glu doxygen mesa graphviz")
 
-#dependencies only needed to build package
-build_deps=""
+build() {
+  go_src_dir
+  burn_patches
+  printf '%s\n' >>docs/doxygen.cfg.in HAVE_DOT=yes DOT_IMAGE_FORMAT=svg INTERACTIVE_SVG=yes
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-pic \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-provides=""
-conflicts=""
+  install -Dt ${pkgdir}/usr/include/FTGL -m644 src/FT{Face,Size}.h
 
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
