@@ -1,0 +1,29 @@
+pkgname=lib32-bzip2
+pkgver=1.0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A high-quality data compression program  (32-bit).")
+longdesc=("The Bzip2 package contains programs for compressing and decompressing files. Compressing text files with bzip2 yields a much better compression percentage than with the traditional gzip.")
+
+tags=("lib32 app-arch")
+
+source=("https://www.sourceware.org/pub/bzip2/bzip2-${pkgver}.tar.gz")
+
+build_deps=("lib32-glibc")
+
+adddep=("lib32-glibc bzip2")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -f Makefile-libbz2_so CC="gcc -m32 $CFLAGS $LDFLAGS"
+  make libbz2.a CC="gcc -m32 $CFLAGS $LDFLAGS"
+  install -dm755 ${pkgdir}/usr/lib32
+  cp -a libbz2.so* ${pkgdir}/usr/lib32
+  ln -s libbz2.so.${pkgver} ${pkgdir}/usr/lib32/libbz2.so
+  ln -s libbz2.so.${pkgver} ${pkgdir}/usr/lib32/libbz2.so.1
+  install -Dm644 libbz2.a ${pkgdir}/usr/lib32/libbz2.a
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
