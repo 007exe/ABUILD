@@ -1,18 +1,24 @@
 pkgname=gcc
-pkglist=("gcc-libs gcc-ada gcc-d gcc-fortran gcc-go gcc-objc lib32-gcc-libs")
 pkgver=12.2.0
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The GNU Compiler Collection - C and C++ frontends.")
+longdesc=("GCC is the collection of GNU compilers. This package contains the parts of the compiler collection that are required to compile C and C ++ code. Other packages add support for Ada, Fortran, Objective-C and Go.")
 
 source=("https://sourceware.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.xz")
 
+#strict_version=1
+#_commit=681c73db9bd156f9b65a73ccc6c4a0a697fe70d6
+#source=("git:https://sourceware.org/git/gcc.git")
+
 tags=("develop sys-devel")
 
-build_deps=("binutils doxygen gcc-ada isl libmpc python zstd flex gcc-d gcc-fortran gcc-go gcc-objc lib32-gcc-libs zlib gmp mpfr")
+build_deps=("binutils doxygen gcc-ada isl libmpc python zstd flex gcc-d gcc-fortran gcc-go gcc-objc zlib gmp mpfr")
 
 adddep=("binutils bison gcc-libs==${pkgver}")
+
+pkglist=("gcc-libs gcc-ada gcc-d gcc-fortran gcc-go gcc-objc")
 
 TARGET=x86_64-pc-linux-gnu
 
@@ -20,24 +26,23 @@ _libdir=usr/lib/gcc/${TARGET}/${pkgver%%+*}
 
 before_build() {
   go_src_dir
+#  git checkout ${_commit}
   burn_patches
-
 # Исправление ошибки, связанную с libasan.a
   sed -e '/static.*SIGSTKSZ/d' \
     -e 's/return kAltStackSize/return SIGSTKSZ * 4/' \
     -i libsanitizer/sanitizer_common/sanitizer_posix_libcdep.cpp
-
 # Не запускать fixincludes
   sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
-
 # Установить библиотеки x86_64 в /lib
   sed -e '/m64=/s/lib64/lib/' \
     -e '/m32=/s/m32=.*/m32=..\/lib32$(call if_multiarch,:i386-linux-gnu)/' \
     -i.orig gcc/config/i386/t-linux64
-
 # Настройка тестов
   sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
   mkdir -p gcc-build
+
+#  mv ${srcdir}/gcc_git_gcc.git.src ${srcdir}/gcc-${pkgver}
 }
 
 build() {
@@ -67,7 +72,7 @@ build() {
     --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d \
     --disable-libssp \
     --disable-werror \
-    --enable-multilib \
+    --disable-multilib \
     --disable-bootstrap \
     --disable-libstdcxx-pch \
     --disable-libunwind-exceptions \
@@ -84,6 +89,7 @@ build() {
           LDFLAGS_FOR_TARGET="$LDFLAGS"
 
 #NOTE: --enable-bootstrap	При включении данной опции компилятор будит несколько раз пересобираться что сильно увеличит сборку.
+#NOTE: --enable-multilib	Данная опция включит сборку 32х разрядных библиотек.
 
 # Сборка документации
   make -C ${TARGET}/libstdc++-v3/doc doc-man-doxygen
@@ -97,23 +103,25 @@ build() {
   install -m755 -t ${pkgdir}/${_libdir}/ gcc/{cc1,cc1plus,collect2,lto1}
 
   make -C ${TARGET}/libgcc DESTDIR=${pkgdir} install
-  make -C ${TARGET}/32/libgcc DESTDIR=${pkgdir} install
-  rm -f ${pkgdir}/usr/lib{,32}/libgcc_s.so*
+# make -C ${TARGET}/32/libgcc DESTDIR=${pkgdir} install
+# rm -f ${pkgdir}/usr/lib{,32}/libgcc_s.so*
+  rm -f ${pkgdir}/usr/lib/libgcc_s.so*
 
   make -C ${TARGET}/libstdc++-v3/src        DESTDIR=${pkgdir} install
   make -C ${TARGET}/libstdc++-v3/include    DESTDIR=${pkgdir} install
   make -C ${TARGET}/libstdc++-v3/libsupc++  DESTDIR=${pkgdir} install
   make -C ${TARGET}/libstdc++-v3/python     DESTDIR=${pkgdir} install
-  make -C ${TARGET}/32/libstdc++-v3/src     DESTDIR=${pkgdir} install
-  make -C ${TARGET}/32/libstdc++-v3/include DESTDIR=${pkgdir} install
-  make -C ${TARGET}/32/libstdc++-v3/libsupc++ DESTDIR=${pkgdir} install
+# make -C ${TARGET}/32/libstdc++-v3/src     DESTDIR=${pkgdir} install
+# make -C ${TARGET}/32/libstdc++-v3/include DESTDIR=${pkgdir} install
+# make -C ${TARGET}/32/libstdc++-v3/libsupc++ DESTDIR=${pkgdir} install
 
   make DESTDIR=${pkgdir} install-libcc1
 
   install -d ${pkgdir}/usr/share/gdb/auto-load/usr/lib
   mv ${pkgdir}/usr/lib/libstdc++.so.6.*-gdb.py ${pkgdir}/usr/share/gdb/auto-load/usr/lib/
 
-  rm ${pkgdir}/usr/lib{,32}/libstdc++.so*
+# rm ${pkgdir}/usr/lib{,32}/libstdc++.so*
+  rm ${pkgdir}/usr/lib/libstdc++.so*
 
   make DESTDIR=${pkgdir} install-fixincludes
   make -C gcc DESTDIR=${pkgdir} install-mkheaders
@@ -130,10 +138,10 @@ build() {
   make -C ${TARGET}/libsanitizer/asan DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
   make -C ${TARGET}/libsanitizer/tsan DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
   make -C ${TARGET}/libsanitizer/lsan DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
-  make -C ${TARGET}/32/libgomp        DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
-  make -C ${TARGET}/32/libitm         DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
-  make -C ${TARGET}/32/libsanitizer   DESTDIR=${pkgdir} install-nodist_{saninclude,toolexeclib}HEADERS
-  make -C ${TARGET}/32/libsanitizer/asan DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
+# make -C ${TARGET}/32/libgomp        DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
+# make -C ${TARGET}/32/libitm         DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
+# make -C ${TARGET}/32/libsanitizer   DESTDIR=${pkgdir} install-nodist_{saninclude,toolexeclib}HEADERS
+# make -C ${TARGET}/32/libsanitizer/asan DESTDIR=${pkgdir} install-nodist_toolexeclibHEADERS
 
   make -C gcc DESTDIR=${pkgdir} install-man install-info
   rm -f ${pkgdir}/usr/share/man/man1/{gccgo,gfortran,gdc}.1
@@ -153,13 +161,13 @@ build() {
  make -C ${TARGET}/libstdc++-v3/doc DESTDIR=${pkgdir} doc-install-man
 
 # Удаление файлов, предоставляемых lib32-gcc-libs
-  rm -f ${pkgdir}/usr/lib32/lib{stdc++,gcc_s}.so
+# rm -f ${pkgdir}/usr/lib32/lib{stdc++,gcc_s}.so
 
 # Компиляция библиотек Python
   python -m compileall ${pkgdir}/usr/share/gcc-${pkgver%%+*}/
   python -O -m compileall ${pkgdir}/usr/share/gcc-${pkgver%%+*}/
 
-  install -d ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -d ${pkgdir}/usr/share/licenses/$pkgname/
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION ${pkgdir}/usr/share/licenses/${pkgname}/
 }
 
@@ -168,6 +176,7 @@ build() {
 gcc-libs() {
   pkgname=gcc-libs
   shortdesc=("Runtime libraries shipped by GCC.")
+  longdesc=("Runtime libraries shipped by GCC.")
   tags=("base sys-libs")
 }
 
@@ -175,7 +184,7 @@ gcc-libs_prep() {
   cd ${srcdir}/gcc-${pkgver}/gcc-build
 
   make -C ${TARGET}/libgcc DESTDIR=${pkgdir} install-shared
-  rm -f ${pkgdir}/${_libdir}/libgcc_eh.a
+  rm -f ${pkgdir}/$_libdir/libgcc_eh.a
   make -C ${TARGET}/libgfortran        DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
   make -C ${TARGET}/libgo              DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
   make -C ${TARGET}/libgomp            DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
@@ -199,7 +208,7 @@ gcc-libs_prep() {
   make -C ${TARGET}/libquadmath DESTDIR=${pkgdir} install-info
 
 # Удаление файлов, предоставляемых lib32-gcc-libs
-  rm -rf ${pkgdir}/usr/lib32/
+# rm -rf ${pkgdir}/usr/lib32/
 
   install -Dm644 ${srcdir}/gcc-${pkgver}/COPYING.RUNTIME ${pkgdir}/usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION
 
@@ -216,6 +225,7 @@ gcc-libs_prep() {
 gcc-fortran() {
   pkgname=gcc-fortran
   shortdesc=("Fortran front-end for GCC.")
+  longdesc=("The gcc-fortran package provides support for compiling Fortran programs with the GNU Compiler Collection.")
   tags=("develop dev-lang")
   adddep="gcc==${pkgver}"
 }
@@ -224,12 +234,12 @@ gcc-fortran_prep() {
   cd ${srcdir}/gcc-${pkgver}/gcc-build
 
   make -C ${TARGET}/libgfortran DESTDIR=${pkgdir} install-cafexeclibLTLIBRARIES install-{toolexeclibDATA,nodist_fincludeHEADERS,gfor_cHEADERS}
-  make -C ${TARGET}/32/libgfortran DESTDIR=$pkgdir install-cafexeclibLTLIBRARIES install-{toolexeclibDATA,nodist_fincludeHEADERS,gfor_cHEADERS}
+# make -C ${TARGET}/32/libgfortran DESTDIR=$pkgdir install-cafexeclibLTLIBRARIES install-{toolexeclibDATA,nodist_fincludeHEADERS,gfor_cHEADERS}
   make -C ${TARGET}/libgomp DESTDIR=${pkgdir} install-nodist_fincludeHEADERS
   make -C gcc DESTDIR=${pkgdir} fortran.install-{common,man,info}
   install -Dm755 gcc/f951 ${pkgdir}/${_libdir}/f951
 
-  ln -s gfortran ${pkgdir}/usr/bin/f95
+  ln -s gfortran "$pkgdir/usr/bin/f95"
 
   install -d ${pkgdir}/usr/share/licenses/${pkgname}/
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION ${pkgdir}/usr/share/licenses/${pkgname}/
@@ -242,7 +252,8 @@ gcc-fortran_prep() {
 
 gcc-objc() {
   pkgname=gcc-objc
-  shortdesc=("Objective-C front-end for GCC.")
+  shortdesc=("Objective-C front-end for GCC")
+  longdesc=("gcc-objc provides Objective-C support for the GCC. Mainly used on systems running NeXTSTEP, Objective-C is an object-oriented derivative of the C language.")
   tags=("develop dev-lang")
   adddep="gcc==${pkgver}"
 }
@@ -254,7 +265,7 @@ gcc-objc_prep() {
   install -dm755 ${pkgdir}/${_libdir}
   install -m755 gcc/cc1obj{,plus} ${pkgdir}/${_libdir}/
 
-  install -d ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -d "$pkgdir/usr/share/licenses/$pkgname/"
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION ${pkgdir}/usr/share/licenses/${pkgname}/
 }
 
@@ -262,9 +273,10 @@ gcc-objc_prep() {
 
 gcc-ada() {
   pkgname=gcc-ada
-  shortdesc=("Ada front-end for GCC (GNAT).")
+  shortdesc=("Ada front-end for GCC GNAT")
+  longdesc=("Ada 95 support for the GNU Compiler Collection. This package contains those parts of the compiler collection needed to compile Ada 95 code.  Ada95 is the object oriented successor to the Ada83 language. The base gcc package is also required.")
   tags=("develop dev-lang")
-  adddep=("gcc==${pkgver}")
+  adddep="gcc==${pkgver}"
 }
 
 gcc-ada_prep() {
@@ -276,21 +288,22 @@ gcc-ada_prep() {
   cd ${srcdir}/gcc-${pkgver}/gcc-build/${TARGET}/libada
   make DESTDIR=${pkgdir} INSTALL="install" INSTALL_DATA="install -m644" install-libada
 
-  cd ${srcdir}/gcc-${pkgver}/gcc-build/${TARGET}/32/libada
-  make DESTDIR=${pkgdir} INSTALL="install"  INSTALL_DATA="install -m644" install-libada
+# cd "$srcdir"/gcc-${pkgver}/gcc-build/${TARGET}/32/libada
+# make DESTDIR=${pkgdir} INSTALL="install" \
+# INSTALL_DATA="install -m644" install-libada
 
-  ln -s gcc ${pkgdir}/usr/bin/gnatgcc
+  ln -s gcc "$pkgdir/usr/bin/gnatgcc"
 
-  mv ${pkgdir}/${_libdir}/adalib/libgna{rl,t}-${pkgver%%.*}.so ${pkgdir}/usr/lib
-  ln -s libgnarl-${pkgver%%.*}.so ${pkgdir}/usr/lib/libgnarl.so
-  ln -s libgnat-${pkgver%%.*}.so ${pkgdir}/usr/lib/libgnat.so
+  mv ${pkgdir}/${_libdir}/adalib/libgna{rl,t}-${pkgver%%.*}.so "$pkgdir/usr/lib"
+  ln -s libgnarl-${pkgver%%.*}.so "$pkgdir/usr/lib/libgnarl.so"
+  ln -s libgnat-${pkgver%%.*}.so "$pkgdir/usr/lib/libgnat.so"
   rm -f ${pkgdir}/${_libdir}/adalib/libgna{rl,t}.so
 
-  install -d ${pkgdir}/usr/lib32/
-  mv ${pkgdir}/${_libdir}/32/adalib/libgna{rl,t}-${pkgver%%.*}.so ${pkgdir}/usr/lib32
-  ln -s libgnarl-${pkgver%%.*}.so ${pkgdir}/usr/lib32/libgnarl.so
-  ln -s libgnat-${pkgver%%.*}.so ${pkgdir}/usr/lib32/libgnat.so
-  rm -f ${pkgdir}/${_libdir}/32/adalib/libgna{rl,t}.so
+# install -d "$pkgdir/usr/lib32/"
+# mv ${pkgdir}/${_libdir}/32/adalib/libgna{rl,t}-${pkgver%%.*}.so "$pkgdir/usr/lib32"
+# ln -s libgnarl-${pkgver%%.*}.so "$pkgdir/usr/lib32/libgnarl.so"
+# ln -s libgnat-${pkgver%%.*}.so "$pkgdir/usr/lib32/libgnat.so"
+# rm -f ${pkgdir}/${_libdir}/32/adalib/libgna{rl,t}.so
 
   install -d ${pkgdir}/usr/share/licenses/${pkgname}/
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION ${pkgdir}/usr/share/licenses/${pkgname}/
@@ -304,6 +317,7 @@ gcc-ada_prep() {
 gcc-go() {
   pkgname=gcc-go
   shortdesc=("Go front-end for GCC.")
+  longdesc=("The gcc-go package provides support for compiling Go programs with the GNU Compiler Collection.")
   tags=("develop dev-lang")
   adddep=("gcc==${pkgver}")
   conflicts=("go")
@@ -313,11 +327,11 @@ gcc-go_prep() {
   cd ${srcdir}/gcc-${pkgver}/gcc-build
 
   make -C ${TARGET}/libgo DESTDIR=${pkgdir} install-exec-am
-  make -C ${TARGET}/32/libgo DESTDIR=${pkgdir} install-exec-am
+# make -C ${TARGET}/32/libgo DESTDIR=${pkgdir} install-exec-am
   make DESTDIR=${pkgdir} install-gotools
   make -C gcc DESTDIR=${pkgdir} go.install-{common,man,info}
 
-  rm -f ${pkgdir}/usr/lib{,32}/libgo.so*
+# rm -f ${pkgdir}/usr/lib{,32}/libgo.so*
   rm -f ${pkgdir}/usr/lib/libgo.so*
   install -Dm755 gcc/go1 ${pkgdir}/${_libdir}/go1
 
@@ -333,6 +347,7 @@ gcc-go_prep() {
 gcc-d() {
   pkgname=gcc-d
   shortdesc=("D frontend for GCC.")
+  longdesc=("This package adds D support to the GNU Compiler Collection.")
   tags=("develop dev-lang")
   adddep=("gcc==${pkgver}")
 }
@@ -347,7 +362,7 @@ gcc-d_prep() {
 
   make -C ${TARGET}/libphobos DESTDIR=${pkgdir} install
   rm -f ${pkgdir}/usr/lib/lib{gphobos,gdruntime}.so*
-  rm -f ${pkgdir}/usr/lib32/lib{gphobos,gdruntime}.so*
+# rm -f "$pkgdir/usr/lib32/"lib{gphobos,gdruntime}.so*
 
   install -d ${pkgdir}/usr/include/dlang
   ln -s /${_libdir}/include/d ${pkgdir}/usr/include/dlang/gdc
@@ -356,43 +371,40 @@ gcc-d_prep() {
   ln -s /usr/share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION ${pkgdir}/usr/share/licenses/${pkgname}/
 }
 
-# lib32-gcc-libs #########################################################################################################################
+#FIXME: Для сборки данного пакета следует включить опцию --enable-multilib но пока получаю ошибку о неработающем компиляторе.
+# gcc-lib32 #########################################################################################################################
 
-lib32-gcc-libs() {
-  pkgname=lib32-gcc-libs
-  shortdesc=("32-bit runtime libraries shipped by GCC.")
-  tags=("lib32 dev-libs")
-  adddep=("lib32-glibc")
-  conflicts=("gcc-lib32")
-}
+#gcc-lib32_prep() {
+# pkgname=gcc-lib32
+# shortdesc=("32-bit runtime libraries shipped by GCC.")
+# longdesc=("32-bit runtime libraries shipped by GCC.")
+# tags=("base sys-libs")
+#}
 
-lib32-gcc-libs_prep() {
-  cd ${srcdir}/gcc-${pkgver}/gcc-build
+#gcc-lib32_prep() {
+# cd ${srcdir}/gcc-${pkgver}/gcc-build
 
-  make -C ${TARGET}/32/libgcc DESTDIR=${pkgdir} install-shared
-  rm -f ${pkgdir}/$_libdir/32/libgcc_eh.a
+# make -C ${TARGET}/32/libgcc DESTDIR=${pkgdir} install-shared
+# rm -f ${pkgdir}/$_libdir/32/libgcc_eh.a
 
-  make -C ${TARGET}/32/libatomic          DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libgfortran        DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libgo              DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libgomp            DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libitm             DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libquadmath        DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libsanitizer/asan  DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libsanitizer/lsan  DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libsanitizer/ubsan DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libstdc++-v3/src   DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libvtv             DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
-  make -C ${TARGET}/32/libobjc            DESTDIR=${pkgdir} install-libs
-  make -C ${TARGET}/libphobos             DESTDIR=${pkgdir} install
+# make -C ${TARGET}/32/libatomic          DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libgfortran        DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libgo              DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libgomp            DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libitm             DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libquadmath        DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libsanitizer/asan  DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libsanitizer/lsan  DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libsanitizer/ubsan DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libstdc++-v3/src   DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libvtv             DESTDIR=${pkgdir} install-toolexeclibLTLIBRARIES
+# make -C ${TARGET}/32/libobjc            DESTDIR=${pkgdir} install-libs
+# make -C ${TARGET}/libphobos             DESTDIR=${pkgdir} install
 
-  rm -f ${pkgdir}/usr/lib32/libgphobos.spec
+# rm -f ${pkgdir}/usr/lib32/libgphobos.spec
 
 # Удаляем файлы предоставляемые gcc-libs
-  rm -rf ${pkgdir}/usr/lib
+# rm -rf ${pkgdir}/usr/lib
 
-# Удаляем ститические библиотеки
-  rm -f ${pkgdir}/usr/lib32/*.a
-
-  install -Dm644 ${srcdir}/gcc-${pkgver}/COPYING.RUNTIME ${pkgdir}/usr/share/licenses/lib32-gcc-libs/RUNTIME.LIBRARY.EXCEPTION
-}
+# install -Dm644 ${srcdir}/gcc/COPYING.RUNTIME ${pkgdir}/usr/share/licenses/lib32-gcc-libs/RUNTIME.LIBRARY.EXCEPTION
+#}
