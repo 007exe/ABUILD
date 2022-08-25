@@ -1,0 +1,39 @@
+pkgname=lib32-libpng
+pkgver=1.6.37
+_libversion=16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A collection of routines used to create PNG format graphics files (32-bit).")
+longdesc=("The libpng package contains a library of functions for creating and manipulating PNG (Portable Network Graphics) image format files. PNG is a bit-mapped graphics format similar to the GIF format. PNG was created to replace the GIF format, since GIF uses a patented data compression algorithm.")
+
+source=("https://downloads.sourceforge.net/sourceforge/libpng/libpng-${pkgver}.tar.xz")
+
+tags=("lib32 media-libs")
+
+build_deps=("lib32-glibc lib32-zlib")
+
+adddep=("lib32-glibc lib32-zlib libpng")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --program-suffix=-32 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/{include,share}
+
+  rm ${pkgdir}/usr/bin/libpng-config
+  ln -s libpng${_libversion}-config-32 ${pkgdir}/usr/bin/libpng-config-32
+
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libpng ${pkgdir}/usr/share/licenses/${pkgname}
+}
