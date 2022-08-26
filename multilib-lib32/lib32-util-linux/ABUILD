@@ -1,0 +1,26 @@
+pkgname=lib32-util-linux
+pkgver=2.38.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Miscellaneous system utilities for Linux (32-bit).")
+longdesc=("The Util-linux package contains miscellaneous utility programs. Among them are utilities for handling file systems, consoles, partitions, and messages.")
+
+source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${pkgver%.*}/util-linux-${pkgver}.tar.xz")
+
+tags=("lib32 sys-apps")
+
+build_deps=("lib32-glibc lib32-gcc-libs")
+
+adddep=("lib32-glibc util-linux")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    CC="${CC:-cc} -m32" \
+    PKG_CONFIG_PATH="/usr/lib32/pkgconfig" \
+    --libdir=/usr/lib32
+  make -j${numjobs} lib{uuid,blkid,fdisk,mount,smartcols}.la
+  make DESTDIR=${pkgdir} install-usrlib_execLTLIBRARIES install-pkgconfigDATA
+}
