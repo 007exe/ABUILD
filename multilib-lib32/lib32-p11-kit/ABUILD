@@ -1,0 +1,35 @@
+pkgname=lib32-p11-kit
+pkgver=0.24.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Loads and enumerates PKCS#11 modules (32-bit).")
+longdesc=("The p11-kit package provides a way to load and enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules.")
+
+source=("https://github.com/p11-glue/p11-kit/releases/download/${pkgver}/p11-kit-${pkgver}.tar.xz")
+
+tags=("lib32 app-crypt")
+
+build_deps=("lib32-glibc lib32-gcc-libs lib32-libtasn1 lib32-libffi meson")
+
+adddep=("lib32-glibc lib32-libtasn1 lib32-libffi p11-kit")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  meson build \
+    -D prefix=/usr \
+    --libdir /usr/lib32 \
+    -D bash_completion=disabled \
+    -D systemd=disabled \
+    -D gtk_doc=false \
+    -D man=false \
+    -D trust_paths=/etc/ca-certificates/trust-source:/usr/share/ca-certificates/trust-source
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  rm -rf ${pkgdir}/etc ${pkgdir}/usr/{bin,include,lib,libexec,share}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
