@@ -1,0 +1,27 @@
+pkgname=lib32-keyutils
+pkgver=1.6.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux Key Management Utilities (32-bit).")
+longdesc=("Linux Key Management Utilities.")
+
+source=("https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/${pkgver}.tar.gz")
+
+tags=("lib32 sys-apps")
+
+build_deps=("lib32-glibc lib32-gcc-libs keyutils lib32-krb5")
+
+adddep=("lib32-glibc lib32-krb5")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  sed -i -e 's/^\(USR\)\?LIBDIR\s*:=.*$/\1LIBDIR=\/usr\/lib32/' Makefile
+  make CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/{usr/{include,share,bin,sbin},etc,{s,}bin}
+}
