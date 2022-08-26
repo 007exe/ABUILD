@@ -1,0 +1,28 @@
+pkgname=lib32-zstd
+pkgver=1.5.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Zstandard - Fast real-time compression algorithm (32-bit).")
+longdesc=("Zstandard is a real-time compression algorithm, providing high compression ratios. It offers a very wide range of compression / speed trade-offs, while being backed by a very fast decoder..")
+
+source=("https://github.com/facebook/zstd/releases/download/v${pkgver}/zstd-${pkgver}.tar.gz")
+
+tags=("lib32 app-arch")
+
+build_deps=("lib32-glibc lib32-gcc-libs gtest")
+
+adddep=("lib32-glibc zstd")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  make -j${numjobs}
+  make -C contrib/pzstd
+  make PREFIX=/usr LIBDIR=/usr/lib32 PKGCONFIGDIR=/usr/lib32/pkgconfig DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{share,include,bin}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
