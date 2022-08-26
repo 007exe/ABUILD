@@ -1,0 +1,33 @@
+pkgname=lib32-xz
+pkgver=5.2.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library and command line tools for XZ and LZMA compressed files (32-bit).")
+longdesc=("The Xz package contains programs for compressing and decompressing files. It provides capabilities for the lzma and the newer xz compression formats. Compressing text files with xz yields a better compression percentage than with the traditional gzip or bzip2 commands.")
+
+source=("http://tukaani.org/xz/xz-${pkgver}.tar.gz")
+
+tags=("lib32 app-arch")
+
+build_deps=("lib32-glibc lib32-gcc-libs")
+
+adddep=("lib32-glibc xz")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  export CFLAGS="$CFLAGS -Wno-format-truncation"
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-rpath \
+    --disable-static \
+    --enable-werror
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+  install -d -m755 ${pkgdir}/usr/share/licenses
+  ln -s xz ${pkgdir}/usr/share/licenses/lib32-xz
+}
