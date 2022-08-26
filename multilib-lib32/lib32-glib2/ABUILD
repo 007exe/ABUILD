@@ -1,0 +1,39 @@
+pkgname=lib32-glib2
+pkgver=2.72.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Low level core library (32-bit).")
+longdesc=("The GLib package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system.")
+
+source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}.tar.xz")
+
+tags=("lib32 dev-libs")
+
+build_deps=("lib32-glibc gettext gtk-doc shared-mime-info python util-linux meson
+lib32-libelf lib32-dbus lib32-pcre lib32-libffi lib32-util-linux lib32-zlib glib2")
+
+adddep=("lib32-glibc lib32-pcre lib32-libffi lib32-util-linux lib32-zlib glib2")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32 -mstackrealign"
+  export CXX="g++ -m32 -mstackrealign"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  CFLAGS+=' -g3'
+  CXXFLAGS+=' -g3'
+  CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
+  meson glib build \
+    -D prefix=/usr \
+    -D glib_debug=disabled \
+    -D selinux=disabled \
+    -D libdir=/usr/lib32
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+
+  rm -r ${pkgdir}/usr/{share,include}
+  find ${pkgdir}/usr/bin -type f -not -name gio-querymodules -printf 'Removing %P\n' -delete
+  mv ${pkgdir}/usr/bin/gio-querymodules{,-32}
+
+}
