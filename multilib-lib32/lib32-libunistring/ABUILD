@@ -1,0 +1,30 @@
+pkgname=lib32-libunistring
+pkgver=1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for manipulating Unicode strings and C strings (32-bit).")
+longdesc=("libunistring is a library that provides functions for manipulating Unicode strings and for manipulating C strings according to the Unicode standard.")
+
+source=("https://ftp.gnu.org/gnu/libunistring/libunistring-${pkgver}.tar.xz")
+
+tags=("lib32 dev-libs")
+
+build_deps=("lib32-glibc lib32-zlib")
+
+adddep=("lib32-glibc lib32-zlib libpng")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+}
