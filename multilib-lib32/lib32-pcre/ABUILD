@@ -1,0 +1,36 @@
+pkgname=lib32-pcre
+pkgver=8.45
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that implements Perl 5-style regular expressions (32-bit).")
+longdesc=("The PCRE package contains Perl Compatible Regular Expression libraries. These are useful for implementing regular expression pattern matching using the same syntax and semantics as Perl 5.")
+
+source=("https://sourceforge.net/projects/pcre/files/pcre/${pkgver}/pcre-${pkgver}.tar.bz2")
+
+tags=("lib32 dev-libs")
+
+build_deps=("lib32-glibc lib32-gcc-libs")
+
+adddep=("lib32-glibc lib32-gcc-libs pcre")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --enable-unicode-properties \
+    --enable-pcre16 \
+    --enable-pcre32 \
+    --enable-jit
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s pcre ${pkgdir}/usr/share/licenses/${pkgname}
+}
