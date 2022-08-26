@@ -1,0 +1,42 @@
+pkgname=lib32-e2fsprogs
+pkgver=1.46.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Ext2/3/4 filesystem libraries (32-bit).")
+longdesc=("The e2fsprogs package contains a number of utilities for creating, checking, modifying and correcting any inconsistencies in ext2, ext3, and ext4 filesystems.  E2fsprogs contains e2fsck (used to repair filesystem inconsistencies after an unclean shutdown), mke2fs (used to initialize a partition to contain an empty ext2 filesystem), debugfs (used to examine the internal structure of a filesystem, to manually repair a corrupted filesystem or to create test cases for e2fsck), tune2fs (used to modify filesystem parameters), resize2fs to grow and shrink unmounted filesystems, and most of the other core ext2fs filesystem utilities.")
+
+source=("https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v${pkgver}/e2fsprogs-${pkgver}.tar.gz")
+
+tags=("lib32 sys-fs")
+
+build_deps=("lib32-glibc lib32-util-linux lib32-gcc-libs bc")
+
+adddep=("lib32-glibc e2fsprogs")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --bindir=/usr/bin \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib32 \
+    --with-root-prefix="" \
+    --enable-elf-shlibs \
+    --disable-libblkid \
+    --disable-libuuid \
+    --disable-uuidd \
+    --disable-fsck \
+    --disable-resizer \
+    --disable-imager \
+    --disable-debugfs
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/{etc,usr/{bin,lib,include,share}}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s e2fsprogs ${pkgdir}/usr/share/licenses/${pkgname}
+}
