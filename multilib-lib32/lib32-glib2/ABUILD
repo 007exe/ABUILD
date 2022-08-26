@@ -11,7 +11,7 @@ source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}
 tags=("lib32 dev-libs")
 
 build_deps=("lib32-glibc gettext gtk-doc shared-mime-info python util-linux meson
-lib32-libelf lib32-dbus lib32-pcre lib32-libffi lib32-util-linux lib32-zlib glib2")
+lib32-elfutils lib32-pcre lib32-libffi lib32-util-linux lib32-zlib glib2 lib32-dbus")
 
 adddep=("lib32-glibc lib32-pcre lib32-libffi lib32-util-linux lib32-zlib glib2")
 
@@ -20,11 +20,12 @@ build() {
   burn_patches
   export CC="gcc -m32 -mstackrealign"
   export CXX="g++ -m32 -mstackrealign"
-  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+#  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   CFLAGS+=' -g3'
   CXXFLAGS+=' -g3'
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
-  meson glib build \
+  meson build \
     -D prefix=/usr \
     -D glib_debug=disabled \
     -D selinux=disabled \
