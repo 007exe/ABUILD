@@ -1,0 +1,52 @@
+pkgname=lib32-dbus
+pkgver=1.14.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Freedesktop.org message bus system (32-bit).")
+longdesc=("D-Bus is a message bus system, a simple way for applications to talk to one another.")
+
+source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.xz")
+
+tags=("lib32 sys-apps")
+
+build_deps=("lib32-glibc lib32-expat lib32-gcc-libs autoconf-archive lib32-glib2")
+
+adddep=("lib32-glibc dbus")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32 -mstackrealign"
+  export CXX="g++ -m32 -mstackrealign"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  NOCONFIGURE=1 ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-user-session \
+    --disable-libaudit \
+    --enable-inotify \
+    --enable-elogind \
+    --disable-doxygen-docs \
+    --disable-xml-docs \
+    --disable-systemd \
+    --disable-static \
+    --runstatedir=/run \
+    --with-systemduserunitdir=no \
+    --with-systemdsystemunitdir \
+    --with-console-auth-dir=/run/console/ \
+    --with-system-pid-file=/run/dbus/pid \
+    --with-system-socket=/run/dbus/system_bus_socket \
+    --with-init-scripts=openrc \
+    --with-dbus-user=dbus \
+    --disable-tests \
+    --without-x
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/{etc,var}
+  rm -rf ${pkgdir}/usr/{bin,include,lib,libexec,share}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
