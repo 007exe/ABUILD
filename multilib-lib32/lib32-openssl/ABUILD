@@ -1,0 +1,35 @@
+pkgname=lib32-openssl
+pkgver=1.1.1q
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Open Source toolkit for Secure Sockets Layer and Transport Layer Security (32-bit).")
+longdesc=("The OpenSSL package contains management tools and libraries relating to cryptography. These are useful for providing cryptographic functions to other packages, such as OpenSSH, email applications, and web browsers (for accessing HTTPS sites).")
+
+source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz")
+
+tags=("lib32 dev-libs")
+
+build_deps=("lib32-glibc lib32-gcc-libs")
+
+adddep=("lib32-glibc openssl")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./Configure \
+    --prefix=/usr \
+    --libdir=lib32 \
+    --openssldir=/etc/ssl \
+    shared no-ssl3-method linux-elf \
+    "-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
+  make MAKEDEPPROG="${CC}" depend
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install_sw
+  rm -rf ${pkgdir}/{usr/{include,bin},etc}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s openssl ${pkgdir}/usr/share/licenses/${pkgname}
+}
