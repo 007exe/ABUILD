@@ -10,23 +10,22 @@ source=("http://downloads.sourceforge.net/sourceforge/freetype/freetype-${pkgver
 
 tags=("lib32 media-libs")
 
-build_deps=("meson freetype lib32-zlib lib32-bzip2 lib32-libpng lib32-harfbuzz lib32-brotli")
+build_deps=("meson freetype lib32-zlib lib32-bzip2 lib32-libpng lib32-brotli lib32-harfbuzz")
 
-# lib32-zlib lib32-bzip2 lib32-libpng lib32-harfbuzz lib32-brotli
-adddep=("freetype")
+adddep=("freetype lib32-zlib lib32-bzip2 lib32-libpng lib32-harfbuzz lib32-brotli")
 
 build() {
   go_src_dir
   burn_patches
-  export CC="gcc -m32"
-  export CXX="g++ -m32"
-  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  CC="gcc -m32"
+  CXX="gcc -m32"
+  PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib32 \
-    --disable-static
+    --disable-static \
+    --host=i686-pc-linux-gnu
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
   rm -r ${pkgdir}/usr/include
 }
