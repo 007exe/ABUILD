@@ -1,0 +1,35 @@
+pkgname=lib32-libpsl
+pkgver=0.21.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Public Suffix List library (32-bit).")
+longdesc=("The libpsl package provides a library for accessing and resolving information from the Public Suffix List (PSL). The PSL is a set of domain names beyond the standard suffixes, such as .com.")
+
+source=("https://github.com/rockdaboot/libpsl/releases/download/${pkgver}/libpsl-${pkgver}.tar.gz")
+
+tags=("lib32 net-libs")
+
+build_deps=("lib32-glibc lib32-libidn2 lib32-libunistring python")
+
+adddep=("lib32-glibc lib32-libidn2 lib32-libunistring libpsl")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-static \
+    --disable-dependency-tracking \
+    --enable-man \
+    --enable-gtk-doc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+  install -dm 755 ${pkgdir}/usr/share/licenses
+  ln -s libpsl ${pkgdir}/usr/share/licenses/lib32-libpsl
+}
