@@ -1,0 +1,36 @@
+pkgname=lib32-gmp
+pkgver=6.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A free library for arbitrary precision arithmetic (32-bit).")
+longdesc=("The GMP package contains math libraries. These have useful functions for arbitrary precision arithmetic.")
+
+source=("https://gmplib.org/download/gmp/gmp-${pkgver}.tar.xz")
+
+tags=("lib32 dev-libs")
+
+build_deps=("lib32-glibc lib32-gcc-libs")
+
+adddep=("lib32-glibc lib32-gcc-libs gmp")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  export ABI=32
+  ./configure \
+    --prefix=/usr \
+    --infodir=/usr/share/info \
+    --enable-fat \
+    --enable-cxx \
+    --libdir=/usr/lib32 \
+    --disable-static \
+    --includedir=/usr/lib32/gmp
+  sed -i 's/$(exec_prefix)\/include/$\(includedir\)/' Makefile
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+}
