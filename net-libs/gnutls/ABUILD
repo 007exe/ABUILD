@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("A library which provides a secure layer over a reliable transport layer.")
 longdesc=("GnuTLS is a project that aims to develop a library which provides a secure layer, over a reliable transport layer.")
 
-source=("https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/${pkgname}-${pkgver}.tar.xz")
+source=("https://www.gnupg.org/ftp/gcrypt/gnutls/v${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("net-libs libs")
 
