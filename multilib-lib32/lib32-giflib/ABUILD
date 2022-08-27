@@ -1,0 +1,25 @@
+pkgname=lib32-giflib
+pkgver=5.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for reading and writing gif images (32-bit).")
+longdesc=("The giflib package contains libraries for reading and writing GIFs as well as programs for converting and working with GIF files.")
+
+source=("https://downloads.sourceforge.net/project/giflib/giflib-${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+build_deps=("lib32-glibc lib32-gcc-libs xmlto docbook-xsl docbook-xml")
+
+adddep=("lib32-glibc giflib")
+
+build() {
+  go_src_dir
+  burn_patches
+  make CC="gcc -m32"
+  make PREFIX=/usr LIBDIR=/usr/lib32 DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+  install -m755 -d ${pkgdir}/usr/share/licenses
+  ln -s giflib ${pkgdir}/usr/share/licenses/${pkgname}
+}
