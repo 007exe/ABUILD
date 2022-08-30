@@ -1,0 +1,21 @@
+pkgname=python-pyelftools
+pkgver=0.29
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python library for analyzing ELF files and DWARF debugging information.")
+
+tags=("libs dev-python")
+
+source=("https://github.com/eliben/pyelftools/archive/v${pkgver}/$pyelftools-${pkgver}.tar.gz")
+
+build_deps=("python python-build python-installer python-wheel python-setuptools")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 README.rst CHANGES -t ${pkgdir}/usr/share/doc/${pkgname}
+  cp -r examples ${pkgdir}/usr/share/doc/${pkgname}
+}
