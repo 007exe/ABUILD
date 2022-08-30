@@ -46,8 +46,4 @@ build() {
 # Сборка с использованием файлов python3 по умолчанию, похоже, не работает
   cd ${srcdir}/rpm-${pkgver}/python
   python setup.py install --root=${pkgdir} --optimize=1
-
-# FIXME:
-  mv ${pkgdir}/usr/libexec/* ${pkgdir}/usr/lib/
-  rm -r ${pkgdir}/usr/libexec/
 }
