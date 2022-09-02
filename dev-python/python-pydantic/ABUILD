@@ -1,0 +1,23 @@
+pkgname=python-pydantic
+pkgver=1.10.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Data parsing and validation using Python type hints.")
+
+source=("https://github.com/pydantic/pydantic/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-wheel python-cython python-typing-extensions")
+
+adddep=("python-cython python-typing-extensions")
+
+build() {
+  go_src_dir
+ls
+  sed -i -e '/CFLAGS/d' setup.py
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
