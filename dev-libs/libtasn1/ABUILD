@@ -1,6 +1,6 @@
 pkgname=libtasn1
-pkgver=4.18.0
-pkgbuild=2
+pkgver=4.19.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The ASN.1 library used in GNUTLS.")
