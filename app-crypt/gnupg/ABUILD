@@ -1,5 +1,5 @@
 pkgname=gnupg
-pkgver=2.2.36
+pkgver=2.2.37
 pkgbuild=1
 arch=("auto")
 
