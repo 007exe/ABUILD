@@ -1,5 +1,5 @@
 pkgname=imagemagick
-pkgver=7.1.0.44
+pkgver=7.1.0.47
 pkgbuild=1
 arch=("auto")
 
@@ -13,10 +13,13 @@ source=("https://imagemagick.org/archive/$_tarname.tar.xz")
 
 tags=("media-gfx xapps")
 
-build_deps=("ghostscript openexr libwmf librsvg libxml2 openjpeg2 libraw opencl-headers libwebp libzip libjxl highway chrpath ocl-icd glu libheif jbigkit lcms2 libxext liblqr libraqm libpng djvulibre")
+build_deps=("ghostscript openexr libwmf librsvg libxml2 openjpeg2 libraw opencl-headers libwebp
+libzip libjxl highway chrpath ocl-icd glu libheif jbigkit lcms2 libxext liblqr libraqm libpng djvulibre")
 
 # NOTE: Очень много зависимостей
-removedep=("util-linux libice openexr libsm libx11 libxau libxdmcp libxt brotli bzip2 cairo djvulibre freetype gcc-libs glib2 harfbuzz libheif icu libjpeg-turbo libjxl xz openjpeg2 pango libraqm libraw librsvg libtiff libwebp libwmf libxcb libxml2 libzip perl")
+removedep=("util-linux libice openexr libsm libx11 libxau libxdmcp libxt brotli bzip2 cairo
+djvulibre freetype gcc-libs glib2 harfbuzz libheif icu libjpeg-turbo libjxl xz openjpeg2
+pango libraqm libraw librsvg libtiff libwebp libwmf libxcb libxml2 libzip perl")
 
 build() {
   go_src_dir
