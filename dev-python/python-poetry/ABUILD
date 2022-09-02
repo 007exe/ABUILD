@@ -1,5 +1,5 @@
 pkgname=python-poetry
-pkgver=1.1.14
+pkgver=1.2.0
 pkgbuild=1
 arch=("auto")
 
