@@ -1,6 +1,6 @@
 pkgname=slang
-pkgver=2.3.2
-pkgbuild=3
+pkgver=2.3.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The shared library for the S-Lang extension language.")
@@ -20,7 +20,7 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib \
     --sysconfdir=/etc
-# Собирается только в одном потоке !!!!
+# NOTE: Собирается только в одном потоке !!!!
   make -j1
   make DESTDIR=${pkgdir} install
 }
