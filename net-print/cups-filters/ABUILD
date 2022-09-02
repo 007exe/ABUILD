@@ -1,5 +1,5 @@
 pkgname=cups-filters
-pkgver=1.28.15
+pkgver=1.28.16
 pkgbuild=1
 arch=("auto")
 
