@@ -1,6 +1,6 @@
 pkgname=python-lark-parser
-pkgver=0.12.0
-pkgbuild=2
+pkgver=1.1.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A modern parsing library.")
@@ -15,6 +15,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
