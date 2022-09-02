@@ -1,6 +1,6 @@
 pkgname=libwpe
-pkgver=1.12.0
-pkgbuild=2
+pkgver=1.12.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("General-purpose library for WPE WebKit.")
