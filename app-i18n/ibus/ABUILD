@@ -1,12 +1,12 @@
 pkgname=ibus
-pkgver=1.5.25
-pkgbuild=2
+pkgver=1.5.27
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Next Generation Input Bus for Linux.")
 longdesc=("Intelligent Input Bus for Linux/Unix OS.")
 
-source=("https://github.com/ibus/ibus/archive/refs/tags/${pkgver}.tar.gz")
+source=("https://github.com/ibus/ibus/releases/download/${pkgver}/ibus-${pkgver}.tar.gz")
 
 tags=("base app-i18n")
 
@@ -26,10 +26,9 @@ lib(){
 build() {
   go_src_dir
   burn_patches
-  sed -i 's@/desktop/ibus@/org/freedesktop/ibus@g' data/dconf/org.freedesktop.ibus.gschema.xml
-  ./autogen.sh
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-dconf \
     --enable-wayland \
@@ -37,6 +36,7 @@ build() {
     --enable-gtk4 \
     --disable-memconf \
     --enable-ui \
+    --disable-systemd-services \
     --disable-python2 \
     --with-python=python3 \
     --with-ucd-dir=/usr/share/unicode/
