@@ -1,6 +1,6 @@
 pkgname=fmt
-pkgver=8.1.1
-pkgbuild=2
+pkgver=9.1.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open-source formatting library for C++.")
