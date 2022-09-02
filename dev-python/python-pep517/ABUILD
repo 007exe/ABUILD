@@ -1,6 +1,6 @@
 pkgname=python-pep517
-pkgver=0.12.0
-pkgbuild=2
+pkgver=0.13.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Wrappers to build Python packages using PEP 517 hooks.")
@@ -10,14 +10,14 @@ source=("https://pypi.io/packages/source/p/pep517/pep517-$pkgver.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-tomli python-setuptools")
+build_deps=("python python-tomli python-build python-flit-core python-installer")
 
 adddep=("python-tomli")
 
 build() {
   go_src_dir
   sed -i -e '/--flake8/d' pytest.ini
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
