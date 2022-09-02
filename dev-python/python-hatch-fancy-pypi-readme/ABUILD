@@ -1,0 +1,21 @@
+pkgname=python-hatch-fancy-pypi-readme
+pkgver=22.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fancy PyPI READMEs with Hatch.")
+
+source=("https://github.com/hynek/hatch-fancy-pypi-readme/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-hatchling")
+
+adddep=("python-hatchling")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
