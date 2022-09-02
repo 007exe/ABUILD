@@ -1,6 +1,6 @@
 pkgname=python-more-itertools
 pkgver=8.13.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Implements a lazy string for python useful for use with get-text.")
@@ -10,10 +10,11 @@ source=("https://files.pythonhosted.org/packages/source/m/more-itertools/more-it
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel python-flit")
 
 build() {
   go_src_dir
-  python3 setup.py install --root=${pkgdir}/ --optimize=0
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
