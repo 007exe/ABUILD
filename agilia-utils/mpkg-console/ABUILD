@@ -27,7 +27,4 @@ build() {
   cd ${pkgdir}/usr/bin
   ln -s mpkg buildpkg
   ln -s mpkg buildsrcpkg
-
-# NOTE: Пути к mpkglddcheck.sh mpkg_objdump_check.sh жёстко прописаны в libmpkg.cpp пока их не трогаю.
-# Следует разобраться с ними нужны ли они.
 }
