@@ -1,6 +1,6 @@
 # NOTE: Обязательно пересобрать при обновлениии icu
 pkgname=libxml2
-pkgver=2.9.14
+pkgver=2.10.2
 pkgbuild=1
 arch=("auto")
 
