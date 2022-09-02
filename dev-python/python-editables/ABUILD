@@ -1,0 +1,20 @@
+pkgname=python-editables
+pkgver=0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python library for creating editable wheels.")
+
+source=("https://github.com/pfmoore/editables/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-wheel")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
