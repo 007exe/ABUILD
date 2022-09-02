@@ -1,6 +1,6 @@
 pkgname=libssh
-pkgver=0.9.6
-pkgbuild=2
+pkgver=0.10.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("C library to authenticate in a simple manner to one or more SSH servers.")
