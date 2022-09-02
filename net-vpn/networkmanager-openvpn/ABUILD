@@ -1,5 +1,5 @@
 pkgname=networkmanager-openvpn
-pkgver=1.8.18
+pkgver=1.10.0
 pkgbuild=1
 arch=("auto")
 
