@@ -1,5 +1,5 @@
 pkgname=npm
-pkgver=8.18.0
+pkgver=8.19.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,6 @@ source=("https://github.com/npm/cli/archive/v${pkgver}.tar.gz")
 
 tags=("develop dev-java")
 
-# libgl
 build_deps=("npm procps-ng python nodejs node-gyp nodejs-nopt semver marked marked-man libxi")
 
 adddep=("nodejs node-gyp nodejs-nopt semver")
