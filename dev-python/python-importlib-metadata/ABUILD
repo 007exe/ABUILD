@@ -1,6 +1,6 @@
 pkgname=python-importlib-metadata
-pkgver=4.8.1
-pkgbuild=3
+pkgver=4.8.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library to access the metadata for a Python package.")
