@@ -1,6 +1,6 @@
 pkgname=python-cachecontrol
-pkgver=0.12.6
-pkgbuild=2
+pkgver=0.12.11
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("httplib2 caching for requests.")
@@ -17,5 +17,5 @@ adddep=("python-msgpack python-requests")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }
