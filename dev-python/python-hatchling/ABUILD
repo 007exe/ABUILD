@@ -1,0 +1,23 @@
+pkgname=python-hatchling
+pkgver=1.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A modern project, package, and virtual env manager (backend).")
+
+source=("https://github.com/ofek/hatch/archive/refs/tags/hatchling-v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-pip python-build python-setuptools python-tomli python-packaging python-pathspec python-pluggy python-editables")
+
+adddep=("python-tomli python-packaging python-pathspec python-pluggy python-editables")
+
+build() {
+  go_src_dir
+  python -m build backend
+  install -Dm644 README.md ${pkgdir}/usr/share/doc/${pkgname}/README.md
+  install -Dm644 backend/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+
+  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps backend/dist/*.whl
+}
