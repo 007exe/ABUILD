@@ -1,12 +1,12 @@
 pkgname=lib32-krb5
-pkgver=1.19.3
+pkgver=1.20
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Kerberos network authentication system (32-bit).")
 longdesc=("Kerberos V5 is a trusted-third-party network authentication system, which can improve your network's security by eliminating the insecure practice of cleartext passwords.")
 
-source=("http://web.mit.edu/kerberos/dist/krb5/${pkgver%.*}/krb5-${pkgver}.tar.gz")
+source=("https://web.mit.edu/kerberos/dist/krb5/${pkgver}/krb5-${pkgver}.tar.gz")
 
 tags=("lib32 sys-libs")
 
