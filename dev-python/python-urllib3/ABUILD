@@ -1,5 +1,5 @@
 pkgname=python-urllib3
-pkgver=1.26.9
+pkgver=1.26.12
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,8 @@ source=("https://github.com/urllib3/urllib3/archive/$pkgver/$pkgbase-$pkgver.tar
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-sphinx python-pyasn1 python-pyopenssl python-mock python-brotli python-sphinx-furo python-ndg-httpsclient python-pysocks")
+build_deps=("python python-setuptools python-sphinx python-pyasn1 python-pyopenssl
+python-mock python-brotli python-sphinx-furo python-ndg-httpsclient python-pysocks")
 
 build() {
   go_src_dir
