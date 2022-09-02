@@ -1,10 +1,10 @@
 pkgname=python-mako
-pkgver=1.1.5
-pkgbuild=2
+pkgver=1.2.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Mako template library for Python.")
-longdesc=("Mako is a template library written in Python. It provides a familiar, non-XML syntax which compiles into Python modules for maximum performance. Mako's syntax and API borrows from the best ideas of many others, including Django templates, Cheetah, Myghty, and Genshi. Conceptually, Mako is an embedded Python (i.e. Python Server Page) language, which refines the familiar ideas of componentized layout and inheritance to produce one of the most straightforward and flexible models available, while also maintaining close ties to Python calling and scoping semantics.")
+longdesc=("A super-fast templating language that borrows the best ideas from the existing templating languages.")
 
 tags=("dev-python libs")
 
@@ -17,10 +17,7 @@ adddep=("python-markupsafe python-beaker python-setuptools")
 build(){
   go_src_dir
   burn_patches
-  sed -e '/\[tool:pytest\]/a filterwarnings =\n    error\n    ignore:Creating a LegacyVersion has been deprecated and will be removed in the next major release:DeprecationWarning' \
-      -e 's/-W error//' \
-      -i setup.cfg
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
