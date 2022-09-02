@@ -1,5 +1,5 @@
 pkgname=graphviz
-pkgver=5.0.0
+pkgver=5.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,8 @@ longdesc=("The Graphviz package contains graph visualization software. Graph vis
 source=("https://gitlab.com/graphviz/graphviz/-/archive/$pkgver/$pkgname-$pkgver.tar.gz")
 
 tags=("utils media-gfx")
-# mono r
-build_deps=("swig lua ocaml>=4.12.0 perl python gtk2 ghostscript qt5-base guile tk")
+# mono
+build_deps=("swig lua ocaml>=4.12.0 perl python gtk2 ghostscript qt5-base guile tk r")
 
 adddep="ghostscript"
 # Это опциональные зависимости
