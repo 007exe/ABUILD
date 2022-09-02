@@ -1,6 +1,6 @@
 pkgname=libfontenc
-pkgver=1.1.4
-pkgbuild=2
+pkgver=1.1.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 font encoding library.")
@@ -8,7 +8,7 @@ longdesc=("The Xorg librarie provide library routines that are used within all X
 
 tags=("x11-libs libs")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libfontenc-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.xz")
 
 build_deps=("zlib xorgproto xorg-util-macros xorg-fonts-encodings")
 
