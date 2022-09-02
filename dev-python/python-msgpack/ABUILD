@@ -1,6 +1,6 @@
 pkgname=python-msgpack
-pkgver=1.0.3
-pkgbuild=2
+pkgver=1.0.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("MessagePack serializer implementation for Python.")
@@ -17,5 +17,5 @@ adddep=("python-pytest python-six")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --skip-build --root="$pkgdir" --optimize=1
+  python setup.py install --skip-build --root=${pkgdir} --optimize=1
 }
