@@ -1,0 +1,19 @@
+pkgname=python-jsonpointer
+pkgver=2.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Identify specific nodes in a JSON document (RFC 6901).")
+
+source=("https://pypi.io/packages/source/j/jsonpointer/jsonpointer-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir}
+    install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
