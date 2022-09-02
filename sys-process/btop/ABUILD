@@ -1,5 +1,5 @@
 pkgname=btop
-pkgver=1.2.7
+pkgver=1.2.9
 pkgbuild=1
 arch="auto"
 
