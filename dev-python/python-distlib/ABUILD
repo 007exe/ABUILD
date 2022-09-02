@@ -1,5 +1,5 @@
 pkgname=python-distlib
-pkgver=0.3.5
+pkgver=0.3.6
 pkgbuild=1
 arch=("auto")
 
