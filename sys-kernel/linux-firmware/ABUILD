@@ -1,5 +1,5 @@
 pkgname=linux-firmware
-pkgver=20220610
+pkgver=20220815
 pkgbuild=1
 arch=("fw")
 
@@ -8,7 +8,7 @@ longdesc=("This package contains the firmware for in-kernel drivers that was pre
 
 tags=("sys-kernel base")
 
-source=("https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-$pkgver.tar.gz")
+source=("https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${pkgver}.tar.gz")
 
 build_deps=("make")
 
