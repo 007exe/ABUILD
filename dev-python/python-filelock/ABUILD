@@ -1,5 +1,5 @@
 pkgname=python-filelock
-pkgver=3.6.0
+pkgver=3.7.0
 pkgbuild=1
 arch=("auto")
 
