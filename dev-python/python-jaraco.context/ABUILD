@@ -1,5 +1,5 @@
 pkgname=python-jaraco.context
-pkgver=4.1.1
+pkgver=4.1.2
 pkgbuild=1
 arch=("auto")
 
@@ -16,7 +16,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
