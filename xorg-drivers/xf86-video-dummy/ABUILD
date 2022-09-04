@@ -1,0 +1,27 @@
+pkgname=xf86-video-dummy
+pkgver=0.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Xorg dummy video driver.")
+longdesc=("This is a dummy video driver for Xorg.")
+
+source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-dummy-${pkgver}.tar.xz")
+
+tags=("xorg xorg-drivers")
+
+build_deps=("xorg-server-devel")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

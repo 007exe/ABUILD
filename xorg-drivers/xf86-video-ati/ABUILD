@@ -1,0 +1,27 @@
+pkgname=xf86-video-ati
+pkgver=19.1.0
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("Xorg ati video driver.")
+longdesc=("The Xorg ATI Driver package contains the X.Org Video Driver for ATI Radeon video cards including all chipsets ranging from R100 to the Volcanic Islands chipsets.")
+
+source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-ati-${pkgver}.tar.gz")
+
+tags=("xorg xorg-drivers")
+
+build_deps=("mesa xorg-server-devel")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

@@ -1,0 +1,27 @@
+pkgname=xf86-video-nouveau
+pkgver=1.0.17
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("Open Source 3D acceleration driver for nVidia cards.")
+longdesc=("The Xorg Nouveau Driver package contains the Xorg Video Driver for NVidia Cards including RIVA TNT, RIVA TNT2, GeForce 256, QUADRO, GeForce2, QUADRO2, GeForce3, QUADRO DDC, nForce, nForce2, GeForce4, QUADRO4, GeForce FX, QUADRO FX, GeForce 6XXX and GeForce 7xxx chipsets.")
+
+source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-nouveau-${pkgver}.tar.bz2")
+
+tags=("xorg xorg-drivers")
+
+build_deps=("mesa xorg-server-devel")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
+}

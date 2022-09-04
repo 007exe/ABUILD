@@ -1,0 +1,27 @@
+pkgname=xf86-video-sisusb
+pkgver=0.9.7
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("Xorg SiS USB video driver.")
+longdesc=("Is the Xorg video driver for SiS video chips connected via a Net2280-based USB dongle.")
+
+source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-sisusb-${pkgver}.tar.bz2")
+
+tags=("xorg xorg-drivers")
+
+build_deps=("xorg-server-devel")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
+}

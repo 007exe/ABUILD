@@ -1,0 +1,26 @@
+pkgname=xf86-input-elographics
+pkgver=1.4.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X.org Elographics TouchScreen input driver.")
+longdesc=("Elographics input driver.")
+
+source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("xorg xorg-drivers")
+
+build_deps=("glibc xorg-server-devel xorgproto")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}
