@@ -1,16 +1,15 @@
 pkgname=python-validate-pyproject
-pkgver=0.9
+pkgver=0.10.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Validation library and CLI tool for checking on 'pyproject.toml' files using JSON Schema.")
-longdesc=("Validation library and CLI tool for checking on 'pyproject.toml' files using JSON Schema.")
 
 source=("https://github.com/abravalheri/validate-pyproject/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-packaging python-trove-classifiers python-tomli")
+build_deps=("python python-build python-installer python-wheel python-setuptools-scm python-packaging python-trove-classifiers python-tomli")
 
 adddep=("python-packaging python-trove-classifiers python-tomli")
 
@@ -19,6 +18,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 build() {
   go_src_dir
   echo "recursive-include src *.template *.json LICENSE LICENSE.*" > MANIFEST.in
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  sed -i '/--cov/d' setup.cfg
+  python -m build -wn
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
