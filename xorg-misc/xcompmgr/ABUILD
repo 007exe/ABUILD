@@ -1,0 +1,26 @@
+pkgname=xcompmgr
+pkgver=1.1.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Composite Window-effects manager for X.org.")
+longdesc=("Composite Window-effects manager for X.org.")
+
+source=("https://xorg.freedesktop.org/releases/individual/app/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("xorg xorg-misc")
+
+build_deps=("libxcomposite libxdamage libxrender libxext")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}
