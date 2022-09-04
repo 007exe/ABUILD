@@ -10,7 +10,7 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools-scm python-toml python-wheel python-pydantic")
+build_deps=("python-build python-installer python-setuptools-scm python-toml python-wheel")
 
 adddep=("python-pydantic")
 
