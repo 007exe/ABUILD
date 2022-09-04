@@ -1,6 +1,6 @@
 pkgname=python-cleo
-pkgver=0.8.1
-pkgbuild=2
+pkgver=1.0.0a5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Create beautiful and testable command-line interfaces")
@@ -18,6 +18,6 @@ adddep=("python-clikit")
 build() {
   go_src_dir
   python -m pyproject2setuppy build
-  python -m pyproject2setuppy install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/${pkgname}/
+  python -m pyproject2setuppy install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
