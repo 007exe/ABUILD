@@ -162,3 +162,4 @@ xorg-base            | Базовые реализации X.Org.
 xorg-drivers         | Драйвера X.Org.
 xorg-fonts           | Шрифты X.Org.
 xorg-libs            | Различные библиотеки X.Org.
+xorg-misc            | Различные пакеты относящиеся к X.Org.
