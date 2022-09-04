@@ -1,5 +1,5 @@
 pkgname=libssh
-pkgver=0.10.1
+pkgver=0.10.2
 pkgbuild=1
 arch=("auto")
 
