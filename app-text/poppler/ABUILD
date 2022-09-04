@@ -1,5 +1,5 @@
 pkgname=poppler
-pkgver=22.08.0
+pkgver=22.09.0
 pkgbuild=1
 arch=("auto")
 
