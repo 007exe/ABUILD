@@ -1,0 +1,25 @@
+pkgname=xorg-xeyes
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Follow the mouse/SHAPE extension X demo.")
+longdesc=("Follow the mouse/SHAPE extension X demo.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xeyes-${pkgver}.tar.bz2")
+
+tags=("xorg-apps xorg")
+
+build_deps=("xorg-util-macros libxfixes libx11 libxt libxext libxmu libxrender libxi")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

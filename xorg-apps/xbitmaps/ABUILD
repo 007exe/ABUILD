@@ -1,0 +1,25 @@
+pkgname=xbitmaps
+pkgver=1.1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X.org Bitmap files.")
+longdesc=("The xbitmaps package contains bitmap images used by multiple applications built in Xorg chapter.")
+
+source=("https://xorg.freedesktop.org/releases/individual/data/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("xorg-apps xorg")
+
+build_deps=("xorg-util-macros")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

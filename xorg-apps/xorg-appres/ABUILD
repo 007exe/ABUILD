@@ -1,0 +1,26 @@
+pkgname=xorg-appres
+pkgver=1.0.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("List X application resource database.")
+longdesc=("list X application resource database.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/appres-${pkgver}.tar.xz")
+
+tags=("xorg-apps xorg")
+
+build_deps=("libxt xorg-util-macros")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

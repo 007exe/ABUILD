@@ -1,0 +1,25 @@
+pkgname=xorg-xlogo
+pkgver=1.0.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X Window System logo.")
+longdesc=("X Window System logo.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xlogo-${pkgver}.tar.bz2")
+
+tags=("xorg-apps xorg")
+
+build_deps=("xorg-util-macros libsm libxaw libxmu libxt libxext libx11 libxrender libxft")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

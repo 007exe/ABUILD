@@ -1,0 +1,25 @@
+pkgname=xorg-xlsfonts
+pkgver=1.0.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("List available X fonts.")
+longdesc=("List available X fonts.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xlsfonts-${pkgver}.tar.xz")
+
+tags=("xorg-apps xorg")
+
+build_deps=("xorg-util-macros libx11")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

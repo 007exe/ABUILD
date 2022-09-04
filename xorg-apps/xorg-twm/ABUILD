@@ -8,7 +8,7 @@ longdesc=("The twm package contains a very minimal window manager.")
 
 source=("https://xorg.freedesktop.org/releases/individual/app/twm-${pkgver}.tar.xz")
 
-tags=("xorg-apps xorg")
+tags=("xorg xorg-apps")
 
 build_deps=("libxmu xorg-util-macros")
 

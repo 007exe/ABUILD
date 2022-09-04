@@ -1,14 +1,14 @@
-pkgname=xorg-luit
-pkgver=20210218
+pkgname=luit
+pkgver=20220111
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Filter that can be run between an arbitrary application and a UTF-8 terminal emulator")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-tags=('x11-apps xserver')
-
 source=("https://invisible-mirror.net/archives/luit/luit-${pkgver}.tgz")
+
+tags=("xorg xorg-apps")
 
 build_deps="libfontenc libx11"
 
@@ -17,12 +17,12 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --enable-fontenc \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

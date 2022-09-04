@@ -1,16 +1,16 @@
-pkgname=xorg-xmessage
-pkgver=1.0.6
+pkgname=xorg-xev
+pkgver=1.2.5
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Display a message or query in a window.")
+shortdesc=("Print contents of X events")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
+
+source=("http://xorg.freedesktop.org/archive/individual/app/xev-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xmessage-${pkgver}.tar.xz")
-
-build_deps=("libxaw xorg-util-macros")
+build_deps=("libx11 libxrandr xorg-util-macros xorgproto")
 
 build() {
   go_src_dir

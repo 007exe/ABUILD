@@ -6,9 +6,9 @@ arch=("auto")
 shortdesc=("Device Color Characterization utility for X Color Management System")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-tags=("xorg-apps xorg")
-
 source=("http://xorg.freedesktop.org/archive/individual/app/xcmsdb-${pkgver}.tar.xz")
+
+tags=("xorg-apps xorg")
 
 build_deps=("libx11 xorg-util-macros")
 

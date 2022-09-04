@@ -1,0 +1,26 @@
+pkgname=xorg-xvidtune
+pkgver=1.0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Video mode tuner for Xorg.")
+longdesc=("Video mode tuner for Xorg.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xvidtune-${pkgver}.tar.bz2")
+
+tags=("xorg-apps xorg")
+
+build_deps=("xorg-util-macros libxxf86vm libxt libxaw libxmu libx11")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

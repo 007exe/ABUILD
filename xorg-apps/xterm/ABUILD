@@ -1,0 +1,58 @@
+pkgname=xterm
+pkgver=372
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Terminal emulator for X")
+longdesc=("This package is not a part of the Xorg katamari and is provided only as a dependency to other packages or for testing the completed Xorg installation.")
+
+tags=("xorg xorg-apps")
+
+source=("https://invisible-mirror.net/archives/${pkgname}/${pkgname}-${pkgver}.tgz")
+
+build_deps=("libxft libxaw ncurses luit xbitmaps libxkbfile libutempter")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --libdir=/etc \
+    --mandir=/usr/share/man \
+    --with-app-defaults=/usr/share/X11/app-defaults/ \
+    --with-x \
+    --disable-full-tgetent \
+    --disable-imake \
+    --enable-ansi-color \
+    --enable-88-color \
+    --enable-256-color \
+    --enable-broken-osc \
+    --enable-broken-st \
+    --enable-load-vt-fonts \
+    --enable-i18n \
+    --enable-wide-chars \
+    --enable-doublechars \
+    --enable-warnings \
+    --enable-tcap-query \
+    --enable-logging \
+    --enable-dabbrev \
+    --enable-freetype \
+    --enable-luit \
+    --enable-mini-luit \
+    --enable-narrowproto \
+    --enable-exec-xterm \
+    --enable-sixel-graphics \
+    --enable-regis-graphics \
+    --with-tty-group=tty \
+    --with-utempter
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  chmod 0755 "${pkgdir}/usr/bin/xterm"
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -m755 -d ${pkgdir}/usr/share/applications
+  install -m644 ${srcdir}/${pkgname}-${pkgver}/{xterm,uxterm}.desktop ${pkgdir}/usr/share/applications/
+}

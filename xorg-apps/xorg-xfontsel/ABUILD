@@ -1,0 +1,24 @@
+pkgname=xorg-xfontsel
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Point and click selection of X11 font names.")
+longdesc=("Point and click selection of X11 font names.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xfontsel-${pkgver}.tar.xz")
+
+tags=("xorg-apps xorg")
+
+build_deps=("xorg-util-macros libxaw libxmu libxt libx11")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,25 @@
+pkgname=xorg-xcalc
+pkgver=1.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Scientific calculator for X")
+longdesc=("Scientific calculator for X.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xcalc-${pkgver}.tar.xz")
+
+tags=("xorg xorg-apps")
+
+build_deps=("libxaw xorg-util-macros")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

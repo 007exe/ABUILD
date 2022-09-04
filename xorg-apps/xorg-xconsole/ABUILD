@@ -1,0 +1,25 @@
+pkgname=xorg-xconsole
+pkgver=1.0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Monitor system console messages with X.")
+longdesc=("Monitor system console messages with X.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/xconsole-${pkgver}.tar.xz")
+
+tags=("xorg-apps xorg")
+
+build_deps=("xorg-util-macros libxaw libxmu libxt libx11")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

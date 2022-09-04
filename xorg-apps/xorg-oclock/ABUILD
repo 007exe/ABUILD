@@ -1,0 +1,26 @@
+pkgname=xorg-oclock
+pkgver=1.0.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Round X clock.")
+longdesc=("Round X clock.")
+
+source=("https://xorg.freedesktop.org/archive/individual/app/oclock-${pkgver}.tar.xz")
+
+tags=("xorg xorg-apps")
+
+build_deps=("libx11 libxmu libxext libxkbfile xorg-util-macros")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}
