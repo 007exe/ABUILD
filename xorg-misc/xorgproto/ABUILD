@@ -8,7 +8,7 @@ longdesc=("The xorgproto package provides the header files required to build the
 
 source=("https://xorg.freedesktop.org/archive/individual/proto/${pkgname}-${pkgver}.tar.xz")
 
-tags=("xorg-base xorg")
+tags=("xorg xorg-misc")
 
 build_deps=("meson xorg-util-macros libxslt xmlto asciidoc")
 
