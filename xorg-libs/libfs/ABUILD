@@ -1,0 +1,25 @@
+pkgname=libfs
+pkgver=1.0.8
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("Library Interface to the X Font Server.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+tags=("libs xorg-libs")
+
+build_deps=("xorg-util-macros xorgproto xtrans")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libFS-${pkgver}.tar.bz2")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}

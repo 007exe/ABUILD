@@ -1,0 +1,28 @@
+pkgname=libxft
+pkgver=2.3.4
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("FreeType-based font drawing library for X.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXft-${pkgver}.tar.bz2")
+
+tags=("libs xorg-libs")
+
+build_deps=("fontconfig libxrender")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

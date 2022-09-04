@@ -1,0 +1,27 @@
+pkgname=libdmx
+pkgver=1.1.4
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("X.Org dmx library.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+tags=("libs xorg-libs")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libdmx-${pkgver}.tar.bz2")
+
+build_deps=("xorg-util-macros libxext xorgproto")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

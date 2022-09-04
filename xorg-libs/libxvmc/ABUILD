@@ -1,0 +1,29 @@
+pkgname=libxvmc
+pkgver=1.0.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X11 Video Motion Compensation extension library.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXvMC-${pkgver}.tar.xz")
+
+tags=("libs xorg-libs")
+
+build_deps=("libxext libxv")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

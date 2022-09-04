@@ -1,0 +1,18 @@
+--- xtrans-1.2.7/xtrans.m4.tirpc	2012-10-03 16:47:12.233259250 +0200
++++ xtrans-1.2.7/xtrans.m4	2012-10-03 16:47:19.431278192 +0200
+@@ -116,7 +116,14 @@ AC_DEFUN([XTRANS_SECURE_RPC_FLAGS],
+  if test "x$SECURE_RPC" = "xyes" -o "x$SECURE_RPC" = "xtry" ; then
+ 	FOUND_SECURE_RPC="no"
+ 	AC_CHECK_FUNCS([authdes_seccreate authdes_create],
+-			[FOUND_SECURE_RPC="yes"])
++			[FOUND_SECURE_RPC="yes"],[
++		AC_CHECK_LIB([tirpc], [authdes_seccreate], [FOUND_SECURE_RPC="tirpc"])
++		AC_CHECK_LIB([tirpc], [authdes_create], [FOUND_SECURE_RPC="tirpc"])
++		if test "x$FOUND_SECURE_RPC" = "tirpc"; then
++			FOUND_SECURE_RPC="yes"
++			LIBS="$LIBS -ltirpc"
++		fi
++	])
+ 	if test "x$FOUND_SECURE_RPC" = "xno" ; then
+ 		if test "x$SECURE_RPC" = "xyes" ; then
+ 	AC_MSG_ERROR([Secure RPC requested, but required functions not found])

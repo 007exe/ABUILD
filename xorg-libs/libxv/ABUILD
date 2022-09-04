@@ -1,0 +1,28 @@
+pkgname=libxv
+pkgver=1.0.11
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("X11 Video extension library.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXv-${pkgver}.tar.bz2")
+
+tags=("libs xorg-libs")
+
+build_deps="libxext xorgproto"
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

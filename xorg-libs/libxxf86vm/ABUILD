@@ -1,0 +1,27 @@
+pkgname=libxxf86vm
+pkgver=1.1.4
+pkgbuild=2
+arch=("auto")
+
+shortdesc=("X.Org Xxf86vm library.")
+longdesc=("X11 XFree86 video mode extension library.")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXxf86vm-${pkgver}.tar.bz2")
+
+tags=("libs xorg-libs")
+
+build_deps=("xorg-util-macros xorgproto libxext")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

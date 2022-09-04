@@ -1,0 +1,31 @@
+pkgname=libfontenc
+pkgver=1.1.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X11 font encoding library.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+tags=("libs xorg-libs")
+
+source=("https://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.xz")
+
+build_deps=("zlib xorgproto xorg-util-macros xorg-fonts-encodings")
+
+adddep=("xorg-fonts-encodings")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --with-encodingsdir=/usr/share/fonts/encodings \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

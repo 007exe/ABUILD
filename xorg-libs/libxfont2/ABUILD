@@ -1,0 +1,28 @@
+pkgname=libxfont2
+pkgver=2.0.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X11 font rasterization library.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+source=("https://xorg.freedesktop.org/archive/individual/lib/libXfont2-${pkgver}.tar.xz")
+
+tags=("libs xorg-libs")
+
+build_deps=("freetype libfontenc xorg-util-macros xtrans xorgproto")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}

@@ -1,0 +1,31 @@
+pkgname=libx11
+pkgver=1.8.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X11 client-side library.")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+source=("http://xorg.freedesktop.org/releases/individual/lib/libX11-${pkgver}.tar.xz")
+
+tags=("libs xorg-libs")
+
+build_deps=("libxcb xorgproto xorg-util-macros xtrans")
+
+adddep=("xorgproto")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --disable-xf86bigfont
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}
