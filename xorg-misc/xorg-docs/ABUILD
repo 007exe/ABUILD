@@ -8,7 +8,7 @@ longdesc=("X.org documentation.")
 
 source=("https://xorg.freedesktop.org/archive/individual/doc/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xorg-docs xorg")
+tags=("xorg xorg-misc")
 
 build_deps=("tar")
 
