@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("C-Extensions for Python.")
 longdesc=("Cython is a language that facilitates the writing of C extensions for the Python language.")
 
-source=("https://github.com/cython/cython/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
+source=("https://github.com/cython/cython/archive/${pkgver}/cython-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
