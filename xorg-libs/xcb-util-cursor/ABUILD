@@ -8,7 +8,7 @@ longdesc=("The xcb-util-cursor package provides a module that implements the XCB
 
 source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("x11-libs libs")
+tags=("libs xorg-libs")
 
 build_deps=("libxcb xcb-util-renderutil xcb-util-image xorgproto")
 

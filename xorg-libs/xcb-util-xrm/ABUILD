@@ -8,7 +8,7 @@ longdesc=("X C-language Bindings sample implementations.")
 
 source=("https://github.com/Airblader/xcb-util-xrm/releases/download/v${pkgver}/xcb-util-xrm-${pkgver}.tar.gz")
 
-tags=("x11-libs libs")
+tags=("libs xorg-libs")
 
 build_deps=("xcb-util xorg-util-macros libx11")
 

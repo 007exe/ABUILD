@@ -8,7 +8,7 @@ longdesc=("The xcb-util-image package provides additional extensions to the XCB 
 
 source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("x11-libs libs")
+tags=("utils xorg-libs")
 
 build_deps=("libxcb xcb-util xorg-util-macros xorgproto")
 

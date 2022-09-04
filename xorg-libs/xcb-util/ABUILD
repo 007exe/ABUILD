@@ -8,7 +8,7 @@ longdesc=("The xcb-util package provides additional extensions to the XCB librar
 
 source=("http://xcb.freedesktop.org/dist//xcb-util-${pkgver}.tar.bz2")
 
-tags=("x11-libs libs")
+tags=("libs xorg-libs")
 
 build_deps=("libxcb gperf xorg-util-macros xorgproto")
 

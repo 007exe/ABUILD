@@ -8,7 +8,7 @@ longdesc=("The xcb-util-renderutil package provides additional extensions to the
 
 source=("https://xcb.freedesktop.org/dist/xcb-util-renderutil-${pkgver}.tar.bz2")
 
-tags=("x11-libs libs")
+tags=("libs xorg-libs")
 
 build_deps=("libxcb xorg-util-macros xorgproto")
 

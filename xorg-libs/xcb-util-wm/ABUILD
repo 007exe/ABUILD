@@ -8,7 +8,7 @@ longdesc=("The xcb-util-wm package contains libraries which provide client and w
 
 source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("x11-libs libs")
+tags=("libs xorg-libs")
 
 build_deps=("libxcb xorg-util-macros xorgproto")
 
