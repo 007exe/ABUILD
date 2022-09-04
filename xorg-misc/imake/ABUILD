@@ -1,0 +1,39 @@
+pkgname=imake
+pkgver=1.0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X.Org imake program and related utilities.")
+longdesc=("X.Org imake program and related utilities.")
+
+source=("https://xorg.freedesktop.org/releases/individual/util/imake-${pkgver}.tar.bz2"
+"https://xorg.freedesktop.org/releases/individual/util/gccmakedep-1.0.3.tar.bz2"
+"https://xorg.freedesktop.org/releases/individual/util/lndir-1.0.3.tar.bz2"
+"https://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.6.tar.bz2"
+"https://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.7.tar.bz2")
+
+tags=("xorg xorg-misc")
+
+build_deps=("xorgproto perl xorg-util-macros xorg-font-util glibc")
+
+before_build() {
+  cd ${srcdir}/xorg-cf-files-1.0.7
+  burn_patches
+}
+
+build() {
+  cd ${srcdir}
+  for i in *; do
+    if [ -d "${i}" ]; then
+      pushd "${i}"
+      autoreconf -fi
+      ./configure \
+        --prefix=/usr \
+        --libdir=/usr/lib \
+        --disable-static
+      make -j${numjobs}
+      make DESTDIR=${pkgdir} install
+      popd
+    fi
+  done
+}
