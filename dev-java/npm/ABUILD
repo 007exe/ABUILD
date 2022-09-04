@@ -1,5 +1,5 @@
 pkgname=npm
-pkgver=8.19.0
+pkgver=8.19.1
 pkgbuild=1
 arch=("auto")
 
