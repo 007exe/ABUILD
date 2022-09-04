@@ -8,7 +8,7 @@ longdesc=("The xcb-proto package provides the XML-XCB protocol descriptions that
 
 source=("https://xorg.freedesktop.org/archive/individual/proto/$pkgname-$pkgver.tar.xz")
 
-tags=("x11-base xorg")
+tags=("xorg xorg-misc")
 
 build_deps=("python libxml2")
 
