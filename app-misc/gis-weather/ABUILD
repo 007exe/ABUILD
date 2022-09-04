@@ -1,0 +1,34 @@
+pkgname=gis-weather
+pkgver=0.8.4.17
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Customizable weather widget.")
+
+source=("https://github.com/RingOV/gis-weather/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("app-misc apps")
+
+build_deps=("gtk3 python python-gobject python-cairo")
+
+adddep=("gtk3 python python-gobject python-cairo")
+
+build() {
+  cd ${srcdir}
+  mkdir -p ${pkgdir}/usr/bin
+  mkdir -p ${pkgdir}/usr/share/gis-weather
+  mkdir -p ${pkgdir}/usr/share/applications
+  cp -R ${srcdir}/${pkgname}-${pkgver}/. ${pkgdir}/usr/share/gis-weather
+  rm -fr ${pkgdir}/usr/share/gis-weather/.git
+  chmod -R 777 ${pkgdir}/usr/share/gis-weather
+  echo "exec python3 /usr/share/gis-weather/gis-weather.py $*" > ${pkgdir}/usr/bin/gis-weather
+  chmod 755 ${pkgdir}/usr/bin/gis-weather
+  echo "[Desktop Entry]
+Name=Gis Weather
+Comment=Weather widget
+Categories=GNOME;Utility;
+Exec=/usr/bin/gis-weather
+Icon=/usr/share/gis-weather/icon.png
+Terminal=false
+Type=Application" > ${pkgdir}/usr/share/applications/gis-weather.desktop
+}
