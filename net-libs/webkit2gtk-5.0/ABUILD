@@ -1,5 +1,5 @@
 pkgname=webkit2gtk-5.0
-pkgver=2.36.6
+pkgver=2.36.7
 pkgbuild=1
 arch=("auto")
 
