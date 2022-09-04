@@ -3,14 +3,14 @@ pkgver=1.0.6
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("X.org Cursor themes")
+shortdesc=("X.org Cursor themes.")
 longdesc=("The xcursor-themes package contains the redglass and whiteglass animated cursor themes.")
-
-tags=('x11-datas xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/data/xcursor-themes-${pkgver}.tar.bz2")
 
-build_deps="pkg-config xorg-xcursorgen xorg-util-macros"
+tags=("xorg xorg-misc")
+
+build_deps=("xorg-xcursorgen xorg-util-macros")
 
 build() {
   go_src_dir
@@ -20,6 +20,6 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
