@@ -1,12 +1,12 @@
 pkgname=libxft
-pkgver=2.3.4
-pkgbuild=2
+pkgver=2.3.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("FreeType-based font drawing library for X.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXft-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXft-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
