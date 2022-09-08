@@ -1,13 +1,12 @@
 pkgname=python-poetry-core
-pkgver=1.0.8
+pkgver=1.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Poetry PEP 517 Build Backend.")
 longdesc=("Poetry PEP 517 Build Backend & Core Utilities.")
 
-_pkgname=poetry-core
-source=("https://github.com/python-poetry/${_pkgname}/archive/${pkgver}.tar.gz")
+source=("https://github.com/python-poetry/poetry-core/archive/${pkgver}/poetry-core-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
