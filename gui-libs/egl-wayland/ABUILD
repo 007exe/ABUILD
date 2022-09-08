@@ -1,5 +1,5 @@
 pkgname=egl-wayland
-pkgver=1.1.10
+pkgver=1.1.11
 pkgbuild=1
 arch=("auto")
 
