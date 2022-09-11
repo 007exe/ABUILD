@@ -1,6 +1,6 @@
 pkgname=qt6-declarative
-pkgver=6.3.1
-pkgbuild=2
+pkgver=6.3.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classes for QML and JavaScript languages.")

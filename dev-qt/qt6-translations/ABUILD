@@ -1,6 +1,6 @@
 pkgname=qt6-translations
-pkgver=6.3.1
-pkgbuild=2
+pkgver=6.3.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework (Translations).")

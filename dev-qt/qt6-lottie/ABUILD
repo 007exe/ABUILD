@@ -1,6 +1,6 @@
 pkgname=qt6-lottie
-pkgver=6.3.1
-pkgbuild=2
+pkgver=6.3.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A family of player software for a certain json-based file format for describing 2d vector graphics animations.")

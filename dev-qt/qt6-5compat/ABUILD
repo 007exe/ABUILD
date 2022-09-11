@@ -1,6 +1,6 @@
 pkgname=qt6-5compat
-pkgver=6.3.1
-pkgbuild=2
+pkgver=6.3.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Module that contains unsupported Qt 5 APIs.")

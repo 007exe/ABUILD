@@ -1,5 +1,5 @@
 pkgname=qt6-webengine
-pkgver=6.3.1
+pkgver=6.3.2
 pkgbuild=1
 arch=("auto")
 
