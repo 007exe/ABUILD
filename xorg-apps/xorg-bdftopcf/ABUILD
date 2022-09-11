@@ -1,0 +1,26 @@
+pkgname=xorg-bdftopcf
+pkgver=1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Convert X font from Bitmap Distribution Format to Portable Compiled Format.")
+longdesc=("Bdftopcf converts X fonts from Bitmap Distribution Format to Portable Compiled Format.")
+
+source=("http://xorg.freedesktop.org/archive/individual/app/bdftopcf-${pkgver}.tar.bz2")
+
+tags=("xorg xorg-apps")
+
+build_deps=("xorg-util-macros xorgproto")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
