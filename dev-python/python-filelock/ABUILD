@@ -1,12 +1,12 @@
 pkgname=python-filelock
-pkgver=3.7.1
+pkgver=3.8.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A platform independent file lock.")
 longdesc=("A platform independent file lock for Python.")
 
-source=("https://github.com/benediktschmitt/py-filelock/archive/$pkgver.tar.gz")
+source=("https://github.com/benediktschmitt/py-filelock/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
