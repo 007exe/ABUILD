@@ -1,5 +1,5 @@
 pkgname=python
-pkgver=3.10.6
+pkgver=3.10.7
 pkgbuild=1
 arch=("auto")
 
