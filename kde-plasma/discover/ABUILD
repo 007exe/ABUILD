@@ -1,5 +1,5 @@
 pkgname=discover
-pkgver=5.25.4
+pkgver=5.25.5
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("plasma kde-plasma")
 
-# flatpak fwupd
+# flatpak
 build_deps=("extra-cmake-modules plasma-framework knewstuff kcmutils kidletime
-qt5-graphicaleffects appstream-qt kirigami2 discount kuserfeedback")
+qt5-graphicaleffects appstream-qt kirigami2 discount kuserfeedback fwupd")
 
 adddep=("hicolor-icon-theme")
 

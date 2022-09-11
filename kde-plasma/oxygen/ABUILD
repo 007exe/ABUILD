@@ -1,5 +1,5 @@
 pkgname=oxygen
-pkgver=5.25.4
+pkgver=5.25.5
 pkgbuild=1
 arch=("auto")
 
