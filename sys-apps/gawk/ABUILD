@@ -1,5 +1,5 @@
 pkgname=gawk
-pkgver=5.1.1
+pkgver=5.2.0
 pkgbuild=1
 arch=("auto")
 
