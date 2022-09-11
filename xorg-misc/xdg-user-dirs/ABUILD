@@ -1,0 +1,27 @@
+pkgname=xdg-user-dirs
+pkgver=0.18
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Manage user directories like ~/Desktop and ~/Music.")
+longdesc=("Xdg-user-dirs is a tool to help manage well known user directories like the desktop folder and the music folder.")
+
+source=("https://gitlab.freedesktop.org/xdg/xdg-user-dirs/-/archive/${pkgver}/xdg-user-dirs-${pkgver}.tar.gz")
+
+tags=("xorg-misc xorg")
+
+build_deps=("docbook-xsl")
+
+config_files=("etc/xdg/user-dirs.conf
+etc/xdg/user-dirs.defaults")
+
+build() {
+  go_src_dir
+  burn_patches
+  NOCONFIGURE=1 ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
