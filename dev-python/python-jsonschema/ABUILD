@@ -1,5 +1,5 @@
 pkgname=python-jsonschema
-pkgver=4.14.0
+pkgver=4.15.0
 pkgbuild=1
 arch=("auto")
 
