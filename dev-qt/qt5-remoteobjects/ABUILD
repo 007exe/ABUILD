@@ -1,6 +1,6 @@
 pkgname=qt5-remoteobjects
-pkgver=5.15.5
-pkgbuild=2
+pkgver=5.15.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Support for XPath, XQuery, XSLT and XML schema validation.")

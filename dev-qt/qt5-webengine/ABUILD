@@ -5,7 +5,7 @@ _qtbasever=5.15.5
 pkgname=qt5-webengine
 pkgver=5.15.10
 strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Provides support for web applications using the Chromium browser project.")

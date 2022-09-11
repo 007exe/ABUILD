@@ -1,6 +1,6 @@
 pkgname=qt5-3d
-pkgver=5.15.5
-pkgbuild=2
+pkgver=5.15.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ and QML APIs for easy inclusion of 3D graphics.")

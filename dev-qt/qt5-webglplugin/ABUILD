@@ -1,6 +1,6 @@
 pkgname=qt5-webglplugin
-pkgver=5.15.5
-pkgbuild=2
+pkgver=5.15.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("QPA plugin for running an application via a browser using streamed WebGL commands.")

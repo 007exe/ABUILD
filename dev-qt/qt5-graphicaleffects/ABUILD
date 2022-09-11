@@ -1,6 +1,6 @@
 pkgname=qt5-graphicaleffects
-pkgver=5.15.5
-pkgbuild=2
+pkgver=5.15.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Graphical effects for use with Qt Quick 2.")

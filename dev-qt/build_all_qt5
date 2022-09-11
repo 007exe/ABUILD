@@ -1,10 +1,13 @@
 #!/bin/bash
 
-QT_VERSION=5.15.5
-BUILD_VERSION=2
+QT_VERSION=5.15.6
+BUILD_VERSION=1
 # NOTE: Измени значение переменной _qtbasever в файле qt5-webengine/ABUILD
 WEBENGINE_VERSION=5.15.10
-BUILD_VERSION_WEB=1
+BUILD_VERSION_WEB=2
+
+WEBKIT_VERSION=5.212.0alpha4
+BUILD_VERSION_WEBKIT=3
 
 # NOTE: После сборки qt5-base следует пересобрать qt5-webkit и qt5-webengine
 # WARNING: Пакет qt5-webengine собирается очень долго
@@ -51,13 +54,13 @@ qt5-xmlpatterns
 CWD=~
 STARTD=`pwd`
 
-LOGFILE="$CWD/qt5-$QT_VERSION-build.log"
+LOGFILE=~/build.log
 
 echo "============================= Начало сборки `date` =============================" >> $LOGFILE
 
 for i in $MLIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -pod ~/mkpkg/packages/dev-qt -wd ~/BUILD -si -bv $QT_VERSION -bb $BUILD_VERSION; then
+    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -bv $QT_VERSION -bb $BUILD_VERSION; then
             echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
             cd $STARTD
     else
@@ -69,7 +72,7 @@ done
 #################################################################################################################
 
 cd $STARTD/qt5-webkit
-if mkpkg -ba -pod ~/mkpkg/packages/dev-qt -wd ~/BUILD -si -ib; then
+if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -ib -bv $WEBKIT_VERSION -bb $BUILD_VERSION_WEBKIT; then
         echo "`date` || Пакет: qt5-webkit ГОТОВ" >> $LOGFILE
         cd $STARTD
 else
@@ -81,7 +84,7 @@ fi
 
 cd $STARTD/qt5-webengine
 # Изменить версию "_qtbasever=" на QT_VERSION
-if mkpkg -ba -pod ~/mkpkg/packages/dev-qt -wd ~/BUILD -si -bv $WEBENGINE_VERSION -bb $BUILD_VERSION_WEB; then
+if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -bv $WEBENGINE_VERSION -bb $BUILD_VERSION_WEB; then
         echo "`date` || Пакет: qt5-webengine ГОТОВ" >> $LOGFILE
         cd $STARTD
 else
@@ -92,7 +95,7 @@ fi
 #################################################################################################################
 
 cd $STARTD/qt5-webview
-if mkpkg -ba -pod ~/mkpkg/packages/dev-qt -wd ~/BUILD -si -bv $QT_VERSION -bb $BUILD_VERSION; then
+if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -bv $QT_VERSION -bb $BUILD_VERSION; then
         echo "`date` || Пакет: qt5-webengine ГОТОВ" >> $LOGFILE
         cd $STARTD
 else

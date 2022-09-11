@@ -1,6 +1,6 @@
 pkgname=qt5-speech
-pkgver=5.15.5
-pkgbuild=2
+pkgver=5.15.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt module to make text to speech and speech recognition easy.")

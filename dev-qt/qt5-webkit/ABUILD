@@ -1,8 +1,8 @@
 pkgname=qt5-webkit
 _pkgver=5.212.0-alpha4
-pkgver=${_pkgver/-/}
+pkgver=5.212.0alpha4
 strict_version=1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Classes for a WebKit2 based implementation and a new QML API")

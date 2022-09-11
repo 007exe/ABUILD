@@ -1,6 +1,6 @@
 pkgname=qt5-multimedia
-pkgver=5.15.5
-pkgbuild=2
+pkgver=5.15.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classes for audio, video, radio and camera functionality.")
