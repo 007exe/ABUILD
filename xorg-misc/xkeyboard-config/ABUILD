@@ -1,0 +1,30 @@
+pkgname=xkeyboard-config
+pkgver=2.35.1
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("X keyboard configuration files.")
+longdesc=("The XKeyboardConfig package contains the keyboard configuration database for the X Window System.")
+
+tags=("xorg-misc xorg")
+
+source=("http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-${pkgver}.tar.xz")
+
+build_deps=("intltool xorg-xkbcomp libxslt python meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D xkb-base=/usr/share/X11/xkb \
+    -D compat-rules=true \
+    -D xorg-rules-symlinks=true
+  meson configure build
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -m755 -d ${pkgdir}/var/lib/xkb
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}
