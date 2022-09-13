@@ -1,0 +1,20 @@
+pkgname=python-mccabe
+pkgver=0.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("McCabe complexity checker for Python.")
+
+source=("https://github.com/PyCQA/mccabe/archive/${pkgver}/mccabe-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
+}
