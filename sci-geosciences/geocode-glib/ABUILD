@@ -1,0 +1,24 @@
+pkgname=geocode-glib
+pkgver=3.26.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Helper library for geocoding services.")
+longdesc=("GLib helper library for geocoding services.")
+
+source=("https://gitlab.gnome.org/GNOME/geocode-glib/-/archive/${pkgver}/geocode-glib-${pkgver}.tar.gz")
+
+tags=("libs sci-libs")
+
+build_deps=("gobject-introspection gtk-doc meson glib2 json-glib libsoup")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D enable-installed-tests=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
