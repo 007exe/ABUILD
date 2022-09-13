@@ -1,79 +1,26 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=cheese
-pkgver=2.32.0
-pkgbuild=3
-arch=('auto')
+pkgver=41.1
+pkgbuild=1
+arch=("auto")
 
-shortdesc="A tool to take pictures and videos from your webcam"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("A webcam application that supports image and video capture. Makes it easy to take photos and videos of you, your friends, pets or whatever you want. Allows you to apply fancy visual effects, fine-control image settings and has features such as Multi-Burst mode, Countdown timer for photos."
-)
+shortdesc=("Take photos and videos with your webcam, with fun graphical effects.")
+longdesc=("Cheese is used to take photos and videos with fun graphical effects.")
 
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.32/${pkgname}-${pkgver}.tar.bz2")
+source=("https://gitlab.gnome.org/GNOME/cheese/-/archive/${pkgver}/cheese-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("gnome gnome-apps")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="gnome gnome-extra"
+build_deps=("gobject-introspection vala git appstream-glib meson yelp-tools
+gtk3 gstreamer gst-plugins-bad gst-plugins-base gst-plugins-good clutter-gst
+clutter-gtk libcanberra librsvg gnome-desktop libgudev dconf gnome-video-effects")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---libexecdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-scrollkeeper"
-
-INSTALL_KEYS="GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
-gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" --domain cheese ${pkgdir}/etc/gconf/schemas/*.schemas
-rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D tests=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
