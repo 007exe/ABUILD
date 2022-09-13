@@ -1,0 +1,25 @@
+pkgname=python-astroid
+pkgver=2.12.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A common base representation of python source code.")
+
+source=("https://github.com/PyCQA/astroid/archive/v${pkgver}/astroid-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+# python-lazy-object-proxy
+build_deps=("python python-build python-installer python-wheel python-setuptools
+python-typing_extensions python-wrapt")
+
+# python-lazy-object-proxy
+adddep=("python-typing_extensions python-wrapt")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e '/^requires =/s/~=[0-9.]\+//g' pyproject.toml
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
+}
