@@ -1,6 +1,6 @@
 pkgname=lazarus
 pkgver=2.2.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Delphi-like IDE for FreePascal common files.")
