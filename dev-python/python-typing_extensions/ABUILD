@@ -1,3 +1,4 @@
+# NOTE: Данный пакет заменяет python-typing-extensions
 pkgname=python-typing_extensions
 pkgver=4.3.0
 pkgbuild=1
