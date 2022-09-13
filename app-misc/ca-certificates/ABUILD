@@ -1,5 +1,5 @@
 pkgname=ca-certificates
-pkgver=20210603
+pkgver=20220905
 pkgbuild=1
 arch=("noarch")
 url="https://src.fedoraproject.org/rpms/ca-certificates"
