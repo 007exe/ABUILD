@@ -1,0 +1,23 @@
+pkgname=gnome-video-effects
+pkgver=0.5.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Collection of GStreamer effects for GNOME.")
+longdesc=("Effects for Cheese, the webcam video and picture application.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-video-effects/-/archive/${pkgver}/gnome-video-effects-${pkgver}.tar.gz")
+
+tags=("gnome-libs libs")
+
+build_deps=("gst-plugins-good gst-plugins-bad frei0r-plugins meson")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  ninja -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
