@@ -1,36 +1,41 @@
 pkgname=protobuf
-pkgver=3.19.4
+pkgver=21.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Protocol Buffers - Google's data interchange format.")
 longdesc=("Google's Protocol Buffers - Extensible mechanism for serializing structured data.")
 
-source=("https://github.com/protocolbuffers/$pkgname/releases/download/v${pkgver}/${pkgname}-all-${pkgver}.tar.gz")
+source=("https://github.com/protocolbuffers/protobuf/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("unzip python-setuptools python-six gcc-libs glibc zlib")
+build_deps=("python-setuptools cmake gtest gcc-libs glibc zlib")
 
 pkglist=("python_protobuf")
 
 build() {
   go_src_dir
   burn_patches
-  autoreconf -vfi
-# Отключение тестов
-  sed -e "/DeprecationWarning/d" -i python/google/protobuf/internal/*test.py
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -Dprotobuf_USE_EXTERNAL_GTEST=ON \
+    -Dprotobuf_BUILD_SHARED_LIBS=ON
+  cmake --build build -j${numjobs}
 
+  ln -rs build src/.libs
+  cd python
+  PROTOC=../build/protoc \
+  python setup.py build --cpp_implementation
+
+  cd ..
+  DESTDIR=${pkgdir} cmake --install build
   install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
   install -vDm 644 editors/protobuf-mode.el -t ${pkgdir}/usr/share/emacs/site-lisp/
   install -vDm 644 editors/proto.vim -t ${pkgdir}/usr/share/vim/vimfiles/syntax
 }
+
+#########################################################################################################
 
 python_protobuf(){
   pkgname=python-protobuf
@@ -43,8 +48,14 @@ python_protobuf(){
 python_protobuf_prep() {
   go_src_dir
   local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-  cd python
-  python setup.py build --cpp_implementation
-  PYTHONPATH="$PWD/build/lib.linux-$CARCH-${python_version}:PYTHONPATH" \
-  python setup.py install --skip-build --cpp_implementation --optimize=1 --root=${pkgdir}
+
+  (
+    cd python
+    PYTHONPATH="$PWD/build/lib.linux-$CARCH-${python_version}:PYTHONPATH" \
+    python setup.py install --skip-build \
+                            --cpp_implementation \
+                            --optimize=1 \
+                            --root=${pkgdir}
+  )
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
