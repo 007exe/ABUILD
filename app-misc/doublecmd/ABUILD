@@ -1,5 +1,5 @@
 pkgname=doublecmd-gtk2
-pkgver=1.0.6
+pkgver=1.0.7
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,7 @@ longdesc=("Double Commander is a cross platform open source file manager with tw
 
 source=("http://sourceforge.net/projects/doublecmd/files/Double%20Commander%20Source/doublecmd-${pkgver}-src.tar.gz")
 
-tags=("app-misc xapps")
+tags=("app-misc apps")
 
 build_deps=("lazarus gtk2 qt5pas")
 
@@ -50,5 +50,5 @@ doublecmd-qt() {
 
 doublecmd-qt_prep() {
   cd ${srcdir}/doublecmd-qt
-  ./install/linux/install.sh --install-prefix="$pkgdir"
+  ./install/linux/install.sh --install-prefix=${pkgdir}
 }
