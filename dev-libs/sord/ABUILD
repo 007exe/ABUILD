@@ -1,37 +1,23 @@
 pkgname=sord
-pkgver=0.16.8
+pkgver=0.16.14
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A lightweight C library for storing RDF data in memory.")
 longdesc=("Library for storing RDF data in memory.")
 
-source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
+source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs dev-libs")
 
-build_deps=("waf serd glibc pcre")
+build_deps=("doxygen glibc meson pcre python-sphinx serd")
 
 build() {
   go_src_dir
   burn_patches
-  sed -i "/ldconfig/d" wscript
-  mkdir -pv tools
-  touch __init__.py
-  cp -v waflib/extras/{autoship,autowaf,lv2}.py tools/
-  mkdir -pv plugins/tools/
-  cp -v waflib/extras/{autoship,autowaf,lv2}.py plugins/tools/
-  rm -rv waflib
-  sed -e 's/waflib.extras/tools/g' \
-      -e "s/load('autowaf'/load('autowaf', tooldir='tools'/g" \
-      -e "s/load('lv2'/load('lv2', tooldir='tools'/g" \
-      -i wscript
-  waf configure \
-    --prefix=/usr \
-    --test
-  waf -v build
-  waf install --destdir=${pkgdir}
-
-  install -vDm 644 COPYING $pkgdir/usr/share/licenses/${pkgname}/LICENSE
-  install -t ${pkgdir}/usr/share/doc/${pkgname} -vDm 644 {AUTHORS,NEWS,README.md}
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
