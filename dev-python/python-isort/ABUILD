@@ -1,0 +1,24 @@
+pkgname=python-isort
+pkgver=5.10.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python utility / library to sort Python imports.")
+
+source=("https://github.com/PyCQA/isort/archive/${pkgver}/isort-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-poetry python-toml python-tomli")
+
+adddep=("python-toml python-tomli")
+
+build() {
+  go_src_dir
+  burn_patches
+  rm -r isort/_vendored
+  sed -i 's/from ._vendored //' isort/settings.py
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname}/ LICENSE
+}
