@@ -1,5 +1,5 @@
 pkgname=pcsclite
-pkgver=1.8.8
+pkgver=1.9.9
 pkgbuild=1
 arch=("auto")
 
@@ -29,7 +29,7 @@ build() {
 
   install -D -m0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
   install -d ${pkgdir}/usr/lib/pcsc/drivers
-  
+
   install -Dm755 ${filedir}/pcscd-init ${pkgdir}/etc/init.d/pcscd
 
   install -Dm644 ${filedir}/99-pcscd-hotplug-r1.rules ${pkgdir}/usr/lib/udev/rules.d/99-pcscd-hotplug-r1.rules
