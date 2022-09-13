@@ -1,0 +1,20 @@
+pkgname=python-dill
+pkgver=0.3.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Serialize all of python.")
+
+source=("https://github.com/uqfoundation/dill/archive/dill-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
