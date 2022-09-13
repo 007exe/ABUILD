@@ -1,62 +1,28 @@
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=libtar
-pkgver=1.2.11
-pkgbuild=2
-arch=('auto')
+pkgver=1.2.20
+pkgbuild=1
+arch=("auto")
 
-shortdesc="tar file manipulation API"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("libtar is a C library for manipulating POSIX tar files. It handles adding and extracting files to/from a tar archive."
-)
+shortdesc=("C library for manipulating POSIX tar files.")
+longdesc=("C library for manipulating tar archives.")
 
-source=("ftp://ftp.feep.net/pub/software/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/tklauser/libtar/archive/refs/tags/v${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("libs dev-libs")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
+build_deps=("zlib")
 
-tags="libs dev-libs"     			#short and long tags / длинный и короткий тег
-build_deps="" 			#
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-
-#numjobs=1 #Set number of jobs while compliling, otherwise it'll be autodetected
-
-docs=				#additional files should be copied into /usr/docs/${pkgname} dir from sources
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---libexecdir=/usr/libexec"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --disable-static \
+    --disable-encap \
+    --disable-epkg-install
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -D -m0644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
