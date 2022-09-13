@@ -1,0 +1,7 @@
+echo -e "\n"
+echo -e "The following packages extend brasero capabilities:"
+echo -e "libburn: alternative back-end"
+echo -e "libisofs: libburn back-end"
+echo -e "dvdauthor: video project"
+echo -e "vcdimager: video project"
+echo -e " "
