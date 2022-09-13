@@ -1,0 +1,23 @@
+pkgname=totem-plparser
+pkgver=3.26.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Playlist parsing library.")
+longdesc=("Simple GObject-based library to parse and save a host of playlist formats.")
+
+source=("https://gitlab.gnome.org/GNOME/totem-pl-parser/-/archive/V_${pkgver//./_}/totem-pl-parser-V_${pkgver//./_}.tar.gz")
+
+tags=("libs gnome-libs")
+
+build_deps=("gobject-introspection gtk-doc meson glib2 libxml2 libarchive libgcrypt")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
