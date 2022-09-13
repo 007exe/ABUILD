@@ -1,0 +1,20 @@
+pkgname=codespell
+pkgver=2.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fix common misspellings in source code.")
+longdesc=("Check text files for common misspellings.")
+
+source=("https://pypi.io/packages/source/c/codespell/codespell-${pkgver}.tar.gz")
+
+tags=("utils dev-util")
+
+build_deps=("python")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+}
