@@ -1,0 +1,20 @@
+pkgname=python-mypy_extensions
+pkgver=0.4.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Experimental type system extensions for programs checked with the mypy typechecker.")
+
+source=("https://pypi.org/packages/source/m/mypy_extensions/mypy_extensions-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --prefix="/usr" --root=${pkgdir} --optimize=1 --skip-build
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
