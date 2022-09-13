@@ -1,1 +1,8 @@
-glib-compile-schemas /usr/share/glib-2.0/schemas
+echo -e "\n"
+echo -e "The following packages extend file-roller capabilities:"
+echo -e "p7zip: 7z, arj, exe and encrypted zip files support"
+echo -e "unrar: better RAR archive support"
+echo -e "unace: ACE archive support"
+echo -e "lrzip: lrzip archive support"
+echo -e "squashfs-tools: squashfs image support"
+echo -e " "

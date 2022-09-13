@@ -1,31 +1,29 @@
 pkgname=file-roller
-pkgver=3.9.2
+pkgver=3.42.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Create and modify archives"
+shortdesc=("Create and modify archives.")
+longdesc=("File Roller is an archive manager for GNOME with support for tar, bzip2, gzip, zip, jar, compress, lzop, zstd, and many other archive formats.")
 
-source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/file-roller/-/archive/${pkgver}/file-roller-${pkgver}.tar.gz")
 
-tags="xapps app-arch"
+tags=("gnome gnome-apps")
 
-build_deps="make gcc binutils itstool perl perl-xml-parser gettext gnome-doc-utils desktop-file-utils intltool p7zip bzip2 pkg-config file json-glib libnotify libarchive dconf docbook-xsl sed grep"
+build_deps=("yelp-tools libnautilus-extension meson appstream-glib
+libhandy dconf libarchive file json-glib libnotify zip unzip")
 
-adddep="p7zip bzip2 unrar cpio gzip lha tar xz zlib rpm"
+adddep=("libhandy dconf libarchive file json-glib libnotify zip unzip")
 
-BUILD_SYSTEM="autotools"
+# NOTE: Это опциональные зависимости
+removedep=("p7zip unrar unace lrzip squashfs-tools")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---libexecdir=/usr/lib${LIBDIRSUFFIX}/file-roller \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-schemas-compile"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
