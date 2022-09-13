@@ -1,0 +1,30 @@
+pkgname=clutter-gst
+pkgver=3.0.27
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GStreamer bindings for clutter.")
+longdesc=("GStreamer integration library for Clutter.")
+
+source=("https://gitlab.gnome.org/Archive/clutter-gst/-/archive/${pkgver}/clutter-gst-${pkgver}.tar.gz")
+
+tags=("gnome-libs libs")
+
+build_deps=("gobject-introspection gtk-doc gst-plugins-good clutter gst-plugins-base-libs libxdamage libgudev gdk-pixbuf")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-good")
+
+
+build(){
+  go_src_dir
+  burn_patches
+  NOCONFIGURE=1 ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --enable-gtk-doc
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
