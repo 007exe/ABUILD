@@ -1,29 +1,25 @@
 pkgname=gnome-disk-utility
-pkgver=3.14.0
+pkgver=42.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="util for dealing with storage devices in GNOME"
-longdesc=("GNOME libraries and applications for dealing with storage devices")
+shortdesc=("Disk Management Utility for GNOME.")
+longdesc=("The GNOME Disk Utility package provides applications used for dealing with storage devices.")
 
-source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/gnome-disk-utility/-/archive/${pkgver}/gnome-disk-utility-${pkgver}.tar.gz")
 
-tags="gnome gnome-base"
+tags=("gnome gnome-apps")
 
-build_deps="make gcc intltool docbook-xsl gnome-settings-daemon libpwquality libdvdread xz pkg-config"
+build_deps=("meson docbook-xsl udisks gtk3 libsecret libpwquality libcanberra libdvdread libnotify parted libhandy")
 
-BUILD_SYSTEM="autotools"
+adddep=("udisks parted")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---libexecdir=/usr/lib${LIBDIRSUFFIX}/gnome-disk-utility \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
