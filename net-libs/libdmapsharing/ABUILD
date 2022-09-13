@@ -1,76 +1,31 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=libdmapsharing
-pkgver=2.9.7
+pkgver=2.9.41
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="daap content access"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Libdmapsharing is a library you may use to access and share DMAP content"
-)
+shortdesc=("A library that implements the DMAP family of protocols.")
+longdesc=("A library that implements the DMAP family of protocols.")
 
-source=("http://www.flyn.org/projects/libdmapsharing/${pkgname}-${pkgver}.tar.gz")
+source=("https://gitlab.gnome.org/GNOME/libdmapsharing/-/archive/LIBDMAPSHARING_${pkgver//./_}/libdmapsharing-LIBDMAPSHARING_${pkgver//./_}.tar.gz")
 
-patch_opts=("")
+tags=("libs net-libs")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="libs media-libs"
+build_deps=("gtk-doc gobject-introspection vala libsoup avahi gst-plugins-base-libs gdk-pixbuf")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---with-mdns=avahi"
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --with-mdns=avahi \
+    --disable-tests \
+    --disable-gtk-doc \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
