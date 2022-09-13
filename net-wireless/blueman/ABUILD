@@ -1,50 +1,36 @@
-# Package metadata
 pkgname=blueman
-pkgver=1.21
-pkgbuild=7
-arch="auto"
+pkgver=2.3.2
+pkgbuild=1
+arch=("auto")
 
-# Package description
-shortdesc=("GTK+ Bluetooth Manager")
-longdesc=("Blueman is a GTK+ Bluetooth ManagerBlueman is designed to be simple and intuitive for everyday bluetooth tasks such as:Connecting to 3G/EDGE/GPRS via DUN profile.Connecting to/Creating bluetooth networksConnecting to input devicesConnecting to audio devicesSending/Receiving/Browsing files via OBEXPairing")
+shortdesc=("GTK+ Bluetooth Manager.")
+longdesc=("Simple and intuitive GTK+ Bluetooth Manager.")
 
-# Source URL
-source=("http://download.tuxfamily.org/blueman/blueman-${pkgver}.tar.gz")
+source=("https://github.com/blueman-project/$pkgname/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
-# Tags
-tags="xapps net-wireless"
+tags=("apps net-wireless")
 
-# Manually-added dependencies
-adddep="notify-python hicolor-icon-theme polkit-gnome obex-data-server pygobject xdg-utils dbus-python"
+build_deps=("python-cython intltool iproute2 bluez bluez-libs gtk3 networkmanager python-cairo python-gobject")
 
-pkglist=nm
+adddep=("python-cairo python-gobject")
 
-# Build system
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
---bindir=/usr/bin \
---sbindir=/usr/sbin \
---libexecdir=/usr/libexec \
---includedir=/usr/include \
---mandir=/usr/man \
---infodir=/usr/info \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---sysconfdir=/etc \
---localstatedir=/var \
---enable-hal=no \
---enable-polkit=yes \
---with-dhcp-config=/etc/dhcpd.conf"
+# NOTE: Это опциональные зависимости
+removedep=("dnsmasq iproute2 networkmanager pulseaudio-bluetooth")
 
-nm() {
-	pkgname=blueman-networkmanager
-	shortdesc="NetworkManager support for Blueman"
-	adddep="NetworkManager ModemManager blueman"
+build() {
+  go_src_dir
+  burn_patches
+# Задаём правильное расположение конфигурации D-Bus
+  sed -i '/^dbusdir =/ s/sysconfdir/datadir/' data/configs/Makefile.{am,in}
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --with-dhcp-config='/etc/dhcpd.conf' \
+    --disable-schemas-compile \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
 }
-
-nm_prep() {
-	set -e
-	mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/blueman/plugins/applet
-	mv ${p_pkgdir}/usr/lib$LIBDIRSUFFIX/python2.6/site-packages/blueman/plugins/applet/NM* ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/blueman/plugins/applet/
-	set +e
-}
-
