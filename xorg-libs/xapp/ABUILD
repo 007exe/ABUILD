@@ -1,0 +1,28 @@
+pkgname=xapp
+pkgver=2.2.15
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Common library for X-Apps project.")
+longdesc=("This package includes files that are shared between several XApp apps (i18n files and configuration schemas).")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs xorg-libs")
+
+build_deps=("meson samurai gobject-introspection python-gobject vala libdbusmenu-gtk3 libgnomekbd")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  samu -C build
+  DESTDIR=${pkgdir} samu -C build install
+
+  rm -r ${pkgdir}/usr/bin
+
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  python -m compileall -o 0 -o 1 -o 2 --hardlink-dupes -s ${pkgdir} ${pkgdir}${site_packages}
+}
