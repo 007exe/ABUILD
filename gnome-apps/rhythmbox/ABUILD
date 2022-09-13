@@ -1,0 +1,37 @@
+pkgname=rhythmbox
+pkgver=3.4.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Music playback and management application.")
+longdesc=("Music management and playback software for GNOME.")
+
+source=("https://gitlab.gnome.org/GNOME/rhythmbox/-/archive/v${pkgver}/rhythmbox-v${pkgver}.tar.gz")
+
+tags=("apps gnome-apps")
+
+# zeitgeist
+build_deps=("gobject-introspection vala lirc libmtp brasero libdmapsharing libgpod totem-plparser
+gtk-doc yelp-tools meson dconf gst-plugins-base gst-plugins-good libsoup json-glib libnotify
+libpeas media-player-info tdb python-gobject libgudev grilo")
+
+adddep=("python-gobject media-player-info")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-ugly gst-plugins-bad gst-libav brasero libdmapsharing grilo-plugins
+lirc libgpod libmtp gvfs-mtp zeitgeist")
+
+build() {
+  go_src_dir
+  burn_patches
+  # Разрешить сборку с более новой версией meson
+  sed -i '/unsupported version of meson/d' meson.build
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  python -m compileall -d /usr/lib ${pkgdir}/usr/lib
+  python -O -m compileall -d /usr/lib ${pkgdir}/usr/lib
+}
