@@ -1,5 +1,5 @@
 pkgname=grantlee
-pkgver=5.2.0
+pkgver=5.3.0
 pkgbuild=1
 arch=("auto")
 
