@@ -1,0 +1,24 @@
+pkgname=python-sphinx-lv2-theme
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A minimal static theme for Sphinx.")
+
+_name=sphinx_lv2_theme
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/sphinx_lv2_theme-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-sphinx python-build python-installer python-setuptools python-wheel")
+
+adddep=("python-sphinx")
+
+build() {
+  go_src_dir
+  burn_patches
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 {NEWS,README.md} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
