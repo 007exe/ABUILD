@@ -1,78 +1,31 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=gnome-session
-pkgver=2.32.1
+pkgver=42.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="The GNOME Session Manager"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("This package contains an X11-compliant session manager (similar to xsm) with GNOME extensions. When you log out, the session manager will save the state of all your GNOME apps. When you log back in, the session manager will restore your session."
-)
+shortdesc=("The GNOME Session Handler.")
+longdesc=("Gnome session manager.")
 
-source=("ftp://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.32/${pkgname}-${pkgver}.tar.bz2")
+source=("https://gitlab.gnome.org/GNOME/gnome-session/-/archive/${pkgver}/gnome-session-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("gnome gnome-base")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="gnome gnome-base"
+build_deps=("mesa gtk-doc xtrans git python xmlto docbook-xsl meson dconf
+gsettings-desktop-schemas gnome-desktop json-glib libsm libxtst")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("gnome-desktop gsettings-desktop-schemas")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---libexecdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-install -d -m755 "${pkgdir}/usr/share/gconf/schemas"
-gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" --domain gnome-session-2.0 ${pkgdir}/etc/gconf/schemas/*.schemas
-rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+build(){
+  go_src_dir
+  burn_patches
+# Фикс Wayland сессии
+  sed 's@/bin/sh@/bin/sh -l@' -i gnome-session/gnome-session.in
+# NOTE: Отключаем сборку с systemd
+  sed -i "/  systemd_dep/,+3d;/if enable_systemd/a \    systemd_userunitdir = '/tmp\'" meson.build
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -Dsystemd_journal=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
