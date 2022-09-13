@@ -1,0 +1,23 @@
+pkgname=python-pyflakes
+pkgver=2.5.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A lint-like tool for Python to identify common errors quickly without executing code.")
+
+source=("https://pypi.io/packages/source/p/pyflakes/pyflakes-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
+
+  ln -s pyflakes ${pkgdir}/usr/bin/pyflakes3k
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
