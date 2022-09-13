@@ -1,6 +1,6 @@
 pkgname=fpc
 pkgver=3.2.2
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Free Pascal Compiler, Turbo Pascal 7.0 and Delphi compatible.")
