@@ -1,0 +1,20 @@
+pkgname=python-wrapt
+pkgver=1.14.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python module for decorators, wrappers and monkey patching.")
+
+source=("https://github.com/GrahamDumpleton/wrapt/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENS
+}
