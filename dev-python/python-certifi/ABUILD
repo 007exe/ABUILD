@@ -1,21 +1,26 @@
 pkgname=python-certifi
-pkgver=2021.10.8
-pkgbuild=2
-arch=('auto')
+pkgver=2022.06.15.1
+pkgbuild=1
+arch=("auto")
 
-shortdesc=("Mozillas SSL Certs")
-longdesc=("This package may or may not become a dependency of Requests. Mozillas CA bundle for SSL is MPL / GPL licensed. This will allow for that.")
+shortdesc=("Python package for providing Mozilla's CA Bundle (using system CA store).")
 
-_libname=${pkgname/python-/}
-source=("https://pypi.io/packages/source/${_libname:0:1}/$_libname/$_libname-$pkgver.tar.gz")
+source=("https://github.com/certifi/python-certifi/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel ca-certificates")
+
+adddep=("ca-certificates")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --skip-build -O1 --root="$pkgdir"
-  install -m0644 -D "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  ln -sf /etc/ssl/certs/ca-certificates.crt certifi/cacert.pem
+  sed -i 's/encoding="ascii"/encoding="utf-8"/' certifi/core.py
+  python -m build --wheel --no-isolation
+
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  ln -sf /etc/ssl/certs/ca-certificates.crt ${pkgdir}/${site_packages}/certifi/cacert.pem
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
