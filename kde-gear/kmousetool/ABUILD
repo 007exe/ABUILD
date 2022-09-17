@@ -1,5 +1,5 @@
 pkgname=kmousetool
-pkgver=22.08.0
+pkgver=22.08.1
 pkgbuild=1
 arch=("auto")
 
