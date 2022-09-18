@@ -1,5 +1,5 @@
 pkgname=gedit
-pkgver=42.0
+pkgver=42.2
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,7 @@ longdesc=("The Gedit package contains a lightweight UTF-8 text editor for the GN
 
 source=("https://download.gnome.org/sources/gedit/${pkgver%.*}/gedit-${pkgver}.tar.xz")
 
-tags=("gnome app-editors")
+tags=("gnome gnome-apps")
 
 build_deps=("yelp-tools vala gobject-introspection git gspell gtk-doc meson desktop-file-utils
 libxml2 gtksourceview4 gsettings-desktop-schemas libpeas python-gobject appstream-glib")
