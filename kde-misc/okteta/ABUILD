@@ -1,5 +1,5 @@
 pkgname=okteta
-pkgver=0.26.7
+pkgver=0.26.8
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,7 @@ removedep=("KDE hex editor for viewing and editing the raw data of files.")
 
 source=("https://download.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
-tags=("develop app-editors")
+tags=("develop kde-misc")
 
 build_deps=("extra-cmake-modules kdoctools qt5-tools kcmutils kparts knewstuff qca-qt5 qt5-script")
 
