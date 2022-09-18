@@ -1,0 +1,24 @@
+pkgname=kile
+pkgver=2.9.93
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A user friendly TeX/LaTeX frontend for KDE.")
+longdesc=("Kile is a user friendly TeX/LaTeX editor for the KDE desktop environment.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("utils kde-misc")
+
+build_deps=("extra-cmake-modules kdoctools ktexteditor kinit okular khtml texlive-core qt5-script")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
