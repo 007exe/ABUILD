@@ -1,0 +1,65 @@
+pkgname=openoffice
+pkgver=4.1.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("OpenOffice.org (a full-featured open-source office suite).")
+longdesc=("OpenOffice.org is a full-featured open-source office suite that is compatible with all other major office software. This is a repackaging of the official OpenOffice.org binary RPM's distributed by the upstream developers.")
+
+source=("https://downloads.apache.org/openoffice/$pkgver/binaries/ru/Apache_OpenOffice_${pkgver}_Linux_x86-64_install-rpm_ru.tar.gz")
+
+tags=("app-office apps")
+
+# libxcrypt-compat
+build_deps=("rpm freetype glibc gtk2 hicolor-icon-theme desktop-file-utils shared-mime-info")
+
+adddep=("hicolor-icon-theme desktop-file-utils shared-mime-info")
+
+config_files=("opt/openoffice4/program/sofficerc")
+
+_source_dirs=ru/RPMS
+
+_find_rpms() {
+    local dir file
+    for dir in "${_source_dirs[@]}"; do
+        dir=${srcdir:-src}/${dir}
+        ( cd "${dir}" ) # check existing
+        for file in $( find "${dir}" -type f -name '*.rpm' ); do
+            if ! [[ $file == */desktop-integration/* && $file != *-freedesktop-menus-* ]] &&
+                ! [[ $file == */jre-* ]]; then
+                echo "${file}"
+            elif type -p msg >/dev/null; then
+                echo "Skipping ${file##*/}" >&2
+            else
+                echo "Skipping ${file##*/}" >&2
+            fi
+        done
+    done
+}
+
+
+_ln_s_t() {
+    local dir=$1 prefix=$2
+    shift 2
+    mkdir -p "$dir"
+    local file
+    for file in "${@}"; do
+        readlink -v -e "${file}" >/dev/null # check existing
+        ln -s -T /"${file}" "${dir}/${prefix}${file##*/}"
+    done
+}
+
+build() {
+  cd ${pkgdir}
+  local file
+    for file in $( _find_rpms ); do
+    echo "Extracting ${file##*/}"
+    bsdtar -xf "${file}"
+  done
+  echo "Completing package"
+  [[ -h usr/bin/soffice ]] && rm -f usr/bin/soffice
+  _ln_s_t usr/share/licenses/${pkgname} '' opt/openoffice4/program/LICENSE
+  sed -i -re "1s;^#! *(/usr(/local)?)?/bin/(env +)?python(2[^ ]*)?( |$);#!/usr/bin/env python2 ;" $(
+        find opt/openoffice4/program/python-core-2.7.18/lib -type f -name '*.py'
+	)
+}
