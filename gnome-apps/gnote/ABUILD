@@ -1,0 +1,22 @@
+pkgname=gnote
+pkgver=42.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A note taking application.")
+
+source=("https://gitlab.gnome.org/GNOME/gnote/-/archive/${pkgver}/gnote-${pkgver}.tar.gz")
+
+tags=("gnome gnome-apps")
+
+build_deps=("yelp-tools meson gtkmm3 gspell libxslt libsecret")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
