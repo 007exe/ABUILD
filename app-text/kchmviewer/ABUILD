@@ -1,78 +1,23 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=kchmviewer
-pkgver=6.0
+pkgver=8.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Free CHM files viewer application"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Kchmviewer is a free, open-source chm (MS HTML help file format) viewer, which uses Qt toolkit. Its main advantage is the best support for non-English languages. Unlike other viewers, kchmviewer in most cases is able to correctly detect the chm file encoding and show it. It correctly shows the index and table of context in Russian, Spanish, Romanian, Korean, Chinese and Arabic help files, and with new search engine is able to search in any chm file no matter what language it is written. KchmViewer is distributed under GNU GPL license version 3. Homepage: http://www.kchmviewer.net"
-)
+shortdesc=("A .chm files (MS HTML help file format) viewer.")
 
-source=("http://downloads.sourceforge.net/project/kchmviewer/kchmviewer/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/gyunaev/${pkgname}/archive/refs/tags/RELEASE_8_0.tar.gz")
 
-patch_opts=("")
+tags=("app-text apps")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="app-text xapps"
+build_deps=("chmlib libzip qt5-webengine")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="qmake"
-BUILD_KEYS="*.pro PREFIX=/usr"
-
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
-
-go_src_dir
-
-# bin
-install -D -m755 ./bin/kchmviewer ${pkgdir}/usr/bin/kchmviewer || exit 1
-
-# icon
-install -D -m644 ./packages/${pkgname}.png \
-	${pkgdir}/usr/share/pixmaps/${pkgname}.png || exit 1
-install -D -m644 ./packages/${pkgname}.desktop \
-	${pkgdir}/usr/share/applications/${pkgname}.desktop || exit 1
-
-#install -D -m644 ${srcdir}/build-$pkgver/po/kchmviewer_ru.po \
-#	${pkgdir}/usr/share/locale/ru/kchmviewer_ru.po || exit 1
+build(){
+  go_src_dir
+  burn_patches
+  qmake-qt5 PREFIX=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm755 bin/${pkgname} ${pkgdir}/usr/bin/${pkgname}
+  install -Dm644 packages/$pkgname.png ${pkgdir}/usr/share/pixmaps/$pkgname.png
+  install -Dm644 packages/$pkgname.desktop ${pkgdir}/usr/share/applications/${pkgname}.desktop
 }
