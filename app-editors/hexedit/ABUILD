@@ -1,17 +1,24 @@
 pkgname=hexedit
-pkgver=1.2.13
+pkgver=1.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Simple hex editor"
-source=("http://rigaux.org/${pkgname}-${pkgver}.src.tgz")
-tags="develop app-editors"
-build_deps="ncurses"
+shortdesc=("View and edit files in hexadecimal or in ASCII.")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --mandir=/usr/man"
+source=("https://github.com/pixel/hexedit/archive/${pkgver}.tar.gz")
+
+tags=("develop app-editors")
+
+build_deps=("ncurses")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make prefix=${pkgdir}/usr install
+}
