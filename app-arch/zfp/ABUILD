@@ -1,6 +1,6 @@
 pkgname=zfp
-pkgver=0.5.5
-pkgbuild=2
+pkgver=1.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Compressed numerical arrays that support high-speed random access.")
