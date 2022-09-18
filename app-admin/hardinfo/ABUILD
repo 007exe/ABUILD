@@ -1,46 +1,25 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=hardinfo
-pkgver=0.5.1
+pkgver=0.6_alpha
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A system information and benchmark tool"
+shortdesc=("A system information and benchmark tool.")
+longdesc=("System information and benchmark tool for Linux systems.")
 
-source=("http://download.berlios.de/hardinfo/${pkgname}-${pkgver}.tar.bz2")
+#source=("https://github.com/lpereira/hardinfo/archive/refs/tags/release-${pkgver}.tar.gz")
+source=("https://github.com/lpereira/hardinfo/archive/54b2e307af763ce87bc8c88e80785d8114bf38dd.tar.gz")
 
-patch_opts=("")
+tags=("utils app-admin")
 
-tags="base app-admin"
+build_deps=("cmake gtk2")
 
-build_deps=""
-
-adddep=""
-
-docs=
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-before_build(){
+build() {
   go_src_dir
-  sed -i 's|{ DB_PREFIX "debian_version",	"deb"  },|{ DB_PREFIX "hardinfo.distro",       "arch"  },\
-    { DB_PREFIX "debian_version",	"deb"  },|' computer.h
-}
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-after_build(){
-  go_src_dir
-  install -D -m644 "${filedir}"/hardinfo.distro "${pkgdir}/etc/hardinfo.distro"
-  rmdir ${pkgdir}/usr/local
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 }
