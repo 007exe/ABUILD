@@ -1,24 +1,21 @@
-#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=bchunk
-pkgver=1.2.0
-pkgbuild=2
-arch=('auto')
+pkgver=1.2.2
+pkgbuild=1
+arch=("auto")
 
-shortdesc="A Tool to Convert *.raw *.bin files to an ISO file"
-source=("http://hes.iki.fi/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-tags="utils app-cdr"
-build_deps="glibc"
+shortdesc=("A Tool to Convert *.raw *.bin files to an ISO file.")
 
-build()
-{
-    go_src_dir
-    burn_patches
-    make -j${numjobs}
-}
+source=("http://he.fi/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-after_build()
-{
-    go_src_dir
-    mkdir -p ${pkgdir}/usr/bin ${pkgdir}/usr/share/man/man1
-    make PREFIX=${pkgdir}/usr MAN_DIR=${pkgdir}/usr/share/man install
+tags=("utils app-cdr")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  install -dm755 ${pkgdir}/usr/{bin,share/man/man1}
+  make PREFIX=${pkgdir}/usr MAN_DIR=${pkgdir}/usr/share/man install
+  chown root:root ${pkgdir}/usr/share/man/man1/bchunk.1
 }
