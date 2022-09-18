@@ -1,26 +1,25 @@
-#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=kakasi
-pkgver=2.3.4
-pkgbuild=2
-arch=('auto')
+pkgver=2.3.6
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Kanji Kana Simple Inverter"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("KAKASI is the language processing filter to convert Kanji characters to Hiragana, Katakana or Romaji(1) and may be helpful to read Japanese documents."
-'The name "KAKASI" is the abbreviation of "kanji kana simple inverter" and the inverse of SKK "simple kana kanji converter" which is developed by Masahiko Sato at Tohoku University. The most entries of the kakasi dictionary is derived form the SKK dictionaries.'
-"Homepage: http://kakasi.namazu.org/"
-)
+shortdesc=("Convert Kanji characters to Hiragana, Katakana or Romaji.")
 
-source=("http://kakasi.namazu.org/stable/${pkgname}-${pkgver}.tar.gz")
-tags="console app-i18n"
-build_deps="gcc"
+source=("http://kakasi.namazu.org/stable/${pkgname}-${pkgver}.tar.xz")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --disable-static \
-    --mandir=/usr/man"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+tags=("console app-i18n")
+
+build_deps=("bash")
+
+adddep=("bash")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
