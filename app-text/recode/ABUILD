@@ -1,0 +1,28 @@
+pkgname=recode
+pkgver=3.7.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Converts files between various character sets and usages.")
+longdesc=("Convert files between various character sets.")
+
+source=("https://github.com/rrthomas/recode/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-text console")
+
+build_deps=("python libxslt docbook-xsl python-pip")
+
+adddep=("python libxslt docbook-xsl")
+
+build() {
+  go_src_dir
+  autoconf
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --infodir=/usr/share/info \
+    --without-included-gettext
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
