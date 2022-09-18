@@ -1,24 +1,25 @@
 pkgname=pwgen
-pkgver=2.06
-pkgbuild=2
-arch=('auto')
+pkgver=2.08
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Password Generator"
-longdesc=("Pwgen is a small, GPL'ed password generator which creates passwords which can be easily memorized by a human. Homepage: http://sourceforge.net/projects/pwgen/")
-source=("http://downloads.sourceforge.net/project/pwgen/pwgen/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-tags="utils app-admin"
-build_deps="glibc"
+shortdesc=("Password Generator.")
+longdesc=("Password generator for creating easily memorable passwords.")
 
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
+tags=("utils app-admin")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoconf
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
