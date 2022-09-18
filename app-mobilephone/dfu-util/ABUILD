@@ -1,28 +1,24 @@
 pkgname=dfu-util
-pkgver=0.1
-pkgbuild=2
-arch=('auto')
+pkgver=0.11
+pkgbuild=1
+arch=("auto")
 
-shortdesc="DFU Utility"
+shortdesc=("Tool intended to download and upload firmware using DFU protocol to devices connected over USB.")
 
-source=("git:git://git.openezx.org/dfu-util.git")
-tags="dev-embedded utils"
-before_build() {
-	autoreconf --install --force
+source=("http://dfu-util.sourceforge.net/releases/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-mobilephone utils")
+
+build_deps=("libusb")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm755 dfuse-pack.py ${pkgdir}/usr/bin/dfuse-pack
+  install -Dm644 doc/60-dfuse.rules ${pkgdir}/usr/lib/udev/rules.d/60-dfuse.rules
 }
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--program-prefix= \
-	--program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
