@@ -1,27 +1,31 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=lesspipe
-pkgver=1.82
+pkgver=2.06
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="An input filter for the pager less'"
+shortdesc=("An input filter for the pager less")
 
-source=("http://downloads.sourceforge.net/project/lesspipe/lesspipe/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/wofr06/lesspipe/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="base sys-apps"
+tags=("utils app-text")
 
-build_deps="make coreutils"
+build_deps=("zsh less perl")
 
-adddep="perl less p7zip unrar gzip bzip2 infozip"
+adddep=("zsh less perl")
+
+# NOTE: Это опциональные зависимости
+removedep=("rpmextract fastjar unzip unrar p7zip cabextract cdrtools html2text ghostscript
+djvulibre odt2txt antiword catdoc pandoc libreoffice-fresh unrtf mediainfo imagemagick")
 
 build() {
   go_src_dir
-  ./configure --prefix=/usr --yes
-  make
-  make install PREFIX=${pkgdir}/usr
-}
-
-after_build(){
-  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --yes
+  make -j${numjobs}
+  mkdir -p ${pkgdir}/usr/share/man/man1
+  make DESTDIR=${pkgdir} PREFIX=/usr install
+  mv ${pkgdir}/etc/{bashc,bash_c}ompletion.d
   install -D ${filedir}/lesspipe.sh ${pkgdir}/etc/profile.d/lesspipe.sh
 }
