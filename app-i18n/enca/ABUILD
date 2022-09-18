@@ -1,22 +1,27 @@
 pkgname=enca
-pkgver=1.15
+pkgver=1.19
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Charset encoding analyzer and converter")
+shortdesc=("Charset analyser and converter.")
 longdesc=("Enca is an Extremely Naive Charset Analyser. It detects character set and encoding of text files and can also convert them to other encodings.")
 
-tags=("console app-text")
+source=("https://dl.cihar.com/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-source=("http://dl.cihar.com/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+tags=("console app-i18n")
 
-build_deps="make gcc glibc-solibs glibc-i18n perl grep gtk-doc coreutils"
+build_deps=("recode")
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-            --libdir=/usr/lib${LIBDIRSUFFIX} \
-             --mandir=/usr/man \
-             --sysconfdir=/etc \
-             --enable-external"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --mandir=/usr/share/man \
+    --with-librecode=/usr \
+    --enable-external
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
