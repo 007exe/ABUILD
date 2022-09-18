@@ -1,75 +1,24 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=unshield
-pkgver=0.6
+pkgver=1.5.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="InstallShield extractor"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Tool for extracting files from InstallShield installers"
-)
+shortdesc=("InstallShield CAB file extractor.")
+longdesc=("Extracts CAB files from InstallShield installers.")
 
-source=("http://downloads.sourceforge.net/sourceforge/synce/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/twogood/unshield/archive/${pkgver}.tar.gz")
 
-patch_opts=("libunshield.c.patch 0")
+tags=("console app-arch")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="console app-arch"
+build_deps=("cmake zlib openssl")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build() {
+  go_src_dir
+  burn_patches
+  cmake . \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/unshield/LICENSE
 }
