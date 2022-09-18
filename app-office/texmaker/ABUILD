@@ -1,70 +1,22 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=texmaker
-pkgver=3.0.2
+pkgver=5.1.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Free crossplatform LaTeX editor"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Free crossplatform LaTeX editor"
-)
+shortdesc=("Free crossplatform LaTeX editor.")
 
-source=("http://www.xm1math.net/texmaker/${pkgname}-${pkgver}.tar.bz2")
+source=("https://www.xm1math.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
-patch_opts=("")
+tags=("apps app-office")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="tex app-text"
+build_deps=("qt6-declarative qt6-5compat texlive-core")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("qt6-declarative qt6-5compat texlive-core")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-build()
-{
-go_src_dir
-export INSTALL_ROOT=${pkgdir}
-qmake -unix PREFIX=//usr texmaker.pro
-make || exit 1
-make install || exit 1
-}
-
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build(){
+  go_src_dir
+  qmake6 PREFIX=/usr texmaker.pro
+  make -j${numjobs}
+  install -dm755 ${pkgdir}/usr/share
+  make INSTALL_PATH=${pkgdir} INSTALL_ROOT=${pkgdir} PREFIX="/usr" install
 }
