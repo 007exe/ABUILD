@@ -1,15 +1,26 @@
 pkgname=cuneiform
 pkgver=1.1.0
-_dpkgver=1.1
 pkgbuild=1
-arch=('auto')
-shortdesc="Linux OCR system"
-source=("http://launchpad.net/cuneiform-linux/${_dpkgver}/${_dpkgver}/+download/cuneiform-linux-${pkgver}.tar.bz2")
-tags="xapps app-text"
+arch=("auto")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
+shortdesc=("Linux port of an OCR system developed in Russia. Supports more than 20 languages.")
+
+source=("https://launchpad.net/cuneiform-linux/${pkgver%.*}/${pkgver%.*}/+download/${pkgname}-linux-${pkgver}.tar.bz2")
+
+tags=("apps app-text")
+
+build_deps=("cmake imagemagick")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's/lib64/lib/' install_files.cmake
+  sed -e '/CMAKE_SHARED_LINKER_FLAGS/d' -i cuneiform_src/CMakeLists.txt
+  CFLAGS+=' -fcommon'
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 cuneiform_src/Kern/license.txt ${pkgdir}/usr/share/licenses/cuneiform/license.txt
+}
