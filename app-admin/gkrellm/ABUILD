@@ -1,47 +1,24 @@
 pkgname=gkrellm
-pkgver=2.3.5
-pkgbuild=6
-arch=('auto')
+pkgver=2.3.11
+pkgbuild=1
+arch=("auto")
 
-shortdesc="GKrellM charts SMP CPU, load, Disk, and all active net interfaces automatically."
+shortdesc=("System monitor package for GTK2.")
+longdesc=("Single process stack of various system monitors.")
 
-source=("http://members.dslextreme.com/users/billw/$pkgname/$pkgname-$pkgver.tar.bz2")
+source=("http://gkrellm.srcbox.net/releases/${pkgname}-${pkgver}.tar.bz2")
 
+tags=("apps app-admin")
 
-tags="xapps x11-utils"
+build_deps=("gtk2 libsm lm_sensors gettext")
 
-build_deps="xorg-server libSM gettext"  
+config_files=("etc/gkrellmd.conf")
 
-removedep="lm_sensors"
-
-
-numjobs=1
-
-
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-
-build()
-{
-
-
-go_src_dir
-
-burn_patches
-
-
-make \
-INSTALLDIR=/usr/bin PKGCONFIGDIR=/usr/lib${LIBDIRSUFFIX}/pkgconfig \
-LOCALEDIR=/usr/share/locale MANDIR=/usr/man/man1 \
-INCLUDEDIR=/usr/include SYS_LIBS+=-lgmodule-2.0 || exit 1
-
-make install \
-INSTALLDIR=$pkgdir/usr/bin DESTDIR=${pkgdir}/usr \
-LOCALEDIR=$pkgdir/usr/share/locale \
-PKGCONFIGDIR=$pkgdir/usr/lib${LIBDIRSUFFIX}/pkgconfig \
-MANDIR=$pkgdir/usr/man/man1 INCLUDEDIR=$pkgdir/usr/include || exit 1
-
+build(){
+  go_src_dir
+  burn_patches
+  make LOCALEDIR=/usr/share/locale
+  make DESTDIR=${pkgdir} PREFIX=/usr install
+  install -Dm644 server/gkrellmd.conf ${pkgdir}/etc/gkrellmd.conf
 }
 
