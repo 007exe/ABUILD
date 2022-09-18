@@ -1,0 +1,24 @@
+pkgname=seahorse
+pkgver=42.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNOME application for managing PGP keys.")
+
+source=("https://gitlab.gnome.org/GNOME/seahorse/-/archive/${pkgver}/seahorse-${pkgver}.tar.gz")
+
+tags=("gnome-apps apps")
+
+build_deps=("gtk3 gcr libsecret libsoup gpgme libpwquality
+libhandy openldap yelp-tools gobject-introspection vala meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D manpage=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
