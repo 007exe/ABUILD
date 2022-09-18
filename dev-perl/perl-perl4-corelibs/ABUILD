@@ -1,0 +1,20 @@
+pkgname=perl-perl4-corelibs
+pkgver=0.004
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Libraries historically supplied with Perl 4.")
+
+source=("https://search.cpan.org/CPAN/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-module-build")
+
+build(){
+  go_src_dir
+  sed -i "s#< 70#< 90#" t/timelocal.t
+  perl Build.PL
+  ./Build
+  ./Build install installdirs=vendor destdir=${pkgdir}
+}
