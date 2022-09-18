@@ -1,0 +1,31 @@
+pkgname=gedit-plugins
+pkgver=42.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Collection of plugins for the gedit Text Editor.")
+longdesc=("GEdit is the GNOME Text editor. This is plugins for GEdit.")
+
+source=("https://gitlab.gnome.org/GNOME/gedit-plugins/-/archive/${pkgver}/gedit-plugins-${pkgver}.tar.gz")
+
+tags=("gnome-apps gnome")
+
+# libgit2-glib
+build_deps=("vte gucharmap gobject-introspection
+vala yelp-tools appstream-glib meson")
+
+adddep=("gedit")
+
+# NOTE: Это опциональные зависимости
+removedep=("gucharmap vte3 libgit2-glib")
+
+build(){
+  go_src_dir
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  python -m compileall -d /usr ${pkgdir}/usr
+  python -O -m compileall -d /usr ${pkgdir}/usr
+}
