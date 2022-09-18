@@ -1,19 +1,26 @@
 pkgname=libmirage
-pkgver=1.5.0
+pkgver=3.2.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="CDEmu image library"
+shortdesc=("CD-ROM image (B6T/C2D/CCD/CDI/CIF/CUE/ISO/MDS/MDX/NRG/TOC) access library.")
 
-source=("http://downloads.sourceforge.net/sourceforge/cdemu/${pkgname}-${pkgver}.tar.bz2")
+source=("https://downloads.sourceforge.net/cdemu/${pkgname}-${pkgver}.tar.xz")
 
-tags="libs sys-fs"
+tags=("libs dev-libs")
 
-BUILD_SYSTEM="autotools"
+build_deps=("gtk-doc gobject-introspection cmake intltool glib2 libsndfile libsamplerate zlib bzip2 xz shared-mime-info")
 
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--libdir=/usr/lib${LIBDIRSUFFIX}"
+adddep=("shared-mime-info")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DPOST_INSTALL_HOOKS:BOOL=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
