@@ -1,61 +1,26 @@
-#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=chntpw
-pkgver=110511
+pkgver=140201
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Offline NT Password Editor - reset passwords in a Windows NT SAM userdatabase file"
+shortdesc=("Offline NT Password Editor - reset passwords in a Windows NT SAM userdatabase file.")
 
-source=("http://pogostick.net/~pnh/ntpasswd/${pkgname}-source-${pkgver}.zip")
+source=("https://pogostick.net/~pnh/ntpasswd/${pkgname}-source-${pkgver}.zip")
 
-patch_opts=("")
+tags=("app-crypt utils")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="app-crypt utils"
+build_deps=("openssl")
 
-#dependencies only needed to build package
-build_deps=""
+build(){
+  go_src_dir
+  sed -i 's/^CFLAGS= \(.*\) -m32 $/CFLAGS= \1/' Makefile
+  burn_patches
+  make -j${numjobs}
+  install -Dm0755 ${pkgname} ${pkgdir}/usr/bin/${pkgname}
+  install -Dm0755 reged ${pkgdir}/usr/bin/reged
+  install -Dm0755 cpnt ${pkgdir}/usr/bin/cpnt
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-build()
-{
-go_src_dir
-
-if [ `uname -m` = "x86_64" ]; then
-burn_patches
-fi
-
-make
-
-install -Dm0755 "${srcdir}/${pkgname}-${pkgver}/${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
-install -Dm0755 "${srcdir}/${pkgname}-${pkgver}/reged" "${pkgdir}/usr/bin/reged"
-install -Dm0755 "${srcdir}/${pkgname}-${pkgver}/cpnt" "${pkgdir}/usr/bin/cpnt"
-
-for _f in *.txt; do
-    install -Dm0644 "${_f}" "${pkgdir}/usr/doc/${pkgname}/${_f}"
+  for _f in *.txt; do
+    install -Dm0644 ${_f} ${pkgdir}/usr/share/doc/${pkgname}/${_f}
   done
 }
