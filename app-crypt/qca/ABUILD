@@ -10,11 +10,9 @@ source=("https://download.kde.org/stable/qca/${pkgver}/qca-${pkgver}.tar.xz")
 
 tags=("app-crypt libs")
 
-#pkglist=("qca-qt6")
+pkglist=("qca-qt6")
 
-# NOTE: qt6-5compat необходим qt6
-# botan pkcs11-helper
-build_deps=("cmake doxygen qt5-base ca-certificates nss")
+build_deps=("cmake doxygen qt5-base ca-certificates nss qt6-5compat botan pkcs11-helper")
 
 adddep=("ca-certificates")
 
