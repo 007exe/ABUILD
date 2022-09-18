@@ -1,6 +1,6 @@
 pkgname=fcitx
-pkgver=4.2.9.8
-pkgbuild=2
+pkgver=4.2.9.9
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Flexible Context-aware Input Tool with eXtension.")

@@ -1,4 +1,5 @@
-echo -e "\nThe following packages extend fcitx capabilities:"
+echo -e "\n"
+echo -e "The following packages extend fcitx capabilities:"
 echo -e "enchant: for word predication support"
 echo -e "opencc: optional engine to do chinese convert"
 echo -e "gettext: for fcitx-po-parser"
