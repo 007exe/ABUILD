@@ -1,0 +1,23 @@
+pkgname=libgweather-4
+pkgver=4.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Location and timezone database and weather-lookup library.")
+
+source=("https://gitlab.gnome.org/GNOME/libgweather/-/archive/${pkgver}/libgweather-${pkgver}.tar.gz")
+
+tags=("libs gnome-libs")
+
+build_deps=("gobject-introspection vala git gi-docgen meson python-gobject libsoup geocode-glib dconf")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
