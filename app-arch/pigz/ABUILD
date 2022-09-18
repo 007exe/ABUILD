@@ -1,40 +1,27 @@
 pkgname=pigz
-pkgver=2.3.1
+pkgver=2.7
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Parallel implementation of the gzip file compressor"
+shortdesc=("Parallel implementation of the gzip file compressor.")
 
-source=("http://www.zlib.net/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("https://www.zlib.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="app-arch libs"
+tags=("app-arch libs")
 
+build_deps=("zlib")
 
-adddep="zlib"
+build(){
+  go_src_dir
+  burn_patches
+  make
+  install -Dm755 ${pkgname} ${pkgdir}/usr/bin/${pkgname}
 
-
-build()
-{
-
-go_src_dir
-
- make
-
-  cd "${srcdir}/$pkgname-$pkgver"
-
-  install -Dm755 "${srcdir}"/${pkgname}-$pkgver/${pkgname} \
-    "${pkgdir}"/usr/bin/${pkgname}
-
-  pushd "${pkgdir}"/usr/bin
+  pushd ${pkgdir}/usr/bin
     ln -s pigz unpigz
   popd
 
-  install -Dm644 "${srcdir}"/${pkgname}-$pkgver/${pkgname}.1 \
-    "${pkgdir}"/usr/share/man/man1/${pkgname}.1
-  install -Dm644 "${srcdir}"/${pkgname}-$pkgver/${pkgname}.pdf \
-    "${pkgdir}"/usr/share/doc/${pkgname}/${pkgname}.pdf
-  install -Dm644 "${srcdir}"/${pkgname}-$pkgver/README \
-    "${pkgdir}"/usr/share/licenses/${pkgname}/README
+  install -Dm644 ${pkgname}.1 ${pkgdir}/usr/share/man/man1/${pkgname}.1
+  install -Dm644 ${pkgname}.pdf ${pkgdir}/usr/share/doc/${pkgname}/${pkgname}.pdf
+  install -Dm644 README ${pkgdir}/usr/share/licenses/${pkgname}/README
 }
-
-
