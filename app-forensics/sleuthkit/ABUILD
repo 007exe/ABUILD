@@ -1,29 +1,28 @@
 pkgname=sleuthkit
-pkgver=4.1.3
+pkgver=4.11.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="The Sleuth Kit iscommand line tools that allow you to investigate volume and file system data."
+shortdesc=("File system and media management forensic analysis tools.")
 
-source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/$pkgname/$pkgname/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="app-admin utils"
+tags=("app-admin utils")
 
-build_deps="perl"
+# libewf
+build_deps=("perl sqlite")
 
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  burn_patches
+  aclocal
+  automake
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm0644 licenses/* ${pkgdir}/usr/share/licenses/${pkgname}
+}
