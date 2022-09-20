@@ -1,5 +1,5 @@
 pkgname=libhandy
-pkgver=1.6.2
+pkgver=1.8.0
 pkgbuild=1
 arch=("auto")
 
