@@ -1,5 +1,5 @@
 pkgname=upower
-pkgver=0.99.20
+pkgver=1.90.0
 pkgbuild=1
 arch=("auto")
 
