@@ -1,17 +1,30 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=flacon
-pkgver=0.6.0
+pkgver=9.2.0
 pkgbuild=1
-arch=('noarch')
+arch=("auto")
 
-shortdesc="A FLAC/CUE file splitter."
-source="http://flacon.googlecode.com/files/$pkgname-$pkgver.tgz"
-tags="xapps media-sound"
-adddep="PyQt flac shntool"
+shortdesc=("An Audio File Encoder. Extracts audio tracks from an audio CD image to separate tracks.")
 
-build()
-{
-	go_src_dir
-	burn_patches
-	make DESTDIR=$pkgdir install
+source=("https://github.com/flacon/${pkgname}/archive/v${pkgver}.tar.gz")
+
+tags=("apps media-sound")
+
+build_deps=("cmake icu qt5-tools hicolor-icon-theme qt5-base uchardet taglib")
+
+adddep=("hicolor-icon-theme")
+
+# NOTE: Это опциональные зависимости
+removedep=("flac lame mac mp3gain opus-tools sox ttaenc vorbis-tools vorbisgain wavpack")
+
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DBUILD_TESTS=Yes
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 }
