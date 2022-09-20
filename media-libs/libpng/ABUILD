@@ -1,6 +1,6 @@
 pkgname=libpng
-pkgver=1.6.37
-pkgbuild=3
+pkgver=1.6.38
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library of functions for manipulating PNG image format files")
