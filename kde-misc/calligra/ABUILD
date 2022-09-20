@@ -1,0 +1,27 @@
+pkgname=calligra
+pkgver=3.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A set of applications for productivity and creative usage")
+
+source=("https://invent.kde.org/office/calligra/-/archive/v${pkgver}/calligra-v${pkgver}.tar.gz")
+
+tags=("kde kde-misc")
+
+# pstoedit libetonyek vc libgit2 libspnav libodfgen cauchy
+build_deps=("extra-cmake-modules kdoctools kdesignerplugin libwpg okular eigen marble-common
+boost libvisio libwps kcalendarcore akonadi kcmutils knotifyconfig kross kactivities kdiagram
+kdelibs4support gsl imath kcontacts qca-qt5 poppler-qt5 khtml kinit")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DBUILD_TESTING=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  rm ${pkgdir}/usr/lib/qt/plugins/calligra*thumbnail.so
+}
