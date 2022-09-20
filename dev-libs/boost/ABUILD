@@ -1,5 +1,5 @@
 pkgname=boost
-pkgver=1.79.0
+pkgver=1.80.0
 pkgbuild=1
 arch=("auto")
 
