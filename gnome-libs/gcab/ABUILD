@@ -1,5 +1,5 @@
 pkgname=gcab
-pkgver=1.4
+pkgver=1.5
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,7 @@ longdesc=("Library and tool for working with Microsoft Cabinet (CAB) files.")
 
 source=("https://download.gnome.org/sources/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
-tags=("libs app-arch")
+tags=("libs gnome-libs")
 
 build_deps=("glib2 meson")
 
@@ -18,6 +18,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib
-  ninja -C build -j${numjobs}
-  DESTDIR=${pkgdir} meson install -C build
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
