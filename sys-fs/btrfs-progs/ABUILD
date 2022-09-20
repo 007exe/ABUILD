@@ -1,5 +1,5 @@
 pkgname=btrfs-progs
-pkgver=5.17
+pkgver=5.19.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ source=("https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-
 
 tags=("utils sys-fs")
 
-build_deps=("asciidoc xmlto python python-setuptools e2fsprogs reiserfsprogs glibc util-linux-ng lzo zlib zstd libgcrypt")
+build_deps=("asciidoc xmlto python python-setuptools e2fsprogs reiserfsprogs glibc util-linux lzo zlib zstd libgcrypt")
 
 # NOTE: Это опциональные зависимости
 removedep=("python e2fsprogs reiserfsprogs")
