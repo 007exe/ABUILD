@@ -1,0 +1,63 @@
+pkgname=projectm
+pkgver=3.1.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Music visualizer which uses 3D accelerated iterative image based rendering.")
+
+source=("https://github.com/projectM-visualizer/projectm/releases/download/v${pkgver}/projectM-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("mesa glm qt5-base ftgl glew sdl2 libpulse")
+
+pkglist=("projectm-sdl projectm-pulseaudio")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --enable-gles \
+    --enable-sdl \
+    --enable-threading \
+    --enable-qt
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install-data-am
+  cd src
+  make DESTDIR=${pkgdir} install-am
+  cd libprojectM
+  make DESTDIR=${pkgdir} install
+  cd ../NativePresets
+  make DESTDIR=${pkgdir} install
+  find ${pkgdir} -iname "\.*" -delete
+}
+
+#####################################################################
+
+projectm-sdl() {
+  pkgname=projectm-sdl
+  shortdesc=("Music visualizer which uses 3D accelerated iterative image based rendering (sdl).")
+  adddep=("projectm")
+}
+
+projectm-sdl_prep() {
+  go_src_dir
+  cd src/projectM-sdl
+  make DESTDIR=${pkgdir} install
+}
+
+#####################################################################
+
+projectm-pulseaudio() {
+  pkgname=projectm-pulseaudio
+  shortdesc=("Music visualizer which uses 3D accelerated iterative image based rendering (pulseaudio).")
+  adddep=("projectm")
+}
+
+projectm-pulseaudio_prep() {
+  go_src_dir
+  cd src/projectM-pulseaudio
+  make DESTDIR=${pkgdir} install
+}
