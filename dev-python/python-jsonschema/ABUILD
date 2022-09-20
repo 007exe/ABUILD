@@ -1,10 +1,9 @@
 pkgname=python-jsonschema
-pkgver=4.15.0
+pkgver=4.16.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An implementation of JSON Schema validation for Python.")
-longdesc=("An implementation of JSON Schema validation for Python.")
 
 source=("https://github.com/Julian/jsonschema/archive/v${pkgver}.tar.gz")
 
