@@ -1,0 +1,22 @@
+pkgname=retro-gtk
+pkgver=1.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Toolkit to write GTK based Libretro frontends.")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("gnome-libs libs")
+
+build_deps=("gobject-introspection meson vala libepoxy glib2 gtk3 libpulse libsamplerate")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
