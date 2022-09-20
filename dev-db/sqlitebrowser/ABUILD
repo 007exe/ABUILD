@@ -1,0 +1,33 @@
+pkgname=sqlitebrowser
+pkgver=3.12.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A light GUI editor for SQLite databases.")
+longdesc=("SQLite Database browser is a light GUI editor for SQLite databases, built on top of Qt.")
+
+source=("https://github.com/sqlitebrowser/sqlitebrowser/archive/refs/tags/v3.12.2.tar.gz")
+
+tags=("utils dev-db")
+
+build_deps=("cmake ninja qt5-tools qt5-base sqlcipher qcustomplot qhexedit2 qscintilla-qt5")
+
+adddep=("hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+    cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
+    -DBUILD_STABLE_VERSION=ON \
+    -DENABLE_TESTING=ON \
+    -DFORCE_INTERNAL_QCUSTOMPLOT=OFF \
+    -DFORCE_INTERNAL_QSCINTILLA=OFF \
+    -DFORCE_INTERNAL_QHEXEDIT=OFF \
+    -Dsqlcipher=1 \
+    -Wno-dev \
+    -G Ninja
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+}
