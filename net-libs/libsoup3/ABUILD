@@ -1,5 +1,5 @@
 pkgname=libsoup3
-pkgver=3.0.8
+pkgver=3.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -19,7 +19,6 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk_doc=true \
     -D sysprof=disabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
