@@ -1,0 +1,22 @@
+pkgname=bcprov
+pkgver=1.71
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Bouncy Castle Crypto APIs for Java.")
+
+source=("https://github.com/bcgit/bc-java/archive/refs/tags/r${pkgver/./rv}.tar.gz")
+
+tags=("develop dev-java")
+
+build_deps=("java-runtime-headless ant strip-nondeterminism")
+
+build() {
+  go_src_dir
+  burn_patches
+  ant -f ant/jdk18+.xml clean build-provider build
+  strip-nondeterminism --timestamp ${SOURCE_DATE_EPOCH} build/artifacts/jdk1.8/jars/bcprov-jdk18on-${pkgver/./}.jar
+  install -Dm644 build/artifacts/jdk1.8/jars/bcprov-jdk18on-${pkgver/./}.jar -t ${pkgdir}/usr/share/java/${pkgname}
+  ln -s bcprov-jdk18on-${pkgver/./}.jar ${pkgdir}/usr/share/java/${pkgname}/bcprov.jar
+  install -Dm644 LICENSE.html -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
