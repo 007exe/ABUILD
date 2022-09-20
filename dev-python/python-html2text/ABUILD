@@ -1,0 +1,21 @@
+pkgname=python-html2text
+pkgver=2020.1.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A HTML to markdown-structured text converter.")
+
+source=("https://github.com/Alir3z4/html2text/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-pytest python-setuptools")
+
+adddep=("python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir}
+}
