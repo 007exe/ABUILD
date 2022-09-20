@@ -1,5 +1,5 @@
 pkgname=nss
-pkgver=3.81
+pkgver=3.83
 pkgbuild=1
 arch=("auto")
 
@@ -17,13 +17,13 @@ pkglist=("ca-certificates-mozilla")
 
 build(){
   go_src_dir
-  
+
   cp ${filedir}/certdata2pem.py certdata2pem.py
   cp ${filedir}/bundle.sh bundle.sh
-  
+
   mkdir -p certs
   ln -srft certs nss/lib/ckfw/builtins/{certdata.txt,nssckbi.h}
-  
+
   cd certs
   ../certdata2pem.py
 
