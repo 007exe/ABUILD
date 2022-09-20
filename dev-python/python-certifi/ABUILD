@@ -1,5 +1,5 @@
 pkgname=python-certifi
-pkgver=2022.06.15.1
+pkgver=2022.09.14
 pkgbuild=1
 arch=("auto")
 
