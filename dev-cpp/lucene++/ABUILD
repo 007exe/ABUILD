@@ -1,0 +1,28 @@
+pkgname=lucene++
+pkgver=3.0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ port of the popular Java Lucene library.")
+longdesc=("C++ port of Lucene library, a high-performance, full-featured text search engine.")
+
+source=("https://github.com/luceneplusplus/LucenePlusPlus/archive/rel_${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("boost cmake boost-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_DESTINATION=/usr/lib \
+    -DBoost_LIBRARY_DIR=/usr/lib \
+    -DENABLE_CUSTOM_ALLOCATOR='FALSE' \
+    -DCMAKE_CXX_FLAGS='-DBOOST_VARIANT_USE_RELAXED_GET_BY_DEFAULT'
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
