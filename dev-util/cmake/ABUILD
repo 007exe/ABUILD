@@ -1,5 +1,5 @@
 pkgname=cmake
-pkgver=3.24.1
+pkgver=3.24.2
 pkgbuild=1
 arch=("auto")
 
