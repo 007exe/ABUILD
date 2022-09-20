@@ -1,0 +1,25 @@
+pkgname=cool-retro-term
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A good looking terminal emulator which mimics the old cathode display.")
+longdesc=("terminal emulator which mimics the look and feel of the old cathode tube screens.")
+
+source=("https://github.com/Swordfish90/cool-retro-term/archive/${pkgver}.tar.gz")
+
+tags=("apps x11-terms")
+
+build_deps=("qmltermwidget qt5-quickcontrols qt5-quickcontrols2 qt5-graphicaleffects hicolor-icon-theme")
+
+adddep=("hicolor-icon-theme")
+
+build(){
+  go_src_dir
+  burn_patches
+# qmltermwidget Отдельный пакет
+  sed -i '/qmltermwidget/d' cool-retro-term.pro
+  qmake
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+}
