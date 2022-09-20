@@ -1,12 +1,12 @@
 pkgname=neon
-pkgver=0.32.2
+pkgver=0.32.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("HTTP and WebDAV client library with a C interface.")
-longdesc=("neon is an HTTP and WebDAV client library, with a C interface.")
+longdesc=("Neon is an HTTP and WebDAV client library, with a C interface.")
 
-source=("https://notroj.github.io/neon/$pkgname-$pkgver.tar.gz")
+source=("https://notroj.github.io/neon/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
