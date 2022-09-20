@@ -1,5 +1,5 @@
 pkgname=meson
-pkgver=0.63.0
+pkgver=0.63.2
 pkgbuild=1
 arch=("auto")
 
