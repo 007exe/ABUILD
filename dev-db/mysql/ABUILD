@@ -1,5 +1,5 @@
 pkgname=mysql
-pkgver=5.5.62
+pkgver=8.0.27
 pkgbuild=1
 arch=("auto")
 
@@ -21,14 +21,13 @@ build() {
   cmake ../${pkgname}-${pkgver} \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_BUILD_TYPE=RELEASE \
-	-DLIB_SUFFIX=${LIBDIRSUFFIX} \
-	-DLIB_DIR=lib${LIBDIRSUFFIX} \
+	-DLIB_DIR=lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DMYSQL_DATADIR=/var/lib/mysql \
 	-DSYSCONFDIR=/etc \
 	-DINSTALL_INFODIR=share/mysql/docs \
 	-DINSTALL_MANDIR=man \
-	-DINSTALL_PLUGINDIR=/usr/lib${LIBDIRSUFFIX}/mysql/plugin \
+	-DINSTALL_PLUGINDIR=/usr/lib/mysql/plugin \
 	-DINSTALL_SCRIPTDIR=bin \
 	-DINSTALL_INCLUDEDIR=include/mysql \
 	-DINSTALL_DOCREADMEDIR=share/mysql \

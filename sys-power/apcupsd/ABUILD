@@ -1,42 +1,64 @@
 pkgname=apcupsd
 pkgver=3.14.14
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Power mangement and controlling most of APC's UPS models"
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-tags="sys-power utils"
-build_deps="pkg-config gcc gd"
+shortdesc=("Power mangement and controlling most of APC's UPS models.")
+longdesc=("APC UPS daemon with integrated tcp/ip remote shutdown.")
 
-config_files='/etc/apcupsd/apcupsd.conf
-/etc/apcupsd/hosts.conf
-/etc/apcupsd/multimon.conf'
+source=("https://downloads.sourceforge.net/apcupsd/${pkgname}-${pkgver}.tar.gz")
 
-BUILD_SYSTEM="autotools"
+tags=("sys-power utils")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc/apcupsd \
---localstatedir=/var \
---sbindir=/sbin \
---with-lock-dir=/run/apcupsd \
---with-pid-dir=/run/apcupsd \
---with-log-dir=/var/log \
---libdir=/usr/lib \
---disable-static \
---mandir=/usr/man \
---enable-usb \
---enable-net \
---with-upstype=usb \
---with-upscable=usb \
---with-serial-dev=/dev/usb/hid/hiddev[0-9] \
---enable-pthreads \
---enable-cgi \
---with-cgi-bin=/var/www/apcupsd/cgi-bin"
+build_deps=("gcc-libs libusb-compat gd")
 
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+config_files=("etc/apcupsd/apcupsd.conf
+etc/apcupsd/hosts.conf
+etc/apcupsd/multimon.conf
+etc/apcupsd/apcupsd.css
+etc/apcupsd/changeme
+etc/apcupsd/commfailure
+etc/apcupsd/commok
+etc/apcupsd/offbattery
+etc/apcupsd/onbattery
+etc/apcupsd/apccontrol")
 
-after_build(){
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --enable-cgi \
+    --enable-usb \
+    --enable-net \
+    --with-upstype=usb \
+    --with-upscable=usb \
+    --with-serial-dev=/dev/usb/hid/hiddev[0-9] \
+    --disable-gapcmon \
+    --enable-modbus-usb \
+    --sysconfdir=/etc/apcupsd \
+    --with-pwrfail-dir=/etc/apcupsd \
+    --with-lock-dir=/run/apcupsd \
+    --with-pid-dir=/run/apcupsd \
+    --with-log-dir=/var/log \
+    --with-nis-port=3551 \
+    --enable-net \
+    --enable-pcnet
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  sed -i 's#^LOCKFILE .*$#LOCKFILE /run/apcupsd#' ${pkgdir}/etc/apcupsd/apcupsd.conf
+
+  install -Dm644 ${filedir}/apcupsd-tmpfiles.conf ${pkgdir}/usr/lib/tmpfiles.d/apcupsd.conf
+
+  chmod 755 ${pkgdir}/usr/bin/*
+  mv ${pkgdir}/usr/bin/smtp{,-$pkgname}
+
+  install -dm755 ${pkgdir}/usr/lib/${pkgname}/cgi-bin
+  mv ${pkgdir}/etc/apcupsd/*.cgi ${pkgdir}/usr/lib/${pkgname}/cgi-bin
+  rm -rf ${pkgdir}/usr/share/hal
+
   install -Dm755 ${filedir}/apcupsd ${pkgdir}/etc/init.d/apcupsd
   install -Dm755 ${filedir}/apcupsd.powerfail ${pkgdir}/etc/init.d/apcupsd.powerfail
   install -Dm644 ${filedir}/apcupsd.conf ${pkgdir}/etc/apcupsd

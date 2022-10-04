@@ -1,27 +1,44 @@
 pkgname=scribus
-pkgver=1.4.0
+pkgver=1.5.8
 pkgbuild=1
-shortdesc="A desktop publishing program"
-longdesc="A desktop publishing program"
-arch=('auto')
-source=(http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
-tags=("xapps media-gfx")
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
-	   -DCMAKE_BUILD_TYPE=Release \
-	   -DCMAKE_SKIP_RPATH=ON \
-	   -DWANT_CAIRO=1 \
-	   -DLIB_SUFFIX=$LIBDIRSUFFIX"
+arch=("auto")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+shortdesc=("Desktop publishing software.")
 
-after_build() {
-	go_src_dir
+#source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+source=("https://sourceforge.net/projects/scribus/files/scribus-devel/${pkgver}/scribus-${pkgver}.tar.xz")
 
-        # fix icon path in .desktop file
-        sed -i 's|Icon=scribus|Icon=/usr/share/scribus/icons/scribus.png|' \
-           ${srcdir}/${pkgname}-${pkgver}/scribus.desktop
+tags=("apps app-office")
 
-        install -Dm644 ${srcdir}/${pkgname}-${pkgver}/scribus.desktop \
-           ${pkgdir}/usr/share/applications/scribus.desktop
+# harfbuzz-icu libfreehand libjpeg libmspub libpagemaker libqxp libzmf openscenegraph
+build_deps=("cmake boost mesa qt5-tools boost-libs cairo fontconfig freetype hunspell 
+lcms2 libcdr libcups libpng librevenge libtiff libvisio libxml2 openssl podofo poppler
+python qt5-base zlib")
+
+# NOTE: Это опциональные зависимости
+removedep=("tk hyphen-lang")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DWANT_CPP17=ON \
+    -DWANT_HUNSPELL=ON \
+    -DWITH_BOOST=ON \
+    -DWITH_PODOFO=ON \
+    -DWANT_GRAPHICSMAGICK=ON
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm644 scribus.desktop -t ${pkgdir}/usr/share/applications
+
+  for i in 16x16 32x32 128x128 256x256 512x512 1024x1024
+  do
+    install -Dm644 resources/iconsets/artwork/icon_${i}.png ${pkgdir}/usr/share/icons/hicolor/${i}/apps/scribus.png
+  done
+
+  rm -rf ${pkgdir}/usr/share/scribus/dicts/hyph
+  ln -sf /usr/share/hyphen ${pkgdir}/usr/share/scribus/dicts/hyp
 }

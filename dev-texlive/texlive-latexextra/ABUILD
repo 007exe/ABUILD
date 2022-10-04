@@ -3,55 +3,63 @@ pkgver=2022.63034
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("TeXLive LaTeX additional packages.")
-longdesc=("TeX Live - Large collection of add-on packages for LaTeX.")
+shortdesc=("TeX Live - Large collection of add-on packages for LaTeX.")
 
-
-source=("ftp://ftp.archlinux.org/other/texlive/${pkgname}-${pkgver}-src.zip")
+source=("https://sources.archlinux.org/other/texlive/${pkgname}-${pkgver}-src.zip")
 
 tags=("dev-texlive tex")
 
-build_deps="texlive-core perl-file-which"
+build_deps=("texlive-core perl-file-which")
 
-adddep="texlive-core perl-file-which"
-
-custom_opts="no_strip"
+adddep=("texlive-core perl-file-which")
 
 build() {
    for p in *.tar.xz; do
-       echo "   --> extracting package ${p}"
-       tar -xf ${p}
+	   bsdtar -xf $p
    done
-   rm -rf tlpkg || true
+   rm -rf {tlpkg,doc,source} || true
 
-   install -m755 -d "${pkgdir}"/var/lib/texmf/agilia/installedpkgs
+   install -m755 -d "$pkgdir"/var/lib/texmf/arch/installedpkgs
    sed -i '/^#/d' CONTENTS
-   install -m644 CONTENTS "${pkgdir}"/var/lib/texmf/agilia/installedpkgs/${pkgname}_${_revnr}.pkgs
-   install -m644 "${filedir}"/${pkgname}.maps "${pkgdir}"/var/lib/texmf/agilia/installedpkgs/
-                 install -m755 -d "${pkgdir}"/usr/share
-   wanteddirs=$(for d in *; do test -d ${d} && [[ ${d} != texmf* ]] && echo ${d}; done) || true
-   for dir in ${wanteddirs}; do
-       find ${dir} -type d -exec install -d -m755 "${pkgdir}"/usr/share/texmf-dist/'{}' \;
-       find ${dir} -type f -exec install -m644 '{}' "${pkgdir}"/usr/share/texmf-dist/'{}' \;
-       echo "Processing directory ${srcdir}/${dir}"
+   install -m644 CONTENTS "$pkgdir"/var/lib/texmf/arch/installedpkgs/${pkgname}_${_revnr}.pkgs
+   install -m644 ${filedir}/$pkgname.maps "$pkgdir"/var/lib/texmf/arch/installedpkgs/
+   install -m755 -d "$pkgdir"/usr/share
+   wanteddirs=$(for d in *; do test -d $d && [[ $d != texmf* ]] && echo $d; done) || true
+   for dir in $wanteddirs; do
+     find $dir -type d -exec install -d -m755 "$pkgdir"/usr/share/texmf-dist/'{}' \;
+     find $dir -type f -exec install -m644 '{}' "$pkgdir"/usr/share/texmf-dist/'{}' \;
    done
    if [[ -d texmf-dist ]]; then
-      find texmf-dist -type d -exec install -d -m755 "${pkgdir}"/usr/share/'{}' \;
-      find texmf-dist -type f -exec install -m644 '{}' "${pkgdir}"/usr/share/'{}' \;
+     find texmf-dist -type d -exec install -d -m755 "$pkgdir"/usr/share/'{}' \;
+     find texmf-dist -type f -exec install -m644 '{}' "$pkgdir"/usr/share/'{}' \;
    fi
-   if [[ -d "${pkgdir}"/usr/share/texmf-dist/scripts ]]; then
-      find "${pkgdir}"/usr/share/texmf-dist/scripts -type f -exec chmod a+x '{}' \;
+   if [[ -d "$pkgdir"/usr/share/texmf-dist/scripts ]]; then
+     find "$pkgdir"/usr/share/texmf-dist/scripts -type f -exec chmod a+x '{}' \;
    fi
-   echo "Add symlinks that were in texlive-bin"
-   install -m755 -d "${pkgdir}"/usr/bin
-   ln -s /usr/share/texmf-dist/scripts/authorindex/authorindex "${pkgdir}"/usr/bin/authorindex
-   ln -s /usr/share/texmf-dist/scripts/exceltex/exceltex "${pkgdir}"/usr/bin/exceltex
-   ln -s /usr/share/texmf-dist/scripts/glossaries/makeglossaries "${pkgdir}"/usr/bin/makeglossaries
-   ln -s /usr/share/texmf-dist/scripts/pax/pdfannotextractor.pl "${pkgdir}"/usr/bin/pdfannotextractor
-   ln -s /usr/share/texmf-dist/scripts/perltex/perltex.pl "${pkgdir}"/usr/bin/perltex
-   ln -s /usr/share/texmf-dist/scripts/pst-pdf/ps4pdf "${pkgdir}"/usr/bin/ps4pdf
-   ln -s /usr/share/texmf-dist/scripts/splitindex/splitindex.pl "${pkgdir}"/usr/bin/splitindex
-   ln -s /usr/share/texmf-dist/scripts/svn-multi/svn-multi.pl "${pkgdir}"/usr/bin/svn-multi
-   ln -s /usr/share/texmf-dist/scripts/vpe/vpe.pl "${pkgdir}"/usr/bin/vpe
-   find ${pkgdir} -name *.bat -exec rm -rf {} \;
+
+    #add symlinks that were in texlive-bin:
+    _linked_scripts="
+authorindex/authorindex
+exceltex/exceltex
+glossaries/makeglossaries
+glossaries/makeglossaries-lite.lua
+hyperxmp/hyperxmp-add-bytecount.pl
+l3build/l3build.lua
+makedtx/makedtx.pl
+pax/pdfannotextractor.pl
+perltex/perltex.pl
+pygmentex/pygmentex.py
+splitindex/splitindex.pl
+svn-multi/svn-multi.pl
+vpe/vpe.pl
+webquiz/webquiz.py
+wordcount/wordcount.sh
+yplan/yplan
+"
+    install -m755 -d "$pkgdir"/usr/bin
+    for _script in ${_linked_scripts}; do
+        _scriptbase=$(basename $_script)
+        _scriptbase=${_scriptbase%.*}
+        ln -s /usr/share/texmf-dist/scripts/${_script} "${pkgdir}/usr/bin/${_scriptbase}"
+    done
 }

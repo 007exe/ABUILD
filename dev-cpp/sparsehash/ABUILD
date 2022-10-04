@@ -1,30 +1,25 @@
-#ABUILD created by/создан: medved, medved55rus at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=sparsehash
-pkgver=2.0.2
+pkgver=2.0.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="The SparseHash library contains several hash-map implementations, including implementations that optimize for space or speed."
+shortdesc=("Library that contains several hash-map implementations, including implementations that optimize for space or speed.")
 
-source=("http://sparsehash.googlecode.com/files/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/sparsehash/sparsehash/archive/sparsehash-${pkgver}.tar.gz")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-tags="libs dev-cpp"
+tags=("libs dev-cpp")
 
-#----------------------------- Make PKG --------------------------------------
-BUILD_SYSTEM="autotools"
+build_deps=("glibc")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

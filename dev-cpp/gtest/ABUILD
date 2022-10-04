@@ -1,6 +1,6 @@
 pkgname=gtest
-pkgver=1.11.0
-pkgbuild=2
+pkgver=1.12.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Google Test - C++ testing utility.")

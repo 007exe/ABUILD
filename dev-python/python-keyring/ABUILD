@@ -1,24 +1,25 @@
 pkgname=python-keyring
-pkgver=23.4.0
-pkgbuild=2
+pkgve=23.9.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Store and access your passwords safely.")
 longdesc=("Store and access your passwords safely.")
 
-source=("https://github.com/jaraco/keyring/archive/refs/tags/v${pkgver}.tar.gz")
+source=("https://github.com/jaraco/keyring/archive/refs/tags/v${pkgve}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-entrypoints python-secretstorage python-importlib-metadata")
+build_deps=("python python-build python-installer python-setuptools-scm python-wheel
+python-entrypoints python-secretstorage python-importlib-metadata")
 
 adddep=("python-entrypoints python-secretstorage python-importlib-metadata")
 
 build() {
   go_src_dir
-  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
-  rm -rf "$pkgdir"/usr/lib/python3.*/site-packages/keyring/tests
+  python -m build
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+  rm -rf ${pkgdir}/usr/lib/python3.10/site-packages/keyring/tests
 }

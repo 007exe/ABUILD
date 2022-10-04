@@ -8,39 +8,47 @@ longdesc=("Xdm manages a collection of X displays, which may be on the local hos
 
 tags=("xorg-apps xorg")
 
-source=("https://xorg.freedesktop.org/releases/individual/app/xdm-${pkgver}.tar.bz2")
-# libxcrypt
-build_deps="xorg-util-macros xtrans linux-pam libxaw libxinerama xorg-xrdb xorg-sessreg libxft"
+source=("https://xorg.freedesktop.org/releases/individual/app/xdm-${pkgver}.tar.xz")
 
-config_files="etc/X11/xdm/Xaccess
+# libxcrypt
+build_deps=("xorg-util-macros xtrans linux-pam libxaw libxinerama xorg-xrdb xorg-sessreg libxft")
+
+config_files=("etc/X11/xdm/Xaccess
 etc/X11/xdm/Xresources
 etc/X11/xdm/Xservers
 etc/X11/xdm/xdm-config
 etc/pam.d/xdm
 etc/X11/xdm/Xsetup_0
-etc/X11/xdm/Xsession"
+etc/X11/xdm/Xsession")
 
 build() {
   go_src_dir
   burn_patches
   autoreconf -vfi
+  unset DEF_USER_PATH
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
+    --disable-xdm-auth \
     --disable-static \
     --with-xdmconfigdir=/etc/X11/xdm \
     --with-xdmscriptdir=/etc/X11/xdm \
-    --with-pixmapdir=/usr/share/xdm/pixmaps
+    --with-pixmapdir=/usr/share/xdm/pixmaps \
+    DEF_USER_PATH="/usr/local/bin:/usr/bin:/bin" \
+    DEF_SYSTEM_PATH="/usr/local/bin:/usr/bin:/bin"
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  mv ${pkgdir}/etc/X11/xdm/xdm-config ${pkgdir}/etc/X11/xdm/xdm-config.sample
-  rm -f ${pkgdir}/etc/X11/xdm/Xservers
-  rm -f ${pkgdir}/etc/X11/xdm/Xsession
-  install -m0755 ${filedir}/Xsession ${pkgdir}/etc/X11/xdm/Xsession
-  install -m0644 ${filedir}/Xservers ${pkgdir}/etc/X11/xdm/Xservers
+  install -m755 -d ${pkgdir}/var/lib/xdm
+  install -m755 -d ${pkgdir}/etc/pam.d
+  install -m644 ${filedir}/xdm.pam ${pkgdir}/etc/pam.d/xdm
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
+
+  sed -i -e 's/\/X11R6//g' "${pkgdir}"/etc/X11/xdm/*
+
+  sed -i 's|^Alias=.*|Alias=display-manager.service|' ${pkgdir}/usr/lib/systemd/system/xdm.service
 
 # OpenRC
   mkdir -p ${pkgdir}/etc/init.d

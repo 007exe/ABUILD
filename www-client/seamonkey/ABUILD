@@ -10,8 +10,9 @@ source=("https://archive.mozilla.org/pub/seamonkey/releases/${pkgver}/source/sea
 
 tags=("apps www-client")
 
+# mime-types
 build_deps=("autoconf2.13 clang imake llvm mesa python python-setuptools rust yasm unzip zip nasm
-dbus-glib gtk3 hunspell icu libevent libpulse libvpx libxt mime-types nss sqlite startup-notification")
+dbus-glib gtk3 hunspell icu libevent libpulse libvpx libxt nss sqlite startup-notification")
 
 # NOTE: Это опциональные зависимости
 removedep=("networkmanager libnotify pulseaudio")

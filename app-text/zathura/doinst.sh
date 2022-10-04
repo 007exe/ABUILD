@@ -1,0 +1,8 @@
+echo -e "\n"
+echo -e "The following packages extend zathura capabilities:"
+echo -e "zathura-djvu: DjVu support"
+echo -e "zathura-pdf-poppler: PDF support using Poppler"
+echo -e "zathura-pdf-mupdf: PDF support using MuPDF"
+echo -e "zathura-ps: PostScript support"
+echo -e "zathura-cb: Comic book support"
+echo -e " "

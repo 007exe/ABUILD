@@ -1,119 +1,33 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=clementine
-pkgver=1.2.1
-pkgbuild=2
-arch=('auto')
+pkgver=1.4.0rc2
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Clementine Music Player based on Amarok 1.4"
-#longdesc=("Clementine is a music player. It is inspired by Amarok 1.4, focusing on a fast and easy-to-use interface for searching and playing your music. Clementine is Free Software under the GPL v3. Homepage: http://www.clementine-player.org")
+shortdesc=("A modern music player and library organizer.")
+longdesc=("Modern music player and library organizer based on Amarok 1.4 and Qt.")
 
-source=("http://clementine-player.googlecode.com/files/clementine-${pkgver}.tar.gz")
+#source=("https://github.com/clementine-player/Clementine/releases/download/${pkgver//+/-}/$pkgname-${pkgver//+/-}.tar.xz")
+source=("https://github.com/clementine-player/Clementine/archive/refs/tags/${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("media-sound apps")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="media-sound xapps"
+# sparsehash liblastfm-qt5 libmygpo-qt5 crypto++
+build_deps=("boost cmake qt5-tools chromaprint gst-plugins-base-libs libcdio libgpod
+libmtp taglib protobuf qt5-x11extras alsa-lib libpulse projectm")
 
-#dependencies only needed to build package
-build_deps="protobuf qjson liblastfm sip libmtp>=1.1.6"
+adddep=("hicolor-icon-theme")
 
-provides=""
-conflicts=""
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav gvfs")
 
-adddep="gst-plugins-ugly gst-plugins-good gst-plugins-bad gst-plugins-base gst-ffmpeg" #${pkgname}-data>=${pkgver}"
-removedep=""
-
-#for multi pkg abuild
-#pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#}
-
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="\
--DCMAKE_INSTALL_PREFIX=/usr \
--DMAN_INSTALL_DIR=/usr/man \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
--DENABLE_VISUALISATIONS=ON \
--DBUNDLE_PROJECTM_PRESETS=ON \
--DENGINE_GSTREAMER_ENABLED=ON \
--DENABLE_IMOBILEDEVICE=ON \
--DENABLE_PLASMARUNNER=OFF \
--DENABLE_WIIMOTEDEV=OFF \
--DENGINE_LIBVLC_ENABLED=OFF \
--DENGINE_LIBXINE_ENABLED=OFF \
--DENGINE_QT_PHONON_ENABLED=OFF \
--DENABLE_SOUNDMENU=OFF \
--DSTATIC_SQLITE=ON \
--DENABLE_SCRIPTING_PYTHON=OFF \
--DENABLE_SPOTIFY=OFF \
--DENABLE_SPOTIFY_BLOB=OFF \
--DENABLE_REMOTE=OFF \
--DENABLE_BREAKPAD=OFF \
--DBUILD_WERROR=OFF \
-../"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
-
-#if [ -d $pkgdir/usr/doc/${pkgname}-${pkgver}/doc/ ]; then 
-# rm -rfv $pkgdir/usr/doc/${pkgname}-${pkgver}/doc/ || exit 1
-#fi
-
-go_src_dir
-
-for i in 16 32 64 ; do
- if [ ! -d $pkgdir/usr/share/icons/hicolor/${i}x${i} ]; then
-  install -m 0644 -D dist/${pkgname}_${i}.png \
-    $pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/application-x-clementine.png
- fi
-done
-}
-
-
-#pkglist="data"
-
-#----------------------------- 
-# Data
-data(){
- pkgname="${p_pkgname}-data"
- pkgver="${p_pkgver}"
- pkgbuild="${p_kgbuild}"
- arch=('noarch')
- shortdesc="Data files for Clementine, a music player"
- #longdesc=("")
- #tags=""
- #adddep="${p_pkgname}>=${pkgver_data}"
- #docs=""
- #provides=""
-}
-data_prep(){
- mkdir -p ${pkgdir}/usr/
- mv -v ${p_pkgdir}/usr/doc	${pkgdir}/usr || exit 1
- mv -v ${p_pkgdir}/usr/share	${pkgdir}/usr || exit 1
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DUSE_SYSTEM_PROJECTM=ON \
+    -DUSE_SYSTEM_TAGLIB=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 }

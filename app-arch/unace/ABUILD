@@ -1,24 +1,23 @@
 pkgname=unace
 pkgver=2.5
-pkgbuild=3
-arch=('auto')
+pkgbuild=1
+arch=("auto")
 
-shortdesc="unACE - extraction tool for ace format."
+shortdesc=("An extraction tool for the proprietary ace archive format.")
 
 source=("http://ftp.debian.org/debian/pool/non-free/u/unace-nonfree/unace-nonfree_2.5.orig.tar.gz")
 
-tags="utils app-arch"
+tags=("utils app-arch")
 
-build_deps="make"
+build_deps=("make patch ncurses")
 
 build(){
   go_src_dir
   burn_patches
-  [ "${ARCH}" == "x86_64" ] && patch -p1 < ${filedir}/04-64bit.dpatch
-  make -j${numjobs}
-}
-
-
-after_build(){
-  install -D -m755 unace ${pkgdir}/usr/bin/unace
+pwd
+ls
+pwd
+  make
+  install -Dm755 unace ${pkgdir}/usr/bin/${pkgname}
+  install -Dm644 licence ${pkgdir}/usr/share/licenses/${pkgname}/license
 }

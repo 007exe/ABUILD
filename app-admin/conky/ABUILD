@@ -17,7 +17,7 @@ libxdamage libxinerama libxft imlib2 libxml2 libpulse ncurses curl docbook2x")
 build(){
   go_src_dir
   burn_patches
-# FIX: glib 2.35
+# fix glibc 2.35
   rm -r tests/catch2
   ln -s /usr/include/catch2 tests
   cmake \

@@ -1,5 +1,5 @@
 pkgname=rpm
-pkgver=4.17.1
+pkgver=4.18.0
 pkgbuild=1
 arch=("auto")
 

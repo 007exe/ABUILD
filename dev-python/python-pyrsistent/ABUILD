@@ -1,10 +1,9 @@
 pkgname=python-pyrsistent
-pkgver=0.18.1
-pkgbuild=2
+pkgver=0.19.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Persistent/Functional/Immutable data structures.")
-longdesc=("Persistent/Functional/Immutable data structures.")
 
 source=("https://pypi.io/packages/source/p/pyrsistent/pyrsistent-$pkgver.tar.gz")
 
@@ -17,6 +16,6 @@ adddep=("python-six")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -D -m644 LICENSE.mit "$pkgdir"/usr/share/licenses/$pkgname/LICENCE.mit
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -D -m644 LICENSE.mit ${pkgdir}/usr/share/licenses/${pkgname}/LICENCE.mit
 }

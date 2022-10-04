@@ -1,5 +1,5 @@
 pkgname=ghostscript
-pkgver=9.56.1
+pkgver=10.0.0
 pkgbuild=1
 arch=("auto")
 

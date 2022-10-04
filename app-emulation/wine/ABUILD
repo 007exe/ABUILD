@@ -1,31 +1,57 @@
 pkgname=wine
-pkgver=6.23
+pkgver=7.18
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A compatibility layer for running Windows programs")
-longdesc=("A compatibility layer for running Windows programs")
+shortdesc=("A compatibility layer for running Windows programs.")
+longdesc=("Virtual for Wine that supports multiple variants and slotting.")
 
-source=("https://dl.winehq.org/wine/source/6.x/$pkgname-${pkgver}.tar.xz")
+source=("https://dl.winehq.org/wine/source/7.x/$pkgname-${pkgver}.tar.xz")
 
-tags="xapps app-emulation"
-# fontforge mingw-w64-gcc giflib libldap mpg123 openal opencl-icd-loader vkd3d sane samba opencl-headers faudio
-build_deps="autoconf bison perl flex libpng gnutls libxinerama libxcomposite libxmu libxxf86vm v4l-utils libpulse alsa-lib libxcomposite mesa libxslt gst-plugins-base-libs vulkan-icd-loader sdl2 libcups libgphoto2 gsm vulkan-headers
-fontconfig lcms2 libxml2 libxcursor libxrandr libxdamage libxi gettext freetype glu libsm gcc-libs libpcap desktop-file-utils"
+tags=("apps app-emulation")
+
+# mingw-w64-gcc opencl-icd-loader lib32-opencl-icd-loader vkd3d lib32-vkd3d samba faudio libldap lib32-libldap
+build_deps=("autoconf bison perl flex libpng gnutls libxinerama libxcomposite libxmu libxxf86vm v4l-utils
+libpulse alsa-lib libxcomposite mesa libxslt gst-plugins-base-libs vulkan-icd-loader libxrandr sdl2 libcups
+opencl-headers libgphoto2 gsm vulkan-headers fontconfig lcms2 libxml2 libxcursor mpg123 glu libxdamage libxi
+gettext freetype libsm gcc-libs libpcap desktop-file-utils fontforge giflib openal sane opencl-headers
+lib32-freetype lib32-giflib lib32-libpng lib32-gnutls lib32-libxinerama lib32-libxcomposite lib32-libxmu
+lib32-libxxf86vm lib32-mpg123 lib32-openal lib32-libxslt lib32-v4l-utils lib32-libpulse lib32-alsa-lib
+lib32-libxcomposite lib32-mesa lib32-mesa-libgl lib32-libcups lib32-sdl2 lib32-vulkan-icd-loader
+lib32-gst-plugins-base-libs")
 
 build() {
   go_src_dir
-  ./configure \
+  burn_patches
+  mkdir ${srcdir}/{${pkgname}-64-build,${pkgname}-32-build}
+  cd ${srcdir}/${pkgname}-64-build
+  ../${pkgname}-${pkgver}/configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --sysconfdir=/etc \
-    --disable-static \
+    --libdir=/usr/lib \
     --with-x \
+    --with-gstreamer \
     --enable-win64
   make -j${numjobs}
-  make  DESTDIR=$pkgdir install
+
+  cd ${srcdir}/${pkgname}-32-build
+  ../${pkgname}-${pkgver}/configure \
+    --prefix=/usr \
+    --with-x \
+    --with-gstreamer \
+    --libdir=/usr/lib32 \
+    --with-wine64=${srcdir}/${pkgname}-64-build
+  make -j${numjobs}
+  make prefix=${pkgdir}/usr libdir=${pkgdir}/usr/lib32 dlldir=${pkgdir}/usr/lib32/wine install
+
+  cd ${srcdir}/${pkgname}-64-build
+  make prefix=${pkgdir}/usr libdir=${pkgdir}/usr/lib dlldir=${pkgdir}/usr/lib/wine install
+
+  # Настройки псевдонимов шрифтов для приложений Win32
+  install -d ${pkgdir}/usr/share/fontconfig/conf.{avail,default}
+  install -m644 ${filedir}/30-win32-aliases.conf ${pkgdir}/usr/share/fontconfig/conf.avail
+  ln -s ../conf.avail/30-win32-aliases.conf ${pkgdir}/usr/share/fontconfig/conf.default/30-win32-aliases.conf
+  install -Dm 644 ${filedir}/wine-binfmt.conf ${pkgdir}/usr/lib/binfmt.d/wine.conf
+
+  i686-w64-mingw32-strip --strip-unneeded ${pkgdir}/usr/lib32/wine/i386-windows/*.dll
+  x86_64-w64-mingw32-strip --strip-unneeded ${pkgdir}/usr/lib/wine/x86_64-windows/*.dll
 }
-
-
-
-

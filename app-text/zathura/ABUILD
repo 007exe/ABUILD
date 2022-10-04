@@ -1,24 +1,30 @@
-#ABUILD created by/создан: PavelVyazovoi, vyazovoi at googlemail.com 
-
 pkgname=zathura
-pkgver=0.0.8.4
+pkgver=0.4.9
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="highly customizable and functional PDF viewer"
-longdesc=("zathura is a highly customizable and functional PDF viewer based on the poppler rendering library and the gtk+ toolkit. The idea behind zathura is an application that provides a minimalistic and space saving interface as well as an easy usage that mainly focuses on keyboard interaction."
-"https://pwmt.org/projects/zathura/"
-)
+shortdesc=("Minimalistic document viewer.")
 
-source=("https://pwmt.org/download/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/pwmt/zathura/archive/${pkgver}.tar.gz")
 
-tags="xapps app-office"
+tags=("apps app-office")
 
-build()
-{
-go_src_dir
-burn_patches
+build_deps=("python-sphinx texlive-bin meson ninja appstream-glib check
+girara sqlite desktop-file-utils file libsynctex")
 
-make
-make install DESTDIR=$pkgdir
+adddep=("girara sqlite desktop-file-utils file libsynctex")
+
+# NOTE: Это опциональные зависимости
+removedep=("zathura-djvu zathura-pdf-poppler zathura-pdf-mupdf zathura-ps zathura-cb")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  cd build
+  ninja
+  DESTDIR=${pkgdir} ninja install
+  install -D -m664 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

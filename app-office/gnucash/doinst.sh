@@ -1,0 +1,7 @@
+echo -e "\n"
+echo -e "The following packages extend gnucash capabilities:"
+echo -e "gnucash-docs: documentation"
+echo -e "libdbi-drivers: open and save data into SQL database"
+echo -e "perl-date-manip: stock information lookups"
+echo -e "perl-finance-quote: stock information lookups"
+echo -e " "

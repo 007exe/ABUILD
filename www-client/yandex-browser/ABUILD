@@ -1,5 +1,5 @@
 pkgname=yandex-browser
-pkgver=22.7.5.1034_1
+pkgver=22.9.1.1107_1
 pkgbuild=1
 arch=("auto")
 

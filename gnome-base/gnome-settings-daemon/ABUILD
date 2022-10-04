@@ -1,37 +1,41 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru
-
 pkgname=gnome-settings-daemon
-pkgver=3.9.90
+pkgver=42.2
+# NOTE: Коммит версии 42.2
+_commit=4bdf8b5ae38a382be4126bbc0ce8d87bac46177e
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="daemon handling the GNOME session settings"
-longdesc=("This package contains the daemon which is responsible for setting the various parameters of a GNOME session and the applications that run under it.")
+shortdesc=("GNOME Settings Daemon.")
+longdesc=("Gnome Settings Daemon.")
 
-source=("ftp://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+strict_version='yes'
+source=("git:https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git"
+"git:https://gitlab.gnome.org/GNOME/libgnome-volume-control.git")
 
-tags="gnome gnome-base"
+tags=("gnome gnome-base")
 
-build_deps="make gcc gcc-g++ coreutils dconf gsettings-desktop-schemas libxslt grep binutils perl perl-xml-parser colord libwacom gnome-desktop libibus pkg-config libpulse libcanberra"
+#usbguard libcanberra-pulse libnm
+build_deps=("libxslt docbook-xsl python git meson dconf gnome-desktop gsettings-desktop-schemas libgweather-4
+libnotify libwacom pulseaudio pulseaudio-alsa upower librsvg geoclue nss libgudev gtk3 gcr geocode-glib")
 
-before_build(){
-  go_src_dir
-  #autoreconf -v --install
+adddep=("gnome-desktop gsettings-desktop-schemas")
+
+config_files=("etc/xdg/Xwayland-session.d/00-xrdb")
+
+before_build() {
+  cd ${srcdir}/gnome-settings-daemon_git_gnome-settings-daemon.git.src
+  git checkout ${_commit}
+  git submodule init
+  git submodule set-url subprojects/gvc ${srcdir}/gnome-settings-daemon_git_libgnome-volume-control.git.src
+  git submodule update
 }
 
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---libexecdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+build() {
+  cd ${srcdir}/gnome-settings-daemon_git_gnome-settings-daemon.git.src
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D systemd=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}

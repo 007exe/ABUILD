@@ -1,20 +1,13 @@
-#ABUILD created by/создан: Unnamed_Hero, sorry at email.hide 
-#updated by Pavel Vyazovoi, vyazovoi at googlemail.com
-
 pkgname=mysql-workbench
-pkgver=5.2.34
-pkgbuild=2
-arch=('auto')
+pkgver=8.0.30
+pkgbuild=1
+arch=("auto")
 
-shortdesc="MySQL gui administrative tool"
+shortdesc=("A cross-platform, visual database design tool developed by MySQL.")
 
-source=("ftp://ftp.gwdg.de/pub/misc/mysql/Downloads/MySQLGUITools/${pkgname}-gpl-${pkgver}-src.tar.gz")
+source=("https://cdn.mysql.com/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz")
 
-adddep="python-pexpect python-paramiko"
-
-patch_opts=("agi.patch 0")
-
-tags="xapps app-admin"
+tags=("apps dev-db")
 
 build() {
 go_src_dir

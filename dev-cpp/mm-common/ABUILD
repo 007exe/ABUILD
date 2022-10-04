@@ -1,17 +1,17 @@
 pkgname=mm-common
-pkgver=1.0.3
+pkgver=1.0.4
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc=("Common build files of the C++ bindings")
+shortdesc=("Common build files of the C++ bindings.")
 
 source=("http://download.gnome.org/sources/mm-common/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-tags="dev-libs develop"
+tags=("dev-libs develop")
 
-build_deps="meson"
+build_deps=("meson")
 
-adddep="doxygen gtk-doc perl-xml-parser graphviz libsigc++-docs"
+adddep=("doxygen gtk-doc perl-xml-parser graphviz libsigc++-docs")
 
 build() {
   go_src_dir

@@ -1,38 +1,31 @@
 pkgname=mtools
-pkgver=4.0.31
+pkgver=4.0.41
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Programs for accessing MS-DOS disks without mounting the disks")
+shortdesc=("Programs for accessing MS-DOS disks without mounting the disks.")
 longdesc=("Mtools is a collection of utilities for accessing MS-DOS files. Mtools allow you to read, write and move around MS-DOS filesystem files (normally on MS-DOS floppy disks).  Mtools supports Windows95 style long file names, OS/2 Xdf disks, and 2m disks.")
 
 source=("http://ftp.gnu.org/gnu/mtools/${pkgname}-${pkgver}.tar.bz2")
 
-tags="sys-fs base"
+tags=("sys-fs base")
 
-#libX11 libSM
-build_deps="glibc texinfo"
+build_deps=("glibc texinfo libsm libx11")
 
-config_files="etc/mtools.conf"
-
-before_build()
-{
-  go_src_dir
-# comment entry in default config
-  sed -i '/^SAMPLE FILE$/s:^:# :' mtools.conf
-}
+config_files=("etc/mtools.conf")
 
 build() {
   go_src_dir
+  sed -i '/^SAMPLE FILE$/s:^:# :' mtools.conf
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --infodir=/usr/share/info \
     --mandir=/usr/share/man
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -vDm 644 {README,NEWS} -t "${pkgdir}/usr/share/doc/${pkgname}"
-  install -Dm644 mtools.conf "${pkgdir}/etc/mtools.conf" || return 1
+  install -vDm 644 {README,NEWS} -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm644 mtools.conf ${pkgdir}/etc/mtools.conf
 }

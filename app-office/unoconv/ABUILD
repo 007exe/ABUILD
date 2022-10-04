@@ -1,26 +1,18 @@
-#ABUILD created by/создан: medved, medved55rus at gmail.com 
-#----------------------------- General vars --------------------------------------
 pkgname=unoconv
-pkgver=0.5
+pkgver=0.9.0
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Libreoffice-based document converter"
+shortdesc=("Libreoffice-based document converter.")
 
-source=("https://github.com/dagwieers/${pkgname}/zipball/${pkgname}-${pkgver}")
+source=("https://github.com/unoconv/unoconv/archive/refs/tags/${pkgver}.tar.gz")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-tags="app-text console"
+tags=("app-office console")
 
-adddep="python libreoffice-common"
+build_deps=("asciidoc python libreoffice")
 
-#----------------------------- Make PKG --------------------------------------
-before_build()
-{
-  go_src_dir
-}
+adddep=("libreoffice")
 
-build()
-{
-  make DESTDIR="$pkgdir" install
+build(){
+  make DESTDIR=${pkgdir} install
 }

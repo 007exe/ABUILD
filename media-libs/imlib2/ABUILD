@@ -1,5 +1,5 @@
 pkgname=imlib2
-pkgver=1.8.1
+pkgver=1.9.1
 pkgbuild=1
 arch=("auto")
 

@@ -32,7 +32,7 @@ build(){
     --enable-gpm \
     --disable-stripping
   make -j1
-  find . -type f -iname "*.jar" -exec strip-nondeterminism {} \;
+#  find . -type f -iname "*.jar" -exec strip-nondeterminism {} \;
   make -j1 INSTALL_ROOT=${pkgdir} install
   make -j1 INSTALL_ROOT=${pkgdir} install-systemd
   make -j1 INSTALL_ROOT=${pkgdir} install-udev

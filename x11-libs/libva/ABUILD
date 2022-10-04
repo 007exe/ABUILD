@@ -1,6 +1,6 @@
 pkgname=libva
 pkgver=2.15.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Video Acceleration (VA) API for Linux.")

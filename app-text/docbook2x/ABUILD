@@ -10,8 +10,8 @@ source=("http://downloads.sourceforge.net/$pkgname/docbook2X-$pkgver.tar.gz")
 
 tags=("app-text console")
 
-# jade perl-xml-sax-expat
-build_deps=("glibc perl-sgmls perl-xml-parser perl-xml-sax libxslt")
+# perl-xml-sax-expat
+build_deps=("glibc perl-sgmls perl-xml-parser perl-xml-sax libxslt openjade")
 
 # perl-xml-sax-expat
 adddep=("perl-sgmls perl-xml-parser perl-xml-sax")

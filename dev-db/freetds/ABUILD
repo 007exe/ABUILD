@@ -1,5 +1,5 @@
 pkgname=freetds
-pkgver=1.3.10
+pkgver=1.3.13
 pkgbuild=1
 arch=("auto")
 

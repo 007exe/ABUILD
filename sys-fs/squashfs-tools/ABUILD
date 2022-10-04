@@ -1,9 +1,9 @@
 pkgname=squashfs-tools
-pkgver=4.5
-pkgbuild=2
+pkgver=4.5.1
+pkgbuild=1
 arch="auto"
 
-shortdesc=("Utilities for the creation of compressed squashfs images")
+shortdesc=("Utilities for the creation of compressed squashfs images.")
 longdesc=("Squashfs-tools are utilities for the creation of compressed squashfs images.")
 
 source=("https://github.com/plougher/squashfs-tools/archive/refs/tags/${pkgver}.tar.gz")

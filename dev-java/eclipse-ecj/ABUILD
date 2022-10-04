@@ -1,24 +1,27 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=eclipse-ecj
-pkgver=3.7.1
-_date=201109091335
+pkgver=4.22
+_date=202111241800
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Eclipse Java Compiler"
+shortdesc=("Eclipse java bytecode compiler.")
 
-source="http://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/eclipse/downloads/drops/R-$pkgver-$_date/ecjsrc-$pkgver.jar"
+source=("https://archive.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_date}/ecjsrc-${pkgver}.jar"
+"https://archive.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_date}/checksum/eclipse-${pkgver}-SUMSSHA512")
 
-tags="libs dev-java"
+tags=("libs dev-java")
 
-build()
-{
-	go_src_dir
-	cd ..
-	burn_patches
+build_deps=("ant java-environment")
 
-	ant
-	install -Dm755 ecj.jar $pkgdir/usr/share/java/eclipse-ecj.jar
-	ln -s eclipse-ecj.jar $pkgdir/usr/share/java/ecj.jar
-	install -Dm755 $filedir/ecj $pkgdir/usr/bin/ecj
+build(){
+  go_src_dir
+  cd ..
+  burn_patches
+  export LANG=en_US.UTF-8
+  ant build
+  install -Dm 644 ${filedir}/ecj.jar ${pkgdir}/usr/share/java/eclipse-ecj-${pkgver}.jar
+  ln -s eclipse-ecj-${pkgver}.jar ${pkgdir}/usr/share/java/ecj.jar
+  ln -s eclipse-ecj-${pkgver}.jar ${pkgdir}/usr/share/java/eclipse-ecj.jar
+  install -Dm 755 ecj -t ${pkgdir}/usr/bin/
+  install -Dm 644 ecj.1 -t ${pkgdir}/usr/share/man/man1/
 }

@@ -1,5 +1,5 @@
 pkgname=glibmm
-pkgver=2.66.2
+pkgver=2.66.5
 pkgbuild=1
 arch=("auto")
 

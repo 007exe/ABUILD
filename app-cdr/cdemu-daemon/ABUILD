@@ -1,27 +1,32 @@
 pkgname=cdemu-daemon
-pkgver=1.5.0
+pkgver=3.2.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="CDemu - a virtual CD/DVD drive for Linux. Daemon part."
+shortdesc=("CD/DVD-ROM device emulator daemon.")
 
-adddep="vhba-module"
+source=("https://downloads.sourceforge.net/cdemu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-source=("http://downloads.sourceforge.net/sourceforge/cdemu/${pkgname}-${pkgver}.tar.bz2")
-build_deps="libmirage"
-tags="libs sys-fs"
-config_files="etc/conf.d/cdemud"
+tags=("libs app-cdr")
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--libdir=/usr/lib${LIBDIRSUFFIX}"
+build_deps=("cmake intltool dbus libmirage")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+adddep=("dbus")
 
-after_build()
-{
-	install -D -m 644 "${filedir}/60-vhba.rules"  "$pkgdir/lib/udev/rules.d/60-vhba.rules"	
-	install -D -m 755 "${filedir}/cdemud" "$pkgdir/etc/init.d/cdemud"
-	install -D -m 644 "${filedir}/cdemud.conf" "$pkgdir/etc/conf.d/cdemud"
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dt ${pkgdir}/usr/share/doc/${pkgname} -m644 $README
+
+  echo vhba | install -Dm644 /dev/stdin "$pkgdir/usr/lib/modules-load.d/cdemu.conf"
+  echo 'g cdemu - -' | install -Dm644 /dev/stdin "$pkgdir/usr/lib/sysusers.d/cdemu.conf"
+  install -Dm644 /dev/stdin "$pkgdir/usr/lib/udev/rules.d/60-cdemu.rules" <<END
+ACTION=="add", KERNEL=="vhba_ctl", MODE="0660", OWNER="root", GROUP="cdemu", TAG+="uaccess"
+END
 }

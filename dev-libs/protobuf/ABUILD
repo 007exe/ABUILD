@@ -1,5 +1,5 @@
 pkgname=protobuf
-pkgver=21.5
+pkgver=21.6
 pkgbuild=1
 arch=("auto")
 
@@ -13,6 +13,11 @@ tags=("libs dev-libs")
 build_deps=("python-setuptools cmake gtest gcc-libs glibc zlib")
 
 pkglist=("python_protobuf")
+
+before_build() {
+  cd ${srcdir}
+  patch -d ${pkgname}-${pkgver} -Rp1 < ${filedir}/ABI.patch
+}
 
 build() {
   go_src_dir

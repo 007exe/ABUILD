@@ -1,6 +1,6 @@
 pkgname=atkmm
-pkgver=2.28.2
-pkgbuild=2
+pkgver=2.28.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ bindings for ATK.")

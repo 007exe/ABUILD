@@ -1,5 +1,5 @@
 pkgname=opera
-pkgver=91.0.4516.16
+pkgver=91.0.4516.20
 pkgbuild=1
 arch=("auto")
 
@@ -8,9 +8,9 @@ longdesc=("A fast and secure web browser.")
 
 source=("https://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/${pkgname}-stable_${pkgver}_amd64.rpm")
 
-tags="proprietary www-client xapps"
-# libnotify libxss
-build_deps=("gtk3 alsa-lib curl nss libcups desktop-file-utils rpm")
+tags=("www-client apps")
+
+build_deps=("gtk3 alsa-lib curl nss libcups desktop-file-utils rpm libxss libnotify")
 
 adddep=("gtk3 desktop-file-utils shared-mime-info hicolor-icon-theme")
 

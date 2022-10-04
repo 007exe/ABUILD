@@ -1,5 +1,5 @@
 pkgname=wayland-utils
-pkgver=1.0.0
+pkgver=1.1.0
 pkgbuild=1
 arch=("auto")
 

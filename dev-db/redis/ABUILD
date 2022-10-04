@@ -1,38 +1,29 @@
 pkgname=redis
-pkgver=2.8.7
+pkgver=7.0.5
 pkgbuild=1
-shortdesc="Advanced key-value store"
-arch=('auto')
-adddep='bash'
-config_files="etc/redis.conf
-etc/logrotate.d/redis
-etc/conf.d/redis"
-tags="dev-db server"
-source=("http://download.redis.io/releases/redis-$pkgver.tar.gz"
-)
-before_build() {
-	go_src_dir
+arch=("auto")
 
-	sed -i 's|# bind 127.0.0.1|bind 127.0.0.1|' redis.conf
-	sed -i 's|daemonize no|daemonize yes|' redis.conf
-	sed -i 's|dir \./|dir /var/lib/redis/|' redis.conf
-	sed -i 's|pidfile .*|pidfile /run/redis/redis.pid|' redis.conf
-	sed -i 's|logfile stdout|logfile /var/log/redis.log|' redis.conf
-}
+shortdesc=("An in-memory database that persists on disk.")
+
+source=("https://github.com/redis/redis/archive/${pkgver}.tar.gz")
+
+tags=("dev-db server")
+
+config_files=("etc/redis/redis.conf
+etc/redis/sentinel.conf")
 
 build() {
-	go_src_dir
-	burn_patches
-	make -j${NUMJOBS} || make
-}
+  go_src_dir
+  burn_patches
+  make BUILD_TLS=yes \
+       USE_SYSTEMD=yes
+  make PREFIX=${pkgdir}/usr install
 
-after_build() {
-	go_src_dir
-	mkdir -p $pkgdir/usr/bin
-	make INSTALL_BIN="$pkgdir/usr/sbin" PREFIX=/usr install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/redis/LICENSE
+  install -Dm644 -t ${pkgdir}/etc/redis redis.conf sentinel.conf
+  install -Dm644 ${filedir}/redis.sysusers ${pkgdir}/usr/lib/sysusers.d/redis.conf
+  install -Dm644 ${filedir}/redis.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/redis.conf
 
-	install -Dm755 $filedir/redis.initd $pkgdir/etc/init.d/redis
-	install -Dm644 $filedir/redis.confd $pkgdir/etc/conf.d/redis
-	install -Dm644 $filedir/redis.logrotate $pkgdir/etc/logrotate.d/redis
-	install -Dm644 redis.conf $pkgdir/etc/redis.conf
+  install -Dm755 ${filedir}/redis.initd ${pkgdir}/etc/init.d/redis
+  install -Dm644 ${filedir}/redis.confd ${pkgdir}/etc/conf.d/redis.confd
 }

@@ -6,12 +6,12 @@ arch=("auto")
 shortdesc=("Python frontend for solid modelling that compiles to OpenSCAD.")
 longdesc=("SolidPython is a generalization of Phillip Tiefenbacher's openscad module, found on Thingiverse. It generates valid OpenSCAD code from Python code with minimal overhead.")
 
-source=("https://github.com/SolidCode/SolidPython/archive/v${pkgver}.tar.gz")
+source=("https://github.com/SolidCode/SolidPython/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-euclid3 python-pypng python-prettytable
-python-regex python-setuptools python-dephell-argparse python-dephell python-charset-normalizer")
+build_deps=("python python-build python-installer python-poetry python-setuptools-scm python-wheel
+python-euclid3 python-pypng python-prettytable python-regex")
 
 adddep=("python-euclid3 python-pypng python-prettytable python-regex")
 
@@ -19,8 +19,7 @@ export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
 build() {
   go_src_dir
-  sed -i -e '/tox/d' -e 's|regex = "^2019.4"|regex = ">=2019.4"|' pyproject.toml
-  dephell deps convert --from pyproject.toml --to setup.py
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  sed -i -e '/tox/d' -e 's|setuptools>=.*|setuptools\",|' pyproject.toml
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }

@@ -1,31 +1,29 @@
 pkgname=qpdf
-pkgver=10.6.3
+pkgver=11.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("QPDF: A Content-Preserving PDF Transformation System.")
 longdesc=("The Qpdf package contains command-line programs and a library that does structural, content-preserving transformations on PDF files.")
 
-source=("https://github.com/qpdf/qpdf/releases/download/release-qpdf-${pkgver}/qpdf-${pkgver}.tar.gz")
+source=("https://github.com/qpdf/qpdf/releases/download/v$pkgver/${pkgname}-${pkgver}.tar.gz")
 
 tags=("console app-text")
 
-build_deps=("libjpeg-turbo zlib gnutls")
+build_deps=("libjpeg-turbo zlib gnutls cmake texlive-core python-sphinx python-sphinx_rtd_theme texlive-bin texlive-latexextra")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static \
-    --enable-crypto-gnutls \
-    --disable-crypto-openssl \
-    --disable-implicit-crypto \
-    --enable-show-failed-test-output
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -D BUILD_STATIC_LIBS:BOOL=OFF \
+    -D REQUIRE_CRYPTO_GNUTLS:BOOL=ON \
+    -D REQUIRE_CRYPTO_OPENSSL:BOOL=OFF \
+    -D ENABLE_QTC:BOOL=ON \
+    -D BUILD_DOC:BOOL=ON
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 
   install -Dm644 completions/bash/qpdf ${pkgdir}/usr/share/bash-completion/completions/qpdf
   install -Dm644 completions/zsh/_qpdf ${pkgdir}/usr/share/zsh/site-functions/_qpdf

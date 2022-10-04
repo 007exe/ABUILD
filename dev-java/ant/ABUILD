@@ -1,21 +1,21 @@
 pkgname=ant
-pkgver=1.10.11
+pkgver=1.10.12
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="A java-based build tool."
+shortdesc=("A java-based build tool.")
 
 source=("https://www.apache.org/dist/ant/source/apache-ant-${pkgver}-src.tar.bz2")
 
-tags="develop dev-java"
+tags=("develop dev-java")
 
-build_deps="bash java-environment junit java-hamcrest"
+build_deps=("bash java-environment junit java-hamcrest")
 
 build() {
   go_src_dir
   burn_patches
   sed -i 's|/usr/bin/python|/usr/bin/python2|' src/script/runant.py
-  export JAVA_HOME=/usr/lib${LIBDIRSUFFIX}/jvm/default
+  export JAVA_HOME=/usr/lib/jvm/default
 echo "step1"
   ./bootstrap.sh
 echo "step2"

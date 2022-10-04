@@ -1,5 +1,5 @@
 pkgname=firefox
-pkgver=103.0.2
+pkgver=105.0
 pkgbuild=1
 arch=("auto")
 
@@ -42,7 +42,7 @@ ac_add_options --enable-rust-simd
 ac_add_options --enable-linker=lld
 ac_add_options --disable-elf-hack
 ac_add_options --disable-bootstrap
-ac_add_options --with-wasi-sysroot=/usr/share/wasi-sysroot
+#ac_add_options --with-wasi-sysroot=/usr/share/wasi-sysroot
 # Branding
 ac_add_options --enable-official-branding
 ac_add_options --enable-update-channel=release

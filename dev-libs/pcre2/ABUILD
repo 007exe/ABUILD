@@ -1,14 +1,14 @@
 pkgname=pcre2
-pkgver=10.39
+pkgver=10.40
 pkgbuild=1
 arch=("auto")
 
-shortdesc="A library that implements Perl 5-style regular expressions. 2nd version"
-longdesc="PCRE2 is a re-working of the original PCRE (Perl-compatible regular expression) library to provide an entirely new API. PCRE2 is written in C, and it has its own API. There are three sets of functions, one for the 8-bit library, which processes strings of bytes, one for the 16-bit library, which processes strings of 16-bit values, and one for the 32-bit library, which processes strings of 32-bit values. There are no C++ wrappers. This package provides support for strings in 8-bit and UTF-8 encodings. Install %{name}-utf16 or %{name}-utf32 packages for the other ones."
-
-tags=("dev-libs libs")
+shortdesc=("A library that implements Perl 5-style regular expressions. 2nd version.")
+longdesc=("PCRE2 is a re-working of the original PCRE (Perl-compatible regular expression) library to provide an entirely new API. PCRE2 is written in C, and it has its own API. There are three sets of functions, one for the 8-bit library, which processes strings of bytes, one for the 16-bit library, which processes strings of 16-bit values, and one for the 32-bit library, which processes strings of 32-bit values. There are no C++ wrappers. This package provides support for strings in 8-bit and UTF-8 encodings. Install %{name}-utf16 or %{name}-utf32 packages for the other ones.")
 
 source=("https://github.com/PhilipHazel/pcre2/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("dev-libs libs")
 
 build_deps=("bzip2 gcc-libs readline zlib")
 

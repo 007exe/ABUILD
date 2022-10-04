@@ -1,5 +1,5 @@
 pkgname=zbar
-pkgver=0.23.1
+pkgver=0.23.90
 pkgbuild=1
 arch=("auto")
 
