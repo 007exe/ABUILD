@@ -1,5 +1,5 @@
 pkgname=xz
-pkgver=5.2.6
+pkgver=5.2.7
 pkgbuild=1
 arch=("auto")
 
@@ -24,7 +24,7 @@ build() {
     --enable-werror
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -d -m755 "${pkgdir}/usr/share/licenses/xz/"
-  ln -sf /usr/share/doc/xz/COPYING "${pkgdir}/usr/share/licenses/xz/"
-  ln -sf /usr/share/licenses/common/GPL2/license.txt "${pkgdir}/usr/share/doc/xz/COPYING.GPLv2"
+  install -d -m755 ${pkgdir}/usr/share/licenses/xz/
+  ln -sf /usr/share/doc/xz/COPYING ${pkgdir}/usr/share/licenses/xz/
+  ln -sf /usr/share/licenses/common/GPL2/license.txt ${pkgdir}/usr/share/doc/xz/COPYING.GPLv2
 }
