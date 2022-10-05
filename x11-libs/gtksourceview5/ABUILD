@@ -1,5 +1,5 @@
 pkgname=gtksourceview5
-pkgver=5.4.2
+pkgver=5.6.1
 pkgbuild=1
 arch=("auto")
 
