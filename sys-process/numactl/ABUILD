@@ -1,5 +1,5 @@
 pkgname=numactl
-pkgver=2.0.14
+pkgver=2.0.16
 pkgbuild=1
 arch=("auto")
 
