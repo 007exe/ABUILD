@@ -1,5 +1,5 @@
 pkgname=libgee
-pkgver=0.20.5
+pkgver=0.20.6
 pkgbuild=1
 arch=("auto")
 
