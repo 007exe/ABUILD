@@ -1,6 +1,6 @@
 pkgname=dbus
-pkgver=1.14.0
-pkgbuild=2
+pkgver=1.14.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Freedesktop.org message bus system.")
