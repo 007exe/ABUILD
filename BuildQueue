@@ -4,17 +4,16 @@
 # WARNING: Скрипт не умеер разделять мультипакеты на категории
 
 # Осторожнео с пакетом file
-LIST="media-libs/aom
-dev-libs/gobject-introspection
-net-libs/nodejs
+LIST="sys-apps/fwupd
+xorg-libs/libxtst
+xorg-libs/libxxf86vm
 dev-python/python-virtualenv
-app-text/ghostscript
-sys-libs/tzdata
-gnome-libs/tracker3
-dev-cpp/glibmm
-net-libs/libnghttp2
+app-shells/bash
+app-text/qpdf
+dev-python/python-rich
+dev-python/python-virtualenv
+dev-python/python-virtualenv
 dev-python/python-mako
-media-gfx/imagemagick
 dev-java/ant
 dev-java/bcprov
 dev-java/eclipse-ecj
@@ -22,7 +21,6 @@ dev-java/icedtea-web
 dev-java/jre-openjdk
 dev-java/junit
 dev-java/lucene
-dev-java/npm
 dev-java/rhino
 dev-java/xerces
 dev-cpp/clucene
@@ -59,7 +57,6 @@ dev-python/python-keyring
 dev-python/python-virtualenv
 dev-python/python-poetry-core
 dev-python/python-black
-dev-python/python-lazy-object-proxy
 dev-python/python-pylint
 dev-python/python-solidpython
 app-misc/wayland-utils
