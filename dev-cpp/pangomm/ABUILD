@@ -1,5 +1,5 @@
 pkgname=pangomm
-pkgver=2.46.2
+pkgver=2.46.3
 pkgbuild=1
 arch=("auto")
 
