@@ -1,5 +1,5 @@
 pkgname=lib32-expat
-pkgver=2.4.8
+pkgver=2.4.9
 pkgbuild=1
 arch=("auto")
 
