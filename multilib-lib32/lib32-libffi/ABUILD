@@ -1,5 +1,5 @@
 pkgname=lib32-libffi
-pkgver=3.4.2
+pkgver=3.4.3
 pkgbuild=1
 arch=("auto")
 
