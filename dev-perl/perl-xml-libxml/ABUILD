@@ -1,5 +1,5 @@
 pkgname=perl-xml-libxml
-pkgver=2.0207
+pkgver=2.0208
 pkgbuild=1
 arch=("auto")
 
