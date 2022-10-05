@@ -1,5 +1,5 @@
 pkgname=pango
-pkgver=1.50.10
+pkgver=1.50.11
 pkgbuild=1
 arch=("auto")
 
