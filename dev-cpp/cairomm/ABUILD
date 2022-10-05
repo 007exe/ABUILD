@@ -1,6 +1,6 @@
 pkgname=cairomm
-pkgver=1.14.3
-pkgbuild=2
+pkgver=1.14.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ bindings for Cairo")
