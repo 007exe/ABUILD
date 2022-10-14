@@ -1,5 +1,5 @@
 pkgname=kidletime
-pkgver=5.98.0
+pkgver=5.99.0
 pkgbuild=1
 arch=("auto")
 
