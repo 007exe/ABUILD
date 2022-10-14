@@ -1,0 +1,24 @@
+pkgname=iucode-tool
+pkgver=2.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tool to manipulate Intel IA-32/X86-64 microcode bundles.")
+longdesc=("Tool to manipulate Intel X86 and X86-64 processor microcode update collections.")
+
+source=("https://gitlab.com/iucode-tool/releases/raw/master/${pkgname}_${pkgver}.tar.xz")
+
+tags=("base sys-apps")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
