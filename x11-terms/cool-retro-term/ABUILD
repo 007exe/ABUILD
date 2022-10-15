@@ -10,7 +10,7 @@ source=("https://github.com/Swordfish90/cool-retro-term/archive/${pkgver}.tar.gz
 
 tags=("apps x11-terms")
 
-build_deps=("qmltermwidget qt5-quickcontrols qt5-quickcontrols2 qt5-graphicaleffects hicolor-icon-theme")
+build_deps=("qt5-quickcontrols qt5-quickcontrols2 qt5-graphicaleffects hicolor-icon-theme qmltermwidget")
 
 adddep=("hicolor-icon-theme")
 
