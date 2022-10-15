@@ -1,19 +1,18 @@
 pkgname=mac
-pkgver=8.81
+pkgver=8.92
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("APE codec and decompressor.")
 
-source=("https://monkeysaudio.com/files/MAC_${pkgver//./}_SDK.zip"
-"https://www.monkeysaudio.com/license.html")
+source=("https://monkeysaudio.com/files/MAC_${pkgver//./}_SDK.zip")
 
 tags=("libs media-sound")
 
 build_deps=("python-html2text gcc-libs")
 
 build(){
-  go_src_dir
+  cd ${srcdir}
   burn_patches
   make -C Source/Projects/NonWindows
   make DESTDIR=${pkgdir} prefix=/usr install -C Source/Projects/NonWindows
