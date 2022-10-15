@@ -1,5 +1,5 @@
 pkgname=freeglut
-pkgver=3.2.2
+pkgver=3.4.0
 pkgbuild=1
 arch=("auto")
 
