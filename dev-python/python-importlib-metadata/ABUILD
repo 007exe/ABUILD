@@ -1,5 +1,5 @@
 pkgname=python-importlib-metadata
-pkgver=4.9.0
+pkgver=5.0.0
 pkgbuild=1
 arch=("auto")
 
@@ -14,11 +14,8 @@ build_deps=("python python-setuptools-scm python-toml python-wheel python-zipp")
 
 adddep=("python-zipp")
 
-export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
-
 build(){
   go_src_dir
-  rm exercises.py
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver} python -m build -nw
+  python -m installer -d ${pkgdir} dist/*.whl
 }
