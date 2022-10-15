@@ -1,12 +1,12 @@
 pkgname=libxtst
-pkgver=1.2.3
-pkgbuild=2
+pkgver=1.2.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Testing -- Resource extension library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXtst-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXtst-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
