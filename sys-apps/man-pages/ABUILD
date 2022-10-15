@@ -1,7 +1,7 @@
 pkgname=man-pages
-pkgver=5.13
+pkgver=6.00
 _posixver=2017-a
-pkgbuild=2
+pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Linux man pages.")
@@ -9,7 +9,7 @@ longdesc=("A large collection of man pages (reference material) from the Linux D
 
 tags=("console sys-apps")
 
-source=("https://www.kernel.org/pub/linux/docs/man-pages/$pkgname-$pkgver.tar.xz"
+source=("https://www.kernel.org/pub/linux/docs/man-pages/${pkgname}-${pkgver}.tar.xz"
 	"https://www.kernel.org/pub/linux/docs/man-pages/man-pages-posix/man-pages-posix-${_posixver}.tar.xz")
 #man2html
 build_deps=("sed")
