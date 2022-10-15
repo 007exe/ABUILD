@@ -1,12 +1,12 @@
 pkgname=libxxf86vm
-pkgver=1.1.4
-pkgbuild=2
+pkgver=1.1.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X.Org Xxf86vm library.")
 longdesc=("X11 XFree86 video mode extension library.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXxf86vm-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXxf86vm-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
