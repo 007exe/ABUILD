@@ -1,12 +1,12 @@
 pkgname=xf86-input-vmmouse
-pkgver=13.1.0
-pkgbuild=2
+pkgver=13.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X.org VMWare Mouse input driver.")
 longdesc=("The VMMouse driver enables support for the special VMMouse protocol that is provided by VMware virtual machines to give absolute pointer positioning.")
 
-source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-input-vmmouse-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-input-vmmouse-${pkgver}.tar.xz")
 
 tags=("xorg xorg-drivers")
 
