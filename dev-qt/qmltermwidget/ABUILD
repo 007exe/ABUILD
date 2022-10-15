@@ -1,0 +1,28 @@
+pkgname=qmltermwidget
+pkgver=0.2.0.git1
+_commit=6322802
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("QML port of qtermwidget.")
+longdesc=("QML port of x11-libs/qtermwidget.")
+
+tags=("libs dev-qt")
+
+strict_version=1
+source=("git:https://github.com/Swordfish90/qmltermwidget.git")
+
+build_deps=("qt5-declarative git")
+
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  qmake
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install -j1
+}
