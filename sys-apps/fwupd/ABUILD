@@ -1,5 +1,5 @@
 pkgname=fwupd
-pkgver=1.8.5
+pkgver=1.8.6
 pkgbuild=1
 arch=("auto")
 
@@ -37,8 +37,7 @@ build() {
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D b_lto=false \
-    -D docs=enabled \
-    -D gresource_quirks=disabled \
+    -D docs=disabled \
     -D plugin_intel_spi=true \
     -D supported_build=enabled \
     -D efi_binary=false \
