@@ -1,12 +1,12 @@
 pkgname=libgssglue
-pkgver=0.4
-pkgbuild=3
+pkgver=0.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A mechanism-switch gssapi library.")
 longdesc=("Exports a gssapi interface which calls other random gssapi libraries.")
 
-source=("http://www.citi.umich.edu/projects/nfsv4/linux/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://gitlab.com/gsasl/${pkgname}/-/archive/${pkgname}-${pkgver}/${pkgname}-${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
@@ -17,6 +17,8 @@ config_files=("etc/gssapi_mech.conf")
 build() {
   go_src_dir
   burn_patches
+  touch ChangeLog
+  autoreconf -fiv
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib
