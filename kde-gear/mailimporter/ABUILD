@@ -1,5 +1,5 @@
 pkgname=mailimporter
-pkgver=22.08.1
+pkgver=22.08.2
 pkgbuild=1
 arch=("auto")
 

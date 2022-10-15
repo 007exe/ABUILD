@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KDE_GEAR_VERSION=22.08.1
+KDE_GEAR_VERSION=22.08.2
 
 LIST="libkdcraw
 libkexiv2
@@ -77,6 +77,7 @@ kompare
 ktouch
 kturtle
 kwalletmanager
+messagelib
 cantor
 ktorrent
 marble
@@ -151,12 +152,10 @@ akonadi-calendar
 kdepim-runtime
 calendarsupport
 akonadi-calendar-tools
-messagelib
 mailcommon
 akonadi-import-wizard
 akonadiconsole
 akregator
-eventviews
 grantlee-editor
 incidenceeditor
 kaddressbook
