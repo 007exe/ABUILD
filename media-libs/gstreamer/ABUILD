@@ -1,5 +1,5 @@
 pkgname=gstreamer
-pkgver=1.20.3
+pkgver=1.20.4
 strict_version=1
 pkgbuild=1
 arch=("auto")
