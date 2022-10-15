@@ -1,5 +1,5 @@
 pkgname=tzdata
-pkgver=2022d
+pkgver=2022e
 pkgbuild=1
 arch=("noarch")
 
