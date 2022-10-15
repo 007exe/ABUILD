@@ -1,6 +1,6 @@
 pkgname=libksba
-pkgver=1.6.0
-pkgbuild=2
+pkgver=1.6.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for working with X.509 certificates, CMS data and related objects.")
