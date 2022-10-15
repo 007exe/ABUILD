@@ -1,5 +1,5 @@
 pkgname=wayland-protocols
-pkgver=1.26
+pkgver=1.27
 pkgbuild=1
 arch=("noarch")
 
