@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("X.Org X Print Library.")
 longdesc=("X.Org Xpm library.")
 
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXp-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXp-${pkgver}.tar.xz")
 
 tags=("xorg-libs libs")
 
