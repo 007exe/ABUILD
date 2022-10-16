@@ -1,6 +1,6 @@
 pkgname=openjpeg2
-pkgver=2.4.0
-pkgbuild=2
+pkgver=2.5.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An open source JPEG 2000 codec, version ${pkgver}")
