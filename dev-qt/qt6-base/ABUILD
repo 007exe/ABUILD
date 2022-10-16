@@ -1,5 +1,5 @@
 pkgname=qt6-base
-pkgver=6.3.2
+pkgver=6.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -41,7 +41,7 @@ build() {
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 
-  install -Dm644 LICENSE* -t ${pkgdir}/usr/share/licenses/qt6-base
+  install -Dm644 LICENSES/* -t ${pkgdir}/usr/share/licenses/qt6-base
 
 # Cимволические ссылки для пользовательских инструментов
   cd ${pkgdir}

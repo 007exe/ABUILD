@@ -1,13 +1,12 @@
 #!/bin/bash
 
-QT_VERSION=6.3.2
+QT_VERSION=6.4.0
 BUILD_VERSION=1
 
 # NOTE: После сборки qt6-base следует пересобрать qt6-webengine
 # WARNING: Пакет qt6-webengine собирается очень долго
 
-MLIST="
-qt6-base
+MLIST="qt6-base
 qt6-shadertools
 qt6-languageserver
 qt6-declarative

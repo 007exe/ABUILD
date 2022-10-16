@@ -1,6 +1,6 @@
 # FIXME: Почемуто ищет заголовки в /usr/local/include
 pkgname=qt6-multimedia
-pkgver=6.3.2
+pkgver=6.4.0
 pkgbuild=1
 arch=("auto")
 
