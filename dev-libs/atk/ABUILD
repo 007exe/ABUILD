@@ -1,6 +1,6 @@
 pkgname=atk
-pkgver=2.36.0
-pkgbuild=2
+pkgver=2.38.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Interface definitions of accessibility infrastructure.")
