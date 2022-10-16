@@ -1,5 +1,5 @@
 pkgname=wine
-pkgver=7.18
+pkgver=7.19
 pkgbuild=1
 arch=("auto")
 
