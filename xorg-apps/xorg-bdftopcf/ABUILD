@@ -1,12 +1,12 @@
 pkgname=xorg-bdftopcf
-pkgver=1.1
+pkgver=1.1.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Convert X font from Bitmap Distribution Format to Portable Compiled Format.")
 longdesc=("Bdftopcf converts X fonts from Bitmap Distribution Format to Portable Compiled Format.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/bdftopcf-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/archive/individual/util/bdftopcf-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
