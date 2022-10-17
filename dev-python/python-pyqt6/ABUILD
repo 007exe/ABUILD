@@ -1,5 +1,5 @@
 pkgname=python-pyqt6
-pkgver=6.3.1
+pkgver=6.4.0
 pkgbuild=1
 arch=("auto")
 
