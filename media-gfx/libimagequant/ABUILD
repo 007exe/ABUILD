@@ -1,5 +1,5 @@
 pkgname=libimagequant
-pkgver=4.0.0
+pkgver=4.0.4
 pkgbuild=1
 arch=("auto")
 
