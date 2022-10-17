@@ -4,23 +4,21 @@
 # WARNING: Скрипт не умеер разделять мультипакеты на категории
 
 # Осторожнео с пакетом file
-#sys-kernel/kernel
-#sys-libs/glibc
-#sys-kernel/kernel-zen
-LIST="dev-python/python-requests-toolbelt
-dev-python/python-lark-parser
-dev-python/python-pyqt6
+LIST="sys-kernel/kernel
+sys-libs/glibc
+sys-kernel/kernel-zen
+dev-python/python-pip
+media-video/obs-studio
+dev-python/python-requests-toolbelt
 kde-gear/cantor
 kde-gear/kitinerary
 kde-gear/kdepim-addons
 sys-libs/ldb
 sys-apps/file
-dev-lang/rust
 media-libs/opencv
 media-libs/projectm
 media-libs/libjxl
 media-libs/libquvi
-media-gfx/libimagequant
 media-gfx/graphicsmagick
 media-gfx/zbar
 app-shells/bash
@@ -68,7 +66,6 @@ dev-libs/wayland-protocols
 net-libs/wpewebkit
 net-libs/webkit2gtk
 net-libs/webkit2gtk-4.1
-net-libs/webkit2gtk-5.0
 net-fs/samba
 dev-python/python-idna
 dev-python/python-pyrsistent
@@ -119,8 +116,7 @@ dev-util/vulkan-tools
 sci-libs/avogadrolibs
 net-fs/cifs-utils
 www-client/firefox
-www-client/seamonkey
-app-emulation/wine"
+www-client/seamonkey"
 
 STARTD=`pwd`
 LOGFILE=~/build.log
