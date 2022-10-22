@@ -1,12 +1,12 @@
 # NOTE: Данный пакет заменяет python-typing-extensions
 pkgname=python-typing_extensions
-pkgver=4.3.0
+pkgver=4.4.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Backported and Experimental Type Hints for Python 3.5+.")
 
-source=("https://github.com/python/typing/archive/refs/tags/${pkgver}.tar.gz")
+source=("https://github.com/python/typing_extensions/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
