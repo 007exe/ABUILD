@@ -1,6 +1,6 @@
 pkgname=lirc
-pkgver=0.10.1
-pkgbuild=2
+pkgver=0.10.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux Infrared Remote Control utilities.")
