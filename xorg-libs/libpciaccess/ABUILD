@@ -1,17 +1,17 @@
 pkgname=libpciaccess
-pkgver=0.16
-pkgbuild=2
+pkgver=0.17
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 PCI access library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
 # xorg-util-macross
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
