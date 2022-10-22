@@ -1,6 +1,6 @@
 pkgname=libde265
-pkgver=1.0.8
-pkgbuild=2
+pkgver=1.0.9
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open h.265 video codec implementation.")
