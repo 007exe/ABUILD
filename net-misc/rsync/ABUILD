@@ -1,5 +1,5 @@
 pkgname=rsync
-pkgver=3.2.6
+pkgver=3.2.7
 pkgbuild=1
 arch=("auto")
 
