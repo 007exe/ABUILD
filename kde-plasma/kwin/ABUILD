@@ -1,5 +1,5 @@
 pkgname=kwin
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -13,6 +13,9 @@ tags=("plasma kde-plasma")
 # pipewire-session-manager
 build_deps=("kscreenlocker xcb-util-cursor plasma-framework kcmutils breeze libqaccessibilityclient
 lcms2 libxcvt extra-cmake-modules qt5-tools kdoctools krunner wayland-protocols plasma-wayland-protocols python")
+
+# pipewire-session-manager
+adddep=("breeze")
 
 # NOTE: Это опциональные зависимости
 removedep=("maliit-keyboard")

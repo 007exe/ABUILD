@@ -1,5 +1,5 @@
 pkgname=plasma-browser-integration
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 

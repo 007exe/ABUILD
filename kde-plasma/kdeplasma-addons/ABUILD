@@ -1,5 +1,5 @@
 pkgname=kdeplasma-addons
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("plasma kde-plasma")
 
-# qt5-webengine
-build_deps=("plasma-workspace kunitconversion extra-cmake-modules")
+build_deps=("plasma-workspace kunitconversion extra-cmake-modules qt5-webengine")
+
+adddep=("plasma-workspace")
 
 # NOTE: Это опциональные зависимости
 removedep=("purpose quota-tools qt5-webengine")

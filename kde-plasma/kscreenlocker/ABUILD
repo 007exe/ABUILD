@@ -1,5 +1,5 @@
 pkgname=kscreenlocker
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -11,6 +11,8 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 tags=("plasma kde-plasma")
 
 build_deps=("layer-shell-qt kidletime kwayland kdeclarative perl extra-cmake-modules kdoctools kcmutils libxcursor")
+
+adddep=("perl")
 
 # NOTE: Это опциональные зависимости
 removedep=("kcmutils")

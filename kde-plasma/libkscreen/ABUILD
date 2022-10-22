@@ -1,5 +1,5 @@
 pkgname=libkscreen
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("kde-plasma libs")
 
-build_deps=("extra-cmake-modules doxygen qt5-tools plasma-wayland-protocols")
+build_deps=("extra-cmake-modules doxygen qt5-tools plasma-wayland-protocols libxrandr")
+
+adddep=("libxrandr")
 
 build() {
   go_src_dir

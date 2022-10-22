@@ -1,5 +1,5 @@
 pkgname=xdg-desktop-portal-kde
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -11,6 +11,8 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 tags=("plasma kde-plasma")
 
 build_deps=("kirigami2 plasma-framework kio-fuse extra-cmake-modules plasma-wayland-protocols")
+
+adddep=("kirigami2 plasma-framework kio-fuse")
 
 build() {
   go_src_dir

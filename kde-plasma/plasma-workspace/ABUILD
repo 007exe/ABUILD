@@ -1,5 +1,5 @@
 pkgname=plasma-workspace
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -13,10 +13,11 @@ tags=("plasma kde-plasma")
 build_deps=("knotifyconfig ksystemstats ktexteditor libqalculate appstream-qt xorg-xrdb xorg-xsetroot
 kactivitymanagerd kholidays xorg-xmessage milou prison kwin plasma-integration kpeople kactivities-stats
 libkscreen kquickcharts kuserfeedback accountsservice qt5-tools extra-cmake-modules kdoctools gpsd baloo
-networkmanager-qt plasma-wayland-protocols kunitconversion kinit qt5-wayland kwayland-integration xorg-xwayland")
+networkmanager-qt plasma-wayland-protocols kunitconversion kinit qt5-wayland kwayland-integration xorg-xwayland
+kio-fuse kde-cli-tools")
 
-# kio-extras kio-fuse kde-cli-tools
-adddep=("oxygen-sounds")
+# kio-extras
+adddep=("oxygen-sounds kio-fuse kde-cli-tools")
 
 # NOTE: Это опциональные зависимости
 removedep=("plasma-workspace-wallpapers gpsd networkmanager-qt kdepim-addons appmenu-gtk-module baloo discover")

@@ -1,5 +1,5 @@
 pkgname=libksysguard
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("kde-plasma libs")
 
-# qt5-webengine
-build_deps=("extra-cmake-modules kdoctools qt5-tools libxres kdeclarative knewstuff")
+build_deps=("extra-cmake-modules kdoctools qt5-tools libxres kdeclarative knewstuff qt5-webengine")
+
+adddep=("knewstuff")
 
 build() {
   go_src_dir

@@ -1,5 +1,5 @@
 pkgname=plasma-nm
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -12,6 +12,8 @@ tags=("plasma kde-plasma")
 
 # openconnect
 build_deps=("plasma-workspace modemmanager-qt networkmanager-qt qca-qt5 extra-cmake-modules")
+
+adddep=("plasma-workspace")
 
 # NOTE: Это опциональные зависимости
 removedep=("openconnect")

@@ -1,5 +1,5 @@
 pkgname=kinfocenter
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -13,6 +13,8 @@ tags=("plasma kde-plasma")
 # vulkan-tools
 build_deps=("systemsettings glu xorg-xdpyinfo dmidecode extra-cmake-modules
 plasma-framework kdoctools wayland-utils mesa-utils fwupd aha")
+
+adddep=("systemsettings glu xorg-xdpyinfo dmidecode")
 
 # vulkan-tools
 adddep=("wayland-utils mesa-utils fwupd aha")

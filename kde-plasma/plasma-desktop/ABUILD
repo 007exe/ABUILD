@@ -1,5 +1,5 @@
 pkgname=plasma-desktop
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -14,6 +14,8 @@ tags=("plasma kde-plasma")
 build_deps=("gawk kdelibs4support polkit-kde-agent kmenuedit systemsettings baloo xdg-user-dirs libibus
 extra-cmake-modules kdoctools xf86-input-evdev xf86-input-synaptics xf86-input-libinput xorg-server-devel
 scim kdesignerplugin kaccounts-integration intltool kinit")
+
+adddep=("gawk polkit-kde-agent kmenuedit systemsettings xdg-user-dirs")
 
 # NOTE: Это опциональные зависимости
 removedep=("plasma-nm powerdevil kscreen ibus scim kaccounts-integration packagekit-qt5")

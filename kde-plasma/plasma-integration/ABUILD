@@ -1,5 +1,5 @@
 pkgname=plasma-integration
-pkgver=5.26.0
+pkgver=5.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -12,7 +12,7 @@ tags=("plasma kde-plasma")
 
 build_deps=("kio kwayland libxcursor qqc2-desktop-style perl extra-cmake-modules breeze plasma-wayland-protocols")
 
-adddep=("ttf-hack noto-fonts")
+adddep=("ttf-hack noto-fonts kwayland qqc2-desktop-style perl")
 
 build() {
   go_src_dir

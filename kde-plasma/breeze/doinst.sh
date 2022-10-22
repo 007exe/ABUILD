@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend breeze capabilities:"
+echo -e "breeze-gtk: Breeze widget style for GTK applications"
+echo -e "kcmutils: for breeze-settings"
+echo -e " "
