@@ -1,6 +1,6 @@
 pkgname=python-requests-toolbelt
-pkgver=0.9.1
-pkgbuild=2
+pkgver=0.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A toolbelt of useful classes and functions to be used with python-requests.")
@@ -18,5 +18,5 @@ build() {
   go_src_dir
   burn_patches
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 }
