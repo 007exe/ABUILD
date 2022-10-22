@@ -1,5 +1,5 @@
 pkgname=perl-html-parser
-pkgver=3.78
+pkgver=3.79
 pkgbuild=1
 arch=("auto")
 
