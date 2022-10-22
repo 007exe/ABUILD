@@ -1,5 +1,5 @@
 pkgname=python-pip
-pkgver=22.2.2
+pkgver=22.3
 pkgbuild=1
 arch=("auto")
 
@@ -12,11 +12,11 @@ tags=("develop dev-python")
 
 build_deps=("python python-setuptools python-appdirs python-colorama python-html5lib python-packaging
 python-requests python-setuptools python-six python-toml python-cachecontrol python-distlib python-distro
-python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl python-contextlib2")
+python-pep517 python-progress python-retrying python-resolvelib python-pyopenssl python-contextlib2 python-wheel")
 
 adddep=("python-appdirs python-colorama python-html5lib python-packaging python-requests python-setuptools
 python-six python-toml python-cachecontrol python-distlib python-distro python-pep517 python-progress
-python-retrying python-resolvelib python-pyopenssl python-contextlib2")
+python-retrying python-resolvelib python-pyopenssl python-contextlib2 python-wheel")
 
 build(){
   go_src_dir
