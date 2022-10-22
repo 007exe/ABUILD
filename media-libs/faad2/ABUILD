@@ -1,12 +1,12 @@
 pkgname=faad2
-pkgver=2.10.0
-pkgbuild=2
+pkgver=2.10.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("ISO AAC audio decoder.")
 longdesc=("FAAD2 is a decoder for a lossy sound compression scheme specified in MPEG-2 Part 7 and MPEG-4 Part 3 standards and known as Advanced Audio Coding (AAC).")
 
-source=("https://github.com/knik0/faad2/archive/${pkgver//./_}.tar.gz")
+source=("https://github.com/knik0/faad2/archive/${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
