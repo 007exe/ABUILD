@@ -1,12 +1,12 @@
 pkgname=xcb-util-wm
-pkgver=0.4.1
-pkgbuild=2
+pkgver=0.4.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility libraries for XC Binding - client and window-manager helpers for ICCCM.")
 longdesc=("The xcb-util-wm package contains libraries which provide client and window-manager helpers for EWMH and ICCCM.")
 
-source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
+source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
