@@ -1,37 +1,31 @@
 pkgname=node-gyp
-pkgver=8.1.0
+pkgver=9.3.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Node.js native addon build tool")
 longdesc=("Node.js native addon build tool")
 
 source=("https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz")
 
-tags="develop dev-util"
+tags=("develop dev-util")
 
-build_deps="npm"
+build_deps=("npm")
 
-adddep="nodejs nodejs-nopt semver python"
+adddep=("nodejs nodejs-nopt semver python")
 
-build()
-{
-  cp "$srcache"/$pkgname-$pkgver.tgz .
+build(){
+  cp ${srcache}/${pkgname}-${pkgver}.tgz .
 
-  npm install -g --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
+  npm install -g --prefix ${pkgdir}/usr ${srcdir}/${pkgname}-${pkgver}.tgz
 
-# Non-deterministic race in npm gives 777 permissions to random directories.
-# See https://github.com/npm/npm/issues/9359 for details.
-  chmod -R u=rwX,go=rX "$pkgdir"
+  chmod -R u=rwX,go=rX ${pkgdir}
 
-# npm installs package.json owned by build user
-# https://bugs.archlinux.org/task/63396
-  chown -R root:root "$pkgdir"
+  chown -R root:root ${pkgdir}
 
-# Experimental dedup
-  rm -r "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/{,.bin/}nopt
-  rm -r "$pkgdir"/usr/lib/node_modules/$pkgname/node_modules/{,.bin/}semver
+  rm -r ${pkgdir}/usr/lib/node_modules/${pkgname}/node_modules/{,.bin/}nopt
+  rm -r ${pkgdir}/usr/lib/node_modules/${pkgname}/node_modules/{,.bin/}semver
 
-  install -d "$pkgdir"/usr/share/licenses/$pkgname
-  ln -s ../../../lib/node_modules/$pkgname/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s ../../../lib/node_modules/${pkgname}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
