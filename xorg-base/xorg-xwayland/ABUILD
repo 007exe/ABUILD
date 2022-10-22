@@ -1,5 +1,5 @@
 pkgname=xorg-xwayland
-pkgver=22.1.3
+pkgver=22.1.4
 pkgbuild=1
 arch=("auto")
 
