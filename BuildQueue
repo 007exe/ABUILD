@@ -4,18 +4,19 @@
 # WARNING: Скрипт не умеер разделять мультипакеты на категории
 
 # Осторожнео с пакетом file
-LIST="sys-kernel/kernel
-sys-libs/glibc
-sys-kernel/kernel-zen
-dev-python/python-pip
+# sys-kernel/kernel
+# sys-libs/glibc
+# sys-kernel/kernel-zen
+# dev-util/meson версия 0.63.3 не работает
+LIST="dev-python/python-keyring
+dev-python/python-solidpython
+dev-python/python-poetry-core
+dev-python/python-poetry
+dev-python/python-rich
 media-video/obs-studio
-dev-python/python-requests-toolbelt
 kde-gear/cantor
-kde-gear/kitinerary
-kde-gear/kdepim-addons
 sys-libs/ldb
 sys-apps/file
-media-libs/opencv
 media-libs/projectm
 media-libs/libjxl
 media-libs/libquvi
@@ -50,7 +51,6 @@ dev-cpp/clucene
 dev-cpp/gtest
 dev-cpp/lucene++
 dev-cpp/tl-expected
-dev-db/freetds
 dev-db/mariadb-clients
 dev-db/mariadb-libs
 dev-db/mongodb
@@ -67,26 +67,16 @@ net-libs/wpewebkit
 net-libs/webkit2gtk
 net-libs/webkit2gtk-4.1
 net-fs/samba
-dev-python/python-idna
-dev-python/python-pyrsistent
-dev-python/python-keyring
-dev-python/python-black
-dev-python/python-pylint
-dev-python/python-solidpython
-dev-python/python-importlib-metadata
-dev-python/python-poetry-core
-dev-python/python-poetry
-dev-python/python-virtualenv
-dev-python/python-rich
-dev-python/python-mako
-app-admin/conky
 app-misc/wayland-utils
 app-misc/beep
 app-misc/far2l
 gnome-libs/gcab
 gnome-libs/retro-gtk
+dev-libs/gobject-introspection
+media-libs/libepoxy
+dev-libs/glib2
+media-sound/pulseaudio
 gnome-libs/gnome-games
-gnome-libs/telepathy-folks
 app-arch/unace
 app-cdr/cdemu-daemon
 msgpack-c
@@ -106,8 +96,6 @@ sys-power/apcupsd
 xorg-apps/xorg-xdm
 xorg-libs/mesa
 net-voip/telepathy-salut
-multilib-lib32/lib32-freetype
-multilib-lib32/lib32-harfbuzz
 multilib-lib32/lib32-libx11
 multilib-lib32/lib32-libxcb
 app-emulation/libvirt
@@ -115,6 +103,7 @@ app-emulation/wine
 dev-util/vulkan-tools
 sci-libs/avogadrolibs
 net-fs/cifs-utils
+media-libs/opencv
 www-client/firefox
 www-client/seamonkey"
 
@@ -127,10 +116,10 @@ for i in $LIST ; do
     cd $STARTD/$i
     CATEGORY="$(echo $i | cut -d '/' -f 1)"
     if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/$CATEGORY -si ; then
-           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           echo "$i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
-           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           echo "$i НЕ СОБРАН!!!" >> $LOGFILE
            cd $STARTD
           # exit
     fi
