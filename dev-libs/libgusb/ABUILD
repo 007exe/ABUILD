@@ -1,5 +1,5 @@
 pkgname=libgusb
-pkgver=0.4.1
+pkgver=0.4.2
 pkgbuild=1
 arch=("auto")
 
