@@ -1,12 +1,12 @@
 pkgname=xcb-util-cursor
-pkgver=0.1.3
-pkgbuild=2
+pkgver=0.1.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("XCB cursor library.")
 longdesc=("The xcb-util-cursor package provides a module that implements the XCB cursor library. It is the XCB replacement for libXcursor.")
 
-source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
+source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
