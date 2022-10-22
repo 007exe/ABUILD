@@ -1,6 +1,6 @@
 pkgname=libsoup
-pkgver=2.74.2
-pkgbuild=2
+pkgver=2.74.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("HTTP client/server library for GNOME.")
@@ -18,7 +18,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk_doc=true \
+    -D gtk_doc=false \
     -D sysprof=disabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
