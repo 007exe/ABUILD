@@ -1,5 +1,5 @@
 pkgname=harfbuzz
-pkgver=5.3.0
+pkgver=5.3.1
 pkgbuild=1
 arch=("auto")
 
@@ -15,10 +15,13 @@ build_deps=("glib2 freetype icu python meson python-setuptools graphite cairo go
 build(){
   go_src_dir
   burn_patches
+  CFLAGS=${CFLAGS/-fexceptions/}
+  CXXFLAGS=${CXXFLAGS/-fexceptions/}
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D graphite=enabled
+    -D graphite2=enabled \
+    -D docs=disabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
