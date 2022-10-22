@@ -1,12 +1,12 @@
 pkgname=xcb-util-image
-pkgver=0.4.0
-pkgbuild=2
+pkgver=0.4.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility libraries for XC Binding - Port of Xlib's XImage and XShmImage functions.")
 longdesc=("The xcb-util-image package provides additional extensions to the XCB library.")
 
-source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
+source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.xz")
 
 tags=("utils xorg-libs")
 
