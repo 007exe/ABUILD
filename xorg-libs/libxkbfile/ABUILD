@@ -1,12 +1,12 @@
 pkgname=libxkbfile
-pkgver=1.1.0
-pkgbuild=2
+pkgver=1.1.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 keyboard file manipulation library.")
 longdesc=("The Xorg libraries provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libxkbfile-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libxkbfile-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
