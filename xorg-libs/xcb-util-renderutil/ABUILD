@@ -1,12 +1,12 @@
 pkgname=xcb-util-renderutil
-pkgver=0.3.9
-pkgbuild=2
+pkgver=0.3.10
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility libraries for XC Binding - Convenience functions for the Render extension.")
 longdesc=("The xcb-util-renderutil package provides additional extensions to the XCB library.")
 
-source=("https://xcb.freedesktop.org/dist/xcb-util-renderutil-${pkgver}.tar.bz2")
+source=("https://xcb.freedesktop.org/dist/xcb-util-renderutil-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
