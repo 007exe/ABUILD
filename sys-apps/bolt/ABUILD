@@ -1,0 +1,30 @@
+pkgname=bolt
+pkgver=0.9.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Thunderbolt 3 device manager.")
+longdesc=("Userspace system daemon to enable security levels for Thunderbolt 3.")
+
+source=("https://gitlab.freedesktop.org/${pkgname}/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("sys-apps utils")
+
+build_deps=("polkit asciidoc meson python-setuptools patch")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D man=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
+
+# Устанавливаем init скрипт и включаем его по умолчанию на уровне запуска default
+  install -Dm755 ${filedir}/bolt ${pkgdir}/etc/init.d/bolt
+  install -dm0755 ${pkgdir}/etc/runlevels/default
+  ln -snf /etc/init.d/bolt ${pkgdir}/etc/runlevels/default/bolt
+}
