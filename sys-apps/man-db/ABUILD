@@ -1,5 +1,5 @@
 pkgname=man-db
-pkgver=2.10.2
+pkgver=2.11.0
 pkgbuild=1
 arch=("auto")
 
