@@ -1,6 +1,6 @@
 pkgname=libical
-pkgver=3.0.14
-pkgbuild=2
+pkgver=3.0.16
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An open source reference implementation of the icalendar data type and serialization format.")
@@ -22,7 +22,8 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DGOBJECT_INTROSPECTION=true \
     -DICAL_GLIB_VAPI=true \
-    -DSHARED_ONLY=true
+    -DSHARED_ONLY=true \
+    -DICAL_BUILD_DOCS=false
   cmake --build build
   DESTDIR=${pkgdir} cmake --build build --target install
 }
