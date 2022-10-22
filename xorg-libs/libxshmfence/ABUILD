@@ -1,12 +1,12 @@
 pkgname=libxshmfence
-pkgver=1.3
-pkgbuild=2
+pkgver=1.3.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library that exposes a event API on top of Linux futexes.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("https://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
