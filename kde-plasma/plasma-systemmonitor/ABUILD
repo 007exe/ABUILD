@@ -12,7 +12,7 @@ tags=("plasma kde-plasma")
 
 build_deps=("ksystemstats kitemmodels qqc2-desktop-style kquickcharts kdeclarative extra-cmake-modules")
 
-adddep=("ksystemstats qqc2-desktop-style kquickcharts kdeclarativ")
+adddep=("ksystemstats kitemmodels qqc2-desktop-style kquickcharts kdeclarative")
 
 build() {
   go_src_dir
