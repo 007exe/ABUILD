@@ -1,5 +1,5 @@
 pkgname=lib32-icu
-pkgver=71.1
+pkgver=72.1
 pkgbuild=1
 arch=("auto")
 
