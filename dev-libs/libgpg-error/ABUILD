@@ -1,5 +1,5 @@
 pkgname=libgpg-error
-pkgver=1.45
+pkgver=1.46
 pkgbuild=1
 arch=("auto")
 
