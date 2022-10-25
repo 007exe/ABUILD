@@ -1,18 +1,18 @@
 pkgname=itstool
-pkgver=2.0.6
-pkgbuild=2
-arch=('noarch')
+pkgver=2.0.7
+pkgbuild=1
+arch=("noarch")
 
-shortdesc=("ITS-based XML translation tool")
+shortdesc=("ITS-based XML translation tool.")
 longdesc=("ITS Tool allows you to translate XML documents with PO files, using rules from the W3C Internationalization Tag Set (ITS) to determine what to translate and how to separate it into PO file messages.")
 
 source=("http://files.itstool.org/itstool/${pkgname}-${pkgver}.tar.bz2")
 
-tags="app-text libs"
+tags=("app-text libs")
 
-build_deps="python libxml2 docbook-xml"
+build_deps=("python libxml2 docbook-xml")
 
-adddep="python libxml2 docbook-xml"
+adddep=("python libxml2 docbook-xml")
 
 build() {
   go_src_dir
