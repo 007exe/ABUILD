@@ -1,20 +1,20 @@
 pkgname=lightdm-gtk-greeter
 pkgver=2.0.8
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("GTK+ greeter for LightDM")
+shortdesc=("GTK+ greeter for LightDM.")
 longdesc=("A LightDM greeter that uses the GTK+ toolkit.")
 
 source=("https://github.com/Xubuntu/lightdm-gtk-greeter/releases/download/lightdm-gtk-greeter-${pkgver}/lightdm-gtk-greeter-${pkgver}.tar.gz")
 
-tags="xapps x11-apps"
+tags=("apps x11-apps")
 
-build_deps="gtk3 lightdm exo gobject-introspection intltool xfce4-dev-tools"
+build_deps=("gtk3 lightdm exo gobject-introspection intltool xfce4-dev-tools")
 
-adddep="lightdm"
+adddep=("lightdm")
 
-config_files="etc/lightdm/lightdm-gtk-greeter.conf"
+config_files=("etc/lightdm/lightdm-gtk-greeter.conf")
 
 build() {
   go_src_dir
@@ -22,7 +22,7 @@ build() {
   ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sbindir=/usr/bin \
     --sysconfdir=/etc \
     --with-libxklavier \
@@ -31,6 +31,5 @@ build() {
     --disable-libindicator \
     --disable-static
   make -j${numjobs}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
-
