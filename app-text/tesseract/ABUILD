@@ -1,6 +1,6 @@
 pkgname=tesseract
 pkgver=5.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An OCR program.")
@@ -16,8 +16,17 @@ build() {
   go_src_dir
   burn_patches
   [ -x configure ] || ./autogen.sh
-  [ -f Makefile ] || ./configure --prefix=/usr
+#  [ -f Makefile ] || ./configure --prefix=/usr
+#  make -j${numjobs}
+#  make DESTDIR=${pkgdir} install
+#  make DESTDIR=${pkgdir} training-install
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-shared \
+    --disable-graphics \
+    --disable-doc \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  make DESTDIR=${pkgdir} training-install
 }
