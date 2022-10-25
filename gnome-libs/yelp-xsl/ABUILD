@@ -1,16 +1,16 @@
 pkgname=yelp-xsl
-pkgver=41.0
+pkgver=42.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Document transformations from Yelp")
+shortdesc=("Document transformations from Yelp.")
 longdesc=("yelp-xsl is a collection of documentation utilities for the Gnome project. Notably, it contains utilities for building documentation and all auxiliary files in your source tree, and it contains the DocBook XSLT stylesheets that were once distributed with Yelp.")
 
 source=("https://gitlab.gnome.org/GNOME/yelp-xsl/-/archive/${pkgver}/yelp-xsl-${pkgver}.tar.gz")
 
-tags="gnome-extra gnome"
+tags=("gnome-extra gnome")
 
-build_deps="itstool"
+build_deps=("itstool")
 
 build() {
   go_src_dir
@@ -18,7 +18,7 @@ build() {
   NOCONFIGURE=1 ./autogen.sh
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var
   make -j${numjobs}
