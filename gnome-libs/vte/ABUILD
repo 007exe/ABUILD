@@ -1,5 +1,5 @@
 pkgname=vte
-pkgver=0.68.0
+pkgver=0.70.1
 pkgbuild=1
 arch=("auto")
 
