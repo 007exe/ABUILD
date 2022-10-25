@@ -1,12 +1,12 @@
 pkgname=libxrender
-pkgver=0.9.10
-pkgbuild=2
+pkgver=0.9.11
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X Rendering Extension client library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXrender-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXrender-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
