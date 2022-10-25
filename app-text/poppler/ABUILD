@@ -1,6 +1,6 @@
 pkgname=poppler
 pkgver=22.09.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("PDF rendering library based on xpdf 3.0.")
@@ -26,7 +26,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX:PATH=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
-    -DENABLE_GTK_DOC=ON
+    -DENABLE_GTK_DOC=OFF
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
