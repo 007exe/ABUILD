@@ -1,5 +1,5 @@
 pkgname=perl-uri
-pkgver=5.15
+pkgver=5.16
 pkgbuild=1
 arch=("noarch")
 
