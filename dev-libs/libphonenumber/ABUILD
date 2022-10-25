@@ -1,6 +1,6 @@
 pkgname=libphonenumber
-pkgver=8.12.52
-pkgbuild=2
+pkgver=8.12.56
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for parsing, formatting, and validating international phone numbers.")
