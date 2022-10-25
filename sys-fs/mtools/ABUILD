@@ -1,5 +1,5 @@
 pkgname=mtools
-pkgver=4.0.41
+pkgver=4.0.42
 pkgbuild=1
 arch=("auto")
 
