@@ -1,5 +1,5 @@
 pkgname=gdk-pixbuf
-pkgver=2.42.8
+pkgver=2.42.10
 pkgbuild=1
 arch=("auto")
 
