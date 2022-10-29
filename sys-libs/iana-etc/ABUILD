@@ -1,5 +1,5 @@
 pkgname=iana-etc
-pkgver=20220915
+pkgver=20221021
 pkgbuild=1
 arch=("noarch")
 
