@@ -1,5 +1,5 @@
 pkgname=lib32-curl
-pkgver=7.85.0
+pkgver=7.86.0
 pkgbuild=1
 arch=("auto")
 
