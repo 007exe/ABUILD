@@ -5,10 +5,35 @@
 
 # Осторожнео с пакетом file
 # sys-kernel/kernel
-# sys-libs/glibc
 # sys-kernel/kernel-zen
 # dev-util/meson версия 0.63.3 не работает
-LIST="dev-python/python-keyring
+# libffi Проверь
+LIST="agilia-utils/mpkgsupport
+media-sound/alsa-utils
+dev-libs/gobject-introspection
+multilib-lib32/lib32-glib2
+dev-python/python-virtualenv
+dev-python/python-markdown-it-py
+dev-python/python-zipp
+x11-libs/gtk4
+dev-python/python-cachy
+dev-python/python-clikit
+dev-python/python-crashtest
+dev-python/python-pastel
+dev-python/python-tomlkit
+net-libs/libmbim
+net-libs/libqmi
+sys-fs/ncdu
+multilib-lib32/lib32-zlib
+dev-python/python-colorama
+dev-python/python-requests-toolbelt
+dev-python/python-virtualenv
+dev-python/python-pygments
+dev-python/python-numpy
+app-accessibility/brltty
+dev-db/postgresql-libs
+dev-libs/xerces-c
+dev-python/python-keyring
 dev-python/python-solidpython
 dev-python/python-poetry-core
 dev-python/python-poetry
@@ -66,6 +91,7 @@ dev-libs/wayland-protocols
 net-libs/wpewebkit
 net-libs/webkit2gtk
 net-libs/webkit2gtk-4.1
+net-libs/webkit2gtk-5.0
 net-fs/samba
 app-misc/wayland-utils
 app-misc/beep
@@ -73,9 +99,6 @@ app-misc/far2l
 gnome-libs/gcab
 gnome-libs/retro-gtk
 dev-libs/gobject-introspection
-media-libs/libepoxy
-dev-libs/glib2
-media-sound/pulseaudio
 gnome-libs/gnome-games
 app-arch/unace
 app-cdr/cdemu-daemon
@@ -103,9 +126,18 @@ app-emulation/wine
 dev-util/vulkan-tools
 sci-libs/avogadrolibs
 net-fs/cifs-utils
+sys-libs/js78
+games-misc/openttd
+games-misc/openttd-bin
+sys-fs/xfsprogs
+mail-mta/postfix
+dev-lang/php
 media-libs/opencv
 www-client/firefox
-www-client/seamonkey"
+www-client/seamonkey
+dev-qt/qt5-webengine
+dev-qt/qt6-webengine
+dev-qt/qt5-webkit"
 
 STARTD=`pwd`
 LOGFILE=~/build.log
