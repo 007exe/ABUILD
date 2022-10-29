@@ -1,5 +1,5 @@
 pkgname=perl-http-message
-pkgver=6.36
+pkgver=6.41
 pkgbuild=1
 arch=("noarch")
 
