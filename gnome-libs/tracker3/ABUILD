@@ -1,5 +1,5 @@
 pkgname=tracker3
-pkgver=3.4.0
+pkgver=3.4.1
 pkgbuild=1
 arch=("auto")
 
