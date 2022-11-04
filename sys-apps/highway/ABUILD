@@ -1,5 +1,5 @@
 pkgname=highway
-pkgver=0.16.0
+pkgver=1.0.2
 pkgbuild=1
 arch=("auto")
 
