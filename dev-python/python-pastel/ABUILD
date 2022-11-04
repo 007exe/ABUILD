@@ -1,6 +1,6 @@
 pkgname=python-pastel
 pkgver=0.2.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Bring colors to your terminal.")
