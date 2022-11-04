@@ -1,5 +1,5 @@
 pkgname=lib32-zlib
-pkgver=1.2.12
+pkgver=1.2.13
 pkgbuild=1
 arch=("auto")
 
