@@ -1,5 +1,5 @@
 pkgname=sysklogd
-pkgver=2.4.2
+pkgver=2.4.4
 pkgbuild=1
 arch=("auto")
 
