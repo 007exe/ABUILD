@@ -1,0 +1,21 @@
+pkgname=perl-xml-sax-expat
+pkgver=0.51
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("SAX2 Driver for Expat (XML::Parser).")
+
+source=("https://www.cpan.org/authors/id/B/BJ/BJOERN/XML-SAX-Expat-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-xml-namespacesupport perl-xml-parser perl-xml-sax")
+
+adddep=("perl-xml-namespacesupport perl-xml-parser perl-xml-sax")
+
+build(){
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make pure_install doc_install DESTDIR=${pkgdir}
+}
