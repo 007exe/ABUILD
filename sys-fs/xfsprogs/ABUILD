@@ -1,5 +1,5 @@
 pkgname=xfsprogs
-pkgver=5.15.0
+pkgver=5.19.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ tags=("base sys-fs")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-${pkgver}.tar.gz")
 
-build_deps=("util-linux-ng libinih device-mapper icu liburcu")
+build_deps=("util-linux libinih device-mapper icu liburcu")
 
 adddep=("device-mapper")
 
