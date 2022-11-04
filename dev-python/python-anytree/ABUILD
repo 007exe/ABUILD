@@ -17,6 +17,6 @@ adddep=("python-six")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  rm "$pkgdir/usr/LICENSE"
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  rm ${pkgdir}/usr/LICENSE
 }
