@@ -1,5 +1,5 @@
 pkgname=gtk4
-pkgver=4.8.1
+pkgver=4.8.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,11 +10,15 @@ source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.ta
 
 tags=("libs x11-libs")
 
-build_deps=("git gdk-pixbuf sassc colord libcloudproviders gi-docgen meson gobject-introspection docbook-xsl glib2 cairo pango fribidi libepoxy harfbuzz libxkbcommon graphene iso-codes wayland wayland-protocols libxrandr libx11 libxrender libxi libxext libxcursor libxdamage libxfixes fontconfig libxinerama libcups json-glib gst-plugins-bad librsvg dconf shared-mime-info desktop-file-utils adwaita-icon-theme cantarell-fonts rest shaderc")
+build_deps=("git gdk-pixbuf sassc colord libcloudproviders gi-docgen meson gobject-introspection docbook-xsl glib2 cairo pango fribidi
+libepoxy harfbuzz libxkbcommon graphene iso-codes wayland wayland-protocols libxrandr libx11 libxrender libxi libxext libxcursor libxdamage
+libxfixes fontconfig libxinerama libcups json-glib gst-plugins-bad librsvg dconf shared-mime-info desktop-file-utils adwaita-icon-theme
+cantarell-fonts rest shaderc")
 
 adddep=("gtk-update-icon-cache adwaita-icon-theme mesa shared-mime-info desktop-file-utils librsvg cantarell-fonts iso-codes dconf json-glib")
 
-pkglist=("gtk-update-icon-cache gtk4-docs gtk4-demos")
+# FIXME: Есть проблемы со сборкой документации по этой причине было решено пакет gtk4-docs не собирать
+pkglist=("gtk-update-icon-cache gtk4-demos")
 
 build() {
   go_src_dir
@@ -27,8 +31,8 @@ build() {
     -D broadway-backend=true \
     -D cloudproviders=enabled \
     -D colord=enabled \
-    -D gtk_doc=true \
-    -D man-pages=true \
+    -D gtk_doc=false \
+    -D man-pages=false \
     ..
   meson compile
   meson install --destdir ${pkgdir}
@@ -75,6 +79,6 @@ gtk4-demos_prep(){
   mv ${p_pkgdir}/usr/share/applications ${pkgdir}/usr/share
   mv ${p_pkgdir}/usr/share/glib-2.0/schemas/org.gtk.Demo4.gschema.xml ${pkgdir}/usr/share/glib-2.0/schemas/org.gtk.Demo4.gschema.xml
   mv ${p_pkgdir}/usr/share/icons/ ${pkgdir}/usr/share
-  mv ${p_pkgdir}/usr/share/man/man1/gtk4-{demo,demo-application,icon-browser,widget-factory}.1 ${pkgdir}/usr/share/man/man1
+#  mv ${p_pkgdir}/usr/share/man/man1/gtk4-{demo,demo-application,icon-browser,widget-factory}.1 ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/metainfo/ ${pkgdir}/usr/share/
 }
