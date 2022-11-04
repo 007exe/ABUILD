@@ -1,8 +1,8 @@
 pkgname=totem
-pkgver=42.0
+pkgver=43.0
 strict_version=1
 # NOTE: Коммит версии 42.0
-_commit=d578333de76dc51f7a58bd84edee8ee93f5050e3
+_commit=7bb879e1f6746ca19f99629794e918cdbbd06008
 pkgbuild=1
 arch=("auto")
 
@@ -30,7 +30,7 @@ before_build() {
 
   git submodule init
   git submodule set-url subprojects/libgd ${srcdir}/totem_git_libgd.git.src
-  git submodule update
+  git -c protocol.file.allow=always submodule update
 }
 
 build() {
@@ -41,7 +41,7 @@ build() {
     -D buildtype=plain \
     -D b_lto=true \
     -D b_pie=true \
-    -D enable-gtk-doc=true
+    -D enable-gtk-doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 
