@@ -1,20 +1,18 @@
 pkgname=docbook2x
 pkgver=0.8.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Tools to convert docbook to man and info.")
 longdesc=("A software package that converts DocBook documents into the traditional Unix man page format and the GNU Texinfo format.")
 
-source=("http://downloads.sourceforge.net/$pkgname/docbook2X-$pkgver.tar.gz")
+source=("http://downloads.sourceforge.net/$pkgname/docbook2X-${pkgver}.tar.gz")
 
 tags=("app-text console")
 
-# perl-xml-sax-expat
-build_deps=("glibc perl-sgmls perl-xml-parser perl-xml-sax libxslt openjade")
+build_deps=("glibc texinfo perl-sgmls perl-xml-parser perl-xml-sax libxslt openjade perl-xml-sax-expat")
 
-# perl-xml-sax-expat
-adddep=("perl-sgmls perl-xml-parser perl-xml-sax")
+adddep=("perl-sgmls perl-xml-parser perl-xml-sax perl-xml-sax-expat")
 
 build() {
   go_src_dir
@@ -28,6 +26,6 @@ build() {
     --program-transform-name 's,docbook2,db2x_docbook2,'
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -D -m0644 COPYING "$pkgdir"/usr/share/licenses/${pkgname}/license
+  install -D -m0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/license
   sed -i 's|http://docbook2x.sf.net/latest|/usr/share/docbook2X|g' ${pkgdir}/usr/bin/db2x_xsltproc
 }

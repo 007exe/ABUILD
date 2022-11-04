@@ -1,5 +1,5 @@
 pkgname=obs-studio
-pkgver=27.2.4
+pkgver=28.1.1
 pkgbuild=1
 arch=("auto")
 
@@ -23,12 +23,13 @@ build() {
   cmake ..\
     -DCMAKE_INSTALL_PREFIX="/usr" \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_BROWSER=OFF \
-    -DBUILD_VST=OFF \
-    -DDISABLE_VLC=ON \
-    -DENABLE_PIPEWIRE=OFF \
-    -DENABLE_PIPEWIRE=ON \
-    -DOBS_VERSION_OVERRIDE=${pkgver}
+    -DENABLE_BROWSER=OFF \
+    -DENABLE_VST=ON \
+    -DENABLE_VLC=OFF \
+    -DENABLE_NEW_MPEGTS_OUTPUT=OFF \
+    -DENABLE_AJA=OFF \
+    -DENABLE_JACK=ON \
+    -DOBS_VERSION_OVERRIDE=${pkgver}-${pkgbuild}
   make -j${numjobs}
   make install DESTDIR=${pkgdir}
 }

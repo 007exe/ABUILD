@@ -1,16 +1,16 @@
 pkgname=python-rich
-pkgver=12.5.1
+pkgver=12.6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal.")
-longdesc=("Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal.")
 
 source=("https://github.com/willmcgugan/rich/archive/v${pkgver}/rich-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-pip python-poetry python-colorama python-pygments python-typing_extensions python-commonmark python-webencodings")
+build_deps=("python python-pip python-poetry python-colorama python-pygments python-typing_extensions
+python-commonmark python-webencodings")
 
 adddep=("python-colorama python-pygments python-typing_extensions python-commonmark")
 

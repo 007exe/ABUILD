@@ -1,5 +1,7 @@
 pkgname=kernel-zen
-pkgver=5.19.1
+_srcver=6.0.7
+_pver=1
+pkgver=${_srcver}.zen${_pver}
 pkgbuild=1
 arch=("auto")
 
@@ -8,14 +10,14 @@ longdesc=("This is a Linux kernel with built-in support for most disk controller
 
 tags=("base sys-kernel")
 
-kernel_ver=`echo $pkgver | sed -e s/_/-/g`
+kernel_ver=`echo $_srcver | sed -e s/_/-/g`
 if [ "$kernel_ver" = "`echo $kernel_ver | sed 's/\.0$//g'` | sed -e s/lts//g" ] ; then
     srcver=$kernel_ver
 else
     srcver=`echo $kernel_ver | sed 's/\.0$//g' | sed 's/lts//g'`
 fi
 
-source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${srcver}-zen1.tar.gz")
+source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${srcver}-${_pver}.tar.gz")
 
 custom_opts=("skip_gendeps no_strip skip_validate")
 
@@ -63,7 +65,7 @@ before_build() {
   make olddefconfig
 
 # Ручная настройка ядра
-  make menuconfig
+#  make menuconfig
 
   echo "*******************************************************"
   echo "*                                                     *"

@@ -4,7 +4,7 @@
 pkgname=asciidoc
 pkgver=10.2.0
 #pkgver=9.0.5
-pkgbuild=1
+pkgbuild=2
 arch=("noarch")
 
 shortdesc=("Tool to convert AsciiDoc text files to DocBook, HTML or Unix man pages.")

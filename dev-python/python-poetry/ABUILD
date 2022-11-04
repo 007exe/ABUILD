@@ -1,5 +1,5 @@
 pkgname=python-poetry
-pkgver=1.2.0
+pkgver=1.2.2
 pkgbuild=1
 arch=("auto")
 
@@ -23,6 +23,8 @@ python-shellingham python-poetry-core python-cachy")
 build() {
   go_src_dir
   burn_patches
+  install -m0755 -t ./ ${filedir}/poetry-completions-generator
+  sed -i -e '/^crashtest/s/\^/>=/' pyproject.toml
   python -m build -wn
   python -m installer -d ${pkgdir} dist/*.whl
   install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname}/ LICENSE

@@ -1,5 +1,5 @@
 pkgname=python-colorama
-pkgver=0.4.5
+pkgver=0.4.6
 pkgbuild=1
 arch=("auto")
 

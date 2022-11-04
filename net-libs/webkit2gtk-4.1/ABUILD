@@ -1,5 +1,5 @@
 pkgname=webkit2gtk-4.1
-pkgver=2.38.0
+pkgver=2.38.1
 pkgbuild=1
 arch=("auto")
 
@@ -29,11 +29,11 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DENABLE_JOURNALD_LOG=OFF \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
-    -DENABLE_GTKDOC=ON \
-    -DENABLE_MINIBROWSER=ON \
     -DUSE_SOUP2=OFF \
+    -DENABLE_DOCUMENTATION=OFF \
+    -DENABLE_MINIBROWSER=ON \
     -DUSE_GTK4=OFF
   cmake --build build
   DESTDIR=${pkgdir} cmake --install build

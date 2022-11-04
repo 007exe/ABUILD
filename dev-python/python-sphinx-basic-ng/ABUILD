@@ -1,5 +1,5 @@
 pkgname=python-sphinx-basic-ng
-pkgver=0.0.1a12
+pkgver=1.0.0b1
 pkgbuild=1
 arch=("auto")
 
@@ -7,7 +7,7 @@ shortdesc=("Modernised skeleton for Sphinx themes.")
 longdesc=("A modernised skeleton for Sphinx themes.")
 
 _name=sphinx_basic_ng
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

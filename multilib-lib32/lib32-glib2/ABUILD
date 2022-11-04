@@ -1,5 +1,5 @@
 pkgname=lib32-glib2
-pkgver=2.72.3
+pkgver=2.74.1
 pkgbuild=1
 arch=("auto")
 
@@ -20,7 +20,6 @@ build() {
   burn_patches
   export CC="gcc -m32 -mstackrealign"
   export CXX="g++ -m32 -mstackrealign"
-#  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
   export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   CFLAGS+=' -g3'
   CXXFLAGS+=' -g3'
@@ -29,7 +28,9 @@ build() {
     -D prefix=/usr \
     -D glib_debug=disabled \
     -D selinux=disabled \
-    -D libdir=/usr/lib32
+    -D libdir=/usr/lib32 \
+    -D man=false \
+    -D gtk_doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 

@@ -1,5 +1,5 @@
 pkgname=zig
-pkgver=0.9.1
+pkgver=0.10.0
 pkgbuild=1
 arch=("auto")
 
@@ -17,7 +17,7 @@ build(){
   cmake -B build \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_PREFIX_PATH=/usr/lib/llvm13 \
+    -DCMAKE_PREFIX_PATH=/usr/lib/llvm14 \
     -DZIG_PREFER_CLANG_CPP_DYLIB=ON \
     .
     cmake --build build

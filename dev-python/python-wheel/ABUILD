@@ -1,13 +1,12 @@
 pkgname=python-wheel
 pkgver=0.37.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A built-package format for Python.")
 longdesc=("A wheel is a ZIP-format archive with a specially formatted filename and the .whl extension. It is designed to contain all the files for a PEP 376 compatible install in a way that is very close to the on-disk format.")
 
-source=("https://pypi.io/packages/source/w/wheel/wheel-$pkgver.tar.gz"
-"https://github.com/pypa/wheel/archive/$pkgver.tar.gz")
+source=("https://github.com/pypa/wheel/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,7 +16,18 @@ adddep=("python-packaging")
 
 build(){
   go_src_dir
+  sed -i 's/--cov=wheel//' setup.cfg
+  rm -r src/wheel/vendored
+  sed -i 's/from .vendored.packaging import tags/from packaging import tags/' src/wheel/bdist_wheel.py
   python setup.py build
-  python setup.py install --root="$pkgdir/" --optimize=1 --skip-build
-  install -D -m644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE.txt"
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

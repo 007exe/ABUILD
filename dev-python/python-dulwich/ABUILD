@@ -1,6 +1,6 @@
 pkgname=python-dulwich
-pkgver=0.20.32
-pkgbuild=2
+pkgver=0.20.50
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Pure-Python implementation of the Git file formats and protocols.")
@@ -11,12 +11,12 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_nam
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-certifi python-urllib3")
+build_deps=("python python-build python-installer python-setuptools python-wheel python-urllib3")
 
-adddep=("python-certifi python-urllib3")
+adddep=("python-urllib3")
 
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }

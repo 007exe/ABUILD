@@ -9,7 +9,9 @@ source=("https://github.com/rrthomas/psutils/releases/download/v${pkgver}/${pkgn
 
 tags=("utils app-text")
 
-build_deps=("glibc ghostscript perl perl-ipc-run3 paper")
+# perl-ipc-run3
+# Хрен его знает толи paper толи libpaper
+build_deps=("glibc ghostscript perl libpaper")
 
 build() {
   go_src_dir

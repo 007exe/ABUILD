@@ -1,5 +1,5 @@
 pkgname=gupnp
-pkgver=1.4.3
+pkgver=1.6.0
 pkgbuild=1
 arch=("auto")
 
@@ -18,7 +18,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk_doc=true
+    -D gtk_doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }

@@ -1,20 +1,22 @@
 pkgname=mysql
-pkgver=8.0.27
+pkglist=("mysql_static libmysqlclient")
+pkgver=8.0.28
 pkgbuild=1
 arch=("auto")
-
-source="http://ftp.gwdg.de/pub/misc/mysql/Downloads/MySQL-5.5/${pkgname}-${pkgver}.tar.gz"
-
 
 shortdesc="mysql (SQL-based relational database server)"
 longdesc="MySQL is a fast, multi-threaded, multi-user, and robust SQL (Structured Query Language) database server. It comes with a nice API which makes it easy to integrate into other applications. The home page for MySQL is http://www.mysql.com/"
 
-tags="server dev-db"
+source=("https://ftp.gwdg.de/pub/misc/mysql/Downloads/MySQL-${pkgver%.*}/mysql-${pkgver}.tar.gz")
+
+tags=("server dev-db")
+
+build_deps=("gcc cmake openssl zlib libaio")
+
+adddeps=("psmisc")
+
 config_files="etc/my.cnf
 etc/conf.d/mysql"
-pkglist="mysql_static libmysqlclient"
-build_deps="gcc cmake openssl zlib libaio"
-adddeps="psmisc"
 
 build() {
   go_src_dir

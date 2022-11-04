@@ -1,5 +1,5 @@
 pkgname=webkit2gtk
-pkgver=2.38.0
+pkgver=2.38.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,13 @@ source=("https://webkitgtk.org/releases/webkitgtk-${pkgver}.tar.xz")
 
 tags=("libs net-libs")
 
-build_deps=("cmake ninja gtk-doc python ruby gobject-introspection wayland-protocols gst-plugins-bad gperf libwpe
-libjpeg-turbo wpebackend-fdo libmanette libsecret enchant libnotify hyphen woff2 bubblewrap libseccomp xdg-dbus-proxy
-gst-plugins-good gst-plugins-bad gst-libav")
+build_deps=("at-spi2-core atk bubblewrap cairo enchant fontconfig
+freetype glib2 gst-plugins-base-libs gstreamer gtk3 harfbuzz hyphen
+icu libglvnd libgcrypt mesa libice libjpeg-turbo libmanette libnotify
+libpng libseccomp libsecret libsoup libtasn1 libwebp libwpe libx11 libxext
+cmake gi-docgen gobject-introspection gperf gst-plugins-bad ninja python ruby
+libxml2 libxslt libxt openjpeg2 sqlite wayland woff2 wpebackend-fdo xdg-dbus-proxy
+zlib wayland-protocols")
 
 adddep=("zlib at-spi2-core libxext libice bubblewrap xdg-dbus-proxy")
 
@@ -29,10 +33,11 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
-    -DENABLE_GTKDOC=OFF \
-    -DENABLE_MINIBROWSER=ON \
     -DUSE_SOUP2=ON \
+    -DENABLE_DOCUMENTATION=OFF \
+    -DENABLE_MINIBROWSER=ON
     -DUSE_GTK4=OFF
   cmake --build build
   DESTDIR=${pkgdir} cmake --install build

@@ -1,5 +1,5 @@
 pkgname=python-jaraco.functools
-pkgver=3.5.1
+pkgver=3.5.2
 pkgbuild=1
 arch=("auto")
 

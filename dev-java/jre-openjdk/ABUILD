@@ -1,8 +1,8 @@
 pkgname=jdk-openjdk
-_majorver=18
+_majorver=19
 _minorver=0
-_securityver=2.1
-_updatever=0
+_securityver=1
+_updatever=10
 _git_tag=jdk-${_majorver}.${_minorver}.${_securityver}+${_updatever}
 pkgver=${_majorver}.${_minorver}.${_securityver}.u${_updatever}
 pkgbuild=1
@@ -12,21 +12,34 @@ shortdesc=("OpenJDK Java ${_majorver} development kit.")
 
 tags=("libs dev-java")
 
-source=("https://github.com/openjdk/jdk${_majorver}u/archive/${_git_tag}.tar.gz")
+_git_tag=jdk-${_majorver}.${_minorver}.${_securityver}+${_updatever}
+source=("https://github.com/openjdk/jdk${_majorver}u/archive/refs/tags/${_git_tag}.tar.gz")
 
-# java-environment-common
-build_deps=("cpio unzip zip libelf libcups libx11 libxrender libxtst libxt libxext
-libxrandr alsa-lib pandoc graphviz freetype libjpeg-turbo giflib libpng lcms2 libnet
+# java-environment-common pandoc libelf libnet
+build_deps=("cpio unzip zip libcups libx11 libxrender libxtst libxt libxext
+libxrandr alsa-lib graphviz freetype libjpeg-turbo giflib libpng lcms2
 bash harfbuzz gcc-libs glibc")
 
 # java-environment-common
 adddep=("hicolor-icon-theme")
 
-pkglist=("jre-openjdk-headless jre-openjdk openjdk-src openjdk-doc")
+#pkglist=("jre-openjdk-headless jre-openjdk openjdk-src openjdk-doc")
+
+_jvmdir=/usr/lib/jvm/java-${_majorver}-openjdk
 
 build() {
   go_src_dir
   burn_patches
+
+  NUM_PROC_OPT=''
+  MAKEFLAG_J=$(echo ${MAKEFLAGS} | sed -En 's/.*-j([0-9]+).*/\1/p')
+  if [ -n "${MAKEFLAG_J}" ]; then
+    # http://hg.openjdk.java.net/jdk10/jdk10/file/85e6cb013b98/make/InitSupport.gmk#l105
+    echo "Removing '-j${MAKEFLAG_J}' from MAKEFLAGS to prevent build fail. Passing it directly to ./configure."
+    export MAKEFLAGS=${MAKEFLAGS/-j${MAKEFLAG_J}/}
+    NUM_PROC_OPT="--with-num-cores=${MAKEFLAG_J}"
+  fi
+
   unset CFLAGS
   unset CXXFLAGS
   unset LDFLAGS
@@ -46,7 +59,14 @@ build() {
     --with-harfbuzz=system \
     --with-jvm-features=zgc \
     --enable-unlimited-crypto \
-    --disable-warnings-as-errors
+    --disable-warnings-as-errors \
+    ${NUM_PROC_OPT}
   make images legacy-jre-image docs
   find "../${_imgdir}" -iname '*.so' -exec chmod +x {} \;
+# jre-openjdk-headless
+  install -dm 755 "${pkgdir}${_jvmdir}"
+  cp -a bin lib \
+    "${pkgdir}${_jvmdir}"
+  cp ../jdk/release "${pkgdir}${_jvmdir}"
+  cp ../jdk/lib/modules "${pkgdir}${_jvmdir}/lib"
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-P_VERSION=5.26.1
+P_VERSION=5.26.2
 BUILD_VERSION=1
 
 LIST="libkscreen

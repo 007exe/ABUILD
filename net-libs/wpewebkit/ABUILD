@@ -1,5 +1,5 @@
 pkgname=wpewebkit
-pkgver=2.38.0
+pkgver=2.38.1
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,7 @@ longdesc=("WPE WebKit allows embedders to create simple and performant systems b
 
 source=("https://wpewebkit.org/releases/${pkgname}-${pkgver}.tar.xz")
 
-tags=("gui-libs libs")
+tags=("net-libs libs")
 
 # harfbuzz-icu
 build_deps=("cairo fontconfig freetype glib2 harfbuzz icu libjpeg-turbo libepoxy libgcrypt libsoup3 libxml2 zlib

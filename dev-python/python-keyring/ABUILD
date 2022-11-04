@@ -1,19 +1,18 @@
 pkgname=python-keyring
-pkgve=23.9.0
+pkgve=23.9.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Store and access your passwords safely.")
-longdesc=("Store and access your passwords safely.")
 
 source=("https://github.com/jaraco/keyring/archive/refs/tags/v${pkgve}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools-scm python-wheel
-python-entrypoints python-secretstorage python-importlib-metadata")
+build_deps=("python python-jaraco.classes python-jeepney python-secretstorage
+python-build python-installer python-setuptools-scm python-wheel")
 
-adddep=("python-entrypoints python-secretstorage python-importlib-metadata")
+adddep=("python-jaraco.classes python-jeepney python-secretstorage")
 
 build() {
   go_src_dir

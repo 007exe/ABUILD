@@ -1,6 +1,6 @@
 pkgname=p11-kit
 pkgver=0.24.1
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Load and enumerate PKCS#11 modules.")
@@ -21,7 +21,7 @@ build() {
     -D buildtype=release \
     -D prefix=/usr \
     -D man=true \
-    -D gtk_doc=true \
+    -D gtk_doc=false \
     -D systemd=disabled \
     -D trust_paths=/etc/ca-certificates/trust-source:/usr/share/ca-certificates/trust-source
   meson compile -C build

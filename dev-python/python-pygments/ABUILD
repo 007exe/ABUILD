@@ -1,12 +1,12 @@
 pkgname=python-pygments
 pkgver=2.13.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Syntax highlighting package written in Python.")
 longdesc=("Pygments is a syntax highlighting package written in Python.")
 
-source=("https://github.com/pygments/pygments/archive/$pkgver.tar.gz")
+source=("https://github.com/pygments/pygments/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -24,4 +24,12 @@ build() {
   cp -rT doc/_build/html ${pkgdir}/usr/share/doc/${pkgname}
   install -Dm644 doc/pygmentize.1 -t ${pkgdir}/usr/share/man/man1
   install -Dm644 external/pygments.bashcomp ${pkgdir}/usr/share/bash-completion/completions/pygmentize
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

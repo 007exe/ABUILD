@@ -1,6 +1,6 @@
 pkgname=gupnp-igd
 pkgver=1.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library to handle UPnP IGD port mapping.")
@@ -18,7 +18,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk_doc=true
+    -D gtk_doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
