@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("GNU Image Manipulation Program.")
 longdesc=("Whether you are a graphic designer, photographer, illustrator, or scientist, GIMP provides you with sophisticated tools to get your job done.")
 
-source=("http://download.gimp.org/pub/gimp/v${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://download.gimp.org/gimp/v${pkgver%.*}/gimp-${pkgver}.tar.bz2")
 
 tags=("apps media-gfx")
 
