@@ -1,5 +1,5 @@
 pkgname=libsoup3
-pkgver=3.2.1
+pkgver=3.2.2
 pkgbuild=1
 arch=("auto")
 
@@ -19,7 +19,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D sysprof=disabled
+    -D sysprof=disabled \
+    -D docs=disabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
