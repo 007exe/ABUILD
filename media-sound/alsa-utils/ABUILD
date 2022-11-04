@@ -1,5 +1,5 @@
 pkgname=alsa-utils
-pkgver=1.2.7
+pkgver=1.2.8
 pkgbuild=1
 arch=("auto")
 
@@ -21,7 +21,8 @@ build() {
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
     --with-udev-rules-dir=/usr/lib/udev/rules.d \
-    --disable-alsaconf
+    --disable-alsaconf \
+    --disable-xmlto
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
