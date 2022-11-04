@@ -1,6 +1,6 @@
 pkgname=gcr
 pkgver=3.41.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library for bits of crypto UI and parsing.")
