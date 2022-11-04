@@ -16,8 +16,8 @@ adddep=("libquvi-scripts")
 
 build() {
   go_src_dir
-  burn_patches
   sed -i 's/lua51/lua52/g' configure.ac
+  burn_patches
   autoreconf -fvi
   ./configure \
     --prefix=/usr \
