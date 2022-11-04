@@ -1,6 +1,6 @@
 pkgname=libnma-common
 pkgver=1.10.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("NetworkManager GUI client library (common files).")
@@ -32,7 +32,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libnma_gtk4=true
+    -D libnma_gtk4=true \
+    -D gtk_doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 
