@@ -1,6 +1,6 @@
 pkgname=poppler
-pkgver=22.09.0
-pkgbuild=2
+pkgver=22.11.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("PDF rendering library based on xpdf 3.0.")
