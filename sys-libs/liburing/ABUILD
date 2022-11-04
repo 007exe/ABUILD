@@ -1,6 +1,6 @@
 pkgname=liburing
-pkgver=2.1
-pkgbuild=2
+pkgver=2.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux-native io_uring I/O access library.")
