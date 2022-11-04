@@ -1,5 +1,5 @@
 pkgname=openvpn
-pkgver=2.5.7
+pkgver=2.5.8
 pkgbuild=1
 arch=("auto")
 
