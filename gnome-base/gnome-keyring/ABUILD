@@ -1,6 +1,6 @@
 pkgname=gnome-keyring
 pkgver=42.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Stores passwords and encryption keys.")
@@ -22,7 +22,8 @@ build() {
     --localstatedir=/var \
     --with-pam-dir=/usr/lib/security \
     --disable-static \
-    --disable-schemas-compile
+    --disable-schemas-compile \
+    --disable-doc
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
