@@ -30,7 +30,7 @@ build() {
     --sysconfdir=/etc \
     --enable-mp \
     --enable-gimp-console \
-    --enable-gtk-doc \
+    --disable-gtk-doc \
     --disable-check-update \
     --disable-python \
     --with-openexr \
