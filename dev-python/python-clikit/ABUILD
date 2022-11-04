@@ -1,6 +1,6 @@
 pkgname=python-clikit
 pkgver=0.6.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Clikit allows you to create beautiful and testable command-line interfaces.")
@@ -11,9 +11,10 @@ source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgna
 
 tags=("libs dev-python")
 
-build_deps=("python python-dephell python-pylev python-typing_extensions python-crashtest python-pastel")
+build_deps=("python python-build python-installer python-wheel python-poetry-core
+python-crashtest python-pastel python-pylev python-typing_extensions")
 
-adddep=("python-pylev python-typing_extensions python-crashtest python-pastel")
+adddep=("python-crashtest python-pastel python-pylev python-typing_extensions")
 
 build() {
   go_src_dir
