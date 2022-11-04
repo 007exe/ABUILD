@@ -6,7 +6,7 @@ arch=("noarch")
 shortdesc=("Specifications of extended Wayland protocols.")
 longdesc=("Wayland-protocols contains Wayland protocols that adds functionality not available in the Wayland core protocol.")
 
-source=("https://wayland.freedesktop.org/releases/$pkgname-$pkgver.tar.xz")
+source=("https://gitlab.freedesktop.org/wayland/${pkgname}/-/releases/${pkgver}/downloads/${pkgname}-${pkgver}.tar.xz")
 
 tags=("dev-libs libs")
 
