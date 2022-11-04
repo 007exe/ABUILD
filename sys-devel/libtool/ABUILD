@@ -1,6 +1,6 @@
 pkgname=libtool
-pkgver=2.4.6
-pkgbuild=4
+pkgver=2.4.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A generic library support script")
@@ -11,7 +11,7 @@ tags=("develop sys-devel")
 source=("https://ftp.gnu.org/gnu/libtool/libtool-${pkgver}.tar.xz")
 
 # NOTE: Необходимо пересобирать после каждого обновления gcc.
-_gccver=11.2.0
+_gccver=12.2.0
 build_deps=("gcc>=$_gccver help2man")
 
 adddep=("m4 tar")
