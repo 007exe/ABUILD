@@ -4,9 +4,8 @@ pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library for computing contrast ratios, as required by WCAG 2.0.")
-longdesc=("Library for computing contrast ratios, as required by WCAG 2.0.")
 
-source=("https://github.com/gsnedders/wcag-contrast-ratio/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/gsnedders/wcag-contrast-ratio/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -15,6 +14,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 -t "$pkgdir/usr/share/licenses/$pkgname" LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
