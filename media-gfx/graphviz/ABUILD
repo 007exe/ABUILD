@@ -1,5 +1,5 @@
 pkgname=graphviz
-pkgver=6.0.2
+pkgver=7.0.0
 pkgbuild=1
 arch=("auto")
 
@@ -12,9 +12,10 @@ tags=("utils media-gfx")
 # mono
 build_deps=("swig lua ocaml>=4.12.0 perl python gtk2 ghostscript qt5-base guile tk r")
 
-adddep="ghostscript"
+adddep=("ghostscript")
+
 # Это опциональные зависимости
-removedep="mono guile lua lua51 lua52 lua53 ocaml perl python r tcl qt5-base gtk2"
+removedep=("mono guile lua lua51 lua52 lua53 ocaml perl python r tcl qt5-base gtk2")
 
 build() {
   go_src_dir
