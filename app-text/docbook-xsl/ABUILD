@@ -1,20 +1,18 @@
 pkgname=docbook-xsl
 pkgver=1.79.2
-pkgbuild=2
+pkgbuild=3
 arch=("noarch")
 
-shortdesc="XML stylesheets for Docbook-xml transformations"
-longdesc="These XSL stylesheets allow to convert any DocBook document to another printed (for example, RTF or PostScript) or online (for example, HTML) format. They are highly customizable."
+shortdesc=("XML stylesheets for Docbook-xml transformations.")
+longdesc=("These XSL stylesheets allow to convert any DocBook document to another printed (for example, RTF or PostScript) or online (for example, HTML) format. They are highly customizable.")
+
+source=("https://github.com/docbook/xslt10-stylesheets/releases/download/release%2F${pkgver}/docbook-xsl-${pkgver}.tar.gz")
 
 tags=("app-text develop")
 
-source=("https://github.com/docbook/xslt10-stylesheets/releases/download/release%2F$pkgver/docbook-xsl-$pkgver.tar.gz")
+build_deps=("libxml2 libxslt docbook-xml")
 
-build_deps="libxml2 libxslt docbook-xml"
-
-adddep="libxml2 libxslt docbook-xml"
-
-custom_opts="no_strip skip_gendeps"
+adddep=("libxml2 libxslt docbook-xml")
 
 build() {
   go_src_dir
@@ -33,4 +31,6 @@ build() {
   for i in doinst postremove ; do
       cat ${filedir}/${i}.sh | sed s/%PKGVER%/${pkgver}/g > ${pkgdir}/install/${i}.sh
   done
+
+  install -d ${pkgdir}/etc/xml
 }
