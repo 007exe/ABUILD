@@ -1,6 +1,6 @@
 pkgname=brasero
 pkgver=3.12.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("CD/DVD mastering tool.")
@@ -11,7 +11,7 @@ source=("https://gitlab.gnome.org/GNOME/brasero/-/archive/${pkgver}/brasero-${pk
 tags=("apps gnome-apps")
 
 build_deps=("gtk-doc yelp-tools gnome-common intltool libburn libisofs libnautilus-extension
-gobject-introspection itstool docbook-xsl gtk3 gst-plugins-good totem-plparser cdrtools
+gobject-introspection itstool docbook-xsl gtk3 gst-plugins-good totem-pl-parser cdrtools
 cdrdao shared-mime-info libcanberra dvd+rw-tools dconf libsm libnotify gvfs tracker3")
 
 adddep=("shared-mime-info")
@@ -32,7 +32,7 @@ build() {
     --disable-search \
     --disable-schemas-compile \
     --enable-compile-warnings=minimum \
-    --enable-gtk-doc \
+    --disable-gtk-doc \
     --disable-static
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
