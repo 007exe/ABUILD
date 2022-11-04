@@ -10,7 +10,7 @@ source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("dev-libs libs")
 
-build_deps="libcddb ncurses gcc-libs"
+build_deps=("libcddb ncurses gcc-libs")
 
 build() {
   go_src_dir
