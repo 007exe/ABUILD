@@ -1,12 +1,12 @@
 pkgname=polkit
-pkgver=121
-pkgbuild=1
+pkgver=122
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Application development toolkit for controlling system-wide privileges.")
 longdesc=("Polkit is a toolkit for defining and handling authorizations. It is used for allowing unprivileged processes to communicate with privileged processes.")
 
-source=("https://www.freedesktop.org/software/polkit/releases/polkit-${pkgver}.tar.gz")
+source=("https://gitlab.freedesktop.org/polkit/polkit/-/archive/${pkgver}/polkit-${pkgver}.tar.gz")
 
 tags=("libs sys-auth")
 
@@ -18,8 +18,10 @@ build(){
   go_src_dir
   burn_patches
   meson build \
-    -D man=true \
+    -D gtk_doc=false \
+    -D man=false \
     -D prefix=/usr \
+    -D libdir=/usr/lib \
     -D os_type=redhat \
     -D buildtype=release \
     -D systemdsystemunitdir=/tmp   \
@@ -41,8 +43,7 @@ EOF
 # Удаляем бесполезные сервисы systemd
   rm -r ${pkgdir}/tmp
 
-#  install -d -o root -g 102 -m 750 ${pkgdir}/{etc,usr/share}/polkit-1/rules.d
-  mv ${pkgdir}/{etc,usr/share}/polkit-1/rules.d/50-default.rules
+  install -d -o root -g 102 -m 750 ${pkgdir}/{etc,usr/share}/polkit-1/rules.d
 
 # Системный пользователь и группы
   install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf <<END
