@@ -1,6 +1,6 @@
 pkgname=rhythmbox
 pkgver=3.4.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Music playback and management application.")
@@ -11,7 +11,7 @@ source=("https://gitlab.gnome.org/GNOME/rhythmbox/-/archive/v${pkgver}/rhythmbox
 tags=("apps gnome-apps")
 
 # zeitgeist
-build_deps=("gobject-introspection vala lirc libmtp brasero libdmapsharing libgpod totem-plparser
+build_deps=("gobject-introspection vala lirc libmtp brasero libdmapsharing libgpod totem-pl-parser
 gtk-doc yelp-tools meson dconf gst-plugins-base gst-plugins-good libsoup json-glib libnotify
 libpeas media-player-info tdb python-gobject libgudev grilo")
 
@@ -29,7 +29,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk_doc=true
+    -D gtk_doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   python -m compileall -d /usr/lib ${pkgdir}/usr/lib
