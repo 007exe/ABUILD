@@ -1,0 +1,28 @@
+pkgname=devilspie
+pkgver=0.23
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Window matching utility for X.")
+longdesc=("Window matching utility with Lua scripting.")
+
+source=("http://www.burtonini.com/computing/${pkgname}-${pkgver}.tar.xz")
+
+tags=("xorg-misc apps")
+
+build_deps=("libwnck3 intltool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  mkdir -p ${pkgdir}/etc/devilspie
+  echo '(debug)' > ${pkgdir}/etc/devilspie/example.ds
+}
