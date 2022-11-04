@@ -1,6 +1,6 @@
 pkgname=make
-pkgver=4.3
-pkgbuild=3
+pkgver=4.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("GNU make utility to maintain groups of programs.")
