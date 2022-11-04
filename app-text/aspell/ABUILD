@@ -1,7 +1,7 @@
 pkgname=aspell
 pkgver=0.60.8
 _pkgmajorver=0.60
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A spell checker designed to eventually replace Ispell.")
