@@ -1,6 +1,6 @@
 pkgname=taglib
-pkgver=1.12
-pkgbuild=2
+pkgver=1.13
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Library for reading and editing the meta-data of several popular audio formats.")
