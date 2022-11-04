@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Wayland tools to display information about current compositor.")
 longdesc=("Display information about supported Wayland protocols and current compositor.")
 
-source=("https://gitlab.freedesktop.org/wayland/${pkgname}/-/archive/${pkgname}-${pkgver}/${pkgname}-${pkgname}-${pkgver}.tar.gz")
+source=("https://gitlab.freedesktop.org/wayland/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("utils app-misc")
 
