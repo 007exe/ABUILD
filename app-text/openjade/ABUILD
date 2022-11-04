@@ -7,6 +7,9 @@ shortdesc=("Implementation of the DSSSL language.")
 
 source=("https://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
+# NOTE: debian patch
+#https://deb.debian.org/debian/pool/main/o/openjade1.3/openjade1.3_1.3.2-13.diff.gz
+
 tags=("app-text develop")
 
 build_deps=("perl-perl4-corelibs opensp sgml-common")
@@ -17,7 +20,8 @@ build() {
   go_src_dir
   burn_patches
   export CXXFLAGS+=' -fno-lifetime-dse'
-  ./configure --prefix=/usr \
+  ./configure \
+    --prefix=/usr \
     --mandir=/usr/share/man \
     --enable-default-catalog=/etc/sgml/catalog \
     --datadir=/usr/share/sgml/openjade-${pkgver} \
