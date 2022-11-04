@@ -1,28 +1,24 @@
 pkgname=libqmi
-pkgver=1.30.8
+pkgver=1.32.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("QMI modem protocol helper library.")
 longdesc=("The libqmi package contains a GLib-based library for talking to WWAN modems and devices which speak the Qualcomm MSM Interface (QMI) protocol.")
 
-source=("http://www.freedesktop.org/software/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.freedesktop.org/mobile-broadband/libqmi/-/archive/${pkgver}/libqmi-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
-build_deps=("gtk-doc python git help2man gobject-introspection libqrtr-glib")
+build_deps=("gtk-doc meson help2man gobject-introspection bash-completion")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --disable-static \
-    --enable-gtk-doc \
-    --enable-compile-warnings=yes
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+    meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
