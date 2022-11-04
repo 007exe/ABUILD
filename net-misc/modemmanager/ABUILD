@@ -1,52 +1,48 @@
 pkgname=modemmanager
-pkgver=1.18.12
+pkgver=1.20.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Mobile broadband modem management service.")
 longdesc=("ModemManager provides a unified high level API for communicating with mobile broadband modems, regardless of the protocol used to communicate with the actual device.")
 
-source=("http://www.freedesktop.org/software/ModemManager/ModemManager-${pkgver}.tar.xz")
+source=("https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/archive/${pkgver}/ModemManager-${pkgver}.tar.gz")
 
 tags=("network net-misc")
 
-build_deps=("gtk-doc gobject-introspection vala meson bash-completion libmbim libqrtr-glib libqmi")
+build_deps=("gtk-doc gobject-introspection vala meson bash-completion libgudev polkit ppp libqmi libmbim mobile-broadband-provider-info")
 
-adddep=("ppp polkit libmm-glib bash-completion")
+adddep=("libgudev polkit ppp libqmi libmbim mobile-broadband-provider-info")
 
 pkglist=("libmm-glib")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --sbindir=/usr/bin \
-    --libdir=/usr/lib \
-    --sysconfdir=/etc \
-    --mandir=/usr/share/man \
-    --infodir=/usr/share/info \
-    --localstatedir=/var \
-    --with-polkit=permissive \
-    --enable-plugin-qcom-soc \
-    --enable-gtk-doc \
-    --disable-static \
-    --enable-vala=yes \
-    --with-systemd-journal=no \
-    --with-systemd-suspend-resume
-  make -j${numjobs}
-  make DESTDIR=$pkgdir install
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D dbus_policy_dir=/usr/share/dbus-1/system.d \
+    -D dist_version="\"$pkgver\"" \
+    -D gtk_doc=false \
+    -D plugin_qcom_soc=disabled \
+    -D polkit=permissive \
+    -D vapi=true \
+    -D systemdsystemunitdir=/tmp   \
+    -D systemd_journal=false \
+    -D systemd_suspend_resume=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 
-  rm -rf ${pkgdir}/usr/share/dbus-1/system-services
-  mkdir -p ${pkgdir}/usr/share/polkit-1/rules.d
-  install -m644 -D ${filedir}/${pkgname}.rules ${pkgdir}/usr/share/polkit-1/rules.d/01-org.freedesktop.ModemManager.rules
-  install -m755 -D ${filedir}/${pkgname}.initd ${pkgdir}/etc/init.d/${pkgname}
+# Удаляем бесполезные сервисы systemd
+  rm -r ${pkgdir}/tmp
 }
 
 libmm-glib() {
   pkgname=libmm-glib
   shortdesc=("ModemManager library.")
   longdesc=("ModemManager provides a unified high level API for communicating with mobile broadband modems, regardless of the protocol used to communicate with the actual device.")
+  adddep=("glib2")
 }
 
 libmm-glib_prep() {
@@ -54,8 +50,10 @@ libmm-glib_prep() {
   mkdir -p ${pkgdir}/usr/{include,lib,share/{gtk-doc/html,vala}}
   mv -fv ${p_pkgdir}/usr/include/ ${pkgdir}/usr
   mv -fv ${p_pkgdir}/usr/lib/girepository-1.0 ${pkgdir}/usr/lib
+  mv -fv ${p_pkgdir}/usr/lib/libmm-glib.so* ${pkgdir}/usr/lib
   mv -fv ${p_pkgdir}/usr/lib/pkgconfig ${pkgdir}/usr/lib
   mv -fv ${p_pkgdir}/usr/share/gir-1.0 ${pkgdir}/usr/share
-  mv -fv ${p_pkgdir}/usr/share/gtk-doc/html/libmm-glib ${pkgdir}/usr/share/gtk-doc/html
+# FIXME: Есть проблемы со сборкой документации
+#  mv -fv ${p_pkgdir}/usr/share/gtk-doc/html/libmm-glib ${pkgdir}/usr/share/gtk-doc/html
   mv -fv ${p_pkgdir}/usr/share/vala ${pkgdir}/usr/share
 }
