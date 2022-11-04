@@ -1,12 +1,12 @@
 pkgname=python-flit-core
 pkgver=3.7.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Simplified packaging of Python modules.")
 longdesc=("Simplified packaging of Python modules (core module).")
 
-source=("https://github.com/takluyver/flit/archive/$pkgver.tar.gz")
+source=("https://github.com/takluyver/flit/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -29,6 +29,14 @@ build() {
 
 # Установка тестов во вложенный каталог проекта может не конфликтовать с верхним уровнем, но в любом случае не делайте этого...
   rm -r ${pkgdir}/usr/lib/python*/site-packages/flit_core/tests/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
 
 python-flit() {
