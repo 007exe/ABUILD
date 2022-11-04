@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=5.19.6
+pkgver=6.0.7
 pkgbuild=1
 arch=("auto")
 
@@ -15,7 +15,7 @@ else
     srcver=`echo $kernel_ver | sed 's/\.0$//g' | sed 's/lts//g'`
 fi
 
-source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${srcver}.tar.xz")
+source=("https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${srcver}.tar.xz")
 
 custom_opts=("skip_gendeps no_strip skip_validate")
 
@@ -86,6 +86,13 @@ before_build() {
 
 build() {
   go_src_dir
+  echo "*******************************************************"
+  echo "*                                                     *"
+  echo "*                    Сборка ядра...                   *"
+  echo "*                                                     *"
+  echo "*******************************************************"
+  echo ""
+
   make -j${numjobs}
   echo "*******************************************************"
   echo "*                                                     *"
