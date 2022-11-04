@@ -1,5 +1,7 @@
 pkgname=readline
-pkgver=8.1.2
+_basever=8.2
+_patchlevel=001
+pkgver=${_basever}.${_patchlevel}
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +10,7 @@ longdesc=("The Readline package is a set of libraries that offers command-line e
 
 tags=("libs sys-libs")
 
-source=("http://ftp.gnu.org/gnu/readline/readline-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/gnu/readline/readline-${_basever}.tar.gz")
 
 build_deps=("glibc ncurses")
 
