@@ -18,7 +18,10 @@ build() {
   go_src_dir
   burn_patches
   python setup.py build
+  export LC_CTYPE=en_US.UTF-8 CPPFLAGS= CFLAGS= CXXFLAGS= LDFLAGS=
+  ./run_tests.py --failfast
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+
   install -d ${pkgdir}/usr/share/vim/vimfiles
   cp -rt ${pkgdir}/usr/share/vim/vimfiles data/syntax-highlighting/vim/*/
 
