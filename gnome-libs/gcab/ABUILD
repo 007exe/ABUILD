@@ -17,7 +17,9 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib
+    -D libdir=/usr/lib \
+    -D nls=true \
+    -D installed_tests=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
