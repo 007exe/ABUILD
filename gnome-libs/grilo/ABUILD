@@ -1,5 +1,5 @@
 pkgname=grilo
-pkgver=0.3.14
+pkgver=0.3.15
 pkgbuild=1
 arch=("auto")
 
@@ -21,7 +21,8 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib
+    -D libdir=/usr/lib \
+    -D enable-gtk-doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
