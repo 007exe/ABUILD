@@ -1,6 +1,6 @@
 pkgname=python-installer
 pkgver=0.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library for installing Python wheels.")
@@ -21,4 +21,12 @@ build() {
   rm ${pkgdir}/usr/lib/python*/site-packages/installer/_scripts/*.exe
 
   install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
