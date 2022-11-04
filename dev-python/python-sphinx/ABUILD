@@ -1,5 +1,5 @@
 pkgname=python-sphinx
-pkgver=5.1.1
+pkgver=5.3.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,22 +10,26 @@ source=("https://pypi.org/packages/source/S/Sphinx/Sphinx-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-docutils python-setuptools python-babel python-imagesize
-python-jinja python-pygments python-requests python-snowballstemmer python-sphinx-alabaster-theme
-python-sphinxcontrib-applehelp python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp
-python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
-
-adddep=("python-docutils python-setuptools python-babel python-imagesize python-jinja python-pygments
-python-requests python-snowballstemmer python-sphinx-alabaster-theme python-sphinxcontrib-applehelp
-python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp python-sphinxcontrib-jsmath
+build_deps=("python python-build python-flit-core python-installer python-babel
+python-docutils python-imagesize python-jinja python-packaging python-pygments
+python-requests python-snowballstemmer python-sphinx-alabaster-theme
+python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp
+python-sphinxcontrib-applehelp python-sphinxcontrib-jsmath
 python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
+
+adddep=("python-babel python-docutils python-imagesize python-jinja
+python-packaging python-pygments python-requests python-snowballstemmer
+python-sphinx-alabaster-theme python-sphinxcontrib-devhelp
+python-sphinxcontrib-htmlhelp python-sphinxcontrib-applehelp
+python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp
+python-sphinxcontrib-serializinghtml")
 
 build() {
   go_src_dir
-  sed -i 's/0.19/0.20/' setup.py
-  burn_patches
-  make build
-  export PYTHONHASHSEED=0
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
-  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s ${site_packages}/sphinx-${pkgver}.dist-info/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
