@@ -1,0 +1,27 @@
+pkgname=gmrun
+pkgver=1.4w
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A simple program which provides a run program window.")
+longdesc=("A GTK-2 based launcher box with bash style auto completion!.")
+
+source=("https://github.com/wdlkmpx/gmrun/archive/${pkgver}.tar.gz")
+
+tags=("apps xorg-misc")
+
+build_deps=("gtk3 popt")
+
+config_files=("etc/gmrunrc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
