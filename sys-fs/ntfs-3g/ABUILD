@@ -1,5 +1,5 @@
 pkgname=ntfs-3g
-pkgver=2022.5.17
+pkgver=2022.10.3
 pkgbuild=1
 arch=("auto")
 
