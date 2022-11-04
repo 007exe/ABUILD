@@ -1,12 +1,12 @@
 pkgname=libxinerama
-pkgver=1.1.4
-pkgbuild=2
+pkgver=1.1.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Xinerama extension library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXinerama-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/archive/individual/lib/libXinerama-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
