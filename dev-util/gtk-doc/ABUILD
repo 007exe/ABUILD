@@ -22,4 +22,6 @@ build() {
     --prefix=/usr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+  python -m compileall -d /usr/lib ${pkgdir}/usr/lib
+  python -O -m compileall -d /usr/lib ${pkgdir}/usr/lib
 }
