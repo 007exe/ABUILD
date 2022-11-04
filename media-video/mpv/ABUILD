@@ -69,3 +69,11 @@ build(){
   install -m0644 DOCS/{encoding.rst,tech-overview.txt} ${pkgdir}/usr/share/doc/mpv
   install -m0644 TOOLS/lua/* -D -t ${pkgdir}/usr/share/mpv/scripts
 }
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
