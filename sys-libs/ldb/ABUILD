@@ -10,7 +10,7 @@ source=("https://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs sys-libs")
 
-build_deps=("talloc tdb popt lmdb")
+build_deps=("python cmocka docbook-xsl tevent")
 
 build() {
   go_src_dir
