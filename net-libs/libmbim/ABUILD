@@ -1,29 +1,26 @@
 pkgname=libmbim
-pkgver=1.26.4
+pkgver=1.28.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("MBIM modem protocol helper library.")
 longdesc=("The libmbim package contains a GLib-based library for talking to WWAN modems and devices which speak the Mobile Interface Broadband Model (MBIM) protocol.")
 
-source=("http://www.freedesktop.org/software/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.freedesktop.org/mobile-broadband/libmbim/-/archive/${pkgver}/libmbim-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
-build_deps=("glib2 bash gtk-doc python git help2man gobject-introspection")
+build_deps=("gtk-doc meson git help2man gobject-introspection bash-completion glib2")
 
 adddep=("bash")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --enable-compile-warnings=yes \
-    --disable-static
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
