@@ -1,22 +1,22 @@
 pkgname=docbook-xml
 pkgver=4.5
-pkgbuild=2
-arch="noarch"
+pkgbuild=3
+arch=("noarch")
 
-shortdesc="A widely used XML scheme for writing documentation and help"
-longdesc="A widely used XML scheme for writing documentation and help"
-
-adddep=('libxml2')
-
-build_deps="libxml2 libarchive"
-
-tags=("app-text libs")
+shortdesc=("A widely used XML scheme for writing documentation and help.")
 
 source=("http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip n"
         "http://www.docbook.org/xml/4.4/docbook-xml-4.4.zip n"
         "http://www.docbook.org/xml/4.3/docbook-xml-4.3.zip n"
         "http://www.docbook.org/xml/4.2/docbook-xml-4.2.zip n"
         "http://www.docbook.org/xml/4.1.2/docbkx412.zip n")
+
+tags=("app-text libs")
+
+build_deps=("libxml2 libarchive")
+
+adddep=("libxml2")
+
 
 build() {
   for ver in 4.2 4.3 4.4 4.5; do
