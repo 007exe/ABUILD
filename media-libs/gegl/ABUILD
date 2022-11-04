@@ -1,5 +1,5 @@
 pkgname=gegl
-pkgver=0.4.36
+pkgver=0.4.38
 pkgbuild=1
 arch=("auto")
 
