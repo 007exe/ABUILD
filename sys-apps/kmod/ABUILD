@@ -1,6 +1,6 @@
 pkgname=kmod
-pkgver=29
-pkgbuild=2
+pkgver=30
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux kernel module management tools and library.")
