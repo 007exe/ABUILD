@@ -1,6 +1,6 @@
 pkgname=qt5-imageformats
-pkgver=5.15.6
-pkgbuild=2
+pkgver=5.15.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plugins for additional image formats: TIFF, MNG, TGA, WBMP.")

@@ -1,11 +1,11 @@
 # NOTE: Этот пакет собирается очень долго и требует много оперативной памяти
 # Версия qt5-base
-_qtbasever=5.15.5
+_qtbasever=5.15.7
 
 pkgname=qt5-webengine
-pkgver=5.15.10
+pkgver=5.15.11
 strict_version=1
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides support for web applications using the Chromium browser project.")
@@ -32,7 +32,7 @@ before_build() {
   git submodule init
   git submodule set-url src/3rdparty ${srcdir}/${pkgname}_git_qtwebengine-chromium.git.src
   git submodule set-branch --branch 87-based src/3rdparty
-  git submodule update
+  git -c protocol.file.allow=always submodule update
 
 # Фикс сборки с использованием python3
   patch -p1 -i ${startdir}/patches/qt5-webengine-python3.patch

@@ -1,6 +1,5 @@
 pkgname=qt5-x11extras
-pkgver=5.15.6
-strict_version=1
+pkgver=5.15.7
 pkgbuild=1
 arch=("auto")
 

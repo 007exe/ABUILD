@@ -1,10 +1,10 @@
 #!/bin/bash
 
-QT_VERSION=5.15.6
+QT_VERSION=5.15.7
 BUILD_VERSION=1
 # NOTE: Измени значение переменной _qtbasever в файле qt5-webengine/ABUILD
-WEBENGINE_VERSION=5.15.10
-BUILD_VERSION_WEB=2
+WEBENGINE_VERSION=5.15.11
+BUILD_VERSION_WEB=1
 
 WEBKIT_VERSION=5.212.0alpha4
 BUILD_VERSION_WEBKIT=3
@@ -46,8 +46,7 @@ qt5-webchannel
 qt5-websockets
 qt5-webglplugin
 qt5-x11extras
-qt5-xmlpatterns
-"
+qt5-xmlpatterns"
 #qt5-webengine
 #qt5-webview
 
