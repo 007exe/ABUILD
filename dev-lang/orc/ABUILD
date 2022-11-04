@@ -1,6 +1,6 @@
 pkgname=orc
-pkgver=0.4.32
-pkgbuild=3
+pkgver=0.4.33
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Oil Runtime Compiler.")
