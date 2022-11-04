@@ -1,12 +1,11 @@
 pkgname=python-tomli
 pkgver=2.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A lil' TOML parser.")
-longdesc=("A lil' TOML parser.")
 
-source=("https://github.com/hukkin/tomli/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/hukkin/tomli/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
