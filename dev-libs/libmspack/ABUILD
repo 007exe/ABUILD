@@ -1,6 +1,6 @@
 pkgname=libmspack
 pkgver=0.10.1alpha
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library for Microsoft compression formats.")
