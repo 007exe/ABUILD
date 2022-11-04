@@ -1,12 +1,12 @@
 pkgname=xorg-xsetroot
-pkgver=1.1.2
+pkgver=1.1.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classic X utility to set your root window background to a given pattern or color.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xsetroot-${pkgver}.tar.gz")
+source=("https://xorg.freedesktop.org/archive/individual/app/xsetroot-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
