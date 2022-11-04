@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend python-beautifulsoup4 capabilities:"
+echo -e "python-chardet: to autodetect character encodings"
+echo -e "python-lxml: alternative HTML parser"
+echo -e "python-html5lib: alternative HTML parser"
+echo -e " "
