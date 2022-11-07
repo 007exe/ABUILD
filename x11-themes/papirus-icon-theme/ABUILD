@@ -1,0 +1,17 @@
+pkgname=papirus-icon-theme
+pkgver=20221101
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Papirus icon theme.")
+
+source=("https://github.com/PapirusDevelopmentTeam/$pkgname/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("themes x11-themes")
+
+build_deps=("mkpkg")
+
+build() {
+  go_src_dir
+  make DESTDIR=${pkgdir} install
+}
