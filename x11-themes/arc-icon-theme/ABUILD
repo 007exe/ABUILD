@@ -1,0 +1,30 @@
+pkgname=arc-icon-theme
+pkgver=20161122
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Arc icon theme. Official releases only.")
+
+source=("https://github.com/horst3180/${pkgname}/archive/${pkgver}.tar.gz")
+
+tags=("themes x11-themes")
+
+build_deps=("gtk-update-icon-cache hicolor-icon-theme")
+
+adddep=("gtk-update-icon-cache hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  sed -i "s/Inherits=.*/Inherits=Moka,Faba,elementary,Adwaita,gnome,hicolor/" Arc/index.theme
+  ./autogen.sh --prefix=/usr
+  make
+  make DESTDIR=${pkgdir} install
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
