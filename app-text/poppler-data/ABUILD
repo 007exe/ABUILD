@@ -1,23 +1,26 @@
 pkgname=poppler-data
 pkgver=0.4.11
-pkgbuild=1
+_POPPLER_DATA_EXTRA_VERSION="0.4.11-2"
+pkgbuild=2
 arch=("noarch")
 
 shortdesc=("Encoding data for the poppler PDF rendering library.")
-longdesc=("Encoding data for the poppler PDF rendering library.")
 
 tags=("app-text libs")
 
-source=("https://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.gz")
+source=("https://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.gz"
+"https://dev.gentoo.org/~sam/distfiles/app-text/${pkgname}/${pkgname}-$_POPPLER_DATA_EXTRA_VERSION-extra.tar.xz")
 
-build_deps="mkpkg"
+build_deps=("mkpkg")
 
 build() {
   go_src_dir
   burn_patches
-  make prefix=/usr libdir=/usr/lib${LIBDIRSUFFIX} DESTDIR="${pkgdir}" install
+  make prefix=/usr libdir=/usr/lib DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING COPYING.adobe "${pkgdir}/usr/share/licenses/${pkgname}/"
+# дополнительные карты для ghostscript - FS#76416
+  cp ${srcdir}/${pkgname}-${_POPPLER_DATA_EXTRA_VERSION}-extra/Identity-* ${pkgdir}/usr/share/poppler/cMap
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING COPYING.adobe ${pkgdir}/usr/share/licenses/${pkgname}/
 }
-
