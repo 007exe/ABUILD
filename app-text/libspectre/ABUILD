@@ -1,10 +1,9 @@
 pkgname=libspectre
-pkgver=0.2.10
+pkgver=0.2.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Small library for rendering Postscript documents.")
-longdesc=("Small library for rendering Postscript documents.")
 
 source=("http://libspectre.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
 
