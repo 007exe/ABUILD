@@ -1,5 +1,5 @@
 pkgname=musikcube
-pkgver=0.97.0
+pkgver=0.98.1
 pkgbuild=1
 arch=("auto")
 
