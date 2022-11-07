@@ -1,5 +1,5 @@
 pkgname=speech-dispatcher
-pkgver=0.11.3
+pkgver=0.11.4
 pkgbuild=1
 arch=("auto")
 
