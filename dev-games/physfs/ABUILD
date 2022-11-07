@@ -1,29 +1,33 @@
 pkgname=physfs
-pkgver=2.0.3
+pkgver=3.2.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A library to provide abstract access to various archives"
-source=("http://icculus.org/physfs/downloads/${pkgname}-${pkgver}.tar.bz2")
-tags="libs dev-libs"
-build_deps="cmake doxygen zlib"
-docs="docs/html/*"
+shortdesc=("Portable and flexible I/O abstraction for archives.")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=Release \
--DMAN_INSTALL_DIR=/usr/man \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
--DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX}\
--DPHYSFS_BUILD_TEST=OFF \
--DPHYSFS_BUILD_WX_TEST=OFF"
+source=("https://github.com/icculus/physfs/archive/refs/tags/release-${pkgver}.tar.gz")
 
-after_build(){
+tags=("libs dev-libs")
+
+build_deps=("cmake doxygen ninja")
+
+build() {
   go_src_dir
-  doxygen
-  mkdir -p ${pkgdir}/usr/man/man3
-  install -D -m644 docs/man/man3/* "${pkgdir}/usr/man/man3"
-  for i in author Deinit description extension Free Init major Malloc minor opaque patch Realloc url ; do
-    mv "${pkgdir}/usr/man/man3/$i.3" "${pkgdir}/usr/man/man3/PHYSFS_$i.3"
+  burn_patches
+  cmake -B build \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D PHYSFS_BUILD_TEST=OFF \
+    -G Ninja
+  ninja -C build all docs
+
+  DESTDIR=${pkgdir} ninja -C build install
+  install -d ${pkgdir}/usr/share/{doc/physfs,man/man3}
+  install -m644 build/docs/html/* ${pkgdir}/usr/share/doc/physfs
+  install -m644 build/docs/man/man3/* ${pkgdir}/usr/share/man/man3
+  for name in Deinit Free Init Malloc Realloc author deprecated description \
+    extension major minor opaque patch remove url; do
+    mv ${pkgdir}/usr/share/man/man3/{,PHYSFS_}$name.3
   done
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
