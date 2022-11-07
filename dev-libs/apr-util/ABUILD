@@ -1,6 +1,6 @@
 pkgname=apr-util
 pkgver=1.6.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The Apache Portable Runtime.")
