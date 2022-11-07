@@ -1,12 +1,12 @@
 pkgname=opera
-pkgver=92.0.4561.33
+pkgver=92.0.4561.43
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A fast and secure web browser.")
-longdesc=("A fast and secure web browser.")
 
-source=("https://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/${pkgname}-stable_${pkgver}_amd64.rpm")
+#source=("https://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/opera-stable_${pkgver}_amd64.rpm")
+source=("https://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/opera-stable_${pkgver}_amd64.deb")
 
 tags=("www-client apps")
 
@@ -14,15 +14,39 @@ build_deps=("gtk3 alsa-lib curl nss libcups desktop-file-utils rpm libxss libnot
 
 adddep=("gtk3 desktop-file-utils shared-mime-info hicolor-icon-theme")
 
+# NOTE: rpm
+#build() {
+#  cd ${srcdir}
+#  rm -r ${srcdir}/usr/{bin,lib}
+#  mkdir -p ${pkgdir}/usr/bin
+#  mv ${srcdir}/usr/lib64 ${pkgdir}/usr/lib
+#  mv ${srcdir}/usr/share ${pkgdir}/usr
+#  chmod 4755 ${pkgdir}/usr/lib/${pkgname}/opera_sandbox
+#  install -Dm644 ${filedir}/default ${pkgdir}/etc/${pkgname}/default
+#  install -Dm755 ${filedir}/opera ${pkgdir}/usr/bin/${pkgname}
+#  install -Dm644 ${filedir}/eula.html ${pkgdir}/usr/share/licenses/${pkgname}/eula.html
+#  install -Dm644 ${filedir}/terms.html ${pkgdir}/usr/share/licenses/${pkgname}/terms.html
+#  install -Dm644 ${filedir}/privacy.html ${pkgdir}/usr/share/licenses/${pkgname}/privacy.html
+
+#  sed -e "s/%pkgname%/$pkgname/g" -i ${pkgdir}/usr/bin/${pkgname}
+#  sed -e "s/%operabin%/$pkgname\/$pkgname/g" -i ${pkgdir}/usr/bin/${pkgname}
+#}
+
 build() {
   cd ${srcdir}
-  rm -r ${srcdir}/usr/{bin,lib}
-  mkdir -p ${pkgdir}/usr/bin
-  mv ${srcdir}/usr/lib64 ${pkgdir}/usr/lib
-  mv ${srcdir}/usr/share ${pkgdir}/usr
+  cp ${srcache}/opera-stable_${pkgver}_amd64.deb .
+  ar -xv opera-stable_${pkgver}_amd64.deb
+  tar -xf data.tar.xz --exclude=usr/share/{lintian,menu} -C ${pkgdir}
+ (
+     cd ${pkgdir}/usr/lib/*-linux-gnu/
+     mv ${pkgname} ../
+ )
+  rm -rf ${pkgdir}/usr/lib/*-linux-gnu
   chmod 4755 ${pkgdir}/usr/lib/${pkgname}/opera_sandbox
   install -Dm644 ${filedir}/default ${pkgdir}/etc/${pkgname}/default
+  rm ${pkgdir}/usr/bin/${pkgname}
   install -Dm755 ${filedir}/opera ${pkgdir}/usr/bin/${pkgname}
+  install -Dm644 ${pkgdir}/usr/share/doc/${pkgname}-stable/copyright ${pkgdir}/usr/share/licenses/${pkgname}/copyright
   install -Dm644 ${filedir}/eula.html ${pkgdir}/usr/share/licenses/${pkgname}/eula.html
   install -Dm644 ${filedir}/terms.html ${pkgdir}/usr/share/licenses/${pkgname}/terms.html
   install -Dm644 ${filedir}/privacy.html ${pkgdir}/usr/share/licenses/${pkgname}/privacy.html
