@@ -1,5 +1,5 @@
 pkgname=openssl
-pkgver=1.1.1q
+pkgver=3.0.7
 pkgbuild=1
 arch=("auto")
 
@@ -14,16 +14,28 @@ build_deps=("perl")
 
 config_files=("etc/ssl/openssl.cnf")
 
+# NOTE: когда все пакеты будут пересобраны под третью версию openssl эту зависимость следует удалить
+# Пакеты зависящие от openssl
+# coreutils, cryptsetup, curl, freerdp, git, gstreamer, kdelibs4support, khtml, kmod, krb5, libevent
+# pulseaudio, libshout, libssh, libssh2, libtorrent-rasterbar, neon, net-snmp, openssh, openvpn, qca
+# opusfile, pipewire, pkcs11-helper, postgresql, python, python-cryptography, python-pycurl, vsftpd
+# qbittorrent, qpdf, qt6-base, rsync, serf, socat, ppp, srt, sudo, wpa_supplicant
+adddep=("openssl-1.1")
+
 build() {
   go_src_dir
   burn_patches
   ./Configure \
     --prefix=/usr \
     --openssldir=/etc/ssl \
-    --libdir=lib shared no-ssl3-method enable-ec_nistp_64_gcc_128 linux-x86_64 "-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
+    --libdir=lib \
+    shared enable-ktls enable-ec_nistp_64_gcc_128 linux-x86_64 "-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
   make depend
   make -j${numjobs}
-  make DESTDIR=$pkgdir MANDIR=/usr/share/man MANSUFFIX=ssl install_sw install_ssldirs install_man_docs
+  make DESTDIR=${pkgdir} MANDIR=/usr/share/man MANSUFFIX=ssl install_sw install_ssldirs install_man_docs
 
-  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  rm -f ${pkgdir}/usr/lib/libcrypto.a
+  rm -f ${pkgdir}/usr/lib/libssl.a
+
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
