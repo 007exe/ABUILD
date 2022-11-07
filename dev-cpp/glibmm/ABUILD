@@ -1,6 +1,6 @@
 pkgname=glibmm
 pkgver=2.66.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("C++ bindings for GLib.")
