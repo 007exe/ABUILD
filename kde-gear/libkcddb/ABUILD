@@ -1,5 +1,5 @@
 pkgname=libkcddb
-pkgver=22.08.2
+pkgver=22.08.3
 pkgbuild=1
 arch=("auto")
 
