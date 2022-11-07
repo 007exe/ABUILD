@@ -1,5 +1,5 @@
 pkgname=lib32-openssl
-pkgver=1.1.1q
+pkgver=3.0.7
 pkgbuild=1
 arch=("auto")
 
@@ -30,6 +30,4 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install_sw
   rm -rf ${pkgdir}/{usr/{include,bin},etc}
-  mkdir -p ${pkgdir}/usr/share/licenses
-  ln -s openssl ${pkgdir}/usr/share/licenses/${pkgname}
 }
