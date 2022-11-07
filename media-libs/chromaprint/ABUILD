@@ -1,6 +1,6 @@
 pkgname=chromaprint
 pkgver=1.5.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library for extracting fingerprints from any audio source.")
