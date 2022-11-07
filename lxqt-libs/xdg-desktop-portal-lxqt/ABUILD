@@ -1,5 +1,5 @@
 pkgname=xdg-desktop-portal-lxqt
-pkgver=0.2.0
+pkgver=0.3.0
 pkgbuild=1
 arch=("auto")
 
