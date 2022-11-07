@@ -1,0 +1,29 @@
+pkgname=pop-icon-theme
+pkgver=3.3.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("System76 Pop Icon Theme.")
+
+source=("https://github.com/pop-os/icon-theme/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("themes x11-themes")
+
+build_deps=("meson")
+
+build() {
+  go_src_dir
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
