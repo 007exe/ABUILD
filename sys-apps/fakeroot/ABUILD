@@ -1,6 +1,6 @@
 pkgname=fakeroot
-pkgver=1.29
-pkgbuild=2
+pkgver=1.30.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tool for simulating superuser privileges.")
