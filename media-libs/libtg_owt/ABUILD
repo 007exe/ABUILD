@@ -1,6 +1,6 @@
 pkgname=libtg_owt
 _commit=442d5bb593c0ae314960308d78f2016ad1f80c3e
-pkgver=0.git16.${_commit}
+pkgver=0.git17.${_commit:0:7}
 pkgbuild=1
 arch=("auto")
 
@@ -29,8 +29,7 @@ before_build() {
   git config submodule.src/third_party/libvpx/source/libvpx.url ${srcdir}/libvpx
   git config submodule.src/third_party/libyuv.url ${srcdir}/libyuv
   git config submodule.src/third_party/pipewire.url ${srcdir}/pipewire
-  git submodule update
-
+  git -c protocol.file.allow=always submodule update
   burn_patches
 }
 
