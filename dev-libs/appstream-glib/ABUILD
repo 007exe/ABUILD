@@ -1,5 +1,5 @@
 pkgname=appstream-glib
-pkgver=0.8.1
+pkgver=0.8.2
 pkgbuild=1
 arch=("auto")
 
@@ -18,7 +18,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk-doc=true \
+    -D gtk-doc=false \
+    -D man=false \
     -D rpm=false
 #   -D alpm=true
   meson compile -C build
