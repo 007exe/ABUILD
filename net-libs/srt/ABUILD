@@ -1,6 +1,6 @@
 pkgname=srt
-pkgver=1.4.4
-pkgbuild=2
+pkgver=1.5.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Secure Reliable Transport library.")
@@ -24,7 +24,5 @@ build() {
     -DENABLE_STATIC=ON \
     -DENABLE_TESTING=ON
   cmake --build build
-
   DESTDIR=${pkgdir} cmake --install build
-  rm ${pkgdir}/usr/bin/{uriparser,utility}-test
 }
