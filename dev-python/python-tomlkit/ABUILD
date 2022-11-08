@@ -1,6 +1,6 @@
 pkgname=python-tomlkit
-pkgver=0.11.5
-pkgbuild=2
+pkgver=0.11.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Style-preserving TOML library for Python.")
