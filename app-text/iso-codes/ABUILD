@@ -1,5 +1,5 @@
 pkgname=iso-codes
-pkgver=4.11.0
+pkgver=4.12.0
 pkgbuild=1
 arch=("noarch")
 
