@@ -27,7 +27,6 @@ build() {
     --enable-antialiasing \
     --with-external-dvdnav \
     --with-wavpack
-  sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtoo
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
