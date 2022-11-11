@@ -1,5 +1,5 @@
 pkgname=python-babel
-pkgver=2.10.3
+pkgver=2.11.0
 _core=41
 pkgbuild=1
 arch=("auto")
