@@ -1,6 +1,6 @@
 pkgname=libnma-common
-pkgver=1.10.2
-pkgbuild=2
+pkgver=1.10.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("NetworkManager GUI client library (common files).")
