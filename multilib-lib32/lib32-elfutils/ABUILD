@@ -1,5 +1,5 @@
 pkgname=lib32-elfutils
-pkgver=0.187
+pkgver=0.188
 pkgbuild=1
 arch=("auto")
 
