@@ -1,8 +1,27 @@
 # useradd defaults file
-GROUP=1000
+
+# The default group for users
+GROUP=users
+
+# The default home directory.
 HOME=/home
+
+# The number of days after a password expires until the account is permanently
+# disabled
 INACTIVE=-1
+
+# The default expire date
 EXPIRE=
+
+# The SHELL variable specifies the default login shell on your
+# system.
 SHELL=/bin/bash
+
+# The SKEL variable specifies the directory containing "skeletal" user files;
+# in other words, files such as a sample .profile that will be copied to the
+# new user's home directory when it is created.
 SKEL=/etc/skel
-CREATE_MAIL_SPOOL=yes
+
+# Defines whether the mail spool should be created while
+# creating the account
+CREATE_MAIL_SPOOL=no
