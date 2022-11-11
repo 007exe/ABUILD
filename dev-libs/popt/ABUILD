@@ -1,6 +1,6 @@
 pkgname=popt
-pkgver=1.18
-pkgbuild=3
+pkgver=1.19
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A commandline option parser.")
