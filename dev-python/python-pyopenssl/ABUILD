@@ -1,6 +1,6 @@
 pkgname=python-pyopenssl
 pkgver=22.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python3 wrapper module around the OpenSSL library.")
@@ -19,4 +19,12 @@ build() {
   export LC_CTYPE=en_US.UTF-8
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
