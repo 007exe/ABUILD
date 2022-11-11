@@ -1,6 +1,6 @@
 pkgname=python-cachecontrol
 pkgver=0.12.11
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("httplib2 caching for requests.")
@@ -18,4 +18,12 @@ build() {
   go_src_dir
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
