@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python library for attributes without boilerplate.")
-longdesc=("Python library for atrributes without boilerplate.")
 
 source=("https://pypi.io/packages/source/a/attrs/attrs-$pkgver.tar.gz")
 
