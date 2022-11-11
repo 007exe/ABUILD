@@ -17,7 +17,7 @@ else
     srcver=`echo $kernel_ver | sed 's/\.0$//g' | sed 's/lts//g'`
 fi
 
-source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${srcver}-${_pver}.tar.gz")
+source=("https://github.com/zen-kernel/zen-kernel/archive/refs/tags/v${srcver}-zen${_pver}.tar.gz")
 
 custom_opts=("skip_gendeps no_strip skip_validate")
 
@@ -65,7 +65,7 @@ before_build() {
   make olddefconfig
 
 # Ручная настройка ядра
-#  make menuconfig
+  make menuconfig
 
   echo "*******************************************************"
   echo "*                                                     *"
@@ -108,8 +108,8 @@ build() {
 
   rm -rf ${pkgdir}/usr/lib/firmware
   rm -f ${pkgdir}/usr/lib/modules/${pkgver}-zen1/{source,build}
-  ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${pkgver}-zen1/source
-  ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${pkgver}-zen1/build
+  ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${srcver}-zen${_pver}/source
+  ln -sf /usr/src/linux-${pkgver}-zen1 ${pkgdir}/usr/lib/modules/${srcver}-zen${_pver}/build
 
 # Пост установочный скрипт
   echo "*******************************************************"
