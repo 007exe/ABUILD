@@ -1,12 +1,11 @@
 pkgname=zvbi
-pkgver=0.2.35
+pkgver=0.2.37
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("VBI capture and decoding library.")
-longdesc=("VBI Decoding Library for Zapping.")
 
-source=("https://downloads.sourceforge.net/sourceforge/zapping/${pkgname}-${pkgver}.tar.bz2")
+source=("https://github.com/zapping-vbi/zvbi/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
@@ -15,6 +14,7 @@ build_deps=("libpng libx11")
 build() {
   go_src_dir
   burn_patches
+  NOCONFIGURE=1 ./autogen.sh
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
@@ -22,4 +22,12 @@ build() {
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
