@@ -1,5 +1,5 @@
 pkgname=python-lark-parser
-pkgver=1.1.3
+pkgver=1.1.4
 pkgbuild=1
 arch=("auto")
 
@@ -17,4 +17,12 @@ build() {
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
