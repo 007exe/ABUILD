@@ -1,16 +1,15 @@
 pkgname=python-requests-toolbelt
 pkgver=0.10.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A toolbelt of useful classes and functions to be used with python-requests.")
-longdesc=("A toolbelt of useful classes and functions to be used with python-requests.")
 
-source=("https://github.com/requests/toolbelt/archive/$pkgver.tar.gz")
+source=("https://github.com/requests/toolbelt/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-requests python-requests")
+build_deps=("python python-setuptools python-requests")
 
 adddep=("python-requests")
 
@@ -19,4 +18,12 @@ build() {
   burn_patches
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
