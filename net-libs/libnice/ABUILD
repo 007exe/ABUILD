@@ -21,7 +21,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk_doc=enabled \
+    -D gtk_doc=disabled \
     -D tests=disabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
