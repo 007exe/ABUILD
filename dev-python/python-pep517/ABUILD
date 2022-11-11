@@ -16,7 +16,8 @@ adddep=("python-tomli")
 
 build() {
   go_src_dir
-  sed -i -e '/--flake8/d' pytest.ini
+  sed -i "s/ '--ignore-installed',//" pep517/envbuild.py
+  sed -i '/--flake8/d' pytest.ini
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
