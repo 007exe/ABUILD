@@ -1,5 +1,5 @@
 pkgname=cryptsetup
-pkgver=2.4.3
+pkgver=2.5.0
 pkgbuild=1
 arch=("auto")
 
@@ -27,5 +27,5 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -D -m0644 -t ${pkgdir}/usr/share/doc/cryptsetup/ FAQ docs/{Keyring,LUKS2-locking}.txt
+  install -D -m0644 -t ${pkgdir}/usr/share/doc/cryptsetup/ FAQ.md docs/{Keyring,LUKS2-locking}.txt
 }
