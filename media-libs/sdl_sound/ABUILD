@@ -1,0 +1,25 @@
+pkgname=sdl_sound
+pkgver=1.0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library to decode several popular sound file formats, such as .WAV and .MP3.")
+
+source=("https://icculus.org/SDL_sound/downloads/SDL_sound-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+build_deps=("sdl libmikmod libvorbis flac speex")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=" -I/usr/include/smpeg"
+  CXXFLAGS+=" -I/usr/include/smpeg"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
