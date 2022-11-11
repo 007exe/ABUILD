@@ -1,5 +1,5 @@
 pkgname=plasma-workspace
-pkgver=5.26.2
+pkgver=5.26.3
 pkgbuild=1
 arch=("auto")
 
@@ -32,6 +32,7 @@ build() {
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
+    -DGLIBC_LOCALE_GEN=OFF \
     -DBUILD_TESTING=OFF
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
