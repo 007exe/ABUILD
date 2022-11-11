@@ -1,6 +1,6 @@
 pkgname=python-wheel
-pkgver=0.37.1
-pkgbuild=3
+pkgver=0.38.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A built-package format for Python.")
@@ -19,6 +19,7 @@ build(){
   sed -i 's/--cov=wheel//' setup.cfg
   rm -r src/wheel/vendored
   sed -i 's/from .vendored.packaging import tags/from packaging import tags/' src/wheel/bdist_wheel.py
+  sed -i 's/from wheel.vendored.packaging import tags/from packaging import tags/' tests/test_bdist_wheel.py
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
   install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
