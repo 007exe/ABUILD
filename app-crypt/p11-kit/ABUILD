@@ -20,7 +20,7 @@ build() {
   meson build \
     -D buildtype=release \
     -D prefix=/usr \
-    -D man=true \
+    -D man=false \
     -D gtk_doc=false \
     -D systemd=disabled \
     -D trust_paths=/etc/ca-certificates/trust-source:/usr/share/ca-certificates/trust-source
