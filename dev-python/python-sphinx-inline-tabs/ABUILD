@@ -1,0 +1,29 @@
+pkgname=python-sphinx-inline-tabs
+pkgver=2022.01.02.beta11
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Add inline tabbed content to your Sphinx documentation.")
+
+source=("https://github.com/pradyunsg/sphinx-inline-tabs/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-flit-core python-sphinx")
+
+adddep=("python-sphinx")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
