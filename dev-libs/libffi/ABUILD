@@ -1,6 +1,6 @@
 pkgname=libffi
 pkgver=3.4.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Portable foreign function interface library.")
@@ -8,25 +8,13 @@ longdesc=("The libffi library provides a portable, high level programming interf
 
 tags=("dev-libs libs")
 
-source=("https://github.com/libffi/libffi/releases/download/v${pkgver}/libffi-${pkgver}.tar.gz"
-"https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz")
+source=("https://github.com/libffi/libffi/releases/download/v${pkgver}/libffi-${pkgver}.tar.gz")
 
 build_deps=("glibc")
 
-# NOTE: Как только программы перестанут требовать libffi.so.7 следует удалить сборку libffi-3.3
-#before_build(){
-#  cd ${srcdir}/libffi-3.3
-#  ./configure \
-#    --prefix=/usr \
-#    --libdir=/usr/lib \
-#    --disable-static \
-#    --enable-pax_emutramp
-#  make -j${numjobs}
-#  make DESTDIR=${srcdir}/TEMPs install
-#}
-
 build() {
-  cd ${srcdir}/libffi-${pkgver}
+  go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
     --disable-static \
@@ -38,8 +26,3 @@ build() {
   install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
   install -Dm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
 }
-
-# NOTE: Как только программы перестанут требовать libffi.so.7 следует удалить сборку libffi-3.3
-#after_build(){
-#  install -Dt ${pkgdir}/usr/lib ${srcdir}/TEMPs/usr/lib/libffi.so.7
-#}
