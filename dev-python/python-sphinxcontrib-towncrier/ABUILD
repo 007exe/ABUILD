@@ -1,0 +1,23 @@
+pkgname=python-sphinxcontrib-towncrier
+pkgver=0.3.1a2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An RST directive for injecting a Towncrier-generated changelog draft containing fragments for the unreleased (next) project version.")
+
+source=("https://github.com/sphinx-contrib/sphinxcontrib-towncrier/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-setuptools-scm
+python-wheel python-setuptools-scm-git-archive python-sphinx towncrier")
+
+adddep=("python-sphinx towncrier")
+
+build() {
+  go_src_dir
+  sed -i '/pytest_cov/d;/--cov/d' pytest.ini
+  python -m build -nw
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
