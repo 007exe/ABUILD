@@ -1,5 +1,5 @@
 pkgname=mobile-broadband-provider-info
-pkgver=20220511
+pkgver=20221107
 pkgbuild=1
 arch=("noarch")
 
