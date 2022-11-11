@@ -10,13 +10,13 @@ source=("https://github.com/executablebooks/markdown-it-py/archive/v${pkgver}.ta
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-attrs")
+build_deps=("python python-build python-installer python-setuptools python-wheel python-mdurl")
 
-adddep=("python-attrs")
+adddep=("python-mdurl")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m build
+  python -m installer -d ${pkgdir} dist/*.whl
   install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
