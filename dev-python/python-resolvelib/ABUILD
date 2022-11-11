@@ -1,6 +1,6 @@
 pkgname=python-resolvelib
 pkgver=0.8.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Resolve abstract dependencies into concrete ones.")
@@ -17,4 +17,12 @@ build() {
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
