@@ -1,10 +1,9 @@
 pkgname=libavif
-pkgver=0.10.1
+pkgver=0.11.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for encoding and decoding .avif files.")
-longdesc=("Library for encoding and decoding .avif files.")
 
 source=("https://github.com/AOMediaCodec/libavif/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
