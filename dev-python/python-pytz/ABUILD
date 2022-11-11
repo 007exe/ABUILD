@@ -1,10 +1,9 @@
 pkgname=python-pytz
-pkgver=2022.1
+pkgver=2022.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("World timezone definitions for Python")
-longdesc=("pytz brings the Olson tz database into Python. This library allows accurate and cross platform timezone calculations using Python 2.3 or higher. It also solves the issue of ambiguous times at the end of daylight savings, which you can read more about in the Python Library Reference (datetime.tzinfo).")
+shortdesc=("World timezone definitions for Python.")
 
 source=("https://pypi.io/packages/source/p/pytz/pytz-${pkgver}.tar.gz")
 
@@ -14,6 +13,9 @@ build_deps=("python")
 
 build() {
   go_src_dir
-  PYTHONHASHSEED=1 python3 setup.py install --root=${pkgdir}/
+  burn_patches
+  rm -r pytz/zoneinfo/
+  python setup.py build
+  python3 setup.py install --root=${pkgdir}
   install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
