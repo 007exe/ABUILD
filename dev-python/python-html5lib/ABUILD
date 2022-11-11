@@ -1,6 +1,6 @@
 pkgname=python-html5lib
 pkgver=1.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A python based HTML parser/tokenizer based on the WHATWG HTML5 specification.")
@@ -17,6 +17,14 @@ adddeps=("python python-six python-webencodings")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
