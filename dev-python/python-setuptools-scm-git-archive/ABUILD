@@ -1,0 +1,23 @@
+pkgname=python-setuptools-scm-git-archive
+pkgver=1.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Setuptools_scm plugin for git archives.")
+
+_name=setuptools-scm-git-archive
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/${_name//-/_}-$pkgver.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-wheel python-setuptools-scm")
+
+adddep=("python-setuptools-scm")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 README.rst -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
