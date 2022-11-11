@@ -1,5 +1,5 @@
 pkgname=luit
-pkgver=20220111
+pkgver=20221028
 pkgbuild=1
 arch=("auto")
 
