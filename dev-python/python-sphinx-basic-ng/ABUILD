@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Modernised skeleton for Sphinx themes.")
-longdesc=("A modernised skeleton for Sphinx themes.")
 
 _name=sphinx_basic_ng
 source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
