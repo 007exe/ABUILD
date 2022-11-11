@@ -1,5 +1,5 @@
 pkgname=intel-ucode
-pkgver=20220809
+pkgver=20221108
 pkgbuild=1
 arch=("fw")
 
