@@ -1,5 +1,5 @@
 pkgname=kernel-zen
-_srcver=6.0.7
+_srcver=6.0.8
 _pver=1
 pkgver=${_srcver}.zen${_pver}
 pkgbuild=1
@@ -65,7 +65,7 @@ before_build() {
   make olddefconfig
 
 # Ручная настройка ядра
-  make menuconfig
+#  make menuconfig
 
   echo "*******************************************************"
   echo "*                                                     *"
