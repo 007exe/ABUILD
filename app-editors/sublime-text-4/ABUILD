@@ -1,5 +1,5 @@
 pkgname=sublime-text-4
-pkgver=4.4142
+pkgver=4.4143
 pkgbuild=1
 arch=("auto")
 
