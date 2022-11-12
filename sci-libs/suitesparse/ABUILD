@@ -1,5 +1,5 @@
 pkgname=suitesparse
-pkgver=5.13.0
+pkgver=6.0.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,14 +10,16 @@ source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}/$
 
 tags=("libs sci-libs")
 
-build_deps=("metis lapack mpfr gcc-fortran cmake chrpath")
+build_deps=("gcc-fortran cmake lapack mpfr")
 
 build() {
   go_src_dir
   burn_patches
-  BLAS=-lblas LAPACK=-llapack MY_METIS_LIB=/usr/lib/libmetis.so make -j${numjobs}
-  install -dm755 ${pkgdir}/usr/{include,lib}
-  BLAS=-lblas LAPACK=-llapack MY_METIS_LIB=/usr/lib/libmetis.so \
-  make -j${numjobs} INSTALL_LIB=${pkgdir}/usr/lib INSTALL_INCLUDE=${pkgdir}/usr/include install
-  chrpath -d ${pkgdir}/usr/lib/*
+  CXXFLAGS+=" -ffat-lto-objects" \
+  CMAKE_OPTIONS="-DBLA_VENDOR=Generic \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_INSTALL_LIBDIR=lib \
+  -DCMAKE_BUILD_TYPE=None" \
+  make -j${numjobs}
+  DESTDIR=${pkgdir} make install
 }
