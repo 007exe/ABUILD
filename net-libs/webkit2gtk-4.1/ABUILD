@@ -1,5 +1,5 @@
 pkgname=webkit2gtk-4.1
-pkgver=2.38.1
+pkgver=2.38.2
 pkgbuild=1
 arch=("auto")
 

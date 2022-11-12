@@ -1,5 +1,5 @@
 pkgname=python-platformdirs
-pkgver=2.5.1
+pkgver=2.5.3
 pkgbuild=1
 arch=("auto")
 
@@ -10,11 +10,13 @@ source=("https://pypi.io/packages/source/p/platformdirs/platformdirs-${pkgver}.t
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm")
+build_deps=("python python-build python-installer python-hatchling python-hatch-vcs python-typing_extensions")
+
+adddep=("python-typing_extensions")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir}/ --optimize=1
-  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

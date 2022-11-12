@@ -1,5 +1,5 @@
 pkgname=wpewebkit
-pkgver=2.38.1
+pkgver=2.38.2
 pkgbuild=1
 arch=("auto")
 
@@ -31,7 +31,7 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
     -DUSE_SOUP2=OFF \
-    -DENABLE_GTKDOC=ON \
+    -DENABLE_DOCUMENTATION=OFF \
     -DENABLE_MINIBROWSER=ON
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build

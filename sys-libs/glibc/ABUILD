@@ -3,7 +3,7 @@
 pkgname=glibc
 pkglist=("lib32-glibc")
 pkgver=2.36
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("GNU C Library.")
@@ -34,6 +34,8 @@ build() {
   echo "sbindir=/usr/bin" >> configparms
   echo "rootsbindir=/usr/bin" >> configparms
 
+  CFLAGS=${CFLAGS/-Wp,-D_FORTIFY_SOURCE=2/}
+
   ${srcdir}/glibc-${pkgver}/configure \
     --prefix=/usr \
     --libdir=/usr/lib \
@@ -43,13 +45,18 @@ build() {
     --without-gd \
     --with-tls \
     --enable-stack-protector=strong \
-    --enable-kernel=3.2 \
+    --enable-kernel=4.4 \
     --enable-add-ons \
     --enable-bind-now \
     --disable-profile \
     --disable-werror \
-    --enable-multi-arch
-  make -j${numjobs}
+    --enable-multi-arch \
+  --enable-cet
+  make -j${numjobs} -O
+  sed -i "/build-programs=/s#no#yes#" configparms
+  echo "CFLAGS += -Wp,-D_FORTIFY_SOURCE=2" >> configparms
+  make -j${numjobs} -O
+  make info
   make install install_root=${pkgdir}
 
 # Установка файла конфигурации для демона nscd.
@@ -90,13 +97,17 @@ lib32-glibc_prep() {
     --without-gd \
     --with-tls \
     --enable-stack-protector=strong \
-    --enable-kernel=3.2 \
+    --enable-kernel=4.4 \
     --enable-add-ons \
     --enable-bind-now \
     --disable-profile \
     --disable-werror \
-    --enable-multi-arch
-  make -j${numjobs}
+    --enable-multi-arch \
+  --enable-cet
+  make -j${numjobs} -O
+  sed -i "/build-programs=/s#no#yes#" configparms
+  echo "CFLAGS += -Wp,-D_FORTIFY_SOURCE=2" >> configparms
+  make -j${numjobs} -O
   make install install_root=${pkgdir}
 
   rm -rf ${pkgdir}/{etc,sbin,usr/{bin,sbin,share},var}

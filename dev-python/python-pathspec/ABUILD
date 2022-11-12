@@ -1,5 +1,5 @@
 pkgname=python-pathspec
-pkgver=0.10.0
+pkgver=0.10.1
 pkgbuild=1
 arch=("auto")
 
@@ -15,8 +15,8 @@ build_deps=("python python-build python-installer python-setuptools python-wheel
 build() {
   go_src_dir
   python -m build --wheel --skip-dependency-check --no-isolation
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
   python -m installer --destdir=${pkgdir} dist/*.whl
-
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d ${pkgdir}/usr/share/licenses/${pkgname}
   ln -s ${site_packages}/$_name-$pkgver.dist-info/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

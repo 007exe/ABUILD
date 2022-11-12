@@ -20,7 +20,7 @@ build() {
   burn_patches
   export CC="gcc -m32 -mstackrealign"
   export CXX="g++ -m32 -mstackrealign"
-  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
   CFLAGS+=' -g3'
   CXXFLAGS+=' -g3'
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"

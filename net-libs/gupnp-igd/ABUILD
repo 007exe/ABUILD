@@ -10,7 +10,7 @@ source=("https://gitlab.gnome.org/GNOME/gupnp-igd/-/archive/${pkgver}/gupnp-igd-
 
 tags=("libs net-libs")
 
-build_deps=("gupnp gobject-introspection git gtk-doc meson")
+build_deps=("gupnp gobject-introspection gtk-doc meson")
 
 build() {
   go_src_dir

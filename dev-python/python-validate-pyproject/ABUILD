@@ -9,7 +9,8 @@ source=("https://github.com/abravalheri/validate-pyproject/archive/v${pkgver}/${
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-setuptools-scm python-packaging python-trove-classifiers python-tomli")
+build_deps=("python python-build python-installer python-wheel python-packaging
+python-setuptools-scm python-trove-classifiers python-tomli")
 
 adddep=("python-packaging python-trove-classifiers python-tomli")
 

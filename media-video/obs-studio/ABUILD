@@ -1,5 +1,5 @@
 pkgname=obs-studio
-pkgver=28.1.1
+pkgver=28.1.2
 pkgbuild=1
 arch=("auto")
 

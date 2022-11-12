@@ -1,6 +1,6 @@
 pkgname=usbutils
-pkgver=014
-pkgbuild=2
+pkgver=015
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux USB utilities")
@@ -10,7 +10,7 @@ tags=("base sys-apps")
 
 source=("https://www.kernel.org/pub/linux/utils/usb/usbutils/${pkgname}-${pkgver}.tar.xz")
 # hwids
-build_deps="glibc libusb coreutils python"
+build_deps=("glibc libusb coreutils python")
 
 build() {
   go_src_dir
@@ -18,10 +18,10 @@ build() {
   autoreconf -vfi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --datadir=/usr/share/hwdata
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -vDm 644 NEWS -t "${pkgdir}/usr/share/doc/${pkgname}/"
+  install -vDm 644 NEWS -t ${pkgdir}/usr/share/doc/${pkgname}/
 }

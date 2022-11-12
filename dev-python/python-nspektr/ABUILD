@@ -10,7 +10,8 @@ source=("https://github.com/jaraco/nspektr/archive/v${pkgver}/${pkgname}-${pkgve
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-setuptools-scm python-jaraco.context python-jaraco.functools python-more-itertools python-packaging")
+build_deps=("python python-build python-installer python-wheel python-setuptools-scm
+python-jaraco.context python-jaraco.functools python-more-itertools python-packaging")
 
 adddep=("python-jaraco.context python-jaraco.functools python-more-itertools python-packaging")
 

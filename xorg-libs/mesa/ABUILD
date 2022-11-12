@@ -1,11 +1,10 @@
 pkgname=mesa
 pkglist=("vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau")
-pkgver=22.2.1
+pkgver=22.2.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Mesa is an OpenGL compatible 3D graphics library.")
-longdesc=("Mesa is an OpenGL compatible 3D graphics library.")
 
 tags=("libs xorg-libs")
 
@@ -22,12 +21,11 @@ build() {
   burn_patches
   CFLAGS+=' -g1'
   CXXFLAGS+=' -g1'
-  CFLAGS+=' -mtls-dialect=gnu'
-  CXXFLAGS+=' -mtls-dialect=gnu'
   meson build \
     -D prefix=/usr \
     -D libdir=lib \
     -D b_ndebug=true \
+    -D b_lto=false \
     -D platforms=x11,wayland \
     -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,crocus,zink,d3d12 \
     -D vulkan-drivers=amd,intel,swrast \
@@ -53,13 +51,11 @@ build() {
     -D osmesa=true \
     -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
+    -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=enabled
-
   meson configure build
-
   ninja -C build
   meson compile -C build
-
   DESTDIR=${pkgdir} meson install -C build
 }
 
@@ -68,7 +64,6 @@ build() {
 vulkan-mesa-layers() {
   pkgname=vulkan-mesa-layers
   shortdesc=("Mesa Vulkan layers.")
-  longdesc=("Mesa Vulkan layers.")
   adddep=("python")
 }
 
@@ -85,7 +80,6 @@ vulkan-mesa-layers_prep() {
 opencl-mesa() {
   pkgname=opencl-mesa
   shortdesc=("OpenCL support for AMD/ATI Radeon mesa drivers.")
-  longdesc=("OpenCL support for AMD/ATI Radeon mesa drivers.")
   adddep=("libclc")
 }
 
@@ -101,7 +95,6 @@ opencl-mesa_prep() {
 vulkan-intel() {
   pkgname=vulkan-intel
   shortdesc=("Intel Vulkan mesa driver.")
-  longdesc=("Intel Vulkan mesa driver.")
 }
 
 vulkan-intel_prep() {
@@ -115,7 +108,6 @@ vulkan-intel_prep() {
 vulkan-radeon() {
   pkgname=vulkan-radeon
   shortdesc=("Radeon Vulkan mesa driver.")
-  longdesc=("Radeon Vulkan mesa driver.")
 }
 
 vulkan-radeon_prep() {
@@ -129,7 +121,6 @@ vulkan-radeon_prep() {
 vulkan-swrast() {
   pkgname=vulkan-swrast
   shortdesc=("Vulkan software rasteriser driver.")
-  longdesc=("Vulkan software rasteriser driver.")
 }
 
 vulkan-swrast_prep() {
@@ -143,7 +134,6 @@ vulkan-swrast_prep() {
 libva-mesa-driver() {
   pkgname=libva-mesa-driver
   shortdesc=("VA-API implementation for gallium.")
-  longdesc=("VA-API implementation for gallium.")
 }
 
 libva-mesa-driver_prep() {
@@ -156,7 +146,6 @@ libva-mesa-driver_prep() {
 mesa-vdpau() {
   pkgname=mesa-vdpau
   shortdesc=("Mesa VDPAU drivers.")
-  longdesc=("Mesa VDPAU drivers.")
 }
 
 mesa-vdpau_prep() {

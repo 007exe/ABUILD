@@ -1,6 +1,6 @@
 pkgname=python-colorama
 pkgver=0.4.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python API for cross-platform colored terminal text.")
@@ -10,11 +10,19 @@ source=("https://github.com/tartley/colorama/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-hatchling")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  python -m build -nw
+  python -m installer -d ${pkgdir} dist/*.whl
   install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

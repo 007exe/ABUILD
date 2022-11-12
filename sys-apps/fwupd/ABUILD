@@ -1,5 +1,5 @@
 pkgname=fwupd
-pkgver=1.8.6
+pkgver=1.8.7
 pkgbuild=1
 arch=("auto")
 
@@ -41,7 +41,7 @@ build() {
     -D plugin_intel_spi=true \
     -D supported_build=enabled \
     -D efi_binary=false \
-    -D systemd=false
+    -D systemd=disabled
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 

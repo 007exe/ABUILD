@@ -1,5 +1,5 @@
 pkgname=webkit2gtk-5.0
-pkgver=2.38.1
+pkgver=2.38.2
 pkgbuild=1
 arch=("auto")
 
@@ -31,7 +31,7 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
     -DUSE_GTK4=ON \
-    -DENABLE_GTKDOC=OFF \
+    -DENABLE_DOCUMENTATION=OFF \
     -DENABLE_MINIBROWSER=ON
   cmake --build build
   DESTDIR=${pkgdir} cmake --install build

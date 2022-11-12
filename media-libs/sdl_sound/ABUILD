@@ -9,7 +9,8 @@ source=("https://icculus.org/SDL_sound/downloads/SDL_sound-${pkgver}.tar.gz")
 
 tags=("media-libs libs")
 
-build_deps=("sdl libmikmod libvorbis flac speex")
+# libmikmod
+build_deps=("sdl libvorbis flac speex")
 
 build() {
   go_src_dir

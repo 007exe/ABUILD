@@ -17,11 +17,7 @@ adddep=("python-platformdirs python-distlib python-filelock python-six python-im
 
 build() {
   go_src_dir
-  sed -i '/test_py_info_to_system_raises/i @pytest.mark.skip' tests/unit/discovery/py_info/test_py_info.py
   sed -i "s|pkgutil.get_data(\"pip._vendor.certifi\", \"cacert.pem\")|open(os.path.join('/etc/ssl/certs/ca-certificates.crt'), 'rb').read()|" tests/conftest.py
-  sed -i 's/from backports.entry_points_selectable import entry_points/from importlib_metadata import entry_points/' src/virtualenv/run/plugin/base.py
-  sed -i '/backports.entry_points_selectable/d' setup.cfg
-
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
   python setup.py build egg_info
@@ -31,4 +27,7 @@ build() {
   python setup.py install --prefix=/usr --root=${pkgdir} --skip-build
   install -Dm 644 docs/_build/man/virtualenv.1 ${pkgdir}/usr/share/man/man1/virtualenv.1
   ln -s virtualenv.1.gz ${pkgdir}/usr/share/man/man1/virtualenv3.1.gz
+
+  ln ${pkgdir}/usr/bin/virtualenv ${pkgdir}/usr/bin/virtualenv3
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
