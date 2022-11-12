@@ -9,7 +9,8 @@ source=("https://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-${pkgver}.t
 
 tags=("media-libs libs")
 
-build_deps=("fluidsynth libmikmod libvorbis sdl")
+# libmikmod
+build_deps=("fluidsynth libvorbis sdl")
 
 build() {
   go_src_dir
