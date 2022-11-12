@@ -1,5 +1,5 @@
 pkgname=bluez
-pkgver=5.65
+pkgver=5.66
 pkgbuild=1
 arch=("auto")
 
