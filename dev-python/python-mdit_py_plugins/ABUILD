@@ -1,5 +1,5 @@
 pkgname=python-mdit_py_plugins
-pkgver=0.2.8
+pkgver=0.3.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,13 +10,21 @@ source=("https://github.com/executablebooks/mdit-py-plugins/archive/v${pkgver}.t
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-markdown-it-py")
+build_deps=("python python-build python-installer python-flit-core python-markdown-it-py")
 
 adddep=("python-markdown-it-py")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
   install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
