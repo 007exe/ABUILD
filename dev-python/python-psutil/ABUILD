@@ -1,12 +1,11 @@
 pkgname=python-psutil
-pkgver=5.9.3
+pkgver=5.9.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform process and system utilities module for Python.")
-longdesc=("Retrieve information on running processes and system utilization.")
 
-source=("https://github.com/giampaolo/psutil/archive/release-$pkgver.tar.gz")
+source=("https://github.com/giampaolo/psutil/archive/release-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
