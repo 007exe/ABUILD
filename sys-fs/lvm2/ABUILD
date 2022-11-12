@@ -1,5 +1,5 @@
 pkgname=lvm2
-pkgver=2.03.16
+pkgver=2.03.17
 pkgbuild=1
 arch=("auto")
 
