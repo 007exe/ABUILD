@@ -1,22 +1,24 @@
 pkgname=python-dnspython
-pkgver=2.2.0
-pkgbuild=2
+pkgver=2.2.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("A DNS toolkit for Python")
-longdesc=("dnspython is a DNS toolkit for Python. It supports almost all record types. It can be used for queries, zone transfers, and dynamic updates. It supports TSIG authenticated messages and EDNS0.")
+shortdesc=("A DNS toolkit for Python.")
 
 _name=dnspython
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/${_name}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-setuptools-scm")
+build_deps=("python python-build python-installer python-wheel python-poetry-core")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-cryptography python-requests-toolbelt python-idna python-curio python-trio python-sniffio")
 
 build() {
   go_src_dir
   burn_patches
-  python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
