@@ -1,5 +1,5 @@
 pkgname=bubblewrap
-pkgver=0.6.2
+pkgver=0.7.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,15 +10,16 @@ source=("https://github.com/containers/bubblewrap/releases/download/v${pkgver}/b
 
 tags=("sys-apps utils")
 
-build_deps=("libxslt docbook-xsl glibc libcap")
+build_deps=("libxslt docbook-xsl git meson bash-completion")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D selinux=disabled
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  chmod u+s ${pkgdir}/usr/bin/bwrap
 }
-
