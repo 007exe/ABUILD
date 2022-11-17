@@ -1,6 +1,6 @@
 pkgname=libwps
 pkgver=0.4.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A Microsoft Works file word processor format import filter library.")
