@@ -1,6 +1,6 @@
 pkgname=libgpg-error
 pkgver=1.46
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Support library for libgcrypt.")
