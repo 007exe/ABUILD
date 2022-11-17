@@ -1,0 +1,28 @@
+pkgname=stalonetray
+pkgver=0.8.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("STAnd-aLONE sysTRAY. It has minimal build and run-time dependencies: the Xlib only.")
+
+source=("https://github.com/kolbusa/stalonetray/archive/v${pkgver}.tar.gz")
+
+tags=("apps x11-misc")
+
+build_deps=("libxslt docbook-xsl libx11 libxpm")
+
+build() {
+  go_src_dir
+  burn_patches
+  XSLVER=$(pacman -Q docbook-xsl | cut -d' ' -f2 | cut -d- -f1)
+  sed -i "s|/usr/share/sgml/docbook/stylesheet/xsl/nwalsh|/usr/share/xml/docbook/xsl-stylesheets-$XSLVER|g" configure.ac
+  test -x configure || aclocal && autoheader && autoconf && automake --add-missing
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+# FIXME:
+  install -D -m644 stalonetrayrc.sample.in ${pkgdir}/etc/stalonetrayrc
+}
