@@ -1,0 +1,24 @@
+pkgname=xpad
+pkgver=5.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Stickies-like notes application.")
+
+source=("https://launchpad.net/${pkgname}/trunk/${pkgver}/+download/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("x11-misc apps")
+
+build_deps=("intltool gtksourceview4 libsm libayatana-appindicator")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
