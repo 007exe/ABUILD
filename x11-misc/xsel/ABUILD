@@ -1,0 +1,23 @@
+pkgname=xsel
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Command-line program for getting and setting the contents of the X selection.")
+
+source=("http://www.kfish.org/software/${pkgname}/download/${pkgname}-${pkgver}.tar.gz")
+
+tags=("xserver x11-utils")
+
+build_deps=("libxt git libx11")
+
+build() {
+  go_src_dir
+  burn_patches
+  touch README
+  [ -x configure ] && ./configure --prefix=/usr || ./autogen.sh --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  mkdir -p ${pkgdir}/usr/share/licenses/xsel/
+  install -D -m0644 COPYING ${pkgdir}/usr/share/licenses/xsel/COPYING
+}
