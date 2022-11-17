@@ -1,6 +1,6 @@
 pkgname=libwpd
 pkgver=0.10.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("WordPerfect Document import/export library.")
