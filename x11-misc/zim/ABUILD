@@ -1,0 +1,26 @@
+pkgname=zim
+pkgver=0.75.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A WYSIWYG text editor that aims at bringing the concept of a wiki to the desktop.")
+
+source=("https://www.zim-wiki.org/downloads/${pkgname}-${pkgver}.tar.gz")
+
+tags=("x11-misc apps")
+
+build_deps=("python python-gobject gtk3 python-xdg")
+
+adddep=("python python-gobject gtk3 python-xdg")
+
+# NOTE: Это опциональные зависимости
+removedep=("bzr git mercurial gnuplot ditaa graphviz xdot gtkspell3 r scrot lilypond gtksourceview3 texlive-bin: Insert Equation plugin")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py install --root=${pkgdir} --optimize=1
+
+  install -dm755 ${pkgdir}/usr/share/icons/
+  cp -r xdg/hicolor/ ${pkgdir}/usr/share/icons/
+}
