@@ -1,0 +1,19 @@
+pkgname=hsetroot
+pkgver=1.0.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tool which allows you to compose wallpapers ("root pixmaps") for X. Fork by Hyriand.")
+
+tags=("x11-misc apps")
+
+source=("https://github.com/himdel/hsetroot/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("imlib2 libxinerama")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  install -Dt ${pkgdir}/usr/bin hsetroot hsr-outputs
+}
