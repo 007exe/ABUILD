@@ -1,0 +1,39 @@
+pkgname=x11vnc
+pkgver=0.9.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("VNC server for real X displays.")
+
+source=("https://github.com/LibVNC/x11vnc/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("x11-misc server")
+
+build_deps=("libvncserver openssl libxcrypt libxtst libxext libxinerama
+libxrandr libxfixes libxdamage libxcomposite libx11 avahi libxi xorg-xdpyinfo")
+
+adddep=("libvncserver openssl libxcrypt libxtst libxext libxinerama
+libxrandr libxfixes libxdamage libxcomposite libx11 avahi libxi xorg-xdpyinfo")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make -C x11vnc DESTDIR=${pkgdir} install
+
+  install -Dm 755 x11vnc/tkx11vnc ${pkgdir}/usr/bin/
+  install -dm 755 ${pkgdir}/etc/${pkgname}
+  install -Dm777 ${filedir}/${pkgname} ${pkgdir}/etc/init.d/${pkgname}
+  install -Dm644 ${filedir}/${pkgname}.conf ${pkgdir}/etc/conf.d/${pkgname}
+  rm -fr ${pkgdir}/usr/include/rfb
+  rm ${pkgdir}/usr/doc/${pkgname}-${pkgver}/README.LibVNCServer
+  
+  install x11vnc/misc/{rx11vnc,Xdummy} -t ${pkgdir}/usr/bin
+  install -D -m644 x11vnc.service -t ${pkgdir}/usr/lib/systemd/system
+  
+}
