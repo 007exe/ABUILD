@@ -1,12 +1,12 @@
 pkgname=nodejs
-pkgver=19.0.1
+pkgver=19.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("JavaScript server-side network application development.")
 longdesc=("Node.js use V8 engine (JavaScript engine used for Webkit) and let you create application on server-side. It handles HTTP server, Socket server, clients and a lot of modules to ease your projects creation.")
 
-source=("https://github.com/nodejs/node/archive/v$pkgver/nodejs-$pkgver.tar.gz")
+source=("https://github.com/nodejs/node/archive/v${pkgver}/nodejs-${pkgver}.tar.gz")
 
 tags=("net-libs libs")
 
