@@ -1,0 +1,19 @@
+pkgname=wmname
+pkgver=0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A utility to set the name of your window manager.")
+
+source="https://dl.suckless.org/tools/wmname-${pkgver}.tar.gz"
+
+tags=("apps x11-misc")
+
+build_deps=("libx11")
+
+build(){
+  go_src_dir
+  make
+  make PREFIX=${pkgdir}/usr install
+  install -Dm0644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
