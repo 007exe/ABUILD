@@ -1,5 +1,5 @@
 pkgname=python-virtualenv
-pkgver=20.16.6
+pkgver=20.16.7
 pkgbuild=1
 arch=("auto")
 
