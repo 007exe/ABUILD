@@ -1,5 +1,5 @@
 pkgname=libpipeline
-pkgver=1.5.6
+pkgver=1.5.7
 pkgbuild=1
 arch=("auto")
 
