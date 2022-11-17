@@ -1,6 +1,6 @@
 pkgname=libgcrypt
 pkgver=1.10.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("General purpose cryptographic library based on the code from GnuPG.")
