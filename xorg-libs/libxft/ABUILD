@@ -1,5 +1,5 @@
 pkgname=libxft
-pkgver=2.3.6
+pkgver=2.3.7
 pkgbuild=1
 arch=("auto")
 
