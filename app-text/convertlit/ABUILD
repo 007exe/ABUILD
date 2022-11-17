@@ -1,6 +1,6 @@
 pkgname=convertlit
 pkgver=1.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("n extractor/converter for .LIT eBooks.")
