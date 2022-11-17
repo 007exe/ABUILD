@@ -1,0 +1,22 @@
+pkgname=wmctrl
+pkgver=1.07
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Control your EWMH compliant window manager from command line.")
+
+source=("http://tripie.sweb.cz/utils/wmctrl/dist/${pkgname}-${pkgver}.tar.gz")
+
+tags=("x11-misc utils")
+
+build_deps=("")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --bindir=${pkgdir}/usr/bin \
+    --mandir=${pkgdir}/usr/share/man
+  make
+  make install
+}
