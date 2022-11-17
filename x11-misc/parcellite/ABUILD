@@ -1,0 +1,24 @@
+pkgname=parcellite
+pkgver=1.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Lightweight GTK+ clipboard manager.")
+
+source=("https://downloads.sourceforge.net/parcellite/parcellite-${pkgver}.tar.gz")
+
+tags=("x11-misc apps")
+
+build_deps=("intltool gtk2 xdotool")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
