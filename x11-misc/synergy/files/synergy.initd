@@ -1,0 +1,17 @@
+#!/usr/bin/openrc-run
+
+depend() {
+	need net
+}
+
+start() {
+	emsg "Starting Synergy server"
+	/usr/bin/synergys --config /etc/synergy.conf
+	eend $?
+}
+
+stop() {
+	emsg "Stopping Synergy server"
+	killall synergys
+	eend $?
+}
