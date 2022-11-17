@@ -1,0 +1,20 @@
+pkgname=xdotool
+pkgver=3.20211022.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Command-line X11 automation tool.")
+ 
+source=("https://github.com/jordansissel/xdotool/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("x11-misc console")
+
+build_deps=("libxtst libxinerama libxkbcommon")
+
+build() {
+  go_src_dir
+  burn_patches
+  make WITHOUT_RPATH_FIX=1
+  make PREFIX=${pkgdir}/usr INSTALLMAN=${pkgdir}/usr/share/man install
+  install -Dm644 COPYRIGHT -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
