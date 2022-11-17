@@ -1,15 +1,15 @@
 pkgname=xorg-fonts-type1
-pkgver=1.0.4
+pkgver=7.7
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("X.org Type1 fonts.")
 
-source=("https://xorg.freedesktop.org/releases/individual/font/font-adobe-utopia-type1-${pkgver}.tar.bz2
+source=("https://xorg.freedesktop.org/releases/individual/font/font-adobe-utopia-type1-1.0.4.tar.bz2
         https://xorg.freedesktop.org/releases/individual/font/font-bh-type1-1.0.3.tar.bz2
         https://xorg.freedesktop.org/releases/individual/font/font-bitstream-type1-1.0.3.tar.bz2
         https://xorg.freedesktop.org/releases/individual/font/font-ibm-type1-1.0.3.tar.bz2
-        https://xorg.freedesktop.org/releases/individual/font/font-xfree86-type1-${pkgver}.tar.bz2")
+        https://xorg.freedesktop.org/releases/individual/font/font-xfree86-type1-1.0.4.tar.bz2")
 
 tags=("media-fonts fonts")
 
