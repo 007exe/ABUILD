@@ -1,6 +1,6 @@
 pkgname=librevenge
 pkgver=0.0.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("library for REVerses ENGineered formats filters.")
