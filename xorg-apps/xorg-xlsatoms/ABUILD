@@ -1,12 +1,12 @@
 pkgname=xorg-xlsatoms
-pkgver=1.1.3
+pkgver=1.1.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("List interned atoms defined on server.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xlsatoms-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/archive/individual/app/xlsatoms-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
