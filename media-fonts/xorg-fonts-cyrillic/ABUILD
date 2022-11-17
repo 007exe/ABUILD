@@ -1,6 +1,6 @@
 pkgname=xorg-fonts-cyrillic
 pkgver=1.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("noarch")
 
 shortdesc=("X.org cyrillic fonts.")
