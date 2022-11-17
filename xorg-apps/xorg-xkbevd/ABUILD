@@ -1,12 +1,12 @@
 pkgname=xorg-xkbevd
-pkgver=1.1.4
+pkgver=1.1.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("XKB event daemon.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xkbevd-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/app/xkbevd-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
