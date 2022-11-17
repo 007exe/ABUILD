@@ -1,0 +1,34 @@
+pkgname=virtualgl
+pkgver=3.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Redirects 3D commands from an OpenGL application onto a server-side 3D graphics card.")
+
+source=("https://downloads.sourceforge.net/project/virtualgl/${pkgver}/VirtualGL-${pkgver}.tar.gz")
+
+tags=("x11-misc apps")
+
+build_deps=("cmake mesa libxtst opencl-headers ninja
+libxv glu libjpeg xcb-util-keysyms opencl-driver ocl-icd xorg-xhost")
+
+
+build() {
+  go_src_dir
+  burn_patches
+  export LDFLAGS="${LDFLAGS/--as-needed,}"
+  cmake -GNinja \
+    -Bbuild \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DTJPEG_INCLUDE_DIR=/usr/include \
+    -DTJPEG_LIBRARY=/usr/lib/libturbojpeg.so \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_INSTALL_BINDIR=/usr/bin \
+    -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/${pkgname} \
+    -DVGL_FAKEXCB=1
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+
+  mv ${pkgdir}/usr/bin/glxinfo ${pkgdir}/usr/bin/vglxinfo
+  mv ${pkgdir}/usr/bin/eglinfo ${pkgdir}/usr/bin/veglinfo
+}
