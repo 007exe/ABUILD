@@ -1,0 +1,25 @@
+pkgname=numlockx
+pkgver=1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Turns on the numlock key in X11.")
+
+source=("https://github.com/rg3/numlockx/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("console x11-misc")
+
+build_deps=("libxtst")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    x_includes=/usr/include/X11 \
+    x_libraries=/usr/lib
+  make -j${numjobs}
+  make prefix=${pkgdir}/usr install
+
+  install -Dm0644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
