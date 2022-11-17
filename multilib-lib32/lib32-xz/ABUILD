@@ -1,5 +1,5 @@
 pkgname=lib32-xz
-pkgver=5.2.7
+pkgver=5.2.8
 pkgbuild=1
 arch=("auto")
 
