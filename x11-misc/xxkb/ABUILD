@@ -1,0 +1,29 @@
+pkgname=xxkb
+pkgver=1.11.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Keyboard layout switcher/indicator.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}-src.tar.gz")
+
+tags=("apps x11-apps")
+
+build() {
+  go_src_dir
+  burn_patches
+  xmkmf
+  make PROJECTROOT=/usr PIXMAPDIR=/usr/share/$pkgname LOCAL_LIBRARIES='-lXext -lXt -lXpm -lX11'
+
+  install -d ${pkgdir}/usr/bin
+  install -d ${pkgdir}/usr/share/${pkgname}
+  install -d ${pkgdir}/usr/man/man1
+  install -d ${pkgdir}/usr/share/X11/app-defaults
+
+  install -m 0755 xxkb ${pkgdir}/usr/bin && \
+  install -m 0644 ${filedir}/XXkb ${pkgdir}/usr/share/X11/app-defaults/XXkb && \
+  install -m 0644 pixmaps/*.xpm ${pkgdir}/usr/share/${pkgname} && \
+  install -m 0644 ${pkgname}.man ${pkgdir}/usr/man/man1/${pkgname}.1 && \
+  install -m 0644 ${filedir}/*.xpm ${pkgdir}/usr/share/${pkgname}/
+}
+
