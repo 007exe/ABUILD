@@ -1,6 +1,6 @@
 pkgname=libwpg
 pkgver=0.3.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library for importing and converting Corel WordPerfect(tm) Graphics images.")
