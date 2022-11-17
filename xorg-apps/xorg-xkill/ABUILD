@@ -1,12 +1,12 @@
 pkgname=xorg-xkill
-pkgver=1.0.5
+pkgver=1.0.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Kill a client by its X resource.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xkill-${pkgver}.tar.gz")
+source=("https://xorg.freedesktop.org/archive/individual/app/xkill-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
