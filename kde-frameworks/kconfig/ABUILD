@@ -1,5 +1,5 @@
 pkgname=kconfig
-pkgver=5.99.0
+pkgver=5.100.1
 pkgbuild=1
 arch=("auto")
 
