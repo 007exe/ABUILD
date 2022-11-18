@@ -1,5 +1,5 @@
 pkgname=python-mako
-pkgver=1.2.3
+pkgver=1.2.4
 pkgbuild=1
 arch=("auto")
 
