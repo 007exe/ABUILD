@@ -1,12 +1,12 @@
 pkgname=nano
-pkgver=6.4
+pkgver=7.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Pico editor clone with enhancements.")
 longdesc=("The Nano package contains a small, simple text editor which aims to replace Pico, the default editor in the Pine package.")
 
-source=("http://www.nano-editor.org/dist/v6/${pkgname}-${pkgver}.tar.gz")
+source=("http://www.nano-editor.org/dist/v7/${pkgname}-${pkgver}.tar.gz")
 
 tags=("console app-editors")
 
