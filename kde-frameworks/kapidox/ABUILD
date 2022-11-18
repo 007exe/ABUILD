@@ -1,5 +1,5 @@
 pkgname=kapidox
-pkgver=5.99.0
+pkgver=5.100.0
 pkgbuild=1
 arch=("auto")
 

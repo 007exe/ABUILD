@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KF5_VERSION=5.99.0
+KF5_VERSION=5.100.0
 BUILD_VERSION=1
 
 LIST="extra-cmake-modules
@@ -85,8 +85,7 @@ kcalendarcore
 kcontacts
 kquickcharts
 kdav
-kapidox
-"
+kapidox"
 
 CWD=~
 STARTD=`pwd`
@@ -97,7 +96,7 @@ echo "============================= Начало сборки `date` ===========
 
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/kde-frameworks -si -bv $KF5_VERSION -bb $BUILD_VERSION ; then
+    if mkpkg -ba -wd ~/mkpkg/build -si -bv $KF5_VERSION -bb $BUILD_VERSION ; then
            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
