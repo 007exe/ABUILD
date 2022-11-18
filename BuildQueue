@@ -7,19 +7,11 @@
 # dev-util/meson версия 0.63.3 не работает
 
 LIST="sys-libs/glibc
-media-libs/sdl_sound
+sci-libs/lapack
 dev-python/python-colorama
-dev-python/python-build
 dev-python/python-sphinxcontrib-towncrier
 dev-python/python-pip
 dev-python/python-sphinx-furo
-dev-python/python-jaraco.context
-dev-python/python-jaraco.functools
-dev-python/python-nspektr
-dev-python/python-validate-pyproject
-dev-python/python-virtualenv
-dev-python/python-markdown-it-py
-dev-python/python-zipp
 dev-python/python-keyring
 dev-python/python-platformdirs
 dev-python/python-crashtest
@@ -28,7 +20,17 @@ dev-python/python-poetry
 dev-python/python-poetry-core
 dev-python/python-rich
 dev-python/python-pathspec
-dev-python/python-hatchling
+x11-misc/x11vnc
+x11-misc/xmobar
+x11-misc/xpad
+x11-misc/xsel
+x11-misc/xxkb
+x11-misc/zim
+x11-misc/stalonetray
+x11-misc/synergy
+x11-misc/virtualgl
+x11-misc/wmctrl
+sci-libs/suitesparse
 multilib-lib32/lib32-glib2
 multilib-lib32/lib32-libx11
 multilib-lib32/lib32-libxcb
@@ -54,12 +56,12 @@ app-accessibility/flite
 app-text/asciidoc
 net-libs/gupnp-igd
 gnome-apps/alacarte
+sci-mathematics/lpsolve
 xorg-misc/xdg-utils
 sys-apps/fwupd
 (zig_Требует_обновить_LLVM_до_15й_версии)
 dev-lang/zig
 sys-fs/ncdu
-media-video/obs-studio
 media-libs/libquvi
 sys-apps/file
 media-libs/projectm
@@ -74,7 +76,6 @@ app-text/texlive-bin
 app-text/linuxdoc-tools
 app-text/mupdf
 app-text/pdftk
-app-text/podofo
 app-text/qpdf
 app-text/xpdf
 app-text/zathura
@@ -126,7 +127,6 @@ app-office/unoconv
 strip-nondeterminism
 media-sound/clementine
 xorg-apps/xorg-xdm
-xorg-libs/mesa
 app-emulation/wine
 dev-util/vulkan-tools
 sci-libs/avogadrolibs
@@ -159,4 +159,4 @@ done
 
 echo "============================= Завершено `date` =============================" >> $LOGFILE
 
-#sudo poweroff
+sudo poweroff
