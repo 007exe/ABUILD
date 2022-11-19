@@ -9,9 +9,11 @@ source=("https://www.zim-wiki.org/downloads/${pkgname}-${pkgver}.tar.gz")
 
 tags=("x11-misc apps")
 
-build_deps=("python python-gobject gtk3 python-xdg")
+# python-xdg
+build_deps=("python python-gobject gtk3")
 
-adddep=("python python-gobject gtk3 python-xdg")
+# python-xdg
+adddep=("python python-gobject gtk3")
 
 # NOTE: Это опциональные зависимости
 removedep=("bzr git mercurial gnuplot ditaa graphviz xdot gtkspell3 r scrot lilypond gtksourceview3 texlive-bin: Insert Equation plugin")
