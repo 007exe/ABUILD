@@ -9,31 +9,39 @@ source=("https://github.com/LibVNC/x11vnc/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("x11-misc server")
 
-build_deps=("libvncserver openssl libxcrypt libxtst libxext libxinerama
-libxrandr libxfixes libxdamage libxcomposite libx11 avahi libxi xorg-xdpyinfo")
+build_deps=("libvncserver openssl libxtst libxext libxinerama libxrandr
+libxfixes libxdamage libxcomposite libx11 avahi libxi xorg-xdpyinfo")
 
-adddep=("libvncserver openssl libxcrypt libxtst libxext libxinerama
-libxrandr libxfixes libxdamage libxcomposite libx11 avahi libxi xorg-xdpyinfo")
+adddep=("libvncserver openssl libxtst libxext libxinerama libxrandr
+libxfixes libxdamage libxcomposite libx11 avahi libxi xorg-xdpyinfo")
 
 build() {
   go_src_dir
   burn_patches
-  autoreconf
+  autoreconf -fi
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
-  make -C x11vnc DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} install
 
-  install -Dm 755 x11vnc/tkx11vnc ${pkgdir}/usr/bin/
+  install -Dm 755 tkx11vnc ${pkgdir}/usr/bin/
   install -dm 755 ${pkgdir}/etc/${pkgname}
-  install -Dm777 ${filedir}/${pkgname} ${pkgdir}/etc/init.d/${pkgname}
+
+# NOTE: Сервисы open-rc
+  install -Dm777 ${filedir}/${pkgname}.init ${pkgdir}/etc/init.d/${pkgname}
   install -Dm644 ${filedir}/${pkgname}.conf ${pkgdir}/etc/conf.d/${pkgname}
-  rm -fr ${pkgdir}/usr/include/rfb
-  rm ${pkgdir}/usr/doc/${pkgname}-${pkgver}/README.LibVNCServer
-  
-  install x11vnc/misc/{rx11vnc,Xdummy} -t ${pkgdir}/usr/bin
-  install -D -m644 x11vnc.service -t ${pkgdir}/usr/lib/systemd/system
-  
+
+# NOTE: Сервисы SystemD
+  install misc/{rx11vnc,Xdummy} -t ${pkgdir}/usr/bin
+  install -D -m644 ${filedir}/x11vnc.service -t ${pkgdir}/usr/lib/systemd/system
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
