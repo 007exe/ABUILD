@@ -8,7 +8,7 @@ longdesc=("v4l-utils provides a series of utilities for media devices, allowing 
 
 source=("https://linuxtv.org/downloads/v4l-utils/v4l-utils-${pkgver}.tar.bz2")
 
-tags=("libs media-libs")
+tags=("lib32 media-libs")
 
 build_deps=("lib32-gcc-libs lib32-libjpeg-turbo")
 

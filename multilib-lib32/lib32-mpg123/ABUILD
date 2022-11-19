@@ -8,7 +8,7 @@ longdesc=("The mpg123 package contains a console-based MP3 player. It claims to 
 
 source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("media-sound libs")
+tags=("lib32 media-sound")
 
 build_deps=("lib32-glibc lib32-libtool lib32-alsa-lib lib32-sdl2 lib32-gcc-libs")
 

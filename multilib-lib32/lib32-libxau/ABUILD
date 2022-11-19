@@ -8,7 +8,7 @@ longdesc=("The libXau package contains a library implementing the X11 Authorizat
 
 source=("https://xorg.freedesktop.org/releases/individual/lib/libXau-${pkgver}.tar.xz")
 
-tags=("libs xorg-libs")
+tags=("lib32 xorg-libs")
 
 build_deps=("lib32-glibc xorgproto pkgconf")
 

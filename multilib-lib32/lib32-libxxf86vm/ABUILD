@@ -7,7 +7,7 @@ shortdesc=("X11 XFree86 video mode extension library (32-bit).")
 
 source=("https://xorg.freedesktop.org/releases/individual/lib/libXxf86vm-${pkgver}.tar.xz")
 
-tags=("libs xorg-libs")
+tags=("lib32 xorg-libs")
 
 build_deps=("lib32-libxext lib32-gcc-libs xorg-util-macros xorgproto")
 

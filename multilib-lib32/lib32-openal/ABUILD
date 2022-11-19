@@ -11,7 +11,7 @@ longdesc=("A software implementation of the OpenAL 3D audio API.")
 
 source=("git:https://github.com/kcat/openal-soft.git")
 
-tags=("libs media-libs")
+tags=("lib32 media-libs")
 
 build_deps=("lib32-gcc-libs lib32-alsa-lib lib32-libpulse lib32-fluidsynth
 lib32-portaudio lib32-jack lib32-pipewire git cmake ninja")

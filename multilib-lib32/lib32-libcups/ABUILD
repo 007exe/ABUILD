@@ -7,7 +7,7 @@ shortdesc=("The CUPS Printing System - client libraries (32-bit).")
 
 source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz")
 
-tags=("base net-print")
+tags=("lib32 net-print")
 
 build_deps=("lib32-krb5 lib32-libtiff lib32-libpng lib32-gnutls")
 

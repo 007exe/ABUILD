@@ -10,7 +10,7 @@ longdesc=("The Libtool package contains the GNU generic library support script. 
 
 source=("https://ftp.gnu.org/gnu/libtool/libtool-${pkgver}.tar.xz")
 
-tags=("develop sys-devel")
+tags=("lib32 sys-devel")
 
 build_deps=("gcc>=$_gccver help2man lib32-glibc")
 

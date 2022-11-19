@@ -8,7 +8,7 @@ shortdesc=("Mesa is an OpenGL compatible 3D graphics library.")
 
 source=("https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz")
 
-tags=("libs xorg-libs")
+tags=("lib32 xorg-libs")
 
 build_deps=("python-mako lib32-libxml2 lib32-expat lib32-libx11 xorgproto lib32-libdrm
 lib32-libxshmfence lib32-libxxf86vm lib32-libxdamage lib32-libvdpau lib32-libva glslang

@@ -8,7 +8,7 @@ longdesc=("Advanced Linux Sound Architecture (ALSA) is a modularized architectur
 
 source=("https://www.alsa-project.org/files/pub/lib/alsa-lib-${pkgver}.tar.bz2")
 
-tags=("libs media-libs")
+tags=("lib32 media-libs")
 
 build_deps=("lib32-glibc")
 

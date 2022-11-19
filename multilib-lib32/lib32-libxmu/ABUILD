@@ -8,7 +8,7 @@ longdesc=("The Xorg librarie provide library routines that are used within all X
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXmu-${pkgver}.tar.xz")
 
-tags=("libs xorg-libs")
+tags=("lib32 xorg-libs")
 
 build_deps=("libxext libxt xorg-util-macros lib32-libxext lib32-libxt lib32-gcc-libs")
 
