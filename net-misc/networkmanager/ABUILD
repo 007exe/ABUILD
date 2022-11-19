@@ -1,5 +1,5 @@
 pkgname=networkmanager
-pkgver=1.40.2
+pkgver=1.40.4
 _pppver=2.4.9
 pkgbuild=1
 arch=("auto")
