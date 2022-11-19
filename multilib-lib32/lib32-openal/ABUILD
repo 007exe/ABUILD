@@ -1,0 +1,45 @@
+pkgname=lib32-openal
+pkgver=1.22.2
+strict_version=1
+# NOTE: Коммит версии
+_commit=dc83d99c95a42c960150ddeee06c124134b52208
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cross-platform 3D audio library, software implementation (32-bit).")
+longdesc=("A software implementation of the OpenAL 3D audio API.")
+
+source=("git:https://github.com/kcat/openal-soft.git")
+
+tags=("libs media-libs")
+
+build_deps=("lib32-gcc-libs lib32-alsa-lib lib32-libpulse lib32-fluidsynth
+lib32-portaudio lib32-jack lib32-pipewire git cmake ninja")
+
+# NOTE: Это опциональные зависимости
+removedep=("lib32-fluidsynth")
+
+pkglist=("openal-examples")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32 -mstackrealign"
+  export CXX="g++ -m32 -mstackrealign"
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib32 \
+    -DCMAKE_BUILD_TYPE=None
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rv ${pkgdir}/usr/{include,share,bin}
+}
