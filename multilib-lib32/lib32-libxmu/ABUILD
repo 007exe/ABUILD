@@ -1,0 +1,33 @@
+pkgname=lib32-libxmu
+pkgver=1.1.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X11 miscellaneous micro-utility library (32-bit).")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXmu-${pkgver}.tar.xz")
+
+tags=("libs xorg-libs")
+
+build_deps=("libxext libxt xorg-util-macros lib32-libxext lib32-libxt lib32-gcc-libs")
+
+adddep=("libxmu")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{include,share}
+
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libxmu ${pkgdir}/usr/share/licenses/${pkgname}
+}
