@@ -9,9 +9,9 @@ source=("https://downloads.sourceforge.net/project/virtualgl/${pkgver}/VirtualGL
 
 tags=("x11-misc apps")
 
-build_deps=("cmake mesa libxtst opencl-headers ninja
-libxv glu libjpeg xcb-util-keysyms opencl-driver ocl-icd xorg-xhost")
-
+# opencl-driver
+build_deps=("cmake mesa libxtst opencl-headers ninja libxv
+glu libjpeg-turbo xcb-util-keysyms ocl-icd xorg-xhost")
 
 build() {
   go_src_dir
