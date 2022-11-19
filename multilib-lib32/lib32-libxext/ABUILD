@@ -1,0 +1,33 @@
+pkgname=lib32-libxext
+pkgver=1.3.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X11 miscellaneous extensions library (32-bit).")
+longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXext-${pkgver}.tar.xz")
+
+tags=("libs xorg-libs")
+
+build_deps=("lib32-libx11 lib32-gcc-libs xorg-util-macros")
+
+adddep=("libxext")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{include,share}
+
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libxext ${pkgdir}/usr/share/licenses/${pkgname}
+}
