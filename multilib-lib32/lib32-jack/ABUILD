@@ -1,0 +1,37 @@
+pkgname=lib32-jack
+pkgver=1.9.21
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The JACK low-latency audio server (32 bit).")
+longdesc=("Jackdmp jack implemention for multi-processor machine.")
+
+source=("https://github.com/jackaudio/jack2/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("lib32 media-sound")
+
+build_deps=("lib32-alsa-lib lib32-dbus lib32-expat lib32-libsamplerate waf
+lib32-gcc-libs lib32-glibc lib32-opus")
+
+build() {
+  go_src_dir
+# Удаляем пользовательский waflib
+  touch __init__.py
+  rm -rv waflib
+  export LINKFLAGS="$LDFLAGS"
+  export PYTHONPATH="$PWD:$PYTHONPATH"
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+  export CXXFLAGS+=' -m32'
+  export CFLAGS+=' -m32'
+  waf configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --classic \
+    --dbus
+  waf build
+  export PYTHONPATH="$PWD:$PYTHONPATH"
+  waf install --destdir=${pkgdir}
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+}
