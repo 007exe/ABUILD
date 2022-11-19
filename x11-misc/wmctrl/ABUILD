@@ -9,7 +9,7 @@ source=("http://tripie.sweb.cz/utils/wmctrl/dist/${pkgname}-${pkgver}.tar.gz")
 
 tags=("x11-misc utils")
 
-build_deps=("")
+build_deps=("glib2 libxmu")
 
 build() {
   go_src_dir
@@ -17,6 +17,6 @@ build() {
   ./configure \
     --bindir=${pkgdir}/usr/bin \
     --mandir=${pkgdir}/usr/share/man
-  make
+  make -j${numjobs}
   make install
 }
