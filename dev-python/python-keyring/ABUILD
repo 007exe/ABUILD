@@ -1,11 +1,12 @@
 pkgname=python-keyring
-pkgve=23.11.0
+pkgver=23.11.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Store and access your passwords safely.")
 
-source=("https://github.com/jaraco/keyring/archive/refs/tags/v${pkgve}.tar.gz")
+_name=keyring
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/keyring/keyring-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -21,12 +22,4 @@ build() {
   install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
   rm -rf ${pkgdir}/usr/lib/python3.10/site-packages/keyring/tests
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgve}.tar.gz
 }
