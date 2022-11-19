@@ -1,0 +1,156 @@
+pkgname=lib32-mesa
+pkglist=("lib32-vulkan-mesa-layers lib32-opencl-mesa lib32-vulkan-intel lib32-vulkan-radeon lib32-libva-mesa-driver lib32-mesa-vdpau")
+pkgver=22.2.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Mesa is an OpenGL compatible 3D graphics library.")
+
+source=("https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz")
+
+tags=("libs xorg-libs")
+
+build_deps=("python-mako lib32-libxml2 lib32-expat lib32-libx11 xorgproto lib32-libdrm
+lib32-libxshmfence lib32-libxxf86vm lib32-libxdamage lib32-libvdpau lib32-libva glslang
+lib32-wayland wayland-protocols lib32-zstd lib32-libelf lib32-llvm libclc clang lib32-clang
+lib32-libglvnd lib32-libunwind lib32-lm_sensors lib32-libxrandr lib32-vulkan-icd-loader cmake
+meson lib32-libxcb lib32-llvm-libs")
+
+adddep=("libxdamage libunwind")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=' -g1'
+  CXXFLAGS+=' -g1'
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+
+  cat >crossfile.ini <<END
+[binaries]
+llvm-config = '/usr/bin/llvm-config32'
+END
+
+  meson build \
+    -D prefix=/usr \
+    -D libdir=lib32 \
+    -D b_ndebug=true \
+    -D b_lto=false \
+    -D platforms=x11,wayland \
+    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,crocus,zink,d3d12 \
+    -D vulkan-drivers=amd,intel,swrast \
+    -D vulkan-layers=device-select,intel-nullhw,overlay \
+    -D dri3=enabled \
+    -D egl=enabled \
+    -D gallium-extra-hud=true \
+    -D gallium-nine=true \
+    -D gallium-omx=bellagio \
+    -D gallium-opencl=icd \
+    -D gallium-va=enabled \
+    -D gallium-vdpau=enabled \
+    -D gallium-xa=enabled \
+    -D gallium-xvmc=disabled \
+    -D gbm=enabled \
+    -D gles1=disabled \
+    -D gles2=enabled \
+    -D glvnd=true \
+    -D glx=dri \
+    -D libunwind=enabled \
+    -D llvm=enabled \
+    -D lmsensors=enabled \
+    -D osmesa=true \
+    -D shared-glapi=enabled \
+    -D microsoft-clc=disabled \
+    -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
+    -D valgrind=enabled
+  meson configure build
+  ninja -C build
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
+
+##############################################################################################################
+
+lib32-vulkan-mesa-layers() {
+  pkgname=lib32-vulkan-mesa-layers
+  shortdesc=("Mesa Vulkan layers.")
+  adddep=("lib32-libdrm lib32-libxcb lib32-wayland vulkan-mesa-layers")
+}
+
+vulkan-mesa-layers_prep() {
+  mkdir -p ${pkgdir}/usr/lib32
+  rm -rv ${p_pkgdir}/usr/share/vulkan/explicit_layer.d
+  rm -rv ${p_pkgdir}/usr/share/vulkan/implicit_layer.d
+  rm -rv ${p_pkgdir}/usr/bin/mesa-overlay-control.py
+  mv -v ${p_pkgdir}/usr/lib32/libVkLayer_*.so ${pkgdir}/usr/lib32/
+}
+
+##############################################################################################################
+
+lib32-opencl-mesa() {
+  pkgname=lib32-opencl-mesa
+  shortdesc=("OpenCL support for AMD/ATI Radeon mesa drivers.")
+  adddep=("lib32-expat lib32-libdrm lib32-libelf lib32-clang lib32-zstd opencl-mesa")
+}
+
+lib32-opencl-mesa_prep() {
+  mkdir -p ${pkgdir}/usr/lib32/gallium-pipe
+  rm -rv ${p_pkgdir}/etc/OpenCL
+  mv -v ${p_pkgdir}/usr/lib32/lib*OpenCL* ${pkgdir}/usr/lib32/
+  mv -v ${p_pkgdir}/usr/lib32/gallium-pipe ${pkgdir}/usr/lib32/
+}
+
+##############################################################################################################
+
+lib32-vulkan-intel() {
+  pkgname=lib32-vulkan-intel
+  shortdesc=("Intel Vulkan mesa driver.")
+  adddep=("lib32-wayland lib32-libx11 lib32-libxshmfence lib32-libdrm lib32-zstd")
+}
+
+lib32-vulkan-intel_prep() {
+  mkdir -p ${pkgdir}{/usr/lib32,/usr/share/vulkan/icd.d}
+  mv -v ${p_pkgdir}/usr/lib32/libvulkan_intel.so ${pkgdir}/usr/lib32/
+  mv -v ${p_pkgdir}/usr/share/vulkan/icd.d/intel_icd*.json ${pkgdir}/usr/share/vulkan/icd.d/
+}
+
+##############################################################################################################
+
+lib32-vulkan-radeon() {
+  pkgname=lib32-vulkan-radeon
+  shortdesc=("Radeon Vulkan mesa driver.")
+  adddep=("lib32-wayland lib32-libx11 lib32-libxshmfence lib32-libelf lib32-libdrm lib32-zstd lib32-llvm-libs")
+}
+
+lib32-vulkan-radeon_prep() {
+  mkdir -p ${pkgdir}{/usr/lib32,/usr/share/vulkan/icd.d}
+  mv -v ${p_pkgdir}/usr/lib32/libvulkan_radeon.so ${pkgdir}/usr/lib32/
+  mv -v ${p_pkgdir}/usr/share/vulkan/icd.d/radeon_icd*.json ${pkgdir}/usr/share/vulkan/icd.d/
+}
+
+##############################################################################################################
+
+lib32-libva-mesa-driver() {
+  pkgname=lib32-libva-mesa-driver
+  shortdesc=("VA-API implementation for gallium.")
+  adddep=("lib32-libdrm lib32-libx11 lib32-llvm-libs lib32-expat lib32-libelf lib32-libxshmfence lib32-zstd")
+}
+
+lib32-libva-mesa-driver_prep() {
+  mkdir -p ${pkgdir}/usr/lib32/dri/
+  mv -v ${p_pkgdir}/usr/lib32/dri/*_drv_video.so ${pkgdir}/usr/lib32/dri/
+}
+
+##############################################################################################################
+
+lib32-mesa-vdpau() {
+  pkgname=lib32-mesa-vdpau
+  shortdesc=("Mesa VDPAU drivers.")
+  adddep=("lib32-libdrm lib32-libx11 lib32-llvm-libs lib32-expat lib32-libelf lib32-libxshmfence lib32-zstd")
+}
+
+lib32-mesa-vdpau_prep() {
+  mkdir -p ${pkgdir}/usr/lib32/vdpau/
+  mv -v ${p_pkgdir}/usr/lib32/vdpau/ ${pkgdir}/usr/lib32/
+}
