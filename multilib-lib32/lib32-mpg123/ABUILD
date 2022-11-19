@@ -1,0 +1,31 @@
+pkgname=lib32-mpg123
+pkgver=1.31.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A console based real time MPEG Audio Player for Layer 1, 2 and 3 (32-bit).")
+longdesc=("The mpg123 package contains a console-based MP3 player. It claims to be the fastest MP3 decoder for Unix.")
+
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("media-sound libs")
+
+build_deps=("lib32-glibc lib32-libtool lib32-alsa-lib lib32-sdl2 lib32-gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --enable-int-quality \
+    --with-cpu=i586 \
+    --with-audio="alsa sdl"
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+}
