@@ -1,0 +1,45 @@
+pkgname=lib32-portaudio
+pkgver=19.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A free, cross-platform, open source, audio I/O library (32 bit).")
+
+source=("https://github.com/${pkgname}/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+build_deps=("lib32-glibc lib32-alsa-lib lib32-jack")
+
+adddep=("portaudio")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd bindings/cpp
+  autoreconf -fiv
+  cd ../..
+  autoreconf -fiv
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --enable-cxx \
+    --disable-static
+# NOTE: Сборка в один поток
+  make -j1
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/include
+  install -vDm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 README.* -t ${pkgdir}/usr/share/doc/${pkgname}
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
