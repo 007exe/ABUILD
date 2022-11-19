@@ -1,12 +1,12 @@
 pkgname=lapack
-pkgver=3.10.1
+pkgver=3.11.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linear Algebra PACKage.")
 longdesc=("BLAS,CBLAS,LAPACK,LAPACKE reference implementations.")
 
-source=("https://github.com/Reference-LAPACK/lapack/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/Reference-LAPACK/lapack/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs sci-libs")
 
