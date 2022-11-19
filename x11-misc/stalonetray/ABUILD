@@ -1,5 +1,7 @@
 pkgname=stalonetray
 pkgver=0.8.4
+# NOTE: Версия docbook-xsl
+XSLVER=1.79.2
 pkgbuild=1
 arch=("auto")
 
@@ -14,8 +16,9 @@ build_deps=("libxslt docbook-xsl libx11 libxpm")
 build() {
   go_src_dir
   burn_patches
-  XSLVER=$(pacman -Q docbook-xsl | cut -d' ' -f2 | cut -d- -f1)
-  sed -i "s|/usr/share/sgml/docbook/stylesheet/xsl/nwalsh|/usr/share/xml/docbook/xsl-stylesheets-$XSLVER|g" configure.ac
+# NOTE: Авто определение версии docbook-xsl
+#  XSLVER=$(mpkg-search -i -y docbook-xsl | cut -d' ' -f5 | cut -d- -f3)
+  sed -i "s|/usr/share/sgml/docbook/stylesheet/xsl/nwalsh|/usr/share/xml/docbook/xsl-stylesheets-${XSLVER}|g" configure.ac
   test -x configure || aclocal && autoheader && autoconf && automake --add-missing
   ./configure \
     --prefix=/usr \
@@ -25,4 +28,12 @@ build() {
   make DESTDIR=${pkgdir} install
 # FIXME:
   install -D -m644 stalonetrayrc.sample.in ${pkgdir}/etc/stalonetrayrc
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
