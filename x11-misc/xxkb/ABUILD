@@ -9,11 +9,13 @@ source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}-src.t
 
 tags=("apps x11-apps")
 
+build_deps=("imake libxpm")
+
 build() {
   go_src_dir
   burn_patches
   xmkmf
-  make PROJECTROOT=/usr PIXMAPDIR=/usr/share/$pkgname LOCAL_LIBRARIES='-lXext -lXt -lXpm -lX11'
+  make PROJECTROOT=/usr PIXMAPDIR=/usr/share/${pkgname} LOCAL_LIBRARIES='-lXext -lXt -lXpm -lX11'
 
   install -d ${pkgdir}/usr/bin
   install -d ${pkgdir}/usr/share/${pkgname}
