@@ -1,0 +1,42 @@
+pkgname=lib32-sdl2
+pkgver=2.24.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (32-bit).")
+
+source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
+
+tags=("media-libs lib32")
+
+build_deps=("cmake jack lib32-alsa-lib lib32-libpulse lib32-libxinerama
+lib32-libxkbcommon lib32-libxrandr lib32-libxss lib32-mesa lib32-pipewire
+lib32-wayland ninja wayland-protocols lib32-glibc lib32-libxext lib32-libxrender
+lib32-libx11 lib32-libglvnd lib32-libxcursor")
+
+adddep=("sdl2")
+
+# NOTE: Это опциональные зависимости
+removedep=("lib32-alsa-lib lib32-jack lib32-libpulse lib32-pipewire")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export CFLAGS+=" -ffat-lto-objects"
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  cmake -B build -G Ninja \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib32 \
+    -D SDL_DLOPEN=ON \
+    -D SDL_RPATH=OFF \
+    -D SDL_STATIC=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+  sed -i "s/libSDL2\.a/libSDL2main.a/g" ${pkgdir}/usr/lib32/cmake/SDL2/SDL2Targets-noconfig.cmake
+  install -dm 755 ${pkgdir}/usr/share/licenses
+  ln -s sdl2 ${pkgdir}/usr/share/licenses/lib32-sdl2
+}

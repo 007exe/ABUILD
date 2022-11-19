@@ -1,0 +1,32 @@
+pkgname=lib32-v4l-utils
+pkgver=1.22.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Userspace tools and conversion library for Video 4 Linux (32-bit).")
+longdesc=("v4l-utils provides a series of utilities for media devices, allowing to handle the proprietary formats available at most webcams (libv4l), and providing tools to test V4L devices.")
+
+source=("https://linuxtv.org/downloads/v4l-utils/v4l-utils-${pkgver}.tar.bz2")
+
+tags=("libs media-libs")
+
+build_deps=("lib32-gcc-libs lib32-libjpeg-turbo")
+
+adddep=("v4l-utils")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sbindir=/usr/bin \
+    --sysconfdir=/etc \
+    --disable-static
+  make -C lib -j${numjobs}
+  MAKEFLAGS="-j1" make -C lib install DESTDIR=${pkgdir}
+  rm -rf ${pkgdir}/{usr/{include,share,bin,sbin},etc,lib}
+}
