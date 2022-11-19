@@ -9,7 +9,8 @@ source=("https://launchpad.net/${pkgname}/trunk/${pkgver}/+download/${pkgname}-$
 
 tags=("x11-misc apps")
 
-build_deps=("intltool gtksourceview4 libsm libayatana-appindicator")
+# libayatana-appindicator
+build_deps=("intltool gtksourceview4 libsm")
 
 build() {
   go_src_dir
