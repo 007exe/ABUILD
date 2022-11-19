@@ -1,0 +1,32 @@
+pkgname=lib32-libsndfile
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C library for reading and writing files containing sampled audio data (32-bit).")
+
+source=("https://github.com/libsndfile/libsndfile/releases/download/libsndfile/libsndfile-${pkgver}.tar.xz")
+
+tags=("lib32 media-libs")
+
+build_deps=("cmake lib32-alsa-lib lib32-flac lib32-libogg lib32-libvorbis lib32-sqlite python lib32-opus")
+
+adddep=("libsndfile")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  cmake -S . -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib32 \
+    -DCMAKE_BUILD_TYPE='None' \
+    -DBUILD_SHARED_LIBS=ON \
+    -Wno-dev
+  make VERBOSE=1 -C build
+  make DESTDIR=${pkgdir} install -C build
+  install -vDm 644 {AUTHORS,ChangeLog,README} -t ${pkgdir}/usr/share/doc/${pkgname}
+  rm -rf ${pkgdir}/usr/{bin,include,share/{man,doc/$_name}}
+}
