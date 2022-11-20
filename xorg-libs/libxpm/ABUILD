@@ -1,12 +1,12 @@
 pkgname=libxpm
-pkgver=3.5.13
-pkgbuild=2
+pkgver=3.5.14
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 pixmap library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXpm-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/releases/individual/lib/libXpm-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
