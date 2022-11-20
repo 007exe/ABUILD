@@ -1,0 +1,20 @@
+pkgname=setconf
+pkgver=0.7.7
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Utility to easily change settings in Makefiles and configuration files.")
+
+source=("https://setconf.roboticoverlords.org/${pkgname}-${pkgver}.tar.xz")
+
+tags=("dev-util libs")
+
+build_deps=("python")
+
+adddep=("python")
+
+build(){
+  go_src_dir
+  install -Dm755 ${pkgname}.py ${pkgdir}/usr/bin/${pkgname}
+  install -Dm644 ${pkgname}.1.gz ${pkgdir}/usr/share/man/man1/${pkgname}.1.gz
+}
