@@ -1,43 +1,70 @@
 pkgname=seamonkey
-pkgver=2.53.13
+pkgver=2.53.14
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("SeaMonkey internet suite.")
 longdesc=("SeaMonkey features a state-of-the-art web browser and powerful email client, as well as a WYSIWYG web page composer and a feature-rich IRC chat client.")
 
-source=("https://archive.mozilla.org/pub/seamonkey/releases/${pkgver}/source/seamonkey-${pkgver}.source.tar.xz")
+source=("https://archive.mozilla.org/pub/seamonkey/releases/${pkgver}/source/seamonkey-${pkgver}.source.tar.xz"
+"https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tar.xz")
 
 tags=("apps www-client")
 
-# mime-types
 build_deps=("autoconf2.13 clang imake llvm mesa python python-setuptools rust yasm unzip zip nasm
 dbus-glib gtk3 hunspell icu libevent libpulse libvpx libxt nss sqlite startup-notification")
+
+adddep=("dbus-glib gtk3 hunspell icu libevent libpulse libvpx libxt nss sqlite startup-notification")
 
 # NOTE: Это опциональные зависимости
 removedep=("networkmanager libnotify pulseaudio")
 
-build() {
-  go_src_dir
+before_build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
   burn_patches
   cp ${filedir}/mozconfig .mozconfig
+
+# FIXME: Пока использую ключи от ArchLinux их нужно будит заменить на свои
+# http://www.chromium.org/developers/how-tos/api-keys
+  _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
+# https://location.services.mozilla.com/api
+  _mozilla_api_key=e05d56db0a694edc8b5aaebda3f2db6a
+  echo -n "$_google_api_key" > google-api-key
+  echo -n "$_mozilla_api_key" > mozilla-api-key
+
   cat >> .mozconfig <<EOF
   ac_add_options --with-google-location-service-api-keyfile=${PWD@Q}/google-api-key
   ac_add_options --with-google-safebrowsing-api-keyfile=${PWD@Q}/google-api-key
   ac_add_options --with-mozilla-api-keyfile=${PWD@Q}/mozilla-api-key
 EOF
+}
+
+build() {
+# NOTE: На данный момент seamonkey требует Python2 который я не поддерживаю
+echo "==========> Сборка Python2 <=========="
+  cd ${srcdir}/Python-2.7.18
+  ./configure \
+    --prefix=/usr \
+    --disable-optimizations \
+    --without-lto \
+    --without-ensurepip
+  DESTDIR=${srcdir}/tmp_python2 make -j${numjobs} install
+  export PATH="${srcdir}/tmp_python2/usr/bin:$PATH"
+
+echo "==========> Сборка Seamonkey <=========="
+  cd ${srcdir}/${pkgname}-${pkgver}
   ./mach build
   DESTDIR=${pkgdir} INSTALL_SDK= ./mach install
   rm -rf ${pkgdir}/usr/lib/seamonkey/{dictionaries,hyphenation}
   ln -s /usr/share/hunspell ${pkgdir}/usr/lib/seamonkey/dictionaries
   ln -s /usr/share/hyphen ${pkgdir}/usr/lib/seamonkey/hyphenation
-  
+
   install -Dm644 comm/suite/branding/seamonkey/default128.png ${pkgdir}/usr/share/pixmaps/seamonkey.png
-  
+
   install -Dm644 toolkit/mozapps/installer/linux/rpm/mozilla.desktop ${pkgdir}/usr/share/applications/seamonkey.desktop
-  
+
   sed -i 's/@MOZ_APP_DISPLAYNAME@/SeaMonkey internet suite/' ${pkgdir}/usr/share/applications/seamonkey.desktop
-  
+
   sed -i 's/@MOZ_APP_NAME@/seamonkey/' ${pkgdir}/usr/share/applications/seamonkey.desktop
 }
 
