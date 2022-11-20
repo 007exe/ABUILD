@@ -1,5 +1,5 @@
 pkgname=libinput
-pkgver=1.20.1
+pkgver=1.22.0
 pkgbuild=1
 arch=("auto")
 
