@@ -1,22 +1,23 @@
 pkgname=whdd
-pkgver=2.2
+pkgver=3.0.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Diagnostic and recovery tool for block devices (near to replace MHDD for Linux)"
+shortdesc=("Diagnostic and recovery tool for block devices (near to replace MHDD for Linux).")
 
+source=("https://github.com/whdd/whdd/archive/${pkgver}.tar.gz")
 
-source=("http://github.com/krieger-od/${pkgname}/tarball/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+tags=("sys-block utils")
 
-tags="app-admin utils"
+build_deps=("ncurses dialog")
 
-build_deps="cmake"
+adddep=("ncurses dialog")
 
-build()
-{
-go_src_dir
-      cmake .
-        make
-              install -D -m 755 "${pkgname}" "${pkgdir}"/usr/bin/"${pkgname}"
+# NOTE: Это опциональные зависимости
+removedep=("smartmontools")
 
+build(){
+  go_src_dir
+  make -j${numjobs}
+  install -D -m 755 ${pkgname} ${pkgdir}/usr/bin/${pkgname}
 }
