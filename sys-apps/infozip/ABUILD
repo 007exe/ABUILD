@@ -1,17 +1,18 @@
 pkgname=infozip
 pkgver=6.0
 pkgbuild=5
-pkgver_unzip=$pkgver
+pkgver_unzip=${pkgver}
 pkgver_zip=3.0
-arch=('auto')
+arch=("auto")
 
-shortdesc="Info-ZIP's zip and unzip utilities"
+shortdesc=("Info-ZIP's zip and unzip utilities")
+
 source=("http://downloads.sourceforge.net/project/infozip/UnZip%206.x%20%28latest%29/UnZip%20${pkgver_unzip}/unzip${pkgver_unzip/./}.tar.gz"
         "http://downloads.sourceforge.net/project/infozip/Zip%203.x%20%28latest%29/${pkgver_zip}/zip${pkgver_zip/./}.tar.gz")
 
-tags="base app-arch"
+tags=("utils app-arch")
 
-build_deps="bzip2"
+build_deps=("bzip2")
 
 build() {
   go_src_dir
