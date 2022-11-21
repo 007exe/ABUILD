@@ -1,19 +1,18 @@
 pkgname=unicode-character-database
-pkgver=14.0.0
+pkgver=15.0.0
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Unicode Character Database.")
-longdesc=("Unicode Character Database.")
 
-source=("https://www.unicode.org/Public/zipped/$pkgver/UCD.zip"
-"https://www.unicode.org/Public/zipped/$pkgver/Unihan.zip")
+source=("https://www.unicode.org/Public/zipped/${pkgver}/UCD.zip"
+"https://www.unicode.org/Public/zipped/${pkgver}/Unihan.zip")
 
 tags=("base app-i18n")
 
 build_deps=("unzip")
 
-custom_opts="skip_gendeps"
+custom_opts=("skip_gendeps")
 
 build() {
   cd ${srcdir}
@@ -25,10 +24,10 @@ build() {
   cp *.html ${pkgdir}/usr/share/unicode/
   cp *.pdf ${pkgdir}/usr/share/unicode/
   cp *.txt ${pkgdir}/usr/share/unicode/
-  ln -s . "$pkgdir/usr/share/unicode/ucd"
+  ln -s . ${pkgdir}/usr/share/unicode/ucd
   cd ${pkgdir}/usr/share/
-  ln -s unicode $pkgdir/usr/share/unicode-character-database
-  ln -s unicode $pkgdir/usr/share/unicode-data
-  ln -s unicode $pkgdir/usr/share/unidata
-  install -Dt "$pkgdir/usr/share/licenses/$pkgname" -m644 ${filedir}/LICENSE
+  ln -s unicode ${pkgdir}/usr/share/unicode-character-database
+  ln -s unicode ${pkgdir}/usr/share/unicode-data
+  ln -s unicode ${pkgdir}/usr/share/unidata
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${filedir}/LICENSE
 }
