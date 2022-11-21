@@ -1,21 +1,27 @@
 pkgname=pam_ldap
-pkgver=185
+pkgver=186
 pkgbuild=1
-shortdesc="LDAP authentication module for the PAM framework"
-longdesc="LDAP authentication module for the PAM framework. Allows having user database in LDAP"
 arch=("auto")
-config_files="etc/pam_ldap.conf"
-source=("http://www.padl.com/download/${pkgname}-${pkgver}.tar.gz")
-tags="base sys-auth"
+
+shortdesc=("LDAP authentication module for the PAM framework.")
+
+source=("https://sources.archlinux.org/other/packages/pam_ldap/${pkgname}-${pkgver}.tar.gz")
+
+tags=("base sys-auth")
+
+# libldap
+build_deps=("linux-pam")
+
+config_files=("etc/pam_ldap.conf")
+
 build() {
-	go_src_dir
-	burn_patches
-	set -e
-	./configure --libdir=/lib${LIBDIRSUFFIX} \
-		--with-ldap-conf-file=/etc/pam_ldap.conf \
-		--mandir=/usr/share/man
-		PATH="${PATH}:`pwd`" make -j${numjobs}
-	make DESTDIR="${pkgdir}" install
-	mv "${pkgdir}/etc/ldap.conf" "${pkgdir}/etc/pam_ldap.conf"
-	set +e
+  go_src_dir
+  burn_patches
+  ./configure \
+    --libdir=/usr/lib \
+    --with-ldap-conf-file=/etc/pam_ldap.conf \
+    --mandir=/usr/share/man
+  PERL5LIB="$PWD" PATH="${PATH}:${srcdir}/${pkgname}-${pkgver}" make
+  make DESTDIR=${pkgdir} install
+  mv ${pkgdir}/etc/ldap.conf ${pkgdir}/etc/pam_ldap.conf
 }
