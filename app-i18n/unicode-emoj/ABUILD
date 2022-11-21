@@ -1,14 +1,13 @@
 pkgname=unicode-emoj
-pkgver=14.0
+pkgver=15.0
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Unicode Emoji Data Files.")
-longdesc=("UTS #51 Unicode Emoji.")
 
-source=("http://www.unicode.org/Public/emoji/$pkgver/emoji-sequences.txt"
-"http://www.unicode.org/Public/emoji/$pkgver/emoji-test.txt"
-"http://www.unicode.org/Public/emoji/$pkgver/emoji-zwj-sequences.txt")
+source=("http://www.unicode.org/Public/emoji/${pkgver}/emoji-sequences.txt"
+"http://www.unicode.org/Public/emoji/${pkgver}/emoji-test.txt"
+"http://www.unicode.org/Public/emoji/${pkgver}/emoji-zwj-sequences.txt")
 
 tags=("base app-i18n")
 
@@ -17,7 +16,7 @@ build_deps=("unzip")
 adddep=("unicode-character-database")
 
 build() {
-  install -Dm644 ${srcache}/emoji-sequences.txt "$pkgdir/usr/share/unicode/emoji/emoji-sequences.txt"
-  install -Dm644 ${srcache}/emoji-test.txt "$pkgdir/usr/share/unicode/emoji/emoji-test.txt"
-  install -Dm644 ${srcache}/emoji-zwj-sequences.txt "$pkgdir/usr/share/unicode/emoji/emoji-zwj-sequences.txt"
+  install -Dm644 ${srcache}/emoji-sequences.txt ${pkgdir}/usr/share/unicode/emoji/emoji-sequences.txt
+  install -Dm644 ${srcache}/emoji-test.txt ${pkgdir}/usr/share/unicode/emoji/emoji-test.txt
+  install -Dm644 ${srcache}/emoji-zwj-sequences.txt ${pkgdir}/usr/share/unicode/emoji/emoji-zwj-sequences.txt
 }
