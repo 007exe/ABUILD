@@ -1,16 +1,15 @@
 pkgname=less
-pkgver=590
-pkgbuild=2
+pkgver=608
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A terminal based program for viewing text files.")
-longdesc=("The Less package contains a text file viewer.")
 
-source=("http://www.greenwoodsoftware.com/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("http://www.greenwoodsoftware.com/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("base sys-apps")
 
-build_deps=("pcre2 ncurses")
+build_deps=("glibc pcre2 ncurses")
 
 build() {
   go_src_dir
