@@ -1,5 +1,5 @@
 pkgname=ccid
-pkgver=1.5.0
+pkgver=1.5.1
 pkgbuild=1
 arch=("auto")
 
