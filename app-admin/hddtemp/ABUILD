@@ -2,19 +2,19 @@ pkgname=hddtemp
 _origver=0.3-beta15
 _patchver=${_origver}-53
 pkgver=${_patchver//-/.}
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc=("Gives you the temperature of your hard drive by reading S.M.A.R.T. information")
+shortdesc=("Gives you the temperature of your hard drive by reading S.M.A.R.T. information.")
 longdesc=("hddtemp is a tool that gives you the temperature of your IDE or SCSI hard drive (that support this feature) by reading S.M.A.R.T. information. Only modern hard drives have a temperature sensor.")
 
 source=("https://download.savannah.gnu.org/releases/${pkgname}/${pkgname}-${_origver}.tar.bz2")
 
-tags="app-admin console"
+tags=("app-admin console")
 
-build_deps="gettext"
+build_deps=("gettext")
 
-config_files="etc/hddtemp.db"
+config_files=("etc/hddtemp.db")
 
 build() {
   go_src_dir
@@ -22,7 +22,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --disable-static \
     --with-db-path="/etc/hddtemp.db"
@@ -30,6 +30,10 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -Dm644 ${filedir}/hddtemp.db ${pkgdir}/etc/hddtemp.db
-# Openrc
-  install -Dm 755 $filedir/hddtemp.init $pkgdir/etc/init.d/hddtemp
+
+# NOTE: openrc
+  install -Dm 755 ${filedir}/hddtemp.init ${pkgdir}/etc/init.d/hddtemp
+
+# NOTE: systemd
+  install -Dm644 ${filedir}/service ${pkgdir}/usr/lib/systemd/system/hddtemp.service
 }
