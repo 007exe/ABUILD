@@ -1,5 +1,5 @@
 pkgname=homebank
-pkgver=5.5.6
+pkgver=5.5.8
 pkgbuild=1
 arch=("auto")
 
