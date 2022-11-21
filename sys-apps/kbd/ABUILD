@@ -1,6 +1,6 @@
 pkgname=kbd
-pkgver=2.4.0
-pkgbuild=2
+pkgver=2.5.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Keytable files and keyboard utilities.")
