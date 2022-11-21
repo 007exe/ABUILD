@@ -1,0 +1,20 @@
+pkgname=perl-xml-writer
+pkgver=0.900
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Module for writing XML documents.")
+
+source=("https://www.cpan.org/authors/id/J/JO/JOSEPHW/XML-Writer-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make DESTDIR=${pkgdir} install
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
