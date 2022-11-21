@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux Key Management Utilities.")
-longdesc=("Linux Key Management Utilities.")
 
 source=("https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/keyutils.git/snapshot/${pkgver}.tar.gz")
 
