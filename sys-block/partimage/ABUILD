@@ -1,43 +1,41 @@
 pkgname=partimage
 pkgver=0.6.9
-pkgbuild=5
-arch=('auto')
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Partition Image saves partitions in many formats to an image file"
+shortdesc=("Partition Image saves partitions in many formats to an image file.")
 
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
+tags=("utils sys-block")
 
-#short and long tags / длинный и короткий тег
-tags="utils app-admin"
+# libnewt
+build_deps=("bzip2 openssl")
 
+config_files=("etc/partimaged/partimagedusers")
 
-build_deps="libaudit newt"
-adddep=""
-
-
-before_build()
-{
-go_src_dir
-burn_patches
-}
-
-build()
-{
-
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---enable-pam 
- 
-  make
- 
+build(){
+  go_src_dir
+  burn_patches
+  sed -e 's/CRYPTO_lock/X509_new/g' -i configure
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --sbindir=/usr/bin \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static \
+    --enable-pam
+  make -j${numjobs}
   make pamfile
+  make DESTDIR=${pkgdir} install
 
- make DESTDIR="${pkgdir}" install
+  install -Dm0644 partimaged.pam ${pkgdir}/etc/pam.d/partimaged
+  install -Dm0755 ${filedir}/partimaged-gencrt ${pkgdir}/usr/bin/partimaged-gencrt
 
-  install -Dm0644 partimaged.pam "${pkgdir}/etc/pam.d/partimaged"
+  chmod 644 ${pkgdir}/etc/partimaged/partimagedusers
+  chown 110:110 ${pkgdir}/etc/partimaged/partimagedusers
+
+  install -Dm0644 ${filedir}/partimaged.service ${pkgdir}/usr/lib/systemd/system/partimaged.service
+  install -Dm0644 ${filedir}/partimage.sysusers ${pkgdir}/usr/lib/sysusers.d/partimage.conf
 }

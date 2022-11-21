@@ -1,3 +1,4 @@
+diff --git a/src/client/imagefile.cpp b/src/client/imagefile.cpp
 index dd83411..62d0f72 100644
 --- a/src/client/imagefile.cpp
 +++ b/src/client/imagefile.cpp
@@ -25,13 +26,10 @@ index 4ba8910..6adb098 100644
 +++ b/src/client/imagefile.h
 @@ -41,7 +41,7 @@ class CImage
    COptions m_options;
-
+ 
    FILE *m_fImageFile;
 -  gzFile *m_gzImageFile;
 +  gzFile m_gzImageFile;
    BZFILE *m_bzImageFile;
-
+ 
    int m_nFdImage;
-
-
-
