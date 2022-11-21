@@ -1,18 +1,22 @@
-
 pkgname=usbredir
-pkgver=0.6
+pkgver=0.13.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("USB traffic redirection protocol")
-tags=("net-misc xapps")
-source=("http://spice-space.org/download/usbredir/$pkgname-$pkgver.tar.bz2")
-build_deps=("libusb")
+shortdesc=("USB traffic redirection protocol.")
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-  --libdir=/usr/lib$LIBDIRSUFFIX \
-  --mandir=/usr/man \
-  --sysconfdir=/etc"
+tags=("sys-apps apps")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+source=("https://spice-space.org/download/usbredir/${pkgname}-${pkgver}.tar.xz")
+
+build_deps=("libusb glib2 meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
