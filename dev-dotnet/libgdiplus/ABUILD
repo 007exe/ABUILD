@@ -1,20 +1,26 @@
 pkgname=libgdiplus
-pkgver=2.10
+pkgver=5.6.1
 pkgbuild=1
-arch=('auto')
-shortdesc="GDI+ implementation"
-source=("http://ftp.novell.com/pub/mono/sources/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-tags="develop dev-dotnet"
+arch=("auto")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---with-cairo=system"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+shortdesc=("Open Source Implementation of the GDI+ API.")
+
+source=("https://github.com/mono/libgdiplus/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("develop dev-dotnet")
+
+build_deps=("libtiff libjpeg-turbo libpng cairo giflib glib2 libexif zlib freetype")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-cairo=system
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm 644 NEWS README TODO AUTHORS ChangeLog -t ${pkgdir}/usr/share/doc/${pkgname}
+}
