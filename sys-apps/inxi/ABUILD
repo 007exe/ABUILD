@@ -1,67 +1,27 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=inxi
-pkgver=1.4.12
+pkgver=3.3.23
+patchver=1
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="a full featured system information script"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("A newer, better system information script for irc, administration, and system troubleshooters. Homepage: http://inxi.org/"
-)
+shortdesc=("Full featured CLI system information tool.")
 
-source=("svn:http://inxi.googlecode.com/svn/")
+source=("https://github.com/smxi/inxi/archive/refs/tags/${pkgver}-${patchver}.tar.gz")
 
-patch_opts=("")
+tags=("console sys-apps")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="console app-admin"
+build_deps=("coreutils pciutils perl procps-ng")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("coreutils pciutils perl procps-ng")
 
-provides=""
-conflicts=""
+# NOTE: Это опциональные зависимости
+removedep=("bluez-tools bluez-utils-compat bind dmidecode file freeipmi hddtemp iproute2 ipmitool kmod
+lm_sensors mesa-utils net-tools perl-io-socket-ssl perl-cpanel-json-xs perl-json-xs
+perl-xml-dumper sudo tree upower usbutils wmctrl xorg-xdpyinfo xorg-xprop xorg-xrandr")
 
-adddep="pciutils gawk grep procps coreutils bash"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-build()
-{
-go_src_dir
-burn_patches
-
-cd ./trunk || exit 1
-install -D -m755 inxi $pkgdir/usr/bin/inxi || exit 1
-}
-
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build(){
+  go_src_dir
+  burn_patches
+  install -D -m755 ${pkgname} ${pkgdir}/usr/bin/${pkgname}
+  install -D -m644 ${pkgname}.1 ${pkgdir}/usr/share/man/man1/${pkgname}.1
 }
