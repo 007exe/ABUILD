@@ -1,22 +1,22 @@
 pkgname=chrpath
 pkgver=0.16
 pkgbuild=2
-arch=('auto')
+arch=("auto")
 
-shortdesc="Dynamic library load path (rpath) alterer"
-longdesc="Chrpath allows you to modify the dynamic library load path (rpath) of compiled programs.  Currently, only removing and modifying the rpath is supported."
+shortdesc=("Dynamic library load path (rpath) alterer.")
+longdesc=("Chrpath allows you to modify the dynamic library load path (rpath) of compiled programs.  Currently, only removing and modifying the rpath is supported.")
 
 source=("http://ftp.debian.org/debian/pool/main/c/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz")
 
-tags="develop dev-util"
+tags=("develop app-admin")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man
   make -j${numjobs}
   make DESTDIR=${pkgdir} docdir=/usr/share/doc/chrpath install
