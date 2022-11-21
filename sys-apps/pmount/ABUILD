@@ -1,64 +1,29 @@
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=pmount
 pkgver=0.9.23
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="монтирование переносимых устройств с правами обычного пользователя"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("pmount - это надстройка над стандартной программой mount, которая позволяет обычным пользователям подключать (монтировать) переносимые устройства без наличия соответствующей записи в файле /etc/fstab. Это обеспечивает быструю работу таких служб автоподключения как Utopia project для среды GNOME и позволяет снизить количество кода, выполняемого от имени суперпользователя. В пакет также включена надстройка pmount-hal, которая считывает метки и параметры монтирования устройств через hal и передает в pmount. Чтобы использовать эту возможность, необходимо установить пакет hal. pmount также поддерживает прозрачное монтирование разделов, зашифрованных при помощи криптографического пакета LUKS.")
+shortdesc=("Mount removable devices as normal user.")
 
-source=("https://alioth.debian.org/frs/download.php/3293/${pkgname}-${pkgver}.tar.bz2")
+source=("https://alioth-archive.debian.org/releases/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
-patch_opts=("")
+tags=("sys-apps console")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
+build_deps=("util-linux sysfsutils intltool")
 
-tags="sys-apps console"     	#short and long tags / длинный и короткий тег
-build_deps="" 			#
+adddep=("util-linux sysfsutils")
 
-provides=""
-conflicts=""
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-hal \
+    --with-cryptsetup-prog=/usr/bin/cryptsetup
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-adddep=""
-removedep=""
-
-
-#numjobs=1 #Set number of jobs while compliling, otherwise it'll be autodetected
-
-docs=				#additional files should be copied into /usr/docs/${pkgname} dir from sources
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---enable-nls \
---enable-fast-install \
---disable-hal \
---enable-ruid-root-cryptsetup"
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
- echo ""
+  install -Dm644 ${filedir}/pmount-bash-completion ${pkgdir}/usr/share/bash-completion/completions/pmount
+  mkdir -p ${pkgdir}/media
 }
