@@ -1,6 +1,6 @@
 pkgname=rust
-#pkglist=("lib32-rust-libs rust-src")
-pkgver=1.64.0
+pkglist=("lib32-rust-libs rust-src")
+pkgver=1.65.0
 pkgbuild=1
 arch=("auto")
 
@@ -13,104 +13,138 @@ tags=("develop dev-lang")
 
 build_deps=("rust libffi lib32-gcc-libs gcc-libs gcc perl python cmake ninja lld llvm-libs curl libssh2")
 
-#_pick() {
-#  local p="$1" f d; shift
-#  for f; do
-#    d="$srcdir/$p/$f"
-#    mkdir -p "$(dirname "$d")"
-#    mv "$f" "$d"
-#    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
-#  done
-#}
+################################################################################################
+# NOTE: Функция переноса файлов
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/$f"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+################################################################################################
 
 before_build() {
   cd ${srcdir}/rustc-${pkgver}-src
-  patch -Np1 -i ${filedir}/0002-compiler-Change-LLVM-targets.patch
-  patch -Np1 -i ${filedir}/0003-compiler-Use-wasm-ld-for-wasm-targets.patch
-  patch -Np1 -d src/llvm-project < ${filedir}/remove-include-linux-fs.h.patch
+#  patch -Np1 -i ${filedir}/0002-compiler-Change-LLVM-targets.patch
+#  patch -Np1 -i ${filedir}/0003-compiler-Use-wasm-ld-for-wasm-targets.patch
+#  patch -Np1 -d src/llvm-project < ${filedir}/remove-include-linux-fs.h.patch
 
 cat >config.toml <<END
 changelog-seen = 2
 profile = "user"
+
 [llvm]
 link-shared = true
+
 [build]
-target = ["x86_64-unknown-linux-gnu"]
-#cargo = "/usr/bin/cargo"
-#rustc = "/usr/bin/rustc"
-#rustfmt = "/usr/bin/rustfmt"
+target = [
+  "x86_64-unknown-linux-gnu",
+  "i686-unknown-linux-gnu",
+]
+cargo = "/usr/bin/cargo"
+rustc = "/usr/bin/rustc"
+rustfmt = "/usr/bin/rustfmt"
 locked-deps = true
 vendor = true
 tools = ["cargo", "rls", "clippy", "rustfmt", "analysis", "src", "rust-demangler"]
 sanitizers = true
 profiler = true
+docs = false
+
 [install]
 prefix = "/usr"
+
 [rust]
-codegen-units-std = 1
 debuginfo-level-std = 2
 channel = "stable"
+description = "AgiliaLinux $pkgver"
 rpath = false
+backtrace-on-ice = true
+remap-debuginfo = true
+jemalloc = true
+codegen-units-std = 1
+deny-warnings = false
+
+[dist]
+compression-formats = ["gz"]
+
 [target.x86_64-unknown-linux-gnu]
+cc = "/usr/bin/gcc"
+cxx = "/usr/bin/g++"
+ar = "/usr/bin/gcc-ar"
+ranlib = "/usr/bin/gcc-ranlib"
 llvm-config = "/usr/bin/llvm-config"
+
+[target.i686-unknown-linux-gnu]
+cc = "/usr/bin/gcc"
+cxx = "/usr/bin/g++"
+ar = "/usr/bin/gcc-ar"
+ranlib = "/usr/bin/gcc-ranlib"
 END
 }
 
 build() {
   cd ${srcdir}/rustc-${pkgver}-src
   export RUST_BACKTRACE=1
-  DESTDIR=${pkgdir} python ./x.py install
-#  DESTDIR=${srcdir}/dest-rust python ./x.py install -j${numjobs}
+  DESTDIR=${srcdir}/dest-rust python ./x.py install -j${numjobs}
 
-#  cd ${srcdir}/dest-rust
+  cd ${srcdir}/dest-rust
 
 # Удаление лишних файлов
-#  rm usr/lib/rustlib/{components,install.log,rust-installer-version,uninstall.sh}
-#  rm usr/lib/rustlib/manifest-*
+  rm usr/lib/rustlib/{components,install.log,rust-installer-version,uninstall.sh}
+  rm usr/lib/rustlib/manifest-*
 
 # rust build всегда устанавливает копии разделяемых библиотек в /usr/lib, перезаписывая их символическими ссылками на версию для каждой архитектуры
-#  mkdir -p usr/lib32
-#  ln -srft usr/lib   usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.so
-#  ln -srft usr/lib32 usr/lib/rustlib/i686-unknown-linux-gnu/lib/*.so
+  mkdir -p usr/lib32
+  ln -srft usr/lib   usr/lib/rustlib/x86_64-unknown-linux-gnu/lib/*.so
+  ln -srft usr/lib32 usr/lib/rustlib/i686-unknown-linux-gnu/lib/*.so
 
-#  mkdir -p usr/share/bash-completion
-#  mv etc/bash_completion.d usr/share/bash-completion/completions
+  mkdir -p usr/share/bash-completion
+  mv etc/bash_completion.d usr/share/bash-completion/completions
 
-#  mkdir -p usr/share/licenses/rust
-#  mv -t usr/share/licenses/rust usr/share/doc/rust/{COPYRIGHT,LICENSE*}
+  mkdir -p usr/share/licenses/rust
+  mv -t usr/share/licenses/rust usr/share/doc/rust/{COPYRIGHT,LICENSE*}
 
-#  _pick dest-i686 usr/lib/rustlib/i686-unknown-linux-gnu usr/lib32
-#  _pick dest-musl usr/lib/rustlib/x86_64-unknown-linux-musl
+  _pick dest-i686 usr/lib/rustlib/i686-unknown-linux-gnu usr/lib32
+  _pick dest-src  usr/lib/rustlib/src
 
-#  cp -a dest-rust/* ${pkgdir}
+  echo "==========> Установка rust <=========="
+  cd ${srcdir}
+  cp -a ${srcdir}/dest-rust/* ${pkgdir}
 }
 
 ################################################################################################
 
-#lib32-rust-libs() {
-#  pkgname=lib32-rust-libs
-#  shortdesc=("32-bit target and libraries for Rust.")
-#  adddep=("rust lib32-gcc-libs")
-#}
+lib32-rust-libs() {
+  pkgname=lib32-rust-libs
+  shortdesc=("32-bit target and libraries for Rust.")
+  adddep=("rust lib32-gcc-libs")
+}
 
-#lib32-rust-libs_prep() {
-#  ${srcdir}
-#  cp -a dest-i686/* ${pkgdir}
-#  mkdir -p ${pkgdir}/usr/share/licenses
-#  ln -s rust ${pkgdir}/usr/share/licenses/${pkgname}
-#}
+lib32-rust-libs_prep() {
+  echo "==========> Установка lib32-rust-libs <=========="
+  cd ${srcdir}
+  cp -a ${srcdir}/dest-i686/* ${pkgdir}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s rust ${pkgdir}/usr/share/licenses/${pkgname}
+}
 
 ################################################################################################
 
-#rust-src() {
-#  pkgname=rust-src
-#  shortdesc=("Source code for the Rust standard library.")
-#  adddep=("rust")
-#}
+rust-src() {
+  pkgname=rust-src
+  shortdesc=("Source code for the Rust standard library.")
+  adddep=("rust")
+}
 
-#rust-src_prep() {
-#  ${srcdir}
-#  cp -a dest-src/* ${pkgdir}
-#  mkdir -p ${pkgdir}/usr/share/licenses
-#  ln -s rust ${pkgdir}/usr/share/licenses/${pkgname}
-#}
+rust-src_prep() {
+  echo "==========> Установка rust-src <=========="
+  cd ${srcdir}
+  cp -a ${srcdir}/dest-src/* ${pkgdir}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s rust ${pkgdir}/usr/share/licenses/${pkgname}
+}
