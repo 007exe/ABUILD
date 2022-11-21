@@ -1,5 +1,5 @@
 pkgname=libfabric
-pkgver=1.15.1
+pkgver=1.16.1
 pkgbuild=1
 arch=("auto")
 
