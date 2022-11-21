@@ -1,5 +1,5 @@
 pkgname=orca
-pkgver=42.3
+pkgver=43.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,13 @@ longdesc=("Extensible screen reader that provides access to the desktop.")
 source=("https://gitlab.gnome.org/GNOME/orca/-/archive/ORCA_${pkgver//./_}/orca-ORCA_${pkgver//./_}.tar.gz")
 
 tags=("accessibility app-accessibility")
-# python-xdg liblouis brltty
-build_deps=("gtk3 at-spi2-atk python-atspi speech-dispatcher dbus-python xorg-xmodmap gsettings-desktop-schemas gst-plugins-base gst-plugins-good itstool yelp-tools")
 
-adddep=("gsettings-desktop-schemas")
+# python-xdg
+build_deps=("gtk3 at-spi2-atk python-atspi speech-dispatcher dbus-python xorg-xmodmap brltty
+liblouis gsettings-desktop-schemas gst-plugins-base gst-plugins-good itstool yelp-tools python-setproctitle")
+
+# python-xdg
+adddep=("gsettings-desktop-schemas python-atspi dbus-python python-setproctitle xorg-xmodmap")
 
 build() {
   go_src_dir
