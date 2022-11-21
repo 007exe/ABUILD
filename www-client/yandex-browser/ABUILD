@@ -1,5 +1,5 @@
 pkgname=yandex-browser
-pkgver=22.9.3.894_1
+pkgver=22.11.0.2416_1
 pkgbuild=1
 arch=("auto")
 
@@ -14,7 +14,8 @@ tags=("www-client apps")
 build_deps=("binutils curl ttf-liberation jq alsa-lib gtk2 gtk3 gtk4 snappy
 opus flac nss libxss libxkbfile wget xdg-utils polkit dbus-glib python rpm")
 
-adddep=("binutils curl ttf-liberation jq alsa-lib gtk2 gtk3 gtk4 snappy opus flac nss libxss libxkbfile wget xdg-utils polkit dbus-glib python")
+adddep=("binutils curl ttf-liberation jq alsa-lib gtk2 gtk3 gtk4 snappy opus
+flac nss libxss libxkbfile wget xdg-utils polkit dbus-glib python")
 
 build() {
   cd ${srcdir}
