@@ -1,6 +1,6 @@
 pkgname=screen
 pkgver=4.9.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Full-screen window manager that multiplexes a physical terminal.")
@@ -15,6 +15,9 @@ build_deps=("ncurses linux-pam")
 config_files=("etc/screenrc
 etc/pam.d/screen")
 
+# NOTE: Идентификатор группы PTY/TTY
+_ptygroup=5
+
 build() {
   go_src_dir
   burn_patches
@@ -28,7 +31,7 @@ build() {
     --enable-pam \
     --enable-rxvt_osc \
     --enable-telnet \
-    --with-pty-group=$_ptygroup \
+    --with-pty-group=${_ptygroup} \
     --with-socket-dir=/run/screens \
     --with-sys-screenrc=/etc/screenrc
   make -j${numjobs}
