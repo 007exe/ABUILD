@@ -1,5 +1,5 @@
 pkgname=autoconf-archive
-pkgver=2022.02.11
+pkgver=2022.09.03
 pkgbuild=1
 arch=("noarch")
 
