@@ -1,16 +1,15 @@
 pkgname=tmux
 pkgver=3.2a
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A terminal multiplexer")
-longdesc=("Tmux is a terminal multiplexer. It enables a number of terminals (or windows) to be accessed and controlled from a single terminal. tmux is intended to be a simple, modern, BSD-licensed alternative to programs such as GNU Screen.")
+shortdesc=("A terminal multiplexer.")
 
 source=("https://github.com/tmux/tmux/releases/download/${pkgver}/tmux-${pkgver}.tar.gz")
 
-tags="console app-misc"
+tags=("console app-misc")
 
-build_deps="ncurses libevent utempter"
+build_deps=("ncurses libevent utempter")
 
 build() {
   go_src_dir
@@ -21,5 +20,5 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -D -m0644 COPYING "$pkgdir/usr/share/licenses/tmux/LICENSE"
+  install -D -m0644 COPYING ${pkgdir}/usr/share/licenses/tmux/LICENSE
 }
