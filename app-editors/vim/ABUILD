@@ -1,5 +1,5 @@
 pkgname=vim
-pkgver=9.0.0057
+pkgver=9.0.0910
 pkgbuild=1
 arch=("auto")
 
