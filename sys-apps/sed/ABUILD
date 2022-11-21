@@ -1,16 +1,18 @@
 pkgname=sed
-pkgver=4.8
-pkgbuild=4
+pkgver=4.9
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("GNU stream editor")
+shortdesc=("GNU stream editor.")
 longdesc=("The Sed package contains a stream editor.")
 
 tags=("base sys-apps")
 
-source=("https://ftp.gnu.org/pub/gnu/sed/$pkgname-$pkgver.tar.xz")
+source=("https://ftp.gnu.org/pub/gnu/sed/${pkgname}-${pkgver}.tar.xz")
 
 build_deps=("glibc acl attr gettext")
+
+adddep=("acl attr")
 
 build() {
   go_src_dir
