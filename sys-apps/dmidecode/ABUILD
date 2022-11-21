@@ -1,22 +1,20 @@
 pkgname=dmidecode
-pkgver=3.3
+pkgver=3.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Tool for dumping a computer's DMI table contents")
-longdesc=("Dmidecode is a tool for dumping a computer's DMI (some say SMBIOS) table contents in a human-readable format. This table contains a description of the system's hardware components, as well as other useful pieces of information such as serial numbers and BIOS revision. Part of its code can be found in the Linux kernel, because DMI data may be used to enable or disable specific portions of code depending on the hardware vendor. Thus, dmidecode is mainly used to detect system signatures and add them to the kernel source code when needed.")
+shortdesc=("Desktop Management Interface table related utilities.")
 
 source=("https://download.savannah.nongnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-tags="sys-apps console"
+tags=("sys-apps console")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build(){
   go_src_dir
   burn_patches
-
   sed -i "s:sbin:bin:g" Makefile
   make prefix=/usr CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
-  make prefix=/usr DESTDIR="${pkgdir}" install
+  make prefix=/usr DESTDIR=${pkgdir} install
 }
