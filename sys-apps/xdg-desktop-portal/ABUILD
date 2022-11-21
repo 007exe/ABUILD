@@ -22,7 +22,4 @@ build() {
     --without-systemd
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-# FIXME: Несмотря на то что указанно не собирать с systemd всё равно создаются сервисы
-  rm -r ${pkgdir}/usr/lib/systemd
 }
