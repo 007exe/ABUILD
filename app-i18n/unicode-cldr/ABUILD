@@ -1,5 +1,5 @@
 pkgname=unicode-cldr
-pkgver=40.0
+pkgver=42.0
 pkgbuild=1
 arch=("noarch")
 
@@ -21,10 +21,10 @@ custom_opts="skip_gendeps"
 build() {
   go_src_dir
   burn_patches
-  install -dm755 "$pkgdir"/usr/share/unicode/cldr/common
-  cp -r * "$pkgdir"/usr/share/unicode/cldr/common/
-  rm -r "$pkgdir"/usr/share/unicode/cldr/common/annotations
-  install -Dm644 ../LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname/
+  install -dm755 ${pkgdir}/usr/share/unicode/cldr/common
+  cp -r * ${pkgdir}/usr/share/unicode/cldr/common/
+  rm -r ${pkgdir}/usr/share/unicode/cldr/common/annotations
+  install -Dm644 ../LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
 
 annotations() {
@@ -37,7 +37,7 @@ annotations() {
 
 annotations_prep() {
   go_src_dir
-  install -dm755 "$pkgdir"/usr/share/unicode/cldr/common
-  cp -r annotations "$pkgdir"/usr/share/unicode/cldr/common/
-  install -Dm644 ../LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname/
+  install -dm755 ${pkgdir}/usr/share/unicode/cldr/common
+  cp -r annotations ${pkgdir}/usr/share/unicode/cldr/common/
+  install -Dm644 ../LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
