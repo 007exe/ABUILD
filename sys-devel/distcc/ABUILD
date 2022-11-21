@@ -1,7 +1,7 @@
 pkgname=distcc
 pkgver=3.4
-pkgbuild=2
-_gccver=12.1.0
+pkgbuild=3
+_gccver=12.2.0
 arch=("auto")
 
 shortdesc=("Distributed compilation service for C, C++ and Objective-C.")
