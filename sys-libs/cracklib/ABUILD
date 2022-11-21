@@ -1,6 +1,6 @@
 pkgname=cracklib
-pkgver=2.9.7
-pkgbuild=3
+pkgver=2.9.8
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A password-checking library.")
