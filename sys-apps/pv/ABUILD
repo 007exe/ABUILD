@@ -1,22 +1,25 @@
 pkgname=pv
-pkgver=1.4.6
-pkgbuild=2
-arch=('auto')
+pkgver=1.6.20
+pkgbuild=1
+arch=("auto")
 
-shortdesc="pv - Pipe Viewer - is a terminal-based tool for monitoring the progress of data through a pipeline"
-source=("http://www.ivarch.com/programs/sources/$pkgname-$pkgver.tar.bz2")
-tags="console app-admin "
-build_deps="glibc"
+shortdesc=("A terminal-based tool for monitoring the progress of data through a pipeline.")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
+source=("https://github.com/a-j-wood/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+tags=("console sys-apps")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm0644 doc/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
