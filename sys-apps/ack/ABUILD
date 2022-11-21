@@ -1,19 +1,22 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=ack
-pkgver=1.94
+pkgver=3.6.0
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="A source code search tool that is better than grep."
-source="http://betterthangrep.com/ack-standalone"
+shortdesc=("A Perl-based grep replacement, aimed at programmers with large trees of heterogeneous source code.")
 
-tags="develop dev-perl"
+source=("https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/${pkgname}-v${pkgver}.tar.gz")
 
-adddep="perl"
+tags=("develop sys-apps")
+
+# perl-file-next
+build_deps=("perl")
+
+# adddep=("perl-file-next")
 
 build() {
-	# A bad thing to do, really.
-	mkdir -p $pkgdir/usr/bin
-	cp $srcache/ack-standalone $pkgdir/usr/bin/ack
-	chmod +x $pkgdir/usr/bin/ack
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make DESTDIR=${pkgdir} install
 }
