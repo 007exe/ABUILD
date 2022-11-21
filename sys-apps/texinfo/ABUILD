@@ -1,6 +1,6 @@
 pkgname=texinfo
 pkgver=7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("GNU documentation system for on-line information and printed output.")
@@ -10,9 +10,9 @@ source=("ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("console sys-apps")
 
-build_deps="ncurses findutils gzip perl"
+build_deps=("ncurses findutils gzip perl")
 
-adddep="findutils gzip ncurses"
+adddep=("findutils gzip ncurses")
 
 build() {
   go_src_dir
