@@ -1,5 +1,5 @@
 pkgname=bc
-pkgver=6.0.4
+pkgver=6.1.1
 pkgbuild=1
 arch=("auto")
 
