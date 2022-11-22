@@ -1,5 +1,5 @@
 pkgname=at-spi2-core
-pkgver=2.44.1
+pkgver=2.46.0
 pkgbuild=1
 arch=("auto")
 
@@ -19,11 +19,7 @@ build() {
     -D prefix=/usr \
     -D buildtype=release \
     -D default_bus=dbus-broker \
-    -D systemd_user_dir=/tmp \
-    -D docs=true
+    -D docs=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
-
-# NOTE: -Dsystemd_user_dir=/tmp: этот флаг помещает файл модуля systemd в /tmp, откуда он будет удален. SysV не может использовать этот файл.
-  rm -r ${pkgdir}/tmp
 }
