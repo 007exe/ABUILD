@@ -1,19 +1,31 @@
 pkgname=iniparser
-pkgver=3.0b
+pkgver=4.1
 pkgbuild=1
-shortdesc=("A free stand-alone ini file parsing library written in portable ANSI C")
-longdesc=("A free stand-alone ini file parsing library written in portable ANSI C")
 arch=('auto')
-source=("http://ndevilla.free.fr/iniparser/$pkgname$pkgver.tar.gz")
+
+shortdesc=("A free stand-alone ini file parsing library written in portable ANSI C.")
+
+source=("https://github.com/ndevilla/iniparser/archive/v${pkgver}.tar.gz")
+
 tags=("libs dev-libs")
 
-adddep="glibc"
+build_deps=("glibc")
+
 build() {
-	go_src_dir
-	set -e
-	make -j${numjobs}
-	install -Dm644 src/iniparser.h $pkgdir/usr/include/iniparser.h
-	install -Dm644 src/dictionary.h $pkgdir/usr/include/dictionary.h
-	install -Dm644 libiniparser.a $pkgdir/usr/lib${LIBDIRSUFFIX}/libiniparser.a
-	set +e
+  go_src_dir
+  make -j${numjobs}
+  install -Dm0644 src/iniparser.h ${pkgdir}/usr/include/iniparser.h
+  install -Dm0644 src/dictionary.h ${pkgdir}/usr/include/dictionary.h
+  install -Dm0644 libiniparser.so.1 $pkgdir/usr/lib/libiniparser.so.1
+  install -Dm0644 LICENSE ${pkgdir}/usr/share/licenses/iniparser/LICENSE
+  ln -sf libiniparser.so.1 ${pkgdir}/usr/lib/libiniparser.so
+  chrpath -d ${pkgdir}/usr/lib/libiniparser.so
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
