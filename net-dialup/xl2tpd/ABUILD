@@ -1,27 +1,26 @@
 pkgname=xl2tpd
-pkgver=1.3.16
+pkgver=1.3.18
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("An open source implementation of the L2TP maintained by Xelerance Corporation")
-longdesc=("xl2tpd is an implementation of the Layer 2 Tunnelling Protocol (RFC 2661). L2TP allows you to tunnel PPP over UDP. Some ISPs use L2TP to tunnel user sessions from dial-in servers (modem banks, ADSL DSLAMs) to back-end PPP servers. Another important application is Virtual Private Networks where the IPsec protocol is used to secure the L2TP connection (L2TP/IPsec, RFC 3193). The L2TP/IPsec protocol is mainly used by Windows and Mac OS X clients. On Linux, xl2tpd can be used in combination with IPsec implementations such as Openswan.")
+shortdesc=("An open source implementation of the L2TP maintained by Xelerance Corporation.")
 
 source=("https://github.com/xelerance/${pkgname}/archive/v${pkgver}.tar.gz")
 
-tags="network app-admin"
+tags=("network net-dialup")
 
-build_deps="ppp"
+build_deps=("ppp")
 
-adddep="ppp"
+adddep=("ppp")
 
-config_files="etc/xl2tpd/xl2tpd.conf"
+config_files=("etc/xl2tpd/xl2tpd.conf")
 
 build(){
   go_src_dir
   make DFLAGS=" -g -DDEBUG_PPPD -DDEBUG_CONTROL -DDEBUG_ENTROPY -DTRUST_PPPD_TO_DIE" PREFIX=/usr SBINDIR=/usr/bin KERNELSRC=/usr/src/linux-`uname -r` -j${numjobs}
 
   make PREFIX=/usr SBINDIR=/usr/bin SBINDIR=${pkgdir}/usr/bin KERNELSRC=/usr/src/linux-`uname -r` DESTDIR=${pkgdir} MANDIR=${pkgdir}/usr/share/man install
-  
+
   install -Dm644 examples/xl2tpd.conf ${pkgdir}/etc/xl2tpd/xl2tpd.conf
   install -Dm755 ${filedir}/xl2tpd.initd ${pkgdir}/etc/init.d/xl2tpd
   install -Dm644 ${filedir}/xl2tpd.confd ${pkgdir}/etc/conf.d/xl2tpd
