@@ -1,37 +1,33 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
 pkgname=openobex
-pkgver=1.7.1
+pkgver=1.7.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Implementation of the OBject EXchange (OBEX) protocol"
+shortdesc=("Implementation of the OBject EXchange (OBEX) protocol.")
 
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}-Source.tar.gz")
 
-tags="network dev-libs"
+tags=("libs dev-libs")
 
-build_deps="make gcc libxslt"
+# jdk
+build_deps=("cmake libxsl doxygen libusb bluez-libs")
 
-before_build(){
-  go_src_dir
-  sed -i 's|MODE="660", GROUP="plugdev"|TAG+="uaccess"|' ${srcdir}/${pkgname}-${pkgver}-Source/udev/openobex.rules.in
-}
+adddep=("libusb bluez-libs")
 
 build() {
+  go_src_dir
+  burn_patches
   mkdir build
   cd build
-  cmake ../ -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_SKIP_RPATH=ON \
-            -DCMAKE_INSTALL_PREFIX=/usr \
-            -DCMAKE_INSTALL_SBINDIR=/usr/bin \
-            -DCMAKE_INSTALL_UDEVRULESDIR=/etc/udev/rules.d \
-            -DLIB_DIR=lib${LIBDIRSUFFIX} \
-            -DLIB_SUFFIX=${LIBDIRSUFFIX}
-
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_INSTALL_SBINDIR=/usr/bin \
+    -DCMAKE_INSTALL_UDEVRULESDIR=/usr/lib/udev/rules.d
   make all openobex-apps
-  make DESTDIR="${pkgdir}" install
-}
-
-after_build(){
-  install -m644 ${srcdir}/${pkgname}-${pkgver}-Source/build/apps/lib/libopenobex-apps-common.a "${pkgdir}/usr/lib${LIBDIRSUFFIX}/libopenobex-apps-common.a"
+  make DESTDIR=${pkgdir} install
+  cp ../apps/lib/*.h  ${pkgdir}/usr/include/openobex/
+  install -m644 ../apps/lib/libopenobex-apps-common.a ${pkgdir}/usr/lib/libopenobex-apps-common.a
 }
