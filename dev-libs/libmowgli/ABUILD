@@ -1,31 +1,33 @@
-#ABUILD created by/создан: Coldead, firedead117 at gmail.com 
-
 pkgname=libmowgli
-pkgver=1.0.0
+pkgver=2.1.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="libmowgli (A useful collection of routines for programming)"
+shortdesc=("Performance and usability-oriented extensions to C.")
 
-longdesc=("libmowgli is a class library containing performance and 
-usability oriented extensions to C. libmowgli was written by Patrick 
-McFarland, William Pitcock, Jonathan Schleifer, Pippijn van Steenhoven, 
-and Jilles Tjoelker.")
+source=("https://github.com/atheme/libmowgli-2/archive/refs/tags/v${pkgver}.tar.gz")
 
-source=("http://distfiles.atheme.org/${pkgname}-${pkgver}.tar.bz2")
+tags=("libs dev-libs")
 
-tags="libs dev-libs"
+build_deps=("glibc")
 
-build_deps="make gcc kernel-headers binutils grep"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-BUILD_SYSTEM="autotools"
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
