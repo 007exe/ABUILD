@@ -1,12 +1,12 @@
 pkgname=at-spi2-atk
 pkgver=2.38.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A GTK+ module that bridges ATK to D-Bus at-spi.")
 longdesc=("The At-Spi2 Atk package contains a library that bridges ATK to At-Spi2 D-Bus service.")
 
-source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
+source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("app-accessibility libs")
 
