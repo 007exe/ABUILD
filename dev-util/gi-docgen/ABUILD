@@ -1,10 +1,9 @@
 pkgname=gi-docgen
-pkgver=2022.1
+pkgver=2022.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Documentation generator for GObject-based libraries.")
-longdesc=("A documentation generator for GObject-based libraries.")
 
 source=("https://gitlab.gnome.org/GNOME/gi-docgen/-/archive/${pkgver}/gi-docgen-${pkgver}.tar.gz")
 
@@ -14,9 +13,8 @@ build_deps=("python-jinja python-markdown python-markupsafe python-pygments pyth
 
 adddep=("python-jinja python-markdown python-markupsafe python-pygments python-toml python-typogrify")
 
-build()
-{
+build(){
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }
