@@ -1,5 +1,5 @@
 pkgname=cargo-c
-pkgver=0.9.11
+pkgver=0.9.14
 pkgbuild=1
 arch=("auto")
 
@@ -19,7 +19,7 @@ build() {
     --release
   cargo install \
     --no-track \
-    --root "${pkgdir}/usr" \
+    --root ${pkgdir}/usr \
     --path .
   install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
