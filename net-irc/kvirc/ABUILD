@@ -1,22 +1,28 @@
-#ABUILD created by/создан: pztrn, pztrn at pztrn.ru 
 pkgname=kvirc
-pkgver=4.0.4
+pkgver=5.0.0
 pkgbuild=1
-arch=('auto')
-shortdesc="Qt-based IRC client"
-source=("ftp://ftp.kvirc.de/pub/kvirc/$pkgver/source/kvirc-$pkgver.tar.bz2")
-tags="xapps net-irc"
-build_deps="cmake"
-adddep=""
-removedep=""
+arch=("auto")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
--DWANT_KDE4=OFF \
--DWANT_PERL=ON \
--DWANT_PHONON=OFF \
--DCMAKE_SKIP_RPATH:BOOL=ON \
-../"
+shortdesc=("Qt based IRC client.")
+
+source=("ftp://ftp.kvirc.net/pub/kvirc/$pkgver/source/KVIrc-${pkgver}.tar.bz2")
+
+tags=("apps net-irc")
+
+build_deps=("cmake ninja python enchant hicolor-icon-theme qt5-multimedia qt5-svg qt5-x11extras")
+
+adddep=("enchant hicolor-icon-theme qt5-multimedia qt5-svg qt5-x11extras")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DCMAKE_INSTALL_PREFIX='/usr' \
+    -DCMAKE_SKIP_RPATH=YES \
+    -DWANT_QTWEBKIT=OFF \
+    -DWANT_KDE=OFF \
+    -DWANT_PHONON=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 ${filedir}/${pkgname}.appdata.xml ${pkgdir}/usr/share/metainfo/${pkgname}.appdata.xml
+}
