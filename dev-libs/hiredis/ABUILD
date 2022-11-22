@@ -1,10 +1,9 @@
 pkgname=hiredis
-pkgver=1.0.2
+pkgver=1.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Minimalistic C client library for Redis.")
-longdesc=("Minimalistic C client library for the Redis database.")
 
 source=("https://github.com/redis/$pkgname/archive/v$pkgver/hiredis-${pkgver}.tar.gz")
 
