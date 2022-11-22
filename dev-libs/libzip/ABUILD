@@ -1,10 +1,9 @@
 pkgname=libzip
-pkgver=1.8.0
-pkgbuild=2
+pkgver=1.9.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C library for reading, creating, and modifying zip archives.")
-longdesc=("Library for manipulating zip archives.")
 
 source=("http://www.nih.at/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
