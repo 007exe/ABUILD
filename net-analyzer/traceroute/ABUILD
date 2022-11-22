@@ -16,5 +16,5 @@ build(){
   go_src_dir
   burn_patches
   make CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" LDFLAGS="$LDFLAGS"
-  make prefix=/usr DESTDIR="${pkgdir}" install
+  make prefix=/usr DESTDIR=${pkgdir} install
 }

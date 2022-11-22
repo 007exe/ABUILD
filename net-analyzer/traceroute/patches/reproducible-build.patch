@@ -34,4 +34,4 @@ Description: Sort lists of libraries/source/object files
 +MOD_OBJS = $(sort $(wildcard $(foreach dir,$(MODDIRS),$(srcdir)/$(dir)/*.o)))
  ifeq ($(shared),yes)
  override LDFLAGS := -rdynamic $(LDFLAGS)
- endif 
+ endif
