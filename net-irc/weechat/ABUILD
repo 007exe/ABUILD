@@ -1,10 +1,32 @@
 pkgname=weechat
-pkgver=0.3.6
+pkgver=3.7.1
 pkgbuild=1
-shortdesc="Fast, light and extensible ncurses IRC client"
-arch='auto'
-tags='console net-im'
-source=("http://www.weechat.org/files/src/${pkgname}-${pkgver}.tar.bz2")
+arch=("auto")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DPREFIX=/usr -DLIBDIR=/usr/lib${LIBDIRSUFFIX}"
+shortdesc=("Fast, light and extensible IRC client (curses UI).")
+
+source=("https://www.weechat.org/files/src/${pkgname}-${pkgver}.tar.xz")
+
+tags=("console net-im")
+
+build_deps=("asciidoctor cmake aspell guile lua perl python ruby tcl gnutls curl libgcrypt")
+
+adddep=("gnutls curl libgcrypt")
+
+# NOTE: Это опциональные зависимости
+removedep=("aspell guile lua perl python ruby tcl")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. -Wno-dev \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DENABLE_MAN=ON \
+        -DENABLE_DOC=ON \
+        -DENABLE_JAVASCRIPT=OFF \
+        -DENABLE_PHP=OFF
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
