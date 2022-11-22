@@ -1,6 +1,6 @@
 pkgname=hidapi
-pkgver=0.11.2
-pkgbuild=2
+pkgver=0.12.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple library for communicating with USB and Bluetooth HID devices.")
