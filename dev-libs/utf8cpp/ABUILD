@@ -1,7 +1,7 @@
 pkgname=utf8cpp
-pkgver=3.2.1
-pkgbuild=2
-arch=("noarch")
+pkgver=3.2.2
+pkgbuild=1
+arch=("auto")
 
 shortdesc=("UTF-8 with C++ in a Portable Way.")
 longdesc=("C++ developers miss an easy and portable way of handling Unicode encoded strings.")
