@@ -1,12 +1,12 @@
 pkgname=bluefish
 pkgver=2.2.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A powerful HTML editor for experienced web designers and programmers.")
 longdesc=("Bluefish is a GTK+ text editor targeted towards programmers and web designers, with many options to write websites, scripts and programming code. Bluefish supports many programming and markup languages, and it focuses on editing dynamic and interactive websites.")
 
-source=("https://www.bennewitz.com/${pkgname}/stable/source/${pkgname}-${pkgver}.tar.bz2")
+source=("https://www.bennewitz.com/$pkgname/stable/source/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("develop app-editors")
 
