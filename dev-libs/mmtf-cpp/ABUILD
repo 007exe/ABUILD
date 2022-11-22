@@ -1,10 +1,9 @@
 pkgname=mmtf-cpp
-pkgver=1.0.0
+pkgver=1.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The pure C++ implementation of the MMTF API, decoder and encoder.")
-longdesc=("The pure C++ implementation of the MMTF API, decoder and encoder.")
 
 source=("https://github.com/rcsb/mmtf-cpp/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
