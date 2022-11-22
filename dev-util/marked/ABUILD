@@ -1,33 +1,28 @@
 pkgname=marked
-pkgver=2.0.7
+pkgver=4.2.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("A markdown parser built for speed")
-longdesc=("A markdown parser built for speed")
+shortdesc=("A markdown parser built for speed.")
 
-source=("https://registry.npmjs.org/$pkgname/-/$pkgname-$pkgver.tgz")
+source=("https://registry.npmjs.org/${pkgname}/-/${pkgname}-${pkgver}.tgz")
 
-tags="develop dev-util"
+tags=("develop dev-util")
 
-build_deps="npm"
+build_deps=("npm")
 
-adddep="nodejs"
+adddep=("nodejs")
 
-build()
-{
-  cp "$srcache"/$pkgname-$pkgver.tgz .
+build(){
+  cd ${srcdir}
+  cp ${srcache}/${pkgname}-${pkgver}.tgz .
 
-  npm install -g --prefix "$pkgdir"/usr "$srcdir"/$pkgname-$pkgver.tgz
+  npm install -g --prefix ${pkgdir}/usr ${srcdir}/${pkgname}-${pkgver}.tgz
 
-  # Non-deterministic race in npm gives 777 permissions to random directories.
-  # See https://github.com/npm/npm/issues/9359 for details.
-  chmod -R u=rwX,go=rX "$pkgdir"
+  chmod -R u=rwX,go=rX ${pkgdir}
 
-  # npm installs package.json owned by build user
-  # https://bugs.archlinux.org/task/63396
-  chown -R root:root "$pkgdir"
+  chown -R root:root ${pkgdir}
 
-  install -d "$pkgdir"/usr/share/licenses/$pkgname
-  ln -s ../../../lib/node_modules/marked/LICENSE.md "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.md
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s ../../../lib/node_modules/marked/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
