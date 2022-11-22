@@ -1,5 +1,5 @@
 pkgname=libuv
-pkgver=1.44.1
+pkgver=1.44.2
 pkgbuild=1
 arch=("auto")
 
