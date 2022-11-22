@@ -1,39 +1,18 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru
-
 pkgname=libunique
 pkgver=1.1.6
-pkgbuild=3
-arch=('auto')
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Library for writing single instance applications - shared libraries"
+shortdesc=("Library for writing single instance applications for GTK3.")
 
-longdesc=("Unique is a library for writing single instance application. If you launch a single instance application twice, the second instance will either just quit or will send a message to the running instance.
+source=("https://github.com/LeSnake04/aur-lesnake04-sources/raw/main/libunique/libunique-1.1.6-8-x86_64.tar.gz")
 
-Unique makes it easy to write this kind of applications, by providing a base class, taking care of all the IPC machinery needed to send messages to a running instance, and also handling the startup notification side.")
+tags=("libs dev-libs")
 
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/1.1/${pkgname}-${pkgver}.tar.bz2")
+build_deps=("gtk3")
 
-tags="libs dev-libs"
+adddep=("gtk3")
 
-build_deps="make gcc kernel-headers grep binutils coreutils pkg-config gettext gtk-doc glib2 dbus-glib sed gobject-introspection"
-
-before_build(){
-  go_src_dir
-  autoreconf -fi
+build() {
+  mv ${srcdir}/usr ${pkgdir}/usr
 }
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-dbus"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
