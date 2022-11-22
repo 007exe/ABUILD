@@ -1,29 +1,25 @@
 pkgname=lrzsz
 pkgver=0.12.20
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="xmodem, ymodem and zmodem file transfer protocols"
+shortdesc=("Xmodem, ymodem and zmodem file transfer protocols")
 
-source=("http://www.ohse.de/uwe/releases/$pkgname-$pkgver.tar.gz")
+source=("https://www.ohse.de/uwe/releases/${pkgname}-${pkgver}.tar.gz")
 
-tags="network net-dialup"
+tags=("network net-dialup")
 
-build_deps="mkpkg"
+build_deps=("glibc")
 
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|${CC-cc} -E|${CC-cc} -O2 -E|g' configure
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --program-transform-name=s/l//
+  make -j1
+  make -j1 DESTDIR=${pkgdir} install
+}
