@@ -1,6 +1,6 @@
 pkgname=libnl
-pkgver=3.5.0
-pkgbuild=3
+pkgver=3.7.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for applications dealing with netlink sockets.")
