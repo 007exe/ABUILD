@@ -1,22 +1,28 @@
 pkgname=xxhash
-pkgver=0.8.0
-pkgbuild=2
+pkgver=0.8.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Extremely fast hash algorithm")
-longdesc=("xxHash is an Extremely fast Hash algorithm, running at RAM speed limits. It successfully completes the SMHasher test suite which evaluates collision, dispersion and randomness qualities of hash functions. Code is highly portable, and hashes are identical on all platforms (little / big endian).")
+shortdesc=("Extremely fast hash algorithm.")
 
 tags=("develop dev-libs")
 
 source=("https://github.com/Cyan4973/xxHash/archive/v${pkgver}.tar.gz")
 
-build_deps="git"
-
+build_deps=("glibc")
 
 build() {
 go_src_dir
-  make PREFIX=/usr LIBDIR=/usr/lib${LIBDIRSUFFIX}
-  make PREFIX=/usr DESTDIR="${pkgdir}" install
+  make PREFIX=/usr LIBDIR=/usr/lib
+  make PREFIX=/usr DESTDIR=${pkgdir} install
 
-  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/xxhash
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/xxhash
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
