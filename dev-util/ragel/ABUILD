@@ -1,25 +1,24 @@
 pkgname=ragel
 pkgver=6.10
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Compiles finite state machines from regular languages into executable C, C++, Objective-C, or D code.")
-longdesc=("Compiles finite state machines from regular languages into executable code")
 
-source=("https://www.colm.net/files/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("https://www.colm.net/files/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("develop dev-util")
 
-build_deps="gcc-libs"
+build_deps=("gcc-libs")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     CXXFLAGS="$CXXFLAGS -std=gnu++98"
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -m0644 -D ragel.vim "$pkgdir"/usr/share/vim/vimfiles/syntax/ragel.vim
+  install -m0644 -D ragel.vim ${pkgdir}/usr/share/vim/vimfiles/syntax/ragel.vim
 }
