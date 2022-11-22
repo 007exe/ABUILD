@@ -1,10 +1,9 @@
 pkgname=pugixml
-pkgver=1.12.1
+pkgver=1.13
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Light-weight, simple and fast XML parser for C++ with XPath support.")
-longdesc=("Light-weight, simple, and fast XML parser for C++ with XPath support.")
 
 source=("https://github.com/zeux/pugixml/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
