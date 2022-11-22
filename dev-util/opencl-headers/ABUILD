@@ -1,29 +1,36 @@
 pkgname=opencl-headers
-pkgver=2021.04.29
+pkgver=2022.05.18
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
 shortdesc=("OpenCL (Open Computing Language) header files.")
-longdesc=("Unified C language headers for the OpenCL API")
 
 source=("https://github.com/KhronosGroup/OpenCL-Headers/archive/v${pkgver}.tar.gz")
 
 tags=("develop dev-util")
 
-build_deps="mkpkg"
+build_deps=("mkpkg")
 
 build() {
   go_src_dir
   burn_patches
   cd CL
-  install -dm755 "${pkgdir}"/usr/include/CL
+  install -dm755 ${pkgdir}/usr/include/CL
 
   for h in *.h; do
-    install -m 644 ${h} "${pkgdir}"/usr/include/CL/
+    install -m 644 ${h} ${pkgdir}/usr/include/CL/
   done
 
   # remove useless headers
-  rm "${pkgdir}"/usr/include/CL/{cl_d3d,cl_dx9}*.h
+  rm ${pkgdir}/usr/include/CL/{cl_d3d,cl_dx9}*.h
 
-  install -D -m644 ../LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
