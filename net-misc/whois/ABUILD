@@ -1,10 +1,9 @@
 pkgname=whois
-pkgver=5.5.13
+pkgver=5.5.14
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Intelligent WHOIS client.")
-longdesc=("Whois is a client-side application which queries the whois directory service for information pertaining to a particular domain name.")
 
 source=("https://github.com/rfc1036/whois/archive/refs/tags/v${pkgver}.tar.gz")
 
@@ -23,4 +22,12 @@ build() {
     HAVE_ICONV=1
   make prefix=/usr BASEDIR=${pkgdir} install-whois
   install -Dm644 whois.conf -t ${pkgdir}/etc
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
