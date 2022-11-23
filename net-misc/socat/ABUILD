@@ -1,10 +1,9 @@
 pkgname=socat
-pkgver=1.7.4.3
+pkgver=1.7.4.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multipurpose relay.")
-longdesc=("Multipurpose relay (SOcket CAT).")
 
 source=("http://www.dest-unreach.org/socat/download/${pkgname}-${pkgver}.tar.gz")
 
