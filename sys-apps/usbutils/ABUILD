@@ -1,5 +1,5 @@
 pkgname=usbutils
-pkgver=015
+pkgver=014
 pkgbuild=1
 arch=("auto")
 
