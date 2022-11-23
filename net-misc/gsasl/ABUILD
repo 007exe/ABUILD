@@ -1,16 +1,23 @@
 pkgname=gsasl
-pkgver=1.6.1
+pkgver=2.2.0
 pkgbuild=1
-shortdesc="GNU SASL is an implementation of SASL"
-tags="libs sys-libs"
-arch=('auto')
+arch=("auto")
 
-source=("ftp://ftp.gnu.org/gnu/gsasl/${pkgname}-${pkgver}.tar.gz")
+shortdesc=("Simple Authentication and Security Layer framework and a few common SASL mechanisms.")
+
+tags=("libs net-misc")
+
+source=("https://ftp.gnu.org/gnu/gsasl/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("gnutls libidn krb5 libgcrypt")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure --prefix=/usr --libdir=/lib${LIBDIRSUFFIX}
-  make
+  ./configure \
+    --prefix=/usr \
+    --libdir=/lib \
+    --with-gssapi-impl=mit
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
