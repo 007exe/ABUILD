@@ -1,5 +1,5 @@
 pkgname=lib32-libpng
-pkgver=1.6.38
+pkgver=1.6.39
 _libversion=16
 pkgbuild=1
 arch=("auto")
