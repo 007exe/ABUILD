@@ -1,12 +1,11 @@
 pkgname=libssh
-pkgver=0.10.2
+pkgver=0.10.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("C library to authenticate in a simple manner to one or more SSH servers.")
-longdesc=("The ssh library was designed to be used by programmers needing a working SSH implementation by the mean of a library. The complete control of the client is made by the programmer.")
 
-source=("https://www.libssh.org/files/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
+source=("https://www.libssh.org/files/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs net-libs")
 
