@@ -1,5 +1,5 @@
 pkgname=python-wheel
-pkgver=0.38.3
+pkgver=0.38.4
 pkgbuild=1
 arch=("auto")
 
