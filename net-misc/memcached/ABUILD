@@ -1,35 +1,41 @@
-#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=memcached
-pkgver=1.4.15
-pkgbuild=2
-arch=('auto')
+pkgver=1.6.17
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Object caching system"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("memcached is a high-performance, distributed memory object caching system, generic in nature, but intended for use in speeding up dynamic web applications by alleviating database load."
-"Homepage: http://memcached.org/"
-)
+shortdesc=("Distributed memory object caching system.")
 
-source=("http://memcached.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
-tags="server net-misc"
-build_deps="libevent perl"
+source=("https://www.memcached.org/files/${pkgname}-${pkgver}.tar.gz")
 
+tags=("server net-misc")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --mandir=/usr/man"
+build_deps=("glibc libevent libseccomp")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+# NOTE: Это опциональные зависимости
+removedep=("perl: for memcached-tool usage")
 
-after_build()
-{
-    mkdir -p ${pkgdir}/etc/conf.d/
-    mkdir -p ${pkgdir}/etc/init.d/
-    cat ${filedir}/memcached.conf > ${pkgdir}/etc/conf.d/memcached.new
-    install -m 755 ${filedir}/memcached.init ${pkgdir}/etc/init.d/memcached
-    install -D -m 755 scripts/memcached-tool "$pkgdir"/usr/bin/memcached-tool
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's/^##safer##//g' -i scripts/*.service
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-seccomp
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm 755 scripts/memcached-tool -t ${pkgdir}/usr/bin
+  install -Dm 644 scripts/memcached-tool.1 -t ${pkgdir}/usr/share/man/man1
+
+# SystemD
+  install -Dm 644 scripts/*.service -t ${pkgdir}/usr/lib/systemd/system
+  install -Dm 644 ${filedir}/memcached.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/memcached.conf
+  install -Dm 644 ${filedir}/memcached.sysusers ${pkgdir}/usr/lib/sysusers.d/memcached.conf
+
+# OpenRC
+  mkdir -p ${pkgdir}/etc/conf.d/
+  mkdir -p ${pkgdir}/etc/init.d/
+  cat ${filedir}/memcached.conf > ${pkgdir}/etc/conf.d/memcached.new
+  install -m 755 ${filedir}/memcached.init ${pkgdir}/etc/init.d/memcached
 }
