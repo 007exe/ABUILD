@@ -1,25 +1,27 @@
 pkgname=libnet
-pkgver=1.2-rc3
+pkgver=1.1.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A library which provides API for commonly used low-level net functions"
+shortdesc=("A library which provides API for commonly used low-level net functions.")
 
-source=("http://downloads.sourceforge.net/libnet-dev/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/libnet/libnet/releases/download/v${pkgver}/libnet-${pkgver}.tar.gz")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="network net-libs"
-build_deps="mkpkg"
+tags=("network net-libs")
 
+build_deps=("help2man doxygen glibc")
 
+adddep=("bash")
 
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-BUILD_SYSTEM='autotools'
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX"
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-
+  install -Dm644 doc/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
