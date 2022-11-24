@@ -1,29 +1,33 @@
-#ABUILD created by/создан: medved, medved55rus at gmail.com 
-#----------------------------- General vars --------------------------------------
 pkgname=powertop
-pkgver=2.1
+pkgver=2.15
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Linux tool to diagnose issues with power consumption and power management."
+shortdesc=("A tool to diagnose issues with power consumption and power management.")
 
-source=("https://01.org/${pkgname}/sites/default/files/downloads/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/fenrus75/powertop/archive/v${pkgver}.tar.gz")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-tags="utils sys-power"
+tags=("utils sys-power")
 
-#----------------------------- Make PKG --------------------------------------
-BUILD_SYSTEM="autotools"
+build_deps=("autoconf-archive patch gcc-libs libnl ncurses pciutils")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./autogen.sh && ./configure"
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sbindir=/usr/bin \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
 
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
