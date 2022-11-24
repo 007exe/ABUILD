@@ -1,16 +1,15 @@
 pkgname=exfatprogs
-pkgver=1.1.2
+pkgver=1.2.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("exFAT filesystem userspace utilities for the Linux Kernel exfat driver")
-longdesc=("Utilities for formatting and repairing exFAT filesystems.")
+shortdesc=("exFAT filesystem userspace utilities for the Linux Kernel exfat driver.")
 
 source=("https://github.com/exfatprogs/exfatprogs/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="base sys-fs"
+tags=("base sys-fs")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -21,5 +20,5 @@ build() {
     --sbindir=/usr/bin
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  install -Dm644 -t "${pkgdir}"/usr/share/man/man8 */*.8
+  install -Dm644 -t ${pkgdir}/usr/share/man/man8 */*.8
 }
