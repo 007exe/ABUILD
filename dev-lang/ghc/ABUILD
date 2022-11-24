@@ -1,38 +1,31 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru
 pkgname=ghc
-pkgver=7.6.3
+pkgver=9.0.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="ghc (The Glasgow Haskell Compiler)"
+shortdesc=("The Glasgow Haskell Compiler.")
 
-source=("http://www.haskell.org/ghc/dist/${pkgver}/${pkgname}-${pkgver}-src.tar.bz2")
+source=("https://downloads.haskell.org/~ghc/${pkgver}/${pkgname}-${pkgver}-src.tar.xz")
 
-tags="develop dev-lang"
+tags=("develop dev-lang")
 
-build_deps="ghc perl libxslt"
+# ghc-static haskell-hscolour texlive-bin alex happy time
+build_deps=("perl libxslt docbook-xsl python-sphinx texlive-latexextra ttf-dejavu numactl llvm")
 
-adddep=""
-
-before_build(){
+build() {
   go_src_dir
-  cp ${filedir}/build.mk mk/build.mk
-  sed -i -e "s:pkgver:${pkgver}:g" mk/build.mk
-  echo "End before_build"
+  burn_patches
+  LANG=en_US.UTF-8 bsdtar xf ${srcdir}/${pkgname}-${pkgver}-src.tar.xz
+  ./boot
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --docdir=/usr/share/doc/ghc \
+    --with-system-libffi \
+    --with-ffi-includes=$(pkg-config --variable=includedir libffi)
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---docdir=/usr/doc/${pkgname}-${pkgver}"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
