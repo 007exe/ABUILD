@@ -1,67 +1,51 @@
-#ABUILD created by/создан: CyberMix, mos.mix at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=fail2ban
-pkgver=0.8.4
+pkgver=1.0.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Fail2ban IP block tool."
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Fail2ban scans log files like /var/log/pwdfail or /var/log/apache/error_log and bans IP that makes too many password failures. It updates firewall rules to reject the IP address."
-)
+shortdesc=("Bans IPs after too many failed authentication attempts.")
 
-source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}-stable/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://github.com/fail2ban/${pkgname}/archive/${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("network net-analyzer")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="network net-firewall"
+build_deps=("python-setuptools iptables python-pyinotify whois sqlite")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("iptables python-pyinotify whois sqlite")
 
-provides=""
-conflicts=""
+config_files=("etc/fail2ban/fail2ban.conf
+etc/fail2ban/jail.conf
+etc/logrotate.d/fail2ban")
 
-adddep=""
-removedep=""
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|self.install_dir|"/usr/bin"|' setup.py
+  sed -i 's/^before = paths-debian.conf/before = paths-arch.conf/' config/jail.conf
+  ./fail2ban-2to3
+  python setup.py build
+  python setup.py install --root ${pkgdir} --optimize=1
 
-#for multi pkg abuild
-pkglist=
+  install -Dm644 build/fail2ban.service ${pkgdir}/usr/lib/systemd/system/${pkgname}.service
+  install -Dm644 files/fail2ban-tmpfiles.conf ${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf
+  install -Dm644 files/fail2ban-logrotate ${pkgdir}/etc/logrotate.d/fail2ban
+  install -Dm644 files/bash-completion ${pkgdir}/usr/share/bash-completion/completions/fail2ban
 
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
+  sed -i 's/sbin/bin/g' ${pkgdir}/etc/fail2ban/action.d/sendmail*.conf
 
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
+  install -Dm644 man/fail2ban.1 ${pkgdir}/usr/share/man/man1/fail2ban.1
+  install -Dm644 man/fail2ban-client.1 ${pkgdir}/usr/share/man/man1/fail2ban-client.1
+  install -Dm644 man/fail2ban-regex.1 ${pkgdir}/usr/share/man/man1/fail2ban-regex.1
+  install -Dm644 man/fail2ban-server.1 ${pkgdir}/usr/share/man/man1/fail2ban-server.1
+  install -Dm644 man/jail.conf.5 ${pkgdir}/usr/share/man/man5/jail.conf.5
 
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
+  rm -r ${pkgdir}/run
+}
 
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-BUILD_SYSTEM="python"
-#
-#MAKE_WORD="python setup.py build"
-#
-BUILD_KEYS=
-
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
