@@ -1,0 +1,30 @@
+pkgname=happy
+pkgver=1.20.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Parser Generator for Haskell.")
+
+source=("https://hackage.haskell.org/packages/archive/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("develop dev-haskell")
+
+build_deps=("ghc ghc-libs")
+
+adddep=("ghc-libs")
+
+build(){
+  go_src_dir
+  burn_patches
+  runhaskell Setup configure -O \
+    --enable-shared \
+    --enable-executable-dynamic \
+    --disable-library-vanilla \
+    --ghc-option='-dynload=deploy' \
+    --prefix=/usr \
+    --datasubdir=${pkgname}
+  runhaskell Setup build $MAKEFLAGS
+  runhaskell Setup copy --destdir=${pkgdir}
+  rm -r ${pkgdir}/usr/share/doc
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
