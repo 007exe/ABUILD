@@ -1,0 +1,22 @@
+pkgname=cowsay
+pkgver=3.04
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Configurable talking cow (and a few other creatures).")
+
+source=("https://github.com/tnalpgge/rank-amateur-cowsay/archive/cowsay-${pkgver}.tar.gz")
+
+tags=("console games-misc")
+
+build_deps=("perl")
+
+adddep=("perl")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|/man/|/share/man/|' install.sh
+  echo ${pkgdir}/usr | ./install.sh
+  rm ${pkgdir}/usr/share/cows/mech-and-cow
+}
