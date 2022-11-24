@@ -1,0 +1,22 @@
+pkgname=crypto++
+pkgver=8.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A free C++ class library of cryptographic schemes.")
+
+source=("https://github.com/weidai11/cryptopp/archive/refs/tags/CRYPTOPP_${pkgver//./_}.tar.gz")
+
+tags=("develop dev-libs")
+
+build_deps=("gcc-libs unzip")
+
+build(){
+  go_src_dir
+  burn_patches
+  export CXXFLAGS="$CXXFLAGS -DNDEBUG -fPIC"
+  make PREFIX=/usr dynamic cryptest.exe libcryptopp.pc
+  make DESTDIR=${pkgdir} PREFIX=/usr install
+  install -Dm 644 License.txt -t ${pkgdir}/usr/share/licenses/crypto++/
+  rm -rf ${pkgdir}/usr/{bin,share/cryptopp}
+}
