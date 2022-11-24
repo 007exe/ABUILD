@@ -1,0 +1,22 @@
+pkgname=gendesk
+pkgver=1.0.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utility for generating desktop files.")
+
+source=("https://roboticoverlords.org/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop dev-util")
+
+build_deps=("gcc-go")
+
+build() {
+  go_src_dir
+  burn_patches
+  go build -v -mod=vendor -trimpath -buildmode=pie -ldflags="-s -w -extldflags $LDFLAGS"
+  install -Dm755 ${pkgname} ${pkgdir}/usr/bin/${pkgname}
+  install -Dm644 ${pkgname}.1.gz ${pkgdir}/usr/share/man/man1/${pkgname}.1.gz
+  install -Dm644 ${filedir}/default.png ${pkgdir}/usr/share/pixmaps/default.png
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
