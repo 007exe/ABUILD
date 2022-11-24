@@ -1,0 +1,19 @@
+pkgname=python-ifaddr
+pkgver=0.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Enumerates all IP addresses on all network adapters of the system..")
+
+source=("https://github.com/pydron/ifaddr/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
