@@ -1,5 +1,5 @@
 pkgname=acpid
-pkgver=2.0.33
+pkgver=2.0.34
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ source=("http://downloads.sourceforge.net/sourceforge/acpid2/$pkgname-$pkgver.ta
 
 tags=("base sys-power")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 config_files=("/etc/acpi/default.sh
 etc/conf.d/acpid
@@ -28,8 +28,11 @@ build() {
   install -Dm755 ${filedir}/acpid-1.0.6-default.sh $pkgdir/etc/acpi/default.sh
   install -Dm644 ${filedir}/acpid-default ${pkgdir}/etc/acpi/events/default
 
-# OpenRC скрипт
+# OpenRC
   install -Dm644 ${filedir}/acpid ${pkgdir}/etc/conf.d/acpid
   install -Dm755 ${filedir}/acpid.init ${pkgdir}/etc/init.d/acpid
+
+# SystemD
+  install -Dm644 ${filedir}/acpid.service ${pkgdir}/usr/lib/systemd/system/acpid.service
 }
 
