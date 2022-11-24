@@ -1,0 +1,27 @@
+pkgname=msgpack-c
+pkgver=4.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An efficient object serialization library.")
+
+tags=("libs dev-libs")
+
+source=("https://github.com/msgpack/msgpack-c/releases/download/c-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("cmake doxygen graphviz glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_C_STANDARD='17' \
+    -DBUILD_SHARED_LIBS=ON \
+    -DMSGPACK_ENABLE_STATIC=OFF \
+    -DMSGPACK_BUILD_EXAMPLES=OFF \
+    -DMSGPACK_BUILD_TESTS=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
