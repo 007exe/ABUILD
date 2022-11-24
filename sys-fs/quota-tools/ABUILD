@@ -1,0 +1,33 @@
+pkgname=quota-tools
+pkgver=4.09
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tools to manage kernel-level quotas in Linux.")
+
+source=("https://downloads.sourceforge.net/sourceforge/linuxquota/quota-$pkgver.tar.gz")
+
+tags=("base sys-fs")
+
+build_deps=("rpcsvc-proto libnl dbus libtirpc")
+
+conflicts=("quota")
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} sbindir=/usr/bin root_sbindir=/usr/bin STRIP="" install
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  head -33 quota.c > ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+# Конфликт с glibc
+  rm -r ${pkgdir}/usr/include
+
+  install -D -m0644 ${filedir}/quota.rc ${pkgdir}/etc/init.d/quota
+  install -D -m0644 ${filedir}/quota.confd ${pkgdir}/etc/conf.d/quota
+  install -D -m0644 ${filedir}/rpc.rquotad.initd ${pkgdir}/etc/init.d/rpc.quotad
+}
