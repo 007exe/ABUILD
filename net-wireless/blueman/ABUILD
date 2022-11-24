@@ -1,5 +1,5 @@
 pkgname=blueman
-pkgver=2.3.2
+pkgver=2.3.4
 pkgbuild=1
 arch=("auto")
 
