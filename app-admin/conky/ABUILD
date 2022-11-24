@@ -1,5 +1,5 @@
 pkgname=conky
-pkgver=1.12.2
+pkgver=1.15.0
 pkgbuild=1
 arch=("auto")
 
@@ -11,8 +11,11 @@ source=("https://github.com/brndnmtthws/conky/archive/v${pkgver}.tar.gz")
 tags=("app-admin utils")
 
 # -D BUILD_NVIDIA=ON libxnvctrl
-build_deps=("cmake docbook-xsl man-db catch glibc glib2 lua wireless_tools
-libxdamage libxinerama libxft imlib2 libxml2 libpulse ncurses curl docbook2x")
+build_deps=("cmake docbook2x docbook-xsl man-db catch python-yaml python-jinja pandoc
+glibc glib2 lua wireless_tools libxdamage libxinerama libxft imlib2 libxml2 libpulse ncurses curl")
+
+# libxnvctrl
+adddep=("glibc glib2 lua wireless_tools libxdamage libxinerama libxft imlib2 libxml2 libpulse ncurses curl")
 
 build(){
   go_src_dir
