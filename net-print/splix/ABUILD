@@ -1,27 +1,24 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=splix
-pkgver=2.0.0
-pkgbuild=2
-arch=('auto')
+pkgver=2.0.0_p20130826
+pkgbuild=1
+arch=("auto")
 
-shortdesc="SpliX is a set of CUPS printer drivers for SPL (Samsung Printer Language) printers."
+shortdesc=("CUPS drivers for SPL (Samsung Printer Language) printers.")
 
-source=("http://downloads.sourceforge.net/splix/$pkgname-$pkgver.tar.bz2")
+# svn+https://svn.code.sf.net/p/splix/code/splix#revision=315
+source=("https://dev.gentoo.org/~voyageur/distfiles/splix-${pkgver}.tar.bz2")
 
-tags="drivers net-print"
+tags=("drivers net-print")
 
-build_deps="make krb5 gcc jbigkit"
+build_deps=("jbigkit krb5 libcups gcc-libs ghostscript")
 
-adddep="jbigkit ghostscript>=9.02"
+adddep=("libcups gcc-libs ghostscript")
 
 build() {
   go_src_dir
-  sed -i 's#const PPDFile::Value::Value #const PPDFile::Value #' src/ppdfile.cpp
-  make PSTORASTER=gstoraster
-  make DESTDIR="${pkgdir}" install
-}
-
-after_build(){
-  ln -s gstoraster ${pkgdir}/usr/lib${LIBDIRSUFFIX}/cups/filter/pstoraster
+  burn_patches
+  CXXFLAGS+=" -fno-strict-aliasing"
+  make drv
+  make all DRV_ONLY=1
+  make DESTDIR=${pkgdir} install DRV_ONLY=1
 }
