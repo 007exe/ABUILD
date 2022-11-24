@@ -1,76 +1,24 @@
-#ABUILD created by/создан: Kroll, krlgs at front.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=ddrescue
-pkgver=1.16
+pkgver=1.26
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="GNU ddrescue is a data recovery tool. It copies data from one file or block device (hard disc, cdrom, etc) to another, trying hard to rescue data in case of read errors.
-http://www.gnu.org/software/ddrescue/ddrescue.html"
+shortdesc=("GNU data recovery tool.")
 
-longdesc=("GNU ddrescue is a data recovery tool. It copies data from one file or block device (hard disc, cdrom, etc) to another, trying hard to rescue data in case of read errors."
-"http://www.gnu.org/software/ddrescue/ddrescue.html")
+source=("https://ftp.gnu.org/gnu/$pkgname/${pkgname}-${pkgver}.tar.lz")
 
-source=("http://mirror.bjtu.edu.cn/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+tags=("console sys-fs")
 
-patch_opts=("")
+build_deps=("gcc-libs glibc")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="console app-admin"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    CPPFLAGS="${CPPFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install install-man
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+  install -vDm 644 {AUTHORS,ChangeLog,NEWS,README} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
