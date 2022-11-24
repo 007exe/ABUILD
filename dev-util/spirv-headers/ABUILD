@@ -1,16 +1,16 @@
 pkgname=spirv-headers
-pkgver=1.3.211.0
+pkgver=1.3.231.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("SPIR-V Headers")
+shortdesc=("SPIR-V Headers.")
 longdesc=("Machine-readable files for the SPIR-V Registry.")
 
 source=("https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-${pkgver}.tar.gz")
 
 tags=("develop dev-util")
 
-build_deps="cmake git"
+build_deps=("cmake")
 
 build() {
   go_src_dir
