@@ -1,5 +1,5 @@
 pkgname=qpdf
-pkgver=11.1.1
+pkgver=11.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,8 @@ source=("https://github.com/qpdf/qpdf/releases/download/v$pkgver/${pkgname}-${pk
 
 tags=("console app-text")
 
-build_deps=("libjpeg-turbo zlib gnutls cmake texlive-core python-sphinx python-sphinx_rtd_theme texlive-bin texlive-latexextra")
+# texlive-bin
+build_deps=("libjpeg-turbo zlib gnutls cmake texlive-core python-sphinx python-sphinx_rtd_theme texlive-latexextra")
 
 build() {
   go_src_dir
