@@ -1,5 +1,5 @@
 pkgname=python-platformdirs
-pkgver=2.5.3
+pkgver=2.5.4
 pkgbuild=1
 arch=("auto")
 
