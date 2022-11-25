@@ -1,0 +1,26 @@
+pkgname=otter-browser
+pkgver=1.0.03
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Web browser aiming to recreate the best aspects of the classic Opera (12.x) UI using Qt5.")
+
+source=("https://github.com/OtterBrowser/${pkgname}/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("www-client apps")
+
+build_deps=("cmake ninja hicolor-icon-theme hunspell qt5-multimedia qt5-svg qt5-webengine qt5-xmlpatterns")
+
+adddep=("hicolor-icon-theme hunspell qt5-multimedia qt5-svg qt5-webengine qt5-xmlpatterns")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's/org.otter_browser.Otter_Browser.desktop/otter-browser.desktop/' packaging/${pkgname}.appdata.xml
+  sed -i '/FILES otter-browser.desktop/a install(FILES packaging/otter-browser.appdata.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/metainfo)' CMakeLists.txt
+  cmake -B build \
+    -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
