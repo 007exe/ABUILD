@@ -1,25 +1,38 @@
 pkgname=upx
-pkgver=3.96
+pkgver=4.0.1
+strict_version=1
+# NOTE: Коммит версии
+_commit=fdec47a83daab27414fe2c4f617ced1c78365008
 pkgbuild=1
 arch=("auto")
 
-shortdesc="The Ultimate Packer for eXecutables"
-longdesc="UPX is an advanced executable file compressor. UPX will typically reduce the file size of programs and DLLs by around 50%-70%, thus reducing disk space, network load times, download times and other distribution and storage costs."
+shortdesc=("Extendable, high-performance executable packer for several executable formats.")
 
 tags=("base app-arch")
 
-source=("https://github.com/upx/upx/releases/download/v$pkgver/upx-$pkgver-src.tar.xz")
+source=("git:https://github.com/upx/upx")
 
-build_deps="git perl ucl"
+build_deps=("cmake perl setconf")
 
-adddep="ucl"
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+  git submodule update --init --recursive
+  setconf src/main.cpp 'bool warn' 'false;'
+
+}
 
 build() {
   go_src_dir
   burn_patches
-  sed -i -e 's/ -O2/ -Ofast/' -e 's/ -Werror//' src/Makefile
-  make -j${numjobs} UPX_LZMA_VERSION=0x465 CHECK_WHITESPACE=/bin/true all
-  install -Dm755 src/upx.out "$pkgdir/usr/bin/upx"
-  install -Dm644 doc/upx.1 "$pkgdir/usr/share/man/man1/upx.1"
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  make \
+    CHECK_WHITESPACE=/bin/true \
+    UPX_LZMA_VERSION=0x465 \
+    UPX_LZMADIR=${srcdir} \
+    CXXFLAGS_WERROR=""
+    install -Dm755 build/release/upx ${pkgdir}/usr/bin/upx
+  install -Dm644 doc/upx.1 ${pkgdir}/usr/share/man/man1/upx.1
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
