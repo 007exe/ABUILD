@@ -1,0 +1,25 @@
+pkgname=python-rapidfuzz
+pkgver=2.13.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Rapid fuzzy string matching in Python using various string metrics..")
+
+_pkgname=rapidfuzz
+source=("https://files.pythonhosted.org/packages/source/${_pkgname::1}/rapidfuzz/rapidfuzz-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-scikit-build python-rapidfuzz-capi python-jarowinkler")
+
+adddep=("python-jarowinkler")
+
+build() {
+  go_src_dir
+  RAPIDFUZZ_BUILD_EXTENSION=1 \
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+
+  install -Dm644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
