@@ -1,0 +1,29 @@
+pkgname=supertux
+pkgver=0.6.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games.")
+
+source=("https://github.com/SuperTux/supertux/releases/download/v${pkgver}/SuperTux-v${pkgver}-Source.tar.gz")
+
+tags=("games games-arcade")
+
+build_deps=("cmake boost mesa optipng glm
+sdl2_image curl openal libvorbis glew physfs freetype boost-libs hicolor-icon-theme")
+
+adddep=("sdl2_image curl openal libvorbis glew physfs freetype boost-libs hicolor-icon-theme")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake \
+    -DENABLE_DISCORD=ON \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DINSTALL_SUBDIR_BIN=bin \
+    -DCMAKE_BUILD_TYPE=Release
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/include
+}
