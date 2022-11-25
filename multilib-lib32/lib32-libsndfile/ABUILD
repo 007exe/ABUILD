@@ -5,7 +5,7 @@ arch=("auto")
 
 shortdesc=("A C library for reading and writing files containing sampled audio data (32-bit).")
 
-source=("https://github.com/libsndfile/libsndfile/releases/download/libsndfile/libsndfile-${pkgver}.tar.xz")
+source=("https://github.com/libsndfile/libsndfile/releases/download/${pkgver}/libsndfile-${pkgver}.tar.xz")
 
 tags=("lib32 media-libs")
 
