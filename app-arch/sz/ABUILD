@@ -1,10 +1,9 @@
 pkgname=sz
-pkgver=2.1.12
-pkgbuild=2
+pkgver=2.1.12.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Modular parametrizable lossy compressor framework for scientific data.")
-longdesc=("SZ is a modular parametrizable lossy compressor framework for scientific data (floating point and integers). It has applications in simulations, AI and instruments. It is a production quality software and a research platform for lossy compression. SZ is open and transparent. Open because all interested researchers and students can study or contribute to it. Transparent because all performance improvements are detailed in publications.")
 
 tags=("base app-arch")
 
@@ -27,5 +26,4 @@ build() {
   make -C build -j${numjobs}
   make -C build DESTDIR=${pkgdir} install
   install -Dm644 copyright-and-BSD-license.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
-  rm ${pkgdir}/usr/bin/test*
 }
