@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Free Lossless Audio Codec (32-bit).")
 longdesc=("FLAC is an audio CODEC similar to MP3, but lossless, meaning that audio is compressed without losing any information.")
 
-source=("http://downloads.xiph.org/releases/flac/${pkgname}-${pkgver}.tar.xz")
+source=("http://downloads.xiph.org/releases/flac/flac-${pkgver}.tar.xz")
 
 tags=("console media-libs")
 
