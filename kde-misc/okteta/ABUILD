@@ -1,10 +1,9 @@
 pkgname=okteta
-pkgver=0.26.8
+pkgver=0.26.9
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Hex editor by KDE")
-removedep=("KDE hex editor for viewing and editing the raw data of files.")
+shortdesc=("KDE hex editor for viewing and editing the raw data of files.")
 
 source=("https://download.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
