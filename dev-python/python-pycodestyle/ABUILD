@@ -1,5 +1,5 @@
 pkgname=python-pycodestyle
-pkgver=2.9.1
+pkgver=2.10.0
 pkgbuild=1
 arch=("auto")
 
