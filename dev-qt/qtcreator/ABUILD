@@ -1,5 +1,5 @@
 pkgname=qtcreator
-pkgver=8.0.2
+pkgver=9.0.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,9 @@ source=("https://github.com/qt-creator/qt-creator/archive/refs/tags/v${pkgver}.t
 
 tags=("dev-qt develop")
 
-# qt6-webengine clazy
-build_deps=("cmake llvm python qt6-tools qt6-svg qt6-quick3d qt6-serialport qt6-shadertools qt6-5compat clang yaml-cpp")
+# clazy
+build_deps=("cmake llvm python qt6-tools qt6-svg qt6-quick3d qt6-serialport
+qt6-shadertools qt6-5compat clang yaml-cpp qt6-webengine")
 
 build() {
   go_src_dir
