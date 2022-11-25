@@ -12,12 +12,13 @@ tags=("apps app-editors")
 
 build_deps=("gendesk")
 
+# FIXME: пакет требует java
+
 build() {
-  go_src_dir
-  burn_patches
+  cd ${srcdir}
   gendesk -f -n \
-    --pkgname "$pkgname" \
-    --pkgdesc "$pkgdesc" \
+    --pkgname ${pkgname} \
+    --pkgdesc ${pkgdesc} \
     --exec 'jeditbg %U' \
     --name jEdit \
     --genericname Editor
