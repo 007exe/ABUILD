@@ -8,7 +8,7 @@ longdesc=("Phonon is the multimedia API for KDE. It replaces the old aRts packag
 
 tags=("libs kde-misc")
 
-source=("https://download.kde.org/stable/phonon/${pkgver}/phonon-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/phonon/${pkgver}/phonon-${pkgver}.tar.xz")
 
 build_deps=("extra-cmake-modules qt5-tools libpulse qt5-base")
 
