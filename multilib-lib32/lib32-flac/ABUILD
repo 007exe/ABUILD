@@ -8,7 +8,7 @@ longdesc=("FLAC is an audio CODEC similar to MP3, but lossless, meaning that aud
 
 source=("http://downloads.xiph.org/releases/flac/flac-${pkgver}.tar.xz")
 
-tags=("console media-libs")
+tags=("lib32 media-libs")
 
 build_deps=("nasm cmake ninja lib32-gcc-libs lib32-libogg")
 
