@@ -1,32 +1,30 @@
 pkgname=liferea
-pkgver=1.6.6b
+pkgver=1.13.9
 pkgbuild=1
-arch=('auto')
-shortdesc="A desktop news aggregator for online news feeds and weblogs"
-longdesc=("Liferea (Linux Feed Reader) is an aggregator for online news 
-feeds. There are many other news readers available, but these others are 
-not available for Linux or require many extra libraries to be installed. 
-Liferea tries to fill this gap by creating a fast, easy to use, easy to 
-install news aggregator for GTK."
-)
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-tags="xapps net-news"
-build_deps="webkit"
+arch=("auto")
 
-build()
-{
-go_src_dir
-#patch -Np1 -i "$filedir/libnotify-0.7.patch"
-./configure --prefix=/usr \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --disable-schemas-install \
-  --libdir=/usr/lib$LIBDIRSUFFIX
-make
-make DESTDIR=$pkgdir install
-mkdir -p ${pkgdir}/usr/share/gconf/schemas
-install -d "${pkgdir}/usr/share/gconf/schemas"
-mkdir -p ${pkgdir}/etc/gconf/schemas/
-gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" "${pkgdir}"/etc/gconf/schemas/*.schemas
-rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+shortdesc=("A desktop news aggregator for online news feeds and weblogs.")
+
+source=("https://github.com/lwindolf/liferea/releases/download/v$pkgver/$pkgname-${pkgver}.tar.bz2")
+
+tags=("apps net-news")
+
+build_deps=("intltool gobject-introspection webkit2gtk libpeas python-gobject")
+
+adddep=("webkit2gtk libpeas python-gobject")
+
+# NOTE: Это опциональные зависимости
+removedep=("libsecret python-cairo gst-plugins-base gst-plugins-good gst-plugins-bad")
+
+build(){
+  go_src_dir
+  burn_patches
+  export WEBKIT_DISABLE_COMPOSITING_MODE=1
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-schemas-compile
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
