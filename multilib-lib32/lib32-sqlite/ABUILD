@@ -1,0 +1,51 @@
+pkgname=lib32-sqlite
+pkgver=3.40.0
+pkgbuild=1
+arch=("auto")
+_amalgamationver=3400000
+
+shortdesc=("A C library that implements an SQL database engine (32-bit).")
+longdesc=("The SQLite package is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.")
+
+tags=("lib32 dev-db")
+
+build_deps=("tcl lib32-readline zlib unzip")
+
+adddep=("sqlite")
+
+source=("http://sqlite.org/2022/sqlite-autoconf-${_amalgamationver}.tar.gz")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CPPFLAGS="$CPPFLAGS \
+	-DSQLITE_ENABLE_COLUMN_METADATA=1 \
+	-DSQLITE_ENABLE_UNLOCK_NOTIFY \
+	-DSQLITE_ENABLE_DBSTAT_VTAB=1 \
+	-DSQLITE_ENABLE_FTS3_TOKENIZER=1 \
+	-DSQLITE_SECURE_DELETE \
+	-DSQLITE_ENABLE_STMTVTAB \
+	-DSQLITE_MAX_VARIABLE_NUMBER=250000 \
+	-DSQLITE_MAX_EXPR_DEPTH=10000 \
+	-DSQLITE_ENABLE_MATH_FUNCTIONS"
+
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-static \
+    --enable-fts3 \
+    --enable-fts4 \
+    --enable-fts5 \
+    --enable-rtree \
+    --disable-tcl \
+    TCLLIBDIR=/usr/lib/sqlite$pkgver
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -r ${pkgdir}/usr/{bin,include}
+}
