@@ -15,7 +15,7 @@ build(){
   go_src_dir
   burn_patches
   export CXXFLAGS="$CXXFLAGS -DNDEBUG -fPIC"
-  make PREFIX=/usr dynamic cryptest.exe libcryptopp.pc
+  make -j${numjobs} PREFIX=/usr dynamic cryptest.exe libcryptopp.pc
   make DESTDIR=${pkgdir} PREFIX=/usr install
   install -Dm 644 License.txt -t ${pkgdir}/usr/share/licenses/crypto++/
   rm -rf ${pkgdir}/usr/{bin,share/cryptopp}
