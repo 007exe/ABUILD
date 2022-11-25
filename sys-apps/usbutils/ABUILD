@@ -1,6 +1,6 @@
 pkgname=usbutils
 pkgver=014
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Linux USB utilities")
