@@ -1,10 +1,9 @@
 pkgname=python-jaraco.context
-pkgver=4.1.2
-pkgbuild=2
+pkgver=4.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Context managers by jaraco.")
-longdesc=("Available as part of the Tidelift Subscription.")
 
 source=("https://github.com/jaraco/jaraco.context/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
