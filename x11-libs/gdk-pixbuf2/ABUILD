@@ -1,0 +1,28 @@
+pkgname=gdk-pixbuf2
+pkgver=2.42.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An image loading library.")
+
+source=("https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/archive/${pkgver}/gdk-pixbuf-${pkgver}.tar.gz")
+
+tags=("libs x11-libs")
+
+build_deps=("gobject-introspection git meson gi-docgen python-docutils
+glib2 libpng libtiff libjpeg-turbo shared-mime-info")
+
+adddep=("glib2 libpng libtiff libjpeg-turbo shared-mime-info")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D builtin_loaders=all \
+    -D gtk_doc=false \
+    -D installed_tests=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
