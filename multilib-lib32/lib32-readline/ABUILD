@@ -1,0 +1,41 @@
+pkgname=lib32-readline
+_basever=8.2
+_patchlevel=001
+pkgver=${_basever}.${_patchlevel}
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNU readline library (32-bit).")
+longdesc=("The Readline package is a set of libraries that offers command-line editing and history capabilities.")
+
+tags=("lib32 sys-libs")
+
+source=("https://ftp.gnu.org/gnu/readline/readline-${_basever}.tar.gz")
+
+build_deps=("lib32-glibc lib32-ncurses")
+
+adddep=("readline")
+
+build() {
+  go_src_dir
+  burn_patches
+
+# Удалитм RPATH из общих объектов (FS#14366)
+  sed -i 's|-Wl,-rpath,$(libdir) ||g' support/shobj-conf
+
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-static \
+    --with-curses
+  make SHLIB_LIBS="-lncursesw" -j${numjobs}
+  make SHLIB_LIBS="-lncursesw" DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+}
+
+
