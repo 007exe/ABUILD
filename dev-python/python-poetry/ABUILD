@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python dependency management and packaging made easy.")
-longdesc=("Python dependency management and packaging made easy.")
 
 _pkgname=poetry
 _archive="$_pkgname-$pkgver"
