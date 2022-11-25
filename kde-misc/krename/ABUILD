@@ -1,5 +1,5 @@
 pkgname=krename
-pkgver=5.0.1
+pkgver=5.0.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgver
 
 tags=("apps kde-misc")
 
-# podofo
-build_deps=("extra-cmake-modules kio kjs exiv2 taglib hicolor-icon-theme")
+build_deps=("extra-cmake-modules kio kjs exiv2 taglib hicolor-icon-theme podofo")
 
 removedep=("hicolor-icon-theme")
 
