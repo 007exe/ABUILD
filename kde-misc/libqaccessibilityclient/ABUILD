@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Helper library to make writing accessibility tools easier.")
 longdesc=("Library for writing accessibility clients such as screen readers.")
 
-source=("https://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs kde-misc")
 
