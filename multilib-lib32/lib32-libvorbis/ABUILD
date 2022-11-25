@@ -1,0 +1,34 @@
+pkgname=lib32-libvorbis
+pkgver=1.3.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Vorbis General Audio Compression Codec (32-bit).")
+longdesc=("The libvorbis package contains a general purpose audio and music encoding format. This is useful for creating (encoding) and playing (decoding) sound in an open (patent free) format.")
+
+source=("http://downloads.xiph.org/releases/vorbis/libvorbis-${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+build_deps=("lib32-libogg")
+
+adddep=("libvorbis")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+  install -d ${pkgdir}/usr/share/licenses
+  ln -s libvorbis ${pkgdir}/usr/share/licenses/${pkgname}
+}
