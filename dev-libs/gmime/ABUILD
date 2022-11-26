@@ -1,24 +1,38 @@
 pkgname=gmime
-pkgver=2.6.19
+pkgver=2.6.23
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="MIME message parser and creator library"
+shortdesc=("A C/C++ MIME creation and parser library with support for S/MIME, PGP, and Unix mbox spools.")
 
-source=("ftp://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/jstedfast/gmime/archive/refs/tags/${pkgver}.tar.gz")
 
-tags="dev-libs libs"
+tags=("dev-libs libs")
 
-build_deps="make gcc pkg-config bash gtk-doc binutils libtool coreutils sed grep docbook-utils"
+# docbook-utils gtk-sharp-2
+build_deps=("glib2 gpgme zlib gobject-introspection gtk-doc git vala")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+build() {
+  go_src_dir
+  burn_patches
+  NOCONFIGURE=1 ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --program-prefix=${pkgname} \
+    --disable-gtk-doc \
+    --enable-mono \
+    --enable-smime \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
