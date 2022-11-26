@@ -1,5 +1,5 @@
 pkgname=neovim
-pkgver=0.7.2
+pkgver=0.8.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,9 @@ source=("https://github.com/neovim/neovim/archive/v${pkgver}/${pkgname}-${pkgver
 
 tags=("app-editors console")
 
-# lua51-mpack lua51-lpeg patchelf libtermkey unibilium libvterm01 libluv tree-sitter
-build_deps=("cmake ninja gperf libuv luajit msgpack-c")
+build_deps=("cmake ninja lua51-mpack lua51-lpeg libtermkey libuv msgpack-c unibilium libvterm luajit libluv tree-sitter")
+
+adddep=("libtermkey libuv msgpack-c unibilium libvterm luajit libluv tree-sitter")
 
 build() {
   go_src_dir
@@ -21,8 +22,8 @@ build() {
 # GCC12
 # https://github.com/neovim/neovim/issues/19125
   CFLAGS+=" -fno-strict-aliasing"
-  cmake -Bbuild \
-    -GNinja \
+  cmake -B build \
+    -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -W no-dev
