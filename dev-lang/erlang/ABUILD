@@ -1,65 +1,41 @@
-# $Id: PKGBUILD 75770 2010-04-03 11:44:36Z ibiru $
-# ArchLinux contributor: Sarah Hay <sarahhay@mb.sympatico.ca>
-# ArchLinux maintainer: Vesa Kaihlavirta <vesa@archlinux.org>
-# Ported to AgiliaLinux: aix27249 <i27249@gmail.com>
-
 pkgname=erlang
-pkgver=R14B02
+pkgver=25.1.2
 pkgbuild=1
-shortdesc="A small concurrent functional programming language developed by Ericsson."
-longdesc="A small concurrent functional programming language developed by Ericsson."
-arch=('auto')
-tags=("develop dev-lang")
-url="http://www.erlang.org/index.html"
-source=(http://www.erlang.org/download/otp_src_${pkgver/./-}.tar.gz
-	http://www.erlang.org/download/otp_doc_man_${pkgver/./-}.tar.gz)
+arch=("auto")
 
-custom_opts="skip_gendeps"
-adddep="ncurses glibc-solibs"
-# Force single threaded build, otherwise it fails
-numjobs=1
+shortdesc=("General-purpose concurrent functional programming language developed by Ericsson.")
+
+source=("https://github.com/erlang/otp/archive/refs/tags/OTP-${pkgver}.tar.gz")
+
+tags=("develop dev-lang")
+
+# fop lksctp-tools
+build_deps=("glu libxslt mesa perl unixodbc wxwidgets-gtk3 glu ncurses openssl webkit2gtk wxwidgets-gtk3")
+
+adddep=("glu ncurses openssl webkit2gtk wxwidgets-gtk3")
 
 build() {
-	set -e
-	cd "$srcdir/otp_src_${pkgver/./-}"
-	ERTSVERSION=$(sed -n 's/^VSN[ ]*=[ ]*\([0-9.]\)/\1/p' < erts/vsn.mk)
-	ERLINTERFACEVERSION=$(sed -n 's/^EI_VSN[ ]*=[ ]*\([0-9.]\)/\1/p' < lib/erl_interface/vsn.mk)
+  go_src_dir
+  burn_patches
+  sed -i 's/^LDFLAGS = /LDFLAGS += /g' lib/{odbc/c_src,megaco/src/flex}/Makefile.in
+  export CFLAGS+=' -ffat-lto-objects'
+  export WX_GKT_VER='3.2'
+  ./otp_build autoconf
+  ./configure \
+    --enable-builtin-zlib \
+    --enable-smp-support \
+    --prefix=/usr \
+    --with-odbc
+  make -j${numjobs}
+  export PATH="$srcdir/bin:$PATH"
+  make DESTDIR=${pkgdir} install
 
-	# fix for #17001
-	sed -i 's|WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`|WX_LIBS="`$WX_CONFIG_WITH_ARGS --libs` -lGLU"|' lib/wx/configure || exit 1
+  install -Dm644 ${filedir}/epmd.service ${pkgdir}/usr/lib/systemd/system/epmd.service
+  install -Dm644 ${filedir}/epmd.socket ${pkgdir}/usr/lib/systemd/system/epmd.socket
+  install -Dm644 ${filedir}/epmd.conf ${pkgdir}/etc/conf.d/epmd
 
-	sed -i '/SSL_DYNAMIC_ONLY=/s:no:yes:' erts/configure || exit 1
-
-	CFLAGS="${SLKCFLAGS} -fno-strict-aliasing" ./configure --prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --enable-smp-support --enable-threads --build=${ARCH}-slackware-linux || exit 1
-	make -j${numjobs} || exit 1
-	make INSTALL_PREFIX="$pkgdir" install || exit 1
-
-	# fix prefix
-	cd "$pkgdir"
-	for i in usr/lib${LIBDIRSUFFIX}/erlang/bin/erl \
-		usr/lib${LIBDIRSUFFIX}/erlang/bin/start \
-		usr/lib${LIBDIRSUFFIX}/erlang/erts-${ERTSVERSION}/bin/erl \
-		usr/lib${LIBDIRSUFFIX}/erlang/erts-${ERTSVERSION}/bin/start \
-		usr/lib${LIBDIRSUFFIX}/erlang/releases/RELEASES ;do 
-		sed -i "s#$pkgdir##" $i || exit 1
-	done
-
-	# fix symlinks
-	cd "$pkgdir/usr/lib$LIBDIRSUFFIX/erlang/bin"
-	ln -sf ../erts-${ERTSVERSION}/bin/epmd 
-
-	cd "$pkgdir/usr/bin"
-	for file in *; do
-		ln -sfv ../lib$LIBDIRSUFFIX/erlang/bin/$file || exit 1
-	done
-
-	ln -s ../lib$LIBDIRSUFFIX/erlang/lib/erl_interface-${ERLINTERFACEVERSION}/bin/erl_call "$pkgdir/usr/bin/erl_call" || exit 1
-
-	# install documentation 
-	install -d "$pkgdir/usr/share/doc/erlang"
-	install -D -m644 "$srcdir"/{COPYRIGHT,PR.template,README} "$pkgdir/usr/share/doc/erlang"
-	cp -r "$srcdir/man" "$pkgdir/usr/lib${LIBDIRSUFFIX}/erlang"
-
-	install -Dm644 "$srcdir/otp_src_${pkgver/./-}/EPLICENCE" "$pkgdir/usr/share/licenses/$pkgname/EPLICENCE"
-	set +e
+  install -Dm644 README.md ${pkgdir}/usr/share/doc/${pkgname}/README.md
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 CONTRIBUTING.md ${pkgdir}/usr/share/doc/${pkgname}/CONTRIBUTING.md
+  install -Dm644 AUTHORS ${pkgdir}/usr/share/doc/${pkgname}/AUTHORS
 }
