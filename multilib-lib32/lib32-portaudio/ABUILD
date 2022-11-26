@@ -5,7 +5,7 @@ arch=("auto")
 
 shortdesc=("A free, cross-platform, open source, audio I/O library (32 bit).")
 
-source=("https://github.com/${pkgname}/${pkgname}/archive/refs/tags/v${pkgver}.tar.gz")
+source=("https://github.com/portaudio/portaudio/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("lib32 media-libs")
 
