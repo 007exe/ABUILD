@@ -1,0 +1,26 @@
+pkgname=docbook-dsssl
+pkgver=1.79
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("DSSSL Stylesheets for DocBook.")
+
+tags=("develop app-text")
+
+source=("https://sourceforge.net/projects/docbook/files/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+
+build_deps=("sgml-common perl")
+
+adddep=("sgml-common")
+
+build() {
+  go_src_dir
+  burn_patches
+  cp ${filedir}/docbook-style-dsssl.Makefile Makefile
+  make -j1 install \
+     BINDIR=${pkgdir}/usr/bin \
+     DESTDIR=${pkgdir}/usr/share/sgml/docbook/dsssl-stylesheets-${pkgver} \
+     MANDIR=${pkgdir}/usr/share/man
+  ln -s dsssl-stylesheets-${pkgver} ${pkgdir}/usr/share/sgml/docbook/dsssl-stylesheets
+  install -Dm644 README ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
