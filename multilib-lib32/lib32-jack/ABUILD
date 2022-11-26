@@ -10,8 +10,10 @@ source=("https://github.com/jackaudio/jack2/archive/refs/tags/v${pkgver}.tar.gz"
 
 tags=("lib32 media-sound")
 
-build_deps=("lib32-alsa-lib lib32-dbus lib32-expat lib32-libsamplerate waf
-lib32-gcc-libs lib32-glibc lib32-opus")
+build_deps=("lib32-alsa-lib lib32-dbus lib32-expat waf
+lib32-libsamplerate lib32-gcc-libs lib32-glibc lib32-opus")
+
+adddep=("jack")
 
 build() {
   go_src_dir
