@@ -1,0 +1,79 @@
+pkgname=lua-mpack
+pkglist=("lua51-mpack lua52-mpack lua53-mpack")
+pkgver=1.0.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple implementation of msgpack in C Lua 5.4.")
+
+tags=("libs dev-libs")
+
+source=("https://github.com/libmpack/libmpack-lua/archive/${pkgver}.tar.gz")
+
+build_deps=("lua lua51 lua52 lua53 libmpack")
+
+build() {
+  go_src_dir
+  burn_patches
+  gcc -O2 -fPIC -DMPACK_USE_SYSTEM -I/usr/include/lua5.1 -c lmpack.c -o lmpack.o
+  gcc -shared -lmpack -o mpack.so.5.1 lmpack.o
+
+  gcc -O2 -fPIC -DMPACK_USE_SYSTEM -I/usr/include/lua5.2 -c lmpack.c -o lmpack.o
+  gcc -shared -lmpack -o mpack.so.5.2 lmpack.o
+
+  gcc -O2 -fPIC -DMPACK_USE_SYSTEM -I/usr/include/lua5.3 -c lmpack.c -o lmpack.o
+  gcc -shared -lmpack -o mpack.so.5.3 lmpack.o
+
+  gcc -O2 -fPIC -DMPACK_USE_SYSTEM -I/usr/include -c lmpack.c -o lmpack.o
+  gcc -shared -lmpack -o mpack.so.5.4 lmpack.o
+
+  install -Dm755 mpack.so.5.4 ${pkgdir}/usr/lib/lua/5.4/mpack.so
+  install -Dm644 LICENSE-MIT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+####################################################################################################
+
+lua51-mpack() {
+  pkgname=lua51-mpack
+  shortdesc=("Simple implementation of msgpack in C Lua 5.1.")
+}
+
+lua51-mpack_prep() {
+  go_src_dir
+  install -Dm755 mpack.so.5.1 ${pkgdir}/usr/lib/lua/5.1/mpack.so
+  install -Dm644 LICENSE-MIT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+####################################################################################################
+
+lua52-mpack() {
+  pkgname=lua52-mpack
+  shortdesc=("Simple implementation of msgpack in C Lua 5.2.")
+}
+
+lua52-mpack_prep() {
+  go_src_dir
+  install -Dm755 mpack.so.5.2 ${pkgdir}/usr/lib/lua/5.2/mpack.so
+  install -Dm644 LICENSE-MIT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+####################################################################################################
+
+lua53-mpack() {
+  pkgname=lua53-mpack
+  shortdesc=("Simple implementation of msgpack in C Lua 5.3.")
+}
+
+lua51-mpack_prep() {
+  go_src_dir
+  install -Dm755 mpack.so.5.3 ${pkgdir}/usr/lib/lua/5.3/mpack.so
+  install -Dm644 LICENSE-MIT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
