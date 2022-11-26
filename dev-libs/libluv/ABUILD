@@ -10,7 +10,9 @@ tags=("libs dev-libs")
 
 source=("https://github.com/luvit/luv/releases/download/${pkgver//_/-}/luv-${pkgver//_/-}.tar.gz")
 
-build_deps=("cmake libuv ninja luajit lua lua51 lua52 lua53")
+build_deps=("cmake libuv ninja luajit lua lua51 lua52 lua53 luajit")
+
+adddep=("luajit")
 
 build() {
   go_src_dir
@@ -50,6 +52,7 @@ build() {
 lua-luv() {
   pkgname=lua-luv
   shortdesc=("Bare libuv bindings for lua - Lua module.")
+  adddep=("lua")
 }
 
 lua-luv_prep() {
@@ -62,6 +65,7 @@ lua-luv_prep() {
 lua51-luv() {
   pkgname=lua51-luv
   shortdesc=("Bare libuv bindings for lua - Lua 5.1 module.")
+  adddep=("lua51")
 }
 
 lua51-luv_prep() {
@@ -74,6 +78,7 @@ lua51-luv_prep() {
 lua52-luv() {
   pkgname=lua52-luv
   shortdesc=("Bare libuv bindings for lua - Lua 5.2 module.")
+  adddep=("lua52")
 }
 
 lua52-luv_prep() {
@@ -86,6 +91,7 @@ lua52-luv_prep() {
 lua53-luv() {
   pkgname=lua53-luv
   shortdesc=("Bare libuv bindings for lua - Lua 5.3 module.")
+  adddep=("lua53")
 }
 
 lua-luv_prep() {
