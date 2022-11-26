@@ -1,59 +1,72 @@
 pkgname=dovecot
-pkgver=2.2.5
+pkgver=2.3.19.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc="open source IMAP and POP3 server"
-longdesc=("Dovecot is an open source IMAP and POP3 server for Linux/UNIX-like systems, written with security primarily in mind. Although it's written in C, it uses several coding techniques to avoid most of the common pitfalls."
-"Dovecot can work with standard mbox and Maildir formats and it's fully compatible with UW-IMAP and Courier IMAP servers' implementation of them, as well as mail clients accessing the mailboxes directly."
-"Builded without ldap and mysql support.")
+shortdesc=("An IMAP and POP3 server written with security primarily in mind.")
 
-source=("http://www.dovecot.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
+source=("https://dovecot.org/releases/2.3/${pkgname}-${pkgver}.tar.gz")
 
-tags="server net-mail"
-build_deps="openssl sqlite mysql linux-pam libcap openldap nss expat curl bzip2"
+tags=("server net-mail")
 
-config_files="etc/dovecot/dovecot.conf"
+build_deps=("libcap openldap lua53 xz clucene sqlite
+mariadb-libs libsodium postgresql-libs bzip2 lz4 expat curl linux-pam")
 
-before_build() {
-  # fix path in helper script
+# NOTE: Это опциональные зависимости
+removedep=("openldap lua53 clucene")
+
+config_files=("etc/dovecot/dovecot.conf")
+
+build() {
+  go_src_dir
+  burn_patches
   sed -i 's:OPENSSLCONFIG=${OPENSSLCONFIG-dovecot-openssl.cnf}:OPENSSLCONFIG=${OPENSSLCONFIG- /etc/ssl/dovecot-openssl.cnf}:' doc/mkcert.sh
-}
-
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
     --localstatedir=/var \
-    --docdir=/usr/doc/${pkgname}-${pkgver} \
-    --mandir=/usr/man \
-    --with-notify=inotify \
-    --with-mysql \
+    --with-rundir=/run/dovecot \
+    --with-moduledir=/usr/lib/dovecot/modules \
+    --disable-static \
+    --with-nss \
     --with-pam \
     --with-sqlite \
-    --with-libcap \
-    --with-ldap \
-    --with-nss \
+    --with-pgsql \
+    --with-mysql \
     --with-ssl=openssl \
     --with-ssldir=/etc/ssl \
-    --disable-static"
+    --with-gssapi \
+    --with-ldap=plugin \
+    --with-lua=plugin \
+    --with-zlib \
+    --with-bzlib \
+    --with-lzma \
+    --with-lz4 \
+    --with-zstd \
+    --with-lucene \
+    --with-solr \
+    --with-sodium \
+    --with-libcap \
+    --with-docs
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+# openrc
+  mkdir -p ${pkgdir}/etc/init.d
+  install -m0755 ${filedir}/dovecot ${pkgdir}/etc/init.d/dovecot
+  install -m0644 ${filedir}/dovecot.conf ${pkgdir}/etc/dovecot/dovecot.conf
 
+# systemd
+  install -Dm644 ${filedir}/dovecot.sysusersd ${pkgdir}/usr/lib/sysusers.d/dovecot.conf
+  install -Dm644 ${filedir}/dovecot.tmpfilesd ${pkgdir}/usr/lib/tmpfiles.d/dovecot.conf
+  install -d -m755 ${pkgdir}/etc/dovecot/conf.d
+  rm -f ${pkgdir}/etc/dovecot/README
 
-after_build() {
-    go_src_dir
+  install -m 755  doc/mkcert.sh ${pkgdir}/usr/lib/dovecot/mkcert.sh
 
-    mkdir -p ${pkgdir}/etc/init.d
-    install -m0755 ${filedir}/dovecot ${pkgdir}/etc/init.d/dovecot
-    install -m0644 ${filedir}/dovecot.conf ${pkgdir}/etc/dovecot/dovecot.conf
+  install -Dm644 ${filedir}/dovecot.ld.so.conf ${pkgdir}/etc/ld.so.conf.d/dovecot.conf
 
-    # Maybe we need to keep it at /etc/dovecot?
-    install -d -m755 ${pkgdir}/etc/ssl
-    install -m 644  ${srcdir}/$pkgname-$pkgver/doc/dovecot-openssl.cnf ${pkgdir}/etc/ssl/dovecot-openssl.cnf
-
-    # install mkcert helper script
-    install -m 755 doc/mkcert.sh ${pkgdir}/usr/lib/dovecot/mkcert.sh
-
-    rm ${pkgdir}/etc/dovecot/README
+  install -Dm644 ${filedir}/dovecot.pam ${pkgdir}/etc/pam.d/dovecot
 }
