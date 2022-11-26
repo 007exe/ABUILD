@@ -12,6 +12,8 @@ source=("https://github.com/libmpack/libmpack-lua/archive/${pkgver}.tar.gz")
 
 build_deps=("lua lua51 lua52 lua53 libmpack")
 
+adddep=("lua")
+
 build() {
   go_src_dir
   burn_patches
@@ -36,6 +38,7 @@ build() {
 lua51-mpack() {
   pkgname=lua51-mpack
   shortdesc=("Simple implementation of msgpack in C Lua 5.1.")
+  adddep=("lua51")
 }
 
 lua51-mpack_prep() {
@@ -49,6 +52,7 @@ lua51-mpack_prep() {
 lua52-mpack() {
   pkgname=lua52-mpack
   shortdesc=("Simple implementation of msgpack in C Lua 5.2.")
+  adddep=("lua52")
 }
 
 lua52-mpack_prep() {
@@ -62,6 +66,7 @@ lua52-mpack_prep() {
 lua53-mpack() {
   pkgname=lua53-mpack
   shortdesc=("Simple implementation of msgpack in C Lua 5.3.")
+  adddep=("lua53")
 }
 
 lua51-mpack_prep() {
