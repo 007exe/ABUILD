@@ -1,33 +1,33 @@
 pkgname=rdesktop
-pkgver=1.8.1
+pkgver=1.9.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="An open source client for Windows Remote Desktop Services "
+shortdesc=("An open source client for Windows Remote Desktop Services.")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/rdesktop/rdesktop/archive/v${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("apps net-misc")
 
-tags="xapps net-misc"
+build_deps=("libao libsamplerate xorg-xrandr pcsclite libgssglue libxcursor")
 
-build_deps=" libsamplerate xorg-server openssl"
-#libao
+build() {
+  go_src_dir
+  burn_patches
+  ./bootstrap
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-smartcard \
+    --with-ipv6
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
 
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---mandir=/usr/man \
---program-prefix= \
---disable-credssp \
---disable-smartcard \
---with-sound=alsa \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
