@@ -1,7 +1,4 @@
-#!/sbin/runscript
-# Copyright 1999-2011 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/dhcp/files/dhcrelay.init2,v 1.2 2011/03/08 20:13:26 vapier Exp $
+#!/usr/bin/openrc-run
 
 depend() {
 	need net
@@ -17,7 +14,7 @@ start() {
 	checkpath -d /var/run/dhcp
 
 	ebegin "Starting dhcrelay"
-	start-stop-daemon --start --exec /usr/sbin/dhcrelay \
+	start-stop-daemon --start --exec /usr/bin/dhcrelay \
 		-- -q $(printf -- '-i %s ' ${IFACE}) ${DHCRELAY_OPTS} ${DHCRELAY_SERVERS}
 	eend $?
 }
