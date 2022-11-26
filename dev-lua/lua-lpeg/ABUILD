@@ -1,0 +1,72 @@
+pkgname=lua-lpeg
+pkglist=("lua51-lpeg lua52-lpeg lua53-lpeg")
+pkgver=1.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Pattern-matching library for Lua 5.4.")
+
+source=("http://www.inf.puc-rio.br/~roberto/lpeg/lpeg-${pkgver}.tar.gz")
+
+tags=("libs dev-lua")
+
+build_deps=("lua lua51 lua52 lua53")
+
+before_build() {
+  cd ${srcdir}
+  sed 's/^CFLAGS =/CFLAGS +=/' -i ${srcdir}/lpeg-${pkgver}/makefile
+  sed 's/^COPT =/# COPT =/' -i ${srcdir}/lpeg-${pkgver}/makefile
+
+  cp -r ${srcdir}/lpeg-${pkgver} ${srcdir}/lpeg-${pkgver}-51
+  cp -r ${srcdir}/lpeg-${pkgver} ${srcdir}/lpeg-${pkgver}-52
+  cp -r ${srcdir}/lpeg-${pkgver} ${srcdir}/lpeg-${pkgver}-53
+}
+
+build() {
+  cd ${srcdir}/lpeg-${pkgver}
+  make LUADIR=/usr/include
+  install -Dm0755 lpeg.so ${pkgdir}/usr/lib/lua/5.4/lpeg.so
+  install -Dm0644 re.lua ${pkgdir}/usr/share/lua/5.4/re.lua
+}
+
+#######################################################################
+
+lua51-lpeg() {
+  pkgname=lua51-lpeg
+  shortdesc=("Pattern-matching library for Lua 5.1.")
+}
+
+lua51-lpeg_prep() {
+  cd ${srcdir}/lpeg-${pkgver}-51
+  make LUADIR=/usr/include/lua5.1
+  install -Dm0755 lpeg.so ${pkgdir}/usr/lib/lua/5.1/lpeg.so
+  install -Dm0644 re.lua ${pkgdir}/usr/share/lua/5.1/re.lua
+}
+
+#######################################################################
+
+lua52-lpeg() {
+  pkgname=lua52-lpeg
+  shortdesc=("Pattern-matching library for Lua 5.2.")
+}
+
+lua52-lpeg_prep() {
+  cd ${srcdir}/lpeg-${pkgver}-52
+  make LUADIR=/usr/include/lua5.2
+  install -Dm0755 lpeg.so ${pkgdir}/usr/lib/lua/5.2/lpeg.so
+  install -Dm0644 re.lua ${pkgdir}/usr/share/lua/5.2/re.lua
+}
+
+#######################################################################
+
+lua53-lpeg() {
+  pkgname=lua53-lpeg
+  shortdesc=("Pattern-matching library for Lua 5.3.")
+}
+
+lua53-lpeg_prep() {
+  cd ${srcdir}/lpeg-${pkgver}-53
+  make LUADIR=/usr/include/lua5.3
+  install -Dm0755 lpeg.so ${pkgdir}/usr/lib/lua/5.3/lpeg.so
+  install -Dm0644 re.lua ${pkgdir}/usr/share/lua/5.3/re.lua
+}
