@@ -1,73 +1,49 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=ziproxy
-pkgver=3.2.0
+pkgver=3.3.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A proxy server that can compress traffic"
-#longdesc=(""
-#)
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+shortdesc=("Forwarding, non-caching, compressing HTTP proxy server.")
 
-patch_opts=("")
+source=("https://downloads.sourceforge.net/project/ziproxy/ziproxy/ziproxy-${pkgver}/ziproxy-${pkgver}.tar.bz2")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="network net-misc"
+tags=("network net-proxy")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("giflib libpng libjpeg-turbo zlib jasper cyrus-sasl")
 
-provides=""
-conflicts=""
+config_files=("etc/ziproxy/ziproxy.conf
+etc/ziproxy/bo_exception.list
+etc/ziproxy/http.passwd
+etc/ziproxy/noprocess.list
+etc/ziproxy/replace.list
+etc/xinetd.d/ziproxy
+var/lib/ziproxy/error/400.html
+var/lib/ziproxy/error/404.html
+var/lib/ziproxy/error/407.html
+var/lib/ziproxy/error/408.html
+var/lib/ziproxy/error/409.html
+var/lib/ziproxy/error/500.html
+var/lib/ziproxy/error/503.html")
 
-adddep=""
-removedep=""
+build() {
+  go_src_dir
+  burn_patches
+  [ -f Makefile ] || CFLAGS+=' -fcommon'
+  ./configure \
+    --prefix=/usr \
+    --with-jasper
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-#for multi pkg abuild
-pkglist=
+  install -d ${pkgdir}/var/lib/ziproxy/error
+  install -d ${pkgdir}/etc/conf.d
 
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+  sed -i 's#var/ziproxy#var/lib/ziproxy#' etc/ziproxy/ziproxy.conf
+  cp -a etc/ziproxy ${pkgdir}/etc/ziproxy
+  install -m644 var/ziproxy/error/* ${pkgdir}/var/lib/ziproxy/error
+  echo "ZIPROXY_ARGS=\"-c /etc/ziproxy/ziproxy.conf\"" >${pkgdir}/etc/conf.d/ziproxy
+  install -Dm0644 ${filedir}/ziproxy.logrotate ${pkgdir}/etc/logrotate.d/ziproxy
+  install -Dm0644 ${filedir}/ziproxy.xinetd ${pkgdir}/etc/xinetd.d/ziproxy
+  install -Dm0644 ${filedir}/ziproxy.sysusers ${pkgdir}/usr/lib/sysusers.d/ziproxy.conf
+  install -Dm0644 ${filedir}/ziproxy.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/ziproxy.conf
+}
