@@ -1,0 +1,34 @@
+pkgname=miniupnpc
+pkglist=("python-miniupnpc")
+pkgver=2.2.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Small UPnP client library/tool to access Internet Gateway Devices.")
+
+source=("https://miniupnp.tuxfamily.org/files/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("glibc lsb-release python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm 644 man3/miniupnpc.3 -t ${pkgdir}/usr/share/man/man3
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
+python-miniupnpc() {
+  pkgname=python-miniupnpc
+  shortdesc=("Python bindings for miniupnpc.")
+}
+
+python-miniupnpc_prep() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --optimize=1 --skip-build --root=${pkgdir}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
