@@ -1,0 +1,20 @@
+pkgname=python-pyproject-metadata
+pkgver=0.6.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("PEP 621 metadata parsing.")
+
+source=("https://github.com/FFY00/python-pyproject-metadata/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-wheel")
+
+build() {
+  go_src_dir
+  burn_patches
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
