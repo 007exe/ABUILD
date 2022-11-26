@@ -12,6 +12,8 @@ tags=("libs dev-lua")
 
 build_deps=("lua lua51 lua52 lua53")
 
+adddep=("lua")
+
 before_build() {
   cd ${srcdir}
   sed 's/^CFLAGS =/CFLAGS +=/' -i ${srcdir}/lpeg-${pkgver}/makefile
@@ -34,6 +36,7 @@ build() {
 lua51-lpeg() {
   pkgname=lua51-lpeg
   shortdesc=("Pattern-matching library for Lua 5.1.")
+  adddep=("lua51")
 }
 
 lua51-lpeg_prep() {
@@ -48,6 +51,7 @@ lua51-lpeg_prep() {
 lua52-lpeg() {
   pkgname=lua52-lpeg
   shortdesc=("Pattern-matching library for Lua 5.2.")
+  adddep=("lua52")
 }
 
 lua52-lpeg_prep() {
@@ -62,6 +66,7 @@ lua52-lpeg_prep() {
 lua53-lpeg() {
   pkgname=lua53-lpeg
   shortdesc=("Pattern-matching library for Lua 5.3.")
+  adddep=("lua53")
 }
 
 lua53-lpeg_prep() {
