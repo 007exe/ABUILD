@@ -18,8 +18,8 @@ adddep=("python-sphinx-basic-ng python-pygments python-beautifulsoup4")
 build() {
   go_src_dir
 # NOTE: Использовать системный nodejs
-  local node_ver=$(expac %v nodejs-lts-gallium | cut -d - -f 1)
-  sed -i "s/16.13.1/$node_ver/" pyproject.toml
+#  local node_ver=$(expac %v nodejs-lts-gallium | cut -d - -f 1)
+#  sed -i "s/16.13.1/$node_ver/" pyproject.toml
 
   python -m build -nw
   python -m installer --destdir=${pkgdir} dist/*.whl
