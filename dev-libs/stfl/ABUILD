@@ -1,27 +1,30 @@
-#ABUILD created by/создан: PavelVyazovoi, vyazovoi at googlemail.com 
-
 pkgname=stfl
-pkgver=0.21
+pkgver=0.24
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="STFL - Structured Terminal Forms Language/Library"
-longdesc=("STFL is a library which implements a curses-based widget set for text terminals. The STFL API can be used from C, SPL, Python, Perl and Ruby. Since the API is only 14 simple function calls big and there are already generic SWIG bindings it is very easy to port STFL to additional scripting languages."
-""
-"A special language (the Structured Terminal Forms Language) is used to describe STFL GUIs. The language is designed to be easy and fast to write so an application programmer does not need to spend ages fiddling around with the GUI and can concentrate on the more interesting programming tasks."
-""
-"http://www.clifford.at/stfl/")
+shortdesc=("Library implementing a curses-based widget set for text terminals.")
 
-source=("http://www.clifford.at/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("http://bygone.clairexen.net/stfl/stfl-${pkgver}.tar.gz")
 
-tags="libs dev-libs"
+tags=("libs dev-libs")
+
+build_deps=("patch swig ncurses")
 
 build() {
-	go_src_dir
-	burn_patches
-
-	sed -i 's/\/usr\/local/\/usr/' Makefile.cfg
-
-	make
-	make install DESTDIR=$pkgdir
+  go_src_dir
+  burn_patches
+#  sed -i \
+#    -e 's/-Os -ggdb//' \
+#    -e 's/^\(all:.*\) example/\1/' \
+#    -e 's/$(CC) -shared/$(CC) $(LDFLAGS) -shared/' \
+#    -e 's/ -o $@ $(LDLIBS) $^/ $^ $(LDLIBS) -o $@/' \
+#    -e 's/-lncursesw/-lncursesw -pthread/' \
+#    -e 's/\<ar\>/$(AR)/' \
+#    -e 's/\<ranlib\>/$(RANLIB)/' \
+#    Makefile
+  make prefix=/usr Makefile.deps
+  make prefix=/usr
+  make prefix=/usr DESTDIR=${pkgdir} install
+  ln -s /usr/lib/libstfl.so.0.24 ${pkgdir}/usr/lib/libstfl.so.0
 }
