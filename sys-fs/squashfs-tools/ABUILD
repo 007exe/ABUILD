@@ -1,28 +1,25 @@
 pkgname=squashfs-tools
 pkgver=4.5.1
 pkgbuild=1
-arch="auto"
+arch=("auto")
 
-shortdesc=("Utilities for the creation of compressed squashfs images.")
-longdesc=("Squashfs-tools are utilities for the creation of compressed squashfs images.")
+shortdesc=("Tools for squashfs, a highly compressed read-only filesystem for Linux.")
 
 source=("https://github.com/plougher/squashfs-tools/archive/refs/tags/${pkgver}.tar.gz")
 
-tags="sys-fs console"
+tags=("sys-fs console")
 
-build_deps="zlib lzo xz lz4"
+build_deps=("zlib lzo xz lz4")
 
 build() {
   go_src_dir
   burn_patches
-  cd squashfs-tools
-  make \
-      GZIP_SUPPORT=1 \
-      XZ_SUPPORT=1 \
-      LZO_SUPPORT=1 \
-      LZMA_XZ_SUPPORT=1 \
-      LZ4_SUPPORT=1 \
-      ZSTD_SUPPORT=1 \
-      XATTR_SUPPORT=1
-  make install INSTALL_DIR=${pkgdir}/usr/bin
+  local _params=(GZIP_SUPPORT=1 XZ_SUPPORT=1 LZO_SUPPORT=1 LZMA_XZ_SUPPORT=1 LZ4_SUPPORT=1 ZSTD_SUPPORT=1 XATTR_SUPPORT=1)
+  make ${_params[@]} -C ${srcdir}/${pkgname}-${pkgver}/${pkgname}
+  make -C ${srcdir}/${pkgname}-${pkgver}/${pkgname} install INSTALL_PREFIX=${pkgdir}/usr
+  mkdir -p ${pkgdir}/usr/share/doc/${pkgname}
+  cp ${srcdir}/${pkgname}-${pkgver}/ACTIONS-README ${pkgdir}/usr/share/doc/${pkgname}/
+  cp ${srcdir}/${pkgname}-${pkgver}/CHANGES ${pkgdir}/usr/share/doc/${pkgname}/
+  cp ${srcdir}/${pkgname}-${pkgver}/USAGE ${pkgdir}/usr/share/doc/${pkgname}/
+  cp ${srcdir}/${pkgname}-${pkgver}/README-${pkgver} ${pkgdir}/usr/share/doc/${pkgname}/
 }
