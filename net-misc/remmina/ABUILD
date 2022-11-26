@@ -1,55 +1,33 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru
-
 pkgname=remmina
-pkgver=1.1.2
+pkgver=1.4.27
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="The GTK+ Remote Desktop Client"
+shortdesc=("Remote desktop client written in GTK+.")
 
-longdesc=("Remmina is a remote desktop connection client able to display and control a remote desktop session."
-"It supports multiple network protocols in an integrated and consistant user interface. Currently RDP, VNC, NX, XDMCP and SSH protocols are supported.")
+source=("https://gitlab.com/Remmina/Remmina/-/archive/v${pkgver/rc/-rc}/Remmina-v${pkgver/rc/-rc}.tar.bz2")
 
-source=("https://github.com/FreeRDP/Remmina/archive/v${pkgver}.tar.gz")
+tags=("network net-misc")
 
-tags="network net-misc"
+# spice-gtk
+build_deps=("cmake freerdp libvncserver spice-protocol harfbuzz xorgproto
+gobject-introspection kwallet webkit2gtk-4.1 gtk-vnc ninja avahi libgcrypt libssh
+vte libsodium libappindicator-gtk3 libsoup3")
 
-build_deps="autoconf automake ccache gcc pkg-config atk gdk-pixbuf libgcrypt gtk+3 glib libssh pango perl-xml-parser freerdp avahi-gtk gnome-keyring libvncserver telepathy-glib vte3 glibc-solibs gnutls xprop setxkbmap libXdmcp libjpeg libunique libpthread-stubs xorg-server-xephyr libgnome-keyring gettext"
+# NOTE: Это опциональные зависимости
+removedep=("freerdp libsecret libvncserver spice-gtk webkit2gtk-4.1 gtk-vnc kwallet gnome-terminal")
 
-conflicts="remmina-plugins"
-
-docs="remmina/AUTHORS remmina/COPYING remmina/ChangeLog remmina/NEWS remmina-plugins/README.LibVNCServer"
-
-before_build(){
+build() {
   go_src_dir
-  for i in "${source[@]}"; do
-      if [[ $i == *.patch ]]; then
-         patch -F100 -p1 -i "${srcdir}/${i}"
-      fi
-  done
-  echo "End before_build"
-}
-
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DWITH_APPINDICATOR=OFF \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
-
-after_build(){
-  go_src_dir
-  rm -rf ${pkgdir}/build
-  #install -Dm 644 remmina/include/remmina/*.h ${pkgdir}/usr/include/remmina
-
-  #sed "s|@prefix@|/usr|" -i remmina/remmina.pc.in
-  #sed "s|@exec_prefix@|${prefix}|" -i remmina/remmina.pc.in
-  #sed "s|@libdir@|/usr/lib"${LIBDIRSUFFIX}"|" -i remmina/remmina.pc.in
-  #sed "s|@includedir@|/usr/include/remmina|" -i remmina/remmina.pc.in
-  #sed "s|@VERSION@|"${pkgver}"|" -i remmina/remmina.pc.in
-  #install -Dm 644 remmina/remmina.pc.in ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/remmina.pc
-  #install -Dm 644 "${filedir}"/remmina.desktop ${pkgdir}/usr/share/applications/remmina.desktop
-
-  echo "End after_build"
+  burn_patches
+   cmake -B build -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DWITH_APPINDICATOR=ON \
+    -DWITH_NEWS=OFF \
+    -DWITH_KF5WALLET=ON \
+    -DWITH_X2GO=ON \
+    -DWITH_GVNC=ON
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
 }
