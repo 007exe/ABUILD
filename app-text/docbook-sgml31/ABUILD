@@ -1,0 +1,24 @@
+pkgname=docbook-sgml31
+pkgver=3.1
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Legacy docbook-sgml.")
+
+source=("https://www.docbook.org/sgml/${pkgver}/docbk31.zip")
+
+tags=("app-text libs")
+
+build_deps=("sgml-common")
+
+adddep=("sgml-common")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e '/ISO 8879/d' -e 's|DTDDECL "-//OASIS//DTD DocBook V3.1//EN"|SGMLDECL|g' docbook.cat
+  local DTDDIR=usr/share/sgml/docbook-sgml-${pkgver}
+  install -dm755 ${pkgdir}/${DTDDIR}
+  install -m644 docbook.cat ${pkgdir}/${DTDDIR}/catalog
+  install -m644 *.dtd *.mod *.dcl ${pkgdir}/${DTDDIR}
+}
