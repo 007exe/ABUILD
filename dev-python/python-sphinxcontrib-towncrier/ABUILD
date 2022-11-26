@@ -1,5 +1,5 @@
 pkgname=python-sphinxcontrib-towncrier
-pkgver=0.3.1a2
+pkgver=0.3.1a3
 pkgbuild=1
 arch=("auto")
 
