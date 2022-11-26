@@ -1,0 +1,47 @@
+pkgname=i2pd
+pkgver=2.44.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A full-featured C++ implementation of the I2P router.")
+
+source=("https://github.com/PurpleI2P/i2pd/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("network net-vpn")
+
+build_deps=("cmake boost boost-libs openssl zlib miniupnpc")
+
+config_files=("etc/i2pd/i2pd.conf
+etc/i2pd/tunnels.conf
+etc/logrotate.d/i2pd")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd ..
+  cmake build \
+    -DCMAKE_BUILD_TYPE:STRING='None' \
+    -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
+    -DBUILD_SHARED_LIBS:BOOL='ON' \
+    -DWITH_UPNP:BOOL='ON' \
+    -Wno-dev
+  make -C build
+  make -C build DESTDIR=${pkgdir} install
+
+  install -D -m644 contrib/{i2pd,tunnels}.conf -t ${pkgdir}/etc/i2pd
+  install -d -m755 ${pkgdir}/etc/i2pd/tunnels.d
+
+  install -d -m755 ${pkgdir}/usr/share/i2pd
+  cp -dr --no-preserve='ownership' contrib/certificates ${pkgdir}/usr/share/i2pd
+
+# SystemD
+  install -D -m644 contrib/i2pd.service   -t ${pkgdir}/usr/lib/systemd/system
+  install -D -m644 ${filedir}/i2pd.sysusers ${pkgdir}/usr/lib/sysusers.d/i2pd.conf
+  install -D -m644 ${filedir}/i2pd.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/i2pd.conf
+
+  install -D -m644 contrib/i2pd.logrotate ${pkgdir}/etc/logrotate.d/i2pd
+  install -D -m644 contrib/tunnels.d/{*.conf,README} -t ${pkgdir}/usr/share/doc/i2pd/tunnels.d
+  install -D -m644 {i18n,libi2pd{,_client}}/*.h -t ${pkgdir}/usr/include/i2pd
+  install -D -m644 debian/i2pd.1 -t ${pkgdir}/usr/share/man/man1
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
