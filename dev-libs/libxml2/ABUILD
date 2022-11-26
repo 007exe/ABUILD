@@ -1,7 +1,7 @@
 # NOTE: Обязательно пересобрать при обновлениии icu
 pkgname=libxml2
 pkgver=2.10.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("XML parsing library, version 2.")
@@ -16,23 +16,19 @@ build_deps=("zlib readline ncurses xz icu python")
 build() {
   go_src_dir
   burn_patches
-  sed -e '/cd fuzz; /d' -e 's/fuzz //g' -i Makefile.am
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
     --with-threads \
     --with-history \
+    --with-python=/usr/bin/python \
     --with-icu \
-    --with-python=/usr/bin/python
-  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' libtool
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
-  find doc -type f -exec chmod 0644 {} +
   make DESTDIR=${pkgdir} install
-
-  python -m compileall -d /usr/lib ${pkgdir}/usr/lib
-  python -O -m compileall -d /usr/lib ${pkgdir}/usr/lib
 
   install -Dm 644 Copyright -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
