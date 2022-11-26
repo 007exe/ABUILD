@@ -1,13 +1,3 @@
-From 1aa82d97c3140ebb93e642c48d187d37cea2e537 Mon Sep 17 00:00:00 2001
-From: Antonio Rojas <arojas@archlinux.org>
-Date: Sat, 20 Feb 2021 22:00:41 +0100
-Subject: [PATCH] Drop unused libkdepim dependency
-
----
- CMakeLists.txt     | 2 --
- src/CMakeLists.txt | 1 -
- 2 files changed, 3 deletions(-)
-
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 3d79806..5204908 100644
 --- a/CMakeLists.txt
@@ -40,6 +30,3 @@ index a512dab..e66e805 100644
    Grantlee5::Templates
    Grantlee5::TextDocument
  )
--- 
-GitLab
-

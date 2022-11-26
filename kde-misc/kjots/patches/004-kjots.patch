@@ -10,78 +10,58 @@ Subject: [PATCH] Fix akonadi includes
  src/noteshared/standardnoteactionmanager.cpp | 2 +-
  4 files changed, 4 insertions(+), 4 deletions(-)
 
-
-From 17f373bb728cbc553c5fe644563ebd015eda4075 Mon Sep 17 00:00:00 2001
-From: Wolfgang Bauer <wbauer@tmo.at>
-Date: Fri, 1 Apr 2022 08:00:34 +0000
-Subject: [PATCH] Fix build with Akonadi 21.12
-
----
- src/kjotsmodel.cpp                           | 4 ++++
- src/kjotswidget.cpp                          | 6 +++++-
- src/noteshared/notecreatorandselector.cpp    | 4 ++++
- src/noteshared/standardnoteactionmanager.cpp | 4 ++++
- 4 files changed, 17 insertions(+), 1 deletion(-)
-
-diff -u a/src/kjotsmodel.cpp b/src/kjotsmodel.cpp
+diff --git a/src/kjotsmodel.cpp b/src/kjotsmodel.cpp
+index 99ee14f..48997a4 100644
 --- a/src/kjotsmodel.cpp
 +++ b/src/kjotsmodel.cpp
-@@ -21,7 +21,11 @@
+@@ -21,7 +21,7 @@
  #include <AkonadiCore/ChangeRecorder>
  #include <AkonadiCore/EntityDisplayAttribute>
  #endif
-+#if AKONADI_VERSION >= QT_VERSION_CHECK(5, 19, 41)
+-#include <Akonadi/Notes/NoteUtils>
 +#include <Akonadi/NoteUtils>
-+#else
- #include <Akonadi/Notes/NoteUtils>
-+#endif
  
  #include <KMime/Message>
  #include <KPIMTextEdit/TextUtils>
-diff -u a/src/kjotswidget.cpp b/src/kjotswidget.cpp
+diff --git a/src/kjotswidget.cpp b/src/kjotswidget.cpp
+index 834fc33..bb4d018 100644
 --- a/src/kjotswidget.cpp
 +++ b/src/kjotswidget.cpp
-@@ -34,8 +34,12 @@
+@@ -34,7 +34,7 @@
  #include <QDebug>
  
  // Akonadi
 -#include <Akonadi/Notes/NoteUtils>
- #include <akonadi_version.h>
-+#if AKONADI_VERSION >= QT_VERSION_CHECK(5, 19, 41)
 +#include <Akonadi/NoteUtils>
-+#else
-+#include <Akonadi/Notes/NoteUtils>
-+#endif
+ #include <akonadi_version.h>
  #if AKONADI_VERSION >= QT_VERSION_CHECK(5, 18, 41)
  #include <Akonadi/AttributeFactory>
- #include <Akonadi/CollectionCreateJob>
-diff -u a/src/noteshared/notecreatorandselector.cpp b/src/noteshared/notecreatorandselector.cpp
+diff --git a/src/noteshared/notecreatorandselector.cpp b/src/noteshared/notecreatorandselector.cpp
+index 6d58c83..7518deb 100644
 --- a/src/noteshared/notecreatorandselector.cpp
 +++ b/src/noteshared/notecreatorandselector.cpp
-@@ -24,7 +24,11 @@
+@@ -24,7 +24,7 @@
  #include <AkonadiCore/EntityTreeModel>
  #include <AkonadiCore/ItemCreateJob>
  #endif
-+#if AKONADI_VERSION >= QT_VERSION_CHECK(5, 19, 41)
+-#include <Akonadi/Notes/NoteUtils>
 +#include <Akonadi/NoteUtils>
-+#else
- #include <Akonadi/Notes/NoteUtils>
-+#endif
  
  #include "noteshared_debug.h"
  
-diff -u a/src/noteshared/standardnoteactionmanager.cpp b/src/noteshared/standardnoteactionmanager.cpp
+diff --git a/src/noteshared/standardnoteactionmanager.cpp b/src/noteshared/standardnoteactionmanager.cpp
+index 2a2f4ce..692b8a2 100644
 --- a/src/noteshared/standardnoteactionmanager.cpp
 +++ b/src/noteshared/standardnoteactionmanager.cpp
-@@ -25,7 +25,11 @@
+@@ -25,7 +25,7 @@
  #include <AkonadiCore/CollectionModifyJob>
  #include <AkonadiCore/ItemModifyJob>
  #endif
-+#if AKONADI_VERSION >= QT_VERSION_CHECK(5, 19, 41)
+-#include <Akonadi/Notes/NoteUtils>
 +#include <Akonadi/NoteUtils>
-+#else
- #include <Akonadi/Notes/NoteUtils>
-+#endif
  
  #include <KXmlGui/KActionCollection>
  #include <KLocalizedString>
+-- 
+GitLab
+
