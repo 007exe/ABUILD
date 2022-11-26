@@ -11,7 +11,7 @@ source=("https://github.com/sdispater/${_pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-poetry")
+build_deps=("python python-build python-installer python-poetry python-poetry-core")
 
 build() {
   go_src_dir
