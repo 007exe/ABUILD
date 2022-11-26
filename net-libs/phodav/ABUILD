@@ -1,0 +1,28 @@
+pkgname=phodav
+pkgver=3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("WebDav server implementation using libsoup (RFC 4918).")
+
+source=("https://download.gnome.org/sources/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("net-libs network")
+
+build_deps=("asciidoc gtk-doc meson xmlto avahi libsoup3")
+
+config_files=("etc/conf.d/spice-webdavd")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  install -dm755 ${pkgdir}/etc/conf.d/
+  echo 'SPICE_WEBDAVD_EXTRA_ARGS=""' > ${pkgdir}/etc/conf.d/spice-webdavd
+}
+
+
