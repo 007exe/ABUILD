@@ -1,0 +1,25 @@
+pkgname=tree-sitter
+pkgver=0.20.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An incremental parsing system for programming tools.")
+
+tags=("libs dev-libs")
+
+source=("https://github.com/tree-sitter/tree-sitter/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("gcc-libs rust")
+
+build() {
+  go_src_dir
+  burn_patches
+  cargo fetch --locked
+  make -j${numjobs}
+  cd cli
+  cargo build --release --locked --offline --all-features
+  cd ..
+  make DESTDIR=${pkgdir} PREFIX=/usr install
+  install -Dm 755 target/release/$pkgname -t ${pkgdir}/usr/bin
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
