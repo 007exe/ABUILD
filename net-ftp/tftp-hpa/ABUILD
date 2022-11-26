@@ -1,72 +1,38 @@
-#ABUILD created by/создан: Drakmail, coder at dps.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=tftp-hpa
 pkgver=5.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="tftp server"
-#longdesc=(""
-#)
+shortdesc=("Official tftp server.")
 
-source=("http://www.kernel.org/pub/software/network/tftp/tftp-hpa/${pkgname}-${pkgver}.tar.gz")
+source=("https://www.kernel.org/pub/software/network/tftp/tftp-hpa/${pkgname}-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("server net-ftp")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="server net-ftp"
+build_deps=("readline")
 
-#dependencies only needed to build package
-build_deps=""
+config_files=("etc/conf.d/tftpd")
 
-provides=""
-conflicts=""
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --without-tcpwrappers
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-adddep=""
-removedep=""
+# openrc
+  install -d ${pkgdir}/var/tftpd
+  install -D -m644 ${filedir}/tftpd.conf ${pkgdir}/etc/conf.d/tftpd
+  install -D -m755 ${filedir}/tftpd ${pkgdir}/etc/init.d/tftpd
 
-#for multi pkg abuild
-pkglist=
+# systemd
+  install -D -m644 ${filedir}/tftpd.conf ${pkgdir}/etc/conf.d/tftpd
+  install -d ${pkgdir}/srv/tftp
+  install -D -m644 ${filedir}/tftpd.service ${pkgdir}/usr/lib/systemd/system/tftpd.service
+  install -D -m644 ${filedir}/tftpd.socket ${pkgdir}/usr/lib/systemd/system/tftpd.socket
 
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-build()
-{
-go_src_dir
-burn_patches
-./configure --prefix=/usr --mandir=/usr/share/man --without-tcpwrappers 
-make
-make INSTALLROOT="${pkgdir}" install
-install -d "${pkgdir}/var/tftpd"
-install -D -m644 "${filedir}/tftpd.conf" "${pkgdir}/etc/conf.d/tftpd"
-install -D -m755 "${filedir}/tftpd" "${pkgdir}/etc/init.d/tftpd"
+  rm ${pkgdir}/usr/share/man/man8/tftpd.8
 }
-
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
