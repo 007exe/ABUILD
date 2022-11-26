@@ -1,0 +1,20 @@
+pkgname=libtermkey
+pkgver=0.22
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for easy processing of keyboard entry from terminal-based programs.")
+
+tags=("libs dev-libs")
+
+source=("http://www.leonerd.org.uk/code/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("unibilium")
+
+build() {
+  go_src_dir
+  burn_patches
+  make PREFIX=/usr
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
