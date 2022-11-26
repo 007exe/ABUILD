@@ -1,0 +1,25 @@
+pkgname=curlftpfs
+pkgver=0.9.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A filesystem for acessing FTP hosts based on FUSE and libcurl.")
+
+source=("https://downloads.sourceforge.net/sourceforge/curlftpfs/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs net-fs")
+
+build_deps=("curl fuse glib2")
+
+adddep=("curl fuse glib2")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
