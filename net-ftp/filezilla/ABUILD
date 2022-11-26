@@ -1,32 +1,28 @@
-
 pkgname=filezilla
-pkgver=3.9.0.1
+pkgver=3.62.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="The free FTP solution"
-longdesc=("filezilla: filezilla is a fast and reliable cross-platform FTP, FTPS and SFTP client with lots of useful features and an intuitive graphical user interface. Homepage: http://filezilla-project.org/")
+shortdesc=("Fast and reliable FTP, FTPS and SFTP client.")
 
-source=("http://downloads.sourceforge.net/project/${pkgname}/FileZilla_Client/${pkgver}/FileZilla_${pkgver}_src.tar.bz2")
+source=("https://download.filezilla-project.org/client/FileZilla_${pkgver}_src.tar.bz2")
 
-tags="network net-ftp"
+tags=("network net-ftp")
 
-build_deps="make gcc gcc-g++ coreutils binutils grep sed wxwidgets>=3.0.1"
+build_deps=("dbus xdg-utils wxwidgets-gtk3 libidn hicolor-icon-theme sqlite gnutls libfilezilla")
 
-BUILD_SYSTEM="autotools"
+adddep=("dbus xdg-utils wxwidgets-gtk3 libidn hicolor-icon-theme sqlite gnutls libfilezilla")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---enable-locales \
---enable-manualupdatecheck \
---disable-autoupdatecheck \
---with-dbus \
---with-tinyxml=builtin"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vif
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-manualupdatecheck \
+    --disable-autoupdatecheck \
+    --with-pugixml=builtin
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
