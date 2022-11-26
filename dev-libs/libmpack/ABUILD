@@ -1,0 +1,27 @@
+pkgname=libmpack
+pkgver=1.0.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple implementation of msgpack in C.")
+
+tags=("libs dev-libs")
+
+source=("https://github.com/libmpack/libmpack/archive/${pkgver}.tar.gz")
+
+build_deps=("make glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} PREFIX=/usr install
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
