@@ -1,73 +1,58 @@
-#ABUILD created by/создан: agr3ss0r, agr3ss0r86 at gmail.com 
 pkgname=psi
-svnver=`svn info http://psi-dev.googlecode.com/svn/trunk | grep "Revision:" | cut -f2 -d ' '`
-pkgver=0.15.$svnver
+pkglist=("psi-nowebengine")
+pkgver=1.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Psi+ - an modified version of Psi jabber client")
-longdesc=("Psi+ - an modified version of Psi jabber client")
+shortdesc=("Powerful XMPP (Jabber) client (Qt, C++) designed for power users.")
 
-source=("")
+source=("https://download.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-patch_opts=("")
+tags=("apps net-im")
 
-tags="xapps net-im"
+# qca
+build_deps=("cmake qt5-multimedia hunspell qt5-svg qt5-webengine qt5-x11extras libidn qca-qt5 qca-qt6")
 
-# Plugins list. Includes certain plugins
-# * - include all plugins
-# Available plugins: http://psi-dev.googlecode.com/svn/trunk/plugins/generic
-# Example: plugins_list="image translate"
-# includes only imageplugin and translateplugin to package
-plugins_list="*"
-# Use WebKit (http://psi-plus.com/wiki/doku.php/webkit)
-# values: (0|1)
-usewebkit=1
+# qca
+adddep=("hunspell qt5-svg qt5-webengine qt5-x11extras libidn")
+
+conflicts=("psi-nowebengine")
 
 build() {
-  sleep 0;pkgrel=1
-  mkdir $srcdir && cd $srcdir
-  
-  PSI_DIR=$srcdir
-  SYSLIBDIRNAME="lib"
-  ICONSETS="system clients activities moods affiliations roster"
-  WORK_OFFLINE=0
-  PATCH_LOG="${PSI_DIR}/psipatch.log"
-  SKIP_INVALID_PATCH=1
-  CONF_OPTS=""
-  [ $usewebkit -eq "1" ] && CONF_OPTS="${CONF_OPTS} --enable-webkit"
-  INSTALL_ROOT=$pkgdir 
-  PLUGINS=$plugins_list
-  TRANSLATIONS="ru"
-  
-  # checkout libpsibuild
-  die() { error "$@"; exit 1; }
-  if [ ! -f ./libpsibuild.sh -o "$WORK_OFFLINE" = 0 ]; then
-    [ -f libpsibuild.sh ] && { rm libpsibuild.sh || die "Delete error"; }
-    wget --no-check-certificate "https://raw.github.com/psi-plus/maintenance/master/scripts/posix/libpsibuild.sh" || die "Failed to update libpsibuild";
-  fi
-  
-  . ./libpsibuild.sh
-   
-  #############
-  # Go Go Go! #
-  #############
-  
-  check_env $CONF_OPTS || true
-  prepare_workspace || true
-  fetch_all || true
-  prepare_all || true
-  
-  revision=$rev
-  sleep 0;pkgver="$pkgver.$revision"
-  
-  compile_all || true
-  install_all || true
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -dm755 ${pkgdir}/usr/include/psi/plugins
+  install -m644 ../src/plugins/include/*.h ${pkgdir}/usr/include/psi/plugins
+  install -Dm644 ../psi.appdata.xml ${pkgdir}/usr/share/metainfo/psi.appdata.xml
 }
 
 
-after_build() {
-	set -e
-	set +e
+psi-nowebengine() {
+  pkgname=psi-nowebengine
+  shortdesc=("Powerful XMPP (Jabber) client (Qt, C++) designed for power users without WebEngine support.")
+  adddep=("hunspell minizip qca-qt5 qt5-svg qt5-x11extras libidn")
+  conflicts=("psi")
 }
 
+psi-nowebengine_prep() {
+  go_src_dir
+  mkdir -p build-nowebengine
+  cd build-nowebengine
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DENABLE_WEBKIT=OFF
+  make -j${numjobs} DESTDIR=${pkgdir} install
+  install -dm755 ${pkgdir}/usr/include/psi/plugins
+  install -m644 ../src/plugins/include/*.h ${pkgdir}/usr/include/psi/plugins
+
+  echo 'X-AppStream-Ignore=true' >> ${pkgdir}/usr/share/applications/psi.desktop
+}
