@@ -1,7 +1,4 @@
-#!/sbin/runscript
-# Copyright 1999-2009 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/xinetd/files/xinetd.rc6,v 1.23 2009/10/11 00:45:08 vapier Exp $
+#!/usr/bin/openrc-run
 
 opts="reload dump check"
 
@@ -11,7 +8,7 @@ depend() {
 
 start() {
 	ebegin "Starting xinetd"
-	start-stop-daemon --start --exec /usr/sbin/xinetd -- \
+	start-stop-daemon --start --exec /usr/bin/xinetd -- \
 		-pidfile /var/run/xinetd.pid ${XINETD_OPTS}
 	eend $?
 }
