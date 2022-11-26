@@ -9,8 +9,8 @@ source=("https://www.spice-space.org/download/gtk/${pkgname}-${pkgver}.tar.xz")
 
 tags=("net-misc apps")
 
-# phodav
-build_deps=("gobject-introspection meson spice-protocol usbutils vala wayland-protocols gst-plugins-base gst-plugins-good libcacard polkit usbredir")
+build_deps=("gobject-introspection meson spice-protocol usbutils vala phodav
+wayland-protocols gst-plugins-base gst-plugins-good libcacard polkit usbredir")
 
 build() {
   go_src_dir
