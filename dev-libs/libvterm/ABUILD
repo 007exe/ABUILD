@@ -1,0 +1,20 @@
+pkgname=libvterm
+pkgver=0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Abstract library implementation of a VT220/xterm/ECMA-48 terminal emulator.")
+
+tags=("libs dev-libs")
+
+source=("https://www.leonerd.org.uk/code/libvterm/libvterm-${pkgver}.tar.gz")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make PREFIX=/usr
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
