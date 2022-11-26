@@ -1,25 +1,24 @@
 pkgname=pvs-studio
-pkgver=7.13.48133.129
+pkgver=7.21.64848.262
 pkgbuild=1
 arch=('x86_64')
 
 shortdesc=("Static code analyzer for C, C++ and C#")
-longdesc=("")
 
-source=("https://files.pvs-studio.com/pvs-studio-$pkgver-$arch.tgz")
+source=("https://files.pvs-studio.com/pvs-studio-${pkgver}-${arch}.tgz")
 
-tags="develop dev-util"
+tags=("develop dev-util")
 
-build_deps="mkpkg"
+build_deps=("mkpkg")
 
 build() {
   go_src_dir
   cd bin
-  install -D -m 755 -t $pkgdir/usr/bin \
-    $pkgname \
-    $pkgname-analyzer \
+  install -D -m 755 -t ${pkgdir}/usr/bin \
+    ${pkgname} \
+    ${pkgname}-analyzer \
     plog-converter
 
   cd ../etc/bash_completion.d
-  install -D -m 644 -t $pkgdir/etc/bash_completion.d $pkgname.sh
+  install -D -m 644 -t ${pkgdir}/etc/bash_completion.d ${pkgname}.sh
 }
