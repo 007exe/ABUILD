@@ -267,4 +267,3 @@ build() {
     "${pkgdir}/etc/xml/docbook-xml"
 
 }
-
