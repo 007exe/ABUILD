@@ -1,7 +1,7 @@
 # NOTE: Иногда при обновлении следует удалить python-setuptools
 pkgname=python-setuptools
 pkgver=65.6.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Easily build and distribute Python packages.")
@@ -18,20 +18,36 @@ python-nspektr python-ordered-set python-packaging python-pyparsing python-tomli
 adddep=("python-appdirs python-jaraco.text python-more-itertools python-nspektr python-ordered-set
 python-packaging python-pyparsing python-tomli python-validate-pyproject")
 
+export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
+
 before_build(){
   go_src_dir
   burn_patches
-  rm -r */_vendor
-  rm -r */extern
-  find -name '*.py' -exec sed \
-       -e 's:from \w*[.]\+extern ::' -e 's:\w*[.]\+extern[.]::' \
-       -i {} + || die
+  rm -r {pkg_resources,setuptools}/{extern,_vendor} setuptools/config/_validate_pyproject
+  for _module in setuptools pkg_resources '' ; do
+      find . -name \*.py -exec sed -i \
+          -e 's/from '$_module.extern' import/import/' \
+          -e 's/from '$_module.extern'\./from /' \
+          -e 's/import '$_module.extern'\./import /' \
+          -e "s/__import__('$_module.extern./__import__('/" \
+          -e 's/from \.\.extern\./from /' \
+          {} +
+  done
+
+  sed -e 's/"-m", "build", "--wheel"/"-m", "build", "--wheel", "--no-isolation"/' \
+      -e 's/"-m", "build", "--sdist"/"-m", "build", "--sdist", "--no-isolation"/' \
+      -i setuptools/tests/fixtures.py
+
+  sed -e '/tag_build = .post/d' \
+      -e '/tag_date = 1/d' \
+      -i setup.cfg
+
+  sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python3|" setuptools/command/easy_install.py
 }
 
 build() {
   go_src_dir
-#  export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
-  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+#  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   SETUPTOOLS_USE_DISTUTILS=stdlib
   python setup.py build
   python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
