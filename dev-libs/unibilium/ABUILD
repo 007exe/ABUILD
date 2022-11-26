@@ -1,0 +1,19 @@
+pkgname=unibilium
+pkgver=2.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A terminfo parsing library.")
+
+tags=("libs dev-libs")
+
+source=("https://github.com/neovim/unibilium/archive/v${pkgver}.tar.gz")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make PREFIX=/usr
+  DESTDIR=${pkgdir} make install PREFIX=/usr
+}
