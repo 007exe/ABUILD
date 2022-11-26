@@ -1,0 +1,33 @@
+pkgname=docbook-utils
+pkgver=0.6.14
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Shell scripts to manage DocBook documents.")
+
+source=("https://sourceware.org/ftp/docbook-tools/new-trials/SOURCES/${pkgname}-${pkgver}.tar.gz")
+
+tags=("console app-text")
+
+build_deps=("perl-sgmls openjade docbook-dsssl docbook-sgml31")
+
+adddep=("openjade docbook-dsssl docbook-sgml31")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir} htmldir=/usr/share/doc/${pkgname}/html
+
+  for doctype in 'html' 'ps' 'dvi' 'man' 'pdf' 'rtf' 'tex' 'texi' 'txt'; do
+    ln -sv docbook2${doctype} ${pkgdir}/usr/bin/db2${doctype}
+    ln -sv "jw.1" ${pkgdir}/usr/share/man/man1/db2${doctype}
+  done
+
+  rm ${pkgdir}/usr/bin/db2html
+  install -p -m 755 ${filedir}/db2html ${pkgdir}/usr/bin/db2html
+}
