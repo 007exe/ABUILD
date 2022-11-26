@@ -1,40 +1,32 @@
 pkgname=libetpan
-pkgver=1.1
-pkgbuild=4
-arch=('auto')
-shortdesc="framework for different kinds of mail access: IMAP, SMTP, POP and NNTP"
+pkgver=1.9.4
+pkgbuild=1
+arch=("auto")
 
-source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+shortdesc=("A portable middleware for email access.")
 
+source=("https://github.com/dinhviethoa/${pkgname}/archive/${pkgver}.tar.gz")
 
-tags="libs net-libs"
+tags=("libs net-libs")
 
-build_deps="autoconf curl libssh2 expat"
-adddep=""
-removedep=""
+build_deps=("expat libgcrypt gnutls zlib cyrus-sasl")
 
-build() 
-{
+adddep=("libgcrypt gnutls zlib cyrus-sasl")
 
-go_src_dir
+build() {
+  go_src_dir
+  burn_patches
+  NOCONFIGURE=1 ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --disable-db \
+    --with-openssl=no \
+    --with-gnutls=yes
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./autogen.sh
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---enable-shared \
---enable-static \
---enable-fast-install \
---enable-db \
---disable-ipv6
-                  
-make -j${numjobs} || exit 1
-make install DESTDIR=${pkgdir} || exit 1
+  install -Dm644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
 }
-
