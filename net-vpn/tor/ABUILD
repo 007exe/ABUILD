@@ -1,44 +1,50 @@
 pkgname=tor
-pkgver=0.2.3.25
-pkgbuild=2
-arch=('auto')
+pkgver=0.4.7.11
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Anonymizing overlay network."
-source=("https://www.torproject.org/dist/${pkgname}-${pkgver}.tar.gz")
-tags="network net-misc"
-build_deps="ca-certificates openssl libevent"
-adddep="bash"
+shortdesc=("Anonymizing overlay network.")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---docdir=/usr/doc/${pkgname}-${pkgver} \
---disable-debug"
+source=("https://dist.torproject.org/${pkgname}-${pkgver}.tar.gz")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
-after_build()
-{
-echo ""
+tags=("network net-vpn")
 
-install -Dm755 $filedir/tor.initd-r4 $pkgdir/etc/init.d/tor || exit 1
-install -Dm0644 $filedir/logrotate.tor $pkgdir/etc/logrotate.d/tor.new || exit 1
+build_deps=("ca-certificates openssl libevent bash libseccomp zstd libcap")
 
-mv $pkgdir/etc/tor/torrc.sample $pkgdir/etc/tor/torrc.new || exit 1
-mv $pkgdir/etc/tor/tor-tsocks.conf $pkgdir/etc/tor/tor-tsocks.conf.new || exit 1
+adddep=("bash")
 
-mkdir -p $pkgdir/var/{run,lib,log}/tor
-chown 220:220 $pkgdir/var/{run,lib,log}/tor
-chmod 0700 $pkgdir/var/lib/tor
+config_files=("etc/tor/torrc")
 
-if [ -d $pkgdir/usr/doc/${pkgname}-${pkgver}/doc ]; then
- rm -rf $pkgdir/usr/doc/${pkgname}-${pkgver}/doc || exit 1
-fi
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  mv ${pkgdir}/etc/tor/torrc{.sample,}
 
+# SystemD
+  install -Dm 644 ${filedir}/*.service -t ${pkgdir}/usr/lib/systemd/system
+  install -Dm 644 ${filedir}/tor.sysusers ${pkgdir}/usr/lib/sysusers.d/tor.conf
+  install -Dm 644 ${filedir}/tor.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/tor.conf
+
+# OpenRC
+  install -Dm755 ${filedir}/tor.initd-r4 $pkgdir/etc/init.d/tor || exit 1
+  install -Dm0644 $filedir/logrotate.tor $pkgdir/etc/logrotate.d/tor.new || exit 1
+
+#  mv ${pkgdir}/etc/tor/torrc.sample ${pkgdir}/etc/tor/torrc.new || exit 1
+#  mv ${pkgdir}/etc/tor/tor-tsocks.conf ${pkgdir}/etc/tor/tor-tsocks.conf.new || exit 1
+
+  mkdir -p ${pkgdir}/var/{run,lib,log}/tor
+  chown 220:220 ${pkgdir}/var/{run,lib,log}/tor
+  chmod 0700 ${pkgdir}/var/lib/tor
+
+  if [ -d $pkgdir/usr/doc/${pkgname}-${pkgver}/doc ]; then
+   rm -rf $pkgdir/usr/doc/${pkgname}-${pkgver}/doc || exit 1
+  fi
+
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
