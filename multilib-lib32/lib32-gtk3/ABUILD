@@ -1,0 +1,44 @@
+pkgname=lib32-gtk3
+pkgver=3.24.35
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The GTK+ 3 package contains libraries used for creating graphical user interfaces for applications (32-bit).")
+
+source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgver%.*}/gtk+-${pkgver}.tar.xz")
+
+tags=("lib32 x11-libs")
+
+build_deps=("meson sassc wayland-protocols lib32-at-spi2-atk lib32-colord lib32-dbus
+lib32-gdk-pixbuf lib32-libcanberra lib32-libcups lib32-libepoxy lib32-librsvg
+lib32-libxcomposite lib32-libxcursor lib32-libxdamage lib32-libxinerama
+lib32-libxkbcommon lib32-libxrandr lib32-mesa lib32-pango lib32-wayland")
+
+adddep=("gtk3 lib32-gdk-pixbuf lib32-libcanberra lib32-libcups lib32-libepoxy lib32-librsvg
+lib32-libxcomposite lib32-libxcursor lib32-libxdamage lib32-libxinerama lib32-libxkbcommon
+lib32-libxrandr lib32-mesa lib32-pango lib32-wayland")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32 \
+    -D broadway_backend=true \
+    -D cloudproviders=false \
+    -D colord=yes \
+    -D gtk_doc=false \
+    -D introspection=false \
+    -D man=false \
+    -D tracker3=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+
+  rm -r ${pkgdir}/{etc,usr/{include,share}}
+  find ${pkgdir}/usr/bin -type f -not -name gtk-query-immodules-3.0 -delete
+  mv ${pkgdir}/usr/bin/gtk-query-immodules-3.0{,-32}
+}
