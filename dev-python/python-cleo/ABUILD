@@ -1,23 +1,27 @@
 pkgname=python-cleo
-pkgver=1.0.0a5
+pkgver=2.0.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Create beautiful and testable command-line interfaces")
-longdesc=("Create beautiful and testable command-line interfaces")
+shortdesc=("Create beautiful and testable command-line interfaces.")
 
-_pkgname=cleo
-source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/python-poetry/cleo/archive/$pkgver/cleo-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-pyproject2setuppy python-clikit")
+# python-rapidfuzz
+build_deps=("python python-build python-installer python-wheel python-poetry-core
+python-crashtest python-pylev python-typing_extensions")
 
-adddep=("python-clikit")
+# python-rapidfuzz
+adddep=("python-crashtest python-pylev python-typing_extensions")
 
 build() {
   go_src_dir
-  python -m pyproject2setuppy build
-  python -m pyproject2setuppy install --root=${pkgdir} --optimize=1 --skip-build
-  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  sed -e 's/\^/>=/g' \
+        -e 's/~=/>=/g' \
+        -i pyproject.toml
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
