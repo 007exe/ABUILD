@@ -1,0 +1,25 @@
+pkgname=python-websockets
+pkgver=10.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python implementation of the WebSocket Protocol (RFC 6455).")
+
+source=("https://github.com/aaugustin/websockets/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-sphinx python-sphinx-copybutton python-sphinx-furo
+python-sphinx-inline-tabs python-sphinxcontrib-spelling python-sphinxcontrib-trio python-sphinxext-opengraph")
+
+build() {
+  go_src_dir
+  python setup.py build
+  sphinx-build -b dirhtml docs docs/_build/html
+  sphinx-build -b man docs docs/_build/man
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 README.rst -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  cp -rT docs/_build/html ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 docs/_build/man/websockets.1 ${pkgdir}/usr/share/man/man1/${pkgname}.1
+}
