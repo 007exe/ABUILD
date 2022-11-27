@@ -1,0 +1,26 @@
+pkgname=lzlib
+pkgver=1.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library providing in-memory LZMA compression and decompression functions.")
+
+source=("https://download.savannah.gnu.org/releases/lzip/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-arch libs")
+
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --enable-shared
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm755 minilzip ${pkgdir}/usr/bin/minilzip
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
