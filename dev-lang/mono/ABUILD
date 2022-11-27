@@ -1,40 +1,100 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=mono
-pkgver=2.11.4
+pkgver=6.12.0.177
+strict_version=1
+# NOTE: Коммит версии
+_commit=ed0788bf61f08a1f0424de4be6f6af1949519e10
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Free implementation of the .NET platform including runtime and compiler"
+shortdesc=("Free implementation of the .NET platform including runtime and compiler.")
 
-source=("http://download.mono-project.com/sources/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("git:https://github.com/mono/mono"
+"git:https://github.com/mono/aspnetwebstack"
+"git:https://github.com/mono/Newtonsoft.Json"
+"git:https://github.com/mono/cecil"
+"git:https://github.com/mono/rx"
+"git:https://github.com/mono/ikvm-fork"
+"git:https://github.com/mono/ikdasm"
+"git:https://github.com/mono/reference-assemblies"
+"git:https://github.com/mono/NUnitLite"
+"git:https://github.com/mono/NuGet.BuildTasks"
+"git:https://github.com/mono/boringssl"
+"git:https://github.com/mono/corefx"
+"git:https://github.com/mono/bockbuild"
+"git:https://github.com/mono/linker"
+"git:https://github.com/mono/roslyn-binaries"
+"git:https://github.com/mono/corert"
+"git:https://github.com/mono/xunit-binaries"
+"git:https://github.com/mono/api-doc-tools"
+"git:https://github.com/mono/api-snapshot")
 
-tags="dev-util develop"
+tags=("dev-lang develop")
 
-build_deps="make gcc"
+# libgdiplus
+build_deps=("cmake git zlib python ca-certificates")
 
-docs="mcs/MIT.X11"
+adddep=("ca-certificates")
 
-build() {
-  go_src_dir
-  # build mono
-  ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --libdir=/usr/lib${LIBDIRSUFFIX} \
-              --with-libgdiplus=installed
-  make || return 1
-  make DESTDIR=${pkgdir} install || return 1
+before_build() {
+  cd ${srcdir}
+  mv mono_git_rx.src rx
+  mv mono_git_mono.src mono
+  mv mono_git_cecil.src cecil
+  mv mono_git_corefx.src corefx
+  mv mono_git_corert.src corert
+  mv mono_git_ikdasm.src ikdasm
+  mv mono_git_linker.src linker
+  mv mono_git_bockbuild.src bockbuild
+  mv mono_git_boringssl.src boringssl
+  mv mono_git_ikvm-fork.src ikvm-fork
+  mv mono_git_NUnitLite.src NUnitLite
+  mv mono_git_api-snapshot.src api-snapshot
+  mv mono_git_api-doc-tools.src api-doc-tools
+  mv mono_git_xunit-binaries.src xunit-binaries
+  mv mono_git_aspnetwebstack.src aspnetwebstack
+  mv mono_git_Newtonsoft.Json.src Newtonsoft.Json
+  mv mono_git_roslyn-binaries.src roslyn-binaries
+  mv mono_git_NuGet.BuildTasks.src NuGet.BuildTasks
+  mv mono_git_reference-assemblies.src reference-assemblies
 
-  # build jay
-  cd mcs/jay
-  make || return 1
-  make DESTDIR=${pkgdir} prefix=/usr INSTALL=../../install-sh install
+  cd mono
+  git checkout ${_commit}
+
+  git submodule init
+  git config submodule."external/aspnetwebstack".url ${srcdir}/aspnetwebstack
+  git config submodule."external/Newtonsoft.Json".url ${srcdir}/Newtonsoft.Json
+  git config submodule."external/cecil".url ${srcdir}/cecil
+  git config submodule."external/rx".url ${srcdir}/rx
+  git config submodule."external/ikvm".url ${srcdir}/ikvm-fork
+  git config submodule."external/ikdasm".url ${srcdir}/ikdasm
+  git config submodule."external/reference-assemblies".url ${srcdir}/reference-assemblies
+  git config submodule."external/nunit-lite".url ${srcdir}/NUnitLite
+  git config submodule."external/nuget-buildtasks".url ${srcdir}/NuGet.BuildTasks
+  git config submodule."external/cecil-legacy".url ${srcdir}/cecil
+  git config submodule."external/boringssl".url ${srcdir}/boringssl
+  git config submodule."external/corefx".url ${srcdir}/corefx
+  git config submodule."external/bockbuild".url ${srcdir}/bockbuild
+  git config submodule."external/linker".url ${srcdir}/linker
+  git config submodule."external/roslyn-binaries".url ${srcdir}/roslyn-binaries
+  git config submodule."external/corert".url ${srcdir}/corert
+  git config submodule."external/xunit-binaries".url ${srcdir}/xunit-binaries
+  git config submodule."external/api-doc-tools".url ${srcdir}/api-doc-tools
+  git config submodule."external/api-snapshot".url ${srcdir}/api-snapshot
+  git submodule update --recursive
 }
 
-
-after_build(){
-  go_src_dir
-  #fix .pc file to be able to request mono on what it depends, fixes #go-oo build
-  sed -i -e "s:#Requires:Requires:" ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/mono.pc
-  echo "End after_build"
+build() {
+ cd ${srcdir}/mono
+  CFLAGS+=" -ffat-lto-objects" \
+  ./autogen.sh \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --bindir=/usr/bin \
+    --sbindir=/usr/bin \
+    --with-mcs-docs=no
+  make -j${numjobs}
+  make -C mcs/jay
+  make DESTDIR=${pkgdir} install
+  make -C mcs/jay DESTDIR=${pkgdir} prefix=/usr INSTALL=../../install-sh install
+  install -Dm 644 ${filedir}/mono.binfmt.d ${pkgdir}/usr/lib/binfmt.d/mono.conf
 }
