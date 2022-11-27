@@ -1,5 +1,5 @@
 pkgname=postgis
-pkgver=3.2.1
+pkgver=3.3.1
 pkgbuild=1
 arch=("auto")
 
@@ -16,9 +16,7 @@ build() {
   burn_patches
   autoreconf -vfi
   ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static
+    --prefix=/usr
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
