@@ -9,7 +9,7 @@ source=("https://github.com/vslavik/poedit/releases/download/v$pkgver-oss/poedit
 
 tags=("app-i18n apps")
 
-build_deps=("boost gtkspell lucene++ wxwidgets-gtk3 webkit2gtk")
+build_deps=("boost gtkspell lucene++ wxwidgets-gtk3 webkit2gtk gtkspell")
 
 build(){
   go_src_dir
