@@ -1,32 +1,38 @@
-#ABUILD created by/создан: medved, medved55rus at gmail.com 
-#----------------------------- General vars --------------------------------------
 pkgname=reaver
-pkgver=1.4
+pkgver=1.6.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="brute force attack tool against an access point's WiFi Protected Setup pin number"
+shortdesc=("Brute force attack against Wifi Protected Setup.")
 
-source=("http://reaver-wps.googlecode.com/files/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/t6x/reaver-wps-fork-t6x/archive/v${pkgver}.tar.gz")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-tags="network net-wireless"
+tags=("network net-wireless")
 
-#----------------------------- Make PKG --------------------------------------
-before_build()
-{
-cd ${srcdir}/${pkgname}-${pkgver}/src
+build_deps=("glibc libpcap")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd src
+  sed 's|CFLAGS=|CFLAGS+=|' -i Makefile
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc
+  make CONFDIR=/etc/reaver
+  make DESTDIR=${pkgdir} install
+
+  install -Dm 755 {reaver,wash} -t ${pkgdir}/usr/bin
+  install -dm 755 ${pkgdir}/etc/reaver
+  install -Dm 644 ../docs/README -t ${pkgdir}/usr/share/doc/reaver
+  install -Dm 644 ../docs/reaver.1 -t ${pkgdir}/usr/share/man/man1
 }
 
-build()
-{
-./configure --prefix=/usr
-make
-}
-
-after_build()
-{
-install -D -m755 ${srcdir}/${pkgname}-${pkgver}/src/reaver $pkgdir/usr/bin/reaver
-install -D -m755 ${srcdir}/${pkgname}-${pkgver}/src/wash ${pkgdir}/usr/bin/wash
-install -D -m644 ${srcdir}/${pkgname}-${pkgver}/docs/reaver.1.gz ${pkgdir}/usr/share/man/man1/reaver.1.gz
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
