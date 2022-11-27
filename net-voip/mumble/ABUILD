@@ -1,42 +1,75 @@
 pkgname=mumble
-pkgver=1.2.8
+pkglist=("murmur")
+pkgver=1.4.287
 pkgbuild=1
-arch=('auto')
-shortdesc="Low latency VoIP client"
-source=("http://downloads.sourceforge.net/mumble/$pkgname-$pkgver.tar.gz")
-tags="network media-sound"
-build_deps="qt4 protobuf boost inputproto libXi libsndfile libX11 speex celt"
+arch=("auto")
 
+shortdesc=("An Open Source, low-latency, high quality voice chat software.")
+
+source=("https://github.com/mumble-voip/mumble/releases/download/v${pkgver}/mumble-${pkgver}.tar.gz")
+
+tags=("network net-voip")
+
+build_deps=("avahi boost cmake poco protobuf python qt5-tools speech-dispatcher libcap
+alsa-lib hicolor-icon-theme jack libpulse libsndfile libspeechd libx11 libxi grpc zeroc-ice
+mesa opus qt5-svg speex xdg-utils")
+
+adddep=("hicolor-icon-theme")
 
 build() {
-    go_src_dir
-    # Building mumble
-    qmake main.pro \
-      CONFIG+="bundled-celt no-bundled-speex no-speechd no-g15 no-xevie no-server \
-      no-embed-qt-translations no-update-packaged no-pulseaudio no-bonjour" \
-      DEFINES+="PLUGIN_PATH=/usr/lib${LIBDIRSUFFIX}/mumble"
-    #no-bundled-celt
-    make -j${numjobs} release
+  go_src_dir
+  burn_patches
+  export PKG_CONFIG_PATH=/usr/lib/openssl-1.1/pkgconfig
+  local _build_number="$(cut -d '.' -f 3 <<< "$pkgver")"
+  cmake \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_BUILD_TYPE=None \
+    -D BUILD_NUMBER="$_build_number" \
+    -D warnings-as-errors=OFF \
+    -W no-dev \
+    -D bundled-opus=OFF \
+    -D bundled-speex=OFF \
+    -D update=OFF \
+    -D server=OFF \
+    -B build-client
+  make VERBOSE=1 -C build-client
+  make DESTDIR=${pkgdir} install -C build-client
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
-after_build() {
-    go_src_dir
+murmur() {
+  pkgname=murmur
+  shortdesc=("An Open Source, low-latency, high quality voice chat software (server).")
+  config_files=("etc/murmur.ini")
+}
 
-    # create directories and copy files
-    mkdir -p $pkgdir/usr/lib$LIBDIRSUFFIX/mumble
-    install -m755 -D ./release/mumble $pkgdir/usr/bin/mumble
-    #install -m755 -D ./release/mumble11x $pkgdir/usr/bin/mumble11x
-    install -m755 -D ./scripts/mumble-overlay $pkgdir/usr/bin/mumble-overlay
-    install -m755 -D ./release/libmumble.so.$pkgver $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/
-    ln -s libmumble.so.$pkgver $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/libmumble.so
-    ln -s libmumble.so.$pkgver $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/libmumble.so.1
-    ln -s libmumble.so.$pkgver $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/libmumble.so.1.2
-    install -m755 -D ./release/plugins/liblink.so $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/
-    install -m755 -D ./release/libcelt* $pkgdir/usr/lib$LIBDIRSUFFIX/mumble/
-    install -m755 -d $pkgdir/usr/share/applications
-    install -m644 -D ./scripts/mumble.desktop $pkgdir/usr/share/applications/mumble.desktop
-    install -m644 -D $filedir/mumble11x.desktop $pkgdir/usr/share/applications/mumble11x.desktop
-    install -m755 -d $pkgdir/usr/man/man1
-    install -m644 -D ./man/mum* $pkgdir/usr/man/man1/
-    install -m644 -D ./icons/mumble.svg $pkgdir/usr/share/icons/hicolor/scalable/apps/mumble.svg
+murmur_prep() {
+  go_src_dir
+  export PKG_CONFIG_PATH=/usr/lib/openssl-1.1/pkgconfig
+  local _build_number="$(cut -d '.' -f 3 <<< "$pkgver")"
+  cmake \
+    -D CMAKE_INSTALL_PREFIX=/usr
+    -D CMAKE_BUILD_TYPE=None
+    -D BUILD_NUMBER="$_build_number"
+    -D warnings-as-errors=OFF
+    -W no-dev
+    -D grpc=ON \
+    -D client=OFF \
+    -B build-server
+  make VERBOSE=1 -C build-server
+  make DESTDIR=${pkgdir} install -C build-server
+  mv -v ${pkgdir}/usr/bin/{mumble-server,murmurd}
+  mv -v ${pkgdir}/usr/share/man/man1/{mumble-server,murmurd}.1
+  mv -v ${pkgdir}/usr/share/man/man1/{mumble-server,murmur}-user-wrapper.1
+  (
+    cd ..
+    install -vDm 640 scripts/murmur.ini -t ${pkgdir}/etc
+    install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+    install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+    install -vDm 644 src/murmur/{Murmur.ice,MurmurRPC.proto} -t ${pkgdir}/usr/share/${pkgname}
+  )
+  install -vDm 644 ${filedir}/murmur.dbus.conf ${pkgdir}/usr/share/dbus-1/system.d/murmur.conf
+  install -vDm 644 ${filedir}/murmur.service -t ${pkgdir}/usr/lib/systemd/system/
+  install -vDm 644 ${filedir}/murmur.sysusers ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
+  install -vDm 644 ${filedir}/murmur.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf
 }
