@@ -14,9 +14,19 @@ build_deps=("texlive-core")
 
 adddep=("texlive-core")
 
-package() {
+build() {
   go_src_dir
   burn_patches
+  for p in *.tar.xz; do
+      case $p in
+          aleph.*|lambda.*|omega.*)
+              ;;
+          *)
+              bsdtar -xf $p
+              ;;
+      esac
+  done
+  rm -rf {tlpkg,doc,source}
   install -m755 -d ${pkgdir}/var/lib/texmf/arch/installedpkgs
   sed -i '/^#/d' CONTENTS
   install -m644 CONTENTS ${pkgdir}/var/lib/texmf/arch/installedpkgs/${pkgname}_${_revnr}.pkgs
