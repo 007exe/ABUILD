@@ -14,9 +14,6 @@ build_deps=("make patch ncurses")
 build(){
   go_src_dir
   burn_patches
-pwd
-ls
-pwd
   make
   install -Dm755 unace ${pkgdir}/usr/bin/${pkgname}
   install -Dm644 licence ${pkgdir}/usr/share/licenses/${pkgname}/license
