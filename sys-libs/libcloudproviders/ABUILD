@@ -1,6 +1,6 @@
 pkgname=libcloudproviders
 pkgver=0.3.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("DBus API that allows cloud storage sync clients to expose their services")
@@ -18,7 +18,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D enable-gtk-doc=true
+    -D enable-gtk-doc=false
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 }
