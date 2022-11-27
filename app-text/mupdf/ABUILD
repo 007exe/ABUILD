@@ -1,16 +1,19 @@
 pkgname=mupdf
-pkgver=1.19.1
+pkglist=("libmupdf mupdf-gl mupdf-tools")
+pkgver=1.21.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Lightweight PDF and XPS viewer.")
-longdesc=("MuPDF is a lightweight PDF and XPS viewer.")
 
-source=("https://mupdf.com/downloads/archive/mupdf-${pkgver/_/}-source.tar.xz")
+source=("https://mupdf.com/downloads/archive/mupdf-${pkgver/_/}-source.tar.gz")
 
 tags=("utils app-text")
 
-build_deps=("desktop-file-utils freetype freeglut glu harfbuzz jbig2dec libjpeg-turbo mesa openjpeg2 libxext")
+build_deps=("desktop-file-utils freetype freeglut glu harfbuzz
+jbig2dec libjpeg-turbo mesa openjpeg2 libxext openssl gumbo-parser")
+
+conflicts=("mupdf-gl")
 
 build() {
   go_src_dir
@@ -23,7 +26,64 @@ build() {
   USE_SYSTEM_LIBS='yes'
   export USE_SYSTEM_LIBS
   export CFLAGS+=' -ffat-lto-objects'
-  make build=release libs apps shared=yes
+  make build=release libs apps
+  install -D -m0755 build/release/mupdf-x11 ${pkgdir}/usr/bin/mupdf
+  install -D -m0644 docs/man/mupdf.1 ${pkgdir}/usr/share/man/man1/mupdf.1
+  install -d ${pkgdir}/usr/share/doc/mupdf
+  install -m0644  README COPYING CHANGES ${pkgdir}/usr/share/doc/mupdf
+  install -D -m0644 ${filedir}/mupdf.desktop ${pkgdir}/usr/share/applications/mupdf.desktop
+  install -D -m0644 ${filedir}/mupdf.xpm ${pkgdir}/usr/share/pixmaps/mupdf.xpm
+}
+
+#############################################################################################################
+
+libmupdf() {
+  pkgname=libmupdf
+  shortdesc=("Library for Lightweight PDF and XPS viewer.")
+  tags=("libs app-text")
+}
+
+libmupdf_prep() {
+  go_src_dir
   make build=release prefix=${pkgdir}/usr install
+  rm -rf ${pkgdir}/usr/{bin,share/man}
+  mv ${pkgdir}/usr/share/doc/mupdf ${pkgdir}/usr/share/doc/libmupdf
   find ${pkgdir}/usr/include ${pkgdir}/usr/share ${pkgdir}/usr/lib -type f -exec chmod 0644 {} +
+}
+
+#############################################################################################################
+
+mupdf-gl() {
+  pkgname=mupdf-gl
+  shortdesc=("Lightweight PDF and XPS viewer with OpenGL backend.")
+  conflicts=("mupdf")
+  provides=("mupdf")
+  adddep=("desktop-file-utils freetype freeglut glu harfbuzz jbig2dec libjpeg-turbo openjpeg2 openssl gumbo-parser")
+}
+
+mupdf-gl_prep() {
+  go_src_dir
+  install -D -m0755 build/release/mupdf-gl ${pkgdir}/usr/bin/mupdf
+  install -D -m0644 docs/man/mupdf.1 ${pkgdir}/usr/share/man/man1/mupdf.1
+  install -d ${pkgdir}/usr/share/doc/mupdf
+  install -m0644 README COPYING CHANGES ${pkgdir}/usr/share/doc/mupdf
+  install -D -m0644 ${filedir}/mupdf.desktop ${pkgdir}/usr/share/applications/mupdf.desktop
+  install -D -m0644 ${filedir}/mupdf.xpm ${pkgdir}/usr/share/pixmaps/mupdf.xpm
+}
+
+#############################################################################################################
+
+mupdf-tools() {
+  pkgname=mupdf-tools
+  shortdesc=("Tools for Lightweight PDF and XPS viewer.")
+  adddep=("mupdf freetype jbig2dec libjpeg-turbo openjpeg2 harfbuzz openssl gumbo-parser")
+}
+
+mupdf-tools_prep() {
+  go_src_dir
+  install -D -m0755 build/release/mutool ${pkgdir}/usr/bin/mutool
+  install -D -m0755 build/release/muraster ${pkgdir}/usr/bin/muraster
+  install -D -m0644 docs/man/mutool.1 ${pkgdir}/usr/share/man/man1/mutool.1
+  install -d ${pkgdir}/usr/share/doc/mupdf-tools
+  install -m0644 README COPYING CHANGES ${pkgdir}/usr/share/doc/mupdf-tools
 }
