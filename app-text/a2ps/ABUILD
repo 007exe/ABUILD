@@ -13,20 +13,31 @@ build_deps=("gperf psutils imagemagick perl")
 
 adddep=("psutils")
 
+config_files=("etc/a2ps/a2ps.cfg
+etc/a2ps/a2ps-site.cfg")
+
 before_build() {
   go_src_dir
-  sed -i -e '/^AM_C_PROTOTYPES/d' -e '/^AUTOMAKE_OPTIONS.*ansi2knr/d' -e 's:AM_CONFIG_HEADER:AC_CONFIG_HEADERS:' \
-      -e 's:AM_PROG_CC_STDC:AC_PROG_CC:' configure.in {contrib/sample,lib,src}/Makefile.am m4/protos.m4
-  sed -i "s:^countdictstack: \0:" contrib/psset.in
+  rm -f {.,ogonkify}/aclocal.m4
+  sed -i \
+    -e '/^AM_C_PROTOTYPES/d' \
+    -e '/^AUTOMAKE_OPTIONS.*ansi2knr/d' \
+    -e 's:AM_CONFIG_HEADER:AC_CONFIG_HEADERS:' \
+    -e 's:AM_PROG_CC_STDC:AC_PROG_CC:' \
+    configure.in {contrib/sample,lib,src}/Makefile.am m4/protos.m4
   burn_patches
+  autoreconf -vfi
 }
 
 before_build(){
   go_src_dir
-  libtoolize --force --copy
-  autoreconf --force --install -I m4
-  LIBS+="-lm" ./configure --prefix=/usr --sysconfdir=/etc/a2ps \
-    --includedir=/usr/include --enable-shared --enable-nls
+  LIBS+="-lm"
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc/a2ps \
+    --includedir=/usr/include \
+    --enable-shared \
+    --enable-nls
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
