@@ -10,10 +10,11 @@ source=("https://downloads.sourceforge.net/project/dblatex/dblatex/${pkgname}-${
 
 tags=("app-text develop")
 
-# texlive-htmlxml texlive-latexextra texlive-pictures texlive-science
-build_deps=("docbook-xsl docbook-xml libxslt python texlive-core")
+build_deps=("docbook-xsl docbook-xml libxslt python texlive-core
+texlive-formatsextra texlive-latexextra texlive-pictures texlive-science")
 
-adddep=("docbook-xsl docbook-xml libxslt python")
+adddep=("docbook-xsl docbook-xml libxslt python texlive-formatsextra
+texlive-latexextra texlive-pictures texlive-science")
 
 build(){
   go_src_dir
