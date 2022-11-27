@@ -8,7 +8,7 @@ longdesc=("JS is Mozilla's JavaScript engine written in C. JS78 is taken from Fi
 
 source=("https://archive.mozilla.org/pub/firefox/releases/${pkgver}esr/source/firefox-${pkgver}esr.source.tar.xz")
 
-tags=("libs sys-libs")
+tags=("libs dev-libs")
 
 build_deps=("autoconf2.13 rust which icu gcc-libs readline zlib python-setuptools python-psutil rust llvm clang lld compiler-rt")
 
@@ -23,7 +23,7 @@ build() {
   export NM=llvm-nm
   export RANLIB=llvm-ranlib
 
-  cd firefox-$pkgver/obj
+  cd firefox-${pkgver}/obj
 
   sh ../js/src/configure \
     --prefix=/usr \
