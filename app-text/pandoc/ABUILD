@@ -1,0 +1,64 @@
+pkgname=pandoc
+pkgver=2.19.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Conversion between markup formats.")
+
+source=("https://hackage.haskell.org/packages/archive/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs app-text")
+
+build_deps=("ghc uusi haskell-diff haskell-tasty haskell-tasty-golden haskell-tasty-hunit haskell-tasty-lua haskell-tasty-quickcheck
+ghc-libs haskell-glob haskell-juicypixels haskell-sha haskell-aeson haskell-aeson-pretty haskell-attoparsec haskell-base64 haskell-blaze-html
+haskell-blaze-markup haskell-case-insensitive haskell-citeproc haskell-commonmark haskell-commonmark-extensions haskell-commonmark-pandoc
+haskell-connection haskell-data-default haskell-doclayout haskell-doctemplates haskell-emojis haskell-file-embed haskell-gridtables
+haskell-haddock-library haskell-hslua haskell-hslua-aeson haskell-hslua-module-doclayout haskell-hslua-module-path haskell-hslua-module-system
+haskell-hslua-module-text haskell-hslua-module-version haskell-http-client haskell-http-client-tls haskell-http-types haskell-ipynb
+haskell-jira-wiki-markup haskell-lpeg haskell-network haskell-network-uri haskell-pandoc-lua-marshal haskell-pandoc-types haskell-pretty-show
+haskell-random haskell-safe haskell-scientific haskell-servant-server haskell-skylighting haskell-skylighting-core haskell-split haskell-syb
+haskell-tagsoup haskell-temporary haskell-texmath haskell-text-conversions haskell-unicode-collation haskell-unicode-transforms haskell-wai
+haskell-wai-extra haskell-warp haskell-xml haskell-xml-conduit haskell-xml-types haskell-yaml haskell-zip-archive haskell-zlib")
+
+adddep=("ghc-libs haskell-glob haskell-juicypixels haskell-sha haskell-aeson haskell-aeson-pretty haskell-attoparsec haskell-base64 haskell-blaze-html
+haskell-blaze-markup haskell-case-insensitive haskell-citeproc haskell-commonmark haskell-commonmark-extensions haskell-commonmark-pandoc
+haskell-connection haskell-data-default haskell-doclayout haskell-doctemplates haskell-emojis haskell-file-embed haskell-gridtables
+haskell-haddock-library haskell-hslua haskell-hslua-aeson haskell-hslua-module-doclayout haskell-hslua-module-path haskell-hslua-module-system
+haskell-hslua-module-text haskell-hslua-module-version haskell-http-client haskell-http-client-tls haskell-http-types haskell-ipynb
+haskell-jira-wiki-markup haskell-lpeg haskell-network haskell-network-uri haskell-pandoc-lua-marshal haskell-pandoc-types haskell-pretty-show
+haskell-random haskell-safe haskell-scientific haskell-servant-server haskell-skylighting haskell-skylighting-core haskell-split haskell-syb
+haskell-tagsoup haskell-temporary haskell-texmath haskell-text-conversions haskell-unicode-collation haskell-unicode-transforms haskell-wai
+haskell-wai-extra haskell-warp haskell-xml haskell-xml-conduit haskell-xml-types haskell-yaml haskell-zip-archive haskell-zlib")
+
+conflicts=("haskell-pandoc")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i "s|let env' = dynlibEnv ++ |let env' = dynlibEnv ++ [(\"LD_LIBRARY_PATH\", \"$PWD/dist/build\")] ++ |" test/Tests/Command.hs
+  uusi -u gridtables ${pkgname}.cabal
+  runhaskell Setup configure -O \
+    --enable-shared \
+    --enable-executable-dynamic \
+    --disable-library-vanilla \
+    --prefix=/usr \
+    --docdir=/usr/share/doc/${pkgname} \
+    --datasubdir=${pkgname} \
+    --enable-tests \
+    --dynlibdir=/usr/lib \
+    --libsubdir=\${compiler}/site-local/\${pkgid} \
+    --ghc-option=-fllvm \
+    -f-embed_data_files \
+    -f-static \
+    -f-lua53
+    runhaskell Setup build $MAKEFLAGS
+    runhaskell Setup register --gen-script
+    runhaskell Setup unregister --gen-script
+    sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
+    sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
+  install -D -m744 register.sh ${pkgdir}/usr/share/haskell/register/${pkgname}.sh
+  install -D -m744 unregister.sh ${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh
+  runhaskell Setup copy --destdir=${pkgdir}
+  rm ${pkgdir}/usr/share/doc/${pkgname}/COPYING.md
+  install -Dm644 man/pandoc.1 -t ${pkgdir}/usr/share/man/man1/
+}
