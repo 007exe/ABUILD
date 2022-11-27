@@ -9,6 +9,10 @@ source=("https://github.com/redis/redis/archive/${pkgver}.tar.gz")
 
 tags=("dev-db server")
 
+build_deps=("openssl jemalloc grep shadow")
+
+adddep=("jemalloc grep shadow")
+
 config_files=("etc/redis/redis.conf
 etc/redis/sentinel.conf")
 
