@@ -1,6 +1,6 @@
 pkgname=compiler-rt
 pkgver=14.0.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Compiler runtime libraries for clang.")
@@ -14,18 +14,13 @@ build_deps=("gcc-libs llvm cmake ninja python")
 
 build(){
   cd ${pkgname}-${pkgver}.src
+  burn_patches
   mkdir build
   cd build
   cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_SKIP_RPATH=ON \
-    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
-    -DCOMPILER_RT_BUILD_MEMPROF=OFF \
-    -DCOMPILER_RT_BUILD_ORC=OFF \
-    -DCOMPILER_RT_BUILD_PROFILE=OFF \
-    -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
-    -DCOMPILER_RT_BUILD_XRAY=OFF \
     -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/${pkgver}
   ninja
   DESTDIR=${pkgdir} ninja install
