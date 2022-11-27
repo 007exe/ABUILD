@@ -1,75 +1,50 @@
-#ABUILD created by/создан: CyberMix, mos.mix at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=kismet
-pkgver=2011.03
+pkgver=2022_08_R1
+_realver="${pkgver//_/-}"
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Kismet wireless network detector."
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Kismet is an 802.11 layer2 wireless network detector, sniffer, and intrusion detection system. Kismet will work with any wireless card which supports raw monitoring (rfmon) mode, and (with appropriate hardware) can sniff 802.11b, 802.11a, 802.11g, and 802.11n traffic. Kismet also supports plugins which allow sniffing other media such as DECT. "
-)
+shortdesc=("802.11 layer2 wireless network detector, sniffer, and intrusion detection system.")
 
-source=("https://www.kismetwireless.net/code/kismet-2011-03-R2.tar.gz")
+source=("https://www.kismetwireless.net/code/${pkgname}-${_realver}.tar.xz")
 
-patch_opts=("")
+tags=("network net-analyzer")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="network net-analyzer"
+build_deps=("python-setuptools libpcap pcre bluez-libs libcap protobuf-c
+sqlite networkmanager gcc-libs libusb libnl glibc zlib elfutils lm_sensors
+python python-setuptools python-protobuf python-pyserial python-numpy
+python-websockets libwebsockets libcap-ng")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("python-setuptools python-protobuf python-pyserial python-numpy python-websockets")
 
-provides=""
-conflicts=""
+# NOTE: Это опциональные зависимости
+removedep=("gpsd wireshark-cli wireshark-cli sox festival flite")
 
-adddep=""
-removedep=""
+config_files=("etc/kismet/kismet.conf
+etc/kismet/kismet_80211.conf
+etc/kismet/kismet_alerts.conf
+etc/kismet/kismet_filter.conf
+etc/kismet/kismet_httpd.conf
+etc/kismet/kismet_logging.conf
+etc/kismet/kismet_memory.conf
+etc/kismet/kismet_uav.conf")
 
-#for multi pkg abuild
-pkglist=
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --localstatedir=/var \
+    --sysconfdir=/etc/kismet \
+    --with-suidgroup=315
+  make -j${numjobs} all plugins
+  make DESTDIR=${pkgdir} install
 
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
+  chmod u+w ${pkgdir}/usr/bin/kismet*
+  chmod o-x ${pkgdir}/usr/bin/kismet_cap*
+  chown 0:315 ${pkgdir}/usr/bin/kismet_cap*
 
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+  install -Dm 644 ${filedir}/kismet.sysusers ${pkgdir}/usr/lib/sysusers.d/kismet.conf
 }
