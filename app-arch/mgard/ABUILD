@@ -1,16 +1,15 @@
 pkgname=mgard
-pkgver=0.1.0
-pkgbuild=2
+pkgver=1.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("MultiGrid Adaptive Reduction of Data.")
-longdesc=("MGARD (MultiGrid Adaptive Reduction of Data) is a technique for multilevel lossy compression of scientific data based on the theory of multigrid methods. We encourage you to make a GitHub issue if you run into any problems using MGARD, have any questions or suggestions, etc.")
 
 source=("https://github.com/CODARcode/MGARD/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("base app-arch")
 
-build_deps=("glibc zlib zstd cmake")
+build_deps=("cmake blas lapack glibc yaml-cpp zlib zstd")
 
 build() {
   go_src_dir
