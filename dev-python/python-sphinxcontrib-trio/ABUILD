@@ -1,0 +1,22 @@
+pkgname=python-sphinxcontrib-trio
+pkgver=1.1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Make Sphinx better at documenting Python functions and methods.")
+
+source=("https://github.com/python-trio/sphinxcontrib-trio/archive/v${pkgver}/${_pyname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-sphinx")
+
+adddep=("python-sphinx")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install -O1 --root=${pkgdir} --skip-build
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 README.rst -t ${pkgdir}/usr/share/doc/${pkgname}
+}
