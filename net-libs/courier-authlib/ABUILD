@@ -1,74 +1,61 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=courier-authlib
-pkgver=0.63.0
+pkgver=0.71.6
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="courier authentification library"
-#longdesc=(""
-#)
-#https://sourceforge.net/projects/courier/files/authlib/0.63.0/courier-authlib-0.63.0.tar.bz2/download
-source=("http://downloads.sourceforge.net/sourceforge/courier/authlib/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+shortdesc=("Authentication library for the Courier mailserver(s).")
 
-patch_opts=("")
+source=("http://downloads.sourceforge.net/project/courier/authlib/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="libs sys-libs"
+tags=("libs sys-libs")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("openssl gdbm perl libtool expect procps-ng expect linux-pam openldap mariadb-libs postgresql-libs courier-unicode")
 
-provides=""
-conflicts=""
+config_files=("etc/authlib/authdaemonrc
+etc/authlib/authldaprc
+etc/authlib/authmysqlrc
+etc/authlib/authpgsqlrc")
 
-adddep=""
-removedep=""
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
+    --with-db=gdbm \
+    --with-mailuser=courier \
+    --with-mailgroup=courier \
+    --with-authpam \
+    --with-authpwd \
+    --with-authshadow \
+    --with-authldap \
+    --with-authmysql \
+    --with-authpgsql \
+    --with-authuserdb \
+    --with-authcram \
+    --with-authdaemon \
+    --with-authdaemonvar=/run/authdaemon
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-#for multi pkg abuild
-pkglist=
+  for _distfile in ${pkgdir}/etc/authlib/*.dist; do
+    chown 72:72 ${_distfile}
+    mv ${_distfile} ${pkgdir}/etc/authlib/`basename ${_distfile} .dist`
+  done
 
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
+  install -Dm 444 authldap.schema ${pkgdir}/etc/openldap/schema/courier.schema
 
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
+  chown 72:72 ${pkgdir}/usr/lib/courier-authlib
 
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
+  install -Dm 644 ${filedir}/courier.conf ${pkgdir}/usr/lib/sysusers.d/courier.conf
 
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
+  install -Dm 644 ${filedir}/authdaemond.service ${pkgdir}/usr/lib/systemd/system/authdaemond.service
 
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
+  install -Dm 644 ${filedir}/courier-authlib.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/courier-authlib.conf
 
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+  mkdir -p ${pkgdir}/var/spool/courier
+}
