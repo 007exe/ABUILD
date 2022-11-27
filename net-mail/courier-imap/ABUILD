@@ -1,74 +1,56 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=courier-imap
-pkgver=4.10.0
+pkgver=5.1.9
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Courier IMAP server"
-#longdesc=(""
-#)
-#https://sourceforge.net/projects/courier/files/imap/4.10.0/courier-imap-4.10.0.tar.bz2/download
-source=("http://downloads.sourceforge.net/sourceforge/courier/imap/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+shortdesc=("IMAP(s)/POP3(s) Server.")
 
-patch_opts=("")
+source=("http://downloads.sourceforge.net/project/courier/imap/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="server net-mail"
+tags=("server net-mail")
 
-#dependencies only needed to build package
-build_deps="courier-authlib"
+build_deps=("gcc-libs gdbm openssl courier-maildrop gamin courier-unicode courier-authlib")
 
-provides=""
-conflicts=""
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e 's|--with-authchangepwdir=/var/tmp/dev/null|--with-authchangepwdir="$libexecdir"/authlib|' configure && chmod 755 configure
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc/courier-imap \
+    --sbindir=/usr/bin \
+    --libexecdir=/usr/lib/courier-imap \
+    --localstatedir=/var/spool/courier-imap \
+    --disable-root-check \
+    --enable-unicode \
+    --enable-workarounds-for-imap-client-bugs \
+    --with-piddir=/run/courier \
+    --with-trashquota \
+    --with-db=gdbm \
+    --with-mailuser=courier --with-mailgroup=courier \
+    --with-notice=unicode --build=x86_64
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-adddep=""
-removedep=""
+  rm ${pkgdir}/usr/bin/{deliverquota,maildirmake,makedat,maildirkw}
+  rm ${pkgdir}/usr/share/man/man1/maildirmake*
+  rm ${pkgdir}/usr/share/man/man1/maildirkw*
+  rm ${pkgdir}/usr/share/man/man8/deliverquota*
 
-#for multi pkg abuild
-pkglist=
+  for _distfile in "${pkgdir}/etc/courier-imap/"*.dist; do
+     chown -R 72:72 "${pkgdir}/etc/courier-imap/"
+     mv "${_distfile}" "${pkgdir}/etc/courier-imap/"$(basename "${_distfile}" .dist)
+  done
+  sed -i 's|TLS_CERTFILE=/usr/share/|TLS_CERTFILE=/etc/courier-imap/|' "${pkgdir}/etc/courier-imap/"*-ssl
 
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
+  install -Dm 644 ${filedir}/courier-imapd.service     ${pkgdir}/usr/lib/systemd/system/courier-imapd.service
+  install -Dm 644 ${filedir}/courier-imapd-ssl.service ${pkgdir}/usr/lib/systemd/system/courier-imapd-ssl.service
+  install -Dm 644 ${filedir}/courier-pop3d.service     ${pkgdir}/usr/lib/systemd/system/courier-pop3d.service
+  install -Dm 644 ${filedir}/courier-pop3d-ssl.service ${pkgdir}/usr/lib/systemd/system/courier-pop3d-ssl.service
 
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
+  mkdir ${pkgdir}/usr/lib/tmpfiles.d -p
+  echo "D /run/courier 0755 courier courier" > ${pkgdir}/usr/lib/tmpfiles.d/courier-imapd.conf
+  echo "D /run/courier 0755 courier courier" > ${pkgdir}/usr/lib/tmpfiles.d/courier-imapd-ssl.conf
 
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+  mkdir -p ${pkgdir}/run/courier
+}
