@@ -1,28 +1,25 @@
 pkgname=fbset
 pkgver=2.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Framebuffer utilities for changing video modes")
+shortdesc=("Framebuffer setup utility.")
 longdesc=("Fbset is a utility for querying and changing video modes of fbcon consoles.")
 
-source="http://users.telenet.be/geertu/Linux/fbdev/fbset-${pkgver}.tar.gz"
+source=("http://users.telenet.be/geertu/Linux/fbdev/fbset-${pkgver}.tar.gz")
 
-tags="console app-misc"
+tags=("console sys-apps")
 
-build_deps="glibc"
+build_deps=("glibc")
 
-config_files="etc/fb.modes"
+config_files=("etc/fb.modes")
 
-build()
-{
+build() {
   go_src_dir
   burn_patches
-# gathers in only one stream
   make
-
-  install -D -m755 fbset "${pkgdir}/usr/bin/fbset"
-  install -D -m644 fb.modes.5 "${pkgdir}/usr/share/man/man5/fb.modes.5"
-  install -D -m644 fbset.8 "${pkgdir}/usr/share/man/man8/fbset.8"
-  install -D -m644 etc/fb.modes.ATI "${pkgdir}/etc/fb.modes"
+  install -D -m755 fbset ${pkgdir}/usr/bin/fbset
+  install -D -m644 fb.modes.5 ${pkgdir}/usr/share/man/man5/fb.modes.5
+  install -D -m644 fbset.8 ${pkgdir}/usr/share/man/man8/fbset.8
+  install -D -m644 etc/fb.modes.ATI ${pkgdir}/etc/fb.modes
 }
