@@ -16,7 +16,7 @@ build() {
   go_src_dir
   burn_patches
 # Отключаем -Werror по умолчанию, установив для ERRORS пустую строку
-  make ERRORS='' all -j${numjobs}
+  make ERRORS='' all
   make DESTDIR=${pkgdir}/ \
        libdir=/usr/lib/ \
        bindir=/usr/bin/ \
