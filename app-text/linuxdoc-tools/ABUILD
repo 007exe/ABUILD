@@ -9,7 +9,8 @@ source=("https://mirrors.edge.kernel.org/debian/pool/main/l/linuxdoc-tools/linux
 
 tags=("app-text develop")
 
-build_deps=("texlive-core jade texlive-bin")
+# texlive-bin jade
+build_deps=("texlive-core")
 
 # NOTE: Это опциональные зависимости
 removedep=("groff texlive-bin")
@@ -21,6 +22,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
+    --disable-docs \
     --mandir=/usr/share/man \
     --with-texdir=/usr/share/texmf-dist/tex/linuxdoc
   make -j${numjobs}
