@@ -1,0 +1,19 @@
+pkgname=iw
+pkgver=5.19
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("nl80211 based CLI configuration utility for wireless devices.")
+
+source=("https://www.kernel.org/pub/software/network/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("network net-wireless")
+
+build_deps=("kernel-headers libnl")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} SBINDIR=/usr/bin install
+}
