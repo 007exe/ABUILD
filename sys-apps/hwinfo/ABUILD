@@ -1,70 +1,35 @@
-#ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=hwinfo
-pkgver=18.5
+pkgver=22.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Hardware information tool"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Hardware information tool"
-)
+shortdesc=("Hardware detection tool from openSUSE.")
 
-source=("git:git://gitorious.org/opensuse/hwinfo.git")
+source=("https://github.com/openSUSE/hwinfo/archive/refs/tags/${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("sys-apps utils")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="sys-apps utils"
+build_deps=("flex libx86emu sysfsutils perl-xml-parser perl-xml-writer")
 
-#dependencies only needed to build package
-build_deps="flex>=2.5.35"
+adddep=("perl-xml-parser perl-xml-writer libx86emu")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-build()
-{
-cd ${srcdir}/${pkgname}.src
-burn_patches
-echo "18.5_git" > ./VERSION
-make LIBDIR=/usr/lib${LIBDIRSUFFIX}
-make LIBDIR=/usr/lib${LIBDIRSUFFIX} DESTDIR=${pkgdir} install
+build() {
+  go_src_dir
+  burn_patches
+  echo touch changelog > git2log
+  sed -i '/linux\/fs.h/d' src/hd/hd.c
+  make -j1 CFLAGS+="-fPIC -I$srcdir/$pkgname/src/hd -w" \
+    HWINFO_VERSION=${pkgver} \
+    LIBDIR=/usr/lib
+  make DESTDIR=${pkgdir} LIBDIR=/usr/lib install
+  mv ${pkgdir}/usr/sbin ${pkgdir}/usr/bin
+  rmdir ${pkgdir}/sbin
 }
 
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
