@@ -1,22 +1,21 @@
 pkgname=acpi_call
-pkgver=0.1
-pkgbuild=9
-arch=('auto')
+pkgver=1.2.2
+pkgbuild=1
+arch=("auto")
 
-KERNEL=${KERNEL:-$(uname -r)}
-KERNELPATH=${KERNELPATH:-/lib/modules/${KERNEL}/build}
+shortdesc=("A linux kernel module that enables calls to ACPI methods through /proc/acpi/call.")
 
-pkgver=${pkgver}_$(echo $KERNEL | tr - _)
-shortdesc="A module to call ACPI through a proc file"
+source=("")
 
-source="git:http://github.com/mkottman/acpi_call.git"
+tags=("base sys-power")
 
-tags="base sys-kernel"
+build_deps=("kernel-headers")
+
 adddep="kernel==$(echo $KERNEL | tr - _)"
-build()
-{
-	go_src_dir
-	burn_patches
+
+build(){
+  go_src_dir
+  burn_patches
 	make KDIR=$KERNELPATH clean
 	make KDIR=$KERNELPATH -j${numjobs}
 	install -D -m644 acpi_call.ko ${pkgdir}/lib/modules/$KERNEL/kernel/drivers/acpi/acpi_call.ko
