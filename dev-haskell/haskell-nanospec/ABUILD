@@ -1,0 +1,35 @@
+pkgname=haskell-nanospec
+pkgver=0.2.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A lightweight implementation of a subset of Hspec API.")
+
+source=("https://hackage.haskell.org/packages/archive/nanospec/${pkgver}/nanospec-${pkgver}.tar.gz")
+
+tags=("libs dev-haskell")
+
+build_deps=("ghc ghc-libs haskell-hspec haskell-silently")
+
+adddep=("ghc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  runhaskell Setup configure -O \
+    --enable-shared \
+    --enable-executable-dynamic \
+    --disable-library-vanilla \
+    --prefix=/usr \
+    --docdir=/usr/share/doc/${pkgname} \
+    --dynlibdir=/usr/lib \
+    --ghc-option=-fllvm
+  runhaskell Setup build $MAKEFLAGS
+  runhaskell Setup register --gen-script
+  runhaskell Setup unregister --gen-script
+  sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
+  sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
+  install -D -m744 register.sh ${pkgdir}/usr/share/haskell/register/${pkgname}.sh
+  install -D -m744 unregister.sh ${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh
+  runhaskell Setup copy --destdir=${pkgdir}
+}
