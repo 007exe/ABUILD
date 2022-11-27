@@ -1,5 +1,6 @@
+# NOTE: Создай каталог /usr/share/wasi-sysroot
 pkgname=firefox
-pkgver=105.0
+pkgver=107.0
 pkgbuild=1
 arch=("auto")
 
@@ -16,7 +17,7 @@ rust clang llvm jack nodejs nasm python-aiohttp python-colorama python-jsonschem
 python-pip python-ply python-pyrsistent python-setuptools python-wheel python-yarl python-zipp
 python-psutil python-volatile lld gtk3 libxt dbus-glib ffmpeg nss libpulse python-zstandard cbindgen")
 
-adddep=("python-zstandard")
+adddep=("python-zstandard dbus-glib ffmpeg gtk3 libpulse libxt  nss")
 
 # NOTE: Это опциональныне зависимости
 removedep=("networkmanager libnotify pulseaudio speech-dispatcher hunspell-en_US xdg-desktop-portal")
@@ -26,7 +27,7 @@ before_build(){
   go_src_dir
   burn_patches
 # Для получения ключей гео локации для дистрибутива http://www.chromium.org/developers/how-tos/api. -keys для двоичных файлов https://location.services.mozilla.com/api
-#!!!! Для теста буду использовать ключи от LFS потом заменю
+# FIXME: Для теста буду использовать ключи от LFS потом заменю
   echo "AIzaSyDxKL42zsPjbke5O8_rPVpVrLrJ8aeE9rQ" > google-api-key
   echo "613364a7-9418-4c86-bcee-57e32fd70c23" > mozilla-api-key
 
@@ -34,7 +35,6 @@ cat >../mozconfig <<END
 ac_add_options --enable-application=browser
 mk_add_options MOZ_OBJDIR=${PWD@Q}/obj
 ac_add_options --prefix=/usr
-ac_add_options --libdir=/usr/lib
 ac_add_options --enable-release
 ac_add_options --enable-hardening
 ac_add_options --enable-optimize
@@ -42,11 +42,11 @@ ac_add_options --enable-rust-simd
 ac_add_options --enable-linker=lld
 ac_add_options --disable-elf-hack
 ac_add_options --disable-bootstrap
-#ac_add_options --with-wasi-sysroot=/usr/share/wasi-sysroot
+ac_add_options --with-wasi-sysroot=/usr/share/wasi-sysroot
 # Branding
 ac_add_options --enable-official-branding
 ac_add_options --enable-update-channel=release
-ac_add_options --with-distribution-id=org.agilialinux
+ac_add_options --with-distribution-id=org.archlinux
 ac_add_options --with-unsigned-addon-scopes=app,system
 ac_add_options --allow-addon-sideload
 export MOZILLA_OFFICIAL=1
@@ -81,7 +81,6 @@ build() {
 ac_add_options --enable-profile-generate=cross
 END
 
-  ./mach configure
   ./mach build
   ./mach package
   LLVM_PROFDATA=llvm-profdata \
@@ -107,7 +106,6 @@ END
   ./mach build
   ./mach buildsymbols
 
-  echo "Установка..."
   DESTDIR=${pkgdir} ./mach install
 
   local vendorjs=${pkgdir}/usr/lib/${pkgname}/browser/defaults/preferences/vendor.js
