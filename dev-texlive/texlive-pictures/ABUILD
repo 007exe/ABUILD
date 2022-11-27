@@ -1,5 +1,6 @@
 pkgname=texlive-pictures
 pkgver=2022.62992
+_revnr=${pkgver#2022.}
 pkgbuild=1
 arch=("noarch")
 
