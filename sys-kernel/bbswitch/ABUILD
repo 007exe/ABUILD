@@ -1,0 +1,22 @@
+pkgname=bbswitch
+pkgver=0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Kernel module allowing to switch dedicated graphics card on Optimus laptops.")
+
+source=("https://github.com/Bumblebee-Project/bbswitch/archive/v${pkgver}.tar.gz")
+
+tags=("drivers sys-power")
+
+build_deps=("kernel-headers kernel-source")
+
+build() {
+  go_src_dir
+  burn_patches
+  make KDIR=/usr/src/linux
+  _extradir="/usr/lib/modules/$(</usr/src/linux/version)/extramodules"
+  install -Dt ${pkgdir}${_extradir} -m644 *.ko
+  find ${pkgdir} -name '*.ko' -exec strip --strip-debug {} +
+  find ${pkgdir} -name '*.ko' -exec xz {} +
+}
