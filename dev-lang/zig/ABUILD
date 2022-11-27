@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A robust, optimal, and maintainable programming language.")
-longdesc=("A general-purpose programming language and toolchain for maintaining robust, optimal, and reusable software.")
 
 source=("https://ziglang.org/download/${pkgver}/zig-${pkgver}.tar.xz")
 
