@@ -1,25 +1,129 @@
 pkgname=mysql-workbench
-pkgver=8.0.30
+pkgver=8.0.31
+_mysql_version=${pkgver}
+_connector_version=${pkgver}
+_gdal_version=3.5.1
+_boost_version=1.77.0
+_antlr4_version=4.9.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform, visual database design tool developed by MySQL.")
 
-source=("https://cdn.mysql.com/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz")
+source=("https://cdn.mysql.com/Downloads/MySQLGUITools/mysql-workbench-community-${pkgver}-src.tar.gz"
+"https://cdn.mysql.com/Downloads/MySQL-${_mysql_version%.*}/mysql-${_mysql_version}.tar.gz"
+"https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-${_connector_version}-src.tar.gz"
+"https://download.osgeo.org/gdal/${_gdal_version}/gdal-${_gdal_version}.tar.xz"
+"https://downloads.sourceforge.net/project/boost/boost/${_boost_version}/boost_${_boost_version//./_}.tar.bz2"
+"https://www.antlr.org/download/antlr-4.9.3-complete.jar"
+"https://www.antlr.org/download/antlr4-cpp-runtime-4.9.3-source.zip")
 
 tags=("apps dev-db")
 
+# java-runtime antlr4-runtime vsqlite++
+build_deps=("cmake boost mesa swig imagemagick
+cairo curl desktop-file-utils freetype giflib gtkmm3
+hicolor-icon-theme json-c libsecret libssh libaio libxml2 libzip
+pcre proj python rapidjson unixodbc zstd")
+
+adddep=("hicolor-icon-theme curl desktop-file-utils json-c")
+
 build() {
-go_src_dir
-cp ${filedir}/AgiliaLinux.xml res/mysql.profiles
-rm -rf ext/curl
-rm -rf ext/yassl
-rm -rf ext/boost
-rm -rf ext/libsigc++
-export CPPFLAGS=$(pkg-config --cflags sigc++-2.0)
-unset LDFLAGS
-./autogen.sh --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --disable-debug --enable-python-modules --disable-static
-burn_patches
-make -j${numjobs} || exit 1
-make DESTDIR="$pkgdir" install
+  cd ${srcdir}/mysql-workbench-community-${pkgver}-src/
+  burn_patches
+  sed -i '/^\s*set/s| -Werror||' CMakeLists.txt
+  sed -i 's| -Wno-deprecated-register||' ext/scintilla/gtk/CMakeLists.txt
+  sed -i "/set(ANTLR_JAR_FILENAME/s/4.9.1/${_antlr4_version}/" CMakeLists.txt
+
+  cd ${srcdir}
+
+  mkdir ${srcdir}/mysql-${_mysql_version}-build
+  cd ${srcdir}/mysql-${_mysql_version}-build
+  cmake ${srcdir}/mysql-${_mysql_version} \
+    -DWITHOUT_SERVER=ON \
+    -DBUILD_CONFIG=mysql_release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSYSCONFDIR=/etc/mysql \
+    -DMYSQL_DATADIR=/var/lib/mysql \
+    -DWITH_BOOST="${srcdir}/boost_${_boost_version//./_}"
+  make -j${numjobs}
+  make DESTDIR=${srcdir}/install-bundle/ install
+
+  mkdir ${srcdir}/mysql-connector-c++-${_connector_version}-src-build
+  cd ${srcdir}/mysql-connector-c++-${_connector_version}-src-build
+  cmake ${srcdir}/mysql-connector-c++-${_connector_version}-src \
+    -Wno-dev \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DINSTALL_LIB_DIR=lib \
+    -DMYSQL_DIR=${srcdir}/install-bundle/ \
+    -DMYSQL_CONFIG_EXECUTABLE=${srcdir}/install-bundle/usr/bin/mysql_config \
+    -DWITH_JDBC=ON
+  make -j${numjobs}
+  make DESTDIR=${srcdir}/install-bundle/ install
+
+  cd ${srcdir}/gdal-${_gdal_version}
+  ./configure \
+    --prefix=/usr \
+    --includedir=/usr/include/gdal \
+    --with-sqlite3 \
+    --with-mysql=${srcdir}/install-bundle/usr/bin/mysql_config \
+    --with-curl \
+    --without-jasper
+  make LD_LIBRARY_PATH=${srcdir}/install-bundle/usr/lib/
+  make LD_LIBRARY_PATH=${srcdir}/install-bundle/usr/lib/ DESTDIR=${srcdir}/install-bundle/ install
+
+  mkdir ${srcdir}/antlr4-build
+  cd ${srcdir}/antlr4-build
+  cmake ../ \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DANTLR4_INSTALL=ON \
+    -DINSTALL_GTEST=OFF
+  make -j${numjobs}
+  make DESTDIR="${srcdir}/install-bundle/" install
+
+  mkdir ${srcdir}/mysql-workbench-community-${pkgver}-src-build
+  cd ${srcdir}/mysql-workbench-community-${pkgver}-src-build
+  cmake ${srcdir}/mysql-workbench-community-${pkgver}-src \
+    -Wno-dev \
+    -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DCMAKE_CXX_FLAGS="-std=c++17" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DMySQL_CONFIG_PATH=${srcdir}/install-bundle/usr/bin/mysql_config \
+    -DMySQLCppConn_LIBRARY=${srcdir}/install-bundle/usr/lib/libmysqlcppconn.so \
+    -DMySQLCppConn_INCLUDE_DIR=${srcdir}/install-bundle/usr/include/jdbc \
+    -DGDAL_INCLUDE_DIR=${srcdir}/install-bundle/usr/include \
+    -DGDAL_LIBRARY=${srcdir}/install-bundle/usr/lib/libgdal.so \
+    -DANTLR4_INCLUDE_DIR=${srcdir}/install-bundle/usr/include \
+    -DANTLR4_LIBRARY=${srcdir}/install-bundle/usr/lib/libantlr4-runtime.so \
+    -DWITH_ANTLR_JAR=${srcdir}/antlr-4.9.3-complete.jar \
+    -DUNIXODBC_INCLUDE_DIR='/usr/include' \
+    -DUSE_BUNDLED_MYSQLDUMP=1
+  make -j${numjobs}
+
+  for LIBRARY in $(find ${srcdir}/install-bundle/usr/lib/ -type f -regex '.*/lib\(gdal\|mysql\(client\|cppconn\)\)\.so\..*'); do
+      BASENAME=$(basename ${LIBRARY})
+      SONAME=$(readelf -d ${LIBRARY} | grep -Po '(?<=(Library soname: \[)).*(?=\])')
+      install -D -m0755 ${LIBRARY} ${pkgdir}/usr/lib/mysql-workbench/${BASENAME}
+      ln -s ${BASENAME} ${pkgdir}/usr/lib/mysql-workbench/${SONAME}
+  done
+  install -D -m0755 ${srcdir}/install-bundle/usr/lib/libantlr4-runtime.so.4.9.3 ${pkgdir}/usr/lib/mysql-workbench/libantlr4-runtime.so.4.9.3
+
+  install -m0755 ${srcdir}/install-bundle/usr/bin/mysql{,dump} ${pkgdir}/usr/lib/mysql-workbench/
+
+  cd ${srcdir}/mysql-workbench-community-${pkgver}-src-build
+
+  make DESTDIR="${pkgdir}" install
+
+  for SIZE in 16 24 32 48 64 96 128; do
+      convert -scale ${SIZE} +set date:create +set date:modify \
+      ${srcdir}/mysql-workbench-community-${pkgver}-src/images/icons/MySQLWorkbench-128.png \
+      ${srcdir}/mysql-workbench.png
+      install -D -m0644 ${srcdir}/mysql-workbench.png ${pkgdir}/usr/share/icons/hicolor/${SIZE}x${SIZE}/apps/mysql-workbench.png
+  done
+
+  install -D -m 0644 ${filedir}/linux_profile.xml \
+  ${pkgdir}/usr/share/mysql-workbench/mysql.profiles/Arch_Linux_\(MariaDB\).xml
 }
