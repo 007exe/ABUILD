@@ -1,0 +1,21 @@
+pkgname=python-sphinxcontrib-spelling
+pkgver=7.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Spelling checker for Sphinx.")
+
+source=("https://files.pythonhosted.org/packages/source/s/sphinxcontrib-spelling/sphinxcontrib-spelling-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-pbr python-sphinx python-pyenchant")
+
+adddep=("python-sphinx python-pyenchant")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
+}
