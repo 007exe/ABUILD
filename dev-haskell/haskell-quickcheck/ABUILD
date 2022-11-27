@@ -24,7 +24,6 @@ build() {
     --docdir=/usr/share/doc/${pkgname}
     --enable-tests \
     --dynlibdir=/usr/lib \
-    --libsubdir=\${compiler}/site-local/\${pkgid} \
     --ghc-option=-fllvm \
     -ftemplateHaskell
   runhaskell Setup build $MAKEFLAGS
