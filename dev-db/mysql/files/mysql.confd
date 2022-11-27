@@ -1,3 +1,0 @@
-# Do not use networking. This is default and safe
-SKIP="--skip-networking"
-
