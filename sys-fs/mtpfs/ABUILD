@@ -1,27 +1,23 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=mtpfs
-pkgver=0.9
+pkgver=1.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="FUSE filesystem for MTP devices"
+shortdesc=("A FUSE filesystem that supports reading and writing from any MTP device.")
 
-source=(http://www.adebenham.com/debian/${pkgname}_${pkgver}.orig.tar.gz)
+source=("https://www.adebenham.com/files/mtp/${pkgname}-${pkgver}.tar.gz")
 
-tags="console sys-fs"
+tags=("console sys-fs")
 
-BUILD_SYSTEM="autotools"
+build_deps=("libmtp glib2 libid3tag fuse libmad")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
