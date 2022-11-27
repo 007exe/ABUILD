@@ -1,29 +1,18 @@
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=ms-sys
-pkgver=2.2.0
-pkgbuild=3
-arch=('auto')
+pkgver=2.8.0
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Tool for writing MS-compatible boot records"
+shortdesc=("Write Microsoft-compatible boot records (MBR and PBR).")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://sourceforge.net/projects/$pkgname/files/${pkgname}-${pkgver}.tar.gz")
 
+tags=("console sys-block")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="console sys-apps"
-build_deps="mkpkg"
+build_deps=("mkpkg")
 
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-build()
-{
-go_src_dir
-make
-make PREFIX=$pkgdir/usr install || exit 1
+build(){
+  go_src_dir
+  make -j${numjobs}
+  make PREFIX=/usr MANDIR=/usr/share/man DESTDIR=${pkgdir} install
 }
-
-
