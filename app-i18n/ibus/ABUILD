@@ -32,7 +32,7 @@ build() {
     --sysconfdir=/etc \
     --enable-dconf \
     --enable-wayland \
-    --enable-gtk-doc \
+    --disable-gtk-doc \
     --enable-gtk4 \
     --disable-memconf \
     --enable-ui \
