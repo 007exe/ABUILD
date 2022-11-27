@@ -18,8 +18,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D enable-man=true \
-    -D enable-gtk-doc=true
+    -D enable-man=false \
+    -D enable-gtk-doc=false
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 }
