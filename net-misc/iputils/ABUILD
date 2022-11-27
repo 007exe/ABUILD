@@ -1,5 +1,5 @@
 pkgname=iputils
-pkgver=20211215
+pkgver=20221126
 pkgbuild=1
 arch=("auto")
 
@@ -19,8 +19,7 @@ build() {
   cd build
   meson .. \
     -D prefix=/usr \
-    -D sbindir=bin \
-    -D BUILD_RARPD=true
+    -D sbindir=bin
   ninja
   DESTDIR=${pkgdir} ninja install
 }
