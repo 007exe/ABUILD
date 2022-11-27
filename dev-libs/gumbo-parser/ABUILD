@@ -1,0 +1,23 @@
+pkgname=gumbo-parser
+pkgver=0.10.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("HTML5 parsing library in pure C99.")
+
+source=("https://github.com/google/gumbo-parser/archive/v${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
