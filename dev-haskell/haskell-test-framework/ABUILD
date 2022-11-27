@@ -1,0 +1,41 @@
+pkgname=haskell-test-framework
+pkgver=0.8.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Framework for running and organising tests, with HUnit and QuickCheck support.")
+
+source=("https://hackage.haskell.org/packages/archive/test-framework/${pkgver}/test-framework-${pkgver}.tar.gz")
+
+tags=("libs dev-haskell")
+
+build_deps=("ghc ghc-libs haskell-hunit haskell-quickcheck haskell-libxml
+haskell-ansi-terminal haskell-ansi-wl-pprint haskell-hostname haskell-old-locale haskell-random haskell-regex-posix haskell-xml")
+
+adddep=("ghc-libs haskell-ansi-terminal haskell-ansi-wl-pprint haskell-hostname haskell-old-locale haskell-random haskell-regex-posix haskell-xml")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e '/semigroups/d' -e 's/< *0.6/<1/;s/< *0.9/<1/;s/< *1.9/<2/;s/< *1.2/<2/' test-framework.cabal
+  runhaskell Setup configure -O \
+    --enable-shared \
+    --enable-executable-dynamic \
+    --disable-library-vanilla \
+    --prefix=/usr \
+    --docdir=/usr/share/doc/${pkgname} \
+    --datasubdir=${pkgname} \
+    --dynlibdir=/usr/lib \
+    --libsubdir=\${compiler}/site-local/\${pkgid} \
+    --ghc-option=-fllvm
+  runhaskell Setup build $MAKEFLAGS
+  runhaskell Setup register --gen-script
+  runhaskell Setup unregister --gen-script
+  sed -i -r -e "s|ghc-pkg.*update[^ ]* |&'--force' |" register.sh
+  sed -i -r -e "s|ghc-pkg.*unregister[^ ]* |&'--force' |" unregister.sh
+  install -D -m744 register.sh ${pkgdir}/usr/share/haskell/register/${pkgname}.sh
+  install -D -m744 unregister.sh ${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh
+  runhaskell Setup copy --destdir=${pkgdir}
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  rm -f ${pkgdir}/usr/share/doc/${pkgname}/LICENSE
+}
