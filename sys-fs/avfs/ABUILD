@@ -1,30 +1,24 @@
-#ABUILD created by/создан: PavelVyazovoi, vyazovoi at googlemail.com 
-
 pkgname=avfs
-pkgver=0.9.9
+pkgver=1.1.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Virtual file system (highly usable with Worker file manager)"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Virtual file system"
-)
+shortdesc=("Virtual filesystem that allows browsing compressed files.")
 
-source=("http://downloads.sourceforge.net/sourceforge/avf/${pkgname}-${pkgver}.tar.bz2")
+source=("https://downloads.sourceforge.net/sourceforge/avf/${pkgname}-${pkgver}.tar.bz2")
 
-tags="utils sys-fs"
+tags=("utils sys-fs")
 
-BUILD_SYSTEM="autotools"
+build_deps=("fuse lzlib perl xz zstd")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --enable-library \
+    --enable-fuse \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
