@@ -1,6 +1,6 @@
 pkgname=accountsservice
 pkgver=22.08.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("D-Bus interface for user account query and manipulation.")
@@ -23,8 +23,8 @@ build() {
     -D admin_group=wheel \
     -D elogind=true \
     -D systemdsystemunitdir=no \
-    -D docbook=true \
-    -D gtk_doc=true
+    -D docbook=false \
+    -D gtk_doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
