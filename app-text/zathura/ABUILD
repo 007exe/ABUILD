@@ -1,5 +1,5 @@
 pkgname=zathura
-pkgver=0.4.9
+pkgver=0.5.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,12 @@ source=("https://github.com/pwmt/zathura/archive/${pkgver}.tar.gz")
 
 tags=("apps app-office")
 
-build_deps=("python-sphinx texlive-bin meson ninja appstream-glib check
-girara sqlite desktop-file-utils file libsynctex")
+# libsynctex texlive-bin
+build_deps=("python-sphinx meson ninja appstream-glib check
+girara sqlite desktop-file-utils file")
 
-adddep=("girara sqlite desktop-file-utils file libsynctex")
+# libsynctex
+adddep=("girara sqlite desktop-file-utils file")
 
 # NOTE: Это опциональные зависимости
 removedep=("zathura-djvu zathura-pdf-poppler zathura-pdf-mupdf zathura-ps zathura-cb")
