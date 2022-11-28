@@ -1,12 +1,12 @@
 pkgname=clisp
-pkgver=2.49
+pkgver=2.49.93
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("ANSI Common Lisp interpreter, compiler and debugger.")
 longdesc=("GNU Clisp is a Common Lisp implementation which includes an interpreter, compiler, debugger, and many extensions.")
 
-source=("http://downloads.sourceforge.net/sourceforge/clisp/clisp-${pkgver}.tar.bz2")
+source=("hg:http://hg.code.sf.net/p/clisp/clisp")
 
 tags=("develop dev-libs")
 
