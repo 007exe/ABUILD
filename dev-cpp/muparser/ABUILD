@@ -1,12 +1,12 @@
 pkgname=muparser
-pkgver=2.3.3
+pkgver=2.3.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A fast math parser library")
 longdesc=("Library for parsing mathematical expressions.")
 
-source=("https://github.com/beltoforion/muparser/archive/v${pkgver}-1/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/beltoforion/muparser/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-cpp")
 
