@@ -1,35 +1,39 @@
 pkgname=texlive-bin
+pkglist=("libsynctex")
 pkgver=2022.62885
+# NOTE: Коммит версии
 _commit=f398692b64d6462c35939ec9489694d0828edee5 # svn://tug.org/texlive/tags/texlive-2022.0/Build/source@62885
+strict_version=1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("TeX Live binaries.")
 
-strict_version=1
 source=("git:https://github.com/Tex-Live/texlive-source.git")
 
 tags=("app-text utils")
 
-# t1lib zziplib libjpeg harfbuzz-icu clisp libxcrypt
+# clisp
 build_deps=("git cairo pixman graphite gd libsigsegv libpng freetype
-icu harfbuzz gmp mpfr potrace libpaper perl ffcall")
+icu harfbuzz gmp mpfr potrace libpaper perl ffcall libjpeg-turbo icu
+zziplib t1lib")
 
-pkglist=("libsynctex")
+adddep=("libsynctex")
 
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
 before_build() {
   go_src_dir
   git checkout ${_commit}
-  sed -i '/AC_SEARCH_LIBS/a KPSE_KPATHSEA_FLAGS' texk/bibtex-x/configure.ac
-  (cd texk/bibtex-x && autoreconf)
-  sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
 }
 
 build(){
   go_src_dir
+  sed -i '/AC_SEARCH_LIBS/a KPSE_KPATHSEA_FLAGS' texk/bibtex-x/configure.ac
+  (cd texk/bibtex-x && autoreconf)
+  sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
   mkdir -p Work
-   cd Work
-   echo "--> Initial configuration..."
+  cd Work
   ax_cv_c_float_words_bigendian=no \
     ../configure --prefix=/usr -C \
     --sysconfdir=/etc \
@@ -70,51 +74,42 @@ build(){
     --enable-luatex \
     --with-clisp-runtime=default \
     --enable-xindy --disable-xindy-rules --disable-xindy-docs
-  echo "-------------------------------------------------------"
-  echo "--> Building the whole beast ..."
-  echo "-------------------------------------------------------"
   make -j${numjobs}
 
   find utils/xindy -name Makefile -exec sed -i -e "s|^prefix =.\+$|prefix = $pkgdir/usr|" -e "s|^mandir =.\+$|mandir = \${prefix}/share/man|" -e "s|^datadir =.\+$|datadir = \${datarootdir}/texmf|" -e "s|^docdir =.\+$|docdir = \${datadir}/doc/xindy|" '{}' \;
-  echo "-------------------------------------------------------"
-   echo "--> Proceeding with make install ..."
-   echo "-------------------------------------------------------"
-   cd Work
-   make DESTDIR=${pkgdir} texmf="$pkgdir"/usr/share/texmf install
-   rm -rf ${pkgdir}/usr/{texmf,share/texmf-dist}
+  cd Work
+  make DESTDIR=${pkgdir} texmf=${pkgdir}/usr/share/texmf install
+  rm -rf ${pkgdir}/usr/{texmf,share/texmf-dist}
 
-   ## symlink engines by hand. texlinks has moved to texlive-core...
-   mkdir -p ${pkgdir}/usr/bin
-   ln -s eptex ${pkgdir}/usr/bin/platex
-   ln -s euptex ${pkgdir}/usr/bin/uplatex
-   ln -s luatex ${pkgdir}/usr/bin/dvilualatex
-   ln -s luatex ${pkgdir}/usr/bin/dviluatex
-   ln -s luahbtex ${pkgdir}/usr/bin/lualatex
-   ln -s pdftex ${pkgdir}/usr/bin/amstex
-   ln -s pdftex ${pkgdir}/usr/bin/cslatex
-   ln -s pdftex ${pkgdir}/usr/bin/csplain
-   ln -s pdftex ${pkgdir}/usr/bin/eplain
-   ln -s pdftex ${pkgdir}/usr/bin/etex
-   ln -s pdftex ${pkgdir}/usr/bin/jadetex
-   ln -s pdftex ${pkgdir}/usr/bin/latex
-   ln -s tex ${pkgdir}/usr/bin/lollipop
-   ln -s pdftex ${pkgdir}/usr/bin/mex
-   ln -s pdftex ${pkgdir}/usr/bin/mllatex
-   ln -s pdftex ${pkgdir}/usr/bin/mltex
-   ln -s pdftex ${pkgdir}/usr/bin/pdfetex
-   ln -s pdftex ${pkgdir}/usr/bin/pdfcslatex
-   ln -s pdftex ${pkgdir}/usr/bin/pdfcsplain
-   ln -s pdftex ${pkgdir}/usr/bin/pdfjadetex
-   ln -s pdftex ${pkgdir}/usr/bin/pdflatex
-   ln -s pdftex ${pkgdir}/usr/bin/pdfmex
-   ln -s pdftex ${pkgdir}/usr/bin/pdfxmltex
-   ln -s pdftex ${pkgdir}/usr/bin/texsis
-   ln -s pdftex ${pkgdir}/usr/bin/utf8mex
-   ln -s pdftex ${pkgdir}/usr/bin/xmltex
-   ln -s xetex ${pkgdir}/usr/bin/xelatex
+  mkdir -p ${pkgdir}/usr/bin
+  ln -s eptex ${pkgdir}/usr/bin/platex
+  ln -s euptex ${pkgdir}/usr/bin/uplatex
+  ln -s luatex ${pkgdir}/usr/bin/dvilualatex
+  ln -s luatex ${pkgdir}/usr/bin/dviluatex
+  ln -s luahbtex ${pkgdir}/usr/bin/lualatex
+  ln -s pdftex ${pkgdir}/usr/bin/amstex
+  ln -s pdftex ${pkgdir}/usr/bin/cslatex
+  ln -s pdftex ${pkgdir}/usr/bin/csplain
+  ln -s pdftex ${pkgdir}/usr/bin/eplain
+  ln -s pdftex ${pkgdir}/usr/bin/etex
+  ln -s pdftex ${pkgdir}/usr/bin/jadetex
+  ln -s pdftex ${pkgdir}/usr/bin/latex
+  ln -s tex ${pkgdir}/usr/bin/lollipop
+  ln -s pdftex ${pkgdir}/usr/bin/mex
+  ln -s pdftex ${pkgdir}/usr/bin/mllatex
+  ln -s pdftex ${pkgdir}/usr/bin/mltex
+  ln -s pdftex ${pkgdir}/usr/bin/pdfetex
+  ln -s pdftex ${pkgdir}/usr/bin/pdfcslatex
+  ln -s pdftex ${pkgdir}/usr/bin/pdfcsplain
+  ln -s pdftex ${pkgdir}/usr/bin/pdfjadetex
+  ln -s pdftex ${pkgdir}/usr/bin/pdflatex
+  ln -s pdftex ${pkgdir}/usr/bin/pdfmex
+  ln -s pdftex ${pkgdir}/usr/bin/pdfxmltex
+  ln -s pdftex ${pkgdir}/usr/bin/texsis
+  ln -s pdftex ${pkgdir}/usr/bin/utf8mex
+  ln -s pdftex ${pkgdir}/usr/bin/xmltex
+  ln -s xetex ${pkgdir}/usr/bin/xelatex
 
-   #############################################################
-   # remove dangling symlinks
    _bibtexextra_scripts="
 bbl2bib
 bib2gls
@@ -356,9 +351,7 @@ tikztosvg"
            rm -vf ${pkgdir}/usr/share/man/man1/${s%.*}.1
        fi
    done
-   ###################################################################
 
-   # remove libsynctex
    rm -f ${pkgdir}/usr/include/synctex/*
    rm -f ${pkgdir}/usr/lib/libsynctex.*
    rm -f ${pkgdir}/usr/lib/pkgconfig/synctex.pc
