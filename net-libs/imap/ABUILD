@@ -1,0 +1,60 @@
+pkgname=imap
+pkglist=("c-client")
+pkgver=2007f
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An IMAP/POP server.")
+
+source=("https://github.com/uw-imap/imap/archive/refs/tags/patches-FD29-RPM.tar.gz")
+
+tags=("net-libs libs")
+
+build_deps=("linux-pam")
+
+adddep=("c-client")
+
+config_files=("etc/xinetd.d/imap
+etc/xinetd.d/ipop2
+etc/xinetd.d/ipop3")
+
+build() {
+  go_src_dir
+  sed -e "s:-g -fno-omit-frame-pointer -O6:\${CFLAGS}:" \
+      -e "s:SSLDIR=/usr/local/ssl:SSLDIR=/usr:" \
+      -e "s:SSLCERTS=\$(SSLDIR)/certs:SSLCERTS=/etc/ssl/certs:" \
+      -i src/osdep/unix/Makefile
+  burn_patches
+  CFLAGS+=" -ffat-lto-objects"
+  yes "y" | make lnp EXTRAAUTHENTICATORS=gss PASSWDTYPE=pam SPECIALAUTHENTICATORS=ssl SSLTYPE=unix EXTRACFLAGS="${CFLAGS} -fPIC -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err -lpam" EXTRALDFLAGS="${LDFLAGS}"
+  install -d ${pkgdir}/usr/bin
+  install -D -m755 imapd/imapd ${pkgdir}/usr/bin/imapd
+  install -D -m755 ipopd/ipop2d ${pkgdir}/usr/bin/ipop2d
+  install -D -m755 ipopd/ipop3d ${pkgdir}/usr/bin/ipop3d
+
+  install -D -m644 ${filedir}/imap ${pkgdir}/etc/xinetd.d/imap
+  install -D -m644 ${filedir}/ipop2 ${pkgdir}/etc/xinetd.d/ipop2
+  install -D -m644 ${filedir}/ipop3 ${pkgdir}/etc/xinetd.d/ipop3
+}
+
+###############################################################################
+
+c-client() {
+  pkgname=c-client
+  shortdesc=("Imap client library.")
+}
+
+c-client_prep() {
+  go_src_dir
+  for i in c-client mail imap4r1 rfc822 linkage misc smtp nntp \
+    osdep env_unix env fs ftl nl tcp sslio utf8 utf8aux; do
+    install -D -m644 c-client/${i}.h ${pkgdir}/usr/include/imap/${i}.h
+  done
+  install -m644 c-client/linkage.c ${pkgdir}/usr/include/imap/linkage.c
+  install -D -m644 c-client/c-client.a ${pkgdir}/usr/lib/c-client.a
+  ln -sf c-client.a ${pkgdir}/usr/lib/libc-client.a
+
+  install -D -m755 c-client/libc-client.so.1.0.0 ${pkgdir}/usr/lib/libc-client.so.1.0.0
+  ln -sf /usr/lib/libc-client.so.1.0.0 ${pkgdir}/usr/lib/libc-client.so.1
+  ln -sf /usr/lib/libc-client.so.1.0.0 ${pkgdir}/usr/lib/libc-client.so
+}
