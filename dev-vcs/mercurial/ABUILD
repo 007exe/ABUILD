@@ -1,10 +1,9 @@
 pkgname=mercurial
-pkgver=6.2
+pkgver=6.3.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A scalable distributed SCM tool.")
-longdesc=("Mercurial is a distributed source control management tool similar to Git and Bazaar. Mercurial is written in Python and is used by projects such as Mozilla for Firefox and Thunderbird.")
 
 source=("https://www.mercurial-scm.org/release/${pkgname}-${pkgver}.tar.gz")
 
@@ -32,13 +31,11 @@ build() {
 
   install -Dm644 contrib/vim/HGAnnotate.vim ${pkgdir}/usr/share/vim/vimfiles/syntax/HGAnnotate.vim
 
-# Устанавливаем переменные по умолчанию
   install -m755 -d ${pkgdir}/etc/profile.d
   install -m644 ${filedir}/mercurial.profile ${pkgdir}/etc/profile.d/mercurial.sh
 
-# FS#38825 - Добавить конфигурацию сертификатов в пакет
-  install -m755 -d "$pkgdir/etc/mercurial"
-  cat <<-EOF > "$pkgdir/etc/mercurial/hgrc"
+  install -m755 -d ${pkgdir}/etc/mercurial
+  cat <<-EOF > ${pkgdir}/etc/mercurial/hgrc
 	[web]
 	cacerts = /etc/ssl/certs/ca-certificates.crt
 	EOF
