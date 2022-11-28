@@ -1,5 +1,5 @@
 pkgname=julia
-pkgver=1.7.3
+pkgver=1.8.3
 pkgbuild=1
 arch=("auto")
 
@@ -51,9 +51,17 @@ build() {
   go_src_dir
   burn_patches
   sed -e 's|0.22314355f0 + 3.1415927f0im|0.22314355f0 - 3.1415927f0im|' -i stdlib/LinearAlgebra/test/lu.jl
-  make -j${numjobs} release VERBOSE=1 JLDFLAGS=${LDFLAGS} $_buildopts
+  sed -e 's|\$Int|Int32|' -i stdlib/LinearAlgebra/test/lu.jl
+  cd stdlib/srccache
+  tar -xzf SuiteSparse-f63732c1c6adecb277d8f2981cc8c1883c321bcc.tar.gz
+  rm SuiteSparse-f63732c1c6adecb277d8f2981cc8c1883c321bcc.tar.gz
+  tar -czf SuiteSparse-f63732c1c6adecb277d8f2981cc8c1883c321bcc.tar.gz JuliaSparse-SuiteSparse.jl-f63732c
+  sed -e "s|baeb73b8ac38dd04174ed04fa1ea8cef|${_suitesparse_md5}|" \
+      -e "s|a95e6ebafe948f419a65a9630b01cda380f3ce19499afe57e212a75dd43aa7a09ddd038e90d1215ae55566a676e392e696565d2d7a96853ec4fca7f73762b268|${_suitesparse_sha512}|" \
+      -i ../../deps/checksums/suitesparse
+  go_src_dir
+  make release VERBOSE=1 JLDFLAGS=${LDFLAGS} $_buildopts
   make DESTDIR=${pkgdir} install $_buildopts
   ln -s /usr/lib/libopenblas.so ${pkgdir}/usr/lib/julia/libopenblas64_.so
-  rm ${pkgdir}/usr/lib/julia/libccalltest.so.debug
   install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
