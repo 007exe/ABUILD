@@ -1,130 +1,39 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=irrlicht
-pkgver=1.7.2
+pkgver=1.8.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A free open source 3d engine"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("The Irrlicht Engine is an open source high performance realtime 3D engine written and usable in C++. It is completely cross-platform, using D3D, OpenGL and its own software renderers."
-""
-"Homepage: http://irrlicht.sourceforge.net"
-)
+shortdesc=("An open source high performance realtime 3D graphics engine.")
 
-source=("http://downloads.sourceforge.net/project/irrlicht/Irrlicht%20SDK/1.7/${pkgver}/${pkgname}-${pkgver}.zip")
+source=("https://downloads.sourceforge.net/irrlicht/${pkgname}-${pkgver}.zip")
 
-patch_opts=("")
+tags=("dev-games libs")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="dev-libs libs"
+build_deps=("mesa unzip libxcursor libjpeg-turbo bzip2 libpng")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-build()
-{
-go_src_dir
-burn_patches
-
-# Idea & part of code from
-# http://repos.archlinux.org/wsvn/community/irrlicht/repos/community-i686/PKGBUILD
-
-  cd $srcdir/$pkgname-$pkgver
-  sed -i -e '/^#.*NON_SYSTEM_ZLIB/d' \
-         -e '/^#.*NON_SYSTEM_JPEG/d' \
-         -e '/^#.*NON_SYSTEM_BZLIB/d' \
-         include/IrrCompileConfig.h
-
+build(){
+  go_src_dir
+  burn_patches
+  sed -r '/^#define _IRR_USE_NON_SYSTEM_(JPEG_LIB|LIB_PNG|ZLIB|BZLIB)_/d' -i include/IrrCompileConfig.h
+  sed -r '/^(ZLIB|JPEGLIB|LIBPNG|BZIP2)OBJ/d' -i source/Irrlicht/Makefile
+  sed -r '/^sharedlib: LDFLAGS/s,\r?$, -lz -ljpeg -lpng -lz -lbz2,' -i source/Irrlicht/Makefile
+  rm -r source/Irrlicht/{bzip2,jpeglib,libpng,zlib}
   cd source/Irrlicht
-  sed -i -e '/^CXXFLAGS/s:-g.*::' \
-         -e '/^CXXFLAGS/s:-Wall::' \
-         -e '/^CFLAGS/s/:= -O3 -fexpensive-optimizations/+=/' \
-         -e '/^CXXINCS/s:-Izlib -Ijpeglib::' \
-         -e '/^ZLIBOBJ/d' \
-         -e '/^JPEGLIBOBJ/d' \
-         -e '/^BZIP2OBJ/d' \
-         -e '/.o=.d/d' \
-         -e '/^sharedlib: LDFLAGS/s:+=:+= -lGL -lXxf86vm -ljpeg -lbz2 -lz:' \
-         -e "/^INSTALL_DIR/s:=.*:=$pkgdir/usr/lib${LIBDIRSUFFIX}:" \
-         -e 's/0-SVN/1/' \
-         -e 's/.$(VERSION_MINOR) -o/ -o/' \
-         Makefile
+  make -j${numjobs} NDEBUG=1 sharedlib
+  sed -i "/^INSTALL_DIR/s:=.*:=$pkgdir/usr/lib:" Makefile
+  make install
 
-make sharedlib || exit 1
-make || exit 1
+  go_src_dir
+  install -Dm644 readme.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-  install -d $pkgdir/usr/lib${LIBDIRSUFFIX} \
-             $pkgdir/usr/share/$pkgname/examples/bin \
-             $pkgdir/usr/doc/${pkgname}-${pkgver}
+  chmod 644 ${pkgdir}/usr/include/${pkgname}/*
 
-make install || exit 1
+  ln -s libIrrlicht.so.${pkgver} ${pkgdir}/usr/lib/libIrrlicht.so.1
 
-  cd $srcdir/$pkgname-$pkgver/
-  install -m644 readme.txt $pkgdir/usr/doc/${pkgname}-${pkgver}
+# NOTE: Документация
+  install -d ${pkgdir}/usr/share/${pkgname} ${pkgdir}/usr/share/doc/${pkgname}
+  cp -r media ${pkgdir}/usr/share/${pkgname}
 
-  # Install static library and fix headers permissions
-  install -m644 lib/Linux/libIrrlicht.a $pkgdir/usr/lib${LIBDIRSUFFIX}
-  chmod 644 $pkgdir/usr/include/$pkgname/*
-
-  # Install media files for examples
-  cp -r media $pkgdir/usr/share/$pkgname
-
-  # Install documentation
-  rm -fv doc/*.txt
-  cp -r doc/* $pkgdir/usr/doc/${pkgname}-${pkgver}
-
-  cd $pkgdir/usr/lib${LIBDIRSUFFIX}
-  ln -s libIrrlicht.so.$pkgver libIrrlicht.so.1
-
-  # Just a helper for examples compilation
-  ln -s libIrrlicht.so.$pkgver $srcdir/$pkgname-$pkgver/lib/Linux/libIrrlicht.so
-
-  # Edit, build and install the examples
-  cd $srcdir/$pkgname-$pkgver/examples
-  sed -i '/define USE_IRRKLANG/s:.*://&:' ./Demo/CDemo.h
-  sed -i '/^CXXFLAGS/d' $(grep -Rl "^CXXFLAGS =" *)
-
-make || exit 1
-
-  install -m755  ../bin/Linux/* /$pkgdir/usr/share/$pkgname/examples/bin/
-}
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+  cp -r doc/* ${pkgdir}/usr/share/doc/${pkgname}
+  rm -f ${pkgdir}/usr/share/doc/${pkgname}/*.txt
 }
