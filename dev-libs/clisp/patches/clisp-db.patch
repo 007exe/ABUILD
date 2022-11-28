@@ -1,0 +1,22 @@
+--- a/modules/berkeley-db/configure
++++ b/modules/berkeley-db/configure
+@@ -6376,7 +6376,7 @@ then :
+ else $as_nop
+ 
+ CFLAGS_save="$CFLAGS"
+-CFLAGS="$CFLAGS -Werror"
++CFLAGS="$CFLAGS -Wno-uninitialized -Werror"
+ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+ #include <db.h>
+--- a/modules/berkeley-db/configure.in
++++ b/modules/berkeley-db/configure.in
+@@ -48,7 +48,7 @@ dnl <http://www.sleepycat.com/docs/ref/u
+ AC_CACHE_CHECK([whether DB_ENV->set_errcall() accepts DBE],
+ ac_cv_dbe_set_errcall_accept_dbe,[
+ CFLAGS_save="$CFLAGS"
+-CFLAGS="$CFLAGS -Werror"
++CFLAGS="$CFLAGS -Wno-uninitialized -Werror"
+ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([#include <db.h>
+ void my_callback (const DB_ENV* dbe, const char *errpfx, const char *msg) {}],
+ [[DB_ENV dbe; dbe.set_errcall(&dbe,&my_callback);]])],

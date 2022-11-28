@@ -1,0 +1,33 @@
+--- a/src/spvw_fault.d
++++ b/src/spvw_fault.d
+@@ -289,7 +289,7 @@ modexp bool handle_fault_range (int prot
+ 
+ local void xmprotect (aint addr, uintM len, int prot) {
+   if (mprotect((void*)addr,len,prot) < 0) {
+-    fprintf(stderr,GETTEXTL("mprotect(0x%lx,%d,%d) failed."),addr,len,prot);
++    fprintf(stderr,GETTEXTL("mprotect(0x%lx,%lu,%d) failed."),addr,(unsigned long)len,prot);
+     errno_out(OS_errno);
+     abort();
+   }
+--- a/src/spvw_language.d
++++ b/src/spvw_language.d
+@@ -172,7 +172,7 @@ global void init_language
+     { /* Invalidate the gettext internal caches. */
+       char *td = textdomain(NULL);
+       if (NULL == td) {
+-        ANSIC_ERROR("textdomain",NULL);
++        ANSIC_ERROR("textdomain","NULL");
+       }
+       if (NULL == textdomain(td)) {
+         ANSIC_ERROR("textdomain",td);
+--- a/src/spvw_sigsegv.d
++++ b/src/spvw_sigsegv.d
+@@ -62,7 +62,7 @@ local void print_mem_stats (void) {
+ /* Put a breakpoint here if you want to catch CLISP just before it dies. */
+ global void sigsegv_handler_failed (void* address) {
+   fprint(stderr,"\n");
+-  fprintf(stderr,GETTEXTL("SIGSEGV cannot be cured. Fault address = 0x%lx."),
++  fprintf(stderr,GETTEXTL("SIGSEGV cannot be cured. Fault address = %p."),
+           address);
+   fprint(stderr,"\n");
+   print_mem_stats();

@@ -1,0 +1,18 @@
+--- a/modules/pari/desc2lisp.lisp
++++ b/modules/pari/desc2lisp.lisp
+@@ -166,7 +166,15 @@
+       (setq h (car h)))
+     (if (and h (ext:starts-with-p h f) (setq end (search "):" h)))
+         ;;(parse-arglist-regexp h :start (1+ (position #\( h)) :end end)
+-        (parse-arglist-read h :start (position #\( h) :end (1+ end))
++	(let ((l (parse-arglist-read h :start (position #\( h) :end (1+ end))))
++	  (and
++	    (consp l)
++	    (consp (cdr l))
++	    (consp (cadr l))
++	    (symbolp (caadr l))
++	    (equalp (symbol-name (caadr l)) "T")
++	    (setf (caadr l) 'T_))
++	  l)
+         ;; (or (warn "~S: no arglist in ~S" 'desc-arglist desc) ...)
+         :unspecific)))
