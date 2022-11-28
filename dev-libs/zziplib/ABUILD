@@ -1,0 +1,23 @@
+pkgname=zziplib
+pkgver=0.13.72
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A lightweight library that offers the ability to easily extract data from files archived in a single zip file.")
+
+source=("https://github.com/gdraheim/zziplib/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("python xmlto zip cmake ninja zlib")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -G Ninja \
+    -DZZIPDOCS=OFF \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+}
