@@ -8,7 +8,7 @@ longdesc=("Single header implementation of std::expected with functional-style e
 
 source=("https://github.com/TartanLlama/expected/archive/v${pkgver}.tar.gz")
 
-tags=("libs dev-cpp")
+tags=("libs dev-libs")
 
 build_deps=("cmake catch")
 
