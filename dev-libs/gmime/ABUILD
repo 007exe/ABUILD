@@ -1,20 +1,32 @@
 pkgname=gmime
-pkgver=2.6.23
+pkgver=2.6.23+4+g91dcee38
+# NOTE: коммит версии
+_commit=91dcee38ea301463fb9c6bc936f08b9fd1c0969f
+strict_version=1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C/C++ MIME creation and parser library with support for S/MIME, PGP, and Unix mbox spools.")
 
-source=("https://github.com/jstedfast/gmime/archive/refs/tags/${pkgver}.tar.gz")
+source=("git:https://github.com/jstedfast/gmime.git")
 
 tags=("dev-libs libs")
 
 # docbook-utils gtk-sharp-2
 build_deps=("glib2 gpgme zlib gobject-introspection gtk-doc git vala")
 
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
 build() {
   go_src_dir
   burn_patches
+  mkdir ${srcdir}/weird
+  export MONO_SHARED_DIR=${srcdir}/weird
   NOCONFIGURE=1 ./autogen.sh
   ./configure \
     --prefix=/usr \
