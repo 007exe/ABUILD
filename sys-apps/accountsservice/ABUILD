@@ -24,7 +24,7 @@ build() {
     -D elogind=true \
     -D systemdsystemunitdir=no \
     -D docbook=false \
-    -D gtk_doc=false
+    -D gtk_doc=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
