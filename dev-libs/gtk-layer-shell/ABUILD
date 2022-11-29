@@ -1,5 +1,5 @@
 pkgname=gtk-layer-shell
-pkgver=0.7.0
+pkgver=0.8.0
 pkgbuild=1
 arch=("auto")
 
@@ -20,7 +20,7 @@ build() {
     --wrap-mode=nofallback \
     -D buildtype=plain \
     -D tests=true \
-    -D docs=true \
+    -D docs=false \
     -D introspection=true
   ninja -C build -j${numjobs}
   DESTDIR=${pkgdir} ninja -C build install
