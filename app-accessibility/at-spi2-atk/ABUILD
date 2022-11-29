@@ -1,12 +1,12 @@
 pkgname=at-spi2-atk
-pkgver=2.38.0
-pkgbuild=3
+pkgver=2.46.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A GTK+ module that bridges ATK to D-Bus at-spi.")
 longdesc=("The At-Spi2 Atk package contains a library that bridges ATK to At-Spi2 D-Bus service.")
 
-source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/at-spi2-core/-/archive/AT_SPI2_CORE_${pkgver//\./_}/at-spi2-core-AT_SPI2_CORE_${pkgver//\./_}.tar.bz2")
 
 tags=("app-accessibility libs")
 
@@ -15,11 +15,11 @@ build_deps=("at-spi2-core libx11 libxml2 atk meson")
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  meson \
+  meson build \
     -D prefix=/usr \
-    -D buildtype=release ..
-  ninja
-  DESTDIR=${pkgdir} ninja install
+    -D default_bus=dbus-broker \
+    -D docs=false \
+    -D buildtype=release
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
