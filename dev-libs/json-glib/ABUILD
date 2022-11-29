@@ -1,6 +1,6 @@
 pkgname=json-glib
 pkgver=1.6.6
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("JSON library built on GLib")
@@ -17,7 +17,8 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D man=true
+    -D gtk_doc=disabled \
+    -D man=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
