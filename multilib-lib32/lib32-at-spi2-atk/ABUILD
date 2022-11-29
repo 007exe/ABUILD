@@ -5,7 +5,7 @@ arch=("auto")
 
 shortdesc=("A GTK+ module that bridges ATK to D-Bus at-spi (32-bit).")
 
-source=("http://download.gnome.org/sources/at-spi2-atk/${pkgver%.*}/at-spi2-atk-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/at-spi2-core/-/archive/AT_SPI2_CORE_${pkgver//\./_}/at-spi2-core-AT_SPI2_CORE_${pkgver//\./_}.tar.bz2")
 
 tags=("app-accessibility lib32")
 
