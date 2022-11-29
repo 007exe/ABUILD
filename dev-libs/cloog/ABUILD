@@ -1,35 +1,24 @@
 pkgname=cloog
 pkgver=0.20.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("The Chunky Loop Generator")
-longdesc=("CLooG is a software which generates loops for scanning Z-polyhedra. That is, CLooG finds the code or pseudo-code where each integral point of one or more parametrized polyhedron or parametrized polyhedra union is reached. CLooG is designed to avoid control overhead and to produce a very efficient code.")
+shortdesc=("The Chunky Loop Generator.")
 
-tags=("develop sys-devel")
+source=("https://github.com/periscop/cloog/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-#source=("https://github.com/periscop/cloog/archive/cloog-$pkgver.tar.gz")
-source=("git:https://github.com/periscop/cloog.git")
-build_deps="isl gmp"
+tags=("dev-libs libs")
+
+build_deps=("texlive-core texlive-bin isl")
 
 build() {
   go_src_dir
   burn_patches
-  autoupdate
-  autoreconf -f -i
-
-# FIXME ugly hack: We make sure configure won't find
-# texi2dvi because the docs don't build (and not
-# having texi2dvi is the only way to tell it not
-# to build docs)
-sed -i -e 's,texi2dvi,broken-texi2dvi,g' configure.ac configure
-
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --with-isl=system \
-    --with-bits=gmp \
-    --enable-portable-binary
+    --with-osl=system
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
