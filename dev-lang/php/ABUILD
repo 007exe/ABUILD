@@ -1,5 +1,7 @@
 pkgname=php
-pkgver=8.1.8
+pkglist=("php-cgi php-apache php-fpm php-embed php-phpdbg php-dblib php-enchant php-gd php-imap php-intl
+php-sodium php-odbc php-pgsql php-pspell php-snmp php-sqlite php-tidy php-xsl")
+pkgver=8.1.13
 pkgbuild=1
 arch=("auto")
 
@@ -14,13 +16,10 @@ gendeps_blacklist=("usr/lib/php/extensions*")
 
 config_files=("etc/php/php.ini")
 
-# c-client
 build_deps=("apache aspell db gdbm enchant gd gmp icu libsodium libxslt libzip net-snmp
-postgresql-libs sqlite tidy unixodbc curl libtool postfix freetds pcre2 libnsl oniguruma")
+postgresql-libs sqlite tidy unixodbc curl libtool postfix freetds pcre2 libnsl oniguruma c-client")
 
-pkglist=("php-cgi php-apache php-fpm php-embed php-phpdbg php-dblib php-enchant php-gd php-imap php-intl
-php-sodium php-odbc php-pgsql php-pspell php-snmp php-sqlite php-tidy php-xsl")
-
+adddep=("libxml2 curl libzip pcre2 argon2 oniguruma db gdbm")
 
 build() {
   go_src_dir
@@ -30,82 +29,84 @@ build() {
   rm tests/output/stream_isatty_*.phpt
   rm Zend/tests/arginfo_zpp_mismatch*.phpt
 
-  local _phpconfig="--srcdir=${srcdir}/php-${pkgver} \
-        --config-cache \
-        --prefix=/usr \
-        --sbindir=/usr/bin \
-        --sysconfdir=/etc/php \
-        --localstatedir=/var \
-        --with-layout=GNU \
-        --with-config-file-path=/etc/php \
-        --with-config-file-scan-dir=/etc/php/conf.d \
-        --disable-rpath \
-        --mandir=/usr/share/man \
-        --disable-gcc-global-regs \
-        "
-  local _phpextensions="\
-        --enable-bcmath=shared \
-        --enable-calendar=shared \
-        --enable-dba=shared \
-        --enable-exif=shared \
-        --enable-ftp=shared \
-        --enable-gd=shared \
-        --enable-intl=shared \
-        --enable-mbstring \
-        --enable-pcntl \
-        --enable-shmop=shared \
-        --enable-soap=shared \
-        --enable-sockets=shared \
-        --enable-sysvmsg=shared \
-        --enable-sysvsem=shared \
-        --enable-sysvshm=shared \
-        --with-bz2=shared \
-        --with-curl=shared \
-        --with-db4=/usr \
-        --with-enchant=shared \
-        --with-external-gd \
-        --with-external-pcre \
-        --with-ffi=shared \
-        --with-gdbm \
-        --with-gettext=shared \
-        --with-gmp=shared \
-        --with-iconv=shared \
-        --with-imap-ssl \
-        --with-imap=shared \
-        --with-kerberos \
-        --with-ldap=shared \
-        --with-ldap-sasl \
-        --with-mhash \
-        --with-mysql-sock=/run/mysqld/mysqld.sock \
-        --with-mysqli=shared,mysqlnd \
-        --with-openssl \
-        --with-password-argon2 \
-        --with-pdo-dblib=shared,/usr \
-        --with-pdo-mysql=shared,mysqlnd \
-        --with-pdo-odbc=shared,unixODBC,/usr \
-        --with-pdo-pgsql=shared \
-        --with-pdo-sqlite=shared \
-        --with-pgsql=shared \
-        --with-pspell=shared \
-        --with-readline \
-        --with-snmp=shared \
-        --with-sodium=shared \
-        --with-sqlite3=shared \
-        --with-tidy=shared \
-        --with-unixODBC=shared \
-        --with-xsl=shared \
-        --with-zip=shared \
-        --with-zlib \
-        "
+local _phpconfig="--srcdir=${srcdir}/php-${pkgver} \
+		--config-cache \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc/php \
+		--localstatedir=/var \
+		--with-layout=GNU \
+		--with-config-file-path=/etc/php \
+		--with-config-file-scan-dir=/etc/php/conf.d \
+		--disable-rpath \
+		--mandir=/usr/share/man \
+		--disable-gcc-global-regs \
+		"
+
+	local _phpextensions="\
+		--enable-bcmath=shared \
+		--enable-calendar=shared \
+		--enable-dba=shared \
+		--enable-exif=shared \
+		--enable-ftp=shared \
+		--enable-gd=shared \
+		--enable-intl=shared \
+		--enable-mbstring \
+		--enable-pcntl \
+		--enable-shmop=shared \
+		--enable-soap=shared \
+		--enable-sockets=shared \
+		--enable-sysvmsg=shared \
+		--enable-sysvsem=shared \
+		--enable-sysvshm=shared \
+		--with-bz2=shared \
+		--with-curl=shared \
+		--with-db4=/usr \
+		--with-enchant=shared \
+		--with-external-gd \
+		--with-external-pcre \
+		--with-ffi=shared \
+		--with-gdbm \
+		--with-gettext=shared \
+		--with-gmp=shared \
+		--with-iconv=shared \
+		--with-imap-ssl \
+		--with-imap=shared \
+		--with-kerberos \
+		--with-ldap=shared \
+		--with-ldap-sasl \
+		--with-mhash \
+		--with-mysql-sock=/run/mysqld/mysqld.sock \
+		--with-mysqli=shared,mysqlnd \
+		--with-openssl \
+		--with-password-argon2 \
+		--with-pdo-dblib=shared,/usr \
+		--with-pdo-mysql=shared,mysqlnd \
+		--with-pdo-odbc=shared,unixODBC,/usr \
+		--with-pdo-pgsql=shared \
+		--with-pdo-sqlite=shared \
+		--with-pgsql=shared \
+		--with-pspell=shared \
+		--with-readline \
+		--with-snmp=shared \
+		--with-sodium=shared \
+		--with-sqlite3=shared \
+		--with-tidy=shared \
+		--with-unixODBC=shared \
+		--with-xsl=shared \
+		--with-zip=shared \
+		--with-zlib \
+		"
 
   EXTENSION_DIR=/usr/lib/php/modules
   export EXTENSION_DIR
   mkdir ${srcdir}/build
   cd ${srcdir}/build
-  ln -s "../php-${pkgver}/configure"
+  ln -s ${srcdir}/php-${pkgver}/configure
   ./configure ${_phpconfig} \
     --enable-cgi \
     --enable-fpm \
+    --with-fpm-systemd \
     --with-fpm-acl \
     --with-fpm-user=http \
     --with-fpm-group=http \
@@ -115,10 +116,11 @@ build() {
 
 # apache
   cp -a ${srcdir}/build ${srcdir}/build-apache
-  cd "${srcdir}/build-apache"
+  cd ${srcdir}/build-apache
   ./configure ${_phpconfig} \
     --with-apxs2 \
     ${_phpextensions}
+  make -j${numjobs}
 
 # phpdbg
   cp -a ${srcdir}/build ${srcdir}/build-phpdbg
@@ -126,8 +128,9 @@ build() {
   ./configure ${_phpconfig} \
     --enable-phpdbg \
     ${_phpextensions}
+  make -j${numjobs}
 
-  cd "${srcdir}/build"
+  cd ${srcdir}/build
   make -j1 INSTALL_ROOT=${pkgdir} install-{modules,cli,build,headers,programs,pharcmd}
   install -D -m644 ${srcdir}/php-${pkgver}/php.ini-production ${pkgdir}/etc/php/php.ini
   install -d -m755 ${pkgdir}/etc/php/conf.d/
@@ -160,12 +163,12 @@ php-cgi_prep() {
 php-apache() {
   pkgname=php-apache
   shortdesc=("Apache SAPI for PHP.")
-  adddeps=("php")
+  adddeps=("php apache libnsl")
 }
 
 php-apache_prep() {
   install -D -m755 ${srcdir}/build-apache/libs/libphp.so ${pkgdir}/usr/lib/httpd/modules/libphp.so
-  install -D -m644 ${srcdir}/apache.conf ${pkgdir}/etc/httpd/conf/extra/php_module.conf.new
+  install -D -m644 ${filedir}/apache.conf ${pkgdir}/etc/httpd/conf/extra/php_module.conf.new
 }
 
 #####################################################################################################
@@ -177,10 +180,10 @@ php-fpm() {
 }
 
 php-fpm_prep() {
-  cd "${srcdir}/build"
+  cd ${srcdir}/build
   make -j1 INSTALL_ROOT=${pkgdir} install-fpm
-#  install -D -m644 sapi/fpm/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
-  install -D -m644 ${srcdir}/php-fpm.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/php-fpm.conf.new
+  install -D -m644 sapi/fpm/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
+  install -D -m644 ${filedir}/php-fpm.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/php-fpm.conf.new
 }
 
 #####################################################################################################
@@ -188,7 +191,7 @@ php-fpm_prep() {
 php-embed() {
   pkgname=php-embed
   shortdesc=("Embedded PHP SAPI library.")
-  adddeps=("php")
+  adddeps=("php libnsl")
 }
 
 php-embed_prep() {
@@ -201,7 +204,7 @@ php-embed_prep() {
 php-phpdbg() {
   pkgname=php-phpdbg
   shortdesc=("Interactive PHP debugger.")
-  adddeps=("php")
+  adddeps=("php freetds")
 }
 
 php-phpdbg_prep() {
@@ -213,7 +216,7 @@ php-phpdbg_prep() {
 
 php-dblib() {
   pkgname=php-dblib
-  shortdesc=("dblib module for PHP.")
+  shortdesc=("Dblib module for PHP.")
   adddeps=("php")
 }
 
@@ -225,8 +228,8 @@ php-dblib_prep() {
 
 php-enchant() {
   pkgname=php-enchant
-  shortdesc=("enchant module for PHP.")
-  adddeps=("php")
+  shortdesc=("Enchant module for PHP.")
+  adddeps=("php enchant")
 }
 
 php-enchant_prep() {
@@ -237,8 +240,8 @@ php-enchant_prep() {
 
 php-gd() {
   pkgname=php-gd
-  shortdesc=("gd module for PHP.")
-  adddeps=("php")
+  shortdesc=("Gd module for PHP.")
+  adddeps=("php gd")
 }
 
 php-gd_prep() {
@@ -249,8 +252,8 @@ php-gd_prep() {
 
 php-imap() {
   pkgname=php-imap
-  shortdesc=("imap module for PHP.")
-  adddeps=("php")
+  shortdesc=("Imap module for PHP.")
+  adddeps=("php c-client")
 }
 
 php-imap_prep() {
@@ -261,8 +264,8 @@ php-imap_prep() {
 
 php-intl() {
   pkgname=php-intl
-  shortdesc=("intl module for PHP.")
-  adddeps=("php")
+  shortdesc=("Intl module for PHP.")
+  adddeps=("php icu")
 }
 
 php-intl_prep() {
@@ -273,8 +276,8 @@ php-intl_prep() {
 
 php-sodium() {
   pkgname=php-sodium
-  shortdesc=("sodium module for PHP.")
-  adddeps=("php")
+  shortdesc=("Sodium module for PHP.")
+  adddeps=("php libsodium")
 }
 
 php-sodium_prep() {
@@ -299,7 +302,7 @@ php-odbc_prep() {
 php-pgsql() {
   pkgname=php-pgsql
   shortdesc=("PostgreSQL modules for PHP.")
-  adddeps=("php")
+  adddeps=("php postgresql-libs")
 }
 
 php-pgsql_prep() {
@@ -311,8 +314,8 @@ php-pgsql_prep() {
 
 php-pspell() {
   pkgname=php-pspell
-  shortdesc=("pspell module for PHP.")
-  adddeps=("php")
+  shortdesc=("Pspell module for PHP.")
+  adddeps=("php aspell")
 }
 
 php-pspell_prep() {
@@ -323,8 +326,8 @@ php-pspell_prep() {
 
 php-snmp() {
   pkgname=php-snmp
-  shortdesc=("snmp module for PHP.")
-  adddeps=("php")
+  shortdesc=("Snmp module for PHP.")
+  adddeps=("php net-snmp")
 }
 
 php-snmp_prep() {
@@ -335,8 +338,8 @@ php-snmp_prep() {
 
 php-sqlite() {
   pkgname=php-sqlite
-  shortdesc=("sqlite module for PHP.")
-  adddeps=("php")
+  shortdesc=("Sqlite module for PHP.")
+  adddeps=("php sqlite")
 }
 
 php-sqlite_prep() {
@@ -348,8 +351,8 @@ php-sqlite_prep() {
 
 php-tidy() {
   pkgname=php-tidy
-  shortdesc=("tidy module for PHP.")
-  adddeps=("php")
+  shortdesc=("Tidy module for PHP.")
+  adddeps=("php tidy")
 }
 
 php-tidy_prep() {
@@ -360,8 +363,8 @@ php-tidy_prep() {
 
 php-xsl() {
   pkgname=php-xsl
-  shortdesc=("xsl module for PHP.")
-  adddeps=("php")
+  shortdesc=("Xsl module for PHP.")
+  adddeps=("php libxslt")
 }
 
 php-xsl_prep() {
