@@ -18,7 +18,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D man=false
+    -D man=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
