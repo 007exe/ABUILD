@@ -1,6 +1,6 @@
 pkgname=gdl
 pkgver=3.40.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("GNOME Docking Library.")
@@ -21,7 +21,7 @@ build() {
     --sysconfdir=/etc \
     --localstatedir=/var\
     --disable-static \
-    --enable-gtk-doc
+    --disable-gtk-doc
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
