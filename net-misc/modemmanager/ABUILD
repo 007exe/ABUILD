@@ -24,7 +24,7 @@ build() {
     -D libdir=/usr/lib \
     -D dbus_policy_dir=/usr/share/dbus-1/system.d \
     -D dist_version="\"$pkgver\"" \
-    -D gtk_doc=false \
+    -D gtk_doc=true \
     -D plugin_qcom_soc=disabled \
     -D polkit=permissive \
     -D vapi=true \
