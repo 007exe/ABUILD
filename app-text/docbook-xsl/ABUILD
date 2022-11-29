@@ -17,43 +17,17 @@ adddep=("libxml2 libxslt docbook-xml")
 build() {
   go_src_dir
   burn_patches
-  mkdir -p ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv VERSION ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv VERSION.xsl ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv assembly ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv common ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv eclipse ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv epub ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv epub3 ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv fo ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv highlighting ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv html ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv htmlhelp ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv javahelp ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv lib ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv manpages ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv params ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv profiling ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv roundtrip ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv template ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv website ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv xhtml ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv xhtml-1_1 ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
-  cp -rv xhtml5 ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
+  _pkgroot=${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}
 
-# FIXME: Надо это автомотизировать
-  rm ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/assembly/README
-  rm -r ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/assembly/schema
-  rm ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/epub/README
-  rm -r ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/epub/bin
-  rm ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/epub3/README
-  rm ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/highlighting/README
-  rm ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/manpages/ChangeLog.20020917
-  rm ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/roundtrip/template.dot
-  rm ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}/xhtml5/README
+  install -dm755 ${_pkgroot}
+  install -m644 VERSION VERSION.xsl ${_pkgroot}
+  for fn in assembly common eclipse epub epub3 fo highlighting html htmlhelp javahelp lib \
+      manpages params profiling roundtrip template website xhtml xhtml-1_1 xhtml5; do
+      install -dm755 ${_pkgroot}/${fn}
+      install -m644 ${fn}/*.{xml,xsl,dtd,ent} ${_pkgroot}/${fn} || true
+  done
 
-  cp -r ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver} ${pkgdir}/usr/share/xml/docbook/xsl-stylesheets-${pkgver}-nons
-
-  install -d ${pkgdir}/etc/xml
-  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+  for i in doinst postremove ; do
+      cat ${filedir}/${i}.sh | sed s/%PKGVER%/${pkgver}/g > ${pkgdir}/install/${i}.sh
+  done
 }
