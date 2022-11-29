@@ -24,8 +24,7 @@ build() {
     -D libdir=/usr/lib32 \
     -D introspection=no \
     -D default_bus=dbus-broker \
-    -D docs=false \
-    -D buildtype=release
+    -D docs=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   rm -r ${pkgdir}/{etc,usr/{include,lib,share}}
