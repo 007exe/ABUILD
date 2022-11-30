@@ -1,6 +1,6 @@
 pkgname=libusb-compat
-pkgver=0.1.7
-pkgbuild=2
+pkgver=0.1.8
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library to enable user space application programs to communicate with USB devices.")
@@ -15,6 +15,7 @@ build_deps=("libusb")
 build() {
   go_src_dir
   burn_patches
+  ./autogen.sh
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
