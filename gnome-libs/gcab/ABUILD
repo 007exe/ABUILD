@@ -20,7 +20,7 @@ build() {
     -D libdir=/usr/lib \
     -D nls=true \
     -D installed_tests=false \
-    -D docs=false
+    -D docs=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
