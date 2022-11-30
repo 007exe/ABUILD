@@ -17,8 +17,7 @@ cantarell-fonts rest shaderc")
 
 adddep=("gtk-update-icon-cache adwaita-icon-theme mesa shared-mime-info desktop-file-utils librsvg cantarell-fonts iso-codes dconf json-glib")
 
-# FIXME: Есть проблемы со сборкой документации по этой причине было решено пакет gtk4-docs не собирать
-pkglist=("gtk-update-icon-cache gtk4-demos")
+pkglist=("gtk-update-icon-cache gtk4-demos gtk4-docs")
 
 build() {
   go_src_dir
@@ -31,8 +30,8 @@ build() {
     -D broadway-backend=true \
     -D cloudproviders=enabled \
     -D colord=enabled \
-    -D gtk_doc=false \
-    -D man-pages=false \
+    -D gtk_doc=true \
+    -D man-pages=true \
     ..
   meson compile
   meson install --destdir ${pkgdir}
