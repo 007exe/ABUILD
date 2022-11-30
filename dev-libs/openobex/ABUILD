@@ -10,7 +10,7 @@ source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}-Source
 tags=("libs dev-libs")
 
 # jdk
-build_deps=("cmake libxsl doxygen libusb bluez-libs")
+build_deps=("cmake libxslt doxygen libusb bluez-libs")
 
 adddep=("libusb bluez-libs")
 
@@ -29,5 +29,5 @@ build() {
   make all openobex-apps
   make DESTDIR=${pkgdir} install
   cp ../apps/lib/*.h  ${pkgdir}/usr/include/openobex/
-  install -m644 ../apps/lib/libopenobex-apps-common.a ${pkgdir}/usr/lib/libopenobex-apps-common.a
+  install -m644 apps/lib/libopenobex-apps-common.a ${pkgdir}/usr/lib/libopenobex-apps-common.a
 }
