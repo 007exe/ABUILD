@@ -1,4 +1,6 @@
 pkgname=gtk4
+# FIXME: Проблемы со сборкой документации gtk4-docs
+pkglist=("gtk-update-icon-cache gtk4-demos")
 pkgver=4.8.2
 pkgbuild=1
 arch=("auto")
@@ -17,8 +19,6 @@ cantarell-fonts rest shaderc")
 
 adddep=("gtk-update-icon-cache adwaita-icon-theme mesa shared-mime-info desktop-file-utils librsvg cantarell-fonts iso-codes dconf json-glib")
 
-pkglist=("gtk-update-icon-cache gtk4-demos gtk4-docs")
-
 build() {
   go_src_dir
   burn_patches
@@ -30,8 +30,8 @@ build() {
     -D broadway-backend=true \
     -D cloudproviders=enabled \
     -D colord=enabled \
-    -D gtk_doc=true \
-    -D man-pages=true \
+    -D gtk_doc=false \
+    -D man-pages=false \
     ..
   meson compile
   meson install --destdir ${pkgdir}
