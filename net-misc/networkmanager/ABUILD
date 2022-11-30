@@ -45,7 +45,7 @@ build() {
     -D netconfig=no \
     -D config_dns_rc_manager_default=symlink \
     -D vapi=true \
-    -D docs=false \
+    -D docs=true \
     -D more_asserts=no \
     -D more_logging=false \
     -D qt=false
