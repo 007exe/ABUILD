@@ -12,6 +12,8 @@ tags=("apps x11-misc")
 
 build_deps=("lcms2 dbus glib2 sqlite gobject-introspection vala bash-completion meson gtk-doc docbook-xsl libgusb polkit")
 
+# FIXME: Проблемы со сборкой документации
+
 build() {
   go_src_dir
   burn_patches
