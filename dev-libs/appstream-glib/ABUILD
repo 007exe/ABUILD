@@ -18,8 +18,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk-doc=false \
-    -D man=false \
+    -D gtk-doc=true \
+    -D man=true \
     -D rpm=false
 #   -D alpm=true
   meson compile -C build
