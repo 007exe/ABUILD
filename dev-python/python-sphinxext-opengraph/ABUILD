@@ -1,0 +1,20 @@
+pkgname=python-sphinxext-opengraph
+pkgver=0.7.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Sphinx extension to generate unique OpenGraph metadata.")
+
+source=("https://files.pythonhosted.org/packages/source/s/sphinxext-opengraph/sphinxext-opengraph-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-setuptools-scm python-sphinx")
+
+adddep=("python-sphinx")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}
