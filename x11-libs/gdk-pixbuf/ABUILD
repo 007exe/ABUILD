@@ -14,13 +14,15 @@ build_deps=("glib2 libpng libjpeg-turbo libtiff shared-mime-info gobject-introsp
 
 adddep=("shared-mime-info")
 
+# FIXME: Проблемы со сборкой документации
+
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
     -D builtin_loaders=all \
-    -D gtk_doc=false \
+    -D gtk_doc=fakse \
     -D installed_tests=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
