@@ -1,10 +1,9 @@
 pkgname=kde-cli-tools
-pkgver=5.26.3
+pkgver=5.26.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tools based on KDE Frameworks 5 to better interact with the system.")
-longdesc=("Tools based on KDE Frameworks 5 to better interact with the system.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 

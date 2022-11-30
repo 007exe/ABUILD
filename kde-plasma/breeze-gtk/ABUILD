@@ -1,5 +1,5 @@
 pkgname=breeze-gtk
-pkgver=5.26.3
+pkgver=5.26.4
 pkgbuild=1
 arch=("noarch")
 
