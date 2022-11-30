@@ -1,10 +1,9 @@
 pkgname=timezonemap
-pkgver=0.4.5.1
-pkgbuild=2
+pkgver=0.4.5.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Gtk3 timezone map widget, forked from gnome which forked from Ubiquity.")
-longdesc=("Gtk3 timezone map widget, forked from gnome which forked from Ubiquity.")
 
 source=("https://github.com/dashea/${pkgname}/archive/${pkgver}.tar.gz")
 
@@ -24,3 +23,10 @@ build() {
   make DESTDIR=${pkgdir} install
 }
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
