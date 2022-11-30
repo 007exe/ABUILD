@@ -1,12 +1,12 @@
 pkgname=libdecor
-pkgver=0.1.0
-pkgbuild=2
+pkgver=0.1.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Client-side decorations library for Wayland clients.")
 longdesc=("libdecor is a library that can help Wayland clients draw window decorations for them. It aims to provide multiple backends that implements the decoration drawing.")
 
-source=("https://gitlab.gnome.org/jadahl/libdecor/uploads/81adf91d27620e20bcc5f6b9b312d768/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/jadahl/libdecor/-/archive/${pkgver}/libdecor-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
