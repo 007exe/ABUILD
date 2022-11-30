@@ -16,8 +16,7 @@ build(){
   go_src_dir
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D gtk_doc=disabled
+    -D libdir=/usr/lib
   meson compile -C build
 #  meson test -C build --print-errorlogs
   DESTDIR=${pkgdir} meson install -C build
