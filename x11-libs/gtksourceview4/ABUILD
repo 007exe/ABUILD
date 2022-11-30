@@ -19,7 +19,7 @@ build() {
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D glade_catalog=true \
-    -D gtk_doc=false
+    -D gtk_doc=true
   meson compile -C build -j${numjobs}
   meson install -C build --destdir ${pkgdir}
 }
