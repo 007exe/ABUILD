@@ -1,12 +1,11 @@
 pkgname=libkolabxml
-pkgver=1.1.6
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Kolab XML Format Schema Definitions Library.")
-longdesc=("Kolab XML Format Schema Definitions Library.")
 
-source=("https://mirror.kolabenterprise.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
+source=("https://cgit.kolab.org/libkolabxml/snapshot/libkolabxml-libkolabxml-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
