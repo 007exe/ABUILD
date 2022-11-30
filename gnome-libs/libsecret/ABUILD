@@ -17,8 +17,7 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D gtk_doc=false \
-    --buildtype=release
+    -D gtk_doc=false
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 }
