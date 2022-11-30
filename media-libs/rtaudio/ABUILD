@@ -22,8 +22,8 @@ build() {
     -D dsound=disabled \
     -D asio=disabled \
     -D wasapi=disabled \
-    -D docs=false \
-    -D install_docs=false
+    -D docs=true \
+    -D install_docs=true
   meson compile -C build -j${numjobs}
   meson install -C build --destdir ${pkgdir}
 }
