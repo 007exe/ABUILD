@@ -18,8 +18,7 @@ build() {
   go_src_dir
   burn_patches
   meson build \
-  -D prefix=/usr \
-  -D gtk_doc=false
+   -D prefix=/usr
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
