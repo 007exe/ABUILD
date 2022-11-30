@@ -1,5 +1,5 @@
 pkgname=nlohmann-json
-pkgver=3.10.5
+pkgver=3.11.2
 pkgbuild=1
 arch=("auto")
 
@@ -24,6 +24,6 @@ build() {
   make -j${numjobs} -C build
   make DESTDIR=${pkgdir} install -C build
 
-  install -vDm 644 {CODE_OF_CONDUCT,README}.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
   install -vDm 644 LICENSE.MIT -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
