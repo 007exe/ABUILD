@@ -20,7 +20,7 @@ build() {
     --wrap-mode=nofallback \
     -D buildtype=plain \
     -D tests=true \
-    -D docs=false \
+    -D docs=true \
     -D introspection=true
   ninja -C build -j${numjobs}
   DESTDIR=${pkgdir} ninja -C build install
