@@ -13,6 +13,8 @@ tags=("gnome gnome-extra")
 # appdata-tools
 build_deps=("gtk-doc gobject-introspection yelp-tools meson unicode-character-database unzip vala gtk3")
 
+# FIXME: Проблемы со сборкой документации
+
 build() {
   go_src_dir
   meson build \
