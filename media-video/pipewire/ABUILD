@@ -1,5 +1,5 @@
 pkgname=pipewire
-pkgver=0.3.60
+pkgver=0.3.61
 pkgbuild=1
 arch=("auto")
 
