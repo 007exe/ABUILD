@@ -12,6 +12,8 @@ tags=("libs app-crypt")
 
 build_deps=("docbook-xsl gobject-introspection vala gtk-doc meson valgrind dbus-glib")
 
+# FIXME: Проблемы со сборкой документации
+
 build() {
   go_src_dir
   burn_patches
