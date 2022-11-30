@@ -1,6 +1,6 @@
 pkgname=libxml++
-pkgver=3.2.3
-pkgbuild=2
+pkgver=3.2.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ bindings to libxml2.")
