@@ -1,6 +1,6 @@
 pkgname=libgusb
 pkgver=0.4.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("GLib wrapper around libusb1.")
@@ -12,12 +12,15 @@ tags=("dev-libs libs")
 
 build_deps=("libusb gobject-introspection gtk-doc meson vala")
 
+# FIXME: Проблемы со сборкой документации
+
 build() {
   go_src_dir
   burn_patches
   meson build \
     --prefix=/usr \
-    --buildtype=release
+    --buildtype=release \
+    -D docs=false
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
 }
