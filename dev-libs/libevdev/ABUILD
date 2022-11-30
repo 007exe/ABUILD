@@ -1,12 +1,12 @@
 pkgname=libevdev
-pkgver=1.12.1
+pkgver=1.13.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Wrapper library for evdev devices.")
 longdesc=("The libevdev package contains common functions for Xorg input drivers.")
 
-source=("https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz")
+source=("https://freedesktop.org/software/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs dev-libs")
 
