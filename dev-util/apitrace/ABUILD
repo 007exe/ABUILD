@@ -1,19 +1,41 @@
-#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=apitrace
-pkgver=4.0
+pkgver=11.1
 pkgbuild=1
-arch=('auto')
-shortdesc="Graphics API Tracing"
-source=("git:git://github.com/${pkgname}/${pkgname}.git")
-tags="dev-util develop"
+strict_version=1
+arch=("auto")
 
-#dependencies only needed to build package
-build_deps="cmake git mesa qt4"
+shortdesc=("Graphics API Tracing.")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
--DDOCDIR=/usr/doc/${pkgname}-${pkgver} \
-../"
+source=("git:https://github.com/apitrace/apitrace.git")
+
+tags=("dev-util develop")
+
+build_deps=("cmake mesa qt5-base")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+  git submodule update --init --depth 1 --recursive
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake . -Bbuild -DCMAKE_INSTALL_PREFIX=/usr \
+    -DENABLE_GUI=TRUE
+  make -C build
+  make -C build DESTDIR=${pkgdir} install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/apitrace
+  install -m644 LICENSE ${pkgdir}/usr/share/licenses/apitrace/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
