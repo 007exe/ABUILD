@@ -1,6 +1,8 @@
 pkgname=libportal
+# FIXME: Проблемы со сборкой документации libportal-docs
+pkglist=("libportal-gtk3 libportal-gtk4 libportal-qt5")
 pkgver=0.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("GIO-style async APIs for most Flatpak portals.")
@@ -11,8 +13,6 @@ tags=("libs dev-libs")
 source=("https://github.com/flatpak/libportal/archive/refs/tags/${pkgver}.tar.gz")
 
 build_deps=("meson gi-docgen vala gobject-introspection gtk3 gtk4 qt5-base qt5-x11extras gjs")
-
-pkglist=("libportal-gtk3 libportal-gtk4 libportal-qt5 libportal-docs")
 
 _pick() {
   local p=${1} f d; shift
@@ -29,7 +29,8 @@ build() {
   burn_patches
   meson build \
     --prefix=/usr \
-    --libdir=/usr/lib
+    --libdir=/usr/lib \
+    -D docs=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   cd  ${pkgdir}
@@ -46,7 +47,7 @@ build() {
   _pick qt5 usr/include/libportal-qt5
   _pick qt5 usr/lib{,/pkgconfig}/libportal-qt5.*
 
-  _pick docs usr/share/doc
+#  _pick docs usr/share/doc
 }
 
 libportal-gtk3(){
