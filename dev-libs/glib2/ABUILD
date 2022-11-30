@@ -1,6 +1,6 @@
 # NOTE: Пересобери gobject-introspection под новый glib2
 pkgname=glib2
-pkgver=2.74.1
+pkgver=2.74.2
 pkgbuild=1
 arch=("auto")
 
@@ -26,8 +26,8 @@ build() {
     --buildtype=release \
     -D glib_debug=disabled \
     -D selinux=disabled \
-    -D man=false \
-    -D gtk_doc=false
+    -D man=true \
+    -D gtk_doc=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 
