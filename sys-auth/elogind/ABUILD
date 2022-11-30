@@ -22,7 +22,7 @@ build() {
 # Разрешаем сборку без установленного polkit
 #  sed -i '/Disable polkit/,+8 d' meson.build &&
   meson build \
-    -D man=false \
+    -D man=true \
     -D pam=true \
     -D acl=true \
     -D utmp=true \
