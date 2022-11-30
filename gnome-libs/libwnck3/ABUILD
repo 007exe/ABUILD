@@ -1,5 +1,5 @@
 pkgname=libwnck3
-pkgver=40.1
+pkgver=43.0
 pkgbuild=1
 arch=("auto")
 
@@ -17,8 +17,7 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D gtk_doc=false
+    -D libdir=/usr/lib
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
