@@ -1,6 +1,6 @@
 pkgname=glade
-pkgver=3.38.2
-pkgbuild=2
+pkgver=3.40.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("User Interface Builder for GTK+ applications.")
@@ -17,8 +17,7 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib \
-    -D gtk_doc=false
+    -D libdir=/usr/lib
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 }
