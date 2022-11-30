@@ -18,7 +18,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D default_bus=dbus-broker \
-    -D docs=false \
+    -D docs=true \
     -D buildtype=release
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
