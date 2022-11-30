@@ -20,8 +20,8 @@ build(){
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D docs=false \
-    -D man=false \
+    -D docs=true \
+    -D man=true \
     -D systemd_user_services=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
