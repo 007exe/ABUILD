@@ -1,61 +1,54 @@
 pkgname=gtk3
-pkgver=3.24.34
+pkglist=("gtk3-docs gtk3-demos")
+pkgver=3.24.35
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("GObject-based multi-platform GUI toolkit.")
-longdesc=("The GTK+ 3 package contains libraries used for creating graphical user interfaces for applications.")
+shortdesc=("The GTK+ 3 package contains libraries used for creating graphical user interfaces for applications.")
 
-source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgver%.*}/gtk+-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.tar.bz2")
 
 tags=("libs x11-libs")
 
-build_deps=("atk cairo libxcursor libxinerama libxrandr libxi libepoxy gdk-pixbuf libxcomposite libxdamage pango
-shared-mime-info wayland libxkbcommon at-spi2-atk librsvg colord desktop-file-utils mesa libcups fribidi gtk-doc
-glib2 meson wayland-protocols cantarell-fonts sassc libcloudproviders gtk-update-icon-cache gobject-introspection
-tracker3")
+# libcolord
+build_deps=("glib2 gobject-introspection gtk-doc meson sassc wayland-protocols
+adwaita-icon-theme at-spi2-atk atk cairo cantarell-fonts dconf desktop-file-utils
+fribidi gtk-update-icon-cache iso-codes libcloudproviders libcups libepoxy librsvg
+libxcomposite libxcursor libxdamage libxi libxinerama libxkbcommon libxrandr mesa
+pango shared-mime-info tracker3 wayland gdk-pixbuf")
 
-adddep=("gtk-update-icon-cache adwaita-icon-theme mesa shared-mime-info desktop-file-utils librsvg cantarell-fonts
-iso-codes dconf json-glib libcanberra libcloudproviders rest tracker3")
-
-pkglist=("gtk_update_icon_cache gtk3-docs gtk3-demos")
+# libcolord
+adddep=("adwaita-icon-theme at-spi2-atk atk cairo cantarell-fonts dconf desktop-file-utils
+fribidi gtk-update-icon-cache iso-codes libcloudproviders libcups libepoxy librsvg
+libxcomposite libxcursor libxdamage libxi libxinerama libxkbcommon libxrandr mesa
+pango shared-mime-info tracker3 wayland gdk-pixbuf")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --sysconfdir=/etc \
-    --enable-broadway-backend \
-    --enable-x11-backend \
-    --enable-wayland-backend \
-    --disable-static
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
-  mkdir -p ${pkgdir}/usr/share/gtk-3.0
+  CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D broadway_backend=true \
+    -D cloudproviders=true \
+    -D colord=yes \
+    -D gtk_doc=true \
+    -D man=true \
+    -D introspection=true \
+    -D tracker3=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 
   cp ${filedir}/settings.ini ${pkgdir}/usr/share/gtk-3.0/settings.ini
 
   rm ${pkgdir}/usr/bin/gtk-update-icon-cache
-}
-
-gtk_update_icon_cache() {
-    pkgname=gtk-update-icon-cache
-    shortdesc=("GTK icon cache update tool.")
-    longdesc=("GTK icon cache updater.")
-}
-
-gtk_update_icon_cache_prep() {
-  go_src_dir
-  cd gtk
-  install -D -m755 gtk-update-icon-cache ${pkgdir}/usr/bin/gtk-update-icon-cache
+  rm ${pkgdir}/usr/share/man/man1/gtk-update-icon-cache.1
 }
 
 gtk3-docs() {
     pkgname=gtk3-docs
     shortdesc=("GObject-based multi-platform GUI toolkit documentation.")
-    longdesc=("GObject-based multi-platform GUI toolkit documentationr.")
 }
 
 gtk3-docs_prep(){
@@ -67,7 +60,6 @@ gtk3-docs_prep(){
 gtk3-demos() {
     pkgname=gtk3-demos
     shortdesc=("GObject-based multi-platform GUI toolkit demo applications.")
-    longdesc=("GObject-based multi-platform GUI toolkit demo applications.")
 }
 
 gtk3-demos_prep(){
