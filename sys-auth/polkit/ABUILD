@@ -18,8 +18,8 @@ build(){
   go_src_dir
   burn_patches
   meson build \
-    -D gtk_doc=false \
-    -D man=false \
+    -D gtk_doc=true \
+    -D man=true \
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D os_type=redhat \
