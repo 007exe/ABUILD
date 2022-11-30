@@ -14,6 +14,8 @@ build_deps=("gobject-introspection vala libxslt git gtk-doc meson gtk3 libgcrypt
 
 config_files=("etc/security/limits.d/10-gcr.conf")
 
+# FIXME: Проблемы со сборкой документации
+
 build(){
   go_src_dir
   burn_patches
