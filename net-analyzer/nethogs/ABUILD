@@ -1,34 +1,25 @@
 pkgname=nethogs
-pkgver=0.8
+pkgver=0.8.7
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A net top tool which displays traffic used per process instead of per IP or interface"
+shortdesc=("A net top tool which displays traffic used per process instead of per IP or interface.")
 
-source=("http://cdnetworks-kr-1.dl.sourceforge.net/project/${pkgname}/${pkgname}/${pkgver}/${pkgname}-${pkgver}.0.tar.gz")
+source=("https://github.com/raboof/nethogs/archive/v${pkgver}.tar.gz")
 
+tags=("net-analyzer console")
 
-tags="net-misc console"
+build_deps=("libpcap ncurses gcc-libs")
 
-build_deps=" libpcap ncurses"
-
-
-build()
-{
-go_src_dir
-burn_patches
-
-  make || return 1
-  
-    install -d -m 755 $pkgdir/usr/bin || exit 1
-
-	install -m 755 nethogs $pkgdir/usr/bin || exit 1
-
-	install -d -m 755 $pkgdir/usr/man/man8 || exit 1
-
-	install -m 644 nethogs.8 $pkgdir/usr/man/man8 || exit 1
-
-
+build(){
+  go_src_dir
+  burn_patches
+  sed -i 's|/sbin|/bin|' src/MakeApp.mk
+  sed -i 's|/local||'  Makefile
+  make prefix="/usr"
+  make prefix="/usr" libnethogs
+  make prefix="/usr" DESTDIR=${pkgdir} install
+  make prefix="/usr" DESTDIR=${pkgdir} install_lib
+  install -Dm755 src/libnethogs.h ${pkgdir}/usr/include/libnethogs.h
+  ln -s /usr/lib/libnethogs.so.${pkgver} ${pkgdir}/usr/lib/libnethogs.so
 }
-
-
