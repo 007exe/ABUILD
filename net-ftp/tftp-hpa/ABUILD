@@ -16,6 +16,7 @@ config_files=("etc/conf.d/tftpd")
 build() {
   go_src_dir
   burn_patches
+  CFLAGS+=' -fcommon'
   ./configure \
     --prefix=/usr \
     --mandir=/usr/share/man \
