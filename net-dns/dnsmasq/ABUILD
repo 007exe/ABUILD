@@ -1,5 +1,5 @@
 pkgname=dnsmasq
-pkgver=2.86
+pkgver=2.87
 pkgbuild=1
 arch=("auto")
 
