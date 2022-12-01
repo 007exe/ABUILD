@@ -1,0 +1,30 @@
+pkgname=rebar
+pkgver=2.6.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A sophisticated build-tool for Erlang projects that follows OTP principles.")
+
+source=("https://github.com/rebar/rebar/archive/${pkgver}.tar.gz")
+
+tags=("dev-util develop")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make
+  install -Dm0755 rebar ${pkgdir}/usr/bin/rebar
+  install -Dm0644 priv/shell-completion/bash/rebar ${pkgdir}/usr/share/bash-completion/completions/rebar
+  install -Dm0644 priv/shell-completion/zsh/_rebar ${pkgdir}/usr/share/zsh/functions/Completion/Zsh/_rebar
+  install -Dm0644 priv/shell-completion/fish/rebar.fish ${pkgdir}/usr/share/fish/vendor_completions.d/rebar.fish
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
