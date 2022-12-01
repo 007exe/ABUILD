@@ -1,81 +1,32 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=scanmem
-pkgver=0.12
+pkgver=0.17
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Locate and modify a variable in an executing process"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("scanmem is a simple interactive debugging utility for linux, used to locate the address of a variable in an executing process. This can be used for the analysis or modification of a hostile process on a compromised machine, reverse engineering, or as a pokefinder to cheat at video games. License: GPL v3. Homepage: http://code.google.com/p/scanmem"
-)
+shortdesc=("Memory scanner designed to isolate the address of an arbitrary variable in an executing process.")
 
-source=("http://scanmem.googlecode.com/files/scanmem-${pkgver}.tar.gz")
+source=("https://github.com/${pkgname}/${pkgname}/archive/v${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("dev-util utils")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="dev-util utils"
+build_deps=("intltool gtk3 python-gobject polkit glibc readline")
 
-#dependencies only needed to build package
-build_deps=""
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-gui
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---docdir=/usr/doc/${pkgname}-${pkgver}"
-
-# since version 0.08, scanmem includes a GUI called GameConqueror. 
-# Game Conqueror is a graphical game cheating tool under Linux, 
-# as a frontend of scanmem.
-#--enable-gui \
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
