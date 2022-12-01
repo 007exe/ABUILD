@@ -1,0 +1,63 @@
+pkgname=cacti
+pkgver=1.2.22
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Network graphing solution using RRDTool.")
+
+source=("https://www.$pkgname.net/downloads/$pkgname-$pkgver.tar.gz")
+
+tags=("net-analyzer utils")
+
+# rrdtool
+build_deps=("php-gd php-snmp ttf-dejavu")
+
+# rrdtool
+adddep=("php-gd php-snmp ttf-dejavu")
+
+# NOTE: Это опциональные зависимости
+removedep=("mariadb perl php-fpm uwsgi-plugin-php")
+
+# etc/webapps/cacti/.htaccess
+config_files=("etc/webapps/cacti/config.php")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's|/usr/local/spine/bin/spine|/usr/bin/spine|g' -i install/functions.php
+  sed -e 's|/usr/share/fonts/dejavu/|/usr/share/fonts/TTF/|g' -i lib/rrd.php
+  find . -executable -type f -and -not -path "*scripts*" -exec chmod -c 644 {} \;
+  install -vdm 755 ${pkgdir}/usr/share/webapps/${pkgname}/include/
+  install -vDm 640 include/config.php -t ${pkgdir}/etc/webapps/${pkgname}/
+#  install -vDm 644 ${pkgname}-htaccess ${pkgdir}/etc/webapps/${pkgname}/.htaccess
+  ln -sv /etc/webapps/${pkgname}/.htaccess ${pkgdir}/usr/share/webapps/${pkgname}/.htaccess
+  ln -sv /etc/webapps/${pkgname}/config.php ${pkgdir}/usr/share/webapps/${pkgname}/include/config.php
+  install -vdm 750 ${pkgdir}/var/lib/${pkgname}/
+  install -vDm 644 rra/.htaccess -t ${pkgdir}/var/lib/${pkgname}/rra/
+  ln -sv /var/lib/${pkgname}/rra ${pkgdir}/usr/share/webapps/${pkgname}/rra
+  install -vDm 644 resource/index.php -t ${pkgdir}/var/lib/${pkgname}/resource/
+  install -vDm 644 resource/snmp_queries/*.{php,xml} -t ${pkgdir}/var/lib/${pkgname}/resource/snmp_queries/
+  install -vDm 644 resource/script_server/*.{php,xml} -t ${pkgdir}/var/lib/${pkgname}/resource/script_server/
+  install -vDm 644 resource/script_queries/*.{php,xml} -t ${pkgdir}/var/lib/${pkgname}/resource/script_queries/
+  ln -sv /var/lib/${pkgname}/resource ${pkgdir}/usr/share/webapps/${pkgname}/resource
+  install -vDm 644 scripts/*.{php,pl,sh} -t ${pkgdir}/var/lib/${pkgname}/scripts/
+  ln -sv /var/lib/${pkgname}/scripts ${pkgdir}/usr/share/webapps/${pkgname}/scripts
+  ln -sv /usr/share/webapps/${pkgname}/lib ${pkgdir}/var/lib/${pkgname}/
+  ln -sv /usr/share/webapps/${pkgname}/include ${pkgdir}/var/lib/${pkgname}/
+  install -vdm 750 ${pkgdir}/var/cache/${pkgname}/
+  install -vDm 644 cache/boost/*.php -t ${pkgdir}/var/cache/${pkgname}/boost/
+  install -vDm 644 cache/mibcache/*.php -t ${pkgdir}/var/cache/${pkgname}/mibcache/
+  install -vDm 644 cache/realtime/*.php -t ${pkgdir}/var/cache/${pkgname}/realtime/
+  install -vDm 644 cache/spikekill/*.php -t ${pkgdir}/var/cache/${pkgname}/spikekill/
+  ln -sv /var/cache/${pkgname} ${pkgdir}/usr/share/webapps/${pkgname}/cache
+  install -vdm 750 ${pkgdir}/var/log/${pkgname}
+  install -vDm 644 log/.htaccess -t ${pkgname}/var/log/${pkgname}
+#  ln -sv /var/log/${pkgname} ${pkgname}/usr/share/webapps/${pkgname}/log
+  install -vDm 644 {CHANGELOG,README.md} -t ${pkgdir}/usr/share/doc/${pkgname}/
+  install -vDm 644 ${filedir}/${pkgname}.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf
+  install -vDm 644 ${filedir}/${pkgname}.sysusers ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
+  install -vDm 644 ${filedir}/${pkgname}.uwsgi ${pkgdir}/etc/uwsgi/${pkgname}.ini
+
+  rm -frv include/config.php rra/ resource/ scripts/ cache/ log/ {CHANGELOG,README.md}
+  find . -type f -exec install -vDm 644 {} ${pkgdir}/usr/share/webapps/${pkgname}/{} \;
+}
