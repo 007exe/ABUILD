@@ -1,26 +1,24 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=wvdial
 pkgver=1.61
-pkgbuild=2
-arch=('auto')
+pkgbuild=1
+arch=("auto")
 
-shortdesc="A dialer program to connect to the Internet"
+shortdesc=("A dialer program to connect to the Internet.")
 
-source=("http://wvstreams.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
+source=("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/wvstreams/${pkgname}-${pkgver}.tar.gz")
 
-tags="network net-dialup"
+tags=("network net-dialup")
 
-build_deps="wvstreams"
+build_deps=("lockdev wvstreams ppp gcc-libs")
 
-adddep="ppp"
-
-docs="FAQ"
+adddep=("wvstreams ppp gcc-libs")
 
 build() {
   go_src_dir
- ./configure
+  burn_patches
+  ./configure
   make LOCKDEV="-llockdev"
-  make prefix="${pkgdir}"/usr PPPDIR="${pkgdir}"/etc/ppp/peers install
+  make prefix=${pkgdir}/usr PPPDIR=${pkgdir}/etc/ppp/peers install
+  install -Dm644 COPYING.LIB ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
