@@ -1,73 +1,27 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=quilt
-pkgver=0.50
+pkgver=0.67
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A patch management system"
-#longdesc=(""
-#)
+shortdesc=("Manage a series of patches by keeping track of the changes each patch makes.")
 
-source=("http://download.savannah.gnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://savannah.nongnu.org/download/quilt/${pkgname}-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("develop dev-util")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="develop dev-util"
+build_deps=("bash bzip2 diffstat diffutils findutils gawk gettext gzip patch perl")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("bash bzip2 diffstat diffutils findutils gawk gettext gzip patch perl")
 
-provides=""
-conflicts=""
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --without-rpmbuild
+  make -j${numjobs}
+  make BUILD_ROOT=${pkgdir} install
 
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="BUILD_ROOT=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+  install -d -m 755 ${pkgdir}/usr/share/bash-completion
+}
