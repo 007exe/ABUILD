@@ -1,5 +1,5 @@
 pkgname=nmap
-pkgver=7.92
+pkgver=7.93
 pkgbuild=1
 arch=("auto")
 
