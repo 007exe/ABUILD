@@ -1,0 +1,23 @@
+pkgname=lockdev
+pkgver=1.0.3_1.6
+_pkgver=1.0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Run-time shared library for locking devices, using _both_ FSSTND and SVr4 methods.")
+
+source=("https://ftp.debian.org/debian/pool/main/l/${pkgname}/${pkgname}_${_pkgver}.orig.tar.gz")
+
+tags=("dev-libs libs")
+
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i "s|CFLAGS	= -g|CFLAGS	= -g -fPIC|" Makefile
+  make CFLAGS="${CFLAGS} -D_PATH_LOCK=\\\"/run/lock/lockdev\\\" -fPIC"
+  make basedir=${pkgdir}/usr install
+  install -dm755 ${pkgdir}/usr/lib/tmpfiles.d
+  echo 'd /run/lock/lockdev 0775 root lock -' > ${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf
+}
