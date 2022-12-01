@@ -1,8 +1,9 @@
 pkgname=gyp
-pkgver=20190716.fcd686f1
-_commit=fcd686f1880fa52a1ee78d3e98af1b88cb334528
-pkgbuild=2
-arch=('noarch')
+pkgver=20220404.9ecf45e3
+# NOTE: Коммит версии
+_commit=9ecf45e37677743503342ee4c6a76eaee80e4a7f
+pkgbuild=1
+arch=("noarch")
 
 shortdesc=("Generate Your Projects Meta-Build system.")
 longdesc=("GYP is a tool to generates native Visual Studio, Xcode and SCons and/or make build files from a platform-independent input format.")
