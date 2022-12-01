@@ -1,6 +1,6 @@
 pkgname=codeblocks
 pkgver=20.03
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Cross-platform C/C++ IDE.")
