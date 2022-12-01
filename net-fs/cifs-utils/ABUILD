@@ -4,16 +4,13 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("CIFS filesystem user-space tools.")
-longdesc=("The cifs-utils package provides a means for mounting SMB/CIFS shares on a Linux system.")
 
 source=("https://download.samba.org/pub/linux-cifs/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("net-fs network")
 
 # libwbclient (smbclient)
-build_deps=("libcap keyutils krb5 talloc linux-pam python-docutils smbclient")
-
-#adddep=("libwbclient")
+build_deps=("python-docutils libcap keyutils krb5 talloc linux-pam")
 
 build() {
   go_src_dir
