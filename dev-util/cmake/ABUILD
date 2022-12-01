@@ -1,5 +1,5 @@
 pkgname=cmake
-pkgver=3.25.0
+pkgver=3.25.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,10 +10,12 @@ source=("http://www.cmake.org/files/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("utils dev-util")
 
-#qt6-base
-build_deps=("libarchive curl rhash python-sphinx jsoncpp")
+build_deps=("libarchive curl rhash python-sphinx jsoncpp qt6-base")
 
 gendeps_blacklist=("usr/bin/cmake-gui")
+
+# NOTE: Это опциональные зависимости
+removedep=("qt6-base")
 
 build() {
   go_src_dir
