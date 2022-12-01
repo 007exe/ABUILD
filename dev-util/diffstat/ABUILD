@@ -1,0 +1,23 @@
+pkgname=diffstat
+pkgver=1.65
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Display a histogram of diff changes.")
+
+source=("https://invisible-island.net/archives/${pkgname}/${pkgname}-${pkgver}.tgz")
+
+tags=("dev-util develop")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 package/debian/copyright ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
