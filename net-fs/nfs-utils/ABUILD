@@ -1,5 +1,5 @@
 pkgname=nfs-utils
-pkgver=1.2.8
+pkgver=2.6.2
 pkgbuild=1
 arch=("auto")
 
@@ -40,6 +40,8 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -D -m 644 ${filedir}/exports ${pkgdir}/etc/exports
+  install -D -m 644 utils/mount/nfsmount.conf ${pkgdir}/etc/nfsmount.conf
+  install -D -m 644 nfs.conf ${pkgdir}/etc/nfs.conf
 
 # конфигурационный файл для похитителей в новых ядрах
   install -D -m 644 utils/nfsidmap/id_resolver.conf ${pkgdir}/etc/request-key.d/id_resolver.conf
@@ -49,4 +51,7 @@ build() {
   mkdir ${pkgdir}/var/lib/nfs/v4recovery
 
   install -D -m 644 support/nfsidmap/idmapd.conf ${pkgdir}/etc/idmapd.conf
+
+# SystemD sysusers
+  install -D -m 644 ${filedir}/sysusers.d ${pkgdir}/usr/lib/sysusers.d/rpcuser.conf
 }
