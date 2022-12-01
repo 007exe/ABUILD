@@ -1,0 +1,38 @@
+pkgname=glusterfs
+pkgver=10.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A cluster file-system capable of scaling to several peta-bytes.")
+
+source=("https://download.gluster.org/pub/gluster/glusterfs/${pkgver%%.*}/${pkgver}/glusterfs-${pkgver}.tar.gz")
+
+tags=("utils sys-cluster")
+
+# gperftools
+build_deps=("rpcsvc-proto fuse python libxml2 libaio liburcu attr rpcbind liburing")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --with-mountutildir=/usr/bin \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --mandir=/usr/share/man \
+    --with-systemddir=/usr/lib/systemd/system \
+    --with-tmpfilesdir=/usr/lib/tmpfiles.d \
+    --enable-gnfs \
+    LEXLIB=
+  make -j${numjobs}
+  make -j1 DESTDIR=${pkgdir} install
+  install -Dm644 ${filedir}/glusterfs.sysusers ${pkgdir}/usr/lib/sysusers.d/glusterfs.conf
+
+  install -D -m 644 ${srcdir}/${pkgname}-${pkgver}/{README.md,INSTALL,COPYING*} ${pkgdir}/usr/share/doc/glusterfs/
+
+  cp -rf ${srcdir}/${pkgname}-${pkgver}/doc/* ${pkgdir}/usr/share/doc/glusterfs/
+  rm -rf ${pkgdir}/var/run
+}
