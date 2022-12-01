@@ -1,5 +1,5 @@
 pkgname=wireshark
-pkgver=3.6.6
+pkgver=4.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -20,9 +20,7 @@ adddep=("hicolor-icon-theme desktop-file-utils")
 build() {
   go_src_dir
   burn_patches
-  sed 's| Rev Unknown from unknown||' -i tools/make-version.pl
-  cmake \
-    -B build \
+  cmake -B build \
     -G Ninja \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
