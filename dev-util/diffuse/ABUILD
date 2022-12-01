@@ -1,81 +1,34 @@
-#ABUILD created by/создан: vk, aka.kloun at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=diffuse
-pkgver=0.4.4
+pkgver=0.7.7
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc="Diffuse is a graphical tool for merging and comparing text files."
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Diffuse is a graphical tool for merging and comparing text files.  Diffuse is
-able to compare an arbitrary number of files side-by-side and gives users the
-ability to manually adjust line matching and directly edit files.  Diffuse can
-also retrieve revisions of files from Bazaar, CVS, Darcs, Git, Mercurial,
-Monotone, RCS, Subversion, and SVK repositories for comparison and merging.
+shortdesc=("Graphical tool for merging and comparing text files.")
 
-Some key features of Diffuse:
-- ability to compare and merge an arbitrary number of files side-by-side (n-way merges)
-- line matching can be manually corrected by the user
-- ability to directly edit files
-- syntax highlighting
-- Bazaar, CVS, Darcs, Git, Mercurial, Monotone, RCS, Subversion, and SVK support
-- Unicode support
-- unlimited undo
-- easy keyboard navigation")
+source=("https://github.com/MightyCreak/diffuse/archive/refs/tags/v${pkgver}.tar.gz")
 
-source=("http://sourceforge.net/projects/diffuse/files/diffuse/0.4.4/diffuse-${pkgver}.tar.bz2")
+tags=("apps dev-util")
 
-patch_opts=("")
+build_deps=("meson ninja python-cairo python-gobject")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps app-text"
+adddep=("python-cairo python-gobject")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep="python>=2.4 pygtk>=2.10"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts="skip_gendeps"
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-build()
-{
-go_src_dir
-burn_patches
-./install.py --prefix=/usr --mandir=/usr/man --destdir=${pkgdir}  --files-only
+build() {
+  go_src_dir
+  burn_patches
+  mkdir -p build
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D b_ndebug=true
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
 }
 
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
