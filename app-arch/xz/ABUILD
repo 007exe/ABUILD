@@ -1,5 +1,5 @@
 pkgname=xz
-pkgver=5.2.8
+pkgver=5.2.9
 pkgbuild=1
 arch=("auto")
 
