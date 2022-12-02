@@ -5,53 +5,209 @@ arch=("auto")
 
 shortdesc=("Jabber server written in Erlang.")
 
-source=("$pkgname-$pkgver.tar.gz::https://github.com/processone/ejabberd/archive/$pkgver.tar.gz"
-	"base64url::git+https://github.com/dvv/base64url#commit=bf1360685da704c8453aba2268c4698c959d2ba4"
-	"cache_tab::git+https://github.com/processone/cache_tab#commit=6da609074b855b904ab72e201c60f1a1e2c00b3f"
-	"eimp::git+https://github.com/processone/eimp#commit=ec616de3762ce8498856b4fdadf8ba36045c6773"
-	"ejabberd_po::git+https://github.com/processone/ejabberd-po#commit=7a977ef321ad305f848920d42a257140c86f3537"
-	"elixir::git+https://github.com/elixir-lang/elixir#commit=867da6f876c48279823a41a33030c95ef37379b2"
-	"epam::git+https://github.com/processone/epam#commit=485aedb105c13c3c6763e5e5b86b9845cd4bec4a"
-	"eredis::git+https://github.com/wooga/eredis#commit=9ad91f149310a7d002cb966f62b7e2c3330abb04"
-	"esip::git+https://github.com/processone/esip#commit=d7a72805dc4b88b2a350ed7693324311c25f0df8"
-	"ezlib::git+https://github.com/processone/ezlib#commit=af37eb27aa0614db8b89110a4b56806b7f3544c4"
-	"fast_tls::git+https://github.com/processone/fast_tls#commit=5aa1e02d1e91155a7b0027abde1af94147c54b82"
-	"fast_xml::git+https://github.com/processone/fast_xml#commit=26d3247e7b7ff94a3bdcd30bad1193e2d86f511b"
-	"fast_yaml::git+https://github.com/processone/fast_yaml#commit=86c66abc4d3b0dcfdf6bd4f0c1a4b3f9609da02d"
-	"idna::git+https://github.com/benoitc/erlang-idna#commit=6cff72747821110169ecfac871b0c69e5064afff"
-	"jiffy::git+https://github.com/davisp/jiffy#commit=9ea1b35b6e60ba21dfd4adbd18e7916a831fd7d4"
-	"jose::git+https://github.com/potatosalad/erlang-jose#commit=090a2ed054304ecc012d6c2d9d10d2a294d835b1"
-	"luerl::git+https://github.com/rvirding/luerl#commit=836d08ad3287d73d9c91cb11a590de15a1761027"
-	"mqtree::git+https://github.com/processone/mqtree#commit=b87975f2c46ea44f3ed0dd484ae248aeea0c5d1e"
-	"p1_acme::git+https://github.com/processone/p1_acme#commit=ff64d95e403bb5eb1670af328359d3c4cc8410d0"
-	"p1_mysql::git+https://github.com/processone/p1_mysql#commit=d07fbce20e51af5bfe3313224c615214aa7456e1"
-	"p1_oauth2::git+https://github.com/processone/p1_oauth2#commit=e1fbe216c9e0c1f85b44bf9750af608fcc2848d2"
-	"p1_pgsql::git+https://github.com/processone/p1_pgsql#commit=ac8a9f4b7d716ceac9fa22c4fa2862ce37f02cd8"
-	"p1_utils::git+https://github.com/processone/p1_utils#commit=ba816751674ab7df46978345ec4c0c84c0b44b0d"
-	"pkix::git+https://github.com/processone/pkix#commit=9655992dc39e91fc8f5e237eea95d74ec9c01891"
-	"rebar_elixir_plugin::git+https://github.com/processone/rebar_elixir_plugin#commit=10614dfef5d10b7071f7181858149259e50159f6"
-	"sqlite3::git+https://github.com/processone/erlang-sqlite3#commit=a68c21ff012142326584c7512a6084a1b61619cc"
-	"stringprep::git+https://github.com/processone/stringprep#commit=11fe965934be988f5c6c9ded9affa870f3e5057a"
-	"stun::git+https://github.com/processone/stun#commit=79dfaa0ff46ea71b448533e5da8d377c147c3a62"
-	"unicode_util_compat::git+https://github.com/benoitc/unicode_util_compat.git#commit=38d7bc105f51159e8ea3279c40121db9db1e652f"
-	"xmpp::git+https://github.com/processone/xmpp#commit=6265bf55c989a8eda9c6f6666555557faea72403"
-	"yconf::git+https://github.com/processone/yconf#commit=b57afc24d6bb32b21bb70f792d5c4b49b4c68092")
+source=("https://github.com/processone/ejabberd/archive/${pkgver}.tar.gz"
+	"git:https://github.com/dvv/base64url"
+	"git:https://github.com/processone/cache_tab"
+	"git:https://github.com/processone/eimp"
+	"git:https://github.com/processone/ejabberd-po"
+	"git:https://github.com/elixir-lang/elixir"
+	"git:https://github.com/processone/epam"
+	"git:https://github.com/wooga/eredis"
+	"git:https://github.com/processone/esip"
+	"git:https://github.com/processone/ezlib"
+	"git:https://github.com/processone/fast_tls"
+	"git:https://github.com/processone/fast_xml"
+	"git:https://github.com/processone/fast_yaml"
+	"git:https://github.com/benoitc/erlang-idna"
+	"git:https://github.com/davisp/jiffy"
+	"git:https://github.com/potatosalad/erlang-jose"
+	"git:https://github.com/rvirding/luerl"
+	"git:https://github.com/processone/mqtree"
+	"git:https://github.com/processone/p1_acme"
+	"git:https://github.com/processone/p1_mysql"
+	"git:https://github.com/processone/p1_oauth2"
+	"git:https://github.com/processone/p1_pgsql"
+	"git:https://github.com/processone/p1_utils"
+	"git:https://github.com/processone/pkix"
+	"git:https://github.com/processone/rebar_elixir_plugin"
+	"git:https://github.com/processone/erlang-sqlite3"
+	"git:https://github.com/processone/stringprep"
+	"git:https://github.com/processone/stun"
+	"git:https://github.com/benoitc/unicode_util_compat.git"
+	"git:https://github.com/processone/xmpp"
+	"git:https://github.com/processone/yconf")
 
 tags=("server net-im")
 
-build_deps=("rebar hevea texlive-bin texlive-core texlive-latexextra
-expat openssl zlib erlang-nox linux-pam iproute2 erlang-unixodbc libyaml sqlite gd")
+# texlive-bin
+build_deps=("rebar hevea texlive-core texlive-latexextra erlang
+expat openssl zlib linux-pam iproute2 libyaml sqlite gd")
 
-adddep=("expat openssl zlib erlang-nox linux-pam iproute2 erlang-unixodbc libyaml sqlite gd")
+adddep=("expat openssl zlib erlang linux-pam iproute2 libyaml sqlite gd erlang")
 
 config_files=("etc/ejabberd/ejabberd.yml
 etc/ejabberd/ejabberdctl.cfg
 etc/logrotate.d/ejabberd")
 
+
+before_build() {
+  mkdir -p ${srcdir}/${pkgname}-${pkgver}/deps
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/base64url
+    cd ${srcdir}/ejabberd_git_base64url.src
+      git checkout bf1360685da704c8453aba2268c4698c959d2ba4
+       mv -v ${srcdir}/ejabberd_git_base64url.src ${srcdir}/${pkgname}-${pkgver}/deps/base64url
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/cache_tab
+    cd ${srcdir}/ejabberd_git_cache_tab.src
+      git checkout 6da609074b855b904ab72e201c60f1a1e2c00b3f
+        mv -v ${srcdir}/ejabberd_git_cache_tab.src ${srcdir}/${pkgname}-${pkgver}/deps/cache_tab
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/eimp
+    cd ${srcdir}/ejabberd_git_eimp.src
+      git checkout ec616de3762ce8498856b4fdadf8ba36045c6773
+        mv -v ${srcdir}/ejabberd_git_eimp.src ${srcdir}/${pkgname}-${pkgver}/deps/eimp
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/ejabberd_po
+    cd ${srcdir}/ejabberd_git_ejabberd-po.src
+      git checkout 7a977ef321ad305f848920d42a257140c86f3537
+        mv -v ${srcdir}/ejabberd_git_ejabberd-po.src ${srcdir}/${pkgname}-${pkgver}/deps/ejabberd_po
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/elixir
+    cd ${srcdir}/ejabberd_git_elixir.src
+      git checkout 867da6f876c48279823a41a33030c95ef37379b2
+        mv -v ${srcdir}/ejabberd_git_elixir.src ${srcdir}/${pkgname}-${pkgver}/deps/elixir
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/epam
+    cd ${srcdir}/ejabberd_git_epam.src
+      git checkout 485aedb105c13c3c6763e5e5b86b9845cd4bec4a
+        mv -v ${srcdir}/ejabberd_git_epam.src ${srcdir}/${pkgname}-${pkgver}/deps/epam
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/eredis
+    cd ${srcdir}/ejabberd_git_eredis.src
+      git checkout 9ad91f149310a7d002cb966f62b7e2c3330abb04
+        mv -v ${srcdir}/ejabberd_git_eredis.src ${srcdir}/${pkgname}-${pkgver}/deps/eredis
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/idna
+    cd ${srcdir}/ejabberd_git_erlang-idna.src
+      git checkout 6cff72747821110169ecfac871b0c69e5064afff
+        mv -v ${srcdir}/ejabberd_git_erlang-idna.src ${srcdir}/${pkgname}-${pkgver}/deps/idna
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/jose
+    cd ${srcdir}/ejabberd_git_erlang-jose.src
+      git checkout 090a2ed054304ecc012d6c2d9d10d2a294d835b1
+        mv -v ${srcdir}/ejabberd_git_erlang-jose.src ${srcdir}/${pkgname}-${pkgver}/deps/jose
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/sqlite3
+    cd ${srcdir}/ejabberd_git_erlang-sqlite3.src
+      git checkout a68c21ff012142326584c7512a6084a1b61619cc
+        mv -v ${srcdir}/ejabberd_git_erlang-sqlite3.src ${srcdir}/${pkgname}-${pkgver}/deps/sqlite3
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/esip
+    cd ${srcdir}/ejabberd_git_esip.src
+      git checkout d7a72805dc4b88b2a350ed7693324311c25f0df8
+        mv -v ${srcdir}/ejabberd_git_esip.src ${srcdir}/${pkgname}-${pkgver}/deps/esip
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/ezlib
+    cd ${srcdir}/ejabberd_git_ezlib.src
+      git checkout af37eb27aa0614db8b89110a4b56806b7f3544c4
+        mv -v ${srcdir}/ejabberd_git_ezlib.src ${srcdir}/${pkgname}-${pkgver}/deps/ezlib
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/fast_tls
+    cd ${srcdir}/ejabberd_git_fast_tls.src
+      git checkout 5aa1e02d1e91155a7b0027abde1af94147c54b82
+        mv -v ${srcdir}/ejabberd_git_fast_tls.src ${srcdir}/${pkgname}-${pkgver}/deps/fast_tls
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/fast_xml
+    cd ${srcdir}/ejabberd_git_fast_xml.src
+      git checkout 26d3247e7b7ff94a3bdcd30bad1193e2d86f511b
+        mv -v ${srcdir}/ejabberd_git_fast_xml.src ${srcdir}/${pkgname}-${pkgver}/deps/fast_xml
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/fast_yaml
+    cd ${srcdir}/ejabberd_git_fast_yaml.src
+      git checkout 86c66abc4d3b0dcfdf6bd4f0c1a4b3f9609da02d
+        mv -v ${srcdir}/ejabberd_git_fast_yaml.src ${srcdir}/${pkgname}-${pkgver}/deps/fast_yaml
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/jiffy
+    cd ${srcdir}/ejabberd_git_jiffy.src
+      git checkout 9ea1b35b6e60ba21dfd4adbd18e7916a831fd7d4
+        mv -v ${srcdir}/ejabberd_git_jiffy.src ${srcdir}/${pkgname}-${pkgver}/deps/jiffy
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/luerl
+    cd ${srcdir}/ejabberd_git_luerl.src
+      git checkout 836d08ad3287d73d9c91cb11a590de15a1761027
+        mv -v ${srcdir}/ejabberd_git_luerl.src ${srcdir}/${pkgname}-${pkgver}/deps/luerl
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/mqtree
+    cd ${srcdir}/ejabberd_git_mqtree.src
+      git checkout b87975f2c46ea44f3ed0dd484ae248aeea0c5d1e
+        mv -v ${srcdir}/ejabberd_git_mqtree.src ${srcdir}/${pkgname}-${pkgver}/deps/mqtree
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/p1_acme
+    cd ${srcdir}/ejabberd_git_p1_acme.src
+      git checkout ff64d95e403bb5eb1670af328359d3c4cc8410d0
+        mv -v ${srcdir}/ejabberd_git_p1_acme.src ${srcdir}/${pkgname}-${pkgver}/deps/p1_acme
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/p1_mysql
+    cd ${srcdir}/ejabberd_git_p1_mysql.src
+      git checkout d07fbce20e51af5bfe3313224c615214aa7456e1
+        mv -v ${srcdir}/ejabberd_git_p1_mysql.src ${srcdir}/${pkgname}-${pkgver}/deps/p1_mysql
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/p1_oauth2
+    cd ${srcdir}/ejabberd_git_p1_oauth2.src
+      git checkout e1fbe216c9e0c1f85b44bf9750af608fcc2848d2
+        mv -v ${srcdir}/ejabberd_git_p1_oauth2.src ${srcdir}/${pkgname}-${pkgver}/deps/p1_oauth2
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/p1_pgsql
+    cd ${srcdir}/ejabberd_git_p1_pgsql.src
+      git checkout ac8a9f4b7d716ceac9fa22c4fa2862ce37f02cd8
+        mv -v ${srcdir}/ejabberd_git_p1_pgsql.src ${srcdir}/${pkgname}-${pkgver}/deps/p1_pgsql
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/p1_utils
+    cd ${srcdir}/ejabberd_git_p1_utils.src
+      git checkout ba816751674ab7df46978345ec4c0c84c0b44b0d
+        mv -v ${srcdir}/ejabberd_git_p1_utils.src ${srcdir}/${pkgname}-${pkgver}/deps/p1_utils
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/pkix
+    cd ${srcdir}/ejabberd_git_pkix.src
+      git checkout 9655992dc39e91fc8f5e237eea95d74ec9c01891
+        mv -v ${srcdir}/ejabberd_git_pkix.src ${srcdir}/${pkgname}-${pkgver}/deps/pkix
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/rebar_elixir_plugin
+    cd ${srcdir}/ejabberd_git_rebar_elixir_plugin.src
+      git checkout 10614dfef5d10b7071f7181858149259e50159f6
+        mv -v ${srcdir}/ejabberd_git_rebar_elixir_plugin.src ${srcdir}/${pkgname}-${pkgver}/deps/rebar_elixir_plugin
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/stringprep
+    cd ${srcdir}/ejabberd_git_stringprep.src
+      git checkout 11fe965934be988f5c6c9ded9affa870f3e5057a
+        mv -v ${srcdir}/ejabberd_git_stringprep.src ${srcdir}/${pkgname}-${pkgver}/deps/stringprep
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/stun
+    cd ${srcdir}/ejabberd_git_stun.src
+      git checkout 79dfaa0ff46ea71b448533e5da8d377c147c3a62
+        mv -v ${srcdir}/ejabberd_git_stun.src ${srcdir}/${pkgname}-${pkgver}/deps/stun
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/unicode_util_compat
+    cd ${srcdir}/ejabberd_git_unicode_util_compat.git.src
+      git checkout 38d7bc105f51159e8ea3279c40121db9db1e652f
+        mv -v ${srcdir}/ejabberd_git_unicode_util_compat.git.src ${srcdir}/${pkgname}-${pkgver}/deps/unicode_util_compat
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/xmpp
+    cd ${srcdir}/ejabberd_git_xmpp.src
+      git checkout 6265bf55c989a8eda9c6f6666555557faea72403
+        mv -v ${srcdir}/ejabberd_git_xmpp.src ${srcdir}/${pkgname}-${pkgver}/deps/xmpp
+
+  rm -rf ${srcdir}/${pkgname}-${pkgver}/deps/yconf
+    cd ${srcdir}/ejabberd_git_yconf.src
+      git checkout b57afc24d6bb32b21bb70f792d5c4b49b4c68092
+        mv -v ${srcdir}/ejabberd_git_yconf.src ${srcdir}/${pkgname}-${pkgver}/deps/yconf
+}
+
 build() {
-  go_src_dir
-  burn_patches
-  ./autogen.sh
+  cd ${srcdir}/${pkgname}-${pkgver}
+  sed -i "s|git describe --tags 2>/dev/null|echo $pkgver|" configure.ac
+  [ -x configure ] || ./autogen.sh
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -66,36 +222,32 @@ build() {
     -e "s|Group=.*|Group=jabber|g" \
     -e "s|User=.*|User=jabber|g" \
     ejabberd.service
-  sed -i -e "s|$pkgdir||g" "$pkgdir"/usr/bin/ejabberdctl
+  sed -i -e "s|$pkgdir||g" ${pkgdir}/usr/bin/ejabberdctl
 
-  install -Dm0644 ejabberd.service "$pkgdir"/usr/lib/systemd/system/ejabberd.service
+  install -Dm0644 ejabberd.service ${pkgdir}/usr/lib/systemd/system/ejabberd.service
 
-  install -Dm04750 deps/epam/priv/bin/epam "$pkgdir"/usr/lib/ejabberd-$pkgver/priv/bin/epam
-  install -d "$pkgdir/var/lib/$pkgname"
-  install -D -m0644 "$srcdir/$pkgname.logrotate" "$pkgdir/etc/logrotate.d/$pkgname"
-  chmod ug+r "$pkgdir/etc/$pkgname/"*
-  chmod a+rx "$pkgdir/usr/bin/ejabberdctl" "$pkgdir/usr/lib/ejabberd-$pkgver/priv/bin/captcha.sh"
-  rm -rf "$pkgdir/var/lock"
-  install -Dm644 "$srcdir"/sysuser.conf "$pkgdir"/usr/lib/sysusers.d/ejabberd.conf
-  install -Dm644 tools/ejabberdctl.bc "$pkgdir"/usr/share/bash-completion/completions/ejabberdctl
+  install -Dm04750 deps/epam/priv/bin/epam ${pkgdir}/usr/lib/ejabberd-$pkgver/priv/bin/epam
+  install -d ${pkgdir}/var/lib/${pkgname}
+  install -D -m0644 ${filedir}/${pkgname}.logrotate ${pkgdir}/etc/logrotate.d/${pkgname}
+  chmod ug+r ${pkgdir}/etc/${pkgname}/*
+  chmod a+rx ${pkgdir}/usr/bin/ejabberdctl ${pkgdir}/usr/lib/ejabberd-${pkgver}/priv/bin/captcha.sh
+  rm -rf ${pkgdir}/var/lock
+  install -Dm644 ${filedir}/sysuser.conf ${pkgdir}/usr/lib/sysusers.d/ejabberd.conf
+  install -Dm644 tools/ejabberdctl.bc ${pkgdir}/usr/share/bash-completion/completions/ejabberdctl
 
-  # workaround
-  ln -s mod_configure.beam "$pkgdir"/usr/lib/ejabberd-$pkgver/ebin/configure.beam
-  rm -f "$pkgdir"/usr/bin/{elixir,iex,mix}
+  ln -s mod_configure.beam ${pkgdir}/usr/lib/ejabberd-$pkgver/ebin/configure.beam
+  rm -f ${pkgdir}/usr/bin/{elixir,iex,mix}
 
-  echo -e "\n\n# home dir workaround\nHOME=/var/lib/ejabberd" >>"$pkgdir"/etc/ejabberd/ejabberdctl.cfg
+  echo -e "\n\n# home dir workaround\nHOME=/var/lib/ejabberd" >>${pkgdir}/etc/ejabberd/ejabberdctl.cfg
 
-  # /usr/lib/ejabberd symlink follows to ejabberd version
-  ln -s ejabberd-$pkgver "$pkgdir"/usr/lib/ejabberd
+  ln -s ejabberd-$pkgver ${pkgdir}/usr/lib/ejabberd
 
-  # permissions
-  chown -R 17:17 "$pkgdir"/var/{lib,log}/ejabberd
+  chown -R 17:17 ${pkgdir}/var/{lib,log}/ejabberd
   chown root:17 \
-    "$pkgdir"/etc/ejabberd/ejabberd.yml \
-    "$pkgdir"/etc/ejabberd/ejabberdctl.cfg \
-    "$pkgdir"/etc/ejabberd \
-    "$pkgdir"/usr/lib/ejabberd/priv/bin/epam
+    ${pkgdir}/etc/ejabberd/ejabberd.yml \
+    ${pkgdir}/etc/ejabberd/ejabberdctl.cfg \
+    ${pkgdir}/etc/ejabberd \
+    ${pkgdir}/usr/lib/ejabberd/priv/bin/epam
 
-  # fix eimp
-  chmod a+x "$pkgdir"/usr/lib/eimp-*/priv/bin/eimp
+  chmod a+x ${pkgdir}/usr/lib/eimp-*/priv/bin/eimp
 }
