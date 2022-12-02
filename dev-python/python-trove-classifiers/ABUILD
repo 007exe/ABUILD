@@ -1,10 +1,9 @@
 pkgname=python-trove-classifiers
-pkgver=2022.10.19
+pkgver=2022.12.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Canonical source for classifiers on PyPI (pypi.org).")
-longdesc=("Canonical source for classifiers on PyPI (pypi.org).")
 
 source=("https://github.com/pypa/trove-classifiers/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
@@ -14,6 +13,7 @@ build_deps=("python python-calver python-setuptools")
 
 build() {
   go_src_dir
+  echo "Version: $pkgver" > PKG-INFO
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
 }
