@@ -10,12 +10,14 @@ source=("https://github.com/garrigue/lablgtk/archive/refs/tags/${pkgver}.tar.gz"
 
 tags=("libs dev-ml")
 
-# ocaml-cairo gtkspell3
-build_deps=("ocaml gtk3 gtksourceview3 ocaml-findlib dune")
+# ocaml-compiler-libs gtkspell3 ocaml-cairo
+build_deps=("ocaml-findlib dune gtk3 gtksourceview3")
+
+# gtkspell3 ocaml-cairo
+adddep=("gtk3 gtksourceview3")
 
 _dune_release_pkgs=('lablgtk3' 'lablgtk3-gtkspell3' 'lablgtk3-sourceview3')
 dune_release_pkgs_comma() {
-  # dune build needs a comma separated list of packages
   local dune_release_pkgs='dummy'
   for _pkg in "${_dune_release_pkgs[@]}"; do
     dune_release_pkgs+=",${_pkg}"
@@ -29,10 +31,9 @@ build(){
   burn_patches
   export OCAMLPATH="$(ocamlfind printconf destdir)"
   LABLGTK_EXTRA_FLAGS=-fcommon dune build -p $(dune_release_pkgs_comma)
-
   for _pkg in "${_dune_release_pkgs[@]}"; do
-      dune install "${_pkg}" --destdir="${pkgdir}" --prefix="/usr" --libdir="$(ocamlfind printconf destdir)"
-  done
+      dune install ${_pkg} --destdir=${pkgdir} --prefix="/usr" --libdir="$(ocamlfind printconf destdir)"
+    done
 
   install -dm755 ${pkgdir}/usr/share/
   mv ${pkgdir}/usr/doc ${pkgdir}/usr/share/
