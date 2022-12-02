@@ -3,18 +3,16 @@ pkgver=2.38.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Web content engine for embedded devices.")
-longdesc=("WPE WebKit allows embedders to create simple and performant systems based on Web platform technologies.")
+shortdesc=("Embeddable web content engine.")
 
 source=("https://wpewebkit.org/releases/${pkgname}-${pkgver}.tar.xz")
 
 tags=("net-libs libs")
 
-# harfbuzz-icu
-build_deps=("cairo fontconfig freetype glib2 harfbuzz icu libjpeg-turbo libepoxy libgcrypt libsoup3 libxml2 zlib
-libpng sqlite libwebp libwpe atk at-spi2-atk openjpeg2 woff2 libtasn1 libxslt bubblewrap libseccomp xdg-dbus-proxy
-gstreamer gst-plugins-base-libs libxkbcommon wayland wpebackend-fdo cmake ninja gtk-doc python ruby gst-plugins-bad
-gperf wayland-protocols")
+build_deps=("cmake gi-docgen gobject-introspection gperf gst-plugins-bad ninja python ruby wayland-protocols
+at-spi2-atk atk bubblewrap cairo fontconfig freetype glib2 gst-plugins-base-libs gstreamer harfbuzz icu libavif
+libepoxy libgcrypt libjpeg-turbo libpng libseccomp libsoup3 libtasn1 libwebp libwpe libxkbcommon libxml2 libxslt
+openjpeg2 sqlite wayland woff2 wpebackend-fdo xdg-dbus-proxy zlib")
 
 # NOTE: Это опциональные зависимости
 removedep=("geoclue gst-plugins-good gst-plugins-bad gst-libav")
@@ -30,9 +28,10 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
+    -DUSE_AVIF=ON \
     -DUSE_SOUP2=OFF \
-    -DENABLE_DOCUMENTATION=OFF \
+    -DENABLE_DOCUMENTATION=ON \
     -DENABLE_MINIBROWSER=ON
-  cmake --build build -j${numjobs}
+  cmake --build build
   DESTDIR=${pkgdir} cmake --install build
 }
