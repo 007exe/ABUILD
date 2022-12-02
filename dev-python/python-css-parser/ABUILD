@@ -1,0 +1,19 @@
+pkgname=python-css-parser
+pkgver=1.0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A CSS Cascading Style Sheets library for Python.")
+
+_pkgname=css-parser
+source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/css-parser/css-parser-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-wheel")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+}
