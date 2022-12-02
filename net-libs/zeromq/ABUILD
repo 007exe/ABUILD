@@ -13,7 +13,7 @@ source=("https://github.com/zeromq/libzmq/releases/download/v${pkgver}/zeromq-${
 tags=("libs net-libs")
 
 #--with-pgm libpgm
-build_deps=("gcc-libs util-linux-ng libsodium asciidoc xmlto")
+build_deps=("gcc-libs util-linux libsodium asciidoc xmlto")
 
 build() {
   cd ${srcdir}/zeromq-${pkgver}
