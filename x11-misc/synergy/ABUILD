@@ -5,12 +5,12 @@ arch=("auto")
 
 shortdesc=("Share a single mouse and keyboard between multiple computers.")
 
-source=("http://synergy.googlecode.com/files/synergy-${pkgver}-Source.tar.gz")
+source=("https://github.com/symless/synergy-core/archive/v${pkgver}-stable.tar.gz")
 
 tags=("x11-apps xserver")
 
-build_deps=("libxt cmake qt5-base qt5-tools gmock gtest gcc-libs libxtst libxinerama
-libxkbcommon-x11 avahi curl openssl hicolor-icon-theme")
+build_deps=("libxt cmake qt5-base qt5-tools gtest gcc-libs libxtst libxinerama
+libxkbcommon-x11 avahi curl openssl hicolor-icon-theme gtest")
 
 adddeps=("hicolor-icon-theme")
 
@@ -38,7 +38,7 @@ build() {
 
   install -Dm 644 res/synergy.svg -t ${pkgdir}/usr/share/icons/hicolor/scalable/apps/
   install -Dm 644 res/synergy.desktop -t ${pkgdir}/usr/share/applications
-  
+
 # RC-service
   install -Dm0755 ${filedir}/synergy.initd ${pkgdir}/etc/init.d/synergy
 }
