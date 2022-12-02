@@ -1,11 +1,10 @@
 pkgname=opera
-pkgver=93.0.4585.21
+pkgver=93.0.4585.37
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A fast and secure web browser.")
 
-#source=("https://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/opera-stable_${pkgver}_amd64.rpm")
 source=("https://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/opera-stable_${pkgver}_amd64.deb")
 
 tags=("www-client apps")
@@ -13,24 +12,6 @@ tags=("www-client apps")
 build_deps=("gtk3 alsa-lib curl nss libcups desktop-file-utils rpm libxss libnotify")
 
 adddep=("gtk3 desktop-file-utils shared-mime-info hicolor-icon-theme")
-
-# NOTE: rpm
-#build() {
-#  cd ${srcdir}
-#  rm -r ${srcdir}/usr/{bin,lib}
-#  mkdir -p ${pkgdir}/usr/bin
-#  mv ${srcdir}/usr/lib64 ${pkgdir}/usr/lib
-#  mv ${srcdir}/usr/share ${pkgdir}/usr
-#  chmod 4755 ${pkgdir}/usr/lib/${pkgname}/opera_sandbox
-#  install -Dm644 ${filedir}/default ${pkgdir}/etc/${pkgname}/default
-#  install -Dm755 ${filedir}/opera ${pkgdir}/usr/bin/${pkgname}
-#  install -Dm644 ${filedir}/eula.html ${pkgdir}/usr/share/licenses/${pkgname}/eula.html
-#  install -Dm644 ${filedir}/terms.html ${pkgdir}/usr/share/licenses/${pkgname}/terms.html
-#  install -Dm644 ${filedir}/privacy.html ${pkgdir}/usr/share/licenses/${pkgname}/privacy.html
-
-#  sed -e "s/%pkgname%/$pkgname/g" -i ${pkgdir}/usr/bin/${pkgname}
-#  sed -e "s/%operabin%/$pkgname\/$pkgname/g" -i ${pkgdir}/usr/bin/${pkgname}
-#}
 
 build() {
   cd ${srcdir}
