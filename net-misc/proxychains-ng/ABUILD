@@ -1,0 +1,25 @@
+pkgname=proxychains-ng
+pkgver=4.16
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A hook preloader that allows to redirect TCP traffic of existing dynamically linked programs through one or more SOCKS or HTTP proxies.")
+
+source=("https://github.com/rofl0r/proxychains-ng/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("network net-misc")
+
+build_deps=("glibc")
+
+config_files=("etc/proxychains.conf")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install install-config
+  ln -s proxychains4 ${pkgdir}/usr/bin/proxychains
+}
