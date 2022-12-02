@@ -20,10 +20,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --mandir=/usr/share/man \
-    --with-pic \
-    --disable-rpath \
-    --disable-static
+    --mandir=/usr/share/man
   make all -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
