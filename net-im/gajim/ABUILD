@@ -1,77 +1,26 @@
 pkgname=gajim
-pkgver=0.15.4
+pkgver=1.5.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Gajim, a Jabber client"
-#longdesc=("")
+shortdesc=("Full featured and easy to use XMPP (Jabber) client.")
 
-source=("http://gajim.org/downloads/${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
+source=("https://www.gajim.org/downloads/${pkgver%.*}/gajim-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("net-im apps")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="net-im xapps"
+build_deps=("python-build python-installer python-wheel python-setuptools
+gtk3 gtksourceview4 python-cairo python-gobject python-keyring python-nbxmpp
+python-pyopenssl python-precis_i18n python-css-parser python-distro
+hicolor-icon-theme python-pillow python-gssapi python-netifaces python-packaging")
 
-#dependencies only needed to build package
-build_deps=""
+adddep=("gtk3 gtksourceview4 python-cairo python-gobject python-keyring python-nbxmpp
+python-pyopenssl python-precis_i18n python-css-parser python-distro
+hicolor-icon-theme python-pillow python-gssapi python-netifaces python-packaging")
 
-provides=""
-conflicts=""
-
-adddep="pyOpenSSL pygobject pycairo pygtk dbus-python gtkspell aspell aspell-en aspell-ru bind-utils pycrypto"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---docdir=/usr/doc/${pkgname}-${pkgver} \
---enable-site-packages"
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
-
-# gajim-allow-root
-if [[ -n "`sed -n '27p' ${pkgdir}/usr/bin/gajim | grep 'exit 1'`" ]]; then
- sed -i '27d' ${pkgdir}/usr/bin/gajim || exit 1
-fi
-
+build() {
+  go_src_dir
+  burn_patches
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
