@@ -18,30 +18,31 @@ etc/logrotate.d/i2pd")
 build() {
   go_src_dir
   burn_patches
-  cd ..
-  cmake build \
+  cd ${srcdir}
+  cmake -B ${srcdir}/${pkgname}-${pkgver}/build \
+    -S ${srcdir}/${pkgname}-${pkgver}/build \
     -DCMAKE_BUILD_TYPE:STRING='None' \
     -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
     -DBUILD_SHARED_LIBS:BOOL='ON' \
     -DWITH_UPNP:BOOL='ON' \
     -Wno-dev
-  make -C build
-  make -C build DESTDIR=${pkgdir} install
+  make -j${numjobs} -C ${srcdir}/${pkgname}-${pkgver}/build
+  make -C ${srcdir}/${pkgname}-${pkgver}/build DESTDIR=${pkgdir} install
 
-  install -D -m644 contrib/{i2pd,tunnels}.conf -t ${pkgdir}/etc/i2pd
+  install -D -m644 ${srcdir}/${pkgname}-${pkgver}/contrib/{i2pd,tunnels}.conf -t ${pkgdir}/etc/i2pd
   install -d -m755 ${pkgdir}/etc/i2pd/tunnels.d
 
   install -d -m755 ${pkgdir}/usr/share/i2pd
-  cp -dr --no-preserve='ownership' contrib/certificates ${pkgdir}/usr/share/i2pd
+  cp -dr --no-preserve='ownership' ${srcdir}/${pkgname}-${pkgver}/contrib/certificates ${pkgdir}/usr/share/i2pd
 
 # SystemD
-  install -D -m644 contrib/i2pd.service   -t ${pkgdir}/usr/lib/systemd/system
+  install -D -m644 ${srcdir}/${pkgname}-${pkgver}/contrib/i2pd.service   -t ${pkgdir}/usr/lib/systemd/system
   install -D -m644 ${filedir}/i2pd.sysusers ${pkgdir}/usr/lib/sysusers.d/i2pd.conf
   install -D -m644 ${filedir}/i2pd.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/i2pd.conf
 
-  install -D -m644 contrib/i2pd.logrotate ${pkgdir}/etc/logrotate.d/i2pd
-  install -D -m644 contrib/tunnels.d/{*.conf,README} -t ${pkgdir}/usr/share/doc/i2pd/tunnels.d
-  install -D -m644 {i18n,libi2pd{,_client}}/*.h -t ${pkgdir}/usr/include/i2pd
-  install -D -m644 debian/i2pd.1 -t ${pkgdir}/usr/share/man/man1
-  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -D -m644 ${srcdir}/${pkgname}-${pkgver}/contrib/i2pd.logrotate ${pkgdir}/etc/logrotate.d/i2pd
+  install -D -m644 ${srcdir}/${pkgname}-${pkgver}/contrib/tunnels.d/{*.conf,README} -t ${pkgdir}/usr/share/doc/i2pd/tunnels.d
+  install -D -m644 ${srcdir}/${pkgname}-${pkgver}/{i18n,libi2pd{,_client}}/*.h -t ${pkgdir}/usr/include/i2pd
+  install -D -m644 ${srcdir}/${pkgname}-${pkgver}/debian/i2pd.1 -t ${pkgdir}/usr/share/man/man1
+  install -D -m644 ${srcdir}/${pkgname}-${pkgver}/LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
