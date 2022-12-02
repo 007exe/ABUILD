@@ -1,5 +1,5 @@
 pkgname=python-cairo
-pkgver=1.22.0
+pkgver=1.23.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,14 @@ tags=("libs dev-python")
 
 source=("https://github.com/pygobject/pycairo/releases/download/v${pkgver}/pycairo-${pkgver}.tar.gz")
 
-build_deps=("python cairo")
+build_deps=("python cairo meson")
+
+adddep=("cairo")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --skip-build --optimize=1
+  meson build \
+    --prefix=/usr
+  meson compile -C build
+  meson install -C build --destdir=${pkgdir}
 }
