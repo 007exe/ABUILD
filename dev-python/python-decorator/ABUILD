@@ -1,0 +1,20 @@
+pkgname=python-decorator
+pkgver=5.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python Decorator module.")
+
+_name=decorator
+source=("https://pypi.python.org/packages/source/${_name:0:1}/decorator/decorator-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python3 setup.py install --root=${pkgdir} --optimize=1
+}
