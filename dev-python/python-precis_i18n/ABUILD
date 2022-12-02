@@ -1,0 +1,21 @@
+pkgname=python-precis_i18n
+pkgver=1.0.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("PRECIS framework (RFC 8264, RFC 8265, RFC 8266).")
+
+source=("https://github.com/byllyfish/precis_i18n/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} -O1 --skip-build
+  install -Dm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 README.rst CHANGELOG.rst -t ${pkgdir}/usr/share/doc/${pkgname}
+}
