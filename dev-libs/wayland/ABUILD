@@ -18,8 +18,8 @@ build() {
   meson build \
     --buildtype=release \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    -D documentation=false
+    --libdir=/usr/lib
+#    -D documentation=false
 # FIXME: Проблемы со сборкой документации
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
