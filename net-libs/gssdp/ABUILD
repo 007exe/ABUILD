@@ -9,7 +9,7 @@ source=("https://gitlab.gnome.org/GNOME/gssdp/-/archive/gssdp-${pkgver}/gssdp-gs
 
 tags=("libs net-libs")
 
-build_deps=("gobject-introspection gi-docgen vala meson git gtk4 pandoc")
+build_deps=("gobject-introspection gi-docgen vala meson gtk4 pandoc")
 
 build() {
   go_src_dir
