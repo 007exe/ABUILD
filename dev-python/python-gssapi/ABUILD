@@ -1,0 +1,22 @@
+pkgname=python-gssapi
+pkgver=1.8.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides both low-level and high level wrappers around the GSSAPI C libraries.")
+
+source=("https://github.com/pythongssapi/python-gssapi/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-cython python-decorator krb5")
+
+adddep=("python-decorator krb5")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install -O1 --root=${pkgdir} --skip-build
+  install -Dm 644 README.txt -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
