@@ -1,0 +1,32 @@
+pkgname=foobnix
+pkgver=3.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GTK+ music player.")
+
+source=("https://github.com/$pkgname/$pkgname/archive/${pkgver}.tar.gz")
+
+tags=("media-sound apps")
+
+build_deps=("python-setuptools
+python-chardet gst-plugins-good gst-plugins-base python-simplejson python-pylast
+gst-plugins-ugly gst-plugins-bad gst-libav gst-python webkit2gtk libkeybinder3
+fuseiso python-notify2 lame faac ffmpeg dbus-python python-mutagen python3-keybinder")
+
+adddep=("python-chardet gst-plugins-good gst-plugins-base python-simplejso python-pylast
+gst-plugins-ugly gst-plugins-bad gst-libav gst-python webkit2gtk libkeybinder3 fuseiso
+python-notify2 lame faac ffmpeg dbus-python python-mutagen python3-keybinder")
+
+build() {
+ go_src_dir
+ python setup.py install --root=${pkgdir} --optimize=1
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
