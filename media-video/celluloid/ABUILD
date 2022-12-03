@@ -1,0 +1,24 @@
+pkgname=celluloid
+pkgver=0.24
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple GTK+ frontend for mpv.")
+
+source=("https://github.com/celluloid-player/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps media-video")
+
+build_deps=("appstream-glib meson gtk4 mpv libadwaita")
+
+adddep=("mpv")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
