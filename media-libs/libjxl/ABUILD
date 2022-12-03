@@ -37,16 +37,15 @@ before_build() {
   mv ${srcdir}/libjxl_git_testdata.git.src ${srcdir}/libjxl-testdata
 
   git -C libjxl checkout v${pkgver}
+
   git -C libjxl submodule init
-  git -C libjxl config --local submodule.third_party/brotli.url     ${srcdir}/brotli
-  git -C libjxl config --local submodule.third_party/googletest.url ${srcdir}/googletest
-  git -C libjxl config --local submodule.third_party/sjpeg.url      ${srcdir}/sjpeg
-  git -C libjxl config --local submodule.third_party/skcms.url      ${srcdir}/skcms 
-  git -C libjxl config --local submodule.third_party/highway.url    ${srcdir}/highway
-  git -C libjxl config --local submodule.third_party/lcms.url       ${srcdir}/Little-CMS
-  git -C libjxl config --local submodule.third_party/libpng.url     ${srcdir}/libpng
-  git -C libjxl config --local submodule.third_party/zlib.url       ${srcdir}/zlib
-  git -C libjxl config --local submodule.third_party/testdata.url   ${srcdir}/libjxl-testdata
+  local _submodule
+  for _submodule in brotli googletest sjpeg skcms highway libpng zlib
+  do
+      git -C libjxl config --local submodule.third_party/${_submodule}.url ${srcdir}/${_submodule}
+  done
+  git -C libjxl config --local submodule.third_party/lcms.url ${srcdir}/Little-CMS
+  git -C libjxl config --local submodule.third_party/testdata.url ${srcdir}/libjxl-testdata
   git -C libjxl submodule update
 }
 
