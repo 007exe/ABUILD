@@ -9,9 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-games")
 
-build_deps=("extra-cmake-modules kdoctools kxmlgui phonon-qt5 hicolor-icon-theme")
+build_deps=("extra-cmake-modules kdoctools kxmlgui phonon hicolor-icon-theme")
 
-adddep=("kxmlgui phonon-qt5 hicolor-icon-theme")
+adddep=("kxmlgui phonon hicolor-icon-theme")
 
 build() {
   go_src_dir
