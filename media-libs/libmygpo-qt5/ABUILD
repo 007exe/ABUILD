@@ -1,0 +1,23 @@
+pkgname=libmygpo-qt5
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C++/Qt client library for gpodder.net.")
+
+source=("http://stefan.derkits.at/files/libmygpo-qt/libmygpo-qt.${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake doxygen qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE='Release' \
+    -DCMAKE_INSTALL_PREFIX='/usr' \
+    -DMYGPO_BUILD_TESTS=OFF
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
