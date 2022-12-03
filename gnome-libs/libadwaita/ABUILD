@@ -1,0 +1,24 @@
+pkgname=libadwaita
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Building blocks for modern adaptive GNOME applications.")
+
+tags=("libs gnome-libs")
+
+source=("https://gitlab.gnome.org/GNOME/libadwaita/-/archive/${pkgver}/libadwaita-${pkgver}.tar.gz")
+
+build_deps=("meson gi-docgen sassc gobject-introspection vala gtk4")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+#    -D gtk_doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
