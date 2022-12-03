@@ -1,0 +1,25 @@
+pkgname=liblastfm-qt5
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Qt C++ library for the Last.fm webservices.")
+
+source=("https://github.com/lastfm/liblastfm/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+build_deps=("cmake qt5-base fftw libsamplerate")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_CXX_STANDARD=14 \
+    -DBUILD_TESTS=OFF
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
