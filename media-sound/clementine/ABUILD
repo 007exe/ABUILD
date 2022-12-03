@@ -6,14 +6,14 @@ arch=("auto")
 shortdesc=("A modern music player and library organizer.")
 longdesc=("Modern music player and library organizer based on Amarok 1.4 and Qt.")
 
-#source=("https://github.com/clementine-player/Clementine/releases/download/${pkgver//+/-}/$pkgname-${pkgver//+/-}.tar.xz")
 source=("https://github.com/clementine-player/Clementine/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("media-sound apps")
 
-# sparsehash liblastfm-qt5 libmygpo-qt5 crypto++
+# -DUSE_SYSTEM_PROJECTM=ON projectm
 build_deps=("boost cmake qt5-tools chromaprint gst-plugins-base-libs libcdio libgpod
-libmtp taglib protobuf qt5-x11extras alsa-lib libpulse projectm")
+libmtp taglib protobuf qt5-x11extras alsa-lib libpulse sparsehash liblastfm-qt5
+libmygpo-qt5 crypto++")
 
 adddep=("hicolor-icon-theme")
 
@@ -26,7 +26,7 @@ build() {
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DUSE_SYSTEM_PROJECTM=ON \
+    -DUSE_SYSTEM_PROJECTM=OFF \
     -DUSE_SYSTEM_TAGLIB=ON
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
