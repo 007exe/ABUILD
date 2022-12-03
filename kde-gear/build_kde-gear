@@ -173,7 +173,50 @@ kontact
 kitinerary
 kdepim-addons
 kio-extras
-kdenetwork-filesharing"
+kdenetwork-filesharing
+artikulate
+bovo
+kanagram
+kblackbox
+kbreakout
+kgoldrunner
+killbots
+klickety
+kmines
+kolf
+kpat
+ksirk
+ksquares
+kubrick
+picmi
+blinken
+granatier
+kapman
+kblocks
+kdiamond
+khangman
+kiriki
+klines
+knavalbattle
+kollision
+kreversi
+ksnakeduel
+ksudoku
+lskat
+bomber
+kajongg
+katomic
+kbounce
+kfourinline
+kigo
+kjumpingcube
+kmahjongg
+knetwalk
+konquest
+kshisen
+kspaceduel
+ktuberling
+palapeli"
 
 CWD=~
 STARTD=`pwd`
@@ -184,10 +227,10 @@ echo "============================= Начало сборки `date` ===========
 for i in $LIST ; do
     cd $STARTD/$i
     if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/kde-gear -si -bv $KDE_GEAR_VERSION -bb 1; then
-           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           echo "$i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
-           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           echo "$i НЕ СОБРАН!!!" >> $LOGFILE
            cd $STARTD
     fi
 done

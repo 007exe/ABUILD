@@ -1,3 +1,0 @@
-Зеркало на Яндекс
-
-https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz
