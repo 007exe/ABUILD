@@ -1,0 +1,30 @@
+pkgname=lollypop
+pkgver=1.4.36
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Music player for GNOME.")
+
+source=("https://gitlab.gnome.org/World/lollypop/-/archive/1.4.35/lollypop-${pkgver}.tar.gz")
+
+tags=("apps gnome-apps")
+
+build_deps=("appstream-glib gobject-introspection intltool itstool meson
+gst-plugins-base-libs gst-python gtk3 libhandy libsoup python-beautifulsoup4
+python-cairo python-gobject python-pillow totem-pl-parser")
+
+adddep=("gst-plugins-base-libs gst-python gtk3 libhandy libsoup python-beautifulsoup4
+python-cairo python-gobject python-pillow totem-pl-parser")
+
+# NOTE: Это опциональные зависимости
+removedep=("easytag gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly kid3-qt libsecret youtube-dl")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
