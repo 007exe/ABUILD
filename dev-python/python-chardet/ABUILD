@@ -1,19 +1,18 @@
 pkgname=python-chardet
-pkgver=4.0.0
-pkgbuild=2
+pkgver=5.1.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python3 module for character encoding auto-detection")
-longdesc=("Character encoding auto-detection in Python. As smart as your browser.")
 
 source=("https://pypi.io/packages/source/c/chardet/chardet-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
