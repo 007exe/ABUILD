@@ -1,78 +1,32 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=cmus
-pkgver=2.4.3
+pkgver=2.10.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="C* Music Player"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("cmus is a small, fast and powerful text mode music player"
-)
+shortdesc=("Feature-rich ncurses-based music player.")
 
-source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}-v${pkgver}.tar.bz2"
-"http://gitorious.org/cmus/cmus/blobs/raw/master/Doc/cmus-tutorial.txt")
+source=("https://github.com/cmus/cmus/archive/v${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("console media-sound")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="console media-sound"
+build_deps=("faad2 ffmpeg flac jack libao libcdio-paranoia libmad libmodplug libmp4v2 libmpcdec libpulse libsamplerate libvorbis opusfile wavpack")
 
-#dependencies only needed to build package
-build_deps=""
+# NOTE: Это опциональные зависимости
+removedep=("alsa-lib libao libpulse faad2 ffmpeg flac jack libmad libmodplug libmp4v2 libmpcdec libsamplerate libvorbis libcdio-paranoia opusfile wavpack")
 
-provides=""
-conflicts=""
+build() {
+  go_src_dir
+  burn_patches
+  ./configure prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 contrib/_cmus ${pkgdir}/usr/share/zsh/site-functions/_cmus
+}
 
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs="${srcache}/cmus-tutorial.txt"
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" \
-	./configure" # --help"
-
-BUILD_KEYS="prefix=/usr \
-sysconfdir=/etc \
-localstatedir=/var \
-libdir=/usr/lib${LIBDIRSUFFIX} \
-mandir=/usr/man \
-program-prefix= \
-program-suffix= \
-exampledir=/usr/doc/${pkgname}-${pkgver}/examples \
-DEBUG=0"
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
