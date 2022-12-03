@@ -9,7 +9,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-games")
 
-build_deps=("extra-cmake-modules kdoctools libkdegames qca-qt5 phonon-qt5 hicolor-icon-theme")
+build_deps=("extra-cmake-modules kdoctools libkdegames qca-qt5 phonon hicolor-icon-theme")
 
 adddep=("libkdegames qca-qt5 phonon hicolor-icon-theme")
 
