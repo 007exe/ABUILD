@@ -1,34 +1,23 @@
-#ABUILD created by: agr3ss0r, agr3ss0r86 at gmail.com 
 pkgname=libmp4v2
-pkgver=2.0.0
+pkgver=2.1.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="libmp4v2 (library to read, create, and modify mp4 files)"
-longdesc=("This library provides functions to read, create, and modify mp4 files. This is a standalone version of mp4v2 library. It is derived from the mpeg4ip source tree, but for licensing reasons it has been adapted to this form."
-"Homepage:  http://resare.com/libmp4v2/")
+shortdesc=("A C/C++ library to create, modify and read MP4 files.")
 
-source=("http://mp4v2.googlecode.com/files/mp4v2-${pkgver}.tar.bz2")
+source=("https://github.com/enzo1982/mp4v2/releases/download/v${pkgver}/mp4v2-${pkgver}.tar.bz2")
 
-tags="libs media-libs"
+tags=("libs media-libs")
 
-build_deps="make gcc gcc-g++ perl-locale-gettext coreutils sed grep"
+build_deps=("gcc-libs")
 
-docs="doc/*"
-
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-after_build() {
-    make DESTDIR=${pkgdir} install-man
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} install-man
 }
