@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for parsing video download links.")
-longdesc=("Library for parsing video download links.")
 
 tags=("libs media-video")
 
