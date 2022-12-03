@@ -1,0 +1,32 @@
+pkgname=lib32-libgudev
+pkgver=237
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GObject bindings for libudev (32-bit).")
+
+source=("https://download.gnome.org/sources/libgudev/${pkgver}/libgudev-${pkgver}.tar.xz")
+
+tags=("dev-libs lib32")
+
+build_deps=("meson python lib32-glib2")
+
+adddep=("libgudev")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32 \
+    -D introspection=disabled \
+    -D gtk_doc=false \
+    -D tests=disabled \
+    -D vapi=disabled
+  ninja -C build
+  meson install -C build --destdir ${pkgdir}
+  rm -rf ${pkgdir}/usr/{include,share}
+}
