@@ -1,0 +1,44 @@
+pkgname=lib32-colord
+pkgver=1.4.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("System daemon for managing color devices (32-bit).")
+
+source=("http://www.freedesktop.org/software/colord/releases/colord-${pkgver}.tar.xz")
+
+tags=("lib32 x11-misc")
+
+# argyllcms
+build_deps=("bash-completion gobject-introspection intltool lib32-dbus lib32-dconf lib32-libgudev lib32-libgusb lib32-polkit lib32-sqlite meson sane vala
+lib32-glib2 lib32-lcms2")
+
+adddep=("colord")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32 \
+    -D systemd=false \
+    -D docs=false \
+    -D man=false \
+    -D tests=false \
+    -D libcolordcompat=true \
+    -D sane=false \
+    -D introspection=false \
+    -D vapi=false \
+    -D print_profiles=false \
+    -D daemon_user=colord
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+
+  rm -r ${pkgdir}/usr/{bin,include,lib,share}
+  rm -r ${pkgdir}/usr/lib32/{colord-plugins,colord-sensors}
+  rm ${pkgdir}/usr/lib32/libcolor{dprivate,hug}*
+  rm ${pkgdir}/usr/lib32/pkgconfig/colorhug.pc
+}
