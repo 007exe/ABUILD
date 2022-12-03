@@ -1,0 +1,26 @@
+pkgname=strawberry
+pkgver=1.0.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A music player aimed at audio enthusiasts and music collectors.")
+
+source=("https://github.com/strawberrymusicplayer/strawberry/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("media-sound apps")
+
+build_deps=("cmake boost qt6-tools
+qt6-base chromaprint protobuf gst-plugins-base gst-plugins-good udisks libcdio libgpod libmtp fftw")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-libav gst-plugins-bad gst-plugins-ugly")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_WITH_QT6=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}

@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend strawberry capabilities:"
+echo -e "gst-libav: additional codecs"
+echo -e "gst-plugins-bad: additional codecs"
+echo -e "gst-plugins-ugly: additional codecs"
+echo -e " "
