@@ -1,55 +1,31 @@
 pkgname=openttd
-pkgver=1.4.3
+pkgver=12.2
 pkgbuild=1
-arch=('noarch')
+arch=("auto")
 
-if [ -z "`echo $pkgver | grep "_"`" ]; then
- srcver=${pkgver}/${pkgname}-${pkgver}
-elif [ -z "`echo $pkgver | grep "_rc"`" ]; then
- srcver=${pkgver/_beta/-beta}/openttd-${pkgver/_beta/-beta}
-else
- srcver=${pkgver/_rc/-RC}/openttd-${pkgver/_rc/-RC}
-fi
+shortdesc=("Engine for running Transport Tycoon Deluxe.")
 
-shortdesc="OpenTTD is an Open Source clone of Transport Tycoon Deluxe"
-source=("http://binaries.openttd.org/releases/${srcver}-source.tar.xz")
-tags="games games-simulation"
-build_deps="libpng sdl icu4c fontconfig lzo hicolor-icon-theme desktop-file-utils xz"
-conflicts="${pkgname}-data"
-adddep="${pkgname}-bin==${pkgver} openttd-opensfx openttd-opengfx" #${pkgname}-data
-pkglist="bin"
+source=("https://cdn.${pkgname}.org/${pkgname}-releases/${pkgver}/${pkgname}-${pkgver}-source.tar.xz")
 
+tags=("games games-simulation")
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix-dir=/usr \
---binary-dir=/bin \
---data-dir=/share/${pkgname} \
---install-dir=${pkgdir} \
---doc-dir=/doc/${pkgname}-${pkgver} \
---man-dir=/man/man6 \
---with-sdl \
---with-png \
---with-fontconfig \
---with-freetype \
---with-icu"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build_deps=("cmake ninja fluidsynth fontconfig hicolor-icon-theme libpng")
 
+adddep=("fluidsynth fontconfig hicolor-icon-theme libpng")
 
-after_build() {
-  if [ -d $pkgdir/usr/doc/${pkgname}-${pkgver}/docs ]; then
-    rm -vrf $pkgdir/usr/doc/${pkgname}-${pkgver}/docs || exit 1
-  fi
-}
+# NOTE: Это опциональные зависимости
+removedep=("openttd-opengfx openttd-opensfx")
 
-# Bin
-bin() {
-  pkgname="${p_pkgname}-bin"
-  arch=('auto')
-  shortdesc="Binary files for OpenTTD"
-  tags="games games-simulation"
-}
-
-bin_prep() {
-  mkdir -p ${pkgdir}/usr
-  mv ${p_pkgdir}/usr/bin ${pkgdir}/usr
+build() {
+  go_src_dir
+  burn_patches
+  sed -i '/sse/d;/SSE/d' CMakeLists.txt
+  cmake -B build \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_BINDIR=bin \
+    -D CMAKE_INSTALL_DATADIR=/usr/share \
+    -G Ninja
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
 }

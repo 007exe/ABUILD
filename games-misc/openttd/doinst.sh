@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend openttd capabilities:"
+echo -e "openttd-opengfx"
+echo -e "openttd-opensfx"
+echo -e " "
