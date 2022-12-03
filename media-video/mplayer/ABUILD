@@ -1,19 +1,20 @@
-pkgname=MPlayer
-pkgver=1.1.1
+pkgname=mplayer
+pkgver=1.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="MPlayer (media player)"
-longdesc=("MPlayer is a movie player. It plays most MPEG/VOB, AVI, Ogg/OGM, VIVO, ASF/WMA/WMV, QT/MOV/MP4, RealMedia, Matroska, NUT, NuppelVideo, FLI, YUV4MPEG, FILM, RoQ, PVA files, supported by many native, XAnim, and Win32 DLL codecs. You can watch VideoCD, SVCD, DVD, 3ivx, DivX 3/4/5, WMV and even H.264 movies.")
+shortdesc=("Media player for Linux.")
 
-source=("svn:svn://svn.mplayerhq.hu/mplayer/trunk")
+source=("https://mplayerhq.hu/MPlayer/releases/MPlayer-${pkgver}.tar.xz")
 
-tags="xapps media-video"
-build_deps="libXxf86dga libXxf86vm libmad libXinerama sdl lame libtheora xvidcore libmng libXScrnSaver smbclient
-aalib libcaca x264 faac faad2 libXvMC enca libvdpau opencore-amr libdca a52dec schroedinger libvpx ffmpeg
-fribidi infozip mesa yasm git fontconfig mpg123 ladspa libass libbluray libcdio-paranoia subversion"
+tags=("apps media-video")
 
-pkglist=mencoder
+build_deps=("libglvnd sdl libx11 libxext libxinerama libxscrnsaver libxv libxxf86vm
+a52dec aalib alsa-lib libass ffmpeg libbluray libbs2b bzip2 glibc libcaca libcdio
+libcdio-paranoia libdca libdv libdvdnav libdvdread enca faac faad2 fontconfig freetype
+fribidi giflib gnutls gsm jack libjpeg-turbo lirc lzo libmad libmng lame libmpeg2 mpg123
+ncurses libogg openal opus libpng libpulse rtmpdump sndio speex libtheora twolame libvdpau
+libvorbis x264 xvidcore zlib")
 
 config_files=("etc/mplayer/mplayer.conf
 etc/mplayer/codecs.conf
@@ -22,53 +23,32 @@ etc/mplayer/input.conf
 etc/mplayer/menu.conf")
 
 build() {
-	go_src_dir
-	burn_patches
-	unset CFLAGS LDFLAGS
-	./configure \
-	--prefix=/usr \
-	--disable-static \
-	--mandir=/usr/man \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--confdir=/etc/mplayer \
-	--disable-gui \
-	--disable-ossaudio \
-	--disable-esd \
-	--disable-arts \
-	--disable-jack \
-	--enable-vdpau \
-	--enable-shm \
-	--enable-xvmc \
-	--enable-x264 \
-	--language=all \
-	--extra-ldflags="-lx264" \
-	--enable-runtime-cpudetection
+  go_src_dir
+  burn_patches
+  ./configure \
+    --enable-runtime-cpudetection \
+    --disable-gui \
+    --disable-arts \
+    --disable-liblzo \
+    --disable-libdv \
+    --disable-musepack \
+    --disable-esd \
+    --disable-mga \
+    --disable-ass-internal \
+    --disable-cdparanoia \
+    --disable-ffmpeg_a \
+    --enable-xvmc \
+    --enable-radio \
+    --enable-radio-capture \
+    --disable-smb \
+    --language=all \
+    --confdir=/etc/mplayer
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -dm0755 $pkgdir/etc/mplayer
+  install -m0644 etc/example.conf ${pkgdir}/etc/mplayer/mplayer.conf
+  cp etc/{codecs.conf,dvb-menu.conf,input.conf,menu.conf}  ${pkgdir}/etc/mplayer
 
-        svnrev=r`svn info svn://svn.mplayerhq.hu/mplayer/trunk | grep "Revision:" | cut -f2 -d ' '`
-	echo "${pkgver}-${svnrev}" > VERSION
-	if [ $ARCH = "i686" ]; then
-		sed 's|-march=i486|-march=i686|g' -i config.mak
-	fi
-
-	make -j${numjobs}
-	make DESTDIR="$pkgdir" install
-
-	install -dm0755 $pkgdir/etc/mplayer
-	install -m0644 etc/example.conf $pkgdir/etc/mplayer/mplayer.conf
-	cp etc/{codecs.conf,dvb-menu.conf,input.conf,menu.conf}  $pkgdir/etc/mplayer
-}
-
-mencoder_prep() {
-	mkdir -p ${pkgdir}/usr/bin
-	mv ${p_pkgdir}/usr/bin/mencoder ${pkgdir}/usr/bin/
-	find ${p_pkgdir}/usr/man/ -type l -name "mencoder*" -exec rm -f {} \;
-	cp -a ${p_pkgdir}/usr/man ${pkgdir}/usr/
-	find ${pkgdir}/usr/man/ -type f -name "mplayer*" -exec rename mplayer.1 mencoder.1 {} \;
-
-}
-
-mencoder() {
-	pkgname=mencoder
-	shortdesc="mencoder (MPlayer Media Encoder)"
-	longdesc=("mencoder is a simple movie encoder, designed to encode MPlayer-playable movies (see above) to other MPlayer-playablev formats (see below).  It encodes to  MPEG-4 (DivX/Xvid), one of the libavcodec codecs and PCM/MP3/VBRMP3 audio in 1, 2 or 3 passes. Furthermore it has stream copying abilities, a powerful filter system (crop, expand, flip, postprocess, rotate, scale, noise, RGB/YUV conversion) and more.")
+  install -Dm 644 ${filedir}/mplayer.desktop -t ${pkgdir}/usr/share/applications
+  install -Dm 644 etc/mplayer256x256.png ${pkgdir}/usr/share/pixmaps/mplayer.png
 }
