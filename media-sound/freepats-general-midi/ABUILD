@@ -1,0 +1,20 @@
+pkgname=freepats-general-midi
+pkgver=20221026
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Free and Open general MIDI sound set.")
+
+source=("https://freepats.zenvoid.org/SoundSets/FreePats-GeneralMIDI/FreePatsGM-SF2-${pkgver}.7z")
+
+tags=("media-sound utils")
+
+build_deps=("p7zip")
+
+build() {
+  cd ${srcdir}
+  7z x ${srcache}/FreePatsGM-SF2-${pkgver}.7z
+  cd FreePatsGM-SF2-${pkgver}
+  install -vDm 644 *.sf2 ${pkgdir}/usr/share/soundfonts/${pkgname}.sf2
+  install -vDm 644 readme.txt -t ${pkgdir}/usr/share/doc/${pkgname}
+}
