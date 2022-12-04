@@ -1,0 +1,27 @@
+pkgname=qhull
+pkgver=2020.2
+_pkgver=8.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A general dimension code for computing convex hulls and related structures.")
+
+source=("http://www.qhull.org/download/qhull-${pkgver%.*}-src-$_pkgver.tgz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_C_FLAGS="$CFLAGS -ffat-lto-objects" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -ffat-lto-objects"
+  cmake --build build
+  cmake --build build --target libqhull
+  DESTDIR=${pkgdir} cmake --install build
+  cp -P build/libqhull.so* ${pkgdir}/usr/lib/
+  install -Dm644 COPYING.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
