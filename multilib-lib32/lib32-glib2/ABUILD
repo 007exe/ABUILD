@@ -1,10 +1,9 @@
 pkgname=lib32-glib2
-pkgver=2.74.2
+pkgver=2.74.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low level core library (32-bit).")
-longdesc=("The GLib package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}.tar.xz")
 
@@ -13,7 +12,7 @@ tags=("lib32 dev-libs")
 build_deps=("gettext gtk-doc lib32-dbus lib32-elfutils meson python shared-mime-info util-linux
 lib32-pcre2 lib32-util-linux lib32-zlib")
 
-adddep=("glib2 lib32-elfutils lib32-pcre2 lib32-util-linux lib32-zlib")
+adddep=("glib2")
 
 build() {
   go_src_dir
@@ -21,14 +20,16 @@ build() {
   export CC="gcc -m32 -mstackrealign"
   export CXX="g++ -m32 -mstackrealign"
   export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   CFLAGS+=' -g3'
   CXXFLAGS+=' -g3'
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
   meson build \
     -D prefix=/usr \
+    -D libdir=/usr/lib32 \
     -D glib_debug=disabled \
     -D selinux=disabled \
-    -D libdir=/usr/lib32 \
+    -D sysprof=disabled \
     -D man=false \
     -D gtk_doc=false
   meson compile -C build
