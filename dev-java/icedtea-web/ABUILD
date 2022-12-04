@@ -5,11 +5,11 @@ arch=("auto")
 
 shortdesc=("Additional components for OpenJDK - Browser plug-in and Web Start implementation.")
 
-source=("https://github.com/AdoptOpenJDK/IcedTea-Web/archive/${pkgbase}-${pkgver}.tar.gz")
+source=("https://github.com/AdoptOpenJDK/IcedTea-Web/archive/icedtea-web-${pkgver}.tar.gz")
 
 tags=("libs dev-java")
 
-build_deps=("java-environment=8 zip libxtst npapi-sdk rhino junit firefox epiphany rust bc")
+build_deps=("zip libxtst rust bc openjdk")
 
 build() {
   go_src_dir
@@ -18,13 +18,13 @@ build() {
   ./configure \
     --prefix=/usr/share/icedtea-web \
     --datarootdir=/usr/share \
-    --with-jdk-home=/usr/lib/jvm/default \
-    --with-jre-home=/usr/lib/jvm/default-runtime \
     --with-java=/usr/bin/java \
     --with-browser-tests \
     --with-firefox=/usr/bin/firefox \
     --with-epiphany=/usr/bin/epiphany \
-    --with-itw-libs=DISTRIBUTION
+    --with-itw-libs=DISTRIBUTION \
+    --with-jdk-home=/usr/lib/jvm/java-19-openjdk \
+    --with-jre-home=/usr/lib/jvm/java-19-openjdk
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
