@@ -1,0 +1,24 @@
+pkgname=python-qtpy
+pkgver=2.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides an uniform layer to support PyQt5 and PySide2 with a single codebase.")
+
+source=("https://github.com/spyder-ide/qtpy/archive/v${pkgver}/python-qtpy-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-packaging")
+
+adddep=("python-packaging")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-pyqt5 python-pyqt6 python-pyqt5-webengine python-pyqt6-webengine pyside2 pyside6")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
