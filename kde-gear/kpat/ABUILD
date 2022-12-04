@@ -9,9 +9,11 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-games")
 
-build_deps=("extra-cmake-modules kdoctools libkdegames freecell-solver black-hole-solver hicolor-icon-theme")
+# -DWITH_BH_SOLVER=ON требует black-hole-solver
+build_deps=("extra-cmake-modules kdoctools libkdegames freecell-solver hicolor-icon-theme")
 
-adddep=("libkdegames freecell-solver black-hole-solver hicolor-icon-theme")
+# black-hole-solver
+adddep=("libkdegames freecell-solver hicolor-icon-theme")
 
 build() {
   go_src_dir
@@ -20,6 +22,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
+    -DWITH_BH_SOLVER=OFF \
     -DBUILD_TESTING=OFF
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
