@@ -1,0 +1,22 @@
+pkgname=aiksaurus
+pkgver=1.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A cross-platform, open-source thesaurus.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CXXFLAGS+=' -std=c++14'
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
