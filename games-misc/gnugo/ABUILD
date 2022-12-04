@@ -1,0 +1,25 @@
+pkgname=gnugo
+pkgver=3.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Program that plays the game of Go.")
+
+source=("https://ftp.gnu.org/gnu/gnugo/${pkgname}-${pkgver}.tar.gz")
+
+tags=("games-board games")
+
+build_deps=("ncurses")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=' -fcommon'
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/usr/share/info
+}
