@@ -1,0 +1,19 @@
+pkgname=perl-appconfig
+pkgver=1.71
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Perl/CPAN AppConfig module - Read configuration files and parse command line arguments.")
+
+source=("https://www.cpan.org/authors/id/N/NE/NEILB/AppConfig-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
