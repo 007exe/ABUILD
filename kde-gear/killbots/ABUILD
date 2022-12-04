@@ -3,7 +3,7 @@ pkgver=22.08.3
 pkgbuild=1
 arch=("auto")
 
-shortdesc=(".")
+shortdesc=("A simple game of evading killer robots.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
