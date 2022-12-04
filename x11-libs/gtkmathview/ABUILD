@@ -1,0 +1,28 @@
+pkgname=gtkmathview
+pkgver=0.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ rendering engine for MathML documents.")
+
+source=("http://helm.cs.unibo.it/mml-widget/sources/${pkgname}-${pkgver}.tar.gz")
+
+tags=("x11-libs libs")
+
+build_deps=("popt t1lib libxml2 glib2")
+
+build() {
+  go_src_dir
+  burn_patches
+  echo 'AC_DEFUN([AM_BINRELOC], [])' > acinclude.m4
+  autoreconf -if
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --disable-static \
+    --disable-gtk \
+    --disable-gmetadom
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
