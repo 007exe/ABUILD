@@ -1,0 +1,21 @@
+pkgname=perl-template-toolkit
+pkgver=3.101
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Perl template processing system.")
+
+source=("https://search.cpan.org/CPAN/authors/id/A/AB/ABW/Template-Toolkit-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl perl-appconfig")
+
+adddep=("perl-appconfig")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor TT_ACCEPT=y
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
