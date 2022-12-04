@@ -11,6 +11,8 @@ tags=("app-forensics utils")
 
 build_deps=("glibc patch")
 
+config_files=("etc/foremost.conf")
+
 build(){
   go_src_dir
   burn_patches
