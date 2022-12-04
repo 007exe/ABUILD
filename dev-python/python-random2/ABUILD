@@ -1,0 +1,18 @@
+pkgname=python-random2
+pkgver=1.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python 3 compatible port of Python 2 random module.")
+
+_pipname=random2
+source=("https://pypi.python.org/packages/source/${_pipname:0:1}/random2/random2-${pkgver}.zip")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build() {
+  go_src_dir
+  python setup.py install --root=${pkgdir} --optimize=1
+}
