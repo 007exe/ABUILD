@@ -1,11 +1,10 @@
 # NOTE: Пересобери gobject-introspection под новый glib2
 pkgname=glib2
-pkgver=2.74.2
+pkgver=2.74.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low level core library.")
-longdesc=("The GLib package contains low-level libraries useful for providing data structure handling for C, portability wrappers and interfaces for such runtime functionality as an event loop, threads, dynamic loading and an object system.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}.tar.xz")
 
