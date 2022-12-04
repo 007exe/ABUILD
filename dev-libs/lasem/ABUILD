@@ -1,0 +1,25 @@
+pkgname=lasem
+pkgver=0.4.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SVG and Mathml rendering library.")
+
+source=("https://download.gnome.org/sources/$pkgname/${pkgver:0:3}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("dev-libs libs")
+
+build_deps=("intltool python gtk3")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  mv ${pkgdir}/usr/doc ${pkgdir}/usr/share/doc
+}
