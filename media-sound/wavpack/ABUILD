@@ -1,10 +1,9 @@
 pkgname=wavpack
-pkgver=5.5.0
+pkgver=5.6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Audio compression format with lossless, lossy and hybrid compression modes.")
-longdesc=("WavPack is a completely open audio compression format providing lossless, high-quality lossy, and a unique hybrid compression mode. Although the technology is loosely based on previous versions of WavPack, the new version 4 format has been designed from the ground up to offer unparalleled performance and functionality.")
 
 source=("https://github.com/dbry/WavPack/releases/download/$pkgver/$pkgname-$pkgver.tar.xz")
 
