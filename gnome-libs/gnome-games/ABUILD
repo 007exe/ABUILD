@@ -19,6 +19,11 @@ libretro-flycast libretro-gambatte libretro-mgba libretro-nestopia libretro-para
 build() {
   go_src_dir
   burn_patches
+  mv flatpak/libretro-cores/{pcsx_rearmed,mednafen_psx}.libretro
+  sed -i 's/^Name=.*/Name=Beetle PSX/
+          s/^Module=.*/Module=mednafen_psx_libretro.so/
+          s/^Authors=.*/Authors=Mednafen Team;/' \
+    flatpak/libretro-cores/mednafen_psx.libretro
   meson  build \
     -D prefix=/usr \
     -D libdir=/usr/lib
