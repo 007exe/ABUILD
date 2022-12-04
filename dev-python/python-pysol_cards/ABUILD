@@ -1,0 +1,20 @@
+pkgname=python-pysol_cards
+pkgver=0.14.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Deal PySol FC Cards.")
+
+source=("https://pypi.io/packages/source/p/pysol_cards/pysol_cards-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-pbr")
+
+adddep=("python-pbr")
+
+build() {
+  go_src_dir
+  python setup.py install --root ${pkgdir} --optimize=1
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
