@@ -12,7 +12,7 @@ tags=("dev-games libs")
 build_deps=("cmake gperf perl-moo perl-path-tiny perl-template-toolkit python-random2 python-six python-pysol_cards rinutils")
 
 # NOTE: Это опциональные зависимости
-removedep=("python-random2 python-pysol_cards")
+removedep=("python-random2 python-pysol_cards python-six")
 
 build() {
   go_src_dir
