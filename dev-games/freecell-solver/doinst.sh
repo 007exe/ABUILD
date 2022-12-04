@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend freecell-solver capabilities:"
+echo -e "python-random2: for the Python interface"
+echo -e "python-six: for the Python interface"
+echo -e "python-pysol_cards: for the Python interface"
+echo -e " "

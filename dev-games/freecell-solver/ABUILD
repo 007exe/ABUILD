@@ -1,0 +1,27 @@
+pkgname=freecell-solver
+pkgver=6.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A program that automatically solves layouts of Freecell and similar variants of Card Solitaire.")
+
+source=("https://fc-solve.shlomifish.org/downloads/fc-solve/${pkgname}-${pkgver}.tar.xz")
+
+tags=("dev-games libs")
+
+build_deps=("cmake gperf perl-moo perl-path-tiny perl-template-toolkit python-random2 python-six python-pysol_cards rinutils")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-random2 python-pysol_cards")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DFCS_WITH_TEST_SUITE=OFF \
+    -DBUILD_STATIC_LIBRARY=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 COPYING.html ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.html
+}
