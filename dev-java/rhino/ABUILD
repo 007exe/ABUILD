@@ -1,17 +1,47 @@
-#ABUILD created by: khvalera, khvalera at narod.ru
 pkgname=rhino
+pkglist=("java-rhino rhino-javadoc")
+pkgver=1.7.14
 
-pkgver=1.7R3
-pkgbuild=2
-arch=('noarch')
+pkgbuild=1
+arch=("noarch")
 
-shortdesc="Mozilla's implementation of JavaScript in Java"
-source="ftp://ftp.mozilla.org/pub/mozilla.org/js/${pkgname}${pkgver%.*}_${pkgver#*.}.zip"
-tags="libs dev-java"
-build_deps="apache-ant"
+shortdesc=("Open-source implementation of JavaScript written entirely in Java")
+
+source=("https://github.com/mozilla/rhino/releases/download/Rhino${pkgver//\./_}_Release/rhino-${pkgver}.zip"
+"https://github.com/mozilla/rhino/archive/Rhino${pkgver//\./_}_Release.tar.gz")
+
+tags=("libs dev-java")
+
+build_deps=("mkpkg")
+
+adddep=("java-rhino")
 
 build(){
-  go_src_dir
-  install -m755 -d ${pkgdir}/usr/share/java
-  install -m644 js.jar ${pkgdir}/usr/share/java/
+  cd ${srcdir}
+  install -dm755 ${pkgdir}/usr/bin
+  install -m755 ${filedir}/rhino ${filedir}/rhino-debugger ${filedir}/rhino-jsc ${filedir}/rhino-idswitch ${pkgdir}/usr/bin/
+  install -dm755 ${pkgdir}/usr/share/man/man1
+  install -m755 rhino-Rhino${pkgver//\./_}_Release/man/rhino.1 ${filedir}/rhino-debugger.1 ${filedir}/rhino-jsc.1 ${pkgdir}/usr/share/man/man1/
+}
+
+java-rhino() {
+  pkgname=java-rhino
+  shortdesc=("Open-source implementation of JavaScript written entirely in Java - JAR.")
+}
+
+java-rhino_prep() {
+  cd ${srcdir}
+  install -Dm644 rhino${pkgver}/lib/rhino-${pkgver}.jar ${pkgdir}/usr/share/java/js-${pkgver}.jar
+  ln -s js-${pkgver}.jar ${pkgdir}/usr/share/java/js.jar
+}
+
+rhino-javadoc() {
+  pkgname=rhino-javadoc
+  shortdesc=("Open-source implementation of JavaScript written entirely in Java - Javadoc.")
+}
+
+rhino-javadoc_prep() {
+  cd ${srcdir}
+  install -m755 -d ${pkgdir}/usr/share/rhino
+  cp -r rhino${pkgver}/docs ${pkgdir}/usr/share/rhino
 }
