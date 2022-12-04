@@ -1,10 +1,9 @@
 pkgname=doublecmd-gtk2
-pkgver=1.0.8
+pkgver=1.0.9
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("twin-panel (commander-style) file manager (GTK2).")
-longdesc=("Double Commander is a cross platform open source file manager with two panels side by side.")
+shortdesc=("Twin-panel (commander-style) file manager (GTK2).")
 
 source=("http://sourceforge.net/projects/doublecmd/files/Double%20Commander%20Source/doublecmd-${pkgver}-src.tar.gz")
 
@@ -42,8 +41,7 @@ build(){
 
 doublecmd-qt() {
   pkgname=doublecmd-qt5
-  shortdesc=("twin-panel (commander-style) file manager (Qt5)")
-  longdesc=("Double Commander is a cross platform open source file manager with two panels side by side.")
+  shortdesc=("Twin-panel (commander-style) file manager (Qt5)")
   adddep=("desktop-file-utils hicolor-icon-theme shared-mime-info")
   conflicts=("doublecmd-gtk2")
 }
