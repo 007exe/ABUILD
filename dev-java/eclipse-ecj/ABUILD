@@ -11,7 +11,7 @@ source=("https://archive.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_dat
 
 tags=("libs dev-java")
 
-build_deps=("ant java-environment")
+build_deps=(" ")
 
 build(){
   go_src_dir
