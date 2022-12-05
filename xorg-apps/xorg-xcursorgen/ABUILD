@@ -1,12 +1,12 @@
 pkgname=xorg-xcursorgen
-pkgver=1.0.7
+pkgver=1.0.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Create an X cursor file from PNG images.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xcursorgen-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xcursorgen-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
