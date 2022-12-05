@@ -1,12 +1,14 @@
 pkgname=lucene++
 pkgver=3.0.8
-pkgbuild=1
+_githash=972c9cb37
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("C++ port of the popular Java Lucene library.")
 longdesc=("C++ port of Lucene library, a high-performance, full-featured text search engine.")
 
-source=("https://github.com/luceneplusplus/LucenePlusPlus/archive/rel_${pkgver}.tar.gz")
+#source=("https://github.com/luceneplusplus/LucenePlusPlus/archive/rel_${pkgver}.tar.gz")
+source=("https://github.com/luceneplusplus/LucenePlusPlus/archive/${_githash}.tar.gz")
 
 tags=("libs dev-cpp")
 
@@ -15,6 +17,8 @@ build_deps=("boost cmake boost-libs")
 build() {
   go_src_dir
   burn_patches
+  sed -i -e 's#SET(LUCENE++_VERSION_REVISION.*#SET(LUCENE++_VERSION_REVISION "5")#' \
+         -e 's#SET(LUCENE++_VERSION_PATCH.*#SET(LUCENE++_VERSION_PATCH "0")#' CMakeLists.txt
   mkdir build
   cd build
   cmake .. \
