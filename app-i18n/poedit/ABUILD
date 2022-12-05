@@ -1,5 +1,5 @@
 pkgname=poedit
-pkgver=3.2.1
+pkgver=3.2.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/vslavik/poedit/releases/download/v$pkgver-oss/poedit
 
 tags=("app-i18n apps")
 
-build_deps=("boost gtkspell lucene++ wxwidgets-gtk3 webkit2gtk gtkspell")
+build_deps=("boost gtkspell3 lucene++ wxwidgets-gtk3 webkit2gtk")
 
 build(){
   go_src_dir
