@@ -1,0 +1,24 @@
+pkgname=gtkspell3
+pkgver=3.0.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides word-processor-style highlighting and replacement of misspelled words in a GtkTextView widget.")
+
+source=("https://downloads.sourceforge.net/gtkspell/${pkgname}-${pkgver}.tar.xz")
+
+tags=("app-text libs")
+
+build_deps=("intltool gobject-introspection vala gtk3 enchant")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
