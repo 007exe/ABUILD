@@ -1,12 +1,12 @@
 pkgname=xorg-xset
-pkgver=1.2.4
+pkgver=1.2.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("User preference utility for X.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xset-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xset-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
