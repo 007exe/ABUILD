@@ -1,12 +1,12 @@
 pkgname=libxres
-pkgver=1.2.1
-pkgbuild=2
+pkgver=1.2.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Resource extension library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXres-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXres-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
