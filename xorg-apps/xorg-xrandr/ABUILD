@@ -1,5 +1,5 @@
 pkgname=xorg-xrandr
-pkgver=1.5.1
+pkgver=1.5.2
 pkgbuild=1
 arch=("auto")
 
