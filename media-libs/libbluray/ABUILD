@@ -1,5 +1,5 @@
 pkgname=libbluray
-pkgver=1.3.3
+pkgver=1.3.4
 pkgbuild=1
 arch=("auto")
 
