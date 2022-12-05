@@ -1,6 +1,6 @@
 pkgname=libass
-pkgver=0.15.2
-pkgbuild=2
+pkgver=0.17.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for SSA/ASS subtitles rendering.")
