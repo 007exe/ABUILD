@@ -1,0 +1,22 @@
+pkgname=xcb-imdkit
+pkgver=1.0.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Input method development support for xcb.")
+
+source=("https://download.fcitx-im.org/fcitx5/xcb-imdkit/xcb-imdkit-${pkgver}.tar.xz")
+
+tags=("dev-libs libs")
+
+build_deps=("extra-cmake-modules ninja uthash xorgproto xcb-util xcb-util-keysyms")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake . -GNinja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib
+  ninja
+  DESTDIR=${pkgdir} ninja install
+}
