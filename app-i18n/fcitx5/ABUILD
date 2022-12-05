@@ -1,0 +1,26 @@
+pkgname=fcitx5
+pkgver=5.0.21
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Next generation of fcitx.")
+
+source=("https://download.fcitx-im.org/fcitx5/fcitx5/fcitx5-${pkgver}_dict.tar.xz")
+
+tags=("libs app-i18n")
+
+build_deps=("extra-cmake-modules ninja cairo enchant iso-codes libxkbcommon-x11
+pango wayland wayland-protocols xcb-util-wm libxkbfile fmt gdk-pixbuf xcb-imdkit")
+
+conflicts=("fcitx")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake . -GNinja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc
+  ninja
+  DESTDIR=${pkgdir} ninja install
+}
