@@ -1,12 +1,12 @@
 pkgname=xorg-xvinfo
-pkgver=1.1.4
+pkgver=1.1.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 longdesc=("Prints out the capabilities of any video adaptors associated with the display that are accessible through the X-Video extension.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xvinfo-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xvinfo-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
