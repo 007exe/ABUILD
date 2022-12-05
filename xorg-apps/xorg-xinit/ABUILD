@@ -1,12 +1,12 @@
 pkgname=xorg-xinit
-pkgver=1.4.1
+pkgver=1.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Xorg initialisation program.")
 longdesc=("The xinit package contains a usable script to start the xserver.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xinit-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xinit-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
