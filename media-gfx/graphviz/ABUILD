@@ -1,5 +1,5 @@
 pkgname=graphviz
-pkgver=7.0.3
+pkgver=7.0.4
 pkgbuild=1
 arch=("auto")
 
