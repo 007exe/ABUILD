@@ -1,12 +1,12 @@
 pkgname=libxcomposite
-pkgver=0.4.5
-pkgbuild=3
+pkgver=0.4.6
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("X11 Composite extension library")
+shortdesc=("X11 Composite extension library.")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXcomposite-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXcomposite-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
