@@ -1,5 +1,5 @@
 pkgname=sdl2
-pkgver=2.26.0
+pkgver=2.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
 tags=("media-libs libs")
 
 build_deps=("alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake
-jack ninja libxss ibus fcitx libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb pipewire")
+jack ninja libxss ibus fcitx5 libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb pipewire")
 
 adddep=("libxext libxrender libx11 libxcursor libibus hidapi libusb")
 
