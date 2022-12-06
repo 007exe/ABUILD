@@ -1,0 +1,29 @@
+pkgname=libdbi-drivers
+pkgver=0.9.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Database drivers for libdbi (MySQL, PostgreSQL, and SQLite).")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("mariadb-libs postgresql-libs sqlite libdbi")
+
+# NOTE: Это опциональные зависимости
+removedep=("mariadb-libs postgresql-libs sqlite")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --localstatedir=/var \
+    --with-mysql \
+    --with-pgsql \
+    --with-sqlite3
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
