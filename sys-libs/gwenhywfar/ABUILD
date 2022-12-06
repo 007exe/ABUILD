@@ -1,0 +1,27 @@
+pkgname=gwenhywfar
+pkgver=5.10.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("OS abstraction functions for various projects.")
+
+tags=("libs sys-libs")
+
+source=("https://www.aquamaniac.de/rdm/attachments/download/465/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("gtk3 qt5-base gnutls libgcrypt openssl")
+
+# NOTE: Это опциональные зависимости
+removedep=("gtk3 qt5-base")
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --enable-system-certs \
+    --with-guis="gtk3 qt5"
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
