@@ -1,0 +1,22 @@
+pkgname=libofx
+pkgver=0.10.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("API for the OFX banking standard.")
+
+source=("https://github.com/$pkgname/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("gnupg opensp curl libxml++")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make CXXFLAGS+=-std=c++11
+  make DESTDIR=${pkgdir} install
+}
