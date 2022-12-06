@@ -1,10 +1,9 @@
 pkgname=liblouis
-pkgver=3.23.0
+pkgver=3.24.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open-source braille translator and back-translator.")
-longdesc=("An open-source braille translator and back-translator.")
 
 source=("https://github.com/liblouis/liblouis/releases/download/v${pkgver}/liblouis-${pkgver}.tar.gz")
 
