@@ -1,5 +1,5 @@
 pkgname=gnucash
-pkgver=4.11
+pkgver=4.12
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,8 @@ source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.b
 
 tags=("apps app-office")
 
-# libdbi-drivers aqbanking gwenhywfar libdbi libofx
 build_deps=("boost cmake gtest mariadb-libs postgresql-libs swig python
-boost-libs guile webkit2gtk")
+aqbanking gwenhywfar boost-libs guile libdbi webkit2gtk libofx libdbi-drivers")
 
 # NOTE: Это опциональные зависимости
 removedep=("gnucash-docs libdbi-drivers perl-date-manip perl-finance-quote")
