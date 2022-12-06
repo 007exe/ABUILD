@@ -1,0 +1,24 @@
+pkgname=aqbanking
+pkgver=6.5.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for online banking and financial applications.")
+
+source=("https://www.aquamaniac.de/rdm/attachments/download/467/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs net-libs")
+
+build_deps=("gwenhywfar")
+
+build() {
+  go_src_dir
+  burn_patches
+  export PKG_CONFIG=/usr/bin/pkg-config
+  ./configure \
+    --prefix=/usr \
+    --enable-gwenhywfar \
+    --with-backends="aqhbci aqofxconnect aqpaypal aqnone"
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
