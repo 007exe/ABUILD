@@ -1,5 +1,5 @@
 pkgname=gnumeric
-pkgver=1.12.52
+pkgver=1.12.53
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,8 @@ source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-$
 
 tags=("xapps app-office")
 
-# ntltool psiconv pygobject-devel
-build_deps=("docbook-xml gobject-introspection python-gobject gtk-doc autoconf-archive yelp-tools perl")
+build_deps=("intltool pygobject-devel docbook-xml gobject-introspection
+python-gobject gtk-doc autoconf-archive yelp-tools psiconv goffice")
 
 # NOTE: Это опциональные зависимости
 removedep=("python-gobject perl yelp")
