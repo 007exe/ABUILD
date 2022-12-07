@@ -1,5 +1,5 @@
 pkgname=re2
-_re2ver=2022-06-01
+_re2ver=2022-12-01
 pkgver=${_re2ver//-}
 pkgbuild=1
 arch=("auto")
