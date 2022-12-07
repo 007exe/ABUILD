@@ -1,0 +1,27 @@
+pkgname=microsoft-gsl
+pkgver=4.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ Core Guidelines Support Library.")
+
+tags=("libs dev-cpp")
+
+source=("https://github.com/Microsoft/GSL/archive/v${pkgver}.tar.gz")
+
+build_deps=("cmake ninja")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -G Ninja \
+    -DGSL_TEST=ON \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
+    -DCMAKE_EXE_LINKER_FLAGS="${LDFLAGS}" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
