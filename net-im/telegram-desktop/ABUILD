@@ -1,22 +1,21 @@
 pkgname=telegram-desktop
-pkgver=4.3.4
+pkgver=4.4.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Official Telegram Desktop client.")
-longdesc=("Official desktop client for Telegram.")
 
 #source=("https://github.com/telegramdesktop/tdesktop/releases/download/v${pkgver}/tdesktop-${pkgver}-full.tar.gz")
 source=("https://updates.tdesktop.com/tlinux/tsetup.${pkgver}.tar.xz")
 
 tags=("apps net-im")
 
-# microsoft-gsl
-# tl-expected -DCMAKE_DISABLE_FIND_PACKAGE_tl-expected=ON
-#build_deps=("hunspell ffmpeg hicolor-icon-theme lz4 minizip openal ttf-opensans
-#qt6-imageformats qt6-svg qt6-wayland qt6-5compat xxhash glibmm rnnoise pipewire
-#libxtst libxrandr jemalloc abseil-cpp libdispatch cmake ninja python range-v3
-#meson extra-cmake-modules wayland-protocols plasma-wayland-protocols libtg_owt")
+#build_deps=("cmake ninja python range-v3 microsoft-gsl meson tl-expected
+#extra-cmake-modules wayland-protocols plasma-wayland-protocols libtg_owt
+#hunspell ffmpeg hicolor-icon-theme lz4 minizip openal ttf-opensans
+#qt6-imageformats qt6-svg qt6-wayland qt6-5compat xxhash glibmm rnnoise
+#pipewire libxtst libxrandr jemalloc abseil-cpp libdispatch openssl
+#protobuf")
 
 build_deps=("glibc libglvnd libx11 fontconfig freetype glib2 libxcb")
 
@@ -32,23 +31,11 @@ build() {
   install -Dm644 ${filedir}/telegramdesktop.metainfo.xml ${pkgdir}/usr/share/metainfo/telegramdesktop.metainfo.xml
   mkdir -p ${pkgdir}/usr/share/icons
   cp -r ${filedir}/hicolor ${pkgdir}/usr/share/icons/
-
-# FIXME: С включённой опцией -DDESKTOP_APP_QT6=ON не собирается
-#  burn_patches
-# NOTE: https://github.com/telegramdesktop/tdesktop/blob/8fab9167beb2407c1153930ed03a4badd0c2b59f/snap/snapcraft.yaml#L87-L88
 #  cmake -B build \
-#    -G Ninja \
 #    -DCMAKE_INSTALL_PREFIX="/usr" \
 #    -DCMAKE_BUILD_TYPE=Release \
 #    -DTDESKTOP_API_ID=611335 \
-#    -DCMAKE_DISABLE_FIND_PACKAGE_tl-expected=ON \
-#    -DDESKTOP_APP_QT6=OFF \
-#    -DDESKTOP_APP_DISABLE_X11_INTEGRATION=ON \
-#    -DDESKTOP_APP_DISABLE_WAYLAND_INTEGRATION=OFF \
-#    -DDESKTOP_APP_USE_ENCHANT=ON \
-#    -DTDESKTOP_API_ID="611335" \
-#    -DTDESKTOP_API_HASH="d524b414d21f4d37f08684c1df41ac9c"
-#  ninja -C build
+#    -DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c
+#    ninja -C build
 #  DESTDIR=${pkgdir} ninja -C build install
-#  rm -rf ${pkgdir}/build
 }
