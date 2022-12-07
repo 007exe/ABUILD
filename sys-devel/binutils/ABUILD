@@ -1,6 +1,6 @@
 pkgname=binutils
 pkgver=2.39
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A set of programs to assemble and manipulate binary and object files.")
@@ -25,6 +25,7 @@ build(){
     --enable-shared \
     --enable-threads \
     --enable-ld=default \
+    --enable-new-dtags \
     --enable-gold \
     --enable-64-bit-bfd \
     --enable-multilib \
