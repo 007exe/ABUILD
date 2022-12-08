@@ -7,15 +7,18 @@ shortdesc=("GLib wrapper around libusb1 (32-bit).")
 
 source=("https://github.com/hughsie/libgusb/archive/${pkgver}/libgusb-${pkgver}.tar.gz")
 
-tags=("dev-libs libs32")
+tags=("dev-libs lib32")
 
-build_deps=("meson   lib32-glib2 lib32-json-glib lib32-libusb")
+build_deps=("meson lib32-glib2 lib32-json-glib lib32-libusb")
+
+adddep=("libgusb")
 
 build() {
   go_src_dir
   burn_patches
   export CC='gcc -m32'
   export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib32 \
