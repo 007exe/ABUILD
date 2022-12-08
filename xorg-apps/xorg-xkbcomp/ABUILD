@@ -1,12 +1,12 @@
 pkgname=xorg-xkbcomp
-pkgver=1.4.5
-pkgbuild=2
+pkgver=1.4.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X Keyboard description compiler.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xkbcomp-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xkbcomp-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
