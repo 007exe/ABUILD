@@ -1,20 +1,32 @@
-pkgname=vte
+pkgname=vte-common
+# FIXME: Проблемы со сборкой документации vte-docs
+pkglist=("vte vte3 vte4")
 pkgver=0.70.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Virtual Terminal Emulator widget.")
-longdesc=("The VTE package contains a termcap file implementation for terminal emulators..")
+shortdesc=("Virtual Terminal Emulator widget (Common files).")
 
 source=("https://gitlab.gnome.org/GNOME/vte/-/archive/${pkgver}/vte-${pkgver}.tar.gz")
 
 tags=("libs x11-libs")
 
-build_deps=("gtk3 pcre2 gnutls fribidi gobject-introspection vala git gtk-doc gperf meson")
+build_deps=("gtk3 gtk4 pcre2 gnutls fribidi gobject-introspection vala git gtk-doc gperf meson")
 
-adddep=("python vte-common")
+adddep=("bash")
 
-pkglist=("vte-common")
+###################################################################
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+###################################################################
 
 build() {
   go_src_dir
@@ -24,22 +36,77 @@ build() {
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D b_lto=false \
-    -D_systemd=false \
-    -D docs=false
+    -D docs=false \
+    -D gtk4=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
+
+  cd ${pkgdir}
+
+  _pick gtk3 usr/bin/vte-2.91
+  _pick gtk3 usr/include/vte-2.91
+  _pick gtk3 usr/lib/libvte-2.91.so*
+  _pick gtk3 usr/lib/pkgconfig/vte-2.91.pc
+  _pick gtk3 usr/lib/girepository-1.0/Vte-2.91.typelib
+  _pick gtk3 usr/share/gir-1.0/Vte-2.91.gir
+  _pick gtk3 usr/share/glade
+  _pick gtk3 usr/share/vala/vapi/vte-2.91.{deps,vapi}
+
+  _pick gtk4 usr/bin/vte-2.91-gtk4
+  _pick gtk4 usr/include/vte-2.91-gtk4
+  _pick gtk4 usr/lib/libvte-2.91-gtk4.so*
+  _pick gtk4 usr/lib/pkgconfig/vte-2.91-gtk4.pc
+  _pick gtk4 usr/lib/girepository-1.0/Vte-3.91.typelib
+  _pick gtk4 usr/share/gir-1.0/Vte-3.91.gir
+  _pick gtk4 usr/share/vala/vapi/vte-2.91-gtk4.{deps,vapi}
+
+# FIXME: Проблемы со сборкой документации
+#  _pick docs usr/share/doc
 }
 
-vte-common(){
-  pkgname=vte-common
-  shortdesc=("Files shared by VTE libraries")
-  longdesc=("The VTE library inserts terminal capability strings into a trie, and then uses it to determine if data received from a pseudo-terminal is a control sequence  or just random data. The sample program interpret illustrates more or less what the widget sees after it filters incoming data.")
+##########################################################################################
+
+vte3(){
+  pkgname=vte3
+  shortdesc=("Virtual Terminal Emulator widget (GTK3)")
+  adddep=("python vte-common")
 }
 
-vte-common_prep(){
-  go_src_dir
-  mkdir -p $pkgdir/usr/libexec
-  mv ${p_pkgdir}/etc ${pkgdir}
-  mv ${p_pkgdir}/usr/libexec/vte-urlencode-cwd ${pkgdir}/usr/libexec
-  rm -r ${p_pkgdir}/usr/libexec
+vte3_prep(){
+  mv ${srcdir}/gtk3/* ${pkgdir}
+}
+
+##########################################################################################
+
+vte4(){
+  pkgname=vte4
+  shortdesc=("Virtual Terminal Emulator widget (Documentation)")
+  adddep=("python vte-common")
+}
+
+vte4_prep(){
+  mv ${srcdir}/gtk4/* ${pkgdir}
+}
+
+##########################################################################################
+
+vte-docs(){
+  pkgname=vte-docs
+  shortdesc=("Virtual Terminal Emulator widget (GTK3)")
+}
+
+vte-docs_prep(){
+  mv ${srcdir}/docs/* ${pkgdir}
+}
+
+##########################################################################################
+
+vte(){
+  pkgname=vte
+  shortdesc=("Virtual Terminal Emulator widget (GTK3)")
+  adddep=("vte3 vte-common")
+}
+
+vte_prep(){
+  echo "Done"
 }
