@@ -1,5 +1,5 @@
 pkgname=gegl
-pkgver=0.4.38
+pkgver=0.4.40
 pkgbuild=1
 arch=("auto")
 
@@ -10,10 +10,11 @@ source=("https://download.gimp.org/pub/gegl/${pkgver%.*}/gegl-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-# libspiro
 build_deps=("intltool ruby mesa glu ffmpeg exiv2 vala gobject-introspection meson
 python-gobject babl json-glib gexiv2 libraw openexr librsvg libtiff luajit jasper
-lensfun suitesparse poppler poppler-glib")
+lensfun suitesparse poppler poppler-glib libspiro")
+
+# FIXME: Проблемы со сборкой документации
 
 build() {
   go_src_dir
