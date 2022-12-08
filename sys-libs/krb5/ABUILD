@@ -1,12 +1,13 @@
 pkgname=krb5
-pkgver=1.20
+pkgver=1.20.1
+_pkgvermajor=1.20
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Kerberos network authentication system")
 longdesc=("Kerberos V5 is a trusted-third-party network authentication system, which can improve your network's security by eliminating the insecure practice of cleartext passwords.")
 
-source=("https://web.mit.edu/kerberos/dist/krb5/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://web.mit.edu/kerberos/dist/krb5/${_pkgvermajor}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs sys-libs")
 
@@ -56,4 +57,7 @@ build() {
   install -m 644 util/ac_check_krb5.m4 ${pkgdir}/usr/share/aclocal
 
   install -Dm 644 ../NOTICE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+# systemd stuff
+  install -Dm 644 ${filedir}/krb5-{kadmind.service,kdc.service,kpropd.service,kpropd@.service,kpropd.socket} -t ${pkgdir}/usr/lib/systemd/system
 }
