@@ -1,12 +1,12 @@
 pkgname=lib32-libice
-pkgver=1.0.10
+pkgver=1.1.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Inter-Client Exchange library (32-bit).")
 longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libICE-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libICE-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
