@@ -1,0 +1,35 @@
+pkgname=vivaldi
+pkgver=5.6.2867.40
+_rpmversion=${pkgver}-1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An advanced browser made with the power user in mind.")
+
+source=("https://downloads.vivaldi.com/stable/vivaldi-stable-${_rpmversion}.x86_64.rpm")
+
+tags=("www-client apps")
+
+build_deps=("gtk3 libcups nss alsa-lib libxss desktop-file-utils shared-mime-info hicolor-icon-theme")
+
+adddep=("gtk3 libcups nss alsa-lib libxss desktop-file-utils shared-mime-info hicolor-icon-theme")
+
+build() {
+  cd ${srcdir}
+  cp --parents -a {opt,usr/bin,usr/share} ${pkgdir}
+  chmod 4755 ${pkgdir}/opt/${pkgname}/vivaldi-sandbox
+  binf=${pkgdir}/usr/bin/vivaldi-stable
+  if [[ ! -e "$binf" ]] && [[ ! -f "$binf" ]] && [[ ! -L "$binf" ]]; then
+      install -dm755 ${pkgdir}/usr/bin
+      ln -s /opt/vivaldi/vivaldi "$binf"
+  fi
+
+  for res in 16 22 24 32 48 64 128 256; do
+      install -Dm644 ${pkgdir}/opt/${pkgname}/product_logo_${res}.png ${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/${pkgname}.png
+  done
+
+  install -Dm644 ${pkgdir}/opt/${pkgname}/product_logo_256.png ${pkgdir}/usr/share/pixmaps/${pkgname}.png
+
+  install -dm755 ${pkgdir}/usr/share/licenses/${pkgname}
+  w3m -dump ${pkgdir}/opt/${pkgname}/LICENSE.html | head -n 5 > ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
+}
