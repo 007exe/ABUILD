@@ -14,9 +14,11 @@ build_deps=("libidn gnutls")
 build() {
   go_src_dir
   burn_patches
+  autoreconf -vfi
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
+    --without-examples \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
