@@ -1,5 +1,5 @@
 pkgname=perl-alien-build
-pkgver=2.73
+pkgver=2.74
 pkgbuild=1
 arch=("auto")
 
