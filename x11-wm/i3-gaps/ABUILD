@@ -1,10 +1,9 @@
 pkgname=i3-gaps
-pkgver=4.20.1
+pkgver=4.21.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A fork of i3-wm tiling window manager with more features, including gaps.")
-longdesc=("Key features of i3 are correct handling multi-monitor, horizontal and vertical columns (table abstraction) in tiling. It also provides hooks/callbacks for other programs to integrate and it is UTF-8 clean. i3 uses xcb for asynchronous communication with X11, and has several measures to be very fast.")
 
 source=("https://github.com/Airblader/i3/archive/${pkgver}.tar.gz")
 
