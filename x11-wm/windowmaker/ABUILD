@@ -1,6 +1,6 @@
 pkgname=windowmaker
 pkgver=0.95.9
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The fast and light GNUstep window manager.")
@@ -10,8 +10,7 @@ source=("http://windowmaker.org/pub/source/release/WindowMaker-$pkgver.tar.gz")
 
 tags=("apps x11-wm")
 
-# libmagick
-build_deps="libxinerama libxrandr libxmu libpng libxpm libxft libtiff giflib libbsd"
+build_deps=("libxinerama libxrandr libxmu libpng libxpm libxft libtiff giflib libbsd imagemagick")
 
 build() {
   go_src_dir
