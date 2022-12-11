@@ -1,20 +1,19 @@
 pkgname=picom
-pkgver=8.2
+pkgver=10.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("X compositor that may fix tearing issues")
-longdesc=("picom is a lightweight compositor for X11. It was forked from the original Compton because it seems to have become unmaintained.")
+shortdesc=("X compositor that may fix tearing issues.")
 
 source=("https://github.com/yshui/picom/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="x11-apps xserver"
+tags=("x11-apps apps")
 
-build_deps="asciidoc mesa meson ninja libev pcre uthash libconfig libev pixman xcb-util-image xcb-util-renderutil"
+build_deps=("asciidoc mesa meson ninja libev pcre uthash libconfig libev pixman xcb-util-image xcb-util-renderutil")
 
-adddep="hicolor-icon-theme"
+adddep=("hicolor-icon-theme")
 
-config_files="etc/xdg/picom.conf"
+config_files=("etc/xdg/picom.conf")
 
 build() {
   go_src_dir
@@ -25,15 +24,14 @@ build() {
     -D b_ndebug=true \
     -D with_docs=true
   ninja -v -C build
-  DESTDIR="$pkgdir" ninja -C build install
+  DESTDIR=${pkgdir} ninja -C build install
 
-# The config that comes with picom
-  install -Dm644 picom.sample.conf "$pkgdir/etc/xdg/picom.conf"
-  install -Dm644 picom.sample.conf "$pkgdir/usr/share/doc/picom/picom.conf.example"
+# Конфигурация, которая поставляется с pico
+  install -Dm644 picom.sample.conf ${pkgdir}/etc/xdg/picom.conf
+  install -Dm644 picom.sample.conf ${pkgdir}/usr/share/doc/picom/picom.conf.example
 
-# Man pages and license files
-  install -Dm644 build/man/picom.1 "$pkgdir/usr/share/man/man1/picom.1"
-  install -Dm644 build/man/picom-trans.1 "$pkgdir/usr/share/man/man1/picom-trans.1"
-  install -Dm644 LICENSES/MIT "$pkgdir/usr/share/licenses/$pkgname/MIT"
-  install -Dm644 LICENSES/MPL-2.0 "$pkgdir/usr/share/licenses/$pkgname/MPL-2.0"
+  install -Dm644 build/man/picom.1 ${pkgdir}/usr/share/man/man1/picom.1
+  install -Dm644 build/man/picom-trans.1 ${pkgdir}/usr/share/man/man1/picom-trans.1
+  install -Dm644 LICENSES/MIT ${pkgdir}/usr/share/licenses/${pkgname}/MIT
+  install -Dm644 LICENSES/MPL-2.0 ${pkgdir}/usr/share/licenses/${pkgname}/MPL-2.0
 }
