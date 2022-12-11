@@ -1,5 +1,5 @@
 pkgname=i3-wm
-pkgver=4.20.1
+pkgver=4.21.1
 pkgbuild=1
 arch=("auto")
 
