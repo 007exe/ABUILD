@@ -1,18 +1,17 @@
 pkgname=menumaker
-pkgver=0.99.13
+pkgver=0.99.14
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc=("Heuristics-driven menu generator for Deskmenu, FluxBox, IceWM, OpenBox, WindowMaker and XFCE")
-longdesc=("MenuMaker is a menu generation utility for X window managers on *NIX systems. It is capable of finding lots of installed programs and generating a root menu consistent across all supported X window managers, so one will get (almost) the same menu no matter which window manager is used.")
+shortdesc=("Heuristics-driven menu generator for Deskmenu, FluxBox, IceWM, OpenBox, WindowMaker and XFCE.")
 
-source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="xapps x11-wm"
+tags=("apps x11-wm")
 
-build_deps="python"
+build_deps=("python")
 
-dddep="python"
+dddep=("python")
 
 build() {
   go_src_dir
@@ -23,8 +22,8 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  rm -rf "${pkgdir}"/usr/share/info
+  rm -rf ${pkgdir}/usr/share/info
 
 #license
-  install -Dm644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/license
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/license
 }
