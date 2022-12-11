@@ -1,5 +1,5 @@
 pkgname=rofi
-pkgver=1.7.3
+pkgver=1.7.5
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,7 @@ source=("https://github.com/DaveDavenport/rofi/releases/download/${pkgver}/rofi-
 
 tags=("apps x11-misc")
 
-# libxdg-basedir
-build_deps=("startup-notification libxkbcommon-x11 xcb-util-wm xcb-util-xrm librsvg xcb-util-cursor check")
+build_deps=("startup-notification libxkbcommon-x11 xcb-util-wm xcb-util-xrm librsvg xcb-util-cursor check libxdg-basedir")
 
 build() {
   go_src_dir
