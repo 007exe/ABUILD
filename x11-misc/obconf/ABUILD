@@ -1,17 +1,17 @@
 pkgname=obconf
 pkgver=2.0.4
-pkgbuild=1
-arch=('auto')
+pkgbuild=2
+arch=("auto")
 
-shortdesc="A GTK+ based configuration tool for the Openbox windowmanager"
+shortdesc=("A GTK+ based configuration tool for the Openbox windowmanager.")
 
-source=("http://openbox.org/dist/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("http://openbox.org/dist/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-tags="x11-wm xapps"
+tags=("x11-wm apps")
 
-build_deps="gtk3"
+build_deps=("gtk3")
 
-adddep="openbox"
+adddep=("openbox")
 
 build() {
   go_src_dir
@@ -19,7 +19,7 @@ build() {
   autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
