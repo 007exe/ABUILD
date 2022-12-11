@@ -12,6 +12,8 @@ tags=("libs x11-libs")
 
 build_deps=("gtk3 gobject-introspection git meson docbook-xsl xmlto gtk-doc")
 
+# FIXME: Проблемы со сборкой документации
+
 build() {
   go_src_dir
   burn_patches
