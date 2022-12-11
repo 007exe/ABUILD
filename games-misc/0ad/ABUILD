@@ -1,88 +1,59 @@
 pkgname=0ad
-pkgver=alpha15
-_pkgver=0.0.15-alpha
-pkgbuild=4
-arch=('auto')
+pkglist=("0ad-data")
+pkgver=alpha26
+_pkgver=0.0.26-alpha
+pkgbuild=1
+arch=("auto")
 
-shortdesc="A cross-platform, open source 3D strategy game"
+shortdesc=("Cross-platform, 3D and historically-based real-time strategy game.")
 
-source=("http://releases.wildfiregames.com/$pkgname-$_pkgver-unix-build.tar.xz"
-"http://releases.wildfiregames.com/0ad-$_pkgver-unix-data.tar.xz")
+source=("https://releases.wildfiregames.com/0ad-${_pkgver}-unix-build.tar.xz"
+        "https://releases.wildfiregames.com/0ad-${_pkgver}-unix-data.tar.xz")
 
-tags="games games-strategy"
+tags=("games games-strategy")
 
-build_deps="cmake gloox"
-adddep="gloox 0ad-data"
-pkglist="data"
+build_deps=("boost cmake mesa zip libsm rust python clang binutils boost-libs curl enet libogg
+libpng libvorbis libxml2 openal sdl2 wxwidgets-gtk3 zlib glu fmt gloox miniupnpc icu nspr
+libsodium")
 
+adddep=("gloox 0ad-data curl")
 
-
-
-build()
-{
-  go_src_dir
-  
-if [ -z "$ARCH" ]; then
-  case "$( uname -m )" in
-    i?86) ARCH=i486 ;;
-    arm*) ARCH=arm ;;
-       *) ARCH=$( uname -m ) ;;
-  esac
-fi
-
-if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i686" ]; then
-  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"
-  LIBDIRSUFFIX="64"
-else
-  SLKCFLAGS="-O2"
-  LIBDIRSUFFIX=""
-fi
-
-
-export CFLAGS="$SLKCFLAGS"
-export CXXFLAGS="$SLKCFLAGS"
-export CPPFLAGS="$SLKCFLAGS"
-export LDFLAGS="-L/usr/lib${LIBDIRSUFFIX}"
-
-  sed -i 's/-mt//g' build/premake/extern_libs4.lua
-
+build() {
+  cd ${srcdir}/0ad-${_pkgver}
+# NOTE: Применяем патч для отключения проверки на запуск update-workspaces.sh от gjkmpjdtntkz root поскольку мы используем fakeroot
   burn_patches
-  cd build/workspaces/
- ./update-workspaces.sh
-  cd gcc/
-  make CONFIG=Release
+  cd ${srcdir}/0ad-${_pkgver}/build/workspaces
+  ./clean-workspaces.sh
+  ./update-workspaces.sh -j$(nproc) \
+    --without-pch \
+    --bindir=/usr/bin \
+    --libdir=/usr/lib/0ad \
+    --datadir=/usr/share/0ad/data
+  cd gcc
+  VERBOSE=1 make -j${numjobs}
+  cd ${srcdir}/${pkgname}-${_pkgver}
+  install -d ${pkgdir}/usr/{bin,lib/0ad,share/${pkgname}/data}
+  install -Dm755 binaries/system/pyrogenesis ${pkgdir}/usr/bin
+  install -Dm755 binaries/system/*.so ${pkgdir}/usr/lib/0ad
 
-  go_src_dir
-  install -d ${pkgdir}/opt/${pkgname}  
-  cp -r binaries/* ${pkgdir}/opt/${pkgname}
-  rm -r ${pkgdir}/opt/${pkgname}/data/
-  rm -r ${pkgdir}/opt/${pkgname}/system/{test,*.a}
+  cp -r binaries/data/l10n/ ${pkgdir}/usr/share/${pkgname}/data/
 
-  install -D -m755 ${filedir}/${pkgname}.sh ${pkgdir}/usr/bin/${pkgname}
-  install -D -m755 ${filedir}/${pkgname}-editor.sh ${pkgdir}/usr/bin/${pkgname}-editor
-
-  install -D -m 0644 "${filedir}/${pkgname}.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
-  install -D -m 0644 "${filedir}/${pkgname}-editor.desktop" "${pkgdir}/usr/share/applications/${pkgname}-editor.desktop"
-  install -D -m 0644 "${filedir}/${pkgname}.png" "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
+  install -Dm755 build/resources/${pkgname}.sh ${pkgdir}/usr/bin/${pkgname}
+  install -Dm644 build/resources/${pkgname}.desktop ${pkgdir}/usr/share/applications/${pkgname}.desktop
+  install -Dm644 build/resources/${pkgname}.png ${pkgdir}/usr/share/pixmaps/${pkgname}.png
 }
 
-data() {
-	pkgname="${p_pkgname}-data"
-	shortdesc="Data files for 0ad"
-	arch='noarch'
-	custom_opts="skip_gendeps no_strip"
+0ad-data() {
+  pkgname=0ad-data
+  shortdesc=("Cross-platform, 3D and historically-based real-time strategy game (data files).")
+  arch=("noarch")
+  custom_opts=("skip_gendeps no_strip")
+  adddep=("0ad")
 }
 
-data_prep() {
+0ad-data_prep() {
+  cd ${srcdir}/0ad-${_pkgver}
 
-install -d ${pkgdir}/opt/0ad
-  cp -r binaries/* ${pkgdir}/opt/0ad
+  install -d ${pkgdir}/usr/share/0ad/data
+  cp -r binaries/data ${pkgdir}/usr/share/0ad
 }
-
-
