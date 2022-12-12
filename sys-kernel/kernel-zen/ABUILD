@@ -1,5 +1,5 @@
 pkgname=kernel-zen
-_srcver=6.0.10
+_srcver=6.0.12
 _pver=1
 pkgver=${_srcver}.zen${_pver}
 pkgbuild=1
