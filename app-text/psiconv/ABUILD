@@ -1,0 +1,27 @@
+pkgname=psiconv
+pkgver=0.9.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Converts Psion 5(MX) files to more commonly used file formats.")
+
+source=("http://www.frodo.looijaard.name/system/files/software/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+build_deps=("bc graphicsmagick")
+
+config_files=("etc/psiconv/psiconv.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's|Magick-config|GraphicsMagick-config|g' -i configure.in
+  autoreconf -vi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --mandir=/usr/share/man
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
