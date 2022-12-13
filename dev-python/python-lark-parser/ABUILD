@@ -1,5 +1,5 @@
 pkgname=python-lark-parser
-pkgver=1.1.4
+pkgver=1.1.5
 pkgbuild=1
 arch=("auto")
 
