@@ -1,5 +1,5 @@
 pkgname=kpeople
-pkgver=5.100.0
+pkgver=5.101.0
 pkgbuild=1
 arch=("auto")
 

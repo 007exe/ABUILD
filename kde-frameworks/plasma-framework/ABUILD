@@ -1,5 +1,5 @@
 pkgname=plasma-framework
-pkgver=5.100.1
+pkgver=5.101.0
 pkgbuild=1
 arch=("auto")
 
