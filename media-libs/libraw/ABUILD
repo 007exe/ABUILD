@@ -1,6 +1,6 @@
 pkgname=libraw
 pkgver=0.20.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A library for reading RAW files obtained from digital photo cameras (CRW/CR2, NEF, RAF, DNG, and others)")
