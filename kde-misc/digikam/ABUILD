@@ -1,0 +1,40 @@
+pkgname=digikam
+pkgver=7.9.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An advanced digital photo management application.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgver}/digiKam-${pkgver}.tar.xz")
+
+tags=("apps kde-misc")
+
+build_deps=("extra-cmake-modules doxygen eigen boost kdoctools
+lensfun opencv akonadi-contacts knotifyconfig libksane kfilemetadata
+qtav marble-common threadweaver kcalendarcore qt5-xmlpatterns imagemagick
+jasper glu perl-image-exiftool")
+
+adddep=("lensfun opencv akonadi-contacts knotifyconfig libksane kfilemetadata
+qtav marble-common threadweaver kcalendarcore qt5-xmlpatterns imagemagick
+jasper glu perl-image-exiftool")
+
+# NOTE: Это опциональные зависимости
+removedep=("hugin rawtherapee perl qt5-imageformats darktable")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DENABLE_KFILEMETADATASUPPORT=ON \
+    -DENABLE_MEDIAPLAYER=ON \
+    -DENABLE_AKONADICONTACTSUPPORT=ON \
+    -DENABLE_MYSQLSUPPORT=ON \
+    -DENABLE_APPSTYLES=ON \
+    -DENABLE_QWEBENGINE=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}

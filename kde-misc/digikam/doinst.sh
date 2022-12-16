@@ -1,0 +1,8 @@
+echo -e "\n"
+echo -e "The following packages extend digikam capabilities:"
+echo -e "hugin: panorama tool"
+echo -e "qt5-imageformats: support for additional image formats (WEBP, TIFF)"
+echo -e "rawtherapee: RAW import"
+echo -e "darktable: RAW import"
+echo -e "perl: for digitaglinktree"
+echo -e " "
