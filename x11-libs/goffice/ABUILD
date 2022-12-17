@@ -1,17 +1,15 @@
 pkgname=goffice
-pkgver=0.10.52
+pkgver=0.10.53
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A GLib/GTK+ set of document-centric objects and charting library.")
-longdesc=("The GOffice package contains a library of GLib/GTK document centric objects and utilities.")
 
 source=("https://download.gnome.org/sources/goffice/${pkgver%.*}/goffice-${pkgver}.tar.xz")
 
 tags=("libs x11-libs")
 
-# lasem
-build_deps=("intltool gtk-doc gobject-introspection autoconf-archive librsvg gtk3 libgsf libspectre libxslt")
+build_deps=("intltool gtk-doc gobject-introspection autoconf-archive librsvg gtk3 libgsf libspectre libxslt lasem")
 
 build() {
   go_src_dir
@@ -21,8 +19,12 @@ build() {
     --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
+    --disable-static \
     --enable-introspection \
-    --disable-static
+    --disable-maintainer-mode \
+    --disable-gtk-doc \
+    --with-gtk \
+    --with-config-backend=gsettings
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
