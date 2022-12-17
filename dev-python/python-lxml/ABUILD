@@ -1,5 +1,5 @@
 pkgname=python-lxml
-pkgver=4.9.1
+pkgver=4.9.2
 pkgbuild=1
 arch=("auto")
 
