@@ -1,5 +1,5 @@
 pkgname=wine
-pkgver=7.20
+pkgver=7.22
 pkgbuild=1
 arch=("auto")
 
@@ -17,8 +17,7 @@ opencl-headers libgphoto2 gsm vulkan-headers fontconfig lcms2 libxml2 libxcursor
 gettext freetype libsm gcc-libs libpcap desktop-file-utils fontforge giflib openal sane opencl-headers
 lib32-freetype lib32-giflib lib32-libpng lib32-gnutls lib32-libxinerama lib32-libxcomposite lib32-libxmu
 lib32-libxxf86vm lib32-mpg123 lib32-openal lib32-libxslt lib32-v4l-utils lib32-libpulse lib32-alsa-lib
-lib32-libxcomposite lib32-mesa lib32-mesa-libgl lib32-libcups lib32-sdl2 lib32-vulkan-icd-loader
-lib32-gst-plugins-base-libs")
+lib32-libxcomposite lib32-mesa lib32-libcups lib32-sdl2 lib32-vulkan-icd-loader lib32-gst-plugins-base-libs")
 
 build() {
   go_src_dir
