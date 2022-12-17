@@ -1,6 +1,6 @@
 pkgname=lib32-mesa
 pkglist=("lib32-vulkan-mesa-layers lib32-opencl-mesa lib32-vulkan-intel lib32-vulkan-radeon lib32-libva-mesa-driver lib32-mesa-vdpau")
-pkgver=22.2.3
+pkgver=22.3.1
 pkgbuild=1
 arch=("auto")
 
