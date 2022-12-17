@@ -1,5 +1,5 @@
 pkgname=gupnp
-pkgver=1.6.2
+pkgver=1.6.3
 pkgbuild=1
 arch=("auto")
 
