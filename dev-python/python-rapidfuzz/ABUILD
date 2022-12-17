@@ -1,5 +1,5 @@
 pkgname=python-rapidfuzz
-pkgver=2.13.2
+pkgver=2.13.5
 pkgbuild=1
 arch=("auto")
 
