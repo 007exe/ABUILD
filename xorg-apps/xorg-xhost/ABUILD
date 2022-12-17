@@ -1,12 +1,12 @@
 pkgname=xorg-xhost
-pkgver=1.0.8
+pkgver=1.0.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Server access control program for X.")
 longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xhost-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/archive/individual/app/xhost-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
