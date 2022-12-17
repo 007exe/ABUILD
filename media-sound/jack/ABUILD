@@ -1,6 +1,6 @@
 pkgname=jack
 pkgver=1.9.21
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The JACK2 low-latency audio server.")
