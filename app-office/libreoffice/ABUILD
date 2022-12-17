@@ -1,6 +1,6 @@
 pkgname=libreoffice
-pkgver=7.4.1
-_LOver=7.4.1.2
+pkgver=7.4.2
+_LOver=7.4.2.3
 pkgbuild=1
 arch=("auto")
 
@@ -55,7 +55,7 @@ build(){
     --disable-odk \
     --enable-release-build=yes \
     --enable-python=system \
-    --with-jdk-home=/usr/lib/jvm/default \
+    --with-jdk-home=/usr/lib/jvm/java-19-openjdk \
     --with-system-boost \
     --with-system-clucene \
     --with-system-curl \
