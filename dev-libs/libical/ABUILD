@@ -1,10 +1,9 @@
 pkgname=libical
 pkgver=3.0.16
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An open source reference implementation of the icalendar data type and serialization format.")
-longdesc=("The libical package contains an implementation of the iCalendar protocols and data formats.")
 
 source=("https://github.com/libical/libical/releases/download/v${pkgver}/libical-${pkgver}.tar.gz")
 
