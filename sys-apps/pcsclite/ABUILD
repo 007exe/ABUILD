@@ -1,10 +1,9 @@
 pkgname=pcsclite
 pkgver=1.9.9
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("PC/SC Architecture smartcard middleware library.")
-longdesc=("PC/SC Architecture smartcard middleware library.")
 
 source=("https://pcsclite.apdu.fr/files/pcsc-lite-${pkgver}.tar.bz2")
 
