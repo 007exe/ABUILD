@@ -12,17 +12,20 @@ tags=("develop dev-lang")
 
 # texlive-bin
 build_deps=("perl libxslt docbook-xsl python-sphinx haskell-hscolour
-texlive-latexextra ttf-dejavu alex happy time numactl llvm")
-
+texlive-latexextra ttf-dejavu time numactl llvm alex happy")
+#build_deps=(" ")
 adddep=("gcc ghc-libs llvm")
 
 # NOTE: пакет ghc заменяет следующие пакеты
 # haskell-haddock haskell-hp2ps haskell-hpc-bin haskell-hsc2hs
 
 build() {
-  go_src_dir
-  burn_patches
-#  LANG=en_US.UTF-8 bsdtar xf ${srcdir}/${pkgname}-${pkgver}-src.tar.xz
+#  go_src_dir
+#  burn_patches
+  cd ${srcdir}
+  rm -r ghc-${pkgver}
+  LANG=en_US.UTF-8 bsdtar xf ${srcache}/${pkgname}-${pkgver}-src.tar.xz
+  cd ghc-${pkgver}
   sed -i 's/LlvmMaxVersion=13/LlvmMaxVersion=14/' configure.ac
   cp mk/build.mk{.sample,}
   sed -i '1iBuildFlavour = perf-llvm' mk/build.mk
@@ -34,6 +37,7 @@ build() {
     --with-system-libffi \
     --with-ffi-includes=$(pkg-config --variable=includedir libffi)
   make -j${numjobs}
+
   make DESTDIR=${pkgdir} -j1 install
 
 # Удаляем статические библиотеки
@@ -42,7 +46,11 @@ build() {
 # Всё остальное находится в пакете ghc-libs
   rm ${pkgdir}/usr/lib/ghc-${pkgver}/bin/ghc-pkg*
   rm ${pkgdir}/usr/bin/ghc-pkg*
-  ((cd ${pkgdir}/usr/lib/ghc-${pkgver}; rm -r !(bin|ghc-${pkgver})))
+  mkdir -p ${srcdir}/ghc-${pkgver}
+  mv ${pkgdir}/usr/lib/ghc-${pkgver}/bin ${srcdir}/ghc-${pkgver}/bin
+  mv ${pkgdir}/usr/lib/ghc-${pkgver}/ghc-${pkgver} ${srcdir}/ghc-${pkgver}/ghc-${pkgver}
+  rm -r ${pkgdir}/usr/lib/ghc-${pkgver}
+  mv ${srcdir}/ghc-${pkgver}/ ${pkgdir}/usr/lib
 
 # Документация находится в ghc-static
   rm -r ${pkgdir}/usr/share/doc
@@ -66,15 +74,17 @@ ghc-libs() {
 }
 
 ghc-libs_prep() {
-  go_src_dir
+  cd ${srcdir}/ghc-${pkgver}
   make DESTDIR=${pkgdir} -j1 install
 # Удаляем статические библиотеки
   find ${pkgdir}/usr/lib \( -name "*.a" -o -name "*.o" -o -name "*.p_o" -o -name "*.p_hi" -o -name "*.hi" \) -delete
 
 # Всё остальное находится в пакете ghc
   rm -r ${pkgdir}/usr/lib/ghc-${pkgver}/ghc-${pkgver}
-  ((cd ${pkgdir}/usr/lib/ghc-${pkgver}/bin; rm !(ghc-pkg*)))
-  ((cd ${pkgdir}/usr/bin; rm !(ghc-pkg*)))
+  cd ${pkgdir}/usr/lib/ghc-${pkgver}/bin
+  rm !ghc-pkg*
+  cd ${pkgdir}/usr/bin
+  rm !ghc-pkg*
 
 # Документация находится в ghc-static
   rm -r ${pkgdir}/usr/share/{man,doc}
@@ -93,7 +103,7 @@ ghc-static() {
 }
 
 ghc-static_prep() {
-  go_src_dir
+  cd ${srcdir}/ghc-${pkgver}
   make DESTDIR=${pkgdir} -j1 install
   mv ${pkgdir}/usr/lib/ghc-${pkgver}/package.conf.d ${srcdir}/static-package.conf.d
   find ${pkgdir}/usr/lib ! \( -name "*.a" -o -name "*.o" -o -name "*.p_o" -o -name "*.p_hi" -o -name "*.hi" \) -type f -delete
