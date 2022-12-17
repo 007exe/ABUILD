@@ -8,14 +8,11 @@ longdesc=("AbiWord is a word processor which is useful for writing reports, lett
 
 source=("https://www.abisource.com/downloads/${pkgname}/${pkgver}/source/${pkgname}-${pkgver}.tar.gz")
 
-tags=("xapps app-office")
+tags=("apps app-office")
 
-# goffice loudmouth link-grammar gtkmathview aiksaurus libots psiconv
 build_deps=("pkgconf boost gobject-introspection python-gobject autoconf-archive fribidi librsvg enchant
 desktop-file-utils libical gtk-update-icon-cache libwmf libxslt libsoup libgsf wv libwpd redland libwpg
-libwps")
-
-removedep=("mesa  libgl  udev libdrm fontconfig freetype")
+libwps loudmouth goffice link-grammar gtkmathview aiksaurus libots psiconv")
 
 build(){
   go_src_dir
