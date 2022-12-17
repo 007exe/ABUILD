@@ -1,5 +1,9 @@
+# NOTE: В будущем этот пакет стоит разделить на:
+# pipewire alsa-card-profiles pipewire-docs pipewire-audio pipewire-alsa pipewire-jack
+# pipewire-pulse gst-plugin-pipewire pipewire-zeroconf pipewire-v4l2 pipewire-x11-bell
+# NOTE: Рассмотреть заману pulseaudio на pipewire
 pkgname=pipewire
-pkgver=0.3.61
+pkgver=0.3.63
 pkgbuild=1
 arch=("auto")
 
