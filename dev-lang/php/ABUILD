@@ -2,7 +2,7 @@ pkgname=php
 pkglist=("php-cgi php-apache php-fpm php-embed php-phpdbg php-dblib php-enchant php-gd php-imap php-intl
 php-sodium php-odbc php-pgsql php-pspell php-snmp php-sqlite php-tidy php-xsl")
 pkgver=8.1.13
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A general-purpose scripting language that is especially suited to web development.")
