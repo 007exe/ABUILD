@@ -1,5 +1,5 @@
 pkgname=nano
-pkgver=7.0
+pkgver=7.1
 pkgbuild=1
 arch=("auto")
 
