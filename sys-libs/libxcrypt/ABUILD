@@ -1,5 +1,5 @@
 pkgname=libxcrypt
-pkgver=4.4.27
+pkgver=4.4.31
 pkgbuild=1
 arch=("auto")
 
