@@ -1,0 +1,37 @@
+pkgname=db5
+pkgver=5.3.28
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Berkeley DB embedded database system v5.")
+
+source=("http://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("glibc gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd build_unix
+  ../dist/configure \
+    --prefix=/usr \
+    --bindir=/usr/bin/db5.3 \
+    --includedir=/usr/include/db5.3 \
+    --enable-compat185 \
+    --enable-shared \
+    --enable-static \
+    --enable-cxx \
+    --enable-dbm \
+    --enable-stl \
+    --disable-static
+  make LIBSO_LIBS=-lpthread -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+  rm ${pkgdir}/usr/lib/libdb.so
+  rm ${pkgdir}/usr/lib/libdb_cxx.so
+  rm ${pkgdir}/usr/lib/libdb_stl.so
+  rm -r ${pkgdir}/usr/docs
+}
