@@ -1,5 +1,5 @@
 pkgname=psmisc
-pkgver=23.5
+pkgver=23.6
 pkgbuild=1
 arch=("auto")
 
