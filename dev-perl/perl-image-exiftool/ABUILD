@@ -1,0 +1,21 @@
+pkgname=perl-image-exiftool
+pkgver=12.50
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Reader and rewriter of EXIF informations that supports raw files.")
+
+source=("https://exiftool.org/Image-ExifTool-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+  make DESTDIR=${pkgdir} install
+  install -dm755 ${pkgdir}/usr/share/${pkgname}
+  cp -r fmt_files config_files arg_files ${pkgdir}/usr/share/${pkgname}
+}
