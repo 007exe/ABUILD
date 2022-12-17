@@ -1,0 +1,27 @@
+pkgname=yad
+pkgver=12.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A fork of zenity - display graphical dialogs from shell scripts or command line.")
+
+source=("https://github.com/v1cont/yad/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs gnome-extra")
+
+build_deps=("autoconf automake intltool gtk3 webkit2gtk gtksourceview3 gspell")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -ivf
+  ./configure \
+    --prefix=/usr \
+    --enable-icon-browser \
+    --enable-html \
+    --enable-gio \
+    --enable-spell \
+    --enable-sourceview
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
