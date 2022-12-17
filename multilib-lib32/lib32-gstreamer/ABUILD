@@ -13,7 +13,7 @@ tags=("lib32 media-libs")
 
 build_deps=("meson git wayland-protocols lib32-glib2 lib32-libunwind lib32-gtk3 lib32-libelf lib32-alsa-lib
 lib32-cdparanoia lib32-libtheora lib32-libvisual lib32-libxv lib32-opus lib32-orc lib32-pango lib32-sdl2
-lib32-aalib lib32-cairo lib32-flac lib32-gdk-pixbuf2 lib32-jack lib32-libavc1394 lib32-libcaca lib32-libdv
+lib32-aalib lib32-cairo lib32-flac lib32-gdk-pixbuf lib32-jack lib32-libavc1394 lib32-libcaca lib32-libdv
 lib32-libgudev lib32-libiec61883 lib32-libpulse lib32-libraw1394 lib32-libshout lib32-libsoup3 lib32-libvpx
 lib32-libxdamage lib32-mpg123 lib32-speex lib32-taglib lib32-twolame lib32-v4l-utils lib32-wavpack
 lib32-libxml2 gstreamer lib32-libvorbis")
