@@ -1,6 +1,6 @@
 pkgname=perl
 pkgver=5.36.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A highly capable, feature-rich programming language")
