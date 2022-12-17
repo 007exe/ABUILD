@@ -1,5 +1,5 @@
 pkgname=protobuf
-pkgver=21.11
+pkgver=21.12
 pkgbuild=1
 arch=("auto")
 
