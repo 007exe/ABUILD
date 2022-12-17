@@ -1,6 +1,6 @@
 pkgname=apr-util
 pkgver=1.6.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("The Apache Portable Runtime.")
@@ -10,8 +10,7 @@ source=("https://www.apache.org/dist/apr/apr-util-${pkgver}.tar.bz2")
 
 tags=("dev-libs libs")
 
-# libldap
-build_deps=("apr expat gdbm unixodbc openssl nss sqlite mariadb-libs db postgresql python postgresql-libs")
+build_deps=("apr expat gdbm unixodbc openssl nss sqlite mariadb-libs db postgresql python postgresql-libs openldap")
 
 # NOTE: Это опциональные зависимости
 removedep=("gdbm libldap unixodbc mariadb-libs postgresql-libs db sqlite nss openssl")
