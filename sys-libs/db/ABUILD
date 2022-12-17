@@ -1,10 +1,9 @@
 pkgname=db
-pkgver=5.3.28
-pkgbuild=3
+pkgver=6.2.32
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("The Berkeley DB database library for C.")
-longdesc=("The Berkeley DB package contains programs and utilities used by many other applications for database related functions.")
+shortdesc=("The Berkeley DB embedded database system.")
 
 source=("http://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz")
 
@@ -18,18 +17,15 @@ build() {
   cd build_unix
   ../dist/configure \
     --prefix=/usr \
-    --libdir=/usr/lib \
     --enable-compat185 \
     --enable-shared \
     --enable-static \
     --enable-cxx \
     --enable-dbm \
-    --enable-stl
-
+    --enable-stl \
+    --disable-static
   make LIBSO_LIBS=-lpthread -j${numjobs}
   make DESTDIR=${pkgdir} install
-
   rm -r ${pkgdir}/usr/docs
-
- install -Dm644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
