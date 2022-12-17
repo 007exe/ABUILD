@@ -1,11 +1,10 @@
 pkgname=luajit
-_commit=637721d00f0c9203542657a1acba6f4cc9b78aca
-pkgver=2.1.0.beta3.r457.g${_commit::8}
+_commit=8625eee71f16a3a780ec92bc303c17456efc7fb3
+pkgver=2.1.0.beta3.r464.g${_commit::8}
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Just-in-time compiler and drop-in replacement for Lua 5.1.")
-longdesc=("Just-In-Time Compiler for the Lua programming language.")
 
 source=("https://repo.or.cz/luajit-2.0.git/snapshot/${_commit}.tar.gz")
 
