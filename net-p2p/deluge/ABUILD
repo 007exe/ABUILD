@@ -1,22 +1,39 @@
 pkgname=deluge
-pkgver=2.0.5
+pkgver=2.1.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("BitTorrent client with a client/server model")
-longdesc=("BitTorrent client with multiple user interfaces in a client/server model")
+shortdesc=("BitTorrent client with multiple user interfaces in a client/server model.")
 
 source=("https://github.com/deluge-torrent/deluge/archive/refs/tags/deluge-${pkgver}.tar.gz")
 
-tags="xapps net-p2p"
+tags=("apps net-p2p")
 
-build_deps="python-setuptools python-wheel intltool gtk3 python-gobject python-cairo librsvg xdg-utils libnotify python-idna openssl>=1.0.1 python-pyopenssl python-six python-chardet python-setproctitle python-pillow python-distro python-mako python-rjsmin python-pygame python-twisted python-service-identity python-rencode python-xdg python-zope-interface dbus-python libtorrent-rasterbar python-geoip libappindicator-gtk3"
+build_deps=("python-setuptools python-wheel intltool python-rjsmin gtk3
+python-gobject python-cairo librsvg xdg-utils libappindicator-gtk3 openssl
+python-pygame libnotify python-twisted python-service-identity python-idna
+python-pyopenssl python-rencode python-zope-interface python-chardet
+python-setproctitle python-pillow dbus-python python-distro python-xdg
+libtorrent-rasterbar python-geoip python-mako python-ifaddr")
 
-adddep="python-idna openssl python-pyopenssl python-six python-chardet python-setproctitle python-pillow python-distro python-mako python-twisted python-service-identity python-rencode python-xdg python-zope-interface dbus-python libtorrent-rasterbar python-geoip libappindicator-gtk3"
+adddep=("python-twisted python-service-identity python-idna openssl python-pyopenssl
+python-rencode python-zope-interface python-chardet python-setproctitle python-xdg
+python-pillow dbus-python python-distro libtorrent-rasterbar python-ifaddr
+python-geoip python-mako")
 
 build() {
   go_src_dir
   burn_patches
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+
+  install -Dt ${pkgdir}/usr/lib/systemd/system -m644 packaging/systemd/*.service
+  install -Dt ${pkgdir}/usr/lib/systemd/user -m644 packaging/systemd/user/*.service
+  install -Dt ${pkgdir}/usr/lib/systemd/system/deluged.service.d -m644 packaging/systemd/user.conf
+  install -Dt ${pkgdir}/usr/lib/systemd/system/deluge-web.service.d -m644 packaging/systemd/user.conf
+
+  echo 'u deluge - "Deluge BitTorrent daemon" /srv/deluge' |
+    install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
+  echo 'd /srv/deluge 0770 deluge deluge' |
+    install -Dm644 /dev/stdin ${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf
 }
