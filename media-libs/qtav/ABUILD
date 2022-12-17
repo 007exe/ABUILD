@@ -1,0 +1,24 @@
+pkgname=qtav
+pkgver=1.13.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A cross-platform multimedia playback framework based on Qt and FFmpeg.")
+
+source=("https://github.com/wang-bin/QtAV/archive/v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("qt5-declarative ffmpeg libxv openal uchardet qt5-quickcontrols qt5-svg")
+
+build() {
+  go_src_dir
+  burn_patches
+# Не достающий заголовок
+  cp ${filedir}/capi.h contrib/capi
+  qmake-qt5 \
+    QMAKE_CXXFLAGS="$CXXFLAGS -I/usr/include/ffmpeg4.4" \
+    QMAKE_LFLAGS="$LDFLAGS -L/usr/lib/ffmpeg4.4"
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+}
