@@ -16,7 +16,7 @@ build(){
   burn_patches
   ./configure \
     --prefix=/usr
-  make CPPFLAGS+=' -DUCHAR_TYPE=uint16_t'
+  make -j${numjobs} CPPFLAGS+=' -DUCHAR_TYPE=uint16_t'
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
