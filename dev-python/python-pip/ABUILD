@@ -12,8 +12,7 @@ tags=("develop dev-python")
 
 # python-sphinxcontrib-towncrier
 build_deps=("python python-build python-installer python-myst-parser python-setuptools python-sphinx
-python-sphinx-copybutton python-sphinx-inline-tabs python-attrs python-cryptography python-wheel
-python-sphinxcontrib-towncrier")
+python-sphinx-copybutton python-sphinx-inline-tabs python-attrs python-cryptography python-wheel")
 
 adddep=("python-attrs python-cryptography python-wheel")
 
