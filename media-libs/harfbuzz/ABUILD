@@ -1,5 +1,5 @@
 pkgname=harfbuzz
-pkgver=5.3.1
+pkgver=6.0.0
 pkgbuild=1
 arch=("auto")
 
@@ -20,8 +20,8 @@ build(){
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D graphite2=enabled \
-    -D docs=disabled
+    -D graphite2=enabled
+#    -D docs=disabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
