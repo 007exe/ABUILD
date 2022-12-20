@@ -1,10 +1,9 @@
 pkgname=imagemagick
-pkgver=7.1.0.54
+pkgver=7.1.0.55
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An image viewing/manipulation program.")
-longdesc=("ImageMagick is a collection of tools and libraries to read, write, and manipulate an image in various image formats. Image processing operations are available from the command line. Bindings for Perl and C++ are also available.")
 
 _relname=ImageMagick-${pkgver%%.*}
 _tarname=ImageMagick-${pkgver%.*}-${pkgver##*.}
