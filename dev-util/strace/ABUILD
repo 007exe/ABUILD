@@ -1,10 +1,9 @@
 pkgname=strace
-pkgver=6.0
+pkgver=6.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A diagnostic, debugging and instructional userspace tracer.")
-longdesc=("A useful diagnostic, instructional, and debugging tool.")
 
 source=("https://github.com/strace/strace/releases/download/v${pkgver}/strace-${pkgver}.tar.xz")
 
