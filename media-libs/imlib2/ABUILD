@@ -1,10 +1,9 @@
 pkgname=imlib2
-pkgver=1.9.1
+pkgver=1.10.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support.")
-longdesc=("imlib2 is a graphics library for fast file loading, saving, rendering and manipulation.")
 
 source=("https://downloads.sourceforge.net/project/enlightenment/imlib2-src/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
