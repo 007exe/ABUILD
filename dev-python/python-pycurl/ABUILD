@@ -1,10 +1,9 @@
 pkgname=python-pycurl
-pkgver=7.45.1
+pkgver=7.45.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Python 3.x interface to libcurl.")
-longdesc=("A Python Interface To The cURL library.")
 
 source=("https://github.com/pycurl/pycurl/archive/REL_${pkgver//./_}/${pkgname}-${pkgver}.tar.gz")
 
