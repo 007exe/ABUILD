@@ -1,12 +1,12 @@
 pkgname=xcb-util
-pkgver=0.4.0
-pkgbuild=2
+pkgver=0.4.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility libraries for XC Binding.")
 longdesc=("The xcb-util package provides additional extensions to the XCB library, many that were previously found in Xlib, but are not part of core X protocol.")
 
-source=("http://xcb.freedesktop.org/dist//xcb-util-${pkgver}.tar.bz2")
+source=("http://xcb.freedesktop.org/dist//xcb-util-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
