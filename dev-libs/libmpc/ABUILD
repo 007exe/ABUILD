@@ -1,10 +1,9 @@
 pkgname=libmpc
-pkgver=1.3.0
+pkgver=1.3.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for the arithmetic of complex numbers with arbitrarily high precision.")
-longdesc=("The MPC package contains a library for the arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result.")
 
 source=("https://ftp.gnu.org/gnu/mpc/mpc-${pkgver/_/-}.tar.gz")
 
