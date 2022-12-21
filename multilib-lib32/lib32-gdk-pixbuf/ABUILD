@@ -1,0 +1,39 @@
+pkgname=lib32-gdk-pixbuf
+pkgver=2.42.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An image loading library (32-bit).")
+
+source=("http://download.gnome.org/sources/gdk-pixbuf/${pkgver%.*}/gdk-pixbuf-${pkgver}.tar.xz")
+
+tags=("lib32 x11-libs")
+
+build_deps=("lib32-glib2 lib32-libpng lib32-libtiff lib32-libjpeg-turbo")
+
+adddep=("gdk-pixbuf")
+
+# NOTE: Это опциональные зависимости
+removedep=("lib32-librsvg")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32 \
+    -D builtin_loaders=all \
+    -D introspection=disabled \
+    -D man=false \
+    -D installed_tests=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+
+  rm -rf ${pkgdir}/usr/{include,lib,share}
+  find ${pkgdir}/usr/bin -type f -not -name gdk-pixbuf-query-loaders -delete
+  mv ${pkgdir}/usr/bin/gdk-pixbuf-query-loaders{,-32}
+}
