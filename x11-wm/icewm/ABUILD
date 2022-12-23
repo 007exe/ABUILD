@@ -1,0 +1,26 @@
+pkgname=icewm
+pkgver=3.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Window Manager designed for speed, usability, and consistency.")
+
+source=("https://github.com/ice-wm/icewm/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.lz")
+
+tags=("x11-wm apps")
+
+build_deps=("asciidoctor xorg-mkfontscale alsa-lib imlib2 librsvg libsndfile libxcomposite libxdamage libxinerama libxpm libxrandr")
+
+# NANO: Это опциональные зависимости
+removedep=("perl")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
