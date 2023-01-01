@@ -1,19 +1,19 @@
 pkgname=compiler-rt
-pkgver=14.0.6
-pkgbuild=2
+pkgver=15.0.6
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Compiler runtime libraries for clang.")
-longdesc=("Compiler runtime library for clang (built-in part).")
+shortdesc=("Compiler runtime library for clang (built-in part).")
 
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz")
+#source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz")
+source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver}.tar.gz")
 
 tags=("develop sys-libs")
 
 build_deps=("gcc-libs llvm cmake ninja python")
 
 build(){
-  cd ${pkgname}-${pkgver}.src
+  cd ${srcdir}/llvm-project-llvmorg-${pkgver}/compiler-rt
   burn_patches
   mkdir build
   cd build
@@ -21,6 +21,7 @@ build(){
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_SKIP_RPATH=ON \
+    -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm-project-llvmorg-${pkgver}/llvm \
     -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/${pkgver}
   ninja
   DESTDIR=${pkgdir} ninja install
