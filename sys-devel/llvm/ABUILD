@@ -1,5 +1,5 @@
 pkgname=llvm
-pkgver=14.0.6
+pkgver=15.0.6
 pkgbuild=1
 arch=("auto")
 
