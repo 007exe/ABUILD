@@ -1,6 +1,6 @@
 pkgname=spirv-llvm-translator
-pkgver=14.0.0
-pkgbuild=2
+pkgver=15.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tool and a library for bi-directional translation between SPIR-V and LLVM IR.")
