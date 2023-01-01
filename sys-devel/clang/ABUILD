@@ -1,14 +1,12 @@
 pkgname=clang
-pkgver=14.0.6
+pkgver=15.0.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C language family front-end for LLVM.")
 longdesc=("The goal of the Clang project is to create a new C, C++, Objective C and Objective C++ front-end for the LLVM compiler.")
 
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-$pkgver.src.tar.xz"
-        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
-        "https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-$pkgver.src.tar.xz")
+source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver}.tar.gz")
 
 tags=("develop sys-devel")
 
@@ -17,34 +15,31 @@ build_deps=("llvm cmake ninja python-sphinx python")
 adddep=("gcc compiler-rt")
 
 build(){
-  mv ${srcdir}/clang-${pkgver}.src ${srcdir}/clang
-  mv ${srcdir}/llvm-${pkgver}.src ${srcdir}/llvm
-  cd ${srcdir}/clang
-  mv ${srcdir}/clang-tools-extra-${pkgver}.src tools/extra
+  cd ${srcdir}/llvm-project-llvmorg-${pkgver}/clang
+  cp -r ${srcdir}/llvm-project-llvmorg-${pkgver}/clang-tools-extra tools/extra
   burn_patches
   mkdir build
   cd build
-  cmake ..  -G Ninja \
+  cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_DOCDIR=share/doc \
     -DCMAKE_SKIP_RPATH=ON \
-    -DLLVM_LINK_LLVM_DYLIB=ON \
+    -DCLANG_DEFAULT_PIE_ON_LINUX=ON \
     -DCLANG_LINK_CLANG_DYLIB=ON \
-    -DLLVM_ENABLE_RTTI=ON \
-    -DLLVM_BUILD_TESTS=ON \
-    -DLLVM_INCLUDE_DOCS=ON \
+    -DENABLE_LINKER_BUILD_ID=ON \
     -DLLVM_BUILD_DOCS=ON \
+    -DLLVM_BUILD_TESTS=ON \
+    -DLLVM_ENABLE_RTTI=ON \
     -DLLVM_ENABLE_SPHINX=ON \
-    -DSPHINX_WARNINGS_AS_ERRORS=OFF \
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
-    -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm
+    -DLLVM_INCLUDE_DOCS=ON \
+    -DLLVM_LINK_LLVM_DYLIB=ON \
+    -DSPHINX_WARNINGS_AS_ERRORS=OFF \
+    -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm-project-llvmorg-${pkgver}/llvm
   ninja
-
   DESTDIR=${pkgdir} ninja install
   install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-
-# Удаляем исходники документации
-  rm -r ${pkgdir}/usr/share/doc/Clang/clang{,-tools}/html/{_sources,.buildinfo}
 
 # Устанавливаем привязку к Python
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
