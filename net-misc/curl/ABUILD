@@ -1,10 +1,9 @@
 pkgname=curl
-pkgver=7.86.0
+pkgver=7.87.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An URL retrieval utility and library.")
-longdesc=("The cURL package contains an utility and a library used for transferring files with URL syntax to any of the following protocols: FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT, LDAP, LDAPS and FILE. Its ability to both download and upload files can be incorporated into other programs to support functions like streaming media.")
+shortdesc=("The cURL package contains an utility and a library used for transferring files with URL syntax to any of the following protocols: FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT, LDAP, LDAPS and FILE. Its ability to both download and upload files can be incorporated into other programs to support functions like streaming media.")
 
 source=("http://curl.haxx.se/download/${pkgname}-${pkgver}.tar.xz")
 
