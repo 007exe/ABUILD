@@ -1,5 +1,5 @@
 pkgname=python-pydantic
-pkgver=1.10.2
+pkgver=1.10.4
 pkgbuild=1
 arch=("auto")
 
