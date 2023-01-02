@@ -1,5 +1,5 @@
 pkgname=intel-media-sdk
-pkgver=22.4.4
+pkgver=22.6.4
 pkgbuild=1
 arch=("auto")
 
