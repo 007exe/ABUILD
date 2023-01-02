@@ -1,5 +1,5 @@
 pkgname=libsigc++
-pkgver=2.10.8
+pkgver=2.12.0
 pkgbuild=1
 arch=("auto")
 
@@ -12,7 +12,7 @@ tags=("dev-libs libs")
 
 build_deps=("meson mm-common")
 
-# FIXME: Сборка документации сломана
+# FIXME: Проблемы со сборкой документации
 #pkglist=("libsigc++-docs")
 
 build() {
