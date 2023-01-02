@@ -1,6 +1,6 @@
 pkgname=gtk3
 pkglist=("gtk3-docs gtk3-demos")
-pkgver=3.24.35
+pkgver=3.24.36
 pkgbuild=1
 arch=("auto")
 
