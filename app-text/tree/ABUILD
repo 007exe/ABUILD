@@ -1,5 +1,5 @@
 pkgname=tree
-pkgver=2.0.4
+pkgver=2.1.0
 pkgbuild=1
 arch=("auto")
 
