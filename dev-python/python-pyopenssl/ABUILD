@@ -1,10 +1,9 @@
 pkgname=python-pyopenssl
-pkgver=22.1.0
-pkgbuild=2
+pkgver=23.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python3 wrapper module around the OpenSSL library.")
-longdesc=("Python3 wrapper module around the OpenSSL library.")
 
 source=("https://github.com/pyca/pyopenssl/archive/${pkgver}.tar.gz")
 
