@@ -1,7 +1,7 @@
 pkgname=libtg_owt
 # NOTE: Коммит версии
-_commit=621f3da55331733bf0d1b223786b96b68c03dca1
-pkgver=0.git18.${_commit:0:7}
+_commit=9b70d7679e86e6c216127d5a6a06ef5aa4f54793
+pkgver=0.git19.${_commit:0:7}
 pkgbuild=1
 arch=("auto")
 
