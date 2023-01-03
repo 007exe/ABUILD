@@ -1,10 +1,9 @@
 pkgname=libksba
-pkgver=1.6.2
+pkgver=1.6.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for working with X.509 certificates, CMS data and related objects.")
-longdesc=("The Libksba package contains a library used to make X.509 certificates as well as making the CMS (Cryptographic Message Syntax) easily accessible by other applications.")
 
 source=("https://www.gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
