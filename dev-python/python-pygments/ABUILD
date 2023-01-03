@@ -1,6 +1,6 @@
 pkgname=python-pygments
-pkgver=2.13.0
-pkgbuild=2
+pkgver=2.14.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Syntax highlighting package written in Python.")
