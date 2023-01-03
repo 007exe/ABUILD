@@ -1,12 +1,12 @@
 pkgname=libxfce4ui
-pkgver=4.16.1
-pkgbuild=2
+pkgver=4.18.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Commonly used Xfce widgets among Xfce applications.")
 longdesc=("The libxfce4ui package contains GTK widgets that are used by other Xfce applications.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
