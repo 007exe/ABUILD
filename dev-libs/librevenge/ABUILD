@@ -1,10 +1,9 @@
 pkgname=librevenge
-pkgver=0.0.4
-pkgbuild=2
+pkgver=0.0.5
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("library for REVerses ENGineered formats filters.")
-longdesc=("librevenge is a base library for writing document import filters.")
+shortdesc=("librevenge is a base library for writing document import filters.")
 
 source=("https://sourceforge.net/projects/libwpd/files/librevenge/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
