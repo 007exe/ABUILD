@@ -1,5 +1,5 @@
 pkgname=xarchiver
-pkgver=0.5.4.18
+pkgver=0.5.4.20
 pkgbuild=1
 arch=("auto")
 
