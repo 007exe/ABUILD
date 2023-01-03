@@ -1,12 +1,12 @@
 pkgname=tumbler
-pkgver=4.16.1
+pkgver=4.18.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("D-Bus service for applications to request thumbnails.")
 longdesc=("The Tumbler package contains a D-Bus thumbnailing service based on the thumbnail management D-Bus specification. This is useful for generating thumbnail images of files.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
