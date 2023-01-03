@@ -1,6 +1,6 @@
 pkgname=thunar-volman
-pkgver=4.16.0
-pkgbuild=2
+pkgver=4.18.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Automatic management of removeable devices in Thunar.")
