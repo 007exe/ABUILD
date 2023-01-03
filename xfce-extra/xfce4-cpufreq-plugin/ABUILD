@@ -1,5 +1,5 @@
 pkgname=xfce4-cpufreq-plugin
-pkgver=1.2.7
+pkgver=1.2.8
 pkgbuild=1
 arch=("auto")
 
