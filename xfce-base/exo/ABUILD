@@ -1,12 +1,12 @@
 pkgname=exo
-pkgver=4.16.4
+pkgver=4.18.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Application library for Xfce.")
 longdesc=("Exo is a support library used in the Xfce desktop. It also has some helper applications that are used throughout Xfce.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
