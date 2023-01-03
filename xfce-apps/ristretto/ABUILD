@@ -1,12 +1,12 @@
 pkgname=ristretto
-pkgver=0.12.3
+pkgver=0.12.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A fast and lightweight picture viewer for Xfce.")
 longdesc=("Ristretto is a fast and lightweight image viewer for the Xfce desktop.")
 
-source=("https://archive.xfce.org/src/apps/$pkgname/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
