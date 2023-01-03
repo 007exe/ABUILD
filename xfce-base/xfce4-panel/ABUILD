@@ -1,16 +1,17 @@
 pkgname=xfce4-panel
-pkgver=4.16.4
+pkgver=4.18.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Panel for the Xfce desktop environment.")
 longdesc=("The Xfce4 Panel package contains the Xfce4 Panel.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
-build_deps=("exo garcon libxfce4ui xfconf libwnck3 libdbusmenu-gtk3 hicolor-icon-theme desktop-file-utils intltool gobject-introspection vala")
+build_deps=("exo garcon libxfce4ui xfconf libwnck3 libdbusmenu-gtk3
+hicolor-icon-theme desktop-file-utils intltool gobject-introspection vala")
 
 adddep=("hicolor-icon-theme")
 
