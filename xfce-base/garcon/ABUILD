@@ -1,12 +1,12 @@
 pkgname=garcon
-pkgver=4.16.1
-pkgbuild=2
+pkgver=4.18.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Implementation of the freedesktop.org menu specification.")
 longdesc=("The Garcon package contains a freedesktop.org compliant menu implementation based on GLib and GIO.")
 
-source=("https://archive.xfce.org/src/xfce/garcon/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/garcon/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
