@@ -1,5 +1,5 @@
 pkgname=xfce4-screenshooter
-pkgver=1.9.10
+pkgver=1.10.1
 pkgbuild=1
 arch=("auto")
 
