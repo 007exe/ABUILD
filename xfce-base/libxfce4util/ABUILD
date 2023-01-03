@@ -1,12 +1,12 @@
 pkgname=libxfce4util
-pkgver=4.16.0
-pkgbuild=2
+pkgver=4.18.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Basic utility non-GUI functions for Xfce.")
 longdesc=("The libxfce4util package is a basic utility library for the Xfce desktop environment.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
