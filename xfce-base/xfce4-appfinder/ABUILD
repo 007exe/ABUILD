@@ -1,12 +1,12 @@
 pkgname=xfce4-appfinder
-pkgver=4.16.1
-pkgbuild=2
+pkgver=4.18.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An application finder for Xfce.")
 longdesc=("Xfce4 Appfinder is a tool to find and launch installed applications by searching the .desktop files installed on your system.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
