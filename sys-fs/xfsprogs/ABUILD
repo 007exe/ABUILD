@@ -1,5 +1,5 @@
 pkgname=xfsprogs
-pkgver=6.0.0
+pkgver=6.1.0
 pkgbuild=1
 arch=("auto")
 
@@ -8,7 +8,7 @@ longdesc=("The xfsprogs package contains administration and debugging tools for 
 
 tags=("base sys-fs")
 
-source=("https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-${pkgver}.tar.gz")
+source=("https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-${pkgver}.tag.xz")
 
 build_deps=("util-linux libinih device-mapper icu liburcu")
 
