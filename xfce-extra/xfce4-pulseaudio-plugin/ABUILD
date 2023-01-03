@@ -1,6 +1,6 @@
 pkgname=xfce4-pulseaudio-plugin
-pkgver=0.4.3
-pkgbuild=2
+pkgver=0.4.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Pulseaudio plugin for Xfce4 panel.")
