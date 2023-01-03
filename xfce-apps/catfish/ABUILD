@@ -1,10 +1,10 @@
 pkgname=catfish
 pkgver=4.16.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Versatile file searching tool.")
-longdesc=(".")
+longdesc=("A frontend for find, (s)locate, doodle, tracker, beagle, strigi and pinot.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
