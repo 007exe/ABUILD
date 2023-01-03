@@ -20,17 +20,17 @@ xfwm4-themes
 CWD=~
 STARTD=`pwd`
 
-LOGFILE="$CWD/xfce4_base-build.log"
+LOGFILE="$CWD/build.log"
 
 echo "============================= Начало сборки `date` =============================" >> $LOGFILE
 
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -pod ~/mkpkg/packages/xfce-base -si; then
-           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+    if mkpkg -ba -wd ~/mkpkg/build -si ; then
+           echo "$i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
-           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           echo "$i НЕ СОБРАН!!!" >> $LOGFILE
            cd $STARTD
     fi
 done
