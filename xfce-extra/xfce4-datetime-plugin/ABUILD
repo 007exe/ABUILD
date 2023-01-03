@@ -1,6 +1,6 @@
 pkgname=xfce4-datetime-plugin
-pkgver=0.8.1
-pkgbuild=2
+pkgver=0.8.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A date and time display plugin for the Xfce panel.")
