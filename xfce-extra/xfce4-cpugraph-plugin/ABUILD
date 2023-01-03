@@ -1,5 +1,5 @@
 pkgname=xfce4-cpugraph-plugin
-pkgver=1.2.6
+pkgver=1.2.7
 pkgbuild=1
 arch=("auto")
 
