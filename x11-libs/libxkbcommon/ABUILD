@@ -1,5 +1,6 @@
 pkgname=libxkbcommon
-pkgver=1.4.1
+pkglist=("libxkbcommon-x11")
+pkgver=1.5.0
 pkgbuild=1
 arch=("auto")
 
@@ -14,15 +15,6 @@ build_deps=("xkeyboard-config libxml2 libxcb wayland wayland-protocols git meson
 
 # Это опциональные зависимости
 removedep=("wayland libxkbcommon-x11")
-
-pkglist=("x11")
-
-x11(){
-  pkgname=libxkbcommon-x11
-  shortdesc=("Keyboard handling library using XKB data for X11 XCB clients.")
-  longdesc=("libxkbcommon is a keymap compiler and support library which processes a reduced subset of keymaps as defined by the XKB specification.")
-  adddep=("libxkbcommon")
-}
 
 build() {
   go_src_dir
@@ -43,6 +35,13 @@ build() {
   mv ${pkgdir}/usr/share/man/man1/*x11* ${srcdir}/x11/usr/share/man/man1
 }
 
-x11_prep(){
+libxkbcommon-x11(){
+  pkgname=libxkbcommon-x11
+  shortdesc=("Keyboard handling library using XKB data for X11 XCB clients.")
+  longdesc=("libxkbcommon is a keymap compiler and support library which processes a reduced subset of keymaps as defined by the XKB specification.")
+  adddep=("libxkbcommon")
+}
+
+libxkbcommon-x11_prep(){
   mv ${srcdir}/x11/* ${pkgdir}
 }
