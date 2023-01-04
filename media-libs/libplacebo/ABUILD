@@ -1,5 +1,5 @@
 pkgname=libplacebo
-pkgver=4.208.0
+pkgver=5.229.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,10 @@ source=("https://code.videolan.org/videolan/libplacebo/-/archive/v${pkgver}/libp
 
 tags=("libs media-libs")
 
-build_deps=("vulkan-icd-loader glslang lcms2 shaderc libepoxy libglvnd glibc gcc-libs meson ninja vulkan-headers python python-mako")
+build_deps=("meson ninja vulkan-headers glad nuklear python python-setuptools python-mako python-markupsafe python-jinja
+vulkan-icd-loader glslang lcms2 shaderc glibc gcc-libs libunwind")
+
+adddep=("vulkan-icd-loader glslang lcms2 shaderc glibc gcc-libs libunwind")
 
 build() {
   go_src_dir
@@ -20,13 +23,12 @@ build() {
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D tests=true \
-    -D vulkan=disabled \
+    -D vulkan=enabled \
     -D glslang=enabled \
     -D shaderc=enabled \
     -D lcms=enabled \
     -D d3d11=disabled \
-    -D vulkan=enabled \
-    -D vulkan-registry=/usr/share/vulkan/registry/vk.xml
+    -D demos=false
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
   install -Dm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
