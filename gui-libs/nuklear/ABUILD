@@ -1,0 +1,20 @@
+pkgname=nuklear
+pkgver=4.10.1
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Single-header ANSI C immediate mode cross-platform GUI library.")
+
+tags=("libs gui-libs")
+
+source=("https://github.com/Immediate-Mode-UI/Nuklear/archive/refs/tags/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  install -Dm 644 nuklear.h -t ${pkgdir}/usr/include
+  install -Dm 644 Readme.md doc/index.html -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 Readme.md -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
