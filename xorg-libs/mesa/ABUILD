@@ -1,7 +1,7 @@
 pkgname=mesa
 pkglist=("vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau")
 pkgver=22.3.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Mesa is an OpenGL compatible 3D graphics library.")
@@ -52,7 +52,7 @@ build() {
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
     -D valgrind=enabled
-  meson configure build
+#  meson configure build
   ninja -C build
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
