@@ -1,0 +1,25 @@
+pkgname=glad
+pkgver=2.0.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specs.")
+
+source=("https://github.com/Dav1dde/glad/archive/refs/tags/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-wheel
+python-jinja python-lxml python-setuptools")
+
+adddep=("python-jinja python-lxml python-setuptools")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed 's/import mock/from unittest import mock/' -i tests/test____main__.py
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
