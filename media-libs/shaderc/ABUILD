@@ -1,19 +1,18 @@
 # NOTE: Необходимо указать версию spirv-tools и glslang
 pkgname=shaderc
-pkgver=2022.1
-_ver_spirv_tools=2022.2
-_ver_glslang=11.9.0
+pkgver=2022.4
+_ver_spirv_tools=2022.4
+_ver_glslang=11.13.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Collection of tools, libraries and tests for shader compilation.")
-longdesc=("A collection of tools, libraries and tests for shader compilation.")
 
-source=("https://github.com/google/shaderc/archive/v${pkgver}.tar.gz")
+source=("https://github.com/google/shaderc/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("glibc gcc-libs glslang spirv-tools asciidoctor cmake ninja python spirv-headers")
+build_deps=("glibc gcc-libs glslang spirv-tools=${_ver_spirv_tools} glslang=${_ver_glslang} asciidoctor cmake ninja python spirv-headers")
 
 build() {
   go_src_dir
