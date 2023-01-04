@@ -1,19 +1,19 @@
 pkgname=python-pkginfo
-pkgver=1.9.2
+pkgver=1.9.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Query metadatdata from sdists / bdists / installed packages.")
-longdesc=("This package provides an API for querying the distutils metadata written in the PKG-INFO file inside a source distriubtion (an sdist) or a binary distribution (e.g., created by running bdist_egg).")
 
 source=("https://pypi.io/packages/source/p/pkginfo/pkginfo-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel")
+build_deps=("python python-build python-installer python-wheel python-setuptools")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE.txt
 }
