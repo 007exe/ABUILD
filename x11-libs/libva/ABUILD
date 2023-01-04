@@ -1,12 +1,11 @@
 pkgname=libva
-pkgver=2.15.0
-pkgbuild=2
+pkgver=2.17.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Video Acceleration (VA) API for Linux.")
-longdesc=("Libva is a library providing the VA API video acceleration API.")
+shortdesc=("Libva is a library providing the VA API video acceleration API.")
 
-source=("https://github.com/intel/libva/releases/download/${pkgver}/libva-${pkgver}.tar.bz2")
+source=("https://github.com/intel/libva/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs x11-libs")
 
@@ -26,4 +25,12 @@ build() {
   install -Dm 644 /dev/stdin ${pkgdir}/etc/libva.conf <<END
 LIBVA_MESSAGING_LEVEL=1
 END
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
