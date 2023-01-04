@@ -1,10 +1,9 @@
 pkgname=mpv
 pkgver=0.35.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A free, open source, and cross-platform media player.")
-longdesc=("Mpv is a movie player based on MPlayer and mplayer2. It supports a wide variety of video file formats, audio and video codecs, and subtitle types. Special input URL types are available to read input from a variety of sources other than disk files. Depending on platform, a variety of different video and audio output methods are supported.")
 
 source=("https://github.com/mpv-player/mpv/archive/refs/tags/v${pkgver}.tar.gz")
 
@@ -22,48 +21,46 @@ build(){
   go_src_dir
   burn_patches
   ./bootstrap.py
-  ./waf configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
+  waf configure --prefix=/usr \
     --confdir=/etc/mpv \
-    --enable-libmpv-shared \
-    --enable-html-build \
-    --enable-dvdnav \
     --enable-cdda \
-    --enable-dvbin \
     --enable-dvb \
-    --enable-libarchive \
-    --enable-libavdevice \
-    --enable-manpage-build \
-    --enable-sdl2 \
-    --enable-pulse \
-    --enable-wayland \
-    --enable-gl-wayland \
-    --enable-egl \
-    --enable-vaapi \
+    --enable-dvdnav \
+    --enable-libmpv-shared \
     --disable-build-date \
-    --disable-caca \
-    --disable-android \
-    --disable-egl-android \
-    --disable-uwp \
-    --disable-audiounit \
-    --disable-macos-media-player \
-    --disable-wasapi \
-    --disable-ios-gl \
-    --disable-macos-touchbar \
-    --disable-macos-cocoa-cb \
-    --disable-tvos \
-    --disable-egl-angle-win32 \
-    --disable-opensles \
-    --disable-vapoursynth \
-    --disable-pdf-build \
-    --disable-optimize \
-    --disable-static-build \
-    --disable-libmpv-static \
-    --disable-egl-drm \
-    --disable-debug
-# --enable-openal
-# --enable-egl-x11
+    --disable-caca
+#    --enable-html-build \
+#    --enable-dvbin \
+#    --enable-libarchive \
+#    --enable-libavdevice \
+#    --enable-manpage-build \
+#    --enable-sdl2 \
+#    --enable-pulse \
+#    --enable-wayland \
+#    --enable-gl-wayland \
+#    --enable-egl \
+#    --enable-vaapi \
+#    --disable-android \
+#    --disable-egl-android \
+#    --disable-uwp \
+#    --disable-audiounit \
+#    --disable-macos-media-player \
+#    --disable-wasapi \
+#    --disable-ios-gl \
+#    --disable-macos-touchbar \
+#    --disable-macos-cocoa-cb \
+#    --disable-tvos \
+#    --disable-egl-angle-win32 \
+#    --disable-opensles \
+#    --disable-vapoursynth \
+#    --disable-pdf-build \
+#    --disable-optimize \
+#    --disable-static-build \
+#    --disable-libmpv-static \
+#    --disable-egl-drm \
+#    --disable-debug \
+#    --enable-openal \
+#    --enable-egl-x11
   ./waf build
   ./waf install --destdir=${pkgdir}
   install -m0644 DOCS/{encoding.rst,tech-overview.txt} ${pkgdir}/usr/share/doc/mpv
