@@ -1,5 +1,5 @@
 pkgname=intel-media-driver
-pkgver=22.2.2
+pkgver=22.6.4
 pkgbuild=1
 arch=("auto")
 
@@ -24,8 +24,4 @@ build() {
   make -j${numjobs} -C build
   make -C build DESTDIR=${pkgdir} install
   install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}/
-
-# FIXME:
-  mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib
-  rm -r ${pkgdir}/usr/lib64
 }
