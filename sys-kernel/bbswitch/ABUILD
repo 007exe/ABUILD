@@ -1,3 +1,4 @@
+# NOTE: Данный пакет следует пеерсобирать при обновлении ядра
 pkgname=bbswitch
 pkgver=0.8
 pkgbuild=1
@@ -15,8 +16,9 @@ build() {
   go_src_dir
   burn_patches
   make KDIR=/usr/src/linux
-  _extradir="/usr/lib/modules/$(</usr/src/linux/version)/extramodules"
-  install -Dt ${pkgdir}${_extradir} -m644 *.ko
+# NOTE: Получаем версию текущего ядра
+  _extradir=`uname -r`
+  install -Dt ${pkgdir}/usr/lib/modules/${_extradir} -m644 *.ko
   find ${pkgdir} -name '*.ko' -exec strip --strip-debug {} +
   find ${pkgdir} -name '*.ko' -exec xz {} +
 }
