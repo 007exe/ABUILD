@@ -1,21 +1,20 @@
 pkgname=python
-pkgver=3.10.9
+pkglist=("python-tests")
+pkgver=3.11.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Next generation of the python high-level scripting language.")
-longdesc=("The Python 3 package contains the Python development environment. It is useful for object-oriented programming, writing scripts, prototyping large programs, or developing entire applications.")
 
 source=("https://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz")
 
 tags=("develop dev-lang")
 
-pkglist=("python-tests")
-# mpdecimal
-build_deps=("tk sqlite llvm gdb bzip2 expat gdbm libffi libnsl openssl zlib")
+# mpdecimal libxcrypt
+build_deps=("tk sqlite llvm gdb bzip2 expat gdbm libffi libnsl openssl zlib
+bzip2 expat gdbm libffi libnsl openssl zlib")
 
-
-adddep=("libnsl")
+adddep=("bzip2 expat gdbm libffi libnsl openssl zlib")
 
 # NOTE: Это опциональные зависимости python-setuptools python-pip sqlite mpdecimal xz tk
 removedep=("libx11 tcl libtirpc sqlite mpdecimal xz tk")
@@ -23,7 +22,7 @@ removedep=("libx11 tcl libtirpc sqlite mpdecimal xz tk")
 # NOTE: Настройка bash
 shopt -s extglob
 
-before_build(){
+build(){
   go_src_dir
   burn_patches
 # FS#23997
@@ -35,10 +34,7 @@ before_build(){
   rm -r Modules/_ctypes/{darwin,libffi}*
 # Необходим пакет mpdecimal
 # rm -r Modules/_decimal/libmpdec
-}
 
-build() {
-  go_src_dir
   ./configure \
     --prefix=/usr \
     --enable-ipv6 \
@@ -59,7 +55,7 @@ build() {
   make DESTDIR=${pkgdir} install
 
 # Сплит-тесты
-  rm -r ${pkgdir}/usr/lib/python*/{test,ctypes/test,distutils/tests,idlelib/idle_test,lib2to3/tests,sqlite3/test,tkinter/test,unittest/test}
+  rm -r ${pkgdir}/usr/lib/python*/{test,ctypes/test,distutils/tests,idlelib/idle_test,lib2to3/tests,tkinter/test,unittest/test}
 
   ln -s python3              ${pkgdir}/usr/bin/python
   ln -s python3-config       ${pkgdir}/usr/bin/python-config
@@ -75,11 +71,12 @@ build() {
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
+#########################################################################################################
+
 python-tests() {
   pkgname=python-tests
-  tags=("develop dev-python")
   shortdesc=("Regression tests packages for Python.")
-  longdesc=("The Python 3 package contains the Python development environment. It is useful for object-oriented programming, writing scripts, prototyping large programs, or developing entire applications.")
+  tags=("develop dev-python")
 }
 
 python-tests_prep() {
