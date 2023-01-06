@@ -1,7 +1,7 @@
 pkgname=rust
 pkglist=("lib32-rust-libs rust-src")
 pkgver=1.66.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Systems programming language focused on safety, speed and concurrency.")
