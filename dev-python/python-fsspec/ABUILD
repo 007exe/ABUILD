@@ -1,0 +1,24 @@
+pkgname=python-fsspec
+pkgver=2022.11.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Specification that python filesystems should adhere to.")
+
+source=("https://github.com/intake/filesystem_spec/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-aiohttp python-distributed python-libarchive-c
+python-lz4 python-paramiko python-pyarrow python-pygit2
+python-requests python-smbprotocol python-snappy python-zstandard")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
