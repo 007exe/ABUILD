@@ -1,0 +1,21 @@
+pkgname=python-traitlets
+pkgver=5.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A configuration system for Python applications.")
+
+source=("https://pypi.python.org/packages/source/t/traitlets/traitlets-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-decorator")
+
+build_deps=("${adddep} python python-build python-installer python-hatchling")
+
+build(){
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 COPYING.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
