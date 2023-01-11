@@ -1,5 +1,5 @@
 pkgname=shadow
-pkgver=4.12.3
+pkgver=4.13
 pkgbuild=1
 arch=("auto")
 
