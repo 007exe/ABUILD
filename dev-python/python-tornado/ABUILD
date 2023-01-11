@@ -1,0 +1,27 @@
+pkgname=python-tornado
+pkgver=6.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Open source version of the scalable, non-blocking web server and tools.")
+
+source=("https://github.com/tornadoweb/tornado/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build(){
+  go_src_dir
+  export TORNADO_EXTENSION=1
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
