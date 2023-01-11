@@ -1,0 +1,23 @@
+pkgname=python-distributed
+pkgver=2022.12.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Distributed task scheduler for Dask.")
+
+source=("https://github.com/dask/distributed/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-click python-cloudpickle python-dask python-jinja python-msgpack
+python-packaging python-psutil python-sortedcontainers python-tblib python-toolz
+python-tornado python-urllib3 python-yaml python-zict")
+
+build_deps=("${adddep} python")
+
+build() {
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
