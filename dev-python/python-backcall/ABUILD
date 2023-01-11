@@ -1,0 +1,22 @@
+pkgname=python-backcall
+pkgver=0.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Backwards compatible callback APIs.")
+
+_name=backcall
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/backcall/backcall-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-flit-core python-installer")
+
+build(){
+  go_src_dir
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s ${site_packages}/backcall-${pkgver}.dist-info/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
