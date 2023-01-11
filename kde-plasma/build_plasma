@@ -1,6 +1,6 @@
 #!/bin/bash
 
-P_VERSION=5.26.4
+P_VERSION=5.26.5
 BUILD_VERSION=1
 
 LIST="libkscreen
@@ -59,7 +59,7 @@ echo "============================= Начало сборки kde-plasma $P_VERS
 
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/kde-plasma -si -bv $P_VERSION -bb $BUILD_VERSION; then
+    if mkpkg -ba -wd ~/mkpkg/build -si -bv $P_VERSION -bb $BUILD_VERSION; then
            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
