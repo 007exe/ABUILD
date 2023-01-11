@@ -1,0 +1,25 @@
+pkgname=python-partd
+pkgver=1.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Concurrent appendable key-value storage.")
+
+_pkg=partd
+source=("https://files.pythonhosted.org/packages/source/${_pkg::1}/partd/partd-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-locket python-toolz")
+
+build_deps=("${adddep} python python-setuptools")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-blosc python-numpy python-pandas python-pyzmq")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
