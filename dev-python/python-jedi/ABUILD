@@ -1,0 +1,41 @@
+pkgname=python-jedi
+pkgver=0.18.2
+# NOTE: комит версии
+_commit=eaab7060388c8f438f1dbe6502e47c6639aa9bac
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Awesome autocompletion for python.")
+
+strict_version=1
+source=("git:https://github.com/davidhalter/jedi.git"
+        "git:https://github.com/davidhalter/typeshed.git"
+        "git:https://github.com/davidhalter/django-stubs.git")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools python-sphinx python-sphinx_rtd_theme")
+
+before_build() {
+  cd ${srcdir}
+  mv python-jedi_git_jedi.git.src jedi
+  mv python-jedi_git_typeshed.git.src typeshed
+  mv python-jedi_git_django-stubs.git.src django-stubs
+  cd jedi
+  git checkout $_commit
+  git submodule init
+  git config submodule."jedi/third_party/typeshed".url "${srcdir}/typeshed"
+  git config submodule."jedi/third_party/django-stubs".url "${srcdir}/django-stubs"
+  git -c protocol.file.allow=always submodule update --recursive
+}
+
+build(){
+  cd ${srcdir}/jedi
+  python setup.py build
+  sphinx-build -b text docs docs/_build/text
+  sphinx-build -b man docs docs/_build/man
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 CHANGELOG.rst README.rst docs/_build/text/*.txt -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 docs/_build/man/jedi.1 ${pkgdir}/usr/share/man/man1/${pkgname}.1
+}
