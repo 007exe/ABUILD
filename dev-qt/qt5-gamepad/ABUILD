@@ -1,10 +1,9 @@
 pkgname=qt5-gamepad
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Adds support for getting events from gamepad devices.")
-longdesc=("Qt module to support gamepad hardware.")
 
 tags=("qt5 dev-qt")
 

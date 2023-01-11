@@ -1,10 +1,9 @@
 pkgname=qt5-location
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides access to position, satellite and area monitoring classes.")
-longdesc=("Location (places, maps, navigation) library for the Qt5 framework.")
 
 #source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtlocation-everywhere-opensource-src-${pkgver}.tar.xz")
 strict_version=1

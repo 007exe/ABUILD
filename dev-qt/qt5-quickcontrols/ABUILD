@@ -1,10 +1,9 @@
 pkgname=qt5-quickcontrols
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Reusable Qt Quick based UI controls to create classic desktop-style user interfaces.")
-longdesc=("Set of Qt Quick controls to create complete user interfaces (deprecated).")
 
 #source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtquickcontrols-everywhere-opensource-src-${pkgver}.tar.xz")
 strict_version=1

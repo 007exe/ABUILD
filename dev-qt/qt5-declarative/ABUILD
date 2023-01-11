@@ -1,10 +1,9 @@
 pkgname=qt5-declarative
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classes for QML and JavaScript languages.")
-longdesc=("The QML and Quick modules for the Qt5 framework.")
 
 tags=("qt5 dev-qt")
 
@@ -17,12 +16,6 @@ build_deps=("qt5-base python vulkan-headers git")
 before_build() {
   go_src_dir
   git checkout v${pkgver}-lts-lgpl
-#  echo "***************************************************"
-#  echo "*           Переключаюсь на 5.15.4 r19            *"
-#  echo "*                                                 *"
-#  echo "* коммит 2454c808bfe99b50084aea59adb917e805c27afa *"
-#  echo "***************************************************"
-#  git checkout 2454c808bfe99b50084aea59adb917e805c27afa
 }
 
 build() {

@@ -1,10 +1,9 @@
 pkgname=qt5-charts
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides a set of easy to use chart components.")
-longdesc=("Chart component library for the Qt5 framework.")
 
 tags=("qt5 dev-qt")
 

@@ -1,10 +1,9 @@
 pkgname=qt5-remoteobjects
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Support for XPath, XQuery, XSLT and XML schema validation.")
-longdesc=("The Qt Remote Objects module provides an easy to use mechanism for sharing a QObject's API between processes.")
 
 #source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtremoteobjects-everywhere-opensource-src-${pkgver}.tar.xz")
 strict_version=1

@@ -1,10 +1,9 @@
 pkgname=qt5-3d
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ and QML APIs for easy inclusion of 3D graphics.")
-longdesc=("3D rendering module for the Qt5 framework.")
 
 tags=("qt5 dev-qt")
 

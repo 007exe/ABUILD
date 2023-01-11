@@ -1,6 +1,6 @@
 #!/bin/bash
 
-QT_VERSION=5.15.7
+QT_VERSION=5.15.8
 BUILD_VERSION=1
 # NOTE: Измени значение переменной _qtbasever в файле qt5-webengine/ABUILD
 WEBENGINE_VERSION=5.15.11

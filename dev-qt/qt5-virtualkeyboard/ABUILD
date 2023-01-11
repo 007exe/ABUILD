@@ -1,10 +1,9 @@
 pkgname=qt5-virtualkeyboard
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Virtual keyboard framework.")
-longdesc=("Customizable input framework and virtual keyboard for Qt.")
 
 #source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtvirtualkeyboard-everywhere-opensource-src-${pkgver}.tar.xz")
 strict_version=1

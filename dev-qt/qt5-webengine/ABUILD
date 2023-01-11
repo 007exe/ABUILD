@@ -1,15 +1,14 @@
 # NOTE: Этот пакет собирается очень долго и требует много оперативной памяти
 # Версия qt5-base
-_qtbasever=5.15.7
+_qtbasever=5.15.8
 
 pkgname=qt5-webengine
-pkgver=5.15.11
+pkgver=5.15.12
 strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Provides support for web applications using the Chromium browser project.")
-longdesc=("QtWebEngine integrates chromium's web capabilities into Qt. It ships with its own copy of ninja which it uses for the build if it cannot find a system copy, and various copies of libraries from ffmpeg, icu, libvpx, and zlib (including libminizip) which have been forked by the chromium developers.")
 
 source=("git:https://code.qt.io/qt/qtwebengine.git"
 "git:https://code.qt.io/qt/qtwebengine-chromium.git"

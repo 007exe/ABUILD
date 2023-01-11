@@ -1,10 +1,9 @@
 pkgname=qt5-connectivity
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides access to Bluetooth hardware.")
-longdesc=("The Qt Bluetooth enables connectivity between Bluetooth enabled devices.")
 
 tags=("qt5 dev-qt")
 

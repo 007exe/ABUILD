@@ -1,10 +1,9 @@
 pkgname=qt5-quick3d
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt module and API for defining 3D content in Qt Quick.")
-longdesc=("Qt Quick 3D enables anyone to introduce 3D content into their Qt Quick applications.")
 
 #source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtquick3d-everywhere-opensource-src-${pkgver}.tar.xz")
 strict_version=1

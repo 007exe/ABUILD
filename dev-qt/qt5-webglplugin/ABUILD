@@ -1,10 +1,9 @@
 pkgname=qt5-webglplugin
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("QPA plugin for running an application via a browser using streamed WebGL commands.")
-longdesc=("QPA plugin for running an application via a browser using streamed WebGL commands.")
 
 #source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwebglplugin-everywhere-opensource-src-${pkgver}.tar.xz")
 strict_version=1

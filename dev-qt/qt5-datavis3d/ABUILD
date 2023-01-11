@@ -1,10 +1,9 @@
 pkgname=qt5-datavis3d
-pkgver=5.15.7
+pkgver=5.15.8
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt Data Visualization module.")
-longdesc=("3D data visualization library for the Qt5 framework.")
+shortdesc=("3D data visualization library for the Qt5 framework.")
 
 tags=("qt5 dev-qt")
 
