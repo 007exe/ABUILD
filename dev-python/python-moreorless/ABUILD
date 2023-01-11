@@ -1,13 +1,12 @@
 pkgname=python-moreorless
 pkgver=0.4.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Python diff wrapper.")
-longdesc=("Python diff wrapper.")
 
 _pkgname=moreorless
-source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/moreorless/moreorless-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

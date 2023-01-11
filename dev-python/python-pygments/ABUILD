@@ -1,10 +1,9 @@
 pkgname=python-pygments
 pkgver=2.14.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Syntax highlighting package written in Python.")
-longdesc=("Pygments is a syntax highlighting package written in Python.")
+shortdesc=("Python syntax highlighter.")
 
 source=("https://github.com/pygments/pygments/archive/${pkgver}.tar.gz")
 
@@ -28,7 +27,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

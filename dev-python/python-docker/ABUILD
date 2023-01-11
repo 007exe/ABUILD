@@ -1,22 +1,33 @@
 pkgname=python-docker
-pkgver=5.0.3
+pkgver=6.0.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Python library for the Docker Engine API.")
-longdesc=("A Python library for the Docker Engine API. It lets you do anything the docker command does, but from within Python apps – run containers, manage containers, manage Swarms, etc.")
 
 source=("https://github.com/docker/docker-py/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-pip python-requests python-six python-websocket-client python-docker-pycreds
-python-requests python-six python-websocket-client python-docker-pycreds python-paramiko")
+build_deps=("python python-build python-installer python-setuptools python-setuptools-scm python-wheel
+python-packaging python-requests python-urllib3 python-websocket-client")
 
-adddep=("python-requests python-six python-websocket-client python-docker-pycreds python-paramiko")
+adddep=("python-packaging python-requests python-urllib3 python-websocket-client")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-paramiko")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install -O1 --root=${pkgdir}
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

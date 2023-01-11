@@ -1,12 +1,11 @@
 pkgname=python-cffi
 pkgver=1.15.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Foreign Function Interface for Python calling C code.")
-longdesc=("Foreign Function Interface for Python calling C code. The aim of this project is to provide a convenient and reliable way of calling C code from Python.")
 
-source=("https://foss.heptapod.net/pypy/cffi/-/archive/v$pkgver/cffi-v${pkgver}.tar.bz2")
+source=("https://foss.heptapod.net/pypy/cffi/-/archive/v${pkgver}/cffi-v${pkgver}.tar.bz2")
 
 tags=("libs dev-python")
 

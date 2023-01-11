@@ -1,10 +1,9 @@
 pkgname=python-memcached
 pkgver=1.59
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python interface to memcached.")
-longdesc=("It is the client side software which allows storing values in one or more, possibly remote, memcached servers.")
 
 source=("https://github.com/linsomniac/python-memcached/archive/refs/tags/${pkgver}.tar.gz")
 
@@ -18,4 +17,12 @@ build() {
   go_src_dir
   burn_patches
   python3 setup.py install --root=${pkgdir} --optimize=1
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

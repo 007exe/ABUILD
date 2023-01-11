@@ -1,6 +1,6 @@
 pkgname=python-sphinxcontrib-spelling
 pkgver=7.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Spelling checker for Sphinx.")

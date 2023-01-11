@@ -1,24 +1,22 @@
 pkgname=python-docutils-stubs
-pkgver=0.0.21
-pkgbuild=2
+pkgver=0.0.22
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("PEP 561 based Type information for docutils.")
-longdesc=("PEP 561 based Type information for docutils.")
 
 _pkgname=docutils-stubs
-source=("https://pypi.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz")
+source=("https://pypi.org/packages/source/${_pkgname:0:1}/docutils-stubs/docutils-stubs-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-docutils")
+build_deps=("python python-build python-installer python-setuptools python-wheel
+python-docutils")
 
 adddep=("python-docutils")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-# remove docutils dependency pin
-  sed -i '/docutils/d' "$pkgdir"/usr/lib/python*/site-packages/docutils_stubs-*.egg-info/requires.txt
+  python -m build -nw
+  python -m installer -d ${pkgdir} dist/*.whl
 }

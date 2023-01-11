@@ -1,11 +1,10 @@
 # NOTE: Иногда при обновлении следует удалить python-setuptools
 pkgname=python-setuptools
 pkgver=65.6.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Easily build and distribute Python packages.")
-longdesc=("Download, build, install, upgrade, and uninstall Python packages -- easily! Homepage: http://pypi.python.org/pypi/setuptools")
+shortdesc=("Easily download, build, install, upgrade, and uninstall Python packages.")
 
 source=("https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-${pkgver}.tar.gz")
 

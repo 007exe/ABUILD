@@ -1,10 +1,9 @@
 pkgname=python-py3c
 pkgver=1.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A Python 2/3 compatibility layer for C extensions.")
-longdesc=("py3c helps you port C extensions to Python 3. It provides a detailed guide, and a set of macros to make porting easy and reduce boilerplate.")
+shortdesc=("  A Python 2/3 compatibility layer for C extensions.")
 
 source=("https://github.com/encukou/py3c/archive/v${pkgver}.tar.gz")
 
@@ -14,15 +13,21 @@ build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
-# Не регенерировать с неработающим путем в цели «установить»
+# Не генерировать не работающие пути
   sed -i 's/install: py3c.pc/install:/' Makefile
   python setup.py build
   make prefix=/usr py3c.pc
   make prefix=${pkgdir}/usr install
   python setup.py install --root=${pkgdir} --optimize=1
-
-# Удалить заголовки в неработающем месте
+# Удаляем не работающие заголовки
   rm -r ${pkgdir}/usr/include/python*
-
   install -Dm644 LICENSE.MIT -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

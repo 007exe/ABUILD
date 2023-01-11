@@ -1,18 +1,16 @@
 pkgname=python-pyqt5
 pkgver=5.15.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A set of Python bindings for the Qt5 toolkit")
-longdesc=("Python bindings for the Qt framework")
 
-source=("https://pypi.python.org/packages/source/P/PyQt5/PyQt5-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/P/PyQt5/PyQt5-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-# qt5-quick3d
 build_deps=("python-pyqt5-sip qt5-base dbus-python sip pyqt-builder python-opengl qt5-serialport qt5-connectivity
-qt5-multimedia qt5-tools qt5-speech qt5-websockets qt5-xmlpatterns qt5-remoteobjects qt5-webkit")
+qt5-multimedia qt5-tools qt5-speech qt5-websockets qt5-xmlpatterns qt5-remoteobjects qt5-webkit qt5-quick3d")
 
 adddep=("python-pyqt5-sip qt5-base")
 

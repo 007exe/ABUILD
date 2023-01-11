@@ -1,5 +1,5 @@
 pkgname=python-hatch-fancy-pypi-readme
-pkgver=22.3.0
+pkgver=22.8.0
 pkgbuild=1
 arch=("auto")
 

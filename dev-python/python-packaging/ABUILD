@@ -1,14 +1,13 @@
 pkgname=python-packaging
 pkgver=21.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Core utilities for Python packages.")
-longdesc=("python-packaging provides core utilities for Python packages like utilities for dealing with versions, specifiers, markers etc.")
 
 tags=("dev-python libs")
 
-source=("https://github.com/pypa/packaging/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/pypa/packaging/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 build_deps=("python python-setuptools python-pyparsing")
 

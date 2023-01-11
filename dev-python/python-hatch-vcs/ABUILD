@@ -1,11 +1,11 @@
 pkgname=python-hatch-vcs
-pkgver=0.2.0
+pkgver=0.3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Hatch plugin for versioning with your preferred VCS.")
 
-source=("https://github.com/ofek/hatch-vcs/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/ofek/hatch-vcs/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

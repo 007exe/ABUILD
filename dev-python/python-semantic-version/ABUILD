@@ -1,12 +1,11 @@
 pkgname=python-semantic-version
-pkgver=2.9.0
-pkgbuild=2
+pkgver=2.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library implementing the SemVer scheme.")
-longdesc=("Library implementing the SemVer scheme.")
 
-source=("https://github.com/rbarrois/python-semanticversion/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/rbarrois/python-semanticversion/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -15,6 +14,6 @@ build_deps=("python python-setuptools")
 build(){
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -D -m644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

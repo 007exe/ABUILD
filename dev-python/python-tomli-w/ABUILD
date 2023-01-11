@@ -1,20 +1,27 @@
 pkgname=python-tomli-w
 pkgver=1.0.0
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("A lil' TOML writer.")
-longdesc=("A lil' TOML writer.")
 
 source=("https://github.com/hukkin/tomli-w/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-pip python-flit python-poetry")
+build_deps=("python python-build python-flit-core python-installer")
 
 build() {
   go_src_dir
-  python -m flit build --format wheel
-  PIP_CONFIG_FILE=/dev/null pip install --isolated --root="${pkgdir}" --ignore-installed --no-deps dist/*.whl
-  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/python-tomli-w/
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} tomli-w/dist/*.whl
+  install -Dm 644 tomli-w/LICENSE -t ${pkgdir}/usr/share/licenses/python-tomli-w/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

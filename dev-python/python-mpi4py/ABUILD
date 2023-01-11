@@ -1,20 +1,27 @@
 pkgname=python-mpi4py
-pkgver=3.1.3
-pkgbuild=2
+pkgver=3.1.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python bindings for the Message Passing Interface (MPI) standard.")
-longdesc=("MPI for Python provides bindings of the Message Passing Interface (MPI) standard for the Python programming language, allowing any Python program to exploit multiple processors.")
 
 source=("https://github.com/mpi4py/mpi4py/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python python-setuptools python-cython openmpi")
+build_deps=("python python-setuptools cython openmpi")
 
 build(){
   go_src_dir
   python setup.py build
-  python setup.py install --root="${pkgdir}" --skip-build --optimize=1
-  install -Dm644 LICENSE.rst -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+  python setup.py install --root=${pkgdir} --skip-build --optimize=1
+  install -Dm644 LICENSE.rst -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

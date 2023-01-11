@@ -1,12 +1,11 @@
 pkgname=python-ply
 pkgver=3.11
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("Implementation of lex and yacc parsing tools")
-longdesc=("PLY is an implementation of lex and yacc parsing tools for Python.")
+shortdesc=("Implementation of lex and yacc parsing tools.")
 
-source=("https://pypi.io/packages/source/p/ply/ply-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/p/ply/ply-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -14,5 +13,5 @@ build_deps=("python-setuptools")
 
 build() {
   go_src_dir
-  python setup.py install --root="$pkgdir"
+  python setup.py install --root=${pkgdir}
 }

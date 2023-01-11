@@ -1,24 +1,24 @@
 pkgname=python-shapely
-pkgver=1.8.0
-pkgbuild=2
+pkgver=1.8.5.post1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Manipulation and analysis of geometric objects in the Cartesian plane.")
-longdesc=("Shapely is a BSD-licensed Python package for manipulation and analysis of planar geometric objects. It is based on the widely deployed GEOS (the engine of PostGIS) and JTS (from which GEOS is ported) libraries.")
 
 source=("https://pypi.io/packages/source/S/Shapely/Shapely-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("geos python python-setuptools python-packaging python-numpy python-cython")
+build_deps=("python python-setuptools python-packaging python-numpy cython geos")
+
+adddep=("geos")
 
 build() {
   go_src_dir
   burn_patches
   rm -r _vendor
   sed -i 's/from _vendor.packaging./from packaging./' setup.py
-
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

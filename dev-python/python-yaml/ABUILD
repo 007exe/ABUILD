@@ -1,17 +1,16 @@
 pkgname=python-yaml
 pkgver=6.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings for YAML, using fast libYAML library.")
-longdesc=("Python bindings for YAML, using fast libYAML library.")
 
 _name=PyYAML
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/PyYAML/PyYAML-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-cython python-setuptools libyaml")
+build_deps=("python cython python-setuptools libyaml")
 
 build() {
   go_src_dir

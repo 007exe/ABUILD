@@ -1,6 +1,6 @@
 pkgname=python-jsonschema
 pkgver=4.17.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An implementation of JSON Schema validation for Python.")
@@ -20,4 +20,12 @@ build() {
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -D -m644 json/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

@@ -1,11 +1,11 @@
 pkgname=python-attrs
 pkgver=22.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python library for attributes without boilerplate.")
 
-source=("https://pypi.io/packages/source/a/attrs/attrs-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/a/attrs/attrs-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

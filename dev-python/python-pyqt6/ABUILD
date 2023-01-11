@@ -1,10 +1,9 @@
 pkgname=python-pyqt6
 pkgver=6.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A set of Python bindings for the Qt6 toolkit'")
-longdesc=("Python bindings for the Qt framework")
+shortdesc=("  A set of Python bindings for the Qt6 toolkit.")
 
 source=("https://pypi.python.org/packages/source/P/PyQt6/PyQt6-${pkgver}.tar.gz")
 

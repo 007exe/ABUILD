@@ -1,10 +1,9 @@
 pkgname=python-mako
 pkgver=1.2.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Mako template library for Python.")
-longdesc=("A super-fast templating language that borrows the best ideas from the existing templating languages.")
+shortdesc=("A super-fast templating language that borrows the best ideas from the existing templating languages.")
 
 tags=("dev-python libs")
 

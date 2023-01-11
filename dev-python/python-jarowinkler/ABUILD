@@ -1,6 +1,6 @@
 pkgname=python-jarowinkler
 pkgver=1.2.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library for fast approximate string matching using Jaro and Jaro-Winkler similarity.")

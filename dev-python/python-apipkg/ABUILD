@@ -1,21 +1,20 @@
 pkgname=python-apipkg
-pkgver=2.1.1
+pkgver=3.0.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Control the exported namespace of a Python package.")
-longdesc=("With apipkg you can control the exported namespace of a Python package and greatly reduce the number of imports for your users.")
+shortdesc=("Namespace control and lazy-import mechanism.")
 
-source=("https://files.pythonhosted.org/packages/source/a/apipkg/apipkg-${pkgver}.tar.gz")
+source=("https://github.com/pytest-dev/apipkg/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-setuptools-scm")
+build_deps=("python python-build python-installer python-hatchling python-hatch-vcs")
 
 build() {
   go_src_dir
-  burn_patches
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${}pkgdir} dist/*.whl
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

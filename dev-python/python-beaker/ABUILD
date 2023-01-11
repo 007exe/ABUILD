@@ -1,11 +1,11 @@
 pkgname=python-beaker
 pkgver=1.12.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("WSGI middleware layer to provide sessions.")
 
-source=("http://cheeseshop.python.org/packages/source/B/Beaker/Beaker-$pkgver.tar.gz")
+source=("http://cheeseshop.python.org/packages/source/B/Beaker/Beaker-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

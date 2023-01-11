@@ -1,10 +1,9 @@
 pkgname=python-pycups
 pkgver=2.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings for libcups.")
-longdesc=("These Python bindings are intended to wrap the CUPS API.")
 
 source=("https://github.com/OpenPrinting/pycups/archive/v${pkgver}.tar.gz")
 
@@ -19,4 +18,12 @@ build() {
   burn_patches
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

@@ -1,24 +1,25 @@
 pkgname=python-yarl
-pkgver=1.8.0
+pkgver=1.8.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Yet another URL library.")
-longdesc=("The module provides handy URL class for URL parsing and changing.")
 
 source=("https://github.com/aio-libs/yarl/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python cython python-setuptools python-build python-installer python-wheel
+glibc python-multidict python-idna python-typing_extensions")
 
-adddep=("python-multidict python-idna python-typing_extensions")
+adddep=("glibc python-multidict python-idna python-typing_extensions")
 
 build(){
   go_src_dir
   burn_patches
   sed 's| .install-cython ||g' -i Makefile
   make cythonize
-  LANG=en_US.UTF-8 python setup.py build
-  LANG=en_US.UTF-8 python setup.py install --root=${pkgdir} -O1 --skip-build
+  export LANG=en_US.UTF-8
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }

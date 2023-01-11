@@ -1,16 +1,16 @@
 pkgname=python-msgpack
 pkgver=1.0.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("MessagePack serializer implementation for Python.")
-longdesc=("MessagePack serializer implementation for Python.")
 
-source=("https://github.com/msgpack/msgpack-python/archive/v$pkgver.tar.gz")
+source=("https://github.com/msgpack/msgpack-python/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-cython python-setuptools python-pytest python-six")
+build_deps=("python cython python-setuptools
+python-pytest python-six")
 
 adddep=("python-pytest python-six")
 
@@ -18,4 +18,12 @@ build() {
   go_src_dir
   python setup.py build
   python setup.py install --skip-build --root=${pkgdir} --optimize=1
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

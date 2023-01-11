@@ -1,11 +1,11 @@
 pkgname=python-idna
 pkgver=3.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Internationalized Domain Names in Applications (IDNA).")
 
-source=("https://pypi.io/packages/source/i/idna/idna-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/i/idna/idna-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

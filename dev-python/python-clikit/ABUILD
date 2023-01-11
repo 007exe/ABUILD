@@ -1,10 +1,9 @@
 pkgname=python-clikit
 pkgver=0.6.2
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Clikit allows you to create beautiful and testable command-line interfaces.")
-longdesc=("Clikit allows you to create beautiful and testable command-line interfaces.")
 
 _pkgname=clikit
 source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")

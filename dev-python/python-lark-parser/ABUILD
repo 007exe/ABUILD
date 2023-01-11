@@ -1,10 +1,9 @@
 pkgname=python-lark-parser
 pkgver=1.1.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A modern parsing library.")
-longdesc=("Python module to propose a modern general-purpose parsing library for Python.")
 
 source=("https://github.com/lark-parser/lark/archive/refs/tags/${pkgver}.tar.gz")
 
@@ -21,7 +20,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

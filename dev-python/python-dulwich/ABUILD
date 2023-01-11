@@ -1,12 +1,12 @@
 pkgname=python-dulwich
 pkgver=0.20.50
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Pure-Python implementation of the Git file formats and protocols.")
 
 _name=dulwich
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/dulwich/dulwich-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

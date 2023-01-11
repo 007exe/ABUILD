@@ -1,23 +1,25 @@
 pkgname=python-kikit
-pkgver=1.0.0
-pkgbuild=2
+pkgver=1.1.2
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Automation tools for KiCAD")
-longdesc=("KiKit is a Python library, KiCAD plugin and a CLI tool to automate several tasks in a standard KiCAD workflow.")
+shortdesc=("Automation tools for KiCAD.")
 
-source=("https://github.com/yaqwsx/KiKit/releases/download/v$pkgver/KiKit-$pkgver.tar.gz")
+source=("https://github.com/yaqwsx/KiKit/releases/download/v${pkgver}/KiKit-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
+build_deps=("python python-build python-installer python-setuptools python-wheel
+kicad python-numpy python-shapely python-click python-markdown2 python-pybars3
+python-solidpython python-pcbnewtransition python-commentjson")
 
-build_deps=("python-setuptools python-numpy python-shapely python-click python-markdown2 python-pybars3 python-solidpython")
-
-adddep=("kicad python-numpy python-shapely python-click python-markdown2 python-pybars3 python-solidpython")
+adddep=("kicad python-numpy python-shapely python-click python-markdown2 python-pybars3
+python-solidpython python-pcbnewtransition python-commentjson")
 
 build() {
   go_src_dir
   sed -i '/versioneer/d' setup.py
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  python -m build -nw
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm 644 LICENCE ${pkgdir}/usr/share/licenses/${pkgname}/LICENCE
 }

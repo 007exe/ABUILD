@@ -1,18 +1,15 @@
 pkgname=python-distro
 pkgver=1.8.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Linux OS platform information API.")
-longdesc=("distro provides information about the OS distribution it runs on, such as a reliable machine-readable ID, or version information.")
 
 source=("https://github.com/python-distro/distro/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
 build_deps=("python python-sphinx python-build python-installer python-wheel python-setuptools")
-
-adddep=("python-setuptools")
 
 build() {
   go_src_dir

@@ -1,12 +1,11 @@
 pkgname=python-hyperlink
 pkgver=21.0.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A featureful, correct URL for Python.")
-longdesc=("A featureful, correct URL for Python.")
 
-source=("https://github.com/python-hyper/hyperlink/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/python-hyper/hyperlink/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,6 +16,6 @@ adddep=("python-idna")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -D -m644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

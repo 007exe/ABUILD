@@ -1,23 +1,25 @@
 pkgname=python-recommonmark
 pkgver=0.7.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Docutils compatibility bridge to CommonMark.")
-longdesc=("A docutils-compatibility bridge to CommonMark.")
 
-_pyname=recommonmark
-_archive="$_pyname-$pkgver"
-source=("https://files.pythonhosted.org/packages/source/${_pyname:0:1}/$_pyname/$_archive.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/r/recommonmark/recommonmark-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-setuptools
+python-commonmark python-docutils python-sphinx")
 
 adddep=("python-docutils python-commonmark python-sphinx")
 
 build(){
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir"
+  make -C docs text man
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} license.md
+  install -Dm644 -t ${pkgdir}/usr/share/doc/${pkgname} README.md CHANGELOG.md docs/_build/text/*.txt
+  install -Dm644 -t ${pkgdir}/usr/share/man/man1 docs/_build/man/recommonmark.1
 }

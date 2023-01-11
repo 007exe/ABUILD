@@ -1,14 +1,13 @@
 #!/bin/sh
 
-MODULES="
-python-setuptools
+MODULES="python-setuptools
 python-appdirs
 python-more-itertools
 python-ordered-set
 python-pyparsing
 python-packaging
 python-six
-python-cython
+cython
 python-setuptools-scm
 python-pyproject2setuppy
 python-tomli
@@ -107,9 +106,7 @@ python-pip
 python-tomlkit
 python-termcolor
 python-yaspin
-python-mistune1
 python-mistune
-python-m2r
 python-dephell
 python-fonttools
 python-zipp

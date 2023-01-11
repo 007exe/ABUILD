@@ -1,6 +1,6 @@
 pkgname=python-sphinx-reredirects
 pkgver=0.1.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Handles redirects for moved pages in Sphinx documentation projects.")
@@ -15,7 +15,6 @@ adddep=("python-sphinx")
 
 build() {
   go_src_dir
-  burn_patches
   python -m build -wn
   python -m installer -d ${pkgdir} dist/*.whl
 }

@@ -1,6 +1,6 @@
 pkgname=python-nspektr
 pkgver=0.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A distribution package dependency inspector.")

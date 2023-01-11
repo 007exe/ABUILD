@@ -1,23 +1,21 @@
 pkgname=towncrier
-pkgver=21.3.0
-pkgbuild=2
+pkgver=22.12.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility to produce useful, summarised news files for your project.")
-longdesc=("Utility to produce useful, summarised news files for your project.")
 
-source=("https://pypi.io/packages/source/t/towncrier/towncrier-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/t/towncrier/towncrier-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-click python-click-default-group python-incremental python-jinja python-toml")
+build_deps=("python python-click python-click-default-group python-incremental python-jinja python-setuptools python-tomli")
 
-adddep=("python-setuptools python-click python-click-default-group python-incremental python-jinja python-toml")
+adddep=("python-click python-click-default-group python-incremental python-jinja python-setuptools python-tomli")
 
 build() {
   go_src_dir
-  sed -i 's/import mock/from unittest import mock/' src/towncrier/test/test_create.py
   python setup.py build
-  python setup.py install -O1 --prefix=/usr --root="$pkgdir"
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install -O1 --prefix=/usr --root=${pkgdir}
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

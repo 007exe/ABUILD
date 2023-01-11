@@ -1,12 +1,11 @@
 pkgname=python-ptyprocess
 pkgver=0.7.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("Run a subprocess in a pseudo terminal.")
-longdesc=("Launch a subprocess in a pseudo terminal (pty), and interact with both the process and its pty.")
+shortdesc=("  Run a subprocess in a pseudo terminal.")
 
-source=("https://pypi.io/packages/source/p/ptyprocess/ptyprocess-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/p/ptyprocess/ptyprocess-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -14,6 +13,6 @@ build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
-  python3 setup.py install --root="$pkgdir/" --prefix=/usr --optimize=0
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/python-ptyprocess/LICENSE"
+  python3 setup.py install --root=${pkgdir}/ --prefix=/usr --optimize=0
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/python-ptyprocess/LICENSE
 }

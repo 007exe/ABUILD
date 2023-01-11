@@ -1,5 +1,5 @@
 pkgname=python-sphinx-lv2-theme
-pkgver=1.2.0
+pkgver=1.2.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,8 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/sphin
 
 tags=("libs dev-python")
 
-build_deps=("python python-sphinx python-build python-installer python-setuptools python-wheel")
+build_deps=("python python-build python-installer python-setuptools python-wheel
+python-sphinx")
 
 adddep=("python-sphinx")
 

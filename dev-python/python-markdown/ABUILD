@@ -1,12 +1,11 @@
 pkgname=python-markdown
 pkgver=3.4.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Python implementation of John Gruber's Markdown.")
-longdesc=("This is a Python implementation of John Gruber's Markdown. It is almost completely compliant with the reference implementation, though there are a few known issues.")
+shortdesc=("Python implementation of John Gruber Markdown.")
 
-source=("https://files.pythonhosted.org/packages/source/M/Markdown/Markdown-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/M/Markdown/Markdown-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,6 +16,6 @@ adddep=("python-importlib-metadata")
 build(){
   go_src_dir
   python setup.py build
-  python3 setup.py install --root="$pkgdir" --optimize=0
-  install -Dm644 LICENSE.md "$pkgdir/usr/share/licenses/python-markdown/LICENSE"
+  python3 setup.py install --root=${pkgdir} --optimize=0
+  install -Dm644 LICENSE.md ${pkgdir}/usr/share/licenses/python-markdown/LICENSE
 }

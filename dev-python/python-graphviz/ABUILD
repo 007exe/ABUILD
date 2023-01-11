@@ -1,10 +1,10 @@
 pkgname=python-graphviz
-pkgver=0.19.1
+pkgver=0.20.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple Python interface for Graphviz.")
-longdesc=("Simple Python interface for Graphviz.")
+
 
 source=("https://github.com/xflr6/graphviz/archive/${pkgver}/graphviz-${pkgver}.tar.gz")
 

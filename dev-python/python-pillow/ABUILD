@@ -1,23 +1,27 @@
 pkgname=python-pillow
-pkgver=9.3.0
+pkgver=9.4.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python Imaging Library (PIL) fork.")
-longdesc=("Python Imaging Library (PIL) fork.")
 
-source=("https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python-setuptools libwebp tk python freetype lcms2 libtiff openjpeg2 libimagequant libxcb libraqm")
+build_deps=("python python-build python-installer python-wheel python-setuptools libwebp tk
+freetype lcms2 libraqm libtiff openjpeg2 libimagequant libxcb")
+
+adddep=("freetype lcms2 libraqm libtiff openjpeg2 libimagequant libxcb")
+
+# NOTE: Это опциональные зависимости
+removedep=("libwebp tk python-olefile python-pyqt5")
 
 build() {
   go_src_dir
-  python setup.py build
-  python3 setup.py install --root="$pkgdir/" --optimize=1
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-
-  install -dm755 "$pkgdir/usr/include/python$_py3basever/"
-  install -m644 -t "$pkgdir/usr/include/python$_py3basever/" src/libImaging/*.h
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+  install -vDm644 -t ${pkgdir}/usr/include/python${python_version} src/libImaging/*.h
+  install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }

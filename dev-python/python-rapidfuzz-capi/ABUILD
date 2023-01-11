@@ -1,6 +1,6 @@
 pkgname=python-rapidfuzz-capi
 pkgver=1.0.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("C-API of RapidFuzz, which can be used to extend RapidFuzz from separate packages.")

@@ -1,16 +1,15 @@
 pkgname=python-lxml
 pkgver=4.9.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python3 binding for the libxml2 and libxslt libraries.")
-longdesc=("lxml provides a Python binding to the libxslt and libxml2 libraries. It follows the ElementTree API as much as possible in order to provide a more Pythonic interface to libxml2 and libxslt than the default bindings.  In particular, lxml deals with Python Unicode strings rather than encoded UTF-8 and handles memory management automatically, unlike the default bindings.")
 
-source=("https://github.com/lxml/lxml/archive/lxml-$pkgver.tar.gz")
+source=("https://github.com/lxml/lxml/archive/lxml-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pygments python-sphinx python-sphinx_rtd_theme python-cython libxslt libxml2")
+build_deps=("python python-setuptools python-pygments python-sphinx python-sphinx_rtd_theme cython libxslt libxml2")
 
 adddep=("libxslt")
 

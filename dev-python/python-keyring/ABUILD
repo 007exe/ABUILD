@@ -1,6 +1,6 @@
 pkgname=python-keyring
 pkgver=23.11.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Store and access your passwords safely.")
@@ -20,6 +20,5 @@ build() {
   python -m build
   python -m installer -d ${pkgdir} dist/*.whl
   install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-
   rm -rf ${pkgdir}/usr/lib/python3.10/site-packages/keyring/tests
 }

@@ -1,6 +1,6 @@
 pkgname=python-xdg
 pkgver=0.28
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python library to access freedesktop.org standards.")

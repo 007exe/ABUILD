@@ -1,5 +1,5 @@
 pkgname=libvirt-python
-pkgver=8.6.0
+pkgver=8.10.0
 pkgbuild=1
 arch=("auto")
 

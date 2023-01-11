@@ -1,10 +1,9 @@
 pkgname=python-typogrify
 pkgver=2.0.7
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Filters to make caring about typography on the web a bit easier.")
-longdesc=("Filters to make caring about typography on the web a bit easier.")
 
 source=("https://pypi.org/packages/source/t/typogrify/typogrify-${pkgver}.tar.gz")
 
@@ -16,6 +15,6 @@ adddep=("python-smartypants")
 
 build() {
   go_src_dir
-  python3 setup.py install --root="${pkgdir}/" --optimize=1
-  install -D -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  python3 setup.py install --root=${pkgdir}/ --optimize=1
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

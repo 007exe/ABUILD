@@ -1,9 +1,9 @@
 pkgname=python-sphinx-argparse-cli
 pkgver=1.10.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Render CLI arguments (sub-commands friendly) defined by argparse module.")
+shortdesc=("  Render CLI arguments (sub-commands friendly) defined by argparse module.")
 
 source=("https://github.com/tox-dev/sphinx-argparse-cli/archive/${pkgver}.tar.gz")
 

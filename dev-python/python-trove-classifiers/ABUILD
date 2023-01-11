@@ -1,6 +1,6 @@
 pkgname=python-trove-classifiers
 pkgver=2022.12.22
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Canonical source for classifiers on PyPI (pypi.org).")

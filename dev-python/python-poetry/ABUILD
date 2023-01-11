@@ -1,11 +1,11 @@
 pkgname=python-poetry
 pkgver=1.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python dependency management and packaging made easy.")
 
-source=("https://github.com/$pkgname/poetry/archive/$pkgver/poetry-${pkgver}.tar.gz")
+source=("https://github.com/python-poetry/poetry/archive/${pkgver}/poetry-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

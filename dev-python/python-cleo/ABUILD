@@ -1,20 +1,18 @@
 pkgname=python-cleo
 pkgver=2.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Create beautiful and testable command-line interfaces.")
 
-source=("https://github.com/python-poetry/cleo/archive/$pkgver/cleo-${pkgver}.tar.gz")
+source=("https://github.com/python-poetry/cleo/archive/${pkgver}/cleo-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-# python-rapidfuzz
 build_deps=("python python-build python-installer python-wheel python-poetry-core
-python-crashtest python-pylev python-typing_extensions")
+python-crashtest python-pylev python-typing_extensions python-rapidfuzz")
 
-# python-rapidfuzz
-adddep=("python-crashtest python-pylev python-typing_extensions")
+adddep=("python-crashtest python-pylev python-typing_extensions python-rapidfuzz")
 
 build() {
   go_src_dir

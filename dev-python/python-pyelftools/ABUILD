@@ -1,13 +1,13 @@
 pkgname=python-pyelftools
 pkgver=0.29
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python library for analyzing ELF files and DWARF debugging information.")
 
 tags=("libs dev-python")
 
-source=("https://github.com/eliben/pyelftools/archive/v${pkgver}/$pyelftools-${pkgver}.tar.gz")
+source=("https://github.com/eliben/python-pyelftools/archive/v${pkgver}/python-pyelftools-${pkgver}.tar.gz")
 
 build_deps=("python python-build python-installer python-wheel python-setuptools")
 

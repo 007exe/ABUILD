@@ -1,5 +1,5 @@
 pkgname=python-sphinxcontrib-towncrier
-pkgver=0.3.1a3
+pkgver=0.3.2a0
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,8 @@ source=("https://github.com/sphinx-contrib/sphinxcontrib-towncrier/archive/v${pk
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-setuptools-scm
-python-wheel python-setuptools-scm-git-archive python-sphinx towncrier")
+build_deps=("python python-build python-installer python-setuptools python-setuptools-scm python-setuptools-scm-git-archive python-wheel
+python-sphinx towncrier")
 
 adddep=("python-sphinx towncrier")
 

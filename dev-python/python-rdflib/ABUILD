@@ -1,18 +1,20 @@
 pkgname=python-rdflib
-pkgver=6.1.1
+pkgver=6.2.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Python library for working with RDF, a simple yet powerful language for representing information.")
-longdesc=("RDF library containing a triple store and parser/serializer.")
 
 source=("https://github.com/RDFLib/rdflib/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-isodate python-pyparsing")
+build_deps=("python python-isodate python-pyparsing python-setuptools")
 
-adddep=("python-isodate python-pyparsing")
+adddep=("python-isodate python-pyparsing python-setuptools")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-html5lib")
 
 build() {
   go_src_dir

@@ -1,19 +1,18 @@
 pkgname=python-pytest-console-scripts
 pkgver=1.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Pytest plugin for testing console scripts.")
-longdesc=("Pytest plugin for testing console scripts.")
 
-_pyname=pytest-console-scripts
-source=("https://pypi.python.org/packages/source/p/$_pyname/$_pyname-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/p/pytest-console-scripts/pytest-console-scripts-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-mock python-pytest")
+build_deps=("python python-build python-installer python-setuptools-scm python-wheel
+python-pytest python-setuptools")
 
-adddep=("python-mock python-pytest")
+adddep=("python-pytest python-setuptools")
 
 build() {
   go_src_dir

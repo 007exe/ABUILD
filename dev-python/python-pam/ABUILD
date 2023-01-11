@@ -1,20 +1,22 @@
 pkgname=python-pam
-pkgver=1.8.4
-pkgbuild=2
+pkgver=2.0.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Pure Python interface to the Pluggable Authentication Modules system on Linux.")
-longdesc=("Pure Python interface to the Pluggable Authentication Modules system on Linux.")
 
-source="https://files.pythonhosted.org/packages/source/${pkgname:0:1}/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+source="https://files.pythonhosted.org/packages/source/${pkgname:0:1}/python-pam/python-pam-${pkgver}.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel
+linux-pam python-six")
+
+adddep=("linux-pam python-six")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
-  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

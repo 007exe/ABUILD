@@ -1,24 +1,22 @@
 pkgname=python-setuptools-rust
-pkgver=0.12.1
-pkgbuild=2
+pkgver=1.5.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Compile and distribute Python extensions written in rust as easily as if they were written in C.")
-longdesc=("setuptools-rust is a plugin for setuptools to build Rust Python extensions implemented with PyO3 or rust-cpython.")
 
-source=("https://github.com/PyO3/setuptools-rust/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/PyO3/setuptools-rust/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python-setuptools-scm python-wheel rust python-setuptools python-semantic-version python-toml")
+build_deps=("python rust python-setuptools python-semantic-version python-typing_extensions")
 
-adddep=("rust python-setuptools python-semantic-version python-toml")
+adddep=("rust python-setuptools python-semantic-version python-typing_extensions")
 
 build() {
   go_src_dir
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

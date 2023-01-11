@@ -1,10 +1,9 @@
 pkgname=python-jaraco.functools
 pkgver=3.5.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Functools like those found in stdlib.")
-longdesc=("Additional functools in the spirit of stdlib's functools.")
+shortdesc=("  Functools like those found in stdlib.")
 
 source=("https://files.pythonhosted.org/packages/source/j/jaraco.functools/jaraco.functools-${pkgver}.tar.gz")
 

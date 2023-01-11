@@ -1,10 +1,9 @@
 pkgname=python-colorama
 pkgver=0.4.6
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Python API for cross-platform colored terminal text.")
-longdesc=("ANSI escape character sequences have long been used to produce colored terminal text and cursor positioning on Unix and Macs.")
 
 source=("https://github.com/tartley/colorama/archive/${pkgver}.tar.gz")
 
@@ -21,7 +20,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

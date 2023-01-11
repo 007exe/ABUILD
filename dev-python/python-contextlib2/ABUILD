@@ -1,10 +1,9 @@
 pkgname=python-contextlib2
 pkgver=21.6.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Backport of the standard library's contextlib module to earlier Python versions.")
-longdesc=("contextlib2 is a backport of the standard library's contextlib module to earlier Python versions.")
 
 source=("https://github.com/jazzband/contextlib2/archive/${pkgver}.tar.gz")
 
@@ -21,7 +20,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

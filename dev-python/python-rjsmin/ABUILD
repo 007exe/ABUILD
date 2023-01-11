@@ -1,21 +1,20 @@
 pkgname=python-rjsmin
-pkgver=1.2.0
-pkgbuild=2
+pkgver=1.2.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fast javascript minifier for Python")
-longdesc=("Javascript minifier written in python")
 
 _name=rjsmin
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/rjsmin/rjsmin-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --optimize=1 --root="${pkgdir}"
-  install -vDm 644 {docs/{CHANGES,DESCRIPTION},README.md} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 {docs/{CHANGES,DESCRIPTION},README.md} -t ${pkgdir}/usr/share/doc/${pkgname}
 }

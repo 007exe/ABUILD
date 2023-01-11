@@ -1,24 +1,23 @@
 pkgname=python-pytest-runner
-pkgver=5.3.2
+pkgver=6.0.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Invoke py.test as distutils command with dependency resolution")
-longdesc=("Invoke py.test as distutils command with dependency resolution")
+shortdesc=("Invoke py.test as distutils command with dependency resolution.")
 
-source=("https://github.com/pytest-dev/pytest-runner/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/pytest-dev/pytest-runner/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-toml python-pytest python-setuptools")
+build_deps=("python python-build python-installer python-setuptools-scm python-wheel
+python-pytest python-setuptools")
 
 adddep=("python-pytest python-setuptools")
 
 build() {
   go_src_dir
-  burn_patches
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

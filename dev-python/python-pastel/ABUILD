@@ -1,13 +1,12 @@
 pkgname=python-pastel
 pkgver=0.2.1
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Bring colors to your terminal.")
-longdesc=("Bring colors to your terminal.")
 
 _pkgname=pastel
-source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/pastel/pastel-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

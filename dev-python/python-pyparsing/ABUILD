@@ -1,12 +1,11 @@
 pkgname=python-pyparsing
 pkgver=3.0.9
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("General parsing module for Python.")
-longdesc=("General parsing module for Python.")
 
-source=("https://github.com/pyparsing/pyparsing/archive/pyparsing_$pkgver.tar.gz")
+source=("https://github.com/pyparsing/pyparsing/archive/pyparsing_${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 

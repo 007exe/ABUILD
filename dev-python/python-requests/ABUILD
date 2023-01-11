@@ -1,12 +1,11 @@
 pkgname=python-requests
 pkgver=2.28.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python HTTP for Humans.")
-longdesc=("Requests allow you to send HTTP/1.1 requests. You can add headers, form data, multipart files, and parameters with simple Python dictionaries, and access the response data in the same way. It's powered by httplib and urllib3, but it does all the hard work and crazy hacks for you.")
 
-source=("https://github.com/psf/requests/archive/v$pkgver/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/psf/requests/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

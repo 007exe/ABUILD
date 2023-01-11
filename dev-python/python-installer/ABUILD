@@ -1,16 +1,16 @@
 pkgname=python-installer
 pkgver=0.6.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A library for installing Python wheels.")
-longdesc=("Low-level library for installing a Python package from a wheel distribution.")
+shortdesc=("Low-level library for installing a Python package from a wheel distribution.")
 
 source=("https://github.com/pypa/installer/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-flit-core python-build python-sphinx python-sphinx-furo python-myst-parser python-sphinx-argparse")
+build_deps=("python python-flit-core python-build python-sphinx
+python-sphinx-furo python-myst-parser python-sphinx-argparse")
 
 build() {
   go_src_dir
@@ -25,7 +25,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

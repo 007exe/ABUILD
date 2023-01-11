@@ -1,20 +1,27 @@
 pkgname=python-aiofiles
-pkgver=0.8.0
+pkgver=22.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("File support for asyncio.")
-longdesc=("File support for asyncio.")
 
 source=("https://github.com/Tinche/aiofiles/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-pip python-poetry")
+build_deps=("python python-build python-installer python-poetry-core")
 
 build() {
   go_src_dir
-  poetry build --format wheel
-  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps aiofiles/dist/*.whl
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} aiofiles/dist/*.whl
   install -Dm 644 aiofiles/LICENSE -t ${pkgdir}/usr/share/licenses/python-aiofiles/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

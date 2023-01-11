@@ -1,18 +1,17 @@
 pkgname=python-dockerpty
 pkgver=0.4.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python library to use the pseudo-tty of a docker container.")
-longdesc=("Provides the functionality needed to operate the pseudo-tty (PTY) allocated to a docker container, using the Python client.")
 
 source=("https://github.com/d11wtq/dockerpty/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
-# python-docker-py
-build_deps=("python-setuptools python-six python-six")
-# python-docker-py
-adddep=("python-six")
+
+build_deps=("python-setuptools python-six python-six python-docker")
+
+adddep=("python-six python-docker")
 
 build() {
   go_src_dir

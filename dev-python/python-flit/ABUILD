@@ -1,53 +1,21 @@
-pkgname=python-flit-core
-pkgver=3.7.1
-pkgbuild=2
+pkgname=python-flit
+pkgver=3.8.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simplified packaging of Python modules.")
-longdesc=("Simplified packaging of Python modules (core module).")
 
-source=("https://github.com/takluyver/flit/archive/${pkgver}.tar.gz")
+source=("https://github.com/pypa/flit/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-pip python-requests python-docutils python-tomli python-tomli-w python-poetry")
+adddep=("python-docutils python-flit-core python-requests python-tomli-w")
 
-adddep=("python-tomli python-tomli-w")
-
-pkglist=("python-flit")
+build_deps=("${adddep} python python-build python-installer")
 
 build() {
   go_src_dir
-  rm tests/test_sdist.py
-  cd flit_core
-  python build_dists.py
-  cd ..
-  PYTHONPATH=flit_core python -m flit build --format wheel
-  cd flit_core
-  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
-  install -Dm 644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-
-# Установка тестов во вложенный каталог проекта может не конфликтовать с верхним уровнем, но в любом случае не делайте этого...
-  rm -r ${pkgdir}/usr/lib/python*/site-packages/flit_core/tests/
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
-}
-
-python-flit() {
-  pkgname=python-flit
-  shortdesc=("Simplified packaging of Python modules.")
-  longdesc=("Simplified packaging of Python modules.")
-  adddep=("python-flit-core python-requests python-docutils")
-}
-
-python-flit_prep() {
-  go_src_dir
-  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
-  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

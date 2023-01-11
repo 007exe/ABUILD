@@ -1,32 +1,37 @@
 pkgname=python-pyudev
-pkgver=0.22
+pkgver=0.24.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python bindings to libudev.")
-longdesc=("Pyudev is a LGPL licensed, pure Python binding for libudev, the device and hardware management and information library for Linux. It supports almost all libudev functionality.")
 
 source=("https://github.com/pyudev/pyudev/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-sphinx python-mock")
+build_deps=("python-build python-installer python-setuptools python-wheel python-sphinx
+python-six")
 
 adddep=("python-six")
 
 build() {
   go_src_dir
-  burn_patches
-  sed -i '/norecursedirs/d' setup.cfg
-  echo -e '[pytest]\nnorecursedirs = .* _* build' > pytest.ini
   rm tests/test_{util,discover,device,monitor,enumerate,observer}.py
   sed -i "s|os.path.join(doc_directory, os.pardir)|os.path.join(doc_directory, os.pardir, 'src')|
           s|b'autodoc-process-docstring'|'autodoc-process-docstring'|" doc/conf.py
-  python setup.py build
+  python -m build -nw
   sphinx-apidoc -f -e -o doc src/pyudev
   sphinx-build -a -b html doc doc/html
-  python setup.py install --root ${pkgdir} --skip-build -O1
+  python -m installer -d ${pkgdir} dist/*.whl
   install -dm 755 ${pkgdir}/usr/share/doc/${pkgname}
   cp -r -a --no-preserve=ownership doc/html ${pkgdir}/usr/share/doc/${pkgname}
   rm -rf ${pkgdir}/usr/share/doc/${pkgname}/html/.doctrees
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

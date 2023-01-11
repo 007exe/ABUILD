@@ -1,27 +1,30 @@
 pkgname=python-pbr
-pkgver=5.8.1
-pkgbuild=2
+pkgver=5.11.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python Build Reasonableness.")
-longdesc=("PBR is a library that injects some useful and sensible default behaviors into your setuptools run. It started off life as the chunks of code that were copied between all of the OpenStack projects. Around the time that OpenStack hit 18 different projects each with at least 3 active branches, it seems like a good time to make that code into a proper re-usable library.")
 
-source=("https://files.pythonhosted.org/packages/source/p/pbr/pbr-$pkgver.tar.gz")
+source=("https://github.com/openstack-dev/pbr/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-importlib-metadata python-setuptools")
 
 adddep=("python-setuptools")
 
 build() {
   go_src_dir
-  export PBR_VERSION=$pkgver
-  export SKIP_PIP_INSTALL=1
-  export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
-# drop bundled egg-info
-rm -rf *.egg-info
+  export PBR_VERSION=${pkgver}
   python setup.py build
-  python setup.py install -O1 --root="$pkgdir"
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install -O1 --root=${pkgdir}
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

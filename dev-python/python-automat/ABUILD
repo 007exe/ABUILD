@@ -1,23 +1,25 @@
 pkgname=python-automat
-pkgver=20.2.0
-pkgbuild=2
+pkgver=22.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Self-service finite-state machines for the programmer on the go.")
-longdesc=("Self-service finite-state machines for the programmer on the go.")
 
-source=("https://github.com/glyph/automat/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/glyph/automat/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-m2r python-attrs")
+build_deps=("python python-setuptools-scm python-wheel python-attrs python-six")
 
-adddep=("python-attrs")
+adddep=("python-attrs python-six")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-graphviz python-twisted")
 
 build() {
   go_src_dir
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/python-automat/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/python-automat/
 }

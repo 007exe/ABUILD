@@ -1,12 +1,12 @@
 pkgname=python-pathspec
-pkgver=0.10.2
+pkgver=0.10.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility library for gitignore style pattern matching of file paths.")
 
 _name=pathspec
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/pathspec/pathspec-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

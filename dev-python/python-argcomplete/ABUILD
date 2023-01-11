@@ -1,19 +1,26 @@
 pkgname=python-argcomplete
-pkgver=1.12.3
-pkgbuild=2
+pkgver=2.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Easy, extensible command line tab completion of arguments for your Python script.")
-longdesc=("Easy, extensible command line tab completion of arguments for your Python script.")
 
-source=("https://files.pythonhosted.org/packages/6a/b4/3b1d48b61be122c95f4a770b2f42fc2552857616feba4d51f34611bd1352/argcomplete-$pkgver.tar.gz")
+source=("https://github.com/kislyuk/argcomplete/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python git python-setuptools")
+build_deps=("python python-setuptools")
 
 build(){
   go_src_dir
   python setup.py build
-  python setup.py install -O1 --root="${pkgdir}" --skip-build
+  python setup.py install -O1 --root=${pkgdir} --skip-build
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

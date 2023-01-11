@@ -1,10 +1,9 @@
 pkgname=python-calver
 pkgver=2022.06.26
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Setuptools extension for CalVer package versions.")
-longdesc=("The calver package is a setuptools extension for automatically defining your Python package version as a calendar version.")
 
 source=("https://github.com/di/calver/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 

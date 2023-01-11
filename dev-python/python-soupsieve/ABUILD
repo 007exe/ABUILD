@@ -1,12 +1,11 @@
 pkgname=python-soupsieve
-pkgver=2.3.1
+pkgver=2.3.2.post1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A CSS4 selector implementation for Beautiful Soup.")
-longdesc=("A CSS4 selector implementation for Beautiful Soup.")
 
-source=("https://github.com/facelessuser/soupsieve/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/facelessuser/soupsieve/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -14,7 +13,7 @@ build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  python -m build --wheel --no-isolation
+ python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }

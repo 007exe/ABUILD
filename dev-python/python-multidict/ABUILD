@@ -1,16 +1,15 @@
 pkgname=python-multidict
-pkgver=6.0.2
+pkgver=6.0.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Asyncio-based multidict implementation for Python.")
-longdesc=("Multidicts are useful for working with HTTP headers, URL query args etc.")
 
 source=("https://github.com/aio-libs/multidict/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-cython python-setuptools")
+build_deps=("python cython python-setuptools")
 
 build(){
   go_src_dir

@@ -1,12 +1,11 @@
 pkgname=python-patiencediff
-pkgver=0.2.2
-pkgbuild=2
+pkgver=0.2.12
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Patiencediff Python and C implementations.")
-longdesc=("Python implementation of the patiencediff algorithm.")
 
-source=("https://github.com/breezy-team/patiencediff/archive/refs/tags/v$pkgver.tar.gz")
+source=("https://github.com/breezy-team/patiencediff/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -15,5 +14,5 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }

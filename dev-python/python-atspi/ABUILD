@@ -1,6 +1,6 @@
 pkgname=python-atspi
 pkgver=2.46.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings for D-Bus AT-SPI.")

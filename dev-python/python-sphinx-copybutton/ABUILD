@@ -1,15 +1,16 @@
 pkgname=python-sphinx-copybutton
-pkgver=0.5.0
+pkgver=0.5.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Sphinx extension to add a \"copy\" button to code blocks.")
 
-source=("https://files.pythonhosted.org/packages/source/s/sphinx-copybutton/sphinx-copybutton-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/s/sphinx-copybutton/sphinx-copybutton-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-sphinx")
+build_deps=("python python-setuptools
+python-sphinx")
 
 adddep=("python-sphinx")
 

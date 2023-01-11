@@ -1,10 +1,9 @@
 pkgname=python-pysocks
 pkgver=1.7.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("SOCKS4, SOCKS5 or HTTP proxy (Anorov fork PySocks replaces socksipy)")
-longdesc=("SOCKS4, SOCKS5 or HTTP proxy (Anorov fork PySocks replaces socksipy)")
+shortdesc=("SOCKS4, SOCKS5 or HTTP proxy (Anorov fork PySocks replaces socksipy).")
 
 source=("https://files.pythonhosted.org/packages/bd/11/293dd436aea955d45fc4e8a35b6ae7270f5b8e00b53cf6c024c83b657a11/PySocks-1.7.1.tar.gz")
 

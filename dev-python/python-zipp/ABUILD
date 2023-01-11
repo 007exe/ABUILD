@@ -1,12 +1,11 @@
 pkgname=python-zipp
 pkgver=3.11.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Backport of pathlib-compatible object wrapper for zip files.")
-longdesc=("A pathlib-compatible Zipfile object wrapper. A backport of the Path object.")
 
-source=("https://github.com/jaraco/zipp/archive/v$pkgver.tar.gz")
+source=("https://github.com/jaraco/zipp/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -19,4 +18,12 @@ build(){
   python -m build -nw
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

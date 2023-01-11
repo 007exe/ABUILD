@@ -1,6 +1,6 @@
 pkgname=python-shellingham
 pkgver=1.5.0.post1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Detect what shell the current Python executable is running in.")
@@ -20,7 +20,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

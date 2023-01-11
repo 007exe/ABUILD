@@ -1,12 +1,11 @@
 pkgname=python-fissix
 pkgver=21.11.13
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Fork of lib2to3 with patch for Python issue33983 support.")
-longdesc=("Backport of latest lib2to3, with enhancements.")
 
-source=("https://pypi.python.org/packages/source/f/fissix/fissix-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/f/fissix/fissix-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

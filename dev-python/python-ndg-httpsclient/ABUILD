@@ -1,12 +1,11 @@
 pkgname=python-ndg-httpsclient
 pkgver=0.5.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL.")
-longdesc=("Provides enhanced HTTPS support for httplib and urllib2 using PyOpenSSL.")
 
-source=("https://files.pythonhosted.org/packages/source/n/ndg-httpsclient/ndg_httpsclient-$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/n/ndg-httpsclient/ndg_httpsclient-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

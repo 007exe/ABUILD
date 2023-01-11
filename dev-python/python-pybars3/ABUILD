@@ -1,12 +1,11 @@
 pkgname=python-pybars3
 pkgver=0.9.7
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Template system for Python which is compatible with Handlebars.js.")
-longdesc=("Pybars3 provides a template system for Python which is compatible with Handlebars.js. It is a fork of the pybars project that adds Python 3 compatibility and numerous features from Handlebars.js 2.0.")
 
-source=("https://github.com/wbond/pybars3/archive/$pkgver.tar.gz")
+source=("https://github.com/wbond/pybars3/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,6 +16,6 @@ adddep=("python-pymeta3")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

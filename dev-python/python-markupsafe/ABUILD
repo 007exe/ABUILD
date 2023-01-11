@@ -1,12 +1,11 @@
 pkgname=python-markupsafe
 pkgver=2.1.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("XML/HTML/XHTML markup safe string package for Python.")
-longdesc=("This package implements a XML/HTML/XHTML markup safe string for Python.")
+shortdesc=("Implements a XML/HTML/XHTML Markup safe string for Python.")
 
-source=("https://github.com/pallets/markupsafe/archive/$pkgver.tar.gz")
+source=("https://github.com/pallets/markupsafe/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,4 +16,12 @@ build() {
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
   install -D -m644 LICENSE.rst ${pkgdir}/usr/share/licenses/python-markupsafe/LICENSE.rst
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

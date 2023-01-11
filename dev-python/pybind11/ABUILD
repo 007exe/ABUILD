@@ -1,10 +1,9 @@
 pkgname=pybind11
 pkgver=2.10.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A lightweight header-only library that exposes C++ types in Python and vice versa.")
-longdesc=("pybind11 is a lightweight header-only library that exposes C++ types in Python and vice versa, mainly to create Python bindings of existing C++ code.")
 
 source=("https://github.com/pybind/pybind11/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 

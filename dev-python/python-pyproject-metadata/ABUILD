@@ -1,6 +1,6 @@
 pkgname=python-pyproject-metadata
 pkgver=0.6.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("PEP 621 metadata parsing.")

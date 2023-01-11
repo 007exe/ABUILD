@@ -1,10 +1,9 @@
 pkgname=python-regex
-pkgver=2022.6.2
+pkgver=2022.10.31
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Alternative python regular expression module.")
-longdesc=("This regex implementation is backwards-compatible with the standard re module, but offers additional functionality.")
 
 source=("https://files.pythonhosted.org/packages/source/r/regex/regex-${pkgver}.tar.gz")
 

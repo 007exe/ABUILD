@@ -1,6 +1,6 @@
 pkgname=python-pysol_cards
 pkgver=0.14.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Deal PySol FC Cards.")

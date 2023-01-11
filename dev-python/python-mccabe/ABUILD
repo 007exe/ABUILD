@@ -1,6 +1,6 @@
 pkgname=python-mccabe
 pkgver=0.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("McCabe complexity checker for Python.")

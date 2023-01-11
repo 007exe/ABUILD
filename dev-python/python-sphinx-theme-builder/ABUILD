@@ -1,10 +1,9 @@
 pkgname=python-sphinx-theme-builder
 pkgver=0.2.0b1
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Python build backend for Sphinx themes.")
-longdesc=("Streamline the Sphinx theme development workflow, by building upon existing standardised tools..")
 
 source=("https://github.com/pradyunsg/sphinx-theme-builder/archive/${pkgver}.tar.gz")
 
@@ -24,7 +23,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

@@ -1,5 +1,5 @@
 pkgname=python-pylint
-pkgver=2.14.5
+pkgver=2.15.9
 pkgbuild=1
 arch=("auto")
 

@@ -1,22 +1,22 @@
 pkgname=python-pytest-mock
-pkgver=3.7.0
-pkgbuild=2
+pkgver=3.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Thin-wrapper around the mock package for easier use with py.test")
-longdesc=("Thin-wrapper around the mock package for easier use with py.test")
 
-source=("https://github.com/pytest-dev/pytest-mock/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/pytest-dev/pytest-mock/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-toml python-pytest python-setuptools")
+build_deps=("python python-setuptools-scm
+python-pytest")
 
-adddep=("python-pytest python-setuptools")
+adddep=("python-pytest")
 
 build() {
   go_src_dir
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 }

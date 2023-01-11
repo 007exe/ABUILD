@@ -1,10 +1,9 @@
 pkgname=python-urwid
 pkgver=2.1.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Curses-based user interface library")
-longdesc=("Urwid is a curses-based user interface library.")
+shortdesc=("Curses-based user interface library.")
 
 source=("https://pypi.org/packages/source/u/urwid/urwid-${pkgver}.tar.gz")
 

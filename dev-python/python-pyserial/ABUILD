@@ -1,10 +1,9 @@
 pkgname=python-pyserial
 pkgver=3.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Multiplatform Serial Port Module for Python.")
-longdesc=("A python library to access serial ports.")
 
 source=("https://github.com/pyserial/pyserial/archive/v${pkgver}.tar.gz")
 
@@ -18,4 +17,12 @@ build(){
   python setup.py build
   python setup.py install --root=${pkgdir} --skip-build
   install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }

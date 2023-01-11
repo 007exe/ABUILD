@@ -1,19 +1,19 @@
-pkgname=django-debug-toolbar
-pkgver=3.2.4
+pkgname=python-django-debug-toolbar
+pkgver=3.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A configurable set of panels that display various debug information about the current request/response.")
-longdesc=("The Django Debug Toolbar is a plug-in Django application that displays a set of panels which conveys information about the current request at the top of the rendered page.")
 
 source=("https://github.com/jazzband/django-debug-toolbar/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-# python-sqlparse python-django
-build_deps=("python python-setuptools")
+adddep=("python-django python-sqlparse")
 
-#adddep=("python-django python-sqlparse")
+build_deps=("${adddep} python python-setuptools")
+
+conflicts=("django-debug-toolbar")
 
 build(){
   go_src_dir

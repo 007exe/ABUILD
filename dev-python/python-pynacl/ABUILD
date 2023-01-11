@@ -1,12 +1,11 @@
 pkgname=python-pynacl
 pkgver=1.4.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Python binding to the Networking and Cryptography (NaCl) library.")
-longdesc=("Python binding to the Networking and Cryptography (NaCl) library.")
 
-source=("https://pypi.org/packages/source/P/PyNaCl/PyNaCl-$pkgver.tar.gz")
+source=("https://pypi.org/packages/source/P/PyNaCl/PyNaCl-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,5 +16,5 @@ adddep=("libsodium python-six python-cffi")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }

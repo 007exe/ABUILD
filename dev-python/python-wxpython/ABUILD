@@ -1,29 +1,25 @@
 pkgname=python-wxpython
-pkgver=4.0.7.2
-pkgbuild=2
+pkgver=4.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Cross-platform GUI toolkit.")
-longdesc=("A blending of the wxWindows C++ class library with Python.")
 
-_pkgver="${pkgver%.*}"
-_post="${pkgver##*.}"
-source=("https://files.pythonhosted.org/packages/source/w/wxPython/wxPython-$_pkgver.post$_post.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/w/wxPython/wxPython-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=('wxgtk3 python-six mesa glu webkit2gtk python-requests python-setuptools')
+build_deps=("mesa glu webkit2gtk python-requests python-setuptools python-attrdict sip doxygen waf
+wxwidgets-gtk3 python-six")
 
-adddep=("python-six wxgtk3")
+adddep=("wxwidgets-gtk3 python-six")
 
 build() {
   go_src_dir
-#Fix compatibility with wxgtk3
-  sed -i "s|WX_CONFIG = 'wx-config'|WX_CONFIG = 'wx-config-gtk3'|" build.py
-
-  python build.py build --use_syswx --release
-  python build.py install --destdir="$pkgdir"
-
-  install -Dm 644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
-  find "$pkgdir/usr/lib" -type f | xargs chmod 644
+  rm -r sip/{cpp,gen}/*
+  SIP=/usr/bin/sip DOXYGEN=/usr/bin/doxygen WAF=/usr/bin/waf \
+  python build.py dox etg --nodoc sip build --use_syswx --release
+  python build.py install --destdir=${pkgdir}
+  install -Dm 644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+  find ${pkgdir}/usr/lib -type f | xargs chmod 644
 }

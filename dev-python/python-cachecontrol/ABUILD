@@ -1,10 +1,9 @@
 pkgname=python-cachecontrol
 pkgver=0.12.11
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("httplib2 caching for requests.")
-longdesc=("CacheControl is a port of the caching algorithms in httplib2 for use with requests session object.")
 
 source=("https://github.com/ionrock/cachecontrol/archive/v${pkgver}.tar.gz")
 
@@ -22,7 +21,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/v${pkgver}.tar.gz

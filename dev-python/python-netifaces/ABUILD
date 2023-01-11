@@ -1,6 +1,6 @@
 pkgname=python-netifaces
 pkgver=0.11.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Portable module to access network interface information in Python.")

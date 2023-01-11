@@ -1,6 +1,6 @@
 pkgname=python-dnspython
 pkgver=2.2.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A DNS toolkit for Python.")

@@ -1,24 +1,26 @@
 pkgname=python-aiohttp
-pkgver=3.8.1
-pkgbuild=2
+pkgver=3.8.3
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("HTTP client/server for asyncio")
-longdesc=("Python HTTP client/server for asyncio which supports both the client and the server side of the HTTP protocol, client and server websocket, and webservers with middlewares and pluggable routing.")
+shortdesc=("HTTP client/server for asyncio.")
 
 source=("https://files.pythonhosted.org/packages/source/a/aiohttp/aiohttp-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("git python python-cython python-setuptools python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer python-aiosignal python-frozenlist")
+build_deps=("python cython npm python-build python-installer python-setuptools python-wheel
+python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer
+python-aiosignal python-frozenlist")
 
-adddep=("python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer python-aiosignal python-frozenlist")
+adddep=("python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer
+python-aiosignal python-frozenlist")
 
 build() {
   go_src_dir
-  sed -i '/http_parser\.c/d' -i setup.py
-  sed -i '/http_parser\.h/s/".*\//"/' -i aiohttp/_cparser.pxd
-#  make cythonize
-  python setup.py build
-  python setup.py install --root="${pkgdir}" -O1 --skip-build
+  sed -i "s/import {import_path!s}/import sys; sys.path.insert(0, '{os.environ['PYTHONPATH']}'); &/" tests/test_circular_imports.py
+  sed -e 's|charset-normalizer >=2.0, < 3.0|charset-normalizer >=2.0, < 4.0|' -i setup.cfg
+  make generate-llhttp cythonize
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${}pkgdir} dist/*.whl
 }

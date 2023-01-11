@@ -1,6 +1,6 @@
 pkgname=python-pyenchant
 pkgver=3.2.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("PyEnchant is a spellchecking library for Python3 based on the Enchant library.")
@@ -21,7 +21,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
 after_build(){
   go_src_dir
   rm ${srcache}/v${pkgver}.tar.gz

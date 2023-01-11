@@ -1,14 +1,13 @@
 pkgname=python-ordered-set
 pkgver=4.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Custom MutableSet that remembers its order")
-longdesc=("An OrderedSet is a custom MutableSet that remembers its order, so that every entry has an index that can be looked up.")
+shortdesc=("A MutableSet that remembers its order, so that every entry has an index.")
 
 tags=("dev-python libs")
 
-source=("https://pypi.io/packages/source/o/ordered-set/ordered-set-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/o/ordered-set/ordered-set-${pkgver}.tar.gz")
 
 build_deps=("python-setuptools python")
 

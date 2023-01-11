@@ -1,28 +1,35 @@
 pkgname=python-pep621
-pkgver=0.4.0
-pkgbuild=2
+pkgver=0.6.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("PEP 621 metadata parsing.")
-longdesc=("PEP 621 metadata parsing.")
 
-source=("https://github.com/FFY00/python-pep621/archive/refs/tags/$pkgver.tar.gz")
+source=("https://github.com/FFY00/python-pep621/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python git python-setuptools python-sphinx python-sphinx-autodoc-typehints python-sphinx-furo python-packaging")
+build_deps=("python python-build python-installer python-setuptools python-wheel
+python-sphinx python-sphinx-autodoc-typehints python-sphinx-furo python-packaging")
 
 adddep=("python-packaging")
 
 build() {
   go_src_dir
   echo 'from setuptools import setup; setup()' >setup.py
-  python setup.py build
+  python -m build -nw
   PYTHONPATH=. sphinx-build -b dirhtml -v docs docs/build/html
-  python setup.py install --root="$pkgdir" --skip-build
-  python -m compileall --invalidation-mode=checked-hash "$pkgdir"
-  install -dm 755 "$pkgdir"/usr/share/doc/$pkgname
-  cp -r -a --no-preserve=ownership docs/build/html "$pkgdir"/usr/share/doc/$pkgname
-  rm -rf "$pkgdir"/usr/share/doc/$pkgname/html/.doctrees
-  install -Dm 644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python -m installer -d ${destdir} dist/*.whl
+  install -dm 755 ${pkgdir}/usr/share/doc/${pkgname}
+  cp -r -a --no-preserve=ownership docs/build/html ${pkgdir}/usr/share/doc/${pkgname}
+  rm -rf ${pkgdir}/usr/share/doc/$pkgname/html/.doctrees
+  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

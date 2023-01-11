@@ -1,5 +1,5 @@
 pkgname=pypy
-pkgver=7.3.9
+pkgver=7.3.11
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,7 @@ source="https://downloads.python.org/pypy/pypy2.7-v${pkgver}-src.zip"
 
 tags=("libs dev-python")
 
-# pypy
-build_deps=("tk sqlite mercurial expat bzip2 gdbm openssl libffi zlib ncurses")
+build_deps=("tk sqlite mercurial expat bzip2 gdbm openssl libffi zlib ncurses pypy")
 
 adddep=("expat bzip2 gdbm openssl libffi zlib ncurses")
 

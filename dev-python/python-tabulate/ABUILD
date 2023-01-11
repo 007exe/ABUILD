@@ -1,22 +1,24 @@
 pkgname=python-tabulate
-pkgver=0.8.10
+pkgver=0.9.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Pretty-print tabular data in Python, a library and a command-line utility.")
-longdesc=("C version of reader, parser and emitter for ruamel.yaml derived from libyaml.")
 
 _name=tabulate
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/tabulate/tabulate-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel")
+build_deps=("python python-build python-installer python-setuptools-scm python-toml python-wheel")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-numpy python-pandas python-wcwidth")
 
 build() {
   go_src_dir
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
-  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}/
   install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

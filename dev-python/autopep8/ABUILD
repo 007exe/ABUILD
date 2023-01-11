@@ -1,24 +1,21 @@
 pkgname=autopep8
-pkgver=1.6.0
+pkgver=2.0.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A tool that automatically formats Python code to conform to the PEP 8 style guide.")
-longdesc=("A tool that automatically formats Python code to conform to the PEP 8 style guide.")
 
 source=("https://github.com/hhatto/autopep8/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-# python-pycodestyle
-build_deps=("python python-toml")
+build_deps=("python python-build python-installer python-wheel python-setuptools")
 
-# python-pycodestyle
-adddep=("python-toml")
+adddep=("python-toml python-pycodestyle")
 
 build() {
   go_src_dir
-  python setup.py build
-  python3 setup.py install -O1 --prefix=/usr --root=${pkgdir}
-  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }

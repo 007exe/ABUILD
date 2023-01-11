@@ -1,6 +1,6 @@
 pkgname=python-gssapi
 pkgver=1.8.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Provides both low-level and high level wrappers around the GSSAPI C libraries.")
@@ -9,7 +9,7 @@ source=("https://github.com/pythongssapi/python-gssapi/archive/v${pkgver}/${pkgn
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-cython python-decorator krb5")
+build_deps=("python python-setuptools cython python-decorator krb5")
 
 adddep=("python-decorator krb5")
 

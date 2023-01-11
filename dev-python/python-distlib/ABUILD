@@ -1,10 +1,9 @@
 pkgname=python-distlib
 pkgver=0.3.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Low-level components of distutils2/packaging.")
-longdesc=("Low-level components of distutils2/packaging, augmented with higher-level APIs for making packaging easier.")
+shortdesc=("Low-level functions that relate to packaging and distribution of Python software.")
 
 source=("https://github.com/pypa/distlib/releases/download/${pkgver}/distlib-${pkgver}.tar.gz")
 

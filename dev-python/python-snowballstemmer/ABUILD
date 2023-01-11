@@ -1,12 +1,11 @@
 pkgname=python-snowballstemmer
 pkgver=2.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Snowball stemming library collection for Python.")
-longdesc=("Stemmer algorithms generated from Snowball algorithms.")
 
-source=("https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

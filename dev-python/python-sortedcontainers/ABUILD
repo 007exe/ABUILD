@@ -1,12 +1,11 @@
 pkgname=python-sortedcontainers
 pkgver=2.4.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("Python library to sort collections and containers.")
-longdesc=("Python Sorted Container Types: SortedList, SortedDict, and SortedSet.")
+shortdesc=("Python Sorted Container Types: SortedList, SortedDict, and SortedSet.")
 
-source=("https://pypi.python.org/packages/source/s/sortedcontainers/sortedcontainers-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/s/sortedcontainers/sortedcontainers-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -17,5 +16,5 @@ build(){
 # Don't use tox
   sed -i '/tests_require/d' ./setup.py
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
+  python setup.py install --root=${pkgdir} --optimize=1
 }

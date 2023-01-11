@@ -1,6 +1,6 @@
 pkgname=python-beautifulsoup4
 pkgver=4.11.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A Python HTML/XML parser designed for quick turnaround projects like screen-scraping.")

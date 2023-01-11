@@ -1,16 +1,16 @@
 pkgname=python-wheel
 pkgver=0.38.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A built-package format for Python.")
-longdesc=("A wheel is a ZIP-format archive with a specially formatted filename and the .whl extension. It is designed to contain all the files for a PEP 376 compatible install in a way that is very close to the on-disk format.")
 
 source=("https://github.com/pypa/wheel/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-packaging python-setuptools")
+build_deps=("python python-setuptools
+python-packaging")
 
 adddep=("python-packaging")
 
@@ -27,7 +27,7 @@ build(){
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

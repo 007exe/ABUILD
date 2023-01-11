@@ -1,10 +1,9 @@
 pkgname=python-entrypoints
 pkgver=0.4
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Discover and load entry points from installed packages.")
-longdesc=("Discover and load entry points from installed packages.")
 
 source=("https://github.com/takluyver/entrypoints/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 

@@ -1,21 +1,18 @@
 pkgname=python-mygpoclient
-pkgver=1.8
+pkgver=1.9
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Enhancements to the Python build system.")
-longdesc=("Client library for the my.gpodder.org web service.")
+shortdesc=("Python client Library for the gpodder.net web service.")
 
-source=("https://github.com/gpodder/mygpoclient/archive/${pkgver}/python-mygpoclient-${pkgver}.tar.gz")
+source=("https://github.com/gpodder/mygpoclient/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools intltool")
-
-adddep=("intltool")
+build_deps=("python")
 
 build() {
   go_src_dir
-  burn_patches
-  python3 setup.py install --root=${pkgdir}
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }

@@ -1,19 +1,18 @@
 pkgname=python-pyasn1
 pkgver=0.4.8
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("ASN.1 tools for Python.")
-longdesc=("This project is dedicated to implementation of ASN.1 types (concrete syntax) and codecs (transfer syntaxes) for Python programming environment. ASN.1 compiler is planned for implementation in the future.")
+shortdesc=("ASN.1 library for Python 3.")
 
 tags=("dev-python libs")
 
-source=("https://pypi.io/packages/source/p/pyasn1/pyasn1-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/p/pyasn1/pyasn1-${pkgver}.tar.gz")
 
 build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
-  python setup.py install --root="${pkgdir}"
-  install -D -m 644 LICENSE.rst "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  python setup.py install --root=${pkgdir}
+  install -D -m 644 LICENSE.rst ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

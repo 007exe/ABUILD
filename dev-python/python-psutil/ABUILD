@@ -1,6 +1,6 @@
 pkgname=python-psutil
 pkgver=5.9.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A cross-platform process and system utilities module for Python.")
@@ -16,4 +16,12 @@ build() {
   python setup.py build --build-lib=build/python
   python setup.py build --build-lib=build/python install --root=${pkgdir} --optimize=1
   install -D -m 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/release-${pkgver}.tar.gz
 }

@@ -1,6 +1,6 @@
 pkgname=python-pyrsistent
 pkgver=0.19.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Persistent/Functional/Immutable data structures.")

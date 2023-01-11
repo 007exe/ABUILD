@@ -1,10 +1,9 @@
 pkgname=python-crashtest
 pkgver=0.4.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Supposedly makes exceptions handling and inspection easier.")
-longdesc=("Python library that makes exceptions handling and inspection easier.")
 
 _pkgname=crashtest
 source=("https://github.com/sdispater/${_pkgname}/archive/${pkgver}.tar.gz")
@@ -18,4 +17,12 @@ build() {
   python -m build -wn
   python -m installer -d ${pkgdir} dist/*.whl
   install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname}/ LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

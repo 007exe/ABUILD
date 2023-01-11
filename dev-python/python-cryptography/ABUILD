@@ -1,12 +1,11 @@
 pkgname=python-cryptography
-pkgver=38.0.4
+pkgver=39.0.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A package designed to expose cryptographic recipes and primitives to Python developers")
-longdesc=("Library providing cryptographic recipes and primitives.")
+shortdesc=("A package designed to expose cryptographic recipes and primitives to Python developers.")
 
-source=("https://pypi.io/packages/source/c/cryptography/cryptography-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/c/cryptography/cryptography-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

@@ -1,25 +1,27 @@
 pkgname=python-twisted
-pkgver=21.7.0
-pkgbuild=2
+pkgver=22.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Asynchronous networking framework written in Python.")
-longdesc=("Asynchronous networking framework written in Python.")
 
-source=("https://github.com/twisted/twisted/archive/twisted-$pkgver.tar.gz")
+source=("https://github.com/twisted/twisted/archive/twisted-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python-setuptools python-zope-interface python-constantly python-incremental python-automat python-hyperlink python-attrs python-typing_extensions")
+build_deps=("python-setuptools python-zope-interface python-constantly python-incremental
+python-automat python-hyperlink python-attrs python-typing_extensions")
 
-adddep=("python-zope-interface python-constantly python-incremental python-automat python-hyperlink python-attrs python-typing_extensions")
+adddep=("python-zope-interface python-constantly python-incremental python-automat
+python-hyperlink python-attrs python-typing_extensions")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-pyopenssl python-service-identity python-idna python-cryptography
+python-pyasn1 python-appdirs python-bcrypt python-h2 python-priority python-pyserial tk")
 
 build() {
   go_src_dir
-  burn_patches
-# Remove upper bounds
-  sed -i 's/, < 4.0//;s/, < 2.0//' setup.cfg
   python setup.py build
-  python setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
-  install -D -m644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

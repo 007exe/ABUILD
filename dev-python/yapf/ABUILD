@@ -1,12 +1,11 @@
 pkgname=yapf
 pkgver=0.32.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python style guide checker.")
-longdesc=("A formatter for Python code.")
 
-source=("https://github.com/google/yapf/archive/v$pkgver/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/google/yapf/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

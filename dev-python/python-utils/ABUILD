@@ -1,23 +1,22 @@
 pkgname=python-utils
-pkgver=3.1.0
-pkgbuild=2
+pkgver=3.4.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A module with some convenient utilities not included with the standard Python install.")
-longdesc=("A module with some convenient utilities not included with the standard Python install.")
 
 source=("https://pypi.org/packages/source/p/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-six")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 adddep=("python-six")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --optimize=1 --root="${pkgdir}"
-  install -vDm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -vDm 644 README.rst -t "${pkgdir}/usr/share/doc/${pkgname}"
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -vDm 644 README.rst -t ${pkgdir}/usr/share/doc/${pkgname}/
 }

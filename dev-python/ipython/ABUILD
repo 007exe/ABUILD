@@ -1,22 +1,20 @@
 pkgname=ipython
-pkgver=8.4.0
+pkgver=8.8.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An enhanced Interactive Python shell.")
-longdesc=("IPython provides a rich architecture for interactive computing.")
 
-source=("http://archive.ipython.org/release/$pkgver/ipython-$pkgver.tar.gz"
+source=("http://archive.ipython.org/release/$pkgver/ipython-${pkgver}.tar.gz"
 "https://www.packal.org/sites/default/files/public/styles/icon_large/public/workflow-files/nkeimipynbworkflow/icon/icon.png")
 
 tags=("develop dev-python")
 
-# python-traitlets python-pickleshare python-prompt_toolkit python-jedi python-backcall python-matplotlib-inline python-stack-data
-build_deps=("python-build python-installer python-setuptools python-wheel
-python-pexpect sqlite python-pygments")
+adddep=("ython python-traitlets python-pexpect sqlite python-pickleshare
+python-prompt_toolkit python-jedi python-pygments python-backcall
+python-matplotlib-inline python-stack-data")
 
-# python-traitlets python-pickleshare python-prompt_toolkit python-jedi python-backcall python-matplotlib-inline python-stack-data
-adddep=("python-pexpect sqlite python-pygments")
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir

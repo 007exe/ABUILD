@@ -1,13 +1,12 @@
 pkgname=python-notify2
 pkgver=0.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python interface to DBus notifications.")
-longdesc=("Python bindings for libnotify.")
 
 _name=notify2
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/notify2/notify2-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

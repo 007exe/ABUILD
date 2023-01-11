@@ -1,5 +1,5 @@
 pkgname=python-sqlalchemy
-pkgver=1.4.39
+pkgver=1.4.44
 pkgbuild=1
 arch=("auto")
 
@@ -9,17 +9,16 @@ source=("https://pypi.io/packages/source/S/SQLAlchemy/SQLAlchemy-${pkgver}.tar.g
 
 tags=("libs dev-python")
 
-# python-greenlet
-build_deps=("python python-setuptools")
+build_deps=("python python-setuptools python-build python-installer python-wheel
+python-greenlet")
 
-# adddep=("python-greenlet")
+adddep=("python-greenlet")
 
 build(){
   go_src_dir
-  burn_patches
   sed -i '/warnings.filterwarnings("error", category=DeprecationWarning)/a \    warnings.filterwarnings("ignore", category=DeprecationWarning, message="Creating a LegacyVersion has been deprecated and will be removed in the next major release")' \
-  lib/sqlalchemy/testing/warnings.py
-  python setup.py build
-  python setup.py install --root=${pkgdir}
+      SQLAlchemy-$pkgver/lib/sqlalchemy/testing/warnings.py
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

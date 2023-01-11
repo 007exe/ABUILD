@@ -1,22 +1,22 @@
 pkgname=python-service-identity
 pkgver=21.1.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Service identity verification for pyOpenSSL.")
-longdesc=("Service identity verification for pyOpenSSL.")
 
-source=("https://github.com/pyca/service-identity/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/pyca/service-identity/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python-setuptools python-idna python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six")
+build_deps=("python python-setuptools python-idna
+python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six")
 
 adddep=("python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six")
 
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

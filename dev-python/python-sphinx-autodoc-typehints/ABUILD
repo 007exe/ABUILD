@@ -1,7 +1,7 @@
 pkgname=python-sphinx-autodoc-typehints
-pkgver=1.13.1
+pkgver=1.19.5
 # NOTE: Коммит версии
-_commit=2f863c20f83bb789610982375cb76b3c45bb787e
+_commit=9d67010bcc5cd7d1d917069b75e43057551af7be
 strict_version=1
 pkgbuild=2
 arch=("auto")
@@ -12,7 +12,8 @@ source=("git:https://github.com/tox-dev/sphinx-autodoc-typehints.git")
 
 tags=("libs dev-python")
 
-build_deps=("python git python-setuptools python-setuptools-scm python-sphinx python-typing_extensions")
+build_deps=("python git python-build python-installer python-hatchling python-hatch-vcs
+python-sphinx python-typing_extensions")
 
 adddep=("python-sphinx python-typing_extensions")
 
@@ -25,8 +26,8 @@ before_build() {
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install -O1 --root=${pkgdir} --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
   install -Dm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
 }

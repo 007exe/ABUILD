@@ -1,13 +1,12 @@
 pkgname=python-euclid3
-_pkgname=euclid3
 pkgver=0.01
-pkgbuild=2
-arch=('auto')
+pkgbuild=3
+arch=("auto")
 
 shortdesc=("2D and 3D vector, matrix, quaternion and geometry module.")
-longdesc=("2D and 3D vector, matrix, quaternion and geometry module.")
 
-source=("https://pypi.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz")
+_pkgname=euclid3
+source=("https://pypi.org/packages/source/${_pkgname:0:1}/euclid3/euclid3-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -16,6 +15,6 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm 644 README "$pkgdir"/usr/share/licenses/$pkgname/README
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 README ${pkgdir}/usr/share/licenses/${pkgname}/README
 }

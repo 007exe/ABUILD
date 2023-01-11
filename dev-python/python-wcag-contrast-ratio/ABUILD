@@ -1,6 +1,6 @@
 pkgname=python-wcag-contrast-ratio
 pkgver=0.9
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Library for computing contrast ratios, as required by WCAG 2.0.")

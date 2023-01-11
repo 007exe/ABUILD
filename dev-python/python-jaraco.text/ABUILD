@@ -1,10 +1,9 @@
 pkgname=python-jaraco.text
 pkgver=3.11.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Module for text manipulation.")
-longdesc=("Text utilities used by other projects by developer jaraco.")
 
 source=("https://files.pythonhosted.org/packages/source/j/jaraco.text/jaraco.text-${pkgver}.tar.gz")
 

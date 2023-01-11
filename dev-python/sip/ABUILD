@@ -1,18 +1,17 @@
 pkgname=sip
-pkgver=6.6.2
+pkgver=6.7.5
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Python bindings generator for C/C++ libraries.")
-longdesc=("A tool that makes it easy to create Python bindings for C and C++ libraries.")
+shortdesc=("A tool that makes it easy to create Python bindings for C and C++ libraries.")
 
-source=("https://pypi.python.org/packages/source/s/sip/$pkgname-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/s/sip/${pkgname}-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python python-toml python-packaging python-setuptools")
+build_deps=("python python-toml python-packaging python-setuptools python-ply")
 
-adddep=("python-toml python-packaging python-setuptools")
+adddep=("python-toml python-packaging python-setuptools python-ply")
 
 build() {
   go_src_dir

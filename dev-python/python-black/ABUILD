@@ -1,5 +1,5 @@
 pkgname=python-black
-pkgver=22.10.0
+pkgver=22.12.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,10 @@ source=("https://files.pythonhosted.org/packages/source/b/black/black-${pkgver}.
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools-scm python-wheel python-click
-python-pathspec python-mypy_extensions python-platformdirs python-tomli python-typing_extensions")
+build_deps=("python python-build python-hatch-fancy-pypi-readme python-hatch-vcs python-hatchling python-installer
+python-click python-mypy_extensions python-pathspec python-platformdirs python-tomli")
 
-adddep=("python-click python-pathspec python-platformdirs python-tomli
-python-typing_extensions")
+adddep=("python-click python-mypy_extensions python-pathspec python-platformdirs python-tomli")
 
 build() {
   go_src_dir

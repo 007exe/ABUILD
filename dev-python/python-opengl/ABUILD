@@ -1,10 +1,9 @@
 pkgname=python-opengl
 pkgver=3.1.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Python OpenGL bindings.")
-longdesc=("The cross platform Python binding to OpenGL and related APIs.")
+shortdesc=("The cross platform Python binding to OpenGL and related APIs.")
 
 source=("https://pypi.python.org/packages/source/P/PyOpenGL/PyOpenGL-${pkgver}.tar.gz")
 

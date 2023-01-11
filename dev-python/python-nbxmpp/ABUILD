@@ -1,6 +1,6 @@
 pkgname=python-nbxmpp
 pkgver=3.2.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A Python library to use Jabber/XMPP networks in a non-blocking way.")

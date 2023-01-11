@@ -1,24 +1,22 @@
 pkgname=python-hypothesis
-pkgver=6.17.0
-pkgbuild=2
+pkgver=6.59.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library for property based testing.")
-longdesc=("Hypothesis is a library for testing your Python code against a much larger range of examples than you would ever want to write by hand. Its based on the Haskell library, Quickcheck, and is designed to integrate seamlessly into your existing Python unit testing work flow.")
 
-source=("https://pypi.io/packages/source/h/hypothesis/hypothesis-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/h/hypothesis/hypothesis-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel
+python-attrs python-sortedcontainers python-exceptiongroup")
 
-adddep=("python python-attrs python-sortedcontainers")
+adddep=("python-attrs python-sortedcontainers python-exceptiongroup")
 
-build()
-{
+build(){
   go_src_dir
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-# It's only present when tests are enabled, so adding -f
-  rm -rf "$pkgdir"/usr/lib/python3.9/site-packages/tests
+  python -m build -nw
+  python -m installer -d ${pkgdir} dist/*.whl
+  rm -rf ${pkgdir}/usr/lib/python*/site-packages/tests
 }

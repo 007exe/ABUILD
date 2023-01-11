@@ -1,6 +1,6 @@
 pkgname=python-jaraco.context
 pkgver=4.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Context managers by jaraco.")

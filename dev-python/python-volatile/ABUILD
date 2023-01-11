@@ -1,13 +1,12 @@
 pkgname=python-volatile
 pkgver=2.1.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A small extension for the tempfile module.")
-longdesc=("A small extension for the tempfile module.")
 
 _pkgname=volatile
-source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/volatile/volatile-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -16,5 +15,5 @@ build_deps=("python python-setuptools")
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
 }

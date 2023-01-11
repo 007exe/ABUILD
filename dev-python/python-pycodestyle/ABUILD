@@ -1,6 +1,6 @@
 pkgname=python-pycodestyle
 pkgver=2.10.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python style guide checker.")

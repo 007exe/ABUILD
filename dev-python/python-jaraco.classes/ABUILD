@@ -1,6 +1,6 @@
 pkgname=python-jaraco.classes
 pkgver=3.2.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Module for classes manipulation.")

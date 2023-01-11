@@ -1,6 +1,6 @@
 pkgname=python-mypy_extensions
 pkgver=0.4.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Experimental type system extensions for programs checked with the mypy typechecker.")
@@ -16,5 +16,5 @@ build() {
   burn_patches
   python setup.py build
   python setup.py install --prefix="/usr" --root=${pkgdir} --optimize=1 --skip-build
-    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

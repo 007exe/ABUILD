@@ -1,23 +1,23 @@
 pkgname=python-genshi
-pkgver=0.7.5
+pkgver=0.7.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python toolkit for stream-based generation of output for the web.")
-longdesc=("Python toolkit for stream-based generation of output for the web.")
 
 source=("https://github.com/edgewall/genshi/archive/${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python python-setuptools python-six")
+build_deps=("python python-build python-installer python-setuptools python-wheel
+python-six")
 
 adddep=("python-six")
 
 build() {
   go_src_dir
   burn_patches
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

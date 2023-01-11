@@ -1,16 +1,15 @@
 pkgname=python-numpy
 pkgver=1.23.5
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Scientific tools for Python.")
-longdesc=("NumPy is the fundamental package needed for scientific computing with Python.")
 
-source=("https://github.com/numpy/numpy/releases/download/v$pkgver/numpy-${pkgver}.tar.gz")
+source=("https://github.com/numpy/numpy/releases/download/v${pkgver}/numpy-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("cblas lapack python python-setuptools gcc-fortran python-cython")
+build_deps=("cblas lapack python python-setuptools gcc-fortran cython")
 
 adddep=("cblas lapack")
 

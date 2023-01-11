@@ -1,19 +1,21 @@
 pkgname=python-zope-interface
-pkgver=5.4.0
-pkgbuild=2
+pkgver=5.5.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Zope Interfaces for Python 3.x")
-longdesc=("Zope Interfaces for Python 3.x")
 
-source=("https://pypi.io/packages/source/z/zope.interface/zope.interface-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/z/zope.interface/zope.interface-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python python-pip")
+build_deps=("python python-setuptools")
+
+adddep=("python-setuptools")
 
 build() {
   go_src_dir
+  sed -i '/coverage/d' setup.py
   python setup.py build
-  python setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
 }

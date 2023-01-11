@@ -1,6 +1,6 @@
 pkgname=python-requests-toolbelt
 pkgver=0.10.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A toolbelt of useful classes and functions to be used with python-requests.")
@@ -22,7 +22,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

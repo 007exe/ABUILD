@@ -1,6 +1,6 @@
 pkgname=python-validate-pyproject
 pkgver=0.10.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Validation library and CLI tool for checking on 'pyproject.toml' files using JSON Schema.")

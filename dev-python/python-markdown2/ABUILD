@@ -1,20 +1,29 @@
 pkgname=python-markdown2
-pkgver=2.4.2
-pkgbuild=2
+pkgver=2.4.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A fast and complete implementation of Markdown in Python.")
-longdesc=("This (markdown2) is a fast and complete Python implementation of Markdown.")
 
-source=("https://github.com/trentm/python-markdown2/archive/$pkgver.tar.gz")
+source=("https://github.com/trentm/python-markdown2/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-setuptools python-pygments")
+
+adddep=("python-pygments")
 
 build() {
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm 644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

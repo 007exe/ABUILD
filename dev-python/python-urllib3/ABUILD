@@ -1,12 +1,11 @@
 pkgname=python-urllib3
 pkgver=1.26.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Python HTTP library with thread-safe connection pooling, file post, and more")
-longdesc=("HTTP library with thread-safe connection pooling, file post, and more.")
+shortdesc=("HTTP library with thread-safe connection pooling and file post support.")
 
-source=("https://github.com/urllib3/urllib3/archive/$pkgver/$pkgbase-$pkgver.tar.gz")
+source=("https://github.com/urllib3/urllib3/archive/${pkgver}/${pkgbase}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -21,7 +20,6 @@ build() {
   cd ..
   python setup.py install --root=${pkgdir}
   install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
-
   install -d ${pkgdir}/usr/share/doc
   cd docs
   cp -r _build/html ${pkgdir}/usr/share/doc/python-urllib3

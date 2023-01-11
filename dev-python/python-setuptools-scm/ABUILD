@@ -1,16 +1,16 @@
 pkgname=python-setuptools-scm
-pkgver=7.0.5
+pkgver=7.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tool to manage python package versions by scm tags.")
-longdesc=("Tool to manage python package versions by scm tags.")
 
 source=("https://pypi.io/packages/source/s/setuptools_scm/setuptools_scm-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-packaging python-setuptools python-tomli python-typing_extensions")
+build_deps=("python python-build python-installer python-wheel
+python-packaging python-setuptools python-tomli python-typing_extensions")
 
 adddep=("python-packaging python-setuptools python-tomli python-typing_extensions")
 

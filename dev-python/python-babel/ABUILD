@@ -1,11 +1,10 @@
 pkgname=python-babel
 pkgver=2.11.0
 _core=41
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Internationalization utilities for Python.")
-longdesc=("Babel is a Python library that provides an integrated collection of utilities that assist with internationalizing and localizing Python applications (in particular web-based applications.)")
 
 source=("https://github.com/python-babel/babel/archive/v${pkgver}.tar.gz"
         "http://unicode.org/Public/cldr/${_core}/core.zip")

@@ -1,12 +1,11 @@
 pkgname=python-nodeenv
 pkgver=1.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Node.js virtual environment builder.")
-longdesc=("It creates an environment that has its own installation directories, that doesn't share libraries with other node.js virtual environments.")
 
-source=("https://github.com/ekalinin/nodeenv/archive/$pkgver.tar.gz")
+source=("https://github.com/ekalinin/nodeenv/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -19,4 +18,12 @@ build() {
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

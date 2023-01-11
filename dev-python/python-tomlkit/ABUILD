@@ -1,13 +1,12 @@
 pkgname=python-tomlkit
 pkgver=0.11.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Style-preserving TOML library for Python.")
-longdesc=("It includes a parser that preserves all comments, indentations, whitespace and internal element ordering, and makes them accessible and editable via an intuitive API.")
 
 _pkgname=tomlkit
-source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/tomlkit/tomlkit-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

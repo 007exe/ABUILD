@@ -1,6 +1,6 @@
 pkgname=python-cairo
 pkgver=1.23.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python bindings for the cairo graphics library.")

@@ -1,6 +1,6 @@
 pkgname=python-random2
 pkgver=1.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python 3 compatible port of Python 2 random module.")

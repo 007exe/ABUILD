@@ -1,5 +1,5 @@
 pkgname=python-sphinx-furo
-pkgver=2022.09.29
+pkgver=2022.12.07
 pkgbuild=1
 arch=("auto")
 
@@ -17,18 +17,13 @@ adddep=("python-sphinx-basic-ng python-pygments python-beautifulsoup4")
 
 build() {
   go_src_dir
-# NOTE: Использовать системный nodejs
-#  local node_ver=$(expac %v nodejs-lts-gallium | cut -d - -f 1)
-#  sed -i "s/16.13.1/$node_ver/" pyproject.toml
-
-  python -m build -nw
+  STB_USE_SYSTEM_NODE=true python -m build -nw
   python -m installer --destdir=${pkgdir} dist/*.whl
-  install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

@@ -1,21 +1,25 @@
 pkgname=python-xapp
-pkgver=2.2.1
-pkgbuild=2
+pkgver=2.4.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python Xapp Library.")
-longdesc=("Python bindings for x11-libs/xapp.")
 
 source="https://github.com/linuxmint/python3-xapp/archive/${pkgver}.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-psutil")
+build_deps=("python meson
+python-psutil")
 
 adddep=("python-psutil")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+  meson build \
+    --prefix=/usr
+  meson compile -C build
+  meson install -C build --destdir=${pkgdir}
+  python -m compileall -d / ${pkgdir}/usr/lib
+  python -O -m compileall -d / ${pkgdir}/usr/lib
 }

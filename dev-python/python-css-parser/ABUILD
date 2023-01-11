@@ -1,6 +1,6 @@
 pkgname=python-css-parser
 pkgver=1.0.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A CSS Cascading Style Sheets library for Python.")

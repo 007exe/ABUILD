@@ -1,11 +1,11 @@
 pkgname=python-precis_i18n
 pkgver=1.0.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("PRECIS framework (RFC 8264, RFC 8265, RFC 8266).")
 
-source=("https://github.com/byllyfish/precis_i18n/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/byllyfish/precis_i18n/archive/v${pkgver}/python-precis_i18n-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 

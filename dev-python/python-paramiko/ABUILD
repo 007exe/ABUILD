@@ -1,12 +1,11 @@
 pkgname=python-paramiko
-pkgver=2.9.2
-pkgbuild=2
+pkgver=2.11.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("SSH2 protocol library.")
-longdesc=("Python module that implements the SSH2 protocol.")
+shortdesc=("Python module that implements the SSH2 protocol.")
 
-source=("https://github.com/paramiko/paramiko/archive/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/paramiko/paramiko/archive/${pkgver}/python-paramiko-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -16,9 +15,8 @@ adddep=("python-bcrypt python-cryptography python-pynacl")
 
 build() {
   go_src_dir
-  python setup.py install --root="$pkgdir" --optimize=1
-
-  install -dm755 "$pkgdir"/usr/share/doc/$pkgname/demos
-  install -m644 demos/* "$pkgdir"/usr/share/doc/$pkgname/demos
-  chmod 755 "$pkgdir"/usr/share/doc/$pkgname/demos/*.py
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -dm755 ${pkgdir}/usr/share/doc/${pkgname}/demos
+  install -m644 demos/* ${pkgdir}/usr/share/doc/${pkgname}/demos
+  chmod 755 ${pkgdir}/usr/share/doc/${pkgname}/demos/*.py
 }

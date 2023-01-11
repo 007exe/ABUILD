@@ -1,12 +1,11 @@
 pkgname=python-cssselect
-pkgver=1.1.0
-pkgbuild=2
+pkgver=1.2.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("A Python3 library that parses CSS3 Selectors and translates them to XPath 1.0")
-longdesc=("Cssselect parses CSS3 Selectors and translate them to XPath 1.0 expressions. Such expressions can be used in lxml or another XPath engine to find the matching elements in an XML or HTML document.")
+shortdesc=("A Python3 library that parses CSS3 Selectors and translates them to XPath 1.0.")
 
-source=("https://github.com/scrapy/cssselect/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/scrapy/cssselect/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
@@ -15,7 +14,6 @@ build_deps=("python python-setuptools")
 build(){
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${}pkgdir}/usr/share/licenses/${pkgname}/
 }

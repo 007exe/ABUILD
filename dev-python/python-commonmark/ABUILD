@@ -1,10 +1,9 @@
 pkgname=python-commonmark
 pkgver=0.9.1
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Python parser for the CommonMark Markdown spec.")
-longdesc=("CommonMark-py is a pure Python port of jgms commonmark.js, a Markdown parser and renderer for the CommonMark specification, using only native modules.")
 
 source=("https://github.com/readthedocs/commonmark.py/archive/${pkgver}.tar.gz")
 
@@ -28,7 +27,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

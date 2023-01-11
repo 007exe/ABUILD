@@ -1,21 +1,20 @@
 pkgname=python-sphinxcontrib-applehelp
 pkgver=1.0.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Apple help file support for the Sphinx documentation generator.")
-longdesc=("Web support for the Sphinx documentation generator.")
 
 _name=sphinxcontrib-applehelp
-source="https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz"
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/sphinxcontrib-applehelp/sphinxcontrib-applehelp-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 -t "$pkgdir"/usr/share/licenses/$pkgname LICENSE
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }

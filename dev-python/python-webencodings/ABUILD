@@ -1,10 +1,9 @@
 pkgname=python-webencodings
 pkgver=0.5.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("This is a Python implementation of the WHATWG Encoding standard.")
-longdesc=("This is a Python implementation of the WHATWG Encoding standard.")
 
 source=("https://github.com/gsnedders/python-webencodings/archive/v${pkgver}.tar.gz")
 
@@ -14,6 +13,6 @@ build_deps=("python python-setuptools")
 
 build() {
   go_src_dir
-  python3 setup.py install --root="${pkgdir}"
-  install -D -m644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  python3 setup.py install --root=${pkgdir}
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

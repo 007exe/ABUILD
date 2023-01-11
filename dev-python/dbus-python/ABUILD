@@ -1,10 +1,9 @@
 pkgname=dbus-python
 pkgver=1.2.18
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Python bindings for DBUS.")
-longdesc=("Python bindings for DBUS.")
 
 source=("https://dbus.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 

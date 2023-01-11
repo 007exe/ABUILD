@@ -1,10 +1,9 @@
 pkgname=python-mdit_py_plugins
 pkgver=0.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Collection of core plugins for markdown-it-py.")
-longdesc=("Extended commonmark compliant parser, with bridges to sphinx.")
 
 source=("https://github.com/executablebooks/mdit-py-plugins/archive/v${pkgver}.tar.gz")
 
@@ -23,7 +22,7 @@ build() {
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/v${pkgver}.tar.gz

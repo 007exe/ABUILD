@@ -1,7 +1,6 @@
-# NOTE: Данный пакет заменяет python-typing-extensions
 pkgname=python-typing_extensions
 pkgver=4.4.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Backported and Experimental Type Hints for Python 3.5+.")
@@ -11,6 +10,9 @@ source=("https://github.com/python/typing_extensions/archive/refs/tags/${pkgver}
 tags=("libs dev-python")
 
 build_deps=("python python-build python-flit-core python-installer")
+
+# NOTE: Данный пакет заменяет python-typing-extensions
+#provides=("python-typing-extensions")
 
 build() {
   go_src_dir

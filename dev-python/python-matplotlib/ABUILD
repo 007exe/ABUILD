@@ -1,26 +1,29 @@
 pkgname=python-matplotlib
-pkgver=3.5.2
+pkgver=3.6.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A python plotting library, making publication quality plots.")
-longdesc=("Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python.")
 
 source=("https://github.com/matplotlib/matplotlib/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-# python-setuptools-scm-git-archive python-cycler python-dateutil python-kiwisolver qhull
-build_deps=("python-certifi freetype python-fonttools python-numpy python-packaging python-pillow python-pyparsing")
+adddep=("freetype python-contourpy python-cycler python-dateutil python-fonttools python-kiwisolver python-numpy
+python-packaging python-pillow python-pyparsing qhull")
 
-# python-cycler python-dateutil python-kiwisolver qhull
-adddep=("freetype python-fonttools python-numpy python-packaging python-pillow python-pyparsing")
+build_deps=("${adddep} python python-setuptools-scm python-certifi")
+
+# NOTE: Это опциональные зависимости
+removedep=("tk pyside2 pyside6 python-pyqt5 python-pyqt6 python-gobject python-wxpython python-cairo python-cairocffi
+python-tornado ffmpeg imagemagick ghostscript texlive-bin texlive-latexextra python-certifi")
 
 build() {
   go_src_dir
   burn_patches
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python setup.py build
   python setup.py install --root ${pkgdir} --prefix=/usr --optimize=1 --skip-build
   install -Dm644 doc/users/project/license.rst -t ${pkgdir}/usr/share/licenses/${pkgname}/
-  rm -r "${pkgdir}"$(python -c "import site; print(site.getsitepackages()[0])")/{matplotlib,mpl_toolkits}/tests/
+  rm -r ${pkgdir}$(python -c "import site; print(site.getsitepackages()[0])")/{matplotlib,mpl_toolkits}/tests/
 }

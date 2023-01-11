@@ -1,6 +1,6 @@
 pkgname=python-websockets
 pkgver=10.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python implementation of the WebSocket Protocol (RFC 6455).")

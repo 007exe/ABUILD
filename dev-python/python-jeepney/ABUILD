@@ -1,20 +1,19 @@
 pkgname=python-jeepney
-pkgver=0.7.1
-pkgbuild=2
+pkgver=0.8.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low-level, pure Python DBus protocol wrapper.")
-longdesc=("Low-level, pure Python DBus protocol wrapper.")
 
-source=("https://pypi.io/packages/source/j/jeepney/jeepney-$pkgver.tar.gz")
+source=("https://pypi.io/packages/source/j/jeepney/jeepney-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python")
+build_deps=("python python-build python-installer python-flit-core")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

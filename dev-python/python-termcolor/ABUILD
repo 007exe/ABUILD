@@ -1,18 +1,18 @@
 pkgname=python-termcolor
-pkgver=1.1.0
-pkgbuild=2
+pkgver=2.1.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("ANSII Color formatting for output in terminal.")
-longdesc=("ANSII Color formatting for output in terminal.")
 
-source=("https://pypi.python.org/packages/source/t/termcolor/termcolor-$pkgver.tar.gz")
+source=("https://pypi.python.org/packages/source/t/termcolor/termcolor-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python")
+build_deps=("python python-build python-installer python-hatch-vcs")
 
 build() {
   go_src_dir
-  python setup.py install --root="$pkgdir"
+  python -m build --no-isolation --wheel
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }

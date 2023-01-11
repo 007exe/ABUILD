@@ -10,9 +10,9 @@ source=("https://github.com/pypa/pip/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("develop dev-python")
 
-# python-sphinxcontrib-towncrier
 build_deps=("python python-build python-installer python-myst-parser python-setuptools python-sphinx
-python-sphinx-copybutton python-sphinx-inline-tabs python-attrs python-cryptography python-wheel")
+python-sphinx-copybutton python-sphinx-inline-tabs python-attrs python-cryptography python-wheel
+python-sphinxcontrib-towncrier")
 
 adddep=("python-attrs python-cryptography python-wheel")
 
@@ -35,7 +35,7 @@ build(){
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета
 after_build(){
   go_src_dir
   rm ${srcache}/${pkgver}.tar.gz

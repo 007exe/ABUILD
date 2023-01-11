@@ -1,21 +1,23 @@
 pkgname=python-fonttools
-pkgver=4.29.1
-pkgbuild=2
-arch=('auto')
+pkgver=4.38.0
+pkgbuild=1
+arch=("auto")
 
-shortdesc=("A library to manipulate font files from Python")
-longdesc=("fontTools is a library for manipulating fonts, written in Python.")
+shortdesc=("A library to manipulate font files from Python.")
 
-source=("https://github.com/fonttools/fonttools/archive/$pkgver/fonttools-$pkgver.tar.gz")
+source=("https://github.com/fonttools/fonttools/archive/${pkgver}/fonttools-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-cython")
+build_deps=("python cython python-build python-installer python-setuptools python-wheel")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-brotli python-fs python-lxml python-lz4 python-matplotlib python-pyqt5
+python-reportlab python-scipy python-sympy python-uharfbuzz python-unicodedata2 python-zopfli")
 
 build(){
   go_src_dir
-  python setup.py build_ext --inplace
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm0755 -t "$pkgdir/usr/share/licenses/$pkgname/" LICENSE
+  python -m build -wn
+  python -m installer -d ${pkgdir} dist/*.whl
+  install -Dm0755 -t ${pkgdir}/usr/share/licenses/${pkgname}/ LICENSE
 }

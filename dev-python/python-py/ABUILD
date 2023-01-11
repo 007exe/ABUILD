@@ -1,27 +1,33 @@
 pkgname=python-py
 pkgver=1.11.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
-shortdesc=("Python development support library.")
-longdesc=("The py lib is a development support library featuring these tools and APIs: py.path py.apipkg py.iniconfig py.code py.path")
+shortdesc=("Library with cross-python path, ini-parsing, io, code, log facilities")
 
-source=("https://github.com/pytest-dev/py/archive/$pkgver.tar.gz")
+source=("https://github.com/pytest-dev/py/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-setuptools-scm python-iniconfig python-apipkg")
+build_deps=("python python-setuptools python-setuptools-scm
+python-iniconfig python-apipkg")
 
 adddep=("python-iniconfig python-apipkg")
 
 build(){
   go_src_dir
   rm -r py/_vendored_packages
-
   export LC_CTYPE=en_US.UTF-8
   export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
-
   python setup.py build
   python setup.py install --root="$pkgdir" --optimize=1
   install -D -m644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }

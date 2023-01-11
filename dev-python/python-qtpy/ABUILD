@@ -1,6 +1,6 @@
 pkgname=python-qtpy
 pkgver=2.3.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Provides an uniform layer to support PyQt5 and PySide2 with a single codebase.")

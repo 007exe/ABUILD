@@ -3,19 +3,19 @@ pkgver=1.4.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Python library for determining image sizes.")
-longdesc=("This module analyzes JPEG/JPEG 2000/PNG/GIF/TIFF/SVG/Netpbm/WebP image headers and returns image size or DIP.")
+shortdesc=("Analyzes JPEG/JPEG 2000/PNG/GIF/TIFF/SVG/Netpbm/WebP image headers and returns image size or DPI.")
 
 source=("https://files.pythonhosted.org/packages/source/i/imagesize/imagesize-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python -m unittest discover -v
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
-  install -Dm644 LICENSE.rst ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s ${site_packages}/imagesize-${pkgver}.dist-info/LICENSE.rst ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst
 }

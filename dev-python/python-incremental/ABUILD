@@ -1,23 +1,22 @@
 pkgname=python-incremental
-pkgver=21.3.0
-pkgbuild=2
+pkgver=22.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A small library that versions your Python projects.")
-longdesc=("A small library that versions your Python projects.")
 
-source=("https://github.com/hawkowl/incremental/archive/incremental-$pkgver.tar.gz")
+source=("https://github.com/hawkowl/incremental/archive/incremental-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-setuptools-scm python-click python-twisted")
+build_deps=("python python-click python-setuptools python-twisted")
 
-adddep=("python-click python-twisted")
+adddep=("python-click python-setuptools python-twisted")
 
 build() {
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   go_src_dir
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname/
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }

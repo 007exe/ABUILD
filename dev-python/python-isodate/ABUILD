@@ -1,10 +1,9 @@
 pkgname=python-isodate
 pkgver=0.6.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An ISO 8601 date/time/duration parser and formatter.")
-longdesc=("ISO 8601 date/time/duration parser and formatter.")
 
 source=("https://files.pythonhosted.org/packages/source/i/isodate/isodate-${pkgver}.tar.gz")
 

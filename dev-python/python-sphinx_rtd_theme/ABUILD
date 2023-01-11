@@ -4,19 +4,22 @@ pkgbuild=2
 arch=("auto")
 
 shortdesc=("Read the Docs theme for Sphinx.")
-longdesc=("ReadTheDocs.org theme for Sphinx.")
 
-source=("https://github.com/readthedocs/sphinx_rtd_theme/archive/$pkgver/sphinx_rtd_theme-$pkgver.tar.gz")
+source=("https://github.com/readthedocs/sphinx_rtd_theme/archive/${pkgver}/sphinx_rtd_theme-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+# nodejs-lts-fermium
+build_deps=("python npm python-setuptools-scm python-build python-installer python-wheel
+python-sphinx")
 
 adddep=("python-sphinx")
 
 build(){
   go_src_dir
+  npm ci
   python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-  install -Dm644 -t "$pkgdir"/usr/share/licenses/$pkgname LICENSE
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
