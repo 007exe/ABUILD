@@ -1,10 +1,9 @@
 pkgname=btrfs-progs
-pkgver=6.1
+pkgver=6.1.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Btrfs filesystem utilities.")
-longdesc=("The btrfs-progs package contains administration and debugging tools for the B-tree file system (btrfs).")
 
 source=("https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v$pkgver.tar.xz")
 
