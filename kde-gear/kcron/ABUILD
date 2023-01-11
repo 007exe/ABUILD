@@ -1,5 +1,5 @@
 pkgname=kcron
-pkgver=22.12.0
+pkgver=22.12.1
 pkgbuild=1
 arch=("auto")
 
