@@ -1,0 +1,22 @@
+pkgname=python-pure-eval
+pkgver=0.2.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Safely evaluate AST nodes without side effects.")
+
+_name=pure_eval
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/pure_eval/pure_eval-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools-scm python-wheel")
+
+build(){
+  go_src_dir
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s ${site_packages}/pure_eval-${pkgver}.dist-info/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
