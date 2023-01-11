@@ -1,0 +1,30 @@
+pkgname=python-commentjson
+pkgver=0.9.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Add Python and JavaScript style comments in your JSON files.")
+
+source=("https://github.com/vaidik/commentjson/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-lark-parser")
+
+adddep=("python-lark-parser")
+
+build(){
+  go_src_dir
+  sed -i 's/,<0/,<1/' setup.py
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE.rst -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
