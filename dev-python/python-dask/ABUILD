@@ -1,0 +1,24 @@
+pkgname=python-dask
+pkgver=2022.12.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Parallel computing with task scheduling.")
+
+source=("https://github.com/dask/dask/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-click python-cloudpickle python-fsspec python-packaging python-partd python-toolz python-yaml mpdecimal")
+
+build_deps=("${adddep} python python-setuptools")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-distributed python-numpy python-pandas python-psutil python-pyarrow python-sqlalchemy python-xxhash")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
