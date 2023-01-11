@@ -1,0 +1,20 @@
+pkgname=python-cloudpickle
+pkgver=2.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Extended pickling support for Python objects.")
+
+_pkg=cloudpickle
+source=("https://files.pythonhosted.org/packages/source/${_pkg::1}/cloudpickle/cloudpickle-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
