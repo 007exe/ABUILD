@@ -1,0 +1,22 @@
+pkgname=mpdecimal
+pkgver=2.5.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Package for correctly-rounded arbitrary precision decimal floating point arithmetic.")
+
+tags=("libs dev-libs")
+
+source=("https://www.bytereef.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.gz")
+
+build_deps=("gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
