@@ -1,0 +1,20 @@
+pkgname=python-heapdict
+pkgver=1.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Heap with decrease-key and increase-key operations.")
+
+_pkg=HeapDict
+source=("https://files.pythonhosted.org/packages/source/${_pkg::1}/HeapDict/HeapDict-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
