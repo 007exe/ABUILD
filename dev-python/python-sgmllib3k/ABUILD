@@ -1,0 +1,19 @@
+pkgname=python-sgmllib3k
+pkgver=1.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python 3 smgllib port.")
+
+_name=${pkgname#python-}
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/sgmllib3k/sgmllib3k-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}
