@@ -1,16 +1,15 @@
 pkgname=qt6-languageserver
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An implementation of the Language Server Protocol.")
-longdesc=("An implementation of the Language Server Protocol.")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtlanguageserver-everywhere-src-${pkgver}.tar.xz")
 
 tags=("qt6 dev-qt")
 
-build_deps=("qt6-base cmake ninja git")
+build_deps=("qt6-base cmake ninja")
 
 build() {
   go_src_dir

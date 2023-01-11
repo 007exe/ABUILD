@@ -1,10 +1,9 @@
 pkgname=qt6-connectivity
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides access to Bluetooth hardware.")
-longdesc=("The Qt Bluetooth enables connectivity between Bluetooth enabled devices.")
 
 tags=("qt6 dev-qt")
 

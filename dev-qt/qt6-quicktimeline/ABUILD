@@ -1,16 +1,15 @@
 pkgname=qt6-quicktimeline
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt module for keyframe-based timeline construction.")
-longdesc=("Qt module for keyframe-based timeline construction.")
 
-tags=("qt5 dev-qt")
+tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtquicktimeline-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("qt6-declarative git qt6-base")
+build_deps=("qt6-declarative qt6-base")
 
 build() {
   go_src_dir

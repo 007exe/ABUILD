@@ -1,10 +1,9 @@
 pkgname=qt6-charts
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides a set of easy to use chart components.")
-longdesc=("Chart component library for the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 

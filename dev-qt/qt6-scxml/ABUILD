@@ -1,10 +1,9 @@
 pkgname=qt6-scxml
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Static and runtime integration of SCXML models into Qt code.")
-longdesc=("State Chart XML (SCXML) support library for the Qt5 framework.")
 
 tags=("qt6 dev-qt")
 

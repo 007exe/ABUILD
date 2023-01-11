@@ -1,16 +1,15 @@
 pkgname=qt6-serialport
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides access to hardware and virtual serial ports.")
-longdesc=("Serial port abstraction library for the Qt5 framework.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtserialport-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-base git")
+build_deps=("cmake ninja qt6-base")
 
 build() {
   go_src_dir

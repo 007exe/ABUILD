@@ -1,10 +1,9 @@
 pkgname=qt6-positioning
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides access to position, satellite and area monitoring classes.")
-longdesc=("Physical position determination library for the Qt5 framework.")
 
 tags=("qt6 dev-qt")
 

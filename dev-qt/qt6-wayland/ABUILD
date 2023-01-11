@@ -1,16 +1,15 @@
 pkgname=qt6-wayland
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides APIs for Wayland.")
-longdesc=("Wayland platform plugin for Qt.")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwayland-everywhere-src-${pkgver}.tar.xz")
 
 tags=("qt6 dev-qt")
 
-build_deps=("qt6-declarative libxcomposite git cmake ninja")
+build_deps=("qt6-declarative libxcomposite cmake ninja")
 
 build() {
   go_src_dir

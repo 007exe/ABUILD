@@ -1,16 +1,15 @@
 pkgname=qt6-virtualkeyboard
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Virtual keyboard framework.")
-longdesc=("Customizable input framework and virtual keyboard for Qt.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtvirtualkeyboard-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-declarative qt6-svg hunspell git qt6-base")
+build_deps=("cmake ninja qt6-declarative qt6-svg hunspell qt6-base")
 
 adddep=("hunspell")
 

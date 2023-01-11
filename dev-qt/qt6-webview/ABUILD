@@ -1,16 +1,15 @@
 pkgname=qt6-webview
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides a way to display web content in a QML application.")
-longdesc=("Module for displaying web content in a QML application using the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwebview-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-webengine git qt6-base")
+build_deps=("cmake ninja qt6-webengine qt6-base")
 
 build() {
   go_src_dir

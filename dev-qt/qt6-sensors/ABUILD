@@ -1,16 +1,15 @@
 pkgname=qt6-sensors
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides access to sensor hardware and motion gesture recognition.")
-longdesc=("Hardware sensor access library for the Qt5 framework.")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtsensors-everywhere-src-${pkgver}.tar.xz")
 
 tags=("qt6 dev-qt")
 
-build_deps=("qt6-connectivity cmake ninja qt6-declarative qt6-base git")
+build_deps=("qt6-connectivity cmake ninja qt6-declarative qt6-base")
 
 # Это опциональная зависимость
 removedep=("qt6-declarative")

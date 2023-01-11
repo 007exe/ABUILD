@@ -1,16 +1,15 @@
 pkgname=qt6-websockets
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides WebSocket communication compliant with RFC 6455.")
-longdesc=("Implementation of the WebSocket protocol for the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwebsockets-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-declarative qt6-base git")
+build_deps=("cmake ninja qt6-declarative qt6-base")
 
 # NOTE: это опциональная зависимость
 removedep=("qt6-declarative")

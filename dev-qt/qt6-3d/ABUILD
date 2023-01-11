@@ -1,10 +1,9 @@
 pkgname=qt6-3d
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ and QML APIs for easy inclusion of 3D graphics.")
-longdesc=("3D rendering module for the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 
@@ -12,9 +11,8 @@ source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*
 
 build_deps=("cmake ninja qt6-declarative qt6-shadertools assimp qt6-base")
 
-# FIXME: Подхватывает qt5-quick3d
 # NOTE: Это опциональная зависимость
-removedep=("qt6-shadertools qt6-declarative assimp qt5-quick3d")
+removedep=("qt6-shadertools qt6-declarative assimp")
 
 build() {
   go_src_dir

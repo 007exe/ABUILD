@@ -1,20 +1,18 @@
 pkgname=qt6-quick3d
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt module and API for defining 3D content in Qt Quick.")
-longdesc=("Qt Quick 3D enables anyone to introduce 3D content into their Qt Quick applications.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtquick3d-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("qt6-declarative assimp git qt6-base qt6-quicktimeline")
+build_deps=("qt6-declarative assimp qt6-base qt6-quicktimeline")
 
-# FIXME: Подхватывает пакет qt5-quick3d
 # NOTE: Это опциональная зависимость
-removedep=("qt6-shadertools assimp qt5-quick3d")
+removedep=("qt6-shadertools assimp")
 
 build() {
   go_src_dir

@@ -1,16 +1,15 @@
 pkgname=qt6-remoteobjects
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Support for XPath, XQuery, XSLT and XML schema validation.")
-longdesc=("The Qt Remote Objects module provides an easy to use mechanism for sharing a QObject's API between processes.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtremoteobjects-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-declarative git qt6-base")
+build_deps=("cmake ninja qt6-declarative qt6-base")
 
 # NOTE: это опциональная зависимость
 removedep=("qt6-declarative")

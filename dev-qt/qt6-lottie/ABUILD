@@ -1,16 +1,15 @@
 pkgname=qt6-lottie
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A family of player software for a certain json-based file format for describing 2d vector graphics animations.")
-longdesc=("A family of player software for a certain json-based file format for describing 2d vector graphics animations.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtlottie-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-declarative git qt6-base")
+build_deps=("cmake ninja qt6-declarative qt6-base")
 
 # NOTE: Это опциональная зависимость
 removedep=("qt6-declarative")

@@ -1,16 +1,15 @@
 pkgname=qt6-shadertools
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides functionality for the shader pipeline that allows Qt Quick to operate on Vulkan, Metal, and Direct3D, in addition to OpenGL.")
-longdesc=("Provides functionality for the shader pipeline that allows Qt Quick to operate on Vulkan, Metal, and Direct3D, in addition to OpenGL.")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtshadertools-everywhere-src-${pkgver}.tar.xz")
 
 tags=("qt6 dev-qt")
 
-build_deps=("cmake ninja git qt6-base")
+build_deps=("cmake ninja qt6-base")
 
 build() {
   go_src_dir

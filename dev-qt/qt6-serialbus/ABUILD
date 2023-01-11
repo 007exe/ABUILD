@@ -1,16 +1,15 @@
 pkgname=qt6-serialbus
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt module for general purpose serial bus access.")
-longdesc=("Qt module to access CAN, ModBus, and other industrial serial buses and protocols.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtserialbus-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-serialport git qt6-base")
+build_deps=("cmake ninja qt6-serialport qt6-base")
 
 build() {
   go_src_dir

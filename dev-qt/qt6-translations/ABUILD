@@ -1,16 +1,15 @@
 pkgname=qt6-translations
-pkgver=6.4.1
+pkgver=6.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework (Translations).")
-longdesc=("Translation files for the Qt6 framework.")
 
 tags=("qt6 dev-qt")
 
 source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qttranslations-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-tools git qt6-base")
+build_deps=("cmake ninja qt6-tools qt6-base")
 
 build() {
   go_src_dir
