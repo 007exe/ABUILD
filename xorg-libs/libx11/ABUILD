@@ -1,10 +1,9 @@
 pkgname=libx11
 pkgver=1.8.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("X11 client-side library.")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
 source=("http://xorg.freedesktop.org/releases/individual/lib/libX11-${pkgver}.tar.xz")
 
