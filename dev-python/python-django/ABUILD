@@ -1,0 +1,35 @@
+pkgname=python-django
+pkgver=4.1.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A high-level Python Web framework that encourages rapid development and clean design.")
+
+source=("https://github.com/django/django/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-pytz python-sqlparse python-asgiref")
+
+build_deps=("${adddep} python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+
+  ln -s django-admin.py ${pkgdir}/usr/bin/django-admin3.py
+  ln -s django-admin ${pkgdir}/usr/bin/django-admin3
+  install -Dm644 extras/django_bash_completion ${pkgdir}/usr/share/bash-completion/completions/django-admin.py
+  ln -s django-admin.py ${pkgdir}/usr/share/bash-completion/completions/django-admin
+  ln -s django-admin.py ${pkgdir}/usr/share/bash-completion/completions/manage.py
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}
