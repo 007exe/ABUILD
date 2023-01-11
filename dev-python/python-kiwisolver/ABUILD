@@ -1,0 +1,19 @@
+pkgname=python-kiwisolver
+pkgver=1.4.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A fast implementation of the Cassowary constraint solver.")
+
+source=("https://github.com/nucleic/kiwi/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-cppy python-setuptools-scm python-wheel")
+
+build(){
+  go_src_dir
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+  python setup.py build
+  python3 setup.py install --root=${pkgdir} --optimize=1
+}
