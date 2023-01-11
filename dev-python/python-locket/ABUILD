@@ -1,0 +1,19 @@
+pkgname=python-locket
+pkgver=1.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("File-based locks for Python.")
+
+source=("https://github.com/mwilliamson/locket.py/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
