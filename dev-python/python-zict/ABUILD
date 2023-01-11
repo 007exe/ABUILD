@@ -1,0 +1,22 @@
+pkgname=python-zict
+pkgver=2.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Useful Mutable Mappings.")
+
+_pkg=zict
+source=("https://files.pythonhosted.org/packages/source/${_pkg::1}/zict/zict-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-heapdict")
+
+build_deps=("${adddep} python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
