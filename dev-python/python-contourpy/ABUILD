@@ -1,0 +1,22 @@
+pkgname=python-contourpy
+pkgver=1.0.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python library for calculating contours in 2D quadrilateral grids.")
+
+_pyname=contourpy
+source=("https://pypi.python.org/packages/source/${_pyname:0:1}/contourpy/contourpy-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-numpy")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools pybind11 python-wheel")
+
+build(){
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
