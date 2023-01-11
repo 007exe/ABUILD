@@ -1,10 +1,9 @@
 pkgname=man-db
-pkgver=2.11.1
+pkgver=2.11.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A utility for reading man pages.")
-longdesc=("The Man-DB package contains programs for finding and viewing man pages.")
 
 source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz")
 
