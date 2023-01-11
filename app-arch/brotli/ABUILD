@@ -1,6 +1,6 @@
 pkgname=brotli
 pkgver=1.0.9
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Generic-purpose lossless compression algorithm.")
