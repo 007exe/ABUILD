@@ -1,6 +1,6 @@
 pkgname=libseccomp
 pkgver=2.5.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Enhanced seccomp library.")
@@ -10,7 +10,7 @@ tags=("sys-libs libs")
 
 source=("https://github.com/seccomp/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps=("glibc gperf python-cython python-setuptools")
+build_deps=("glibc gperf cython python-setuptools")
 
 pkglist=("python-libseccomp")
 
