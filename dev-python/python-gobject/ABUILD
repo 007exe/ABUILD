@@ -1,10 +1,9 @@
 pkgname=python-gobject
 pkgver=3.42.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Python Bindings for GLib/GObject/GIO/GTK+.")
-longdesc=("PyGObject is a Python package which provides bindings for GObject based libraries such as GTK, GStreamer, WebKitGTK, GLib, GIO and many more.")
 
 source=("https://download.gnome.org/sources/pygobject/${pkgver%.*}/pygobject-${pkgver}.tar.xz")
 
