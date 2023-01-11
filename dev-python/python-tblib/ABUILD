@@ -1,0 +1,22 @@
+pkgname=python-tblib
+pkgver=1.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python traceback fiddling library.")
+
+source=("https://github.com/ionelmc/python-tblib/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-six")
+
+build_deps=("${adddep} python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install -O1 --root=${pkgdir} --prefix=/usr --skip-build
+  install -Dm 644 README.rst -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
