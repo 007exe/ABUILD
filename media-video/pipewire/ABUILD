@@ -3,8 +3,8 @@
 # pipewire-pulse gst-plugin-pipewire pipewire-zeroconf pipewire-v4l2 pipewire-x11-bell
 # NOTE: Рассмотреть заману pulseaudio на pipewire
 pkgname=pipewire
-pkgver=0.3.63
-pkgbuild=2
+pkgver=0.3.64
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low-latency audio/video router and processor.")
