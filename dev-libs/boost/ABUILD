@@ -1,10 +1,10 @@
 pkgname=boost
-pkgver=1.80.0
+pkglist=("boost-libs")
+pkgver=1.81.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Free peer-reviewed portable C++ source libraries development headers.")
-longdesc=("Boost provides a set of free peer-reviewed portable C++ source libraries.")
 
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${pkgver//./_}.tar.bz2")
 
@@ -17,11 +17,11 @@ adddep=("boost-libs=${pkgver}")
 # NOTE: Это опциональные зависимости
 removedep=("python")
 
-pkglist=("boost-libs")
-
 build() {
   go_src_dir
   local JOBS="$(sed 's/.*\(-j *[0-9]\+\).*/\1/' <<<$MAKEFLAGS)"
+# NOTE: Версия pythonn
+  _python_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4)
 
   pushd tools/build
   ./bootstrap.sh --cxxflags="$CXXFLAGS $LDFLAGS"
@@ -45,7 +45,7 @@ build() {
     runtime-link=shared \
     link=shared,static \
     toolset=gcc \
-    python=3.10 \
+    python=${_python_ver} \
     cflags="$CPPFLAGS $CFLAGS -fPIC -O3 -ffat-lto-objects" \
     cxxflags="$CPPFLAGS $CXXFLAGS -fPIC -O3 -ffat-lto-objects" \
     linkflags="$LDFLAGS" \
@@ -65,7 +65,6 @@ build() {
 boost-libs() {
   pkgname=boost-libs
   shortdesc=("Free peer-reviewed portable C++ source libraries runtime libraries.")
-  longdesc=("Boost provides a set of free peer-reviewed portable C++ source libraries.")
   # NOTE: Это опциональные зависимости
   removedep=("openmpi")
 }
@@ -75,15 +74,16 @@ boost-libs_prep() {
   cp -a ${srcdir}/fakeinstall/lib/*.so* ${pkgdir}/usr/lib/
 
 # https://github.com/boostorg/mpi/issues/112
-  install -d ${pkgdir}/usr/lib/python3.10/site-packages/boost
-  touch ${pkgdir}/usr/lib/python3.10/site-packages/boost/__init__.py
-  python -m compileall -o 0 -o 1 -o 2 ${pkgdir}/usr/lib/python3.10/site-packages/boost
-  cp ${srcdir}/fakeinstall/lib/boost-python3.10/mpi.so \
-    ${pkgdir}/usr/lib/python3.10/site-packages/boost/mpi.so
+  install -d ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost
+  touch ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost/__init__.py
+  python -m compileall -o 0 -o 1 -o 2 ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost
+  cp ${srcdir}/fakeinstall/lib/boost-python${_python_ver}/mpi.so \
+    ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost/mpi.so
 
 # https://github.com/boostorg/python/issues/203#issuecomment-391477685
+  _python_minor_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4,5 | cut -d "." -f2)
   for _lib in python numpy; do
-    ln -srL ${pkgdir}/usr/lib/libboost_${_lib}3{10,}.so
+    ln -srL ${pkgdir}/usr/lib/libboost_${_lib}3{${_python_minor_ver},}.so
   done
 
   install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ${srcdir}/boost_${pkgver//./_}/LICENSE_1_0.txt
