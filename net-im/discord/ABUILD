@@ -1,10 +1,9 @@
 pkgname=discord
-pkgver=0.0.22
+pkgver=0.0.24
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("All-in-one voice and text chat for gamers.")
-longdesc=("All-in-one voice and text chat for gamers that's free and secure.")
+shortdesc=("All-in-one voice and text chat for gamers that's free and secure.")
 
 source=("https://dl.discordapp.net/apps/linux/${pkgver}/$pkgname-${pkgver}.tar.gz")
 
@@ -20,15 +19,11 @@ build() {
   cd ${srcdir}
   install -d ${pkgdir}/opt/${pkgname}
   cp -a Discord/. ${pkgdir}/opt/${pkgname}
-
   chmod 755 ${pkgdir}/opt/${pkgname}/Discord
-
   rm ${pkgdir}/opt/${pkgname}/postinst.sh
-
   install -d ${pkgdir}/usr/{bin,share/{pixmaps,applications}}
   ln -s /opt/${pkgname}/Discord ${pkgdir}/usr/bin/${pkgname}
   ln -s /opt/${pkgname}/discord.png ${pkgdir}/usr/share/pixmaps/${pkgname}.png
   ln -s /opt/${pkgname}/${pkgname}.desktop ${pkgdir}/usr/share/applications/${pkgname}.desktop
-
   chmod u+s ${pkgdir}/opt/${pkgname}/chrome-sandbox
 }
