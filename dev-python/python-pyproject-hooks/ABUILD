@@ -1,0 +1,22 @@
+pkgname=python-pyproject-hooks
+pkgver=1.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A low-level library for calling build-backends in pyproject.toml-based project.")
+
+_name=pyproject_hooks
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/pyproject_hooks/pyproject_hooks-${pkgver}.tar.gz")
+
+tags=("dev-python libs")
+
+adddep=("python-tomli")
+
+build_deps=("${adddep} python python-build python-installer python-flit-core python-wheel")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
