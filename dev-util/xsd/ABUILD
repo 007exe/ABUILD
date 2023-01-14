@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("An open-source, cross-platform W3C XML Schema to C++ data binding compiler.")
-longdesc=("CodeSynthesis XSD is an open-source, cross-platform W3C XML Schema to C++ data binding compiler.")
 
 #source=("https://www.codesynthesis.com/download/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}+dep.tar.bz2")
 source=("https://codesynthesis.com/~boris/tmp/${pkgname}/${pkgver}/xsd-${pkgver}+dep.tar.bz2")
