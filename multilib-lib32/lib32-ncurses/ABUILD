@@ -1,5 +1,5 @@
 pkgname=lib32-ncurses
-pkgver=6.3
+pkgver=6.4
 pkgbuild=1
 arch=("auto")
 
