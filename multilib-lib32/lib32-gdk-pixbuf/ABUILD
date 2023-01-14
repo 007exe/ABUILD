@@ -1,6 +1,6 @@
 pkgname=lib32-gdk-pixbuf
 pkgver=2.42.10
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An image loading library (32-bit).")
