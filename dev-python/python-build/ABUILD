@@ -1,6 +1,6 @@
 pkgname=python-build
-pkgver=0.9.0
-pkgbuild=2
+pkgver=0.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A simple, correct PEP517 package builder.")
@@ -9,11 +9,14 @@ source=("https://github.com/pypa/build/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python-build python-installer python-setuptools python-wheel
-python-sphinx python-sphinx-argparse-cli python-sphinx-autodoc-typehints
-python-sphinx-furo python-tomli python-pep517 python-packaging")
+adddep=("python-packaging python-pyproject-hooks python-tomli")
 
-adddep=("python-tomli python-pep517 python-packaging")
+build_deps=("${adddep} python python-build python-flit-core
+python-installer python-sphinx python-sphinx-argparse-cli
+python-sphinx-autodoc-typehints python-sphinx-furo")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-virtualenv")
 
 build() {
   go_src_dir
@@ -23,6 +26,9 @@ build() {
   install -dm 755 ${pkgdir}/usr/share/doc/${pkgname}
   cp -r -a --no-preserve=ownership docs/build/html ${pkgdir}/usr/share/doc/${pkgname}
   rm -rf ${pkgdir}/usr/share/doc/${pkgname}/html/.doctrees
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  install -d ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s ${site_packages}/build-${pkgver}.dist-info/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
 # NOTE: Удаляем исходники пакета после сборки
