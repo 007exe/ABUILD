@@ -1,18 +1,17 @@
 pkgname=yandex-disk-indicator
 pkgver=1.11.0
-pkgbuild=1
-arch=("x86_64")
+pkgbuild=2
+arch=("auto")
 
 shortdesc=("Panel indicator (GUI) for YandexDisk CLI client for Linux.")
-longdesc=("Desktop panel indicator for YandexDisk CLI client for Linux (GTK+).")
 
 source=("https://github.com/slytomcat/yandex-disk-indicator/archive/${pkgver}.tar.gz")
 
 tags=("network net-misc")
 
-build_deps=("python python-pyinotify pygobject-devel python-gobject libappindicator-gtk3 xclip zenity")
+build_deps=("python python-pyinotify python-gobject python-gobject libappindicator-gtk3 xclip zenity")
 
-adddep=("yandex-disk python python-pyinotify pygobject-devel python-gobject libappindicator-gtk3 xclip zenity")
+adddep=("yandex-disk python python-pyinotify python-gobject python-gobject libappindicator-gtk3 xclip zenity")
 
 build() {
   go_src_dir
