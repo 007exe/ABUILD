@@ -1,10 +1,9 @@
 pkgname=audit
-pkgver=3.0.8
+pkgver=3.0.9
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Userspace components of the audit framework.")
-longdesc=("Userspace utilities for storing and processing auditing records.")
+shortdesc=("Userspace utilities for storing and processing auditing records.")
 
 source=("http://people.redhat.com/sgrubb/audit/audit-${pkgver}.tar.gz")
 
