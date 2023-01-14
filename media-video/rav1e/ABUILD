@@ -1,10 +1,9 @@
 pkgname=rav1e
-pkgver=0.6.2
+pkgver=0.6.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The fastest and safest AV1 encoder.")
-longdesc=("An AV1 encoder focused on speed and safety.")
 
 source=("https://github.com/xiph/rav1e/archive/refs/tags/v${pkgver}.tar.gz")
 
