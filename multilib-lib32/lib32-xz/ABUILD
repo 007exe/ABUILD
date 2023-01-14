@@ -1,10 +1,9 @@
 pkgname=lib32-xz
-pkgver=5.4.0
+pkgver=5.4.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library and command line tools for XZ and LZMA compressed files (32-bit).")
-longdesc=("The Xz package contains programs for compressing and decompressing files. It provides capabilities for the lzma and the newer xz compression formats. Compressing text files with xz yields a better compression percentage than with the traditional gzip or bzip2 commands.")
 
 source=("http://tukaani.org/xz/xz-${pkgver}.tar.gz")
 
