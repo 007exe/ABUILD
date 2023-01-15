@@ -1,10 +1,9 @@
 pkgname=fuse3
-pkgver=3.12.0
+pkgver=3.13.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library that makes it possible to implement a filesystem in a userspace program.")
-longdesc=("FUSE (Filesystem in USErspace) is a simple interface for userspace programs to export a virtual filesystem to the linux kernel. FUSE also aims to provide a secure method for non privileged users to create and mount their own filesystem implementations.")
 
 source=("https://github.com/libfuse/libfuse/releases/download/fuse-$pkgver/fuse-$pkgver.tar.xz")
 
