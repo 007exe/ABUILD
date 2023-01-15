@@ -55,9 +55,15 @@ build() {
     --prefix=${srcdir}/fakeinstall
 
   install -d ${pkgdir}/usr/lib
-  cp -a ${srcdir}/fakeinstall/lib/*.a ${pkgdir}/usr/lib/
+  cp -a ${srcdir}/fakeinstall/lib/*.{a,so} ${pkgdir}/usr/lib/
   cp -a ${srcdir}/fakeinstall/lib/cmake ${pkgdir}/usr/lib/
   cp -a ${srcdir}/fakeinstall/{bin,include,share} ${pkgdir}/usr/
+
+# https://github.com/boostorg/python/issues/203#issuecomment-391477685
+  _python_minor_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4,5 | cut -d "." -f2)
+  for _lib in python numpy; do
+    ln -srL ${pkgdir}/usr/lib/libboost_${_lib}3{${_python_minor_ver},}.so
+  done
 
   install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ${srcdir}/boost_${pkgver//./_}/LICENSE_1_0.txt
 }
@@ -79,12 +85,6 @@ boost-libs_prep() {
   python -m compileall -o 0 -o 1 -o 2 ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost
   cp ${srcdir}/fakeinstall/lib/boost-python${_python_ver}/mpi.so \
     ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost/mpi.so
-
-# https://github.com/boostorg/python/issues/203#issuecomment-391477685
-  _python_minor_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4,5 | cut -d "." -f2)
-  for _lib in python numpy; do
-    ln -srL ${pkgdir}/usr/lib/libboost_${_lib}3{${_python_minor_ver},}.so
-  done
 
   install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ${srcdir}/boost_${pkgver//./_}/LICENSE_1_0.txt
 }
