@@ -1,12 +1,11 @@
 pkgname=libpcap
-pkgver=1.10.1
-pkgbuild=2
+pkgver=1.10.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A system-independent interface for user-level packet capture.")
-longdesc=("Libpcap provides functions for user-level packet capture, used in low-level network monitoring.")
 
-source=("http://www.tcpdump.org/release/$pkgname-$pkgver.tar.gz")
+source=("http://www.tcpdump.org/release/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
