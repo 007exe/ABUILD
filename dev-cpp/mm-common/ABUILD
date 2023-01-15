@@ -1,5 +1,5 @@
 pkgname=mm-common
-pkgver=1.0.4
+pkgver=1.0.5
 pkgbuild=1
 arch=("noarch")
 
@@ -9,9 +9,9 @@ source=("http://download.gnome.org/sources/mm-common/${pkgver%.*}/${pkgname}-${p
 
 tags=("dev-libs develop")
 
-build_deps=("meson")
+adddep=("graphviz doxygen gtk-doc libsigc++-docs perl-xml-parser")
 
-adddep=("doxygen gtk-doc perl-xml-parser graphviz libsigc++-docs")
+build_deps=("${adddep} libsigc++ meson")
 
 build() {
   go_src_dir
@@ -19,5 +19,5 @@ build() {
   meson build \
     -D prefix=/usr
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
