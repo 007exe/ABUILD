@@ -11,7 +11,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 tags=("kde kde-multimedia")
 
 build_deps=("libkcddb kcmutils knotifyconfig libmad kfilemetadata knewstuff libmpcdec
-libdvdread libburn libsamplerate qt5-webkit extra-cmake-modules kdoctools")
+libdvdread libburn libsamplerate extra-cmake-modules kdoctools")
 
 # NOTE: Это опциональные зависимости
 removedep=("cdrtools dvd+rw-tools vcdimager emovix cdrdao cdparanoia transcode")

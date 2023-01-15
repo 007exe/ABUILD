@@ -1,6 +1,6 @@
 pkgname=qt5-tools
 pkgver=5.15.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework.")
@@ -11,7 +11,7 @@ tags=("qt5 dev-qt")
 strict_version=1
 source=("git:https://invent.kde.org/qt/qt/qttools.git")
 
-build_deps=("vulkan-headers clang qt5-base hicolor-icon-theme qt5-declarative git qt5-webkit")
+build_deps=("vulkan-headers clang qt5-base hicolor-icon-theme qt5-declarative")
 
 adddep=("hicolor-icon-theme")
 

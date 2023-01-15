@@ -9,7 +9,7 @@ BUILD_VERSION_WEB=1
 WEBKIT_VERSION=5.212.0alpha4
 BUILD_VERSION_WEBKIT=3
 
-# NOTE: После сборки qt5-base следует пересобрать qt5-webkit и qt5-webengine
+# NOTE: После сборки qt5-base следует пересобрать qt5-webengine
 # WARNING: Пакет qt5-webengine собирается очень долго
 
 MLIST="qt5-base
@@ -67,17 +67,6 @@ for i in $MLIST ; do
             cd $STARTD
     fi
 done
-
-#################################################################################################################
-
-cd $STARTD/qt5-webkit
-if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -ib -bv $WEBKIT_VERSION -bb $BUILD_VERSION_WEBKIT; then
-        echo "`date` || Пакет: qt5-webkit ГОТОВ" >> $LOGFILE
-        cd $STARTD
-else
-        echo "`date` || ОШИБКА пакет: qt5-webkit НЕ СОБРАН!!!" >> $LOGFILE
-        cd $STARTD
-fi
 
 #################################################################################################################
 

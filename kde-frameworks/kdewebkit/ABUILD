@@ -4,13 +4,12 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE Integration for QtWebKit.")
-longdesc=("KDE Integration for QtWebKit.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/frameworks/${pkgver%.*}/portingAids/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
-build_deps=("extra-cmake-modules qt5-tools qt5-webkit kparts")
+build_deps=("extra-cmake-modules qt5-tools kparts")
 
 build() {
   go_src_dir

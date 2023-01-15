@@ -1,16 +1,15 @@
 pkgname=vtk
 pkgver=9.1.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Software system for 3D computer graphics, image processing, and visualization.")
-longdesc=("The Visualization Toolkit (VTK) is open source software for manipulating and displaying scientific data.")
 
 source=("https://www.vtk.org/files/release/${pkgver%.*}/VTK-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
-# gnuplot openimagedenoise openmp python-matplotlib qt5-webkit
+# gnuplot openimagedenoise openmp python-matplotlib
 # -DVTK_WRAP_JAVA=ON java-environment
 # -DVTKOSPRAY_ENABLE_DENOISER=ON -DVTK_ENABLE_OSPRAY=ON ospray
 
@@ -19,10 +18,19 @@ tags=("dev-libs libs")
 # -DVTK_MODULE_ENABLE_VTK_IOPDAL=DONT_WANT pdal
 # -DVTK_MODULE_ENABLE_VTK_IOOpenVDB=DONT_WANT openvdb
 # -DVTK_MODULE_USE_EXTERNAL_VTK_cgns=OFF cgns
-build_deps=("gcc-libs double-conversion tbb adios2 cmake boost doxygen ffmpeg gdal liblas libxt openmpi postgresql qt5-base qt5-tools qt5-x11extras tk unixodbc wget eigen expat fmt freetype gl2ps glew hdf5 libjpeg-turbo jsoncpp libharu proj libxml2 lz4 xz python-mpi4py netcdf libogg libpng pugixml rapidjson sqlite libtheora libtiff utf8cpp zfp zlib")
+# -DVTK_MODULE_USE_EXTERNAL_VTK_cli11=ON cli11
+
+adddep=("gcc-libs double-conversion pugixml tbb")
+
+build_deps=("${adddep} adios2 cmake boost doxygen ffmpeg gdal liblas libxt mariadb-libs
+openmpi postgresql-libs python-matplotlib qt5-base qt5-tools qt5-declarative tk unixodbc
+wget eigen expat fmt freetype gl2ps glew hdf5 libjpeg-turbo jsoncpp libharu proj libxml2
+lz4 xz python-mpi4py netcdf libogg libpng rapidjson sqlite libtheora libtiff utf8cpp zfp zlib")
 
 # NOTE: Это опцианальные зависимости
-removedep=("gnuplot graphviz openmpi qt5-x11extras qt5-webkit tk adios2 cgns ffmpeg fmt gdal gl2ps glew hdf5 jsoncpp libarchive libharu liblas lz4 netcdf openimagedenoise openvdb openvr ospray pdal postgresql proj sqlite unixodbc")
+removedep=("gnuplot graphviz openmpi qt5-x11extras tk adios2 cgns ffmpeg fmt gdal gl2ps
+glew hdf5 jsoncpp libarchive libharu liblas lz4 netcdf openimagedenoise openvdb openvr
+ospray pdal postgresql proj sqlite unixodbc")
 
 build() {
   go_src_dir
