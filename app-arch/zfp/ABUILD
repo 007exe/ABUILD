@@ -10,7 +10,7 @@ source=("https://github.com/LLNL/zfp/archive/${pkgver}/${pkgname}-${pkgver}.tar.
 
 tags=("base app-arch")
 
-build_deps=("glibc gcc-libs cmake gcc-fortran python-cython python python-numpy")
+build_deps=("glibc gcc-libs cmake gcc-fortran cython python python-numpy")
 
 build() {
   go_src_dir
