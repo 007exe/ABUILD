@@ -1,10 +1,9 @@
 pkgname=mpfr
-pkgver=4.1.1
-pkgbuild=2
+pkgver=4.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multiple-precision floating-point library.")
-longdesc=("The MPFR package contains functions for multiple precision math.")
 
 tags=("dev-libs libs")
 
