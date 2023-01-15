@@ -1,6 +1,6 @@
 pkgname=libraqm
 pkgver=0.10.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library that encapsulates the logic for complex text layout.")
@@ -13,13 +13,15 @@ build_deps=("meson gtk-doc freetype fribidi")
 
 removedep=("harfbuzz")
 
+# FIXME: Проблемы со сборкой документации
+
 build() {
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D docs=true
+    -D docs=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 
