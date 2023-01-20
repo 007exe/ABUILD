@@ -13,7 +13,7 @@ tags=("dev-libs libs")
 build_deps=("meson mm-common")
 
 # FIXME: Проблемы со сборкой документации
-#pkglist=("libsigc++-docs")
+pkglist=("libsigc++-docs")
 
 build() {
   go_src_dir
@@ -21,8 +21,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D maintainer-mode=true \
-    --buildtype=release \
-    -D build-documentation=false
+    --buildtype=release
+#    -D build-documentation=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
