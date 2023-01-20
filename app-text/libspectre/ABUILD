@@ -1,5 +1,5 @@
 pkgname=libspectre
-pkgver=0.2.11
+pkgver=0.2.12
 pkgbuild=1
 arch=("auto")
 
