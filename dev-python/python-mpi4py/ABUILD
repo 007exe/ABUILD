@@ -9,7 +9,8 @@ source=("https://github.com/mpi4py/mpi4py/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python python-setuptools cython openmpi")
+# FIXME: Для сборки требует ccache но это косяк mkpkg
+build_deps=("python python-setuptools cython openmpi ccache")
 
 build(){
   go_src_dir
