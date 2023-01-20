@@ -1,10 +1,9 @@
 pkgname=clucene
 pkgver=2.3.3.4
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("C++ port of the high-performance text search engine Lucene.")
-longdesc=("High-performance, full-featured text search engine based off of lucene in C++.")
 
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-core-${pkgver}.tar.gz")
 
