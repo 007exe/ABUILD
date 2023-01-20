@@ -1,6 +1,6 @@
 pkgname=gd
 pkgver=2.3.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library for the dynamic creation of images by programmers.")
