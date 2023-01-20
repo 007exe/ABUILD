@@ -1,6 +1,6 @@
 pkgname=sdl_image
 pkgver=1.2.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Image file loading library.")
