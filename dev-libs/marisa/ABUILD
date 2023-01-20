@@ -1,10 +1,9 @@
 pkgname=marisa
 pkgver=0.2.6
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Static and space-efficient trie data structure library.")
-longdesc=("Matching Algorithm with Recursively Implemented StorAge.")
 
 source=("https://github.com/s-yata/marisa-trie/archive/v${pkgver}.tar.gz")
 
