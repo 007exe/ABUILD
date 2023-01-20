@@ -1,10 +1,9 @@
 pkgname=recode
-pkgver=3.7.12
+pkgver=3.7.13
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Converts files between various character sets and usages.")
-longdesc=("Convert files between various character sets.")
 
 source=("https://github.com/rrthomas/recode/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
