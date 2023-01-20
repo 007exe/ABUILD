@@ -1,6 +1,6 @@
 pkgname=lcms2
 pkgver=2.14
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Small-footprint color management engine, version 2")
