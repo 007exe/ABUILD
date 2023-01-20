@@ -1,6 +1,6 @@
 pkgname=imagemagick
 pkgver=7.1.0.57
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An image viewing/manipulation program.")
