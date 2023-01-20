@@ -1,10 +1,9 @@
 pkgname=libopenmpt
-pkgver=0.6.6
+pkgver=0.6.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library to render tracker music to a PCM audio stream.")
-longdesc=("Library to decode tracked music files (modules).")
 
 source=("https://lib.openmpt.org/files/libopenmpt/src/${pkgname}-${pkgver}+release.autotools.tar.gz")
 
