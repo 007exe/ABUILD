@@ -19,7 +19,7 @@ build() {
   sed -i "s/'use_2to3': True,//" setup.py
   sed -i 's/from setuptools.command.build_py import Mixin2to3/from distutils.util import Mixin2to3/' setup3lib.py
   2to3 -wn nose unit_tests functional_tests
-  python setup.py build build_tests
+#  python setup.py build build_tests
   python setup.py install --prefix=/usr --root=${pkgdir}
   ln -s nosetests ${pkgdir}/usr/bin/nosetests3
 }
