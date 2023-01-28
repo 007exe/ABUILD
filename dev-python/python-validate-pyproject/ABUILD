@@ -1,6 +1,6 @@
 pkgname=python-validate-pyproject
-pkgver=0.10.1
-pkgbuild=2
+pkgver=0.12
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Validation library and CLI tool for checking on 'pyproject.toml' files using JSON Schema.")
@@ -9,10 +9,9 @@ source=("https://github.com/abravalheri/validate-pyproject/archive/v${pkgver}/${
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-packaging
-python-setuptools-scm python-trove-classifiers python-tomli")
+adddep=("python-fastjsonschema python-packaging python-trove-classifiers python-tomli")
 
-adddep=("python-packaging python-trove-classifiers python-tomli")
+build_deps=("${adddep} python python-build python-installer python-wheel python-setuptools-scm")
 
 export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
