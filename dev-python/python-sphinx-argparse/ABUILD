@@ -5,18 +5,18 @@ arch=("auto")
 
 shortdesc=("Sphinx extension that automatically documents argparse commands and options.")
 
-source=("https://files.pythonhosted.org/packages/source/s/sphinx-argparse/sphinx-argparse-${pkgver}.tar.gz")
+_name=sphinx-argparse
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/sphinx-argparse/sphinx_argparse-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-poetry-core python-wheel
-python-sphinx")
-
 adddep=("python-sphinx")
+
+build_deps=("${adddep} python python-build python-installer python-poetry-core python-wheel")
 
 build() {
   go_src_dir
-  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
