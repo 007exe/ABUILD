@@ -15,5 +15,5 @@ build(){
   go_src_dir
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
-  install -Dm644 LICENSE -t ${}pkgdir}/usr/share/licenses/${pkgname}/
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
