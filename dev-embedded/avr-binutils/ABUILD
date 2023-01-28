@@ -1,10 +1,9 @@
 pkgname=avr-binutils
-pkgver=2.39
+pkgver=2.40
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("GNU Binary Utilities for ATMEL AVR architecture.")
-longdesc=("A set of programs to assemble and manipulate binary and object files for the AVR architecture.")
 
 source=("https://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2")
 
