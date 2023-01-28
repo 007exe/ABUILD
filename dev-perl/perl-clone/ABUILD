@@ -1,11 +1,11 @@
 pkgname=perl-clone
-pkgver=0.45
+pkgver=0.46
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Recursive copy of nested objects.")
 
-source=("https://search.cpan.org/CPAN/authors/id/A/AT/ATOOMIC/Clone-${pkgver}.tar.gz")
+source=("https://cpan.metacpan.org/authors/id/G/GA/GARU/Clone-${pkgver}.tar.gz")
 
 tags=("libs dev-perl")
 
