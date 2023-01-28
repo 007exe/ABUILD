@@ -1,6 +1,6 @@
 pkgname=python-dulwich
-pkgver=0.20.50
-pkgbuild=2
+pkgver=0.21.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Pure-Python implementation of the Git file formats and protocols.")
