@@ -1,10 +1,9 @@
 pkgname=libnice
-pkgver=0.1.19
+pkgver=0.1.21
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An implementation of the IETF's draft ICE (for p2p UDP data streams).")
-longdesc=("An implementation of the Interactice Connectivity Establishment standard (ICE).")
 
 source=("http://nice.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
 
