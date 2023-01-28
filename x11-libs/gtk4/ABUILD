@@ -2,7 +2,7 @@ pkgname=gtk4
 # FIXME: Проблемы со сборкой документации gtk4-docs
 pkglist=("gtk-update-icon-cache gtk4-demos")
 pkgver=4.8.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("GObject-based multi-platform GUI toolkit.")
