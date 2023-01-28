@@ -1,10 +1,9 @@
 pkgname=libtool
 pkgver=2.4.7
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("A generic library support script")
-longdesc=("The Libtool package contains the GNU generic library support script. It wraps the complexity of using shared libraries in a consistent, portable interface.")
+shortdesc=("A generic library support script.")
 
 tags=("develop sys-devel")
 
@@ -12,7 +11,7 @@ source=("https://ftp.gnu.org/gnu/libtool/libtool-${pkgver}.tar.xz")
 
 # NOTE: Необходимо пересобирать после каждого обновления gcc.
 _gccver=12.2.0
-build_deps=("gcc>=$_gccver help2man")
+build_deps=("gcc>=${_gccver} help2man")
 
 adddep=("m4 tar")
 
