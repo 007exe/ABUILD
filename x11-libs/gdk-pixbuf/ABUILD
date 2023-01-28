@@ -1,6 +1,6 @@
 pkgname=gdk-pixbuf
 pkgver=2.42.10
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("An image loading library.")
@@ -22,7 +22,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D builtin_loaders=all \
-    -D gtk_doc=fakse \
+    -D gtk_doc=false \
     -D installed_tests=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
