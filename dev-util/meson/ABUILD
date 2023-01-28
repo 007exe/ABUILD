@@ -1,6 +1,6 @@
 pkgname=meson
 pkgver=1.0.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("High productivity build system.")
