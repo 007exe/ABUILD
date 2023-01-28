@@ -24,3 +24,4 @@ build() {
 after_build(){
   go_src_dir
   rm ${srcache}/v${pkgver}.tar.gz
+}
