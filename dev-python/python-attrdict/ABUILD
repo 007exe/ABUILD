@@ -1,0 +1,20 @@
+pkgname=python-attrdict
+pkgver=2.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that provides mapping objects that allow their elements to be accessed both as keys and as attributes.")
+
+_name=${pkgname#python-}
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/attrdict/attrdict-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-wheel")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
