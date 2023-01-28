@@ -11,8 +11,6 @@ tags=("libs dev-python")
 
 build_deps=("python python-build python-installer python-wheel python-flit-scm")
 
-adddep=("python-greenlet")
-
 build(){
   go_src_dir
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
