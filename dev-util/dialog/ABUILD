@@ -1,10 +1,9 @@
 pkgname=dialog
-pkgver=1.3_20220728
+pkgver=1.3_20221229
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A tool to display dialog boxes from shell scripts.")
-longdesc=("Though similar in style to CDK, it is different, being a script-interpreter which provides a set of curses widgets. Widgets are objects whose appearance and behavior can be customized.")
 
 source=("https://invisible-mirror.net/archives/dialog/${pkgname}-${pkgver//_/-}.tgz")
 
