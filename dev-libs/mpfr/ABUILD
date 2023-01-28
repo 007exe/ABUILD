@@ -1,6 +1,6 @@
 pkgname=mpfr
 pkgver=4.2.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Multiple-precision floating-point library.")
