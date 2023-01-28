@@ -3,7 +3,7 @@
 pkgname=glibc
 pkglist=("lib32-glibc")
 pkgver=2.36
-pkgbuild=4
+pkgbuild=5
 arch=("auto")
 
 shortdesc=("GNU C Library.")
