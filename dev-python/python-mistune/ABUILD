@@ -9,12 +9,12 @@ source=("https://github.com/lepture/mistune/archive/refs/tags/v${pkgver}.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-install python-setuptools python-wheel")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
   python -m build --wheel --skip-dependency-check --no-isolation
-  python -m install --optimize=1 --destdir="$pkgdir" dist/*.whl
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -vDm 644 README.md -t "$pkgdir/usr/share/doc/${pkgname}/"
   install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/${pkgname}/"
 }
