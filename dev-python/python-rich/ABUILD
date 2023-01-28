@@ -1,5 +1,5 @@
 pkgname=python-rich
-pkgver=13.0.1
+pkgver=13.3.0
 pkgbuild=1
 arch=("auto")
 
