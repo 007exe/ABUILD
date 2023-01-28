@@ -1,6 +1,6 @@
 pkgname=clucene
 pkgver=2.3.3.4
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("C++ port of the high-performance text search engine Lucene.")
