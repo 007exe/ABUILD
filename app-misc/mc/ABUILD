@@ -1,12 +1,11 @@
 pkgname=mc
-pkgver=4.8.28
+pkgver=4.8.29
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A file manager that emulates Norton Commander.")
-longdesc=("Midnight Commander is a visual shell much like a file manager, only with way more features.")
+shortdesc=("Midnight Commander is a visual shell much like a file manager, only with way more features.")
 
-source=("http://www.midnight-commander.org/downloads/mc-${pkgver}.tar.bz2")
+source=("http://ftp.midnight-commander.org/${pkgname}-${pkgver}.tar.xz")
 
 tags=("console app-misc")
 
@@ -20,14 +19,14 @@ perl python python-boto python-pytz samba unace unarj unrar unzip zip")
 
 config_files=("etc/mc/edit.indent.rc
 etc/mc/filehighlight.ini
-etc/mc/mc.ext
 etc/mc/mc.keymap
-etc/mc/sfs.ini
 etc/mc/mc.menu
-etc/mc/mcedit.menu")
+etc/mc/mcedit.menu
+etc/mc/sfs.ini")
 
 build() {
   go_src_dir
+#  ./autogen.sh
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
