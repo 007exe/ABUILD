@@ -10,8 +10,9 @@ source=("http://archive.ipython.org/release/$pkgver/ipython-${pkgver}.tar.gz"
 
 tags=("develop dev-python")
 
-adddep=("ython python-traitlets python-pexpect sqlite python-pickleshare
-python-prompt_toolkit python-jedi python-pygments python-backcall
+# python-jedi
+adddep=("python-traitlets python-pexpect sqlite python-pickleshare
+python-prompt_toolkit python-pygments python-backcall
 python-matplotlib-inline python-stack-data")
 
 build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
