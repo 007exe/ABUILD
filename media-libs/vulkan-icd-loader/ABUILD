@@ -1,23 +1,21 @@
 # NOTE: Перед перед обновлением данного пакета следует обновить vulkan-headers
-# Attention: Перед сборкой очисти кеш исходников поскольку vulkan-headers имеет архив с такойже версией который будит ошибюочно собран
+# NOTE: При сборке пакет имеет конфликт с ccache
 pkgname=vulkan-icd-loader
-pkgver=1.3.235
+pkgver=1.3.240
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Vulkan Installable Client Driver (ICD) Loader.")
-longdesc=("Vulkan is an explicit API, enabling direct control over how GPUs actually work. As such, Vulkan supports systems that have multiple GPUs, each running with a different driver, or ICD (Installable Client Driver).")
 
 source=("https://github.com/KhronosGroup/Vulkan-Loader/archive/v${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("cmake python-lxml libx11 libxrandr wayland vulkan-headers=${pkgver}")
+build_deps=("cmake python-lxml libx11 libxrandr wayland vulkan-headers=${pkgver} glibc")
 
 build() {
   go_src_dir
   burn_patches
-echo "Attention: Перед сборкой очисти кеш исходников поскольку vulkan-headers имеет архив с такойже версией который будит ошибюочно собран"
   rm -rf build ; mkdir build ; cd build
   cmake -DCMAKE_INSTALL_PREFIX=/usr \
     -DVULKAN_HEADERS_INSTALL_DIR=/usr \
