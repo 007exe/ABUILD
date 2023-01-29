@@ -1,11 +1,10 @@
 # NOTE: Обнови vulkan-icd-loader
 pkgname=vulkan-headers
-pkgver=1.3.235
+pkgver=1.3.240
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Vulkan header files.")
-longdesc=("Vulkan Header files and API registry.")
+shortdesc=("Vulkan Header files and API registry.")
 
 source=("https://github.com/KhronosGroup/Vulkan-Headers/archive/v${pkgver}.tar.gz")
 
