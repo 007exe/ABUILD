@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=OpenJDK Java 18 Shell
-Comment=OpenJDK Java 18 Shell
+Name=OpenJDK Java Shell
+Comment=OpenJDK Java Shell
 Keywords=java;shell
-Exec=/usr/lib/jvm/java-18-openjdk/bin/jshell
+Exec=/usr/lib/jvm/java-openjdk/bin/jshell
 Terminal=true
 Type=Application
 Icon=java18-openjdk
