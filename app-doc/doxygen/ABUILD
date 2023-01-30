@@ -1,5 +1,5 @@
 pkgname=doxygen
-pkgver=1.9.5
+pkgver=1.9.6
 pkgbuild=1
 arch=("auto")
 
