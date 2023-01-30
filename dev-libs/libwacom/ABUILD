@@ -1,10 +1,9 @@
 pkgname=libwacom
-pkgver=2.5.0
+pkgver=2.6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library to identify Wacom tablets and their features.")
-longdesc=("The libwacom package contains a library used to identify wacom tablets and their model-specific features.")
 
 source=("https://github.com/linuxwacom/libwacom/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
