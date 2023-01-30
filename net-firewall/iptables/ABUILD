@@ -1,10 +1,9 @@
 pkgname=iptables
 pkgver=1.8.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Tools for managing Linux kernel packet filtering capabilities.")
-longdesc=("The iptables utility controls the network packet filtering code in the Linux kernel.")
 
 source=("http://www.netfilter.org/projects/iptables/files/${pkgname}-${pkgver}.tar.bz2")
 
