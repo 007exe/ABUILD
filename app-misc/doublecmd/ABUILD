@@ -1,5 +1,5 @@
 pkgname=doublecmd-gtk2
-pkgver=1.0.9
+pkgver=1.0.10
 pkgbuild=1
 arch=("auto")
 
@@ -41,7 +41,7 @@ build(){
 
 doublecmd-qt() {
   pkgname=doublecmd-qt5
-  shortdesc=("Twin-panel (commander-style) file manager (Qt5)")
+  shortdesc=("Twin-panel (commander-style) file manager (Qt5).")
   adddep=("desktop-file-utils hicolor-icon-theme shared-mime-info")
   conflicts=("doublecmd-gtk2")
 }
