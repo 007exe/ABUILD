@@ -1,10 +1,10 @@
 pkgname=intel-media-sdk
-pkgver=22.6.4
+pkglist=("libmfx")
+pkgver=23.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("API to access hardware-accelerated video on Intel Gen graphics hardware platforms.")
-longdesc=("Intel Media SDK provides a plain C API to access hardware-accelerated video decode, encode and filtering on Intel Gen graphics hardware platforms. Implementation written in C++ 11 with parts in C-for-Media (CM).")
 
 source=("https://github.com/Intel-Media-SDK/MediaSDK/archive/intel-mediasdk-${pkgver}.tar.gz")
 
@@ -12,9 +12,7 @@ tags=("libs media-libs")
 
 build_deps=("intel-media-driver libdrm libva wayland cmake libpciaccess libx11 libxcb python")
 
-adddep="libmfx=${pkgver}"
-
-pkglist=("libmfx")
+adddep=("libmfx=${pkgver}")
 
 build() {
   go_src_dir
