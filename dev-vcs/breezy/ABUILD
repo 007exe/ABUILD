@@ -10,7 +10,7 @@ source=("https://github.com/breezy-team/breezy/archive/refs/tags/brz-${pkgver}.t
 
 tags=("develop dev-vcs")
 
-build_deps=("python-cython python-dulwich python-fastimport python-gpgme python-paramiko python-setuptools
+build_deps=("cython python-dulwich python-fastimport python-gpgme python-paramiko python-setuptools
 python-configobj python-patiencediff python-six")
 
 adddep=("python-configobj python-patiencediff python-six")
