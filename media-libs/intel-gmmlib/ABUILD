@@ -1,10 +1,9 @@
 pkgname=intel-gmmlib
-pkgver=22.3.2
+pkgver=22.3.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Intel Graphics Memory Management Library.")
-longdesc=("The Intel(R) Graphics Memory Management Library provides device specific and buffer management for the Intel(R) Graphics Compute Runtime for OpenCL(TM) and the Intel(R) Media Driver for VAAPI.")
 
 source=("https://github.com/${pkgname/-//}/archive/${pkgname}-${pkgver}.tar.gz")
 
