@@ -1,10 +1,9 @@
 pkgname=findutils
 pkgver=4.9.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("GNU utilities to locate files")
-longdesc=("The Findutils package contains programs to find files. These programs are provided to recursively search through a directory tree and to create, maintain, and search a database (often faster than the recursive find, but is unreliable if the database has not been recently updated).")
+shortdesc=("GNU utilities to locate files.")
 
 source=("https://ftp.gnu.org/pub/gnu/findutils/${pkgname}-${pkgver}.tar.xz")
 
