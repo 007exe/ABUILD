@@ -2,11 +2,10 @@ pkgname=readline
 _basever=8.2
 _patchlevel=001
 pkgver=${_basever}.${_patchlevel}
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("GNU readline library.")
-longdesc=("The Readline package is a set of libraries that offers command-line editing and history capabilities.")
 
 tags=("libs sys-libs")
 
