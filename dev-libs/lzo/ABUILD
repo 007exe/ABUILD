@@ -1,10 +1,9 @@
 pkgname=lzo
 pkgver=2.10
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Portable lossless data compression library.")
-longdesc=("LZO is a data compression library which is suitable for data decompression and compression in real-time. This means it favors speed over compression ratio.")
 
 source=("https://www.oberhumer.com/opensource/lzo/download/lzo-${pkgver}.tar.gz")
 
