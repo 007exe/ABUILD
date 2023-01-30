@@ -1,10 +1,9 @@
 pkgname=libyaml
 pkgver=0.2.5
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("YAML 1.1 library.")
-longdesc=("The yaml package contains a C library for parsing and emitting YAML (YAML Ain't Markup Language) code.")
 
 source=("https://pyyaml.org/download/libyaml/yaml-$pkgver.tar.gz")
 
