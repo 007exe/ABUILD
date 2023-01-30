@@ -1,10 +1,9 @@
 pkgname=libvirt
-pkgver=8.10.0
+pkgver=9.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("C toolkit to manipulate virtual machines.")
-longdesc=("API for controlling virtualization engines (openvz,kvm,qemu,virtualbox,xen,etc).")
 
 source=("https://libvirt.org/sources/libvirt-${pkgver}.tar.xz")
 
