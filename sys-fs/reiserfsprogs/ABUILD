@@ -1,10 +1,9 @@
 pkgname=reiserfsprogs
 pkgver=3.6.27
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Reiserfs utilities.")
-longdesc=("The reiserfsprogs package contains various utilities for use with the Reiser file system..")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${pkgver}/reiserfsprogs-${pkgver}.tar.xz")
 
