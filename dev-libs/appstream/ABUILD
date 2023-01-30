@@ -6,12 +6,11 @@
 # в пост установочные скрипты пакетов которые это требуют
 
 pkgname=appstream
-pkgver=0.15.6
+pkgver=0.16.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides a standard for creating app stores across distributions.")
-longdesc=("Cross-distro effort for providing metadata for software in the Linux ecosystem.")
 
 source=("https://www.freedesktop.org/software/appstream/releases/AppStream-${pkgver}.tar.xz")
 
