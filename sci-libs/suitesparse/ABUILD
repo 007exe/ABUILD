@@ -1,10 +1,9 @@
 pkgname=suitesparse
-pkgver=6.0.3
+pkgver=7.0.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A collection of sparse matrix libraries.")
-longdesc=("Suitesparse is a collection of libraries for computations involving sparse matrices.")
 
 source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
