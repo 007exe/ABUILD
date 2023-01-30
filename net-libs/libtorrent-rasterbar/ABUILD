@@ -1,10 +1,9 @@
 pkgname=libtorrent-rasterbar
 pkgver=2.0.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("C++ BitTorrent implementation focusing on efficiency and scalability.")
-longdesc=("A C++ BitTorrent library that aims to be a good alternative to all the other implementations around.")
 
 source=("https://github.com/arvidn/libtorrent/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
