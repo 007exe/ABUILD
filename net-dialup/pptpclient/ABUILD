@@ -1,10 +1,9 @@
 pkgname=pptpclient
 pkgver=1.10.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Linux client for PPTP.")
-longdesc=("Client for the proprietary Microsoft Point-to-Point Tunneling Protocol, PPTP.")
 
 source=("https://downloads.sourceforge.net/sourceforge/pptpclient/pptp-${pkgver}.tar.gz")
 
