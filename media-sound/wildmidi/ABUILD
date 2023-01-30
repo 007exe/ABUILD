@@ -1,10 +1,9 @@
 pkgname=wildmidi
-pkgver=0.4.4
+pkgver=0.4.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open Source MIDI Synthesizer.")
-longdesc=("MIDI processing library and player using the GUS patch set.")
 
 source=("https://github.com/psi29a/wildmidi/archive/wildmidi-${pkgver}.tar.gz")
 
