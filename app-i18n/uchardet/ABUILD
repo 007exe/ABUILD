@@ -1,10 +1,9 @@
 pkgname=uchardet
-pkgver=0.0.7
-pkgbuild=2
+pkgver=0.0.8
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Encoding detector library ported from Mozilla.")
-longdesc=("Uchardet uchardet is a C language binding of the original C++ implementation of the universal charset detection library by Mozilla.")
 
 source=("https://www.freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
 
