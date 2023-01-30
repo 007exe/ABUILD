@@ -1,10 +1,9 @@
 pkgname=flex
 pkgver=2.6.4
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("A tool for generating text-scanning programs.")
-longdesc=("The Flex package contains a utility for generating programs that recognize patterns in text.")
 
 tags=("develop sys-devel")
 
