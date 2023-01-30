@@ -1,10 +1,9 @@
 pkgname=shadow
 pkgver=4.13
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Utilities to deal with user accounts.")
-longdesc=("Password and account management tool suite with support for shadow files and PAM.")
+shortdesc=("Password and account management tool suite with support for shadow files and PAM.")
 
 tags=("base sys-apps")
 
