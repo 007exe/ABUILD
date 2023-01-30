@@ -1,10 +1,9 @@
 pkgname=tdb
-pkgver=1.4.7
+pkgver=1.4.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Trivial Database similar to GDBM but allows simultaneous commits.")
-longdesc=("Library implementing Sambas embedded database and utilities for backing up, restoring and manipulating the database.")
 
 source=("http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
