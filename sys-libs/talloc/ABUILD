@@ -1,10 +1,9 @@
 pkgname=talloc
-pkgver=2.3.4
+pkgver=2.4.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Hierarchical pool based memory allocator with destructors.")
-longdesc=("Talloc provides a hierarchical, reference counted memory pool system with destructors. It is the core memory allocator used in Samba.")
 
 source=("https://www.samba.org/ftp/talloc/talloc-${pkgver}.tar.gz")
 
