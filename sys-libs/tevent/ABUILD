@@ -1,10 +1,9 @@
 pkgname=tevent
-pkgver=0.13.0
+pkgver=0.14.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Event system based on the talloc memory management library.")
-longdesc=("Tevent is an event system based on the talloc memory management library. It is the core event system used in Samba.")
 
 source=("https://samba.org/ftp/tevent/${pkgname}-${pkgver}.tar.gz")
 
