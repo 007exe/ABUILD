@@ -1,10 +1,9 @@
 pkgname=m4
 pkgver=1.4.19
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("The GNU macro processor.")
-longdesc=("The M4 package contains a macro processor.")
 
 tags=("develop sys-devel")
 
