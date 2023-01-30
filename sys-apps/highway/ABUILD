@@ -1,10 +1,9 @@
 pkgname=highway
-pkgver=1.0.2
+pkgver=1.0.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C++ library for SIMD (Single Instruction, Multiple Data).")
-longdesc=("Performance-portable, length-agnostic SIMD with runtime dispatch.")
 
 source=("https://github.com/google/highway/archive/refs/tags/${pkgver}.tar.gz")
 
