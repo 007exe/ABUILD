@@ -1,10 +1,9 @@
 pkgname=terminus-font
 pkgver=4.49.1
-pkgbuild=1
+pkgbuild=2
 arch=("noarch")
 
 shortdesc=("Monospace bitmap font (for X11 and console).")
-longdesc=("A clean fixed font for the console and X11.")
 
 source=("https://downloads.sourceforge.net/project/terminus-font/terminus-font-${pkgver%.1}/terminus-font-$pkgver.tar.gz")
 
