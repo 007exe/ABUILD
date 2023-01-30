@@ -1,10 +1,9 @@
 pkgname=qtcreator
 pkgver=9.0.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Lightweight, cross-platform integrated development environment.")
-longdesc=("Lightweight IDE for C++/QML development centering around Qt.")
 
 source=("https://github.com/qt-creator/qt-creator/archive/refs/tags/v${pkgver}.tar.gz")
 
