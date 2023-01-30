@@ -1,10 +1,9 @@
 pkgname=dosfstools
 pkgver=4.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("DOS filesystem utilities.")
-longdesc=("The dosfstools package contains various utilities for use with the FAT family of file systems.")
 
 source=("https://github.com/$pkgname/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
