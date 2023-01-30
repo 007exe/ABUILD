@@ -10,7 +10,7 @@ tags=("libs app-pda")
 
 source=("https://github.com/libimobiledevice/libplist/releases/download/$pkgver/libplist-$pkgver.tar.bz2")
 
-build_deps=("python python-cython autoconf python-setuptools glib2")
+build_deps=("python cython autoconf python-setuptools glib2")
 
 build() {
   go_src_dir
