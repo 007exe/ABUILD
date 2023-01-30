@@ -1,6 +1,6 @@
 pkgname=libx11
 pkgver=1.8.3
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("X11 client-side library.")
