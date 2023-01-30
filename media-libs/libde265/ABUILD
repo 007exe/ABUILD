@@ -1,10 +1,9 @@
 pkgname=libde265
-pkgver=1.0.9
+pkgver=1.0.10
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open h.265 video codec implementation.")
-longdesc=("libde265 is an open source implementation of the h.265 video codec. It is written from scratch and has a plain C API to enable a simple integration into other software.")
 
 source=("https://github.com/strukturag/libde265/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
 
