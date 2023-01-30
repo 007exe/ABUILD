@@ -1,10 +1,9 @@
 pkgname=fontconfig
-pkgver=2.14.0
+pkgver=2.14.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for configuring and customizing font access.")
-longdesc=("The Fontconfig package contains a library and support programs used for configuring and customizing font access.")
 
 source=("http://www.fontconfig.org/release/$pkgname-$pkgver.tar.gz")
 
