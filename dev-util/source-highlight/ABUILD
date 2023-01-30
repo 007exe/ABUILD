@@ -1,10 +1,9 @@
 pkgname=source-highlight
 pkgver=3.1.9
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("Produces a document with syntax highlighting.")
-longdesc=("GNU Source-highlight produces a document with syntax highlighting when given a source file.")
 
 source=("https://ftp.gnu.org/gnu/src-highlite/${pkgname}-${pkgver}.tar.gz")
 
