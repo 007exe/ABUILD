@@ -10,7 +10,7 @@ source=("https://github.com/libimobiledevice/libimobiledevice/archive/refs/tags/
 
 tags=("libs app-pda")
 
-build_deps=("libusbmuxd gnutls python python-cython libplist autoconf usbmuxd")
+build_deps=("libusbmuxd gnutls python cython libplist autoconf usbmuxd")
 
 adddep=("usbmuxd gnutls")
 
