@@ -1,10 +1,9 @@
 pkgname=net-tools
 pkgver=2.10
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The basic tools for setting up networking")
-longdesc=("The net-tools package contains the basic tools needed for setting up networking:  ifconfig, netstat, route and others.")
 
 tags=("network net-misc")
 
