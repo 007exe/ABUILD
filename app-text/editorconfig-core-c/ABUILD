@@ -1,10 +1,9 @@
 pkgname=editorconfig-core-c
-pkgver=0.12.5
+pkgver=0.12.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("EditorConfig core library written in C.")
-longdesc=("EditorConfig core code written in C (for use by plugins supporting EditorConfig parsing).")
+shortdesc=("EditorConfig core code written in C (for use by plugins supporting EditorConfig parsing).")
 
 source=("https://github.com/editorconfig/$pkgname/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
