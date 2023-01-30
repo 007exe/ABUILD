@@ -1,10 +1,10 @@
 pkgname=lvm2
+pkglist=("device-mapper")
 pkgver=2.03.18
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Logical Volume Manager 2 utilities.")
-longdesc=("The LVM2 package is a set of tools that manage logical partitions. It allows spanning of file systems across multiple physical disks and disk partitions and provides for dynamic growing or shrinking of logical partitions, mirroring and low storage footprint snapshots.")
 
 source=("https://github.com/lvmteam/lvm2/archive/v${pkgver//./_}.tar.gz")
 
@@ -13,8 +13,6 @@ tags=("base sys-fs")
 build_deps=("readline eudev libaio util-linux glibc")
 
 adddep=("device-mapper>=${pkgver}")
-
-pkglist=("device-mapper")
 
 config_files=("etc/lvm/lvm.conf
 etc/lvm/lvmlocal.conf")
@@ -64,7 +62,6 @@ build() {
 device-mapper() {
   pkgname=device-mapper
   shortdesc=("Device mapper userspace library and tools.")
-  longdesc=("The LVM2 package is a set of tools that manage logical partitions. It allows spanning of file systems across multiple physical disks and disk partitions and provides for dynamic growing or shrinking of logical partitions, mirroring and low storage footprint snapshots.")
 }
 
 device-mapper_prep() {
