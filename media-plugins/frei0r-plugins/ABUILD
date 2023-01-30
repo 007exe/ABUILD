@@ -1,10 +1,9 @@
 pkgname=frei0r-plugins
 pkgver=1.8.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Minimalistic plugin API for video effects.")
-longdesc=("A minimalistic plugin API for video effects.")
 
 source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz")
 
