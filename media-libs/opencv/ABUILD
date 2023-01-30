@@ -1,10 +1,9 @@
 pkgname=opencv
-pkgver=4.6.0
+pkgver=4.7.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open Source Computer Vision Library.")
-longdesc=("The opencv package contains graphics libraries mainly aimed at real-time computer vision.")
 
 source=("https://github.com/opencv/opencv/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz"
 "https://github.com/opencv/opencv_contrib/archive/${pkgver}/opencv_contrib-${pkgver}.tar.gz")
