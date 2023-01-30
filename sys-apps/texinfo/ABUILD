@@ -1,10 +1,9 @@
 pkgname=texinfo
-pkgver=7.0.1
+pkgver=7.0.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("GNU documentation system for on-line information and printed output.")
-longdesc=("The Texinfo package contains programs for reading, writing, and converting info pages.")
 
 source=("ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
