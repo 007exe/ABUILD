@@ -1,5 +1,5 @@
 pkgname=libopenmpt
-pkgver=0.6.7
+pkgver=0.6.8
 pkgbuild=1
 arch=("auto")
 
