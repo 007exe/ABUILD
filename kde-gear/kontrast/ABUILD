@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tool to check contrast for colors to verify they are correctly accessible.")
-longdesc=("Tool to check contrast for colors that allows verifying that your colors are correctly accessible.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 

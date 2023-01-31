@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("PHP plugin for KDevelop.")
-longdesc=("PHP language and documentation plugin for KDevelop.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/kdev-php-${pkgver}.tar.xz")
 

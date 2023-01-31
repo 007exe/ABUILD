@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Libary for handling mail messages and newsgroup articles.")
-longdesc=("Library for handling mail messages and newsgroup articles.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 

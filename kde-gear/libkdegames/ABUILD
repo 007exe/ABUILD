@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Base library common to many KDE games.")
-longdesc=("Common code and data for many KDE games.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/$pkgver/src/$pkgname-$pkgver.tar.xz")
 

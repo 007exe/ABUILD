@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Thumbnailers for various graphics file formats.")
-longdesc=("These plugins allow KDE software to create thumbnails for advanced graphic file formats PostScript and Raw.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 

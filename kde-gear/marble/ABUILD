@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Common libraries and plugins for Marble.")
-longdesc=("Virtual Globe and World Atlas to learn more about Earth.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/marble-${pkgver}.tar.xz")
 

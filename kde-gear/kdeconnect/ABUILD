@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Adds communication between KDE and your smartphone.")
-longdesc=("Adds communication between KDE Plasma and your smartphone.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-kde-${pkgver}.tar.xz")
 

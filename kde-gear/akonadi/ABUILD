@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Storage service for PIM data and libraries for PIM apps.")
-longdesc=("PIM layer, which provides an asynchronous API to access all kind of PIM data.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 

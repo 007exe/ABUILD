@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Network Monitor for DNS-SD services (Zeroconf).")
-longdesc=("KIO worker to discover file systems by DNS-SD (DNS Service Discovery).")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 

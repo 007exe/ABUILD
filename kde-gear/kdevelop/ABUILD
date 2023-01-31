@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ IDE using KDE technologies.")
-longdesc=("Integrated Development Environment, supporting KF5/Qt, C/C++ and much more.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
