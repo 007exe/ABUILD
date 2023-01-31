@@ -1,10 +1,9 @@
 pkgname=spandsp
 pkgver=0.0.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A DSP library for telephony.")
-longdesc=("SpanDSP is a library of DSP functions for telephony.")
 
 source=("https://www.soft-switch.org/downloads/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
