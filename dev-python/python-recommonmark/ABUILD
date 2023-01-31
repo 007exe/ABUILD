@@ -9,13 +9,13 @@ source=("https://files.pythonhosted.org/packages/source/r/recommonmark/recommonm
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools
-python-commonmark python-docutils python-sphinx")
-
 adddep=("python-docutils python-commonmark python-sphinx")
+
+build_deps=("${adddep} python python-setuptools")
 
 build(){
   go_src_dir
+  burn_patches
   python setup.py build
   make -C docs text man
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
