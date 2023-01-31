@@ -1,10 +1,9 @@
 pkgname=libnl
 pkgver=3.7.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library for applications dealing with netlink sockets.")
-longdesc=("The libnl suite is a collection of libraries providing APIs to netlink protocol based Linux kernel interfaces.")
 
 source=("https://github.com/thom311/libnl/releases/download/libnl${pkgver//./_}/${pkgname}-${pkgver}.tar.gz")
 
