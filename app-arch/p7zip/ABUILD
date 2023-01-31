@@ -1,16 +1,15 @@
 pkgname=p7zip
 pkgver=17.04
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Port of 7-Zip archiver for Unix.")
-longdesc=("Command-line file archiver with high compression ratio.")
 
-source=("https://github.com/jinfeihan57/p7zip/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.gz")
+source=("https://github.com/p7zip-project/p7zip/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.gz")
 
 tags=("app-arch console")
 
-build_deps=("gcc-libs")
+build_deps="gcc-libs glibc>=2.36 gcc-libs>=12.2.0"
 
 build() {
   go_src_dir
