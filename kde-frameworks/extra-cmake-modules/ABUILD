@@ -1,10 +1,9 @@
 pkgname=extra-cmake-modules
-pkgver=5.101.0
+pkgver=5.102.0
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Extra modules and scripts for CMake.")
-longdesc=("Extra modules and scripts for CMake.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 

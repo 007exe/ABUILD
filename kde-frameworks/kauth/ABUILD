@@ -1,5 +1,5 @@
 pkgname=kauth
-pkgver=5.101.0
+pkgver=5.102.0
 pkgbuild=1
 arch=("auto")
 
