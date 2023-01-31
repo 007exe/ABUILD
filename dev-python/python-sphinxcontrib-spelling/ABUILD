@@ -9,12 +9,13 @@ source=("https://files.pythonhosted.org/packages/source/s/sphinxcontrib-spelling
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pbr python-sphinx python-pyenchant")
+build_deps="python python-setuptools python-pbr python-sphinx python-pyenchant python>=3.11.1"
 
 adddep=("python-sphinx python-pyenchant")
 
 build() {
   go_src_dir
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1 --skip-build
   install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
