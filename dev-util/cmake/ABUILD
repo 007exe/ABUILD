@@ -1,10 +1,9 @@
 pkgname=cmake
-pkgver=3.25.1
+pkgver=3.25.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Cross-platform, open-source make system.")
-longdesc=("The CMake package contains a modern toolset used for generating Makefiles.")
+shortdesc=("The CMake package contains a modern toolset used for generating Makefiles.")
 
 source=("http://www.cmake.org/files/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
 
