@@ -1,10 +1,9 @@
 pkgname=intel-media-driver
-pkgver=22.6.4
+pkgver=23.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Intel Media Driver for VAAPI Broadwell+ iGPUs.")
-longdesc=("The Intel(R) Media Driver for VAAPI is a new VA-API (Video Acceleration API) user mode driver supporting hardware accelerated decoding, encoding, and video post processing for GEN based graphics hardware.")
 
 source=("https://github.com/intel/media-driver/archive/${pkgname%-*}-${pkgver}.tar.gz")
 
