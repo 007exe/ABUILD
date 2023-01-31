@@ -1,14 +1,12 @@
 pkgname=sudo
-_sudover=1.9.12p1
+_sudover=1.9.12p2
 pkgver=${_sudover/p/.p}
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Give certain users the ability to run some commands as root.")
-longdesc=("The Sudo package allows a system administrator to give certain users (or groups of users) the ability to run some (or all) commands as root or another user while logging the commands and arguments.")
 
-#source=("http://www.sudo.ws/sudo/dist/sudo-$_sudover.tar.gz")
-source=("https://github.com/sudo-project/sudo/archive/refs/tags/SUDO_${_sudover//./_}.tar.gz")
+source=("https://www.sudo.ws/sudo/dist/${pkgname}-${_sudover}.tar.gz")
 
 tags=("console sys-auth")
 
@@ -33,11 +31,17 @@ build() {
     --with-sssd \
     --with-ldap \
     --with-passprompt="[sudo] password for %p: "
-
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
   install -Dm0644 ${filedir}/sudo.pam ${pkgdir}/etc/pam.d/sudo
+
+# файл службы sudo_logsrvd (взят из sudo-logsrvd-1.9.0-1.el8.x86_64.rpm)
+  install -Dm644 -t ${pkgdir}/usr/lib/systemd/system ${filedir}/sudo_logsrvd.service
+
+# Данные5 каталоги создаются сервисом systemd-tmpfiles
+#  rmdir ${pkgdir}/run/sudo
+#  rmdir ${pkgdir}/run
 
   install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/sudo
 }
