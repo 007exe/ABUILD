@@ -1,0 +1,36 @@
+pkgname=blosc
+pkgver=1.21.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A blocking, shuffling and loss-less compression library.")
+
+source=("https://github.com/Blosc/c-blosc/archive/v${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+adddep=("snappy zstd")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  cmake -B build \
+    -D CMAKE_INSTALL_PREFIX="/usr" \
+    -D BUILD_STATIC="OFF" \
+    -D DEACTIVATE_SNAPPY="OFF" \
+    -D PREFER_EXTERNAL_LZ4="ON" \
+    -D PREFER_EXTERNAL_ZLIB="ON" \
+    -D PREFER_EXTERNAL_ZSTD="ON"
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm644 LICENSES/BLOSC.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
+}
