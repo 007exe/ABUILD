@@ -9,7 +9,7 @@ source=("https://github.com/Alir3z4/html2text/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-pytest python-setuptools")
+build_deps="python python-pytest python-setuptools python>=3.11.1"
 
 adddep=("python-setuptools")
 
