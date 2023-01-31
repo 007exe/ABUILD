@@ -9,7 +9,7 @@ source=("https://download.gnome.org/sources/pygobject/${pkgver%.*}/pygobject-${p
 
 tags=("libs dev-python")
 
-build_deps=("python python-cairo gobject-introspection git meson")
+build_deps="python python-cairo gobject-introspection git meson glibc>=2.36 cairo>=1.17.6 libffi>=3.4.4 gobject-introspection>=1.74.0 glib2>=2.74.5 python>=3.11.1"
 
 adddep=("gobject-introspection")
 
