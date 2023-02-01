@@ -20,14 +20,14 @@ build(){
   go_src_dir
   burn_patches
   python -m build --wheel --no-isolation
-  cd docs/
-  PYTHONPATH=${srcdir}/pip-${pkgver}/src/ python pip_sphinxext.py
-  PYTHONPATH=${srcdir}/pip-${pkgver}/src/ sphinx-build -b man -d build/doctrees/man man build/man -c html
+#  cd docs/
+#  PYTHONPATH=${srcdir}/pip-${pkgver}/src/ python pip_sphinxext.py
+#  PYTHONPATH=${srcdir}/pip-${pkgver}/src/ sphinx-build -b man -d build/doctrees/man man build/man -c html
 
   local _site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -vDm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
-  install -vDm 644 docs/build/man/*.1 -t ${pkgdir}/usr/share/man/man1/
+#  install -vDm 644 docs/build/man/*.1 -t ${pkgdir}/usr/share/man/man1/
   install -vDm 644 {NEWS,README}.rst -t ${pkgdir}/usr/share/doc/${pkgname}/
   PYTHONPATH=${pkgdir}/${_site_packages} ${pkgdir}/usr/bin/pip completion --bash | install -vDm 644 /dev/stdin ${pkgdir}/usr/share/bash-completion/completions/pip
   PYTHONPATH=${pkgdir}/${_site_packages} ${pkgdir}/usr/bin/pip completion --fish | install -vDm 644 /dev/stdin ${pkgdir}/usr/share/fish/vendor_completions.d/pip.fish
