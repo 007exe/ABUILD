@@ -1,15 +1,15 @@
 pkgname=iptables
-pkgver=1.8.8
-pkgbuild=2
+pkgver=1.8.9
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tools for managing Linux kernel packet filtering capabilities.")
 
-source=("http://www.netfilter.org/projects/iptables/files/${pkgname}-${pkgver}.tar.bz2")
+source=("https://www.netfilter.org/projects/iptables/files/iptables-${pkgver}.tar.xz")
 
 tags=("network net-firewall")
 
-build_deps=("glibc libpcap kernel-headers")
+build_deps="glibc libpcap kernel-headers glibc>=2.36 libnetfilter_conntrack>=1.0.9 libnfnetlink>=1.0.2 libpcap>=1.10.3"
 
 build(){
   go_src_dir
@@ -30,9 +30,18 @@ build(){
 
   install -Dm0755 ${filedir}/iptables.init ${pkgdir}/etc/init.d/iptables
   install -Dm644 ${filedir}/iptables.confd ${pkgdir}/etc/conf.d/iptables
-
   install -Dm755 ${filedir}/ebtables.initd ${pkgdir}/etc/init.d/ebtables
   install -D -m644 ${filedir}/ebtables.confd ${pkgdir}/etc/conf.d/ebtables
-
   install -Dm644 ${filedir}/ip6tables.confd ${pkgdir}/etc/conf.d/ip6tables
+
+  install -Dt ${pkgdir}/usr/lib/systemd/system -m644 ${filedir}/{arp,eb}tables.service
+  touch ${pkgdir}/etc/{arp,eb}tables.conf
+
+  install -Dt ${pkgdir}/usr/lib/systemd/system -m644 ${filedir}/{ip,ip6}tables.service
+  install -D ${filedir}/iptables-legacy-flush ${pkgdir}/usr/lib/systemd/scripts/iptables-flush
+#  install -D ${filedir}/iptables-nft-flush ${pkgdir}/usr/lib/systemd/scripts/iptables-flush
+
+  install -Dm644 ${filedir}/empty.rules ${pkgdir}/etc/iptables/iptables.rules
+  install -Dm644 ${filedir}/empty.rules ${pkgdir}/etc/iptables/ip6tables.rules
+  install -Dt ${pkgdir}/usr/share/iptables -m644 ${filedir}/*.rules
 }
