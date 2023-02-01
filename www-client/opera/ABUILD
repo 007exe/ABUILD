@@ -1,5 +1,5 @@
 pkgname=opera
-pkgver=94.0.4606.76
+pkgver=95.0.4635.25
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://get.geo.opera.com/pub/${pkgname}/desktop/${pkgver}/linux/opera-
 
 tags=("www-client apps")
 
-build_deps=("gtk3 alsa-lib curl nss libcups desktop-file-utils rpm libxss libnotify")
+build_deps="gtk3 alsa-lib curl nss libcups desktop-file-utils rpm libxss libnotify glibc>=2.36 libx11>=1.8.3 libxcomposite>=0.4.6 libxdamage>=1.1.5 libxext>=1.3.5 libxfixes>=6.0.0 libxrandr>=1.5.3 alsa-lib>=1.2.8 atk>=2.38.0 at-spi2-core>=2.46.0 cairo>=1.17.6 libcups>=2.4.2 curl>=7.87.0 dbus>=1.14.4 libdrm>=2.4.114 expat>=2.5.0 mesa>=22.3.3 gcc-libs>=12.2.0 glib2>=2.74.5 nspr>=4.35 nss>=3.87 pango>=1.50.12 libxcb>=1.15 libxkbcommon>=1.5.0 shared-mime-info hicolor-icon-theme"
 
 adddep=("gtk3 desktop-file-utils shared-mime-info hicolor-icon-theme")
 
