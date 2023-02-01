@@ -1,10 +1,9 @@
 pkgname=exiv2
-pkgver=0.27.5
-pkgbuild=2
+pkgver=0.27.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Exif, Iptc and XMP metadata manipulation library and tools.")
-longdesc=("Exiv2 is a C++ library and a command line utility for managing image and video metadata.")
 
 source=("https://github.com/Exiv2/exiv2/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
