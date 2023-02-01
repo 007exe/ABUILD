@@ -1,17 +1,16 @@
 pkgname=metis
-pkgver=5.1.0.p10
-_pkgver=5.1.0-p10
-pkgbuild=2
+pkgver=5.1.0.p11
+_pkgver=5.1.0-p11
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices.")
-longdesc=("METIS is a set of serial programs for partitioning graphs, partitioning finite element meshes, and producing fill reducing orderings for sparse matrices. The algorithms implemented in METIS are based on the multilevel recursive-bisection, multilevel k-way, and multi-constraint partitioning schemes developed in our lab.")
 
 source=("https://bitbucket.org/petsc/pkg-metis/get/v${_pkgver}.tar.bz2")
 
 tags=("libs sci-libs")
 
-build_deps=("cmake glibc")
+build_deps="cmake glibc glibc>=2.36"
 
 build() {
   go_src_dir
