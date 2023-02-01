@@ -3,19 +3,18 @@
 # pipewire-pulse gst-plugin-pipewire pipewire-zeroconf pipewire-v4l2 pipewire-x11-bell
 # NOTE: Рассмотреть заману pulseaudio на pipewire
 pkgname=pipewire
-pkgver=0.3.64
+pkgver=0.3.65
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low-latency audio/video router and processor.")
-longdesc=("The pipewire package contains a server and user-space API to handle multimedia pipelines.")
 
 source=("https://github.com/PipeWire/pipewire/archive/${pkgver}/pipewire-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
 # rtkit liblc3
-build_deps=("alsa-lib bluez-libs avahi git dbus doxygen graphviz gst-plugins-base libcanberra
+build_deps=("alsa-lib bluez-libs avahi dbus doxygen graphviz gst-plugins-base libcanberra
 libfdk-aac libfreeaptx libldac libpulse libsndfile libusb libx11 libxfixes lilv meson ncurses
 python-docutils sbc sdl2 valgrind webrtc-audio-processing")
 
