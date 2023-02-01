@@ -1,6 +1,6 @@
 pkgname=python-poetry-core
-pkgver=1.4.0
-pkgbuild=2
+pkgver=1.5.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Poetry PEP 517 Build Backend & Core Utilities.")
