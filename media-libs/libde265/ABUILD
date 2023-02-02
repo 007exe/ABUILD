@@ -1,5 +1,5 @@
 pkgname=libde265
-pkgver=1.0.10
+pkgver=1.0.11
 pkgbuild=1
 arch=("auto")
 
