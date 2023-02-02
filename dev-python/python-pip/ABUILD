@@ -10,11 +10,10 @@ source=("https://github.com/pypa/pip/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("develop dev-python")
 
-build_deps=("python python-build python-installer python-myst-parser python-setuptools python-sphinx
-python-sphinx-copybutton python-sphinx-inline-tabs python-attrs python-cryptography python-wheel
-python-sphinxcontrib-towncrier")
-
 adddep=("python-attrs python-cryptography python-wheel")
+
+build_deps=("${adddep} python python-build python-installer python-myst-parser python-setuptools
+python-sphinx python-sphinx-copybutton python-sphinx-inline-tabs python-sphinxcontrib-towncrier")
 
 build(){
   go_src_dir
