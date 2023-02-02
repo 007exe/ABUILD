@@ -1,10 +1,9 @@
 pkgname=libsrtp
-pkgver=2.4.2
+pkgver=2.5.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for SRTP (Secure Realtime Transport Protocol).")
-longdesc=("Open-source implementation of the Secure Real-time Transport Protocol (SRTP).")
 
 source=("https://github.com/cisco/libsrtp/archive/refs/tags/v${pkgver}.tar.gz")
 
@@ -28,4 +27,12 @@ build() {
   cp -a build/html ${pkgdir}/usr/share/doc/${pkgname}
 
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
