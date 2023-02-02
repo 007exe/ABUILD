@@ -1,10 +1,9 @@
 pkgname=openssh
-pkgver=9.1p1
+pkgver=9.2p1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Premier connectivity tool for remote login with the SSH protocol.")
-longdesc=("The OpenSSH package contains ssh clients and the sshd daemon. This is useful for encrypting authentication and subsequent traffic over a network. The ssh and scp commands are secure implementations of telnet and rcp respectively.")
 
 source=("https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz")
 
