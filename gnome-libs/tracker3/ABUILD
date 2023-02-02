@@ -1,18 +1,18 @@
 pkgname=tracker3
 pkgver=3.4.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Desktop-neutral user information store, search tool and indexer.")
-longdesc=("Tracker is the file indexing and search provider used in the GNOME desktop environment.")
 
 source=("https://download.gnome.org/sources/tracker/${pkgver%.*}/tracker-${pkgver}.tar.xz")
 
 tags=("gnome-libs utils")
 
+adddep=("glib2 icu json-glib libsoup3 libstemmer libxml2 sqlite")
+
 # hotdoc python-tappy
-build_deps=("sqlite icu glib2 libffi util-linux libseccomp json-glib libsoup3 gobject-introspection vala
-bash-completion meson asciidoc libsoup python-gobject dbus-python libstemmer")
+build_deps=("${adddep} asciidoc bash-completion dbus gobject-introspection libsoup meson dbus-python python-gobject")
 
 build(){
   go_src_dir
