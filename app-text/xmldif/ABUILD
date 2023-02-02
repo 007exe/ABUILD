@@ -1,0 +1,21 @@
+pkgname=xmldiff
+pkgver=2.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A python tool that figures out the differences between two similar XML files, in the same way the diff utility does it.")
+
+source=("https://github.com/Shoobx/xmldiff/archive/${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+build_deps=("python-setuptools python libxslt openjade")
+
+adddep=("libxslt openjade")
+
+build(){
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+}
