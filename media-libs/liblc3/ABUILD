@@ -1,15 +1,26 @@
 pkgname=liblc3
 pkgver=1.0.1
 pkgbuild=1
+strict_version=1
 arch=("auto")
 
 shortdesc=("Low Complexity Communication Codec library and tools.")
 
-source=("https://github.com/google/liblc3/archive/refs/tags/v${pkgver}.tar.gz")
+source=("git:https://github.com/google/liblc3.git")
 
 tags=("libs media-libs")
 
 build_deps=("meson glibc")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+
+  git cherry-pick -n 214c343165006b664402c1667f4936e640c4376f  # add soversion
+  git cherry-pick -n 5c2f8916e71490dddbef0e43793cc09206da0ef1  # fix build
+}
 
 build() {
   go_src_dir
@@ -20,13 +31,5 @@ build() {
     -D tools=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
-  install -Dt ${pkgdir}/usr/share/doc/${pkgname} -m644 liblc3/README.md
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
+  install -Dt ${pkgdir}/usr/share/doc/${pkgname} -m644 README.md
 }
