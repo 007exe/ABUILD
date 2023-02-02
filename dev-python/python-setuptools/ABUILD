@@ -1,7 +1,7 @@
 # NOTE: Иногда при обновлении следует удалить python-setuptools
 pkgname=python-setuptools
-pkgver=65.6.3
-pkgbuild=3
+pkgver=67.1.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Easily download, build, install, upgrade, and uninstall Python packages.")
