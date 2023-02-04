@@ -1,5 +1,5 @@
 pkgname=sip
-pkgver=6.7.5
+pkgver=6.7.6
 pkgbuild=1
 arch=("auto")
 
