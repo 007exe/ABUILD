@@ -1,10 +1,9 @@
 pkgname=libmspack
 pkgver=0.10.1alpha
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A library for Microsoft compression formats.")
-longdesc=("A library for Microsoft compression formats.")
 
 source=("https://github.com/kyz/${pkgname}/archive/v${pkgver}.tar.gz")
 
