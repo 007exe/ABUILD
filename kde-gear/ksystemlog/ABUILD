@@ -1,5 +1,5 @@
 pkgname=ksystemlog
-pkgver=22.12.1
+pkgver=22.12.2
 pkgbuild=1
 arch=("auto")
 

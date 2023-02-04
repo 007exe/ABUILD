@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KDE_GEAR_VERSION=22.12.1
+KDE_GEAR_VERSION=22.12.2
 
 LIST="libkdcraw
 libkexiv2
@@ -220,18 +220,18 @@ palapeli"
 
 STARTD=`pwd`
 
-LOGFILE=~/build.log
+LOGFILE=~
 
-echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE/kde_gear_build.log
 for i in $LIST ; do
     cd $STARTD/$i
     if mkpkg -ba -wd ~/mkpkg/build -si -bv $KDE_GEAR_VERSION -bb 1; then
-           echo "$i ГОТОВ" >> $LOGFILE
+           echo "$i" >> $LOGFILE/kde_gear_build.log
            cd $STARTD
     else
-           echo "$i НЕ СОБРАН!!!" >> $LOGFILE
+           echo "$i" >> $LOGFILE/kde_gear_error_build.log
            cd $STARTD
     fi
 done
 
-echo "============================= Завершено `date` =============================" >> $LOGFILE
+echo "============================= Завершено `date` =============================" >> $LOGFILE/kde_gear_build.log
