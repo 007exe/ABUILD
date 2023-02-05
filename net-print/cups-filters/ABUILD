@@ -17,6 +17,8 @@ build_deps=("${adddep} ghostscript python liblouis")
 # NOTE: Это опциональные зависимости
 removedep=("ghostscript foomatic-db foomatic-db-engine foomatic-db-nonfree antiword docx2txt")
 
+config_files=("etc/cups/cups-browsed.conf")
+
 build() {
   go_src_dir
   burn_patches
@@ -46,4 +48,7 @@ build() {
 
   mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 ${srcdir}/${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+
+  install -Dm644 utils/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
+  sed -i "s|/usr/sbin/cups-browsed|/usr/bin/cups-browsed|" ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
 }
