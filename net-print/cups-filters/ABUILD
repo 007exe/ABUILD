@@ -1,17 +1,18 @@
 pkgname=cups-filters
-pkgver=1.28.16
+pkgver=1.28.17
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("OpenPrinting CUPS Filters.")
-longdesc=("The CUPS Filters package contains backends, filters and other software that was once part of the core CUPS distribution but is no longer maintained by Apple Inc.")
 
-source=("https://www.openprinting.org/download/cups-filters/cups-filters-${pkgver}.tar.xz")
+source=("https://github.com/OpenPrinting/cups-filters/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("console net-print")
 
+adddep=("lcms2 poppler qpdf ijs libcups libexif")
+
 # mupdf-tools --enable-mutool
-build_deps=("ghostscript python lcms2 poppler qpdf imagemagick liblouis ijs libcups")
+build_deps=("${adddep} ghostscript python liblouis")
 
 # NOTE: Это опциональные зависимости
 removedep=("ghostscript foomatic-db foomatic-db-engine foomatic-db-nonfree antiword docx2txt")
