@@ -1,5 +1,5 @@
 pkgname=perl-html-parser
-pkgver=3.80
+pkgver=3.81
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://www.cpan.org/authors/id/O/OA/OALDERS/HTML-Parser-${pkgver}.tar.
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-html-tagset perl-http-message perl-uri")
-
 adddep=("perl-html-tagset perl-http-message perl-uri")
+
+build_deps=("${adddep} perl")
 
 build(){
   go_src_dir
