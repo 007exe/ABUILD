@@ -9,15 +9,16 @@ source=("https://github.com/pradyunsg/furo/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-# nodejs-lts-gallium expac
-build_deps=("python python-build python-installer python-sphinx-theme-builder python-flit-core npm
-python-sphinx-basic-ng python-pygments python-beautifulsoup4")
-
 adddep=("python-sphinx-basic-ng python-pygments python-beautifulsoup4")
+
+# nodejs-lts-gallium
+build_deps=("${adddep} python python-build python-installer npm
+python-sphinx-theme-builder python-flit-core")
 
 build() {
   go_src_dir
-  STB_USE_SYSTEM_NODE=true python -m build -nw
+#  STB_USE_SYSTEM_NODE=true
+  python -m build -nw
   python -m installer --destdir=${pkgdir} dist/*.whl
 }
 
