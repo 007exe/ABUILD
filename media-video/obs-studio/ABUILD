@@ -1,16 +1,18 @@
 pkgname=obs-studio
-pkgver=29.0.0
+pkgver=29.0.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Free, open source software for live streaming and recording.")
-longdesc=("Free and open source software for video recording and live streaming.")
+shortdesc=("Free and open source software for video recording and live streaming.")
 
 source=("https://github.com/jp9000/obs-studio/archive/$pkgver.tar.gz")
 
 tags=("media-video apps")
 
-build_deps=("cmake x264 swig python libfdk-aac luajit sndio ffmpeg curl jack jansson libxinerama libxkbcommon-x11 libxcomposite mbedtls qt5-svg pipewire")
+adddep=("ffmpeg jansson libxinerama libxkbcommon-x11 mbedtls rnnoise
+pciutils qt6-svg curl jack gtk-update-icon-cache pipewire libxcomposite")
+
+build_deps=("${adddep} cmake libfdk-aac x264 swig python luajit sndio")
 
 # NOTE: Это опциональные зависимости
 removedep=("libfdk-aac libva-intel-driver libva-mesa-driver luajit python sndio v4l2loopback-dkms")
@@ -18,18 +20,18 @@ removedep=("libfdk-aac libva-intel-driver libva-mesa-driver luajit python sndio 
 build() {
   go_src_dir
   burn_patches
-  mkdir -p build
-  cd build
-  cmake ..\
+  cd ${srcdir}
+  cmake -B build -S ${srcdir}/${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX="/usr" \
-    -DCMAKE_INSTALL_LIBDIR=lib \
     -DENABLE_BROWSER=OFF \
     -DENABLE_VST=ON \
     -DENABLE_VLC=OFF \
     -DENABLE_NEW_MPEGTS_OUTPUT=OFF \
     -DENABLE_AJA=OFF \
     -DENABLE_JACK=ON \
-    -DOBS_VERSION_OVERRIDE=${pkgver}-${pkgbuild}
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+    -DENABLE_LIBFDK=ON \
+    -DOBS_VERSION_OVERRIDE=${pkgver}-${pkgbuild} \
+    -Wno-dev
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 }
