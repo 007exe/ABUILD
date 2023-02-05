@@ -21,10 +21,10 @@ build() {
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python setup.py build egg_info
   export PYTHONPATH="$PWD/build/lib:$PWD/src"
-  sphinx-build -b man docs docs/_build/man
+#  sphinx-build -b man docs docs/_build/man
   python setup.py install --prefix=/usr --root=${pkgdir} --skip-build
-  install -Dm 644 docs/_build/man/virtualenv.1 ${pkgdir}/usr/share/man/man1/virtualenv.1
-  ln -s virtualenv.1.gz ${pkgdir}/usr/share/man/man1/virtualenv3.1.gz
+#  install -Dm 644 docs/_build/man/virtualenv.1 ${pkgdir}/usr/share/man/man1/virtualenv.1
+#  ln -s virtualenv.1.gz ${pkgdir}/usr/share/man/man1/virtualenv3.1.gz
   ln ${pkgdir}/usr/bin/virtualenv ${pkgdir}/usr/bin/virtualenv3
   install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
