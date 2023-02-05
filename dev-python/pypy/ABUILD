@@ -9,27 +9,42 @@ source="https://downloads.python.org/pypy/pypy2.7-v${pkgver}-src.zip"
 
 tags=("libs dev-python")
 
-build_deps=("tk sqlite mercurial expat bzip2 gdbm openssl libffi zlib ncurses pypy")
-
 adddep=("expat bzip2 gdbm openssl libffi zlib ncurses")
+
+build_deps=("${adddep} pypy tk sqlite mercurial")
+
+# NOTE: Это опциональные зависимости
+removedep=("sqlite tk")
 
 build() {
   go_src_dir
   cd pypy/goal
+
+# По какой-то причине PyPy хочет использовать свои вендорные зависимости при обнаружении Linux.
   sed -i "s/, 'linux', 'linux2'//" targetpypystandalone.py
   pypy ../../rpython/bin/rpython -Ojit --shared targetpypystandalone
+
+# Собираемп модули
   PYTHONPATH=../.. ./pypy-c ../../lib_pypy/pypy_tools/build_cffi_imports.py
+
+# Подготовка к установке
+  go_src_dir
   pypy pypy/tool/release/package.py --archive-name pypy --targetdir .
   mkdir unpacked
   tar xf pypy.tar.bz2 -C unpacked
+
+# Устанавливаем pypy
   cd unpacked
   install -Dm755 pypy/bin/pypy ${pkgdir}/opt/pypy/bin/pypy
   install -Dm755 pypy/bin/libpypy-c.so ${pkgdir}/opt/pypy/bin/libpypy-c.so
   cp -r pypy/include pypy/lib_pypy pypy/lib-python pypy/site-packages ${pkgdir}/opt/pypy/
   cd ..
+
+# Cоздаём симлинки
   mkdir -p ${pkgdir}/usr/bin ${pkgdir}/usr/lib
   ln -s /opt/pypy/bin/pypy ${pkgdir}/usr/bin/pypy
   ln -s /opt/pypy/bin/libpypy-c.so ${pkgdir}/usr/lib/libpypy-c.so
+
   install -Dm644 README.rst ${pkgdir}/opt/pypy/README.rst
   install -Dm644 LICENSE ${pkgdir}/opt/pypy/LICENSE
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/pypy/LICENSE
