@@ -1,3 +1,5 @@
+shopt -s extglob
+
 pkgname=ghc
 pkglist=("ghc-libs ghc-static")
 pkgver=9.0.2
@@ -10,25 +12,22 @@ source=("https://downloads.haskell.org/~ghc/${pkgver}/${pkgname}-${pkgver}-src.t
 
 tags=("develop dev-lang")
 
-# texlive-bin
-build_deps=("perl libxslt docbook-xsl python-sphinx haskell-hscolour
-texlive-latexextra ttf-dejavu time numactl llvm alex happy")
-#build_deps=(" ")
 adddep=("gcc ghc-libs llvm")
+
+# texlive-bin
+build_deps=("${adddep} ghc-static perl libxslt docbook-xsl python-sphinx haskell-hscolour
+texlive-latexextra ttf-dejavu alex happy time numactl")
 
 # NOTE: пакет ghc заменяет следующие пакеты
 # haskell-haddock haskell-hp2ps haskell-hpc-bin haskell-hsc2hs
 
 build() {
-#  go_src_dir
-#  burn_patches
   cd ${srcdir}
-  rm -r ghc-${pkgver}
   LANG=en_US.UTF-8 bsdtar xf ${srcache}/${pkgname}-${pkgver}-src.tar.xz
   cd ghc-${pkgver}
-  sed -i 's/LlvmMaxVersion=13/LlvmMaxVersion=14/' configure.ac
-  cp mk/build.mk{.sample,}
-  sed -i '1iBuildFlavour = perf-llvm' mk/build.mk
+  burn_patches
+#  cp mk/build.mk{.sample,}
+#  sed -i '1iBuildFlavour = perf-llvm' mk/build.mk
   ./boot
   ./configure \
     --prefix=/usr \
@@ -37,23 +36,19 @@ build() {
     --with-system-libffi \
     --with-ffi-includes=$(pkg-config --variable=includedir libffi)
   make -j${numjobs}
-
   make DESTDIR=${pkgdir} -j1 install
 
-# Удаляем статические библиотеки
+## Удаляем статические библиотеки
   find ${pkgdir}/usr/lib \( -name "*.a" -o -name "*.o" -o -name "*.p_o" -o -name "*.p_hi" -o -name "*.hi" \) -delete
 
-# Всё остальное находится в пакете ghc-libs
-  rm ${pkgdir}/usr/lib/ghc-${pkgver}/bin/ghc-pkg*
-  rm ${pkgdir}/usr/bin/ghc-pkg*
-  mkdir -p ${srcdir}/ghc-${pkgver}
-  mv ${pkgdir}/usr/lib/ghc-${pkgver}/bin ${srcdir}/ghc-${pkgver}/bin
-  mv ${pkgdir}/usr/lib/ghc-${pkgver}/ghc-${pkgver} ${srcdir}/ghc-${pkgver}/ghc-${pkgver}
-  rm -r ${pkgdir}/usr/lib/ghc-${pkgver}
-  mv ${srcdir}/ghc-${pkgver}/ ${pkgdir}/usr/lib
+# ghc-pkg находится в ghc-libs
+  rm "$pkgdir"/usr/lib/ghc-$pkgver/bin/ghc-pkg*
+  rm "$pkgdir"/usr/bin/ghc-pkg*
+  (cd "$pkgdir"/usr/lib/ghc-$pkgver; rm -r !(bin|ghc-$pkgver))
 
-# Документация находится в ghc-static
+# Документация находится ghc-static
   rm -r ${pkgdir}/usr/share/doc
+
   install -Dm644 utils/completion/ghc.bash ${pkgdir}/usr/share/bash-completion/completions/ghc
 }
 
@@ -76,17 +71,16 @@ ghc-libs() {
 ghc-libs_prep() {
   cd ${srcdir}/ghc-${pkgver}
   make DESTDIR=${pkgdir} -j1 install
+
 # Удаляем статические библиотеки
   find ${pkgdir}/usr/lib \( -name "*.a" -o -name "*.o" -o -name "*.p_o" -o -name "*.p_hi" -o -name "*.hi" \) -delete
 
-# Всё остальное находится в пакете ghc
-  rm -r ${pkgdir}/usr/lib/ghc-${pkgver}/ghc-${pkgver}
-  cd ${pkgdir}/usr/lib/ghc-${pkgver}/bin
-  rm !ghc-pkg*
-  cd ${pkgdir}/usr/bin
-  rm !ghc-pkg*
+# библиотека ghc и другие бывшие версии находятся в пакете ghc
+  rm -r "$pkgdir"/usr/lib/ghc-$pkgver/ghc-$pkgver
+  (cd "$pkgdir"/usr/lib/ghc-$pkgver/bin; rm !(ghc-pkg*))
+  (cd "$pkgdir"/usr/bin; rm !(ghc-pkg*))
 
-# Документация находится в ghc-static
+# Документация находится ghc-static
   rm -r ${pkgdir}/usr/share/{man,doc}
 
   install -dm755 ${pkgdir}/usr/share/haskell/{register,unregister}
@@ -99,7 +93,7 @@ ghc-libs_prep() {
 ghc-static() {
   pkgname=ghc-static
   shortdesc=("The Glasgow Haskell Compiler - Static Libraries and Documentation.")
-  adddep=("ghc")
+  adddep=("ghc ghc-libs llvm")
 }
 
 ghc-static_prep() {
