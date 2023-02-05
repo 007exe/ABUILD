@@ -22,7 +22,7 @@ build(){
     --disable-library-vanilla \
     --ghc-option='-dynload=deploy' \
     --prefix=/usr \
-    --datasubdir=${pkgname}
+    --datasubdir=$pkgname
   runhaskell Setup build $MAKEFLAGS
   runhaskell Setup copy --destdir=${pkgdir}
   rm -r ${pkgdir}/usr/share/doc

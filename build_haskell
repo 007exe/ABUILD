@@ -1,0 +1,163 @@
+#!/bin/bash
+
+# NOTE: Этот скрипт предназначен для организации очереди сборки пакетов
+# WARNING: Скрипт не умеер разделять мультипакеты на категории
+
+LIST="dev-lang/ghc
+dev-haskell/haskell-lexer
+dev-haskell/haskell-hscolour
+dev-haskell/alex
+dev-haskell/happy
+dev-haskell/uusi
+dev-haskell/haskell-erf
+dev-haskell/haskell-splitmix
+dev-haskell/haskell-random
+dev-haskell/haskell-hunit
+dev-haskell/haskell-call-stack
+dev-haskell/haskell-quickcheck
+dev-haskell/haskell-test-framework
+dev-haskell/haskell-extensible-exceptions
+dev-haskell/haskell-test-framework-quickcheck2
+dev-haskell/haskell-colour
+dev-haskell/haskell-ansi-terminal
+dev-haskell/haskell-hspec-expectations
+       haskell-quickcheck-io
+       haskell-setenv
+dev-haskell/haskell-hspec-core
+       haskell-hspec-discover
+dev-haskell/haskell-hspec
+       haskell-silently
+dev-haskell/haskell-nanospec
+       haskell-libxml
+       haskell-ansi-wl-pprint
+       haskell-hostname
+       haskell-old-locale
+       haskell-regex-posix
+       haskell-xml
+dev-haskell/haskell-diff
+dev-haskell/haskell-tasty
+dev-haskell/haskell-tasty-golden
+       haskell-tasty-hunit
+       haskell-tasty-lua
+       haskell-tasty-quickcheck
+       haskell-glob
+       haskell-juicypixels
+       haskell-sha
+       haskell-aeson
+       haskell-aeson-pretty
+       haskell-attoparsec
+       haskell-base64
+       haskell-blaze-html
+dev-haskell/haskell-blaze-markup
+       haskell-case-insensitive
+       haskell-citeproc
+       haskell-commonmark
+       haskell-commonmark-extensions
+       haskell-commonmark-pandoc
+       haskell-connection
+       haskell-data-default
+       haskell-doclayout
+       haskell-doctemplates
+       haskell-emojis
+       haskell-file-embed
+       haskell-gridtables
+       haskell-haddock-library
+       haskell-hslua
+       haskell-hslua-aeson
+       haskell-hslua-module-doclayout
+       haskell-hslua-module-path
+       haskell-hslua-module-system
+       haskell-hslua-module-text
+       haskell-hslua-module-version
+       haskell-http-client
+       haskell-http-client-tls
+       haskell-http-types
+       haskell-ipynb
+       haskell-jira-wiki-markup
+       haskell-lpeg
+dev-haskell/haskell-network
+       haskell-network-uri
+       haskell-pandoc-lua-marshal
+       haskell-pandoc-types
+       haskell-pretty-show
+       haskell-safe
+       haskell-scientific
+       haskell-servant-server
+       haskell-skylighting
+       haskell-skylighting-core
+       haskell-split
+dev-haskell/haskell-syb
+       haskell-tagsoup
+       haskell-temporary
+       haskell-texmath
+       haskell-text-conversions
+       haskell-unicode-collation
+       haskell-unicode-transforms
+       haskell-wai
+       haskell-wai-extra
+       haskell-warp
+       haskell-xml
+       haskell-xml-conduit
+       haskell-xml-types
+       haskell-yaml
+dev-haskell/haskell-zip-archive
+dev-haskell/haskell-zlib
+       haskell-x11
+       haskell-x11-xft
+       haskell-utf8-string
+       haskell-network-uri
+       haskell-hinotify
+       haskell-parsec-numbers
+       haskell-regex-compat
+       haskell-old-locale
+       haskell-http
+       haskell-dbus
+       haskell-libmpd
+       haskell-cereal
+       haskell-netlink
+       haskell-async
+       haskell-aeson
+       haskell-timezone-olson
+       haskell-timezone-series
+       haskell-extensible-exceptions
+       haskell-http-conduit
+       haskell-http-types
+       haskell-http-client-tls
+       haskell-alsa-core
+       haskell-alsa-mixer"
+
+STARTD=`pwd`
+LOGFILE=~
+
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE/haskell_build.log
+
+for i in $LIST ; do
+    # Проверить сущетвует ли ABUILD
+    # если он существует
+    if [ -f $i/ABUILD ]
+       then
+              cd $STARTD/$i
+              if mkpkg -ba -wd ~/mkpkg/build -si; then
+                     echo "$i" >> $LOGFILE/haskell_build.log
+                     cd $STARTD
+              else
+                     echo "$i" >> $LOGFILE/haskell_error.log
+                     cd $STARTD
+              fi
+       else
+              # Если ABUILD не найден
+              if [ -f $i/ABUILD ]
+                     then
+                            cd $STARTD/$i
+                            cat README.md >> $LOGFILE/haskell_error.log
+                            cd $STARTD
+                     else
+                            echo "$i Пакет отсутстыует" >> $LOGFILE/haskell_error.log
+                            cd $STARTD
+              fi
+       fi
+    sleep 1
+done
+
+echo "============================= Завершено `date` =============================" >> $LOGFILE/haskell_build.log
+

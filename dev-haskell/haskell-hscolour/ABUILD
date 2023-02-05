@@ -24,7 +24,7 @@ build(){
     --docdir=/usr/share/doc/${pkgname} \
     --datasubdir=${pkgname} \
     --dynlibdir=/usr/lib \
-    --ghc-option=-fllvm
+    --libsubdir=\$compiler/site-local/\$pkgid
   runhaskell Setup build $MAKEFLAGS
   runhaskell Setup register --gen-script
   runhaskell Setup unregister --gen-script

@@ -21,11 +21,11 @@ build() {
     --enable-executable-dynamic \
     --disable-library-vanilla \
     --prefix=/usr \
-    --docdir=/usr/share/doc/${pkgname} \
-    --datasubdir=${pkgname} \
+    --docdir=/usr/share/doc/$pkgname \
+    --datasubdir=$pkgname \
     --disable-tests \
     --dynlibdir=/usr/lib \
-    --ghc-option=-fllvm
+    --libsubdir=\$compiler/site-local/\$pkgid
   runhaskell Setup build $MAKEFLAGS
   runhaskell Setup register --gen-script
   runhaskell Setup unregister --gen-script

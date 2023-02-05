@@ -22,10 +22,10 @@ build(){
     --disable-library-vanilla \
     --prefix=/usr \
     --docdir=/usr/share/doc/${pkgname} \
-    --datasubdir=${pkgname} \
+    --datasubdir=$pkgname \
     --disable-tests \
     --dynlibdir=/usr/lib \
-    --ghc-option=-fllvm \
+    --libsubdir=\$compiler/site-local/\$pkgid \
     --ghc-option=-optl-Wl\,-z\,relro\,-z\,now \
     --ghc-option='-pie'
   runhaskell Setup build $MAKEFLAGS

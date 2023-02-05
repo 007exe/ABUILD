@@ -1,17 +1,17 @@
-pkgname=haskell-erf
-pkgver=2.0.0.0
+pkgname=haskell-lexer
+pkgver=1.1.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("The error function, erf, and related functions.")
+shortdesc=("A fully compliant Haskell 98 lexer.")
 
-source=("https://hackage.haskell.org/packages/archive/erf/${pkgver}/erf-${pkgver}.tar.gz")
+source=("https://hackage.haskell.org/packages/archive/haskell-lexer/${pkgver}/haskell-lexer-${pkgver}.tar.gz")
 
 tags=("libs dev-haskell")
 
-build_deps=("ghc ghc-libs")
-
 adddep=("ghc-libs")
+
+build_deps=("${adddep} ghc")
 
 build() {
   go_src_dir
@@ -21,7 +21,9 @@ build() {
     --enable-executable-dynamic \
     --disable-library-vanilla \
     --prefix=/usr \
-    --docdir=/usr/share/doc/$pkgname \
+    --docdir=/usr/share/doc/${pkgname} \
+    --datasubdir=${pkgname} \
+    --disable-tests \
     --dynlibdir=/usr/lib \
     --libsubdir=\$compiler/site-local/\$pkgid
   runhaskell Setup build $MAKEFLAGS
@@ -32,4 +34,6 @@ build() {
   install -D -m744 register.sh ${pkgdir}/usr/share/haskell/register/${pkgname}.sh
   install -D -m744 unregister.sh ${pkgdir}/usr/share/haskell/unregister/${pkgname}.sh
   runhaskell Setup copy --destdir=${pkgdir}
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  rm -f ${pkgdir}/usr/share/doc/${pkgname}/LICENSE
 }
