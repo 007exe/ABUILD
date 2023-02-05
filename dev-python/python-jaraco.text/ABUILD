@@ -1,6 +1,6 @@
 pkgname=python-jaraco.text
-pkgver=3.11.0
-pkgbuild=2
+pkgver=3.11.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Module for text manipulation.")
