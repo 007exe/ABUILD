@@ -1,12 +1,11 @@
 pkgname=lib32-libsm
-pkgver=1.2.3
+pkgver=1.2.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Session Management library (32-bit).")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libSM-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libSM-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
@@ -25,9 +24,7 @@ build() {
     --sysconfdir=/etc
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
   rm -rf ${pkgdir}/usr/{include,share}
-
   mkdir -p ${pkgdir}/usr/share/licenses
   ln -s libsm ${pkgdir}/usr/share/licenses/${pkgname}
 }
