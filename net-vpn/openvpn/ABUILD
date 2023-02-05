@@ -1,12 +1,11 @@
 pkgname=openvpn
-pkgver=2.5.8
+pkgver=2.6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An easy-to-use, robust, and highly configurable VPN (Virtual Private Network).")
-longdesc=("Robust and highly flexible tunneling application compatible with many OSes.")
 
-source=("https://build.openvpn.net/downloads/releases/openvpn-${pkgver}.tar.xz")
+source=("https://github.com/OpenVPN/openvpn/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("network net-vpn")
 
@@ -29,6 +28,7 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
+# Сервисы systemd
   install -D -m0644 ${filedir}/sysusers.conf ${pkgdir}/usr/lib/sysusers.d/openvpn.conf
   install -D -m0644 ${filedir}/tmpfiles.conf ${pkgdir}/usr/lib/tmpfiles.d/openvpn.conf
 
@@ -46,4 +46,12 @@ build() {
         install -D -m0644 ${FILE} ${pkgdir}/usr/share/openvpn/${FILE} ;;
     esac
   done
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
