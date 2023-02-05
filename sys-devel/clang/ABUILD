@@ -4,15 +4,17 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C language family front-end for LLVM.")
-longdesc=("The goal of the Clang project is to create a new C, C++, Objective C and Objective C++ front-end for the LLVM compiler.")
 
 source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver}.tar.gz")
 
 tags=("develop sys-devel")
 
-build_deps=("llvm cmake ninja python-sphinx python")
-
 adddep=("gcc compiler-rt")
+
+build_deps=("${adddep} llvm cmake ninja python-sphinx python")
+
+# NOTE: Это опциональные зависимости
+removedep=("openmp python llvm")
 
 build(){
   cd ${srcdir}/llvm-project-llvmorg-${pkgver}/clang
