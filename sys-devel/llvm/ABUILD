@@ -1,12 +1,11 @@
 pkgname=llvm
+pkglist=("llvm_libs")
 pkgver=15.0.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low Level Virtual Machine (LLVM).")
-longdesc=("LLVM is a compiler infrastructure designed for compile-time, link-time, runtime, and idle-time optimization of programs from arbitrary programming languages. The compiler infrastructure includes mirror sets of programming tools as well as libraries with equivalent functionality")
 
-#source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz")
 source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver}.tar.gz")
 
 tags=("develop sys-devel")
@@ -15,12 +14,10 @@ build_deps=("libffi python python-setuptools python-psutil python-sphinx cmake n
 
 adddep=("llvm-libs perl")
 
-pkglist=("llvm_libs")
-
 build() {
   cd ${srcdir}/llvm-project-llvmorg-${pkgver}/llvm
   burn_patches
-# Отключаем использование SDK в OSX, ошибка № 568758
+# Отключаем использование SDK в OSX, ошибка #568758
   sed -i -e 's/xcrun/false/' utils/lit/lit/util.py
   mkdir build
   cd build
@@ -69,8 +66,7 @@ build() {
 
 llvm_libs() {
   pkgname=llvm-libs
-  shortdesc=("Libraries and header files for LLVM")
-  longdesc=("This package contains library and header files needed to develop new native programs that use the LLVM infrastructure.w")
+  shortdesc=("Libraries and header files for LLVM.")
   tags=("libs sys-libs")
   adddep=("llvm=${pkgver} gcc-libs zlib")
 }
