@@ -1,0 +1,7 @@
+echo -e " "
+echo -e "The following packages extend python-aiohttp capabilities:"
+echo -e "gunicorn: to deploy using Gunicorn"
+echo -e "python-aiodns: for fast DNS resolving"
+echo -e "python-cchardet: for faster encoding detection"
+echo -e "python-brotli: for Brotli transfer-encodings support"
+echo -e " "

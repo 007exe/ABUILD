@@ -1,26 +1,42 @@
 pkgname=python-aiohttp
 pkgver=3.8.3
 pkgbuild=1
+strict_version=1
 arch=("auto")
 
 shortdesc=("HTTP client/server for asyncio.")
 
-source=("https://files.pythonhosted.org/packages/source/a/aiohttp/aiohttp-${pkgver}.tar.gz")
+source=("git:https://github.com/aio-libs/aiohttp.git"
+"git:https://github.com/nodejs/llhttp.git")
 
 tags=("libs dev-python")
 
-build_deps=("python cython npm python-build python-installer python-setuptools python-wheel
-python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer
-python-aiosignal python-frozenlist")
+adddep=("python-chardet python-multidict python-async-timeout python-yarl python-attrs
+python-charset-normalizer python-aiosignal python-frozenlist")
 
-adddep=("python-chardet python-multidict python-async-timeout python-yarl python-attrs python-charset-normalizer
-python-aiosignal python-frozenlist")
+build_deps=("${adddep} python cython npm python-build python-installer python-setuptools python-wheel")
+
+# NOTE: Это опциональные зависимости
+removedep=("gunicorn python-aiodns python-cchardet python-brotli")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  cd ${srcdir}
+  mv ${srcdir}/python-aiohttp_git_aiohttp.git.src ${srcdir}/aiohttp
+  mv ${srcdir}/python-aiohttp_git_llhttp.git.src ${srcdir}/llhttp
+  cd ${srcdir}/aiohttp
+  git checkout v${pkgver}
+}
 
 build() {
-  go_src_dir
+  cd ${srcdir}/aiohttp
+  git submodule init
+  git config submodule."vendor/llhttp".url "${srcdir}/llhttp"
+  git -c protocol.file.allow=always submodule update --recursive
   sed -i "s/import {import_path!s}/import sys; sys.path.insert(0, '{os.environ['PYTHONPATH']}'); &/" tests/test_circular_imports.py
   sed -e 's|charset-normalizer >=2.0, < 3.0|charset-normalizer >=2.0, < 4.0|' -i setup.cfg
   make generate-llhttp cythonize
   python -m build --wheel --no-isolation
-  python -m installer --destdir=${}pkgdir} dist/*.whl
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
