@@ -1,10 +1,9 @@
 pkgname=libvncserver
-pkgver=0.9.13
+pkgver=0.9.14
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("library for creating vnc servers.")
-longdesc=("Cross-platform C libraries that allow you to easily implement VNC server or client functionality.")
 
 source=("https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${pkgver}.tar.gz")
 
