@@ -1,14 +1,13 @@
 pkgname=xfsprogs
-pkgver=6.1.0
+pkgver=6.1.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utilities for managing the XFS filesystem.")
-longdesc=("The xfsprogs package contains administration and debugging tools for the XFS file system.")
 
 tags=("base sys-fs")
 
-source=("https://mirrors.edge.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-${pkgver}.tag.xz")
+source=("https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/snapshot/xfsprogs-dev-${pkgver}.tar.gz")
 
 build_deps=("util-linux libinih device-mapper icu liburcu")
 
@@ -16,6 +15,7 @@ adddep=("device-mapper")
 
 build() {
   go_src_dir
+  make configure
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
