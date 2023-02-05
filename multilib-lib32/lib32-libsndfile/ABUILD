@@ -1,5 +1,5 @@
 pkgname=lib32-libsndfile
-pkgver=1.1.0
+pkgver=1.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://github.com/libsndfile/libsndfile/releases/download/${pkgver}/li
 
 tags=("lib32 media-libs")
 
-build_deps=("cmake lib32-alsa-lib lib32-flac lib32-libogg lib32-libvorbis lib32-sqlite python lib32-opus")
+adddep=("libsndfile lib32-opus")
 
-adddep=("libsndfile")
+build_deps=("${adddep} cmake cmake lib32-alsa-lib lib32-flac lib32-libogg lib32-libvorbis lib32-sqlite python")
 
 build() {
   go_src_dir
@@ -21,12 +21,13 @@ build() {
   export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   cmake -S . -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib32 \
-    -DCMAKE_BUILD_TYPE='None' \
+    -DCMAKE_BUILD_TYPE=None \
     -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_INSTALL_LIBDIR=lib32 \
+    -DENABLE_MPEG=OFF \
     -Wno-dev
   make VERBOSE=1 -C build
   make DESTDIR=${pkgdir} install -C build
   install -vDm 644 {AUTHORS,ChangeLog,README} -t ${pkgdir}/usr/share/doc/${pkgname}
-  rm -rf ${pkgdir}/usr/{bin,include,share/{man,doc/$_name}}
+  rm -rf ${pkgdir}/usr/{bin,include,share/{man,doc/libsndfile}}
 }
