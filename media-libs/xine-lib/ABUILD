@@ -1,19 +1,19 @@
 pkgname=xine-lib
-pkgver=1.2.12
+pkgver=1.2.13
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multimedia playback engine.")
-longdesc=("Core libraries for Xine movie player.")
 
 source=("https://downloads.sourceforge.net/project/xine/xine-lib/${pkgver}/xine-lib-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
+adddep=("ffmpeg libjpeg-turbo libnsl libpng libx11 libxcb libxext libxinerama libxv libxvmc zlib")
+
 # smbclient
-build_deps=("mesa libdvdnav libdvdread vcdimager glu sdl wayland aalib a52dec faad2 flac
-libdca libmad libmpcdec wavpack gdk-pixbuf imagemagick libcaca libmng libnfs
-ffmpeg libjpeg-turbo libnsl libpng libx11 libxcb libxext libxinerama libxv libxvmc zlib")
+build_deps=("${adddep} mesa libdvdnav libdvdread vcdimager glu sdl wayland aalib a52dec faad2
+flac libdca libmad libmpcdec wavpack gdk-pixbuf imagemagick libcaca libmng libnfs")
 
 # NOTE: Это опциональные зависимости
 removedep=("libdvdnav libdvdread vcdimager glu sdl wayland aalib a52dec faad2 flac libdca
