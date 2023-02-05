@@ -21,10 +21,10 @@ removedep=("python-virtualenv")
 build() {
   go_src_dir
   python -m build --wheel --skip-dependency-check --no-isolation
-  PYTHONPATH=src sphinx-build -b dirhtml -v docs docs/build/html
+#  PYTHONPATH=src sphinx-build -b dirhtml -v docs docs/build/html
   python -m installer --destdir=${pkgdir} dist/*.whl
-  install -dm 755 ${pkgdir}/usr/share/doc/${pkgname}
-  cp -r -a --no-preserve=ownership docs/build/html ${pkgdir}/usr/share/doc/${pkgname}
+#  install -dm 755 ${pkgdir}/usr/share/doc/${pkgname}
+#  cp -r -a --no-preserve=ownership docs/build/html ${pkgdir}/usr/share/doc/${pkgname}
   rm -rf ${pkgdir}/usr/share/doc/${pkgname}/html/.doctrees
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d ${pkgdir}/usr/share/licenses/${pkgname}
