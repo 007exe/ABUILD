@@ -1,10 +1,9 @@
 pkgname=cdrdao
-pkgver=1.2.4
+pkgver=1.2.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Records audio/data CD-Rs in disk-at-once (DAO) mode.")
-longdesc=("Burn CDs in disk-at-once mode -- with optional GUI frontend.")
 
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
