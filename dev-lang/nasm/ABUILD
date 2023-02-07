@@ -1,21 +1,21 @@
 pkgname=nasm
-pkgver=2.15.05
-pkgbuild=2
-arch=('auto')
+pkgver=2.16
+pkgbuild=1
+arch=("auto")
 
-shortdesc="The Netwide Assembler, a portable x86 assembler with Intel-like syntax"
-longdesc="NASM is the Netwide Assembler, a free portable assembler for the Intel 80x86 microprocessor series, using primarily the traditional Intel instruction mnemonics and syntax."
+shortdesc=("The Netwide Assembler, a portable x86 assembler with Intel-like syntax.")
 
 source=("http://www.nasm.us/pub/nasm/releasebuilds/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
-tags="develop dev-lang"
+tags=("develop dev-lang")
 
-build_deps="glibc"
+build_deps=("glibc")
 
 build() {
   go_src_dir
   ./configure --prefix=/usr
-  make
-  make DESTDIR="${pkgdir}" install install_rdf
-  install -Dm 644 LICENSE -t "${pkgdir}"/usr/share/licenses/nasm
+  make -j${numjobs}
+#  make DESTDIR=${pkgdir} install install_rdf
+  make DESTDIR=${pkgdir} install
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/nasm
 }
