@@ -1,10 +1,9 @@
 pkgname=jasper
-pkgver=3.0.6
+pkgver=4.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Software-based implementation of the codec specified in the emerging JPEG-2000 Part-1 standard.")
-longdesc=("The JasPer Project is an open-source initiative to provide a free software-based reference implementation of the JPEG-2000 codec.")
 
 source=("https://github.com/mdadams/jasper/archive/version-${pkgver}.tar.gz")
 
