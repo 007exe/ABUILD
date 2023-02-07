@@ -1,16 +1,17 @@
 pkgname=upower
 pkgver=1.90.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Abstraction for enumerating power devices, listening to device events and querying history and statistics.")
-longdesc=("The UPower package provides an interface to enumerating power devices, listening to device events and querying history and statistics. Any application or service on the system can access the org.freedesktop.UPower service via the system message bus.")
 
 source=("https://gitlab.freedesktop.org/upower/upower/-/archive/v${pkgver}/upower-v${pkgver}.tar.gz")
 
 tags=("utils sys-power")
 
-build_deps=("eudev docbook-xsl gobject-introspection python git gtk-doc meson")
+adddep=("libgudev libimobiledevice usbmuxd")
+
+build_deps=("eudev docbook-xsl gobject-introspection python gtk-doc meson")
 
 config_files=("/etc/UPower/UPower.conf")
 
