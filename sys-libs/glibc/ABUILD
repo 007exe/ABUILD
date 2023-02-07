@@ -2,8 +2,8 @@
 # NOTE: valgrind необходимо пересобрать при обновлениии glibc
 pkgname=glibc
 pkglist=("lib32-glibc")
-pkgver=2.36
-pkgbuild=5
+pkgver=2.37
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("GNU C Library.")
@@ -14,9 +14,9 @@ source=("http://ftp.gnu.org/gnu/glibc/glibc-${pkgver}.tar.xz")
 
 config_files=("etc/nscd.conf")
 
-build_deps=("gd python tzdata kernel-headers etc lib32-gcc-libs")
-
 adddep=("tzdata kernel-headers etc")
+
+build_deps=("${adddep} gd python lib32-gcc-libs")
 
 before_build() {
   go_src_dir
