@@ -1,10 +1,9 @@
 pkgname=amf-headers
-pkgver=1.4.23
-pkgbuild=2
+pkgver=1.4.29
+pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Header files for AMD Advanced Media Framework.")
-longdesc=("AMF is a light-weight, portable multimedia framework that abstracts away most of the platform and API-specific details and allows for easy implementation of multimedia applications using a variety of technologies, such as DirectX 11, OpenGL, and OpenCL and facilitates an efficient interop between them.")
 
 source=("https://github.com/GPUOpen-LibrariesAndSDKs/AMF/archive/refs/tags/v${pkgver}.tar.gz")
 
