@@ -1,5 +1,5 @@
 pkgname=openttd
-pkgver=12.2
+pkgver=13.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://cdn.${pkgname}.org/${pkgname}-releases/${pkgver}/${pkgname}-${p
 
 tags=("games games-simulation")
 
-build_deps=("cmake ninja fluidsynth fontconfig hicolor-icon-theme libpng")
-
 adddep=("fluidsynth fontconfig hicolor-icon-theme libpng")
+
+build_deps=("${adddep} cmake ninja")
 
 # NOTE: Это опциональные зависимости
 removedep=("openttd-opengfx openttd-opensfx")
