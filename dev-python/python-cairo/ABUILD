@@ -1,6 +1,6 @@
 pkgname=python-cairo
 pkgver=1.23.0
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Python bindings for the cairo graphics library.")
@@ -9,9 +9,9 @@ tags=("libs dev-python")
 
 source=("https://github.com/pygobject/pycairo/releases/download/v${pkgver}/pycairo-${pkgver}.tar.gz")
 
-build_deps=("python cairo meson")
-
 adddep=("cairo")
+
+build_deps=("${adddep} python meson")
 
 build() {
   go_src_dir
