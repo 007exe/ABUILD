@@ -1,16 +1,20 @@
 pkgname=htop
-pkgver=3.1.2
+pkgver=3.2.2
 pkgbuild=1
 arch="auto"
 
 shortdesc=("Interactive text-mode process viewer for Linux.")
-longdesc=("htop is an interactive process viewer for Linux, similar to top. It requires ncurses. Tested with Linux 2.4 and 2.6.")
 
 source=("https://github.com/htop-dev/htop/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("sys-process console")
 
-build_deps=("libcap libnl ncurses lm_sensors")
+adddep=("libcap libnl ncurses")
+
+build_deps=("${adddep} lm_sensors")
+
+# NOTE: Это опциональные зависимости
+removedep=("lm_sensors lsof strace")
 
 build() {
   go_src_dir

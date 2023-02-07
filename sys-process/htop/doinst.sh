@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend htop capabilities:"
+echo -e "lm_sensors: show cpu temperatures"
+echo -e "lsof: show files opened by a process"
+echo -e "strace: attach to a running process"
+echo -e " "
