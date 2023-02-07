@@ -1,16 +1,17 @@
 pkgname=libgphoto2
-pkgver=2.5.29
+pkgver=2.5.30
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Digital camera access library.")
-longdesc=("Library that implements support for numerous digital cameras.")
 
 source=("https://github.com/gphoto/libgphoto2/releases/download/v${pkgver}/libgphoto2-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("libexif libjpeg-turbo gd libusb libxml2 curl autoconf libltdl")
+adddep=("curl gd libexif libjpeg-turbo libltdl libusb libxml2")
+
+build_deps=("${adddep} autoconf-archive curl autoconf")
 
 build() {
   go_src_dir
