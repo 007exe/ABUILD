@@ -1,0 +1,8 @@
+echo -e " "
+echo -e "The following packages extend sdl2 capabilities:"
+echo -e "alsa-lib: ALSA audio driver"
+echo -e "libpulse: PulseAudio audio driver"
+echo -e "jack: JACK audio driver"
+echo -e "pipewire: PipeWire audio driver"
+echo -e "libdecor: Wayland client decorations"
+echo -e " "

@@ -1,19 +1,21 @@
 pkgname=sdl2
-pkgver=2.26.2
+pkgver=2.26.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2).")
-longdesc=("The Simple DirectMedia Layer Version 2 (SDL2 for short) is a cross-platform library designed to make it easy to write multimedia software, such as games and emulators.")
 
 source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
 
 tags=("media-libs libs")
 
-build_deps=("alsa-lib mesa libpulse libxrandr libxinerama wayland libxkbcommon wayland-protocols cmake
-jack ninja libxss ibus fcitx5 libdecor libxext libxrender libx11 libxcursor libibus hidapi libusb pipewire")
+adddep=("glibc libxext libxrender libx11 libxcursor hidapi libusb")
 
-adddep=("libxext libxrender libx11 libxcursor libibus hidapi libusb")
+build_deps=("${adddep} alsa-lib mesa libpulse libxrandr libxinerama wayland
+libxkbcommon wayland-protocols ibus fcitx5 libxss cmake jack ninja pipewire libdecor")
+
+# NOTE: Это опциональные зависимости
+removedep=("alsa-lib libpulse jack pipewire libdecor")
 
 build() {
   go_src_dir
