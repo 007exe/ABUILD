@@ -1,10 +1,9 @@
 pkgname=sdl2_image
-pkgver=2.6.2
-pkgbuild=2
+pkgver=2.6.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Image file loading library.")
-longdesc=("A simple library to load images of various formats as SDL surfaces (Version 2).")
 
 source=("https://www.libsdl.org/projects/SDL_image/release/SDL2_image-${pkgver}.tar.gz")
 
