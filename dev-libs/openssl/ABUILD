@@ -1,10 +1,9 @@
 pkgname=openssl
-pkgver=3.0.7
+pkgver=3.0.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Open Source toolkit for Secure Sockets Layer and Transport Layer Security.")
-longdesc=("The OpenSSL package contains management tools and libraries relating to cryptography. These are useful for providing cryptographic functions to other packages, such as OpenSSH, email applications, and web browsers (for accessing HTTPS sites).")
 
 source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz")
 
