@@ -1,5 +1,5 @@
 pkgname=libgusb
-pkgver=0.4.4
+pkgver=0.4.5
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/hughsie/libgusb/archive/${pkgver}/libgusb-${pkgver}.
 
 tags=("dev-libs libs")
 
-build_deps=("libusb gobject-introspection gtk-doc meson vala")
+build_deps=("libusb gobject-introspection gtk-doc meson vala glib2")
 
 # FIXME: Проблемы со сборкой документации
 
