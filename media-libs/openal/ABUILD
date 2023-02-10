@@ -1,22 +1,21 @@
 pkgname=openal
+pkglist=("openal-examples")
 pkgver=1.22.2
 strict_version=1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Cross-platform 3D audio library, software implementation.")
-longdesc=("A software implementation of the OpenAL 3D audio API.")
 
 source=("git:https://github.com/kcat/openal-soft.git")
 
 tags=("libs media-libs")
 
-build_deps=("alsa-lib libpulse fluidsynth portaudio jack qt5-base sdl2 libsndfile ffmpeg libmysofa cmake ninja")
+build_deps=("alsa-lib cmake ffmpeg fluidsynth git jack libmysofa
+libpulse libsndfile ninja pipewire portaudio qt5-base sdl2 gcc-libs")
 
 # NOTE: Это опциональные зависимости
 removedep=("qt5-base fluidsynth libmysofa")
-
-pkglist=("openal-examples")
 
 build() {
   go_src_dir
@@ -33,8 +32,7 @@ build() {
 openal-examples() {
   pkgname=openal-examples
   shortdesc=("Cross-platform 3D audio library, software implementation example programs")
-  longdesc=("A software implementation of the OpenAL 3D audio API example programs")
-  adddep=(openal=$pkgver)
+  adddep=(openal=${pkgver} sdl2 libsndfile ffmpeg)
 }
 
 openal-examples_prep() {
