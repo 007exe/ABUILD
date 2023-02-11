@@ -1,18 +1,17 @@
 pkgname=openrc
-pkgver=0.45.2
+pkgver=0.46
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("OpenRC manages the services, startup and shutdown of a host.")
-longdesc=("OpenRC is a dependency-based init system that works with the system-provided init program, normally.")
+shortdesc=("Dependency based init system that works with sysvinit and systemd or on its own.")
 
 source=("https://github.com/OpenRC/openrc/archive/${pkgver}.tar.gz")
 
 tags=("base sys-apps")
 
-build_deps=("glibc kernel-headers meson libcap ncurses linux-pam")
-
 adddep=("etc sed grep")
+
+build_deps=("${adddep} glibc kernel-headers meson libcap ncurses linux-pam")
 
 config_files=("etc/rc.conf
 etc/conf.d/agetty
@@ -54,7 +53,7 @@ build() {
     -D pam=true \
     -D newnet=true \
     -D audit=enabled
-  meson configure build
+#  meson configure build
   meson compile -C build
   meson install --destdir ${pkgdir} -C build
 
@@ -73,4 +72,6 @@ build() {
 
 # Шрифт консоли по умолчанию
   sed -i 's/default8x16/cyr-sun16/g' ${pkgdir}/etc/conf.d/consolefont
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
