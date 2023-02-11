@@ -10,7 +10,7 @@ tags=("base sys-apps")
 
 source=("https://ftp.gnu.org/pub/gnu/sed/${pkgname}-${pkgver}.tar.xz")
 
-build_deps=("glibc acl attr gettext")
+build_deps="glibc acl attr gettext acl>=2.3.1 glibc>=2.36"
 
 adddep=("acl attr")
 
