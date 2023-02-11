@@ -1,70 +1,27 @@
-# ABUILD created by/создан: fat0troll, fat0troll at riseup.net
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=eog
-pkgver=2.32.1
-pkgbuild=3
-arch=('auto')
+pkgver=43.2
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Eye of GNOME graphics viewer program"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("eog or the Eye of GNOME is a simple graphics viewer for the GNOME desktop which uses the gdk-pixbuf library. It can deal with large images, and zoom and scroll with constant memory usage. Its goals are simplicity and standards compliance. "
-)
+shortdesc=("Eye of Gnome: An image viewing and cataloging program.")
 
-source=("ftp://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.32/${pkgname}-${pkgver}.tar.bz2")
+source=("https://gitlab.gnome.org/GNOME/eog/-/archive/${pkgver}/eog-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("gnome gnome-apps")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
+#webp-pixbuf-loader
+adddep=("gnome-desktop libexif lcms2 exempi libpeas librsvg libhandy")
 
-tags="gnome media-gfx"     			#short and long tags / длинный и короткий тег
-build_deps="" 			#
+build_deps=("${adddep} gobject-introspection gi-docgen meson yelp-tools")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-
-#numjobs=1 #Set number of jobs while compliling, otherwise it'll be autodetected
-
-docs=				#additional files should be copied into /usr/docs/${pkgname} dir from sources
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-scrollkeeper"
-
-INSTALL_KEYS="DESTDIR=$pkgdir GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
-  install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
-  gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" --domain eog ${pkgdir}/etc/gconf/schemas/*.schemas || return 1
-  rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true \
+    -D libportal=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
