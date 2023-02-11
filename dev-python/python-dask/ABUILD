@@ -11,7 +11,7 @@ tags=("libs dev-python")
 
 adddep=("python-click python-cloudpickle python-fsspec python-packaging python-partd python-toolz python-yaml mpdecimal")
 
-build_deps=("${adddep} python python-setuptools")
+build_deps="python-click python-cloudpickle python-fsspec python-packaging python-partd python-toolz python-yaml mpdecimal python python-setuptools python>=3.11.1"
 
 # NOTE: Это опциональные зависимости
 removedep=("python-distributed python-numpy python-pandas python-psutil python-pyarrow python-sqlalchemy python-xxhash")
