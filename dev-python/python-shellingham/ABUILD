@@ -9,7 +9,7 @@ source=("https://github.com/sarugaku/shellingham/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-setuptools")
+build_deps="python python-build python-installer python-wheel python-setuptools python>=3.11.1"
 
 build() {
   go_src_dir
