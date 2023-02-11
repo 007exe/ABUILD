@@ -1,10 +1,9 @@
 pkgname=lmdb
-pkgver=0.9.29
-pkgbuild=2
+pkgver=0.9.30
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Symas Lightning Memory-Mapped Database.")
-longdesc=("The lmdb package is a fast, compact, key-value embedded data store.")
 
 source=("https://git.openldap.org/openldap/openldap/-/archive/LMDB_${pkgver}/openldap-LMDB_${pkgver}.tar.gz")
 
