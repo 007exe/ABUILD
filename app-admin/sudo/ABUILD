@@ -10,9 +10,14 @@ source=("https://www.sudo.ws/sudo/dist/${pkgname}-${_sudover}.tar.gz")
 
 tags=("console sys-auth")
 
-build_deps=("glibc linux-pam audit zlib")
+adddep=("glibc openssl linux-pam zlib")
 
-config_files=("etc/sudoers")
+build_deps=("${adddep} audit")
+
+config_files=("etc/sudoers
+etc/pam.d/sudo
+etc/sudo.conf
+etc/sudo_logsrvd.conf")
 
 build() {
   go_src_dir
