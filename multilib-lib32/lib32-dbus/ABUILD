@@ -1,18 +1,17 @@
 pkgname=lib32-dbus
-pkgver=1.14.4
+pkgver=1.14.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Freedesktop.org message bus system (32-bit).")
-longdesc=("D-Bus is a message bus system, a simple way for applications to talk to one another.")
 
 source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.xz")
 
 tags=("lib32 sys-apps")
 
-build_deps=("lib32-glibc lib32-expat lib32-gcc-libs autoconf-archive lib32-glib2")
-
 adddep=("lib32-glibc dbus")
+
+build_deps=("${adddep} autoconf-archive lib32-glib2 lib32-expat autoconf-archive")
 
 build() {
   go_src_dir
