@@ -1,16 +1,15 @@
 pkgname=bc
-pkgver=6.1.1
+pkgver=6.2.4
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An arbitrary precision calculator language.")
-longdesc=("The Bc package contains an arbitrary precision numeric processing language.")
+shortdesc=("This is an implementation of the POSIX bc calculator that implements GNU bc extensions, as well as the period extension for the BSD flavor of bc.")
 
 tags=("console sys-devel")
 
 source=("https://github.com/gavinhoward/bc/releases/download/${pkgver}/bc-${pkgver}.tar.xz")
 
-build_deps=("readline")
+build_deps=("glibc")
 
 build() {
   go_src_dir
