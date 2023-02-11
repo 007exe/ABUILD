@@ -1,18 +1,17 @@
 pkgname=wxwidgets-gtk3
-pkgver=3.2.1
+pkgver=3.2.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("GTK+3 implementation of wxWidgets API for GUI.")
-longdesc=("wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base.")
 
 tags=("libs x11-libs")
 
 source=("https://github.com/wxWidgets/wxWidgets/releases/download/v${pkgver}/wxWidgets-${pkgver}.tar.bz2")
 
-build_deps=("cmake gst-plugins-base glu webkit2gtk libnotify qt5-base sdl2 libmspack")
+adddep=("wxwidgets-common gtk3 gst-plugins-base-libs libsm wxwidgets-common libnotify libmspack")
 
-adddep=("wxwidgets-common")
+build_deps=("${adddep} cmake gst-plugins-base glu webkit2gtk libnotify qt5-base expat pcre2 libsecret sdl2 libtiff")
 
 # NOTE: Это опциональные зависимости
 removedep=("webkit2gtk")
@@ -101,9 +100,8 @@ build() {
 
 wxwidgets-common() {
   pkgname=wxwidgets-common
-  shortdesc=("Qt5 implementation of wxWidgets API for GUI.")
-  longdesc=("wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base.")
-  adddep=("wxwidgets-common")
+  shortdesc=("Common libraries and headers for wxwidgets.")
+  adddep=("wxwidgets-common expat pcre2 libsecret")
 }
 
 wxwidgets-common_prep() {
@@ -129,8 +127,7 @@ wxwidgets-common_prep() {
 wxwidgets-qt5() {
   pkgname=wxwidgets-qt5
   shortdesc=("Qt5 implementation of wxWidgets API for GUI.")
-  longdesc=("wxWidgets is a C++ library that lets developers create applications for Windows, macOS, Linux and other platforms with a single code base.")
-  adddep=("wxwidgets-common")
+  adddep=("qt5-base wxwidgets-common libmspack sdl2 libtiff")
 }
 
 wxwidgets-qt5_prep() {
