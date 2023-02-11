@@ -1,5 +1,5 @@
 pkgname=pcre2
-pkgver=10.41
+pkgver=10.42
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/PhilipHazel/pcre2/releases/download/${pkgname}-${pkg
 
 tags=("dev-libs libs")
 
-build_deps=("bzip2 gcc-libs readline zlib")
+build_deps="bzip2 gcc-libs readline zlib bzip2>=1.0.8 glibc>=2.36 readline>=8.2.001 zlib>=1.2.13"
 
 build() {
   go_src_dir
