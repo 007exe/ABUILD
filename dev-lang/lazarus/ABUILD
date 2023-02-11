@@ -1,23 +1,21 @@
 pkgname=lazarus
-pkgver=2.2.2
-pkgbuild=2
+pkglist=("lazarus-gtk2 lazarus-qt5")
+pkgver=2.2.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Delphi-like IDE for FreePascal common files.")
-longdesc=("Lazarus is a free and opensource RAD tool for freepascal using the lazarus component library - LCL, which is also included in this package.")
 
 source=("https://gitlab.com/freepascal.org/lazarus/lazarus/-/archive/lazarus_${pkgver//./_}/lazarus-lazarus_${pkgver//./_}.tar.bz2")
 
 tags=("develop dev-lang")
 
-build_deps=("gtk2 fpc fpc-src rsync qt5pas")
-
 adddep=("fpc fpc-src gdb")
+
+build_deps=("${adddep} gtk2 qt5pas rsync")
 
 # NOTER: Это опциональные зависимости
 removedep=("qt5pas perl qt5pas")
-
-pkglist=("lazarus-gtk2 lazarus-qt5")
 
 build(){
   go_src_dir
@@ -69,9 +67,8 @@ build(){
 lazarus-gtk2() {
   pkgname=lazarus-gtk2
   shortdesc=("Delphi-like IDE for FreePascal gtk2 version.")
-  longdesc=("Lazarus is a free and opensource RAD tool for freepascal using the lazarus component library - LCL, which is also included in this package.")
   conflicts=("lazarus-qt5")
-  adddep=("lazarus desktop-file-utils")
+  adddep=("lazarus desktop-file-utils gtk2")
 }
 
 lazarus-gtk2_prep() {
@@ -95,7 +92,6 @@ lazarus-gtk2_prep() {
 lazarus-qt5() {
   pkgname=lazarus-qt5
   shortdesc=("Delphi-like IDE for FreePascal qt5 version")
-  longdesc=("Lazarus is a free and opensource RAD tool for freepascal using the lazarus component library - LCL, which is also included in this package.")
   conflicts=("lazarus-gtk2")
   adddep=("lazarus qt5pas")
 }
