@@ -1,0 +1,19 @@
+pkgname=perl-yaml
+pkgver=1.30
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Perl/CPAN Module YAML : YAML Aint Markup Language.")
+
+source=("https://www.cpan.org/authors/id/T/TI/TINITA/YAML-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
