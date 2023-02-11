@@ -1,5 +1,5 @@
 pkgname=seahorse
-pkgver=42.0
+pkgver=43.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,10 @@ source=("https://gitlab.gnome.org/GNOME/seahorse/-/archive/${pkgver}/seahorse-${
 
 tags=("gnome-apps apps")
 
-build_deps=("gtk3 gcr libsecret libsoup gpgme libpwquality
-libhandy openldap yelp-tools gobject-introspection vala meson")
+# org.freedesktop.secrets
+adddep=("gtk3 gcr libsecret libsoup3 gpgme libpwquality libhandy")
+
+build_deps=("${adddep} openldap yelp-tools gobject-introspection vala meson")
 
 build() {
   go_src_dir
