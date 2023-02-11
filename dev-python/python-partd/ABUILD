@@ -12,7 +12,7 @@ tags=("libs dev-python")
 
 adddep=("python-locket python-toolz")
 
-build_deps=("${adddep} python python-setuptools")
+build_deps="python-locket python-toolz python python-setuptools python>=3.11.1"
 
 # NOTE: Это опциональные зависимости
 removedep=("python-blosc python-numpy python-pandas python-pyzmq")
