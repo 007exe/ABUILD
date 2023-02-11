@@ -1,5 +1,5 @@
 pkgname=lib32-e2fsprogs
-pkgver=1.46.6
+pkgver=1.47.0
 pkgbuild=1
 arch=("auto")
 
