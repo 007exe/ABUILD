@@ -1,18 +1,17 @@
 pkgname=freetype
-pkgver=2.12.1
+pkgver=2.13.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Font rasterization library.")
-longdesc=("The FreeType2 package contains a library which allows applications to properly render TrueType fonts.")
 
 source=("http://downloads.sourceforge.net/sourceforge/freetype/freetype-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("bzip2 zlib")
+adddep=("bash brotli harfbuzz libpng")
 
-adddep=("bash")
+build_deps=("${adddep} bzip2 zlib")
 
 conflicts=("freetype2")
 
