@@ -1,46 +1,28 @@
 pkgname=evince
-pkgver=2.32.0
-pkgbuild=5
-arch=('auto')
+pkgver=43.1
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Document (postscript, pdf) viewer"
+shortdesc=("Document viewer (PDF, PostScript, XPS, djvu, dvi, tiff, cbr, cbz, cb7, cbt)")
 
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
+source=("https://gitlab.gnome.org/GNOME/evince/-/archive/${pkgver}/evince-${pkgver}.tar.gz")
 
-build_deps="make binutils intltool gcc-g++ gcc perl perl-xml-parser"
-adddep="dconf"
-tags="gnome gnome-extra"
+tags=("gnome gnome-apps")
 
-BUILD_SYSTEM="autotools"
+# libsynctex
+adddep=("dconf gtk3 libgxps libspectre gsfonts poppler-glib djvulibre dconf libsecret
+gsettings-desktop-schemas gnome-desktop libarchive gst-plugins-base-libs gspell libhandy gvfs")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+# texlive-bin
+build_deps=("${adddep} gobject-introspection gi-docgen git meson appstream-glib yelp-tools")
 
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--program-prefix= \
-	--program-suffix= \
-	--disable-nautilus \
-	--enable-pdf \
-	--enable-tiff \
-	--enable-djvu \
-	--enable-dvi \
-	--enable-t1lib \
-	--enable-pixbuf \
-	--enable-comics \
-	--enable-impress \
-	--without-gconf \
-	--without-keyring \
-	--disable-introspection \
-	--disable-scrollkeeper \
-	--disable-schemas-compile"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-after_build(){
- sed '/NoDisplay=true/d' -i ${pkgdir}/usr/share/applications/evince.desktop
- echo "End after_build"
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D ps=enabled
+  meson compile -C build
+   meson install -C build --destdir ${pkgdir}
 }
