@@ -1,26 +1,24 @@
 pkgname=gnome-commander
-pkgver=1.14.3
+pkgver=1.16.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Graphical two-pane filemanager for Gnome.")
-longdesc=("A graphical, full featured, twin-panel file manager.")
 
 source=("https://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("gnome-apps apps")
 
-build_deps=("perl-xml-parser itstool yelp-tools python libgsf exiv2 taglib poppler-glib gtk2")
+adddep=("libgsf exiv2 taglib poppler-glib libunique gtk2")
+
+build_deps=("${adddep} perl-xml-parser itstool yelp-tools meson ninja")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
+  meson build \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --with-help-dir=/usr/share/doc/${pkgname}
-  make -j${numjobs}
-  make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR=${pkgdir} install
+    --buildtype=plain
+  ninja -C build
+  GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR=${pkgdir} ninja -C build install
 }
