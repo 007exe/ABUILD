@@ -1,10 +1,9 @@
 pkgname=e2fsprogs
-pkgver=1.46.5
+pkgver=1.47.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Utilities used for ext2/ext3/ext4 filesystems")
-longdesc=("The e2fsprogs package contains a number of utilities for creating, checking, modifying and correcting any inconsistencies in ext2, ext3, and ext4 filesystems.  E2fsprogs contains e2fsck (used to repair filesystem inconsistencies after an unclean shutdown), mke2fs (used to initialize a partition to contain an empty ext2 filesystem), debugfs (used to examine the internal structure of a filesystem, to manually repair a corrupted filesystem or to create test cases for e2fsck), tune2fs (used to modify filesystem parameters), resize2fs to grow and shrink unmounted filesystems, and most of the other core ext2fs filesystem utilities.")
+shortdesc=("Utilities used for ext2/ext3/ext4 filesystems.")
 
 source=("https://www.kernel.org/pub/linux/kernel/people/tytso/${pkgname}/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
