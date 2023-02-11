@@ -1,31 +1,24 @@
 pkgname=gnome-system-monitor
-pkgver=2.28.2
-pkgbuild=3
-arch=('auto')
+pkgver=42.0
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Process viewer and system resource monitor for GNOME"
-longdesc=("This package allows you to graphically view and manipulate the running processes on your system. It also provides an overview of available resources such as CPU and memory. ")
+shortdesc=("View current processes and monitor system state.")
 
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.28/${pkgname}-${pkgver}.tar.bz2")
+source=("https://gitlab.gnome.org/GNOME/gnome-system-monitor/-/archive/${pkgver}/gnome-system-monitor-${pkgver}.tar.gz")
 
-tags="gnome-base gnome"
+tags=("gnome-base gnome")
 
+adddep=("libgtop gtkmm3 librsvg libhandy polkit")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--program-prefix= \
-	--program-suffix="
+build_deps=("${adddep} meson yelp-tools appstream-glib")
 
-INSTALL_KEYS="DESTDIR=$pkgdir GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1"
-
-after_build() {
-	install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
-	gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" ${pkgdir}/etc/gconf/schemas/*.schemas || return 1
-	rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
