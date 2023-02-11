@@ -1,11 +1,10 @@
 pkgname=discount
-pkgver=2.2.7.b
-_pkgver=2.2.7b
+pkgver=2.2.7.c
+_pkgver=2.2.7c
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Markdown implementation written in C.")
-longdesc=("A Markdown-to HTML translator written in C.")
 
 source=("https://github.com/Orc/discount/archive/v${_pkgver}/${pkgname}-${pkgver}.tar.gz")
 
