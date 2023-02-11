@@ -1,18 +1,17 @@
 pkgname=gnome-disk-utility
-pkgver=42.0
+pkgver=43.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Disk Management Utility for GNOME.")
-longdesc=("The GNOME Disk Utility package provides applications used for dealing with storage devices.")
 
 source=("https://gitlab.gnome.org/GNOME/gnome-disk-utility/-/archive/${pkgver}/gnome-disk-utility-${pkgver}.tar.gz")
 
 tags=("gnome gnome-apps")
 
-build_deps=("meson docbook-xsl udisks gtk3 libsecret libpwquality libcanberra libdvdread libnotify parted libhandy")
+adddep=("udisks parted gtk3 libsecret libpwquality libcanberra libdvdread libnotify libhandy")
 
-adddep=("udisks parted")
+build_deps=("${adddep} meson docbook-xsl")
 
 build() {
   go_src_dir
