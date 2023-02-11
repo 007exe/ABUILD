@@ -10,7 +10,7 @@ source=("http://www.libarchive.org/downloads/$pkgname-${pkgver}.tar.gz")
 
 tags=("app-arch libs")
 
-build_deps=("acl bzip2 expat lz4 openssl xz zlib zstd")
+build_deps="acl bzip2 expat lz4 openssl xz zlib zstd acl>=2.3.1 libb2>=0.98.1 bzip2>=1.0.8 glibc>=2.36 openssl-1.1>=1.1.1s expat>=2.5.0 lz4>=1.9.4 xz>=5.4.1 zlib>=1.2.13 zstd>=1.5.2"
 
 build() {
   go_src_dir
