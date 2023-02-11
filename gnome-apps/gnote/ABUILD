@@ -1,5 +1,5 @@
 pkgname=gnote
-pkgver=42.1
+pkgver=43.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://gitlab.gnome.org/GNOME/gnote/-/archive/${pkgver}/gnote-${pkgver
 
 tags=("gnome gnome-apps")
 
-build_deps=("yelp-tools meson gtkmm3 gspell libxslt libsecret")
+adddep=("gtkmm3 gspell libxslt libsecret")
+
+build_deps=("${adddep} yelp-tools meson")
 
 build(){
   go_src_dir
