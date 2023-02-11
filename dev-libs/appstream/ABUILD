@@ -6,7 +6,7 @@
 # в пост установочные скрипты пакетов которые это требуют
 
 pkgname=appstream
-pkgver=0.16.0
+pkgver=0.16.1
 pkgbuild=1
 arch=("auto")
 
