@@ -1,5 +1,5 @@
 pkgname=lib32-libgusb
-pkgver=0.4.2
+pkgver=0.4.5
 pkgbuild=1
 arch=("auto")
 
