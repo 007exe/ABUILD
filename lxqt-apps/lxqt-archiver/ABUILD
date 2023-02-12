@@ -3,14 +3,15 @@ pkgver=0.7.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt GUI File Archiver.")
-longdesc=("A simple & lightweight desktop-agnostic Qt file archiver.")
+shortdesc=("A simple & lightweight desktop-agnostic Qt file archiver.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps lxqt-apps")
 
-build_deps=("libfm-qt qt5-x11extras glib2 json-glib libfm-qt cmake qt5-tools lxqt-build-tools")
+adddep=("libfm-qt qt5-x11extras glib2 json-glib")
+
+build_deps=("${adddep} cmake qt5-tools lxqt-build-tools")
 
 # NOTE: Это опциональная зависимосить
 removedep=("libarchive")

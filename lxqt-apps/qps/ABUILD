@@ -3,14 +3,15 @@ pkgver=2.6.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt GUI Process Manager.")
-longdesc=("A visual process manager, an X11 version of 'top' or 'ps'.")
+shortdesc=("A visual process manager, an X11 version of 'top' or 'ps'.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps lxqt-apps")
 
-build_deps=("cmake lxqt-build-tools lxqt-config qt5-x11extras qt5-tools liblxqt")
+adddep=("qt5-x11extras qt5-tools liblxqt")
+
+build_deps=("${adddep} cmake lxqt-build-tools lxqt-config")
 
 build() {
   go_src_dir

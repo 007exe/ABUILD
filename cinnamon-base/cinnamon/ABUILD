@@ -1,26 +1,22 @@
 pkgname=cinnamon
-pkgver=5.4.9
+pkgver=5.6.7
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A fork of GNOME Shell with layout similar to GNOME 2.")
-longdesc=("Linux desktop which provides advanced innovative features and a traditional user experience.")
+shortdesc=("Linux desktop which provides advanced innovative features and a traditional user experience.")
 
 source=("https://github.com/linuxmint/cinnamon/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-build_deps=("meson samurai gobject-introspection intltool accountsservice caribou cinnamon-control-center
-cinnamon-menus cinnamon-screensaver cinnamon-session cinnamon-settings-daemon cjs gnome-backgrounds
-gnome-themes-extra gstreamer libcroco libgnomekbd libkeybinder3 librsvg muffin network-manager-applet
-polkit-gnome python-cairo dbus-python python-gobject python-pam python-pexpect python-pillow python-pyinotify
-python-pytz python-tinycss2 python-xapp timezonemap xapp ")
-
 # gsound xapps
-adddep=("gnome-themes-extra python-pam python-pillow python-pyinotify python-tinycss2 cinnamon-translations
-accountsservice caribou cinnamon-control-center cinnamon-screensaver cinnamon-session cinnamon-settings-daemon
-gnome-backgrounds libcroco libgnomekbd libkeybinder3 librsvg network-manager-applet nemo polkit-gnome python-cairo
-dbus-python python-gobject python-pexpect python-pytz python-xapp python-requests timezonemap")
+adddep=("accountsservice caribou cinnamon-control-center cinnamon-menus cinnamon-screensaver
+cinnamon-session cinnamon-settings-daemon cjs gnome-backgrounds gnome-themes-extra gstreamer
+libcroco libgnomekbd libkeybinder3 librsvg muffin network-manager-applet nemo polkit-gnome
+python-cairo dbus-python python-gobject python-pam python-pexpect python-pillow timezonemap
+python-pyinotify python-pytz python-tinycss2 python-xapp python-requests")
+
+build_deps=("${adddep} meson samurai gobject-introspection intltool")
 
 # NOTE: Это опциональные зависимости
 removedep=("blueberry gnome-panel metacity system-config-printer wget")

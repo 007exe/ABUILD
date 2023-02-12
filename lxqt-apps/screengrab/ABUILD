@@ -3,14 +3,15 @@ pkgver=2.5.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt GUI Screenshot Utility")
-longdesc=("Crossplatform tool for grabbing screenshots of your desktop.")
+shortdesc=("Crossplatform tool for grabbing screenshots of your desktop.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps lxqt-apps")
 
-build_deps=("qt5-base qt5-x11extras kwindowsystem libqtxdg libx11 libxcb libqtxdg cmake qt5-tools")
+adddep=("qt5-base qt5-x11extras kwindowsystem libqtxdg libx11 libxcb")
+
+build_deps=("${adddep} cmake qt5-tools")
 
 build() {
   go_src_dir

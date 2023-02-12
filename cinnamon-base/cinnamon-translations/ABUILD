@@ -1,10 +1,9 @@
 pkgname=cinnamon-translations
-pkgver=5.4.2
+pkgver=5.6.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Translations for Cinnamon and Nemo.")
-longdesc=("Translations for Cinnamon and Nemo.")
 
 source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 

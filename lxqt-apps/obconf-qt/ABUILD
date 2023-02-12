@@ -3,16 +3,15 @@ pkgver=0.16.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt GUI Openbox Configuration Tool.")
-longdesc=("Openbox configuration tool. Qt port of ObConf.")
+shortdesc=("Openbox configuration tool. Qt port of ObConf.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps lxqt-apps")
 
-build_deps=("hicolor-icon-theme openbox qt5-x11extras lxqt-build-tools")
+adddep=("hicolor-icon-theme openbox qt5-x11extras")
 
-adddep=("hicolor-icon-theme openbox")
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

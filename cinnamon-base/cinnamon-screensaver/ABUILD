@@ -1,18 +1,18 @@
 pkgname=cinnamon-screensaver
-pkgver=5.4.2
+pkgver=5.6.3
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Screensaver for Cinnamon.")
-longdesc=("Screensaver designed to integrate well with the Cinnamon desktop.")
+shortdesc=("Screensaver designed to integrate well with the Cinnamon desktop.")
 
 source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-build_deps=("gobject-introspection meson samurai accountsservice cinnamon-desktop libgnomekbd python-cairo python-gobject python-setproctitle python-xapp xapp")
+adddep=("accountsservice cinnamon-desktop libgnomekbd xdotool
+python-cairo python-gobject python-setproctitle python-xapp xapp")
 
-adddep=("python-setproctitle python-gobject")
+build_deps=("${adddep} gobject-introspection meson samurai")
 
 build() {
   go_src_dir
@@ -27,3 +27,10 @@ build() {
   DESTDIR=${pkgdir} samu install
 }
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}

@@ -3,14 +3,15 @@ pkgver=1.2.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt terminal emulator widget.")
-longdesc=("A terminal widget for Qt, used by QTerminal.")
+shortdesc=("A terminal widget for Qt, used by QTerminal.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps lxqt-apps")
 
-build_deps=("qt5-base lxqt-build-tools python-pyqt5 pyqt-builder sip python-installer")
+adddep=("qt5-base")
+
+build_deps=("${adddep} lxqt-build-tools python-pyqt5 pyqt-builder sip python-installer")
 
 # NOTE: Это опциональная зависимосить
 removedep=("python")

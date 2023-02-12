@@ -1,16 +1,17 @@
 pkgname=cinnamon-menus
-pkgver=5.4.0
+pkgver=5.6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Cinnamon menu specifications.")
-longdesc=("Cinnamon's library for the Desktop Menu fd.o specification.")
 
 source=("https://github.com/linuxmint/cinnamon-menus/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-build_deps=("gobject-introspection meson samurai glib2")
+adddep=(glib2)
+
+build_deps=("${adddep} gobject-introspection meson samurai")
 
 build(){
   go_src_dir

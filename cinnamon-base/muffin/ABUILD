@@ -1,16 +1,19 @@
 pkgname=muffin
-pkgver=5.4.5
+pkgver=5.6.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Cinnamon window manager based on Mutter.")
-longdesc=("Compositing window manager forked from Mutter for use with Cinnamon.")
 
 source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-build_deps=("meson intltool gobject-introspection cinnamon-desktop libcanberra libinput libsm libxkbcommon-x11 startup-notification zenity graphene pipewire")
+# gobject-introspection-runtime
+adddep=("cinnamon-desktop libcanberra libinput libsm libxkbcommon-x11
+startup-notification zenity graphene pipewire")
+
+build_deps=("${adddep} meson intltool gobject-introspection")
 
 build() {
   go_src_dir
@@ -22,3 +25,10 @@ build() {
   meson install --destdir=${pkgdir} -C build
 }
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}

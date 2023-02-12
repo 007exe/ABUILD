@@ -1,18 +1,17 @@
 pkgname=cinnamon-desktop
-pkgver=5.4.2
+pkgver=5.6.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library with common API for various Cinnamon modules.")
-longdesc=("A collection of libraries and utilites used by Cinnamon.")
 
 source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs cinnamon-base")
 
-build_deps=("meson samurai gobject-introspection intltool accountsservice gtk3 libxkbfile libpulse")
+adddep=("accountsservice gtk3 libxkbfile libpulse")
 
-adddep=("accountsservice")
+build_deps=("${adddep} meson samurai gobject-introspection intltool")
 
 build() {
   go_src_dir

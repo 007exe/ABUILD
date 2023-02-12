@@ -3,16 +3,15 @@ pkgver=1.2.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt-based multitab terminal emulator")
-longdesc=("A lightweight Qt-based terminal emulator.")
+shortdesc=("A lightweight Qt-based terminal emulator.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps lxqt-apps")
 
-build_deps=("hicolor-icon-theme qtermwidget qt5-x11extras cmake lxqt-build-tools")
+adddep=("hicolor-icon-theme qtermwidget qt5-x11extras")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} cmake lxqt-build-tools")
 
 build() {
   go_src_dir

@@ -3,17 +3,18 @@ pkgver=1.2.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt Image Viewer.")
-longdesc=("The LXQt image viewer and screenshot tool.")
+shortdesc=("The LXQt image viewer and screenshot tool.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps lxqt-apps")
 
-build_deps=("lxqt-themes libfm-qt qt5-svg libexif libxfixes libfm-qt")
+adddep=("lxqt-themes libfm-qt qt5-svg libexif libxfixes")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 # NOTE: Это опциональная зависимосить
-removedep=("qt5-imageformats")
+removedep=("qt5-imageformats kimageformats")
 
 build() {
   go_src_dir

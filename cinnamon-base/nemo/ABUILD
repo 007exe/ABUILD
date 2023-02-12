@@ -1,16 +1,17 @@
 pkgname=nemo
-pkgver=5.4.2
+pkgver=5.6.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Cinnamon file manager (Nautilus fork).")
-longdesc=("A file manager for Cinnamon, forked from Nautilus.")
 
 source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-build_deps=("meson samurai gobject-introspection intltool libgsf cinnamon-desktop dconf gvfs exempi libexif libnotify libxml2 python xapp")
+adddep=("cinnamon-desktop dconf gvfs exempi libexif libnotify libxml2 python xapp")
+
+build_deps=("${adddep} meson samurai gobject-introspection intltool libgsf")
 
 # NOTE: Это опциональные зависимости
 removedep=("ffmpegthumbnailer catdoc ghostscript libgsf libreoffice odt2txt poppler")

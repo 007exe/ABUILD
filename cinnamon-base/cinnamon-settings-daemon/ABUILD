@@ -1,19 +1,19 @@
 pkgname=cinnamon-settings-daemon
-pkgver=5.4.4
+pkgver=5.6.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Cinnamon Settings daemon.")
-longdesc=("The Cinnamon Settings daemon.")
 
 source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-build_deps=("cinnamon-desktop colord dbus-glib libcanberra libcups libgnomekbd libgudev muffin
-libnotify librsvg libwacom nss polkit pulseaudio-alsa upower meson samurai xf86-input-wacom")
+# libcanberra-pulse
+adddep=("cinnamon-desktop colord dbus-glib libcups pulseaudio-alsa
+libgnomekbd libgudev libnotify librsvg libwacom nss polkit upower")
 
-adddep=("pulseaudio-alsa")
+build_deps=("${adddep} meson samurai xf86-input-wacom")
 
 build() {
   go_src_dir
@@ -28,3 +28,10 @@ build() {
   DESTDIR=${pkgdir} samu install
 }
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
+}

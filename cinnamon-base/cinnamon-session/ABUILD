@@ -1,16 +1,21 @@
 pkgname=cinnamon-session
-pkgver=5.4.0
+pkgver=5.6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Cinnamon Session Handler.")
-longdesc=("Linux desktop which provides advanced innovative features and a traditional user experience.")
 
 source=("https://github.com/linuxmint/cinnamon/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-build_deps=("meson samurai xtrans cjs cinnamon-desktop libsm libcanberra xapp muffin")
+# xapps
+adddep=("cinnamon-desktop libsm libcanberra libxtst")
+
+build_deps=("${adddep} meson samurai xtrans")
+
+# NOTE: Это опциональные зависимости
+removedep=("cinnamon-translations")
 
 build() {
   go_src_dir
