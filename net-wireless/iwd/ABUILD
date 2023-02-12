@@ -1,0 +1,28 @@
+pkgname=iwd
+pkgver=2.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Internet Wireless Daemon.")
+
+source=("https://www.kernel.org/pub/linux/network/wireless/iwd-${pkgver}.tar.xz")
+
+tags=("network net-wireless")
+
+# ell
+adddep=("glibc readline")
+
+build_deps=("${adddep} python-docutils dbus")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --disable-systemd-service
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# openrc
+  install -Dm755 ${filedir}/iwd.initd ${pkgdir}/etc/init.d/iwd
+}

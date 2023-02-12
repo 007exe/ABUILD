@@ -1,0 +1,12 @@
+#!/usr/bin/openrc-run
+
+pidfile="/run/iwd.pid"
+command="/usr/libexec/iwd"
+command_background="yes"
+
+depend() {
+	need dbus
+	after bootmisc modules
+	before dns dhcpcd net
+	keyword -shutdown
+}
