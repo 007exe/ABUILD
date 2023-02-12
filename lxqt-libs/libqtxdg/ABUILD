@@ -3,14 +3,15 @@ pkgver=3.10.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt Implementation of XDG Standards")
-longdesc=("Library providing freedesktop.org XDG specs implementations for Qt.")
+shortdesc=("Library providing freedesktop.org XDG specs implementations for Qt.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs lxqt-libs")
 
-build_deps=("libsm libxkbcommon-x11 qt5-base qt5-svg cmake lxqt-build-tools")
+adddep=("libsm libxkbcommon-x11 qt5-base qt5-svg")
+
+build_deps=("${adddep} cmake lxqt-build-tools")
 
 build() {
   go_src_dir

@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("libqtxdg user tools.")
-longdesc=("User Tools from libqtxdg.")
 
 source=("https://github.com/lxqt/$pkgname/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs lxqt-libs")
 
-build_deps=("qt5-base libqtxdg cmake qt5-tools lxqt-build-tools")
+adddep=("qt5-base libqtxdg")
+
+build_deps=("${adddep} cmake qt5-tools lxqt-build-tools")
 
 build() {
   go_src_dir

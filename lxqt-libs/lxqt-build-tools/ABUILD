@@ -3,14 +3,15 @@ pkgver=0.12.0
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("LXQt Build Tools.")
-longdesc=("Various packaging tools and scripts for LXQt applications.")
+shortdesc=("Various packaging tools and scripts for LXQt applications.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("utils lxqt-libs")
 
-build_deps=("cmake qt5-tools perl")
+adddep=("cmake qt5-tools git perl")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir

@@ -1,16 +1,17 @@
 pkgname=libfm-qt
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Core library of PCManFM-Qt (Qt binding for libfm)")
-longdesc=("Qt Library for Building File Managers.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs lxqt-libs")
 
-build_deps=("liblxqt lxqt-build-tools")
+adddep=("menu-cache libexif qt5-x11extras")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

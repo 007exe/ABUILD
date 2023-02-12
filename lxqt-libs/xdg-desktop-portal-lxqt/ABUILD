@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A backend implementation for xdg-desktop-portal using Qt/KF5/libfm-qt")
-longdesc=("Backend implementation for xdg-desktop-portal using Qt/KF5/libfm-qt.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs lxqt-libs")
 
-build_deps=("qt5-base kwindowsystem xdg-desktop-portal libfm-qt cmake")
+adddep=("qt5-base kwindowsystem xdg-desktop-portal libfm-qt")
+
+build_deps=("${adddep} cmake")
 
 build() {
   go_src_dir

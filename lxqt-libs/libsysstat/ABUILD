@@ -3,14 +3,15 @@ pkgver=0.4.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt GUI for System Statistics.")
-longdesc=("Library to query system statistics.")
+shortdesc=("Library to query system statistics.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-libs")
 
-build_deps=("qt5-base lxqt-build-tools")
+adddep=("qt5-base")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Common base library for LXQt components.")
-longdesc=("Common base library for the LXQt desktop environment.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-libs")
 
-build_deps=("kwindowsystem libxss polkit-qt libqtxdg")
+adddep=("kwindowsystem libxss polkit-qt")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir
