@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt openssh password prompt.")
-longdesc=("LXQt OpenSSH user password prompt tool.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("liblxqt cmake lxqt-build-tools")
+adddep=("liblxqt")
+
+build_deps=("${adddep} cmake lxqt-build-tools")
 
 build() {
   go_src_dir

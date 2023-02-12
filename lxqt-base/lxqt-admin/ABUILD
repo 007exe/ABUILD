@@ -10,7 +10,9 @@ source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgnam
 
 tags=("lxqt lxqt-base")
 
-build_deps=("qt5-base liblxqt kwindowsystem polkit-qt")
+adddep=("qt5-base liblxqt kwindowsystem polkit-qt")
+
+build_deps=("${adddep} cmake qt5-tools lxqt-build-tools")
 
 build() {
   go_src_dir

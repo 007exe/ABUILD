@@ -1,18 +1,17 @@
 pkgname=pcmanfm-qt
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt GUI Tabbed Filemanager")
-longdesc=("The LXQt file manager, Qt port of PCManFM")
+shortdesc=("The LXQt file manager, Qt port of PCManFM")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("desktop-file-utils libfm-qt lxmenu-data lxqt-build-tools qt5-translations")
+adddep=("desktop-file-utils libfm-qt lxmenu-data gvfs")
 
-adddep=("qt5-translations gvfs")
+build_deps=("${adddep} lxqt-build-tools")
 
 # NOTE: Это опциональные зависимости
 removedep=("gvfs-mtp lxqt-archiver")

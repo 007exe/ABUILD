@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt quick launcher")
-longdesc=("The LXQt application launcher.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("lxqt-globalkeys muparser libqtxdg lxqt-build-tools")
+adddep=("lxqt-globalkeys muparser libqtxdg")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

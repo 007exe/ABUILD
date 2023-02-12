@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt privilege program (lxsu)")
-longdesc=("LXQt GUI frontend for sudo.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("liblxqt lxqt-build-tools")
+adddep=("liblxqt")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

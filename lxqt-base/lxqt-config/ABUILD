@@ -4,15 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt system configuration.")
-longdesc=("LXQt system configuration control center.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("lxqt-build-tools lxqt-themes liblxqt libkscreen libxcursor xf86-input-libinput qt5-svg libqtxdg")
+adddep=("lxqt-themes liblxqt libkscreen libxcursor xf86-input-libinput qt5-svg 	libqtxdg")
 
-adddep=("lxqt-themes")
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

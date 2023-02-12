@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("The LXQt policykit authentication agent.")
-longdesc=("LXQt PolKit authentication agent.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("liblxqt polkit-qt cmake lxqt-build-tools")
+adddep=("liblxqt polkit-qt")
+
+build_deps=("${adddep} cmake lxqt-build-tools")
 
 build() {
   go_src_dir

@@ -1,19 +1,17 @@
 pkgname=lxqt-panel
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The LXQt desktop panel.")
-longdesc=("LXQt desktop panel and plugins.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("libdbusmenu-qt5 libxcomposite lxmenu-data libxtst lxqt-globalkeys solid libxcb libqtxdg
-lxqt-build-tools liblxqt libpulse libstatgrab libsysstat lm_sensors libxdamage alsa-lib")
+adddep=("lxmenu-data libdbusmenu-qt5 libxcomposite lxmenu-data libxtst lxqt-globalkeys solid libxcb libqtxdg")
 
-adddep=("lxmenu-data")
+build_deps=("${adddep} lxqt-build-tools liblxqt libpulse libstatgrab libsysstat lm_sensors libxdamage alsa-lib")
 
 # NOTE: Это опциональные зависимости
 removedep=("libpulse alsa-lib libstatgrab libsysstat lm_sensors")

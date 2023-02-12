@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt notification daemon and library.")
-longdesc=("lxqt-notificationd is LXQt's implementation of a daemon according to the Desktop Notifications Specification.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("qt5-base liblxqt kwindowsystem libqtxdg cmake lxqt-build-tools")
+adddep=("qt5-base liblxqt kwindowsystem libqtxdg")
+
+build_deps=("cmake lxqt-build-tools")
 
 build() {
   go_src_dir

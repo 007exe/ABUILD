@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt about dialog.")
-longdesc=("LXQt about is a dialogue window providing information about LXQt and the system it's running on..")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("lxqt-build-tools liblxqt libqtxdg")
+adddep=("liblxqt libqtxdg")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

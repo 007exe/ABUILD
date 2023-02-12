@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt platform integration for Qt.")
-longdesc=("LXQt system integration plugin for Qt.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("libdbusmenu-qt5 libqtxdg qt5-x11extras libfm-qt libqtxdg lxqt-build-tools")
+adddep=("libdbusmenu-qt5 libqtxdg qt5-x11extras libfm-qt libqtxdg")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

@@ -4,15 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt power management daemon.")
-longdesc=("LXQt daemon for power management and auto-suspend.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("qt5-svg qt5-x11extras upower kidletime solid hicolor-icon-theme libqtxdg lxqt-globalkeys cmake lxqt-build-tools")
+adddep=("qt5-svg qt5-x11extras upower kidletime solid hicolor-icon-theme libqtxdg lxqt-globalkeys")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} cmake lxqt-build-tools")
 
 build() {
   go_src_dir

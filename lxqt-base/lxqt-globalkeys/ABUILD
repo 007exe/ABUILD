@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("LXQt daemon and library for global keyboard shortcuts registration.")
-longdesc=("Daemon and library for global keyboard shortcuts registration.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("liblxqt lxqt-build-tools")
+adddep=("liblxqt")
+
+build_deps=("${adddep} lxqt-build-tools")
 
 build() {
   go_src_dir

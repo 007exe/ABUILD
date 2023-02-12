@@ -3,16 +3,15 @@ pkgver=1.2.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("LXQt Session Manager.")
-longdesc=("The LXQt Session Manager.")
+shortdesc=("The LXQt Session Manager.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("lxqt lxqt-base")
 
-build_deps=("liblxqt qtxdg-tools xdg-user-dirs libx11 eudev kwindowsystem libqtxdg procps-ng cmake lxqt-build-tools")
+adddep=("liblxqt qtxdg-tools xdg-user-dirs libx11 kwindowsystem libqtxdg procps-ng eudev")
 
-adddep=("qtxdg-tools xdg-user-dirs eudev")
+build_deps=("${adddep} cmake lxqt-build-tools")
 
 # NOTE: Это опциональные зависимости
 removedep=("breeze-icons oxygen-icons sddm")
