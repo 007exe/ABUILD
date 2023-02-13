@@ -1,18 +1,17 @@
 pkgname=vala
-pkgver=0.56.3
+pkgver=0.56.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Compiler for the GObject type system.")
-longdesc=("Vala is a new programming language that aims to bring modern programming language features to GNOME developers without imposing any additional runtime requirements and without using a different ABI compared to applications and libraries written in C.")
 
 source=("https://download.gnome.org/sources/vala/${pkgver%.*}/vala-${pkgver}.tar.xz")
 
 tags=("develop dev-lang")
 
-build_deps=("glib2 help2man pkgconf gcc graphviz")
+adddep=("gtk-doc pkgconf gcc glib2 graphviz")
 
-adddep=("gtk-doc pkgconf gcc")
+build_deps=("${adddep} glib2 help2man")
 
 build() {
   go_src_dir
