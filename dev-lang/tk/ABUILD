@@ -1,16 +1,17 @@
 pkgname=tk
-pkgver=8.6.12
-pkgbuild=2
+pkgver=8.6.13
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A windowing toolkit for use with tcl.")
-longdesc=("Tk is an extension to Tcl that allows you to quickly and easily build X11 applications that have the look and feel of Motif apps.")
 
 source=("http://downloads.sourceforge.net/sourceforge/tcl/tk${pkgver}-src.tar.gz")
 
 tags=("dev-lang tcl")
 
-build_deps=("tcl libxss libxft")
+adddep=("tcl libxss libxft")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
