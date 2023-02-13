@@ -1,17 +1,18 @@
 pkgname=xorg-xwayland
-pkgver=22.1.7
+pkgver=22.1.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Run X clients under wayland.")
-longdesc=("The Xwayland package is an Xorg server running on top of the wayland server. It has been separated from the main Xorg server package. It allows running X clients inside a wayland session.")
 
 source=("https://xorg.freedesktop.org/archive/individual/xserver/xwayland-${pkgver}.tar.xz")
 
 tags=("xorg-base xorg")
 
-build_deps=("nettle libepoxy libxfont2 pixman xorg-server-common libxcvt meson xorgproto
-xtrans libxkbfile dbus xorg-font-util wayland wayland-protocols libdrm mesa egl-wayland")
+adddep=("nettle libepoxy libxfont2 pixman xorg-server-common libxcvt mesa")
+
+build_deps=("${adddep} meson xorgproto xtrans libxkbfile dbus xorg-font-util
+wayland wayland-protocols libdrm  egl-wayland")
 
 build() {
   go_src_dir
