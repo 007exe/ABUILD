@@ -1,6 +1,6 @@
 pkgname=libx11
-pkgver=1.8.3
-pkgbuild=3
+pkgver=1.8.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 client-side library.")
@@ -9,9 +9,9 @@ source=("http://xorg.freedesktop.org/releases/individual/lib/libX11-${pkgver}.ta
 
 tags=("libs xorg-libs")
 
-build_deps=("libxcb xorgproto xorg-util-macros xtrans")
+adddep=("xorgproto libxcb")
 
-adddep=("xorgproto")
+build_deps=("${adddep} xorg-util-macros xtrans")
 
 build() {
   go_src_dir
