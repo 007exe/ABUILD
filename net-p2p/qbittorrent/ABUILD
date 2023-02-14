@@ -1,20 +1,18 @@
 pkgname=qbittorrent
-pkgver=4.5.0
+pkglist=("qbittorrent-nox")
+pkgver=4.5.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("BitTorrent client in C++ and Qt.")
-longdesc=("An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar.")
+shortdesc=("An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar.")
 
 source=("https://downloads.sourceforge.net/sourceforge/qbittorrent/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps net-p2p")
 
-build_deps=("cmake boost qt6-tools qt6-svg libtorrent-rasterbar qt6-base")
+adddep=("hicolor-icon-theme libtorrent-rasterbar qt6-base")
 
-adddep=("hicolor-icon-theme")
-
-pkglist=("qbittorrent-nox")
+build_deps=("cmake boost qt6-tools qt6-svg")
 
 build(){
   go_src_dir
@@ -30,8 +28,7 @@ build(){
 
 qbittorrent-nox() {
   pkgname=qbittorrent-nox
-  shortdesc=("BitTorrent console client in C++ and Qt.")
-  longdesc=("An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar, w/o gui.")
+  shortdesc=("An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar, w/o gui.")
   tags=("console net-p2p")
 }
 
