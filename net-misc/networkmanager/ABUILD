@@ -1,5 +1,5 @@
 pkgname=networkmanager
-pkgver=1.40.12
+pkgver=1.42.0
 _pppver=2.4.9
 pkgbuild=1
 arch=("auto")
@@ -10,13 +10,16 @@ source=("https://download.gnome.org/sources/NetworkManager/${pkgver:0:4}/Network
 
 tags=("network net-misc")
 
-build_deps=("meson jansson curl gobject-introspection iptables nss polkit elogind upower vala bluez gnutls gtk-doc
-libpsl valgrind libndp modemmanager mobile-broadband-provider-info newt python-gobject dnsmasq audit")
+# libnewt libteam
+adddep=("audit bluez-libs curl iproute2 libmm-glib libndp libpsl mobile-broadband-provider-info
+wpa_supplicant")
+
+# nftables openresolv pacrunner
+build_deps=("${adddep} elogind audit bluez-libs curl dhclient dhcpcd dnsmasq glib2 gobject-introspection gtk-doc iwd iproute2
+iptables jansson libmm-glib libndp libpsl meson modemmanager nss perl-yaml polkit python-gobject vala wpa_supplicant")
 
 # NOTE: Это опциональнеые зависимости
 removedep=("polkit dnsmasq nftables iptables bluez modemmanager iwd dhclient dhcpcd openresolv firewalld ppp=${_pppver}")
-
-adddep=("mobile-broadband-provider-info")
 
 config_files=("etc/NetworkManager/NetworkManager.conf")
 
