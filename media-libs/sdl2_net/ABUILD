@@ -1,0 +1,28 @@
+pkgname=sdl2_net
+pkgver=2.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A small sample cross-platform networking library (Version 2).")
+
+source=("https://github.com/libsdl-org/SDL_net/releases/download/release-${pkgver}/SDL2_net-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+adddep=("sdl2")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
