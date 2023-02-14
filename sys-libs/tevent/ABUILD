@@ -1,5 +1,5 @@
 pkgname=tevent
-pkgver=0.14.0
+pkgver=0.14.1
 pkgbuild=1
 arch=("auto")
 
