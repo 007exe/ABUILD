@@ -1,18 +1,17 @@
 pkgname=lib32-libx11
-pkgver=1.8.3
+pkgver=1.8.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 client-side library (32-bit).")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
 source=("http://xorg.freedesktop.org/releases/individual/lib/libX11-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
-build_deps=("lib32-glibc lib32-libxcb lib32-gcc-libs xorg-util-macros xorgproto xtrans")
-
 adddep=("lib32-glibc lib32-libxcb libx11")
+
+build_deps=("${adddep} lib32-gcc-libs xorg-util-macros xorgproto xtrans")
 
 build() {
   go_src_dir
