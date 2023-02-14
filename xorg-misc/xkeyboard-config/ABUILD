@@ -1,10 +1,9 @@
 pkgname=xkeyboard-config
-pkgver=2.37
+pkgver=2.38
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("X keyboard configuration files.")
-longdesc=("The XKeyboardConfig package contains the keyboard configuration database for the X Window System.")
 
 tags=("xorg-misc xorg")
 
