@@ -1,16 +1,15 @@
 pkgname=harfbuzz
-pkgver=6.0.0
+pkgver=7.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("OpenType text shaping engine.")
-longdesc=("The HarfBuzz package contains an OpenType text shaping engine.")
 
 source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/harfbuzz-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("glib2 freetype icu python meson python-setuptools graphite cairo gobject-introspection python-fonttools ragel chafa")
+build_deps=("cairo chafa freetype glib2 gobject-introspection graphite gtk-doc icu meson python ragel")
 
 build(){
   go_src_dir
