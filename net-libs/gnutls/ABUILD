@@ -1,16 +1,18 @@
 pkgname=gnutls
-pkgver=3.7.8
+pkgver=3.8.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library which provides a secure layer over a reliable transport layer.")
-longdesc=("GnuTLS is a project that aims to develop a library which provides a secure layer, over a reliable transport layer.")
 
 source=("https://www.gnupg.org/ftp/gcrypt/gnutls/v${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("net-libs libs")
 
-build_deps=("gcc-libs libtasn1 readline zlib nettle libidn2 libunistring p11-kit")
+adddep=("gcc-libs libtasn1 readline zlib nettle p11-kit libidn2 zstd libunistring brotli")
+
+# tpm2-tss
+build_deps=("${adddep}")
 
 # Это опциональная зависимость
 removedep=("guile")
