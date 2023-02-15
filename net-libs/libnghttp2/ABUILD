@@ -1,12 +1,11 @@
 pkgname=libnghttp2
-pkgver=1.51.0
+pkgver=1.52.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Framing layer of HTTP/2 is implemented as a reusable C library.")
-longdesc=("nghttp2 is an implementation of HTTP/2 and its header compression algorithm, HPACK.")
 
-source=("https://github.com/nghttp2/nghttp2/archive/v$pkgver.tar.gz")
+source=("https://github.com/nghttp2/nghttp2/archive/v${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
@@ -26,4 +25,12 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/libnghttp2/COPYING
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
