@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KF5_VERSION=5.102.0
+KF5_VERSION=5.103.0
 BUILD_VERSION=1
 
 LIST="extra-cmake-modules
@@ -65,7 +65,6 @@ kpty
 kdesu
 frameworkintegration
 kinit
-kdewebkit
 modemmanager-qt
 kpeople
 kxmlrpcclient
