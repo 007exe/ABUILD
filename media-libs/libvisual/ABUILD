@@ -1,10 +1,9 @@
 pkgname=libvisual
-pkgver=0.4.0
-pkgbuild=2
+pkgver=0.4.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Abstraction library that comes between applications and audio visualisation plugins.")
-longdesc=("Libvisual is an audio visualization library that acts as a middle layer between audio visualization plugins and applications. Any application written with libvisual support included will be able to make use of all the plugins that are written for libvisual. Libvisual also contains a whole set of facilities to ease the development of plugins. Libvisual was written by Dennis Smit.")
 
 source=("https://downloads.sourceforge.net/sourceforge/libvisual/libvisual-${pkgver}.tar.gz")
 
