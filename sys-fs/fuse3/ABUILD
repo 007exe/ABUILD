@@ -1,5 +1,6 @@
 pkgname=fuse3
-pkgver=3.13.0
+pkglist=("fuse-common")
+pkgver=3.13.1
 pkgbuild=1
 arch=("auto")
 
@@ -12,8 +13,6 @@ tags=("libs sys-fs")
 build_deps=("eudev meson")
 
 adddep=("fuse-common")
-
-pkglist=("fuse-common")
 
 build() {
   go_src_dir
@@ -34,7 +33,6 @@ build() {
 fuse-common() {
   pkgname=fuse-common
   shortdesc=("Common files for fuse2/3 packages.")
-  longdesc=("Common files for fuse2/3 packages.")
 }
 
 fuse-common_prep() {
