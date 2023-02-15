@@ -1,10 +1,9 @@
 pkgname=lib32-harfbuzz
-pkgver=6.0.0
+pkgver=7.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("OpenType text shaping engine (32-bit).")
-longdesc=("The HarfBuzz package contains an OpenType text shaping engine.")
 
 source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/harfbuzz-${pkgver}.tar.xz")
 
