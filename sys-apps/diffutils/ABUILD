@@ -1,12 +1,11 @@
 pkgname=diffutils
-pkgver=3.8
-pkgbuild=2
+pkgver=3.9
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility programs used for creating patch files.")
-longdesc=("The Diffutils package contains programs that show the differences between files or directories.")
 
-source=("https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("base sys-apps")
 
