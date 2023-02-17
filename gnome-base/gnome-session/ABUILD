@@ -1,5 +1,5 @@
 pkgname=gnome-session
-pkgver=42.0
+pkgver=43.0
 pkgbuild=1
 arch=("auto")
 
