@@ -1,5 +1,5 @@
 pkgname=git
-pkgver=2.39.1
+pkgver=2.39.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,16 @@ source=("https://mirrors.edge.kernel.org/pub/software/scm/git/git-$pkgver.tar.xz
 
 tags=("dev-vcs develop")
 
-build_deps=("curl expat perl openssl pcre2 grep shadow zlib")
+# perl-error perl-mailtools
+adddep=("curl expat perl openssl pcre2 grep shadow zlib")
+
+# libgnome-keyring
+build_deps=("${adddep} python xmlto asciidoc")
 
 # NOTE: Это опциональные зависимости
-removedep=("tk python libsecret")
+removedep=("tk perl-libwww perl-term-readkey perl-io-socket-ssl perl-authen-sasl
+perl-mediawiki-api perl-datetime-format-iso8601 perl-lwp-protocol-https perl-cgi
+python subversion org.freedesktop.secrets libsecret")
 
 config_files=("etc/conf.d/git-daemon")
 

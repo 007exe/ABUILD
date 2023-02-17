@@ -1,4 +1,4 @@
-echo -e "\n"
+echo -e " "
 echo -e "The following packages extend git capabilities:"
 echo -e "tk: gitk and git gui"
 echo -e "perl-libwww: git svn"
