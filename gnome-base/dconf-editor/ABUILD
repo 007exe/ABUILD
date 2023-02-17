@@ -1,16 +1,17 @@
 pkgname=dconf-editor
-pkgver=3.38.3
+pkgver=43.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("dconf Editor.")
-longdesc=("The DConf-Editor, as the name suggests, is a graphical editor for the DConf database.")
+shortdesc=("GSettings editor for GNOME.")
 
 source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("gnome gnome-base")
 
-build_deps=("vala meson gtk3 dconf")
+adddep=("libhandy dconf")
+
+build_deps=("${adddep} vala meson gtk3 dconf")
 
 build() {
   go_src_dir
