@@ -1,12 +1,11 @@
 pkgname=xorg-util-macros
-pkgver=1.19.3
-pkgbuild=2
+pkgver=1.20.0
+pkgbuild=1
 arch=("noarch")
 
 shortdesc=("X.Org Autotools macros.")
-longdesc=("Macro used for X.org development.")
 
-source=("http://xorg.freedesktop.org/releases/individual/util/util-macros-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/util/util-macros-${pkgver}.tar.xz")
 
 tags=("xorg xorg-misc")
 
