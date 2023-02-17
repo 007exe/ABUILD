@@ -1,0 +1,23 @@
+pkgname=clinfo
+pkgver=3.0.21.02.21
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple OpenCL application that enumerates all available platform and device properties.")
+
+tags=("develop dev-util")
+
+source=("https://github.com/Oblomov/clinfo/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+#adddep=("opencl-icd-loader")
+
+build_deps=("${adddep} opencl-headers")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  install -Dm755 clinfo -t ${pkgdir}/usr/bin/
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm644 man1/clinfo.1 -t ${pkgdir}/usr/share/man/man1/
+}
