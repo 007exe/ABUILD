@@ -1,6 +1,6 @@
 pkgname=python-typing_extensions
-pkgver=4.4.0
-pkgbuild=2
+pkgver=4.5.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Backported and Experimental Type Hints for Python 3.5+.")
