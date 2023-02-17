@@ -1,7 +1,7 @@
 pkgname=php
 pkglist=("php-cgi php-apache php-fpm php-embed php-phpdbg php-dblib php-enchant php-gd php-imap php-intl
 php-sodium php-odbc php-pgsql php-pspell php-snmp php-sqlite php-tidy php-xsl")
-pkgver=8.2.2
+pkgver=8.2.3
 pkgbuild=1
 arch=("auto")
 
@@ -15,10 +15,10 @@ gendeps_blacklist=("usr/lib/php/extensions*")
 
 config_files=("etc/php/php.ini")
 
-build_deps=("apache aspell db gdbm enchant gd gmp icu libsodium libxslt libzip net-snmp
-postgresql-libs sqlite tidy unixodbc curl libtool postfix freetds pcre2 libnsl oniguruma c-client")
-
 adddep=("libxml2 curl libzip pcre2 argon2 oniguruma db gdbm")
+
+build_deps=("${adddep} apache aspell db enchant gd gmp icu libsodium libxslt net-snmp
+postgresql-libs sqlite tidy unixodbc libtool postfix freetds libnsl c-client")
 
 build() {
   go_src_dir
