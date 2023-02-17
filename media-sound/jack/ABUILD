@@ -1,18 +1,21 @@
 pkgname=jack
-pkgver=1.9.21
-pkgbuild=2
+pkglist=("jack-dbus jack-docs")
+pkgver=1.9.22
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The JACK2 low-latency audio server.")
-longdesc=("Jackdmp jack implemention for multi-processor machine.")
 
 source=("https://github.com/jackaudio/jack2/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs media-sound")
 
-build_deps=("waf alsa-lib dbus expat libsndfile readline libsamplerate celt libffado zita-alsa-pcmi zita-resampler")
+adddep=("alsa-lib db dbus gcc-libs glibc libsamplerate opus")
 
-pkglist=("jack-dbus jack-docs")
+build_deps=("${adddep} doxygen expat libffado libsamplerate opus waf")
+
+# NOTE: Это опциональные зависимости
+removedep=("a2jmidid libffado jack-example-tools jack-dbus jack-docs realtime-privileges")
 
 build() {
   go_src_dir
@@ -36,7 +39,7 @@ build() {
 jack-dbus() {
   pkgname=jack-dbus
   shortdesc=("The JACK2 low-latency audio server dbus integration.")
-  longdesc=("Jackdmp jack implemention for multi-processor machine.")
+  adddep=("dbus expat gcc-libs glibc jack dbus-python")
 }
 
 jack-dbus_prep() {
@@ -49,11 +52,18 @@ jack-dbus_prep() {
 jack-docs() {
   pkgname=jack-docs
   shortdesc=("The JACK2 low-latency audio server documentation")
-  longdesc=("Jackdmp jack implemention for multi-processor machine.")
 }
 
 jack-docs_prep() {
   go_src_dir
   mkdir -p ${pkgdir}/usr/share/doc/jack/
   mv ${p_pkgdir}/usr/share/doc/jack/html ${pkgdir}/usr/share/doc/jack/
+}
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/v${pkgver}.tar.gz
 }
