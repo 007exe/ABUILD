@@ -1,10 +1,9 @@
 pkgname=python-pip
-pkgver=22.3.1
+pkgver=23.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("The PyPA recommended tool for installing Python packages")
-longdesc=("Pip is a tool for installing and managing Python packages, such as those found in the Python Package Index_. It's a replacement for easy_install_.")
+shortdesc=("The PyPA recommended tool for installing Python packages.")
 
 source=("https://github.com/pypa/pip/archive/refs/tags/${pkgver}.tar.gz")
 
