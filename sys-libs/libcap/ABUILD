@@ -1,16 +1,17 @@
 pkgname=libcap
-pkgver=2.66
+pkgver=2.67
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("POSIX 1003.1e capabilities.")
-longdesc=("The Libcap package implements the user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels. These capabilities are a partitioning of the all powerful root privilege into a set of distinct privileges.")
 
 tags=("libs sys-libs")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/${pkgname}-${pkgver}.tar.gz")
 
-build_deps=("glibc linux-pam kernel-headers")
+adddep=("glibc linux-pam")
+
+build_deps=("${adddep} kernel-headers")
 
 build() {
   go_src_dir
