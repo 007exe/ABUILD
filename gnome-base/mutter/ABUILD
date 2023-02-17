@@ -1,0 +1,33 @@
+pkgname=mutter
+pkgver=43.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Window manager and compositor for GNOME.")
+
+source=("https://gitlab.gnome.org/GNOME/mutter/-/archive/${pkgver}/mutter-${pkgver}.tar.gz")
+tags=("gnome gnome-base")
+
+# libsysprof-capture
+adddep=("colord dconf gnome-desktop gnome-settings-daemon graphene
+gsettings-desktop-schemas lcms2 libcanberra libgudev libinput libsm
+libxkbcommon-x11 libxkbfile pipewire xorg-xwayland
+startup-notification")
+
+# sysprof
+build_deps=("${adddep} egl-wayland gi-docgen git gobject-introspection
+meson wayland-protocols xorg-server")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D egl_device=true \
+    -D wayland_eglstream=true \
+    -D docs=true \
+    -D installed_tests=false
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
