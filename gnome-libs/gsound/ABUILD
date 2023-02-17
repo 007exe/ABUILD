@@ -1,0 +1,27 @@
+pkgname=gsound
+pkgver=1.0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Small library for playing system sounds.")
+
+source=("https://gitlab.gnome.org/GNOME/gsound/-/archive/${pkgver}/gsound-${pkgver}.tar.gz")
+
+tags=("libs gnome-libs")
+
+adddep=("glib2 libcanberra")
+
+build_deps=("${adddep} gobject-introspection vala gtk-doc meson")
+
+# FIXME: Проблемы со сборкой документации
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
