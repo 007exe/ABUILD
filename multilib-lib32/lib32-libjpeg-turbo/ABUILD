@@ -1,10 +1,9 @@
 pkgname=lib32-libjpeg-turbo
-pkgver=2.1.4
+pkgver=2.1.5.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("JPEG image codec with accelerated baseline compression and decompression (32-bit).")
-longdesc=("libjpeg-turbo is a fork of the original IJG libjpeg which uses SIMD to accelerate baseline JPEG compression and decompression. libjpeg is a library that implements JPEG image encoding, decoding and transcoding.")
 
 source=("https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-${pkgver}.tar.gz")
 
