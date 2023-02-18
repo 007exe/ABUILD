@@ -1,4 +1,0 @@
-#!/bin/bash
-
-cd /usr/share/assaultcube
-ac_client "--home=${HOME}/.config/assaultcube" "--init=${HOME}/.config/assaultcube/config/init.cfg" "$@"
