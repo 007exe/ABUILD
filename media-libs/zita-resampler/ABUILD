@@ -1,12 +1,11 @@
 pkgname=zita-resampler
-pkgver=1.8.0
-pkgbuild=2
+pkgver=1.10.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C++ library for resampling audio signals.")
-longdesc=("C++ library for real-time resampling of audio signals.")
 
-source=("https://kokkinizita.linuxaudio.org/linuxaudio/downloads/${pkgname}-${pkgver}.tar.bz2")
+source=("https://kokkinizita.linuxaudio.org/linuxaudio/downloads/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
