@@ -1,5 +1,5 @@
 pkgname=sudo
-_sudover=1.9.12p2
+_sudover=1.9.13
 pkgver=${_sudover/p/.p}
 pkgbuild=1
 arch=("auto")
