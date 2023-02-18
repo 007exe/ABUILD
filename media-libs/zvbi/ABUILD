@@ -1,5 +1,5 @@
 pkgname=zvbi
-pkgver=0.2.40
+pkgver=0.2.41
 pkgbuild=1
 arch=("auto")
 
