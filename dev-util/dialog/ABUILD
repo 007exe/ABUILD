@@ -1,5 +1,5 @@
 pkgname=dialog
-pkgver=1.3_20221229
+pkgver=1.3_20230209
 pkgbuild=1
 arch=("auto")
 
