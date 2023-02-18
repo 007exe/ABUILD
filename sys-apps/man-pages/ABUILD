@@ -1,11 +1,10 @@
 pkgname=man-pages
-pkgver=6.02
+pkgver=6.03
 _posixver=2017-a
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Linux man pages.")
-longdesc=("A large collection of man pages (reference material) from the Linux Documentation Project (LDP).")
 
 tags=("console sys-apps")
 
