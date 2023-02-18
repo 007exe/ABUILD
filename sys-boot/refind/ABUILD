@@ -1,0 +1,58 @@
+pkgname=refind
+pkgver=0.13.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An EFI boot manager.")
+
+source=("https://sourceforge.net/projects/refind/files/${pkgver}/refind-src-${pkgver}.tar.gz")
+
+tags=("base sys-boot")
+
+adddep=("bash dosfstools efibootmgr")
+
+build_deps=("${adddep} gnu-efi")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's|../Styles/||g' -i docs/refind/*.html
+# Жёстко закодируйте RefindDir, чтобы refind-install мог найти refind_x64.efi
+  sed -e 's|RefindDir=\"\$ThisDir/refind\"|RefindDir="/usr/share/refind/"|g' -i refind-install
+  make
+  make gptsync
+# NOTE: Сборка не может быть распараллелена
+  make fs -j1
+# Устанавливаем в ручную поскольку make install вызывает refind-install
+  install -vDm 644 refind/*.efi -t ${pkgdir}/usr/share/refind/
+  install -vDm 644 drivers_*/*.efi -t ${pkgdir}/usr/share/refind/drivers_64/
+  install -vDm 644 gptsync/*.efi -t ${pkgdir}/usr/share/refind/tools_64/
+# sample config
+  install -vDm 644 refind.conf-sample -t ${pkgdir}/usr/share/refind/
+# keys
+  install -vDm 644 keys/*{cer,crt} -t ${pkgdir}/usr/share/refind/keys/
+# keysdir
+  install -vdm 700 ${pkgdir}/etc/refind.d/keys
+# fonts
+  install -vDm 644 fonts/*.png -t ${pkgdir}/usr/share/refind/fonts/
+# icons
+  install -vDm 644 icons/*.png -t ${pkgdir}/usr/share/refind/icons
+  install -vDm 644 icons/svg/*.svg -t ${pkgdir}/usr/share/refind/icons/svg/
+# scripts
+  install -vDm 755 {refind-{install,mkdefault},mkrlconf,mvrefind} -t ${pkgdir}/usr/bin/
+  install -vDm 755 fonts/mkfont.sh ${pkgdir}/usr/bin/refind-mkfont
+# man pages
+  install -vDm 644 docs/man/*.8 -t ${pkgdir}/usr/share/man/man8/
+# docs
+  install -vDm 644 {CREDITS,NEWS,README}.txt -t ${pkgdir}/usr/share/doc/refind/
+  install -vDm 644 fonts/README.txt ${pkgdir}/usr/share/doc/refind/README.refind-mkfont.txt
+  install -vDm 644 icons/README ${pkgdir}/usr/share/doc/refind/README.icons.txt
+  install -vDm 644 keys/README.txt ${pkgdir}/usr/share/doc/refind/README.keys.txt
+# license
+  install -vDm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/refind/
+
+# NOTE: Установка документации. В будущем её можно выделить в отдельный пакет или избавится
+  install -vDm 644 docs/refind/*.{html,png,svg,txt} -t ${pkgdir}/usr/share/doc/refind/html/
+  install -vDm 644 docs/Styles/*.css -t ${pkgdir}/usr/share/doc/refind/html/
+  install -vDm 644 images/refind-banner.{png,svg} -t ${pkgdir}/usr/share/doc/refind/html/
+}
