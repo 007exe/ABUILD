@@ -1,16 +1,17 @@
 pkgname=libnotify
-pkgver=0.8.1
+pkgver=0.8.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for sending desktop notifications.")
-longdesc=("The libnotify library is used to send desktop notifications to a notification daemon, as defined in the Desktop Notifications spec.")
 
 source=("https://gitlab.gnome.org/GNOME/libnotify/-/archive/${pkgver}/libnotify-${pkgver}.tar.gz")
 
 tags=("libs x11-libs")
 
-build_deps=("gtk3 gobject-introspection git meson docbook-xsl xmlto gtk-doc")
+adddep=("gdk-pixbuf")
+
+build_deps=("${adddep} docbook-xsl gi-docgen gobject-introspection gtk3 meson xmlto")
 
 # FIXME: Проблемы со сборкой документации
 
