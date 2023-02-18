@@ -1,5 +1,5 @@
 pkgname=libheif
-pkgver=1.14.2
+pkgver=1.15.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/strukturag/libheif/releases/download/v$pkgver/libhei
 
 tags=("libs media-libs")
 
-build_deps=("libjpeg-turbo libpng gdk-pixbuf libde265 x265 aom")
+adddep=("libde265 x265 aom")
+
+build_deps=("${adddep} libjpeg-turbo libpng gdk-pixbuf")
 
 # NOTE: Это опциональные зависимости
 removedep=("libjpeg-turbo libpng")
