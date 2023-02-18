@@ -1,0 +1,30 @@
+pkgname=gnu-efi
+pkgver=3.0.15
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Develop EFI applications using the GNU toolchain and the EFI development environment.")
+
+source=("https://download.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+
+tags=("base sys-boot")
+
+build_deps=("make")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's/-Werror//g' -i Make.defaults
+  CFLAGS="-O2 -flto -ffat-lto-objects"
+  make
+  make -C lib
+  make -C gnuefi
+  make -C inc
+  LDFLAGS=""
+  make -C apps
+  CFLAGS="-O2 -flto -ffat-lto-objects"
+  make INSTALLROOT="$pkgdir" PREFIX=/usr install
+  install -vDm 644 apps/*.efi -t ${pkgdir}/usr/share/${pkgname}/apps/x86_64/
+  install -vDm 644 README.efilib -t ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -vDm 644 {ChangeLog,README.{gnuefi,git,elilo}} -t ${pkgdir}/usr/share/doc/${pkgname}/
+}
