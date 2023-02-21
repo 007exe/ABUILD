@@ -9,9 +9,9 @@ source=("https://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("lib32-glibc lib32-gcc-libs lib32-libjpeg-turbo lib32-zlib lib32-xz lib32-zstd")
+adddep=("libtiff lib32-glibc lib32-gcc-libs lib32-libjpeg-turbo lib32-zlib lib32-xz lib32-zstd")
 
-adddep=("libtiff")
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
