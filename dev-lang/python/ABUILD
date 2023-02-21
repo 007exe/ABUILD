@@ -1,6 +1,6 @@
 pkgname=python
 pkglist=("python-tests")
-pkgver=3.11.1
+pkgver=3.11.2
 pkgbuild=1
 arch=("auto")
 
