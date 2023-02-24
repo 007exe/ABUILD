@@ -1,10 +1,9 @@
 pkgname=iproute2
-pkgver=6.1.0
+pkgver=6.2.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("IP Routing Utilities.")
-longdesc=("The IPRoute2 package contains programs for basic and advanced IPV4-based networking.")
 
 source=("http://www.kernel.org/pub/linux/utils/net/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
