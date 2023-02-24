@@ -1,5 +1,5 @@
 pkgname=perl-http-daemon
-pkgver=6.14
+pkgver=6.15
 pkgbuild=1
 arch=("noarch")
 
@@ -9,9 +9,9 @@ source=("https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Daemon-${pkgver}
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-http-date perl-http-message perl-lwp-mediatypes")
+adddep=("perl perl-http-date perl-http-message perl-lwp-mediatypes")
 
-adddep=("perl-http-date perl-http-message perl-lwp-mediatypes")
+build_deps=("${adddep} perl-module-build-tiny")
 
 build(){
   go_src_dir
