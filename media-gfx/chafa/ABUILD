@@ -1,18 +1,17 @@
 pkgname=chafa
-pkgver=1.12.0
+pkgver=1.12.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Image-to-text converter supporting a wide range of symbols and palettes, transparency, animations, etc.")
-longdesc=("Versatile and fast Unicode/ASCII/ANSI graphics renderer")
 
-source=("https://github.com/hpjansson/chafa/releases/download/$pkgver/chafa-$pkgver.tar.xz")
+source=("https://github.com/hpjansson/chafa/releases/download/${pkgver}/chafa-${pkgver}.tar.xz")
 
-tags=("media-gfx xapps")
+tags=("media-gfx apps")
 
-build_deps=("gtk-doc libxslt imagemagick")
+adddep=("imagemagick librsvg libwebp libxslt")
 
-adddep=("libxslt")
+build_deps=("${adddep} gtk-doc")
 
 build() {
   go_src_dir
