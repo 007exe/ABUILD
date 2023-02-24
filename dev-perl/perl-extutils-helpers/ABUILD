@@ -1,0 +1,28 @@
+pkgname=perl-extutils-helpers
+pkgver=0.026
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("ExtUtils::Helpers - Various portability utilities for module builders.")
+
+source=("https://search.cpan.org/CPAN/authors/id/L/LE/LEONT/ExtUtils-Helpers-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+    ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd ${srcdir}/ExtUtils-Helpers-${pkgver}
+    /usr/bin/perl Makefile.PL
+    make
+  )
+  make install
+  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
+}
