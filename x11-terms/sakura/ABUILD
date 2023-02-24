@@ -1,5 +1,5 @@
 pkgname=sakura
-pkgver=3.8.3
+pkgver=3.8.6
 pkgbuild=1
 arch=('auto')
 
