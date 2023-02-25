@@ -1,16 +1,17 @@
 pkgname=pango
-pkgver=1.50.12
+pkgver=1.50.13
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library for layout and rendering of text.")
-longdesc=("Pango is a library for laying out and rendering text, with an emphasis on internationalization. It can be used anywhere that text layout is needed, though most of the work on Pango so far has been done in the context of the GTK+ widget toolkit.")
 
 source=("https://download.gnome.org/sources/pango/${pkgver%.*}/pango-${pkgver}.tar.xz")
 
 tags=("libs x11-libs")
 
-build_deps=("cairo libxft harfbuzz fribidi gobject-introspection help2man meson gi-docgen libthai")
+adddep=("cairo fribidi harfbuzz libthai libxft")
+
+build_deps=("${adddep} gi-docgen gobject-introspection help2man meson")
 
 removedep=("libx11 libxrender fontconfig freetype")
 
