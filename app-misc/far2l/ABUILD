@@ -10,7 +10,7 @@ tags=("apps app-misc")
 source=("https://github.com/elfmz/far2l/archive/refs/tags/v_${pkgver}.tar.gz")
 
 # smbclient
-build_deps="cmake wxgtk3 gtkmm3 openssl gvfs spdlog xerces-c fmt uchardet libssh libnfs neon pcre libarchive"
+build_deps="cmake gtkmm3 openssl gvfs spdlog xerces-c fmt uchardet libssh libnfs neon pcre libarchive"
 
 build() {
   go_src_dir
@@ -21,7 +21,6 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DUSEWX=yes \
-    -DwxWidgets_CONFIG_EXECUTABLE=/usr/bin/wx-config-gtk3 \
     -DCMAKE_CXX_FLAGS=-w
   make -j${numjobs}
   make DESTDIR=$pkgdir install
