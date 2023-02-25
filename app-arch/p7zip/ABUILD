@@ -1,6 +1,6 @@
 pkgname=p7zip
-pkgver=17.04
-pkgbuild=2
+pkgver=17.05
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Port of 7-Zip archiver for Unix.")
