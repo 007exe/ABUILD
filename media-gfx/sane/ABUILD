@@ -1,5 +1,5 @@
 pkgname=sane
-pkgver=1.1.1
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,11 +10,10 @@ source=("https://gitlab.com/sane-project/backends/-/archive/${pkgver}/backends-$
 
 tags=("apps media-gfx")
 
-build_deps=("bash cairo gcc-libs glibc libgphoto2 libnl libpng libxml2 libieee1284
-net-snmp openssl v4l-utils autoconf-archive avahi curl glib2 libjpeg-turbo libtiff
-libusb poppler-glib python")
+adddep=("bash cairo gcc-libs glibc libpng libieee1284 net-snmp v4l-utils")
 
-adddep=("bash")
+build_deps=("${adddep} autoconf-archive avahi curl glib2 libgphoto2 libjpeg-turbo
+libtiff libusb libxml2 poppler-glib python texlive-latexextra")
 
 build() {
   go_src_dir
