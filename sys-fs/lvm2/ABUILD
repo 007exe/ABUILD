@@ -1,7 +1,7 @@
 pkgname=lvm2
 pkglist=("device-mapper")
-pkgver=2.03.18
-pkgbuild=2
+pkgver=2.03.19
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Logical Volume Manager 2 utilities.")
