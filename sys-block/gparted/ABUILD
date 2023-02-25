@@ -1,22 +1,19 @@
 pkgname=gparted
-pkgver=1.4.0
+pkgver=1.5.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Partition Magic clone, frontend to GNU Parted.")
-longdesc=("Gparted is the Gnome Partition Editor, a Gtk 3 GUI for other command line tools that can create, reorganise or delete disk partitions.")
 
 source=("https://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("sys-block apps")
 
-build_deps=("gtkmm3 intltool itstool pkgconf yelp-tools polkit parted
-dosfstools jfsutils f2fs-tools btrfs-progs exfatprogs ntfs-3g reiserfsprogs
-udftools xfsprogs nilfs-utils polkit gpart mtools xorg-xhost e2fsprogs")
+# NOTE: Бошльшая часть зависчимостей является опциональными но мы их всё равно включим дабы gparted не потерял функциональности
+adddep=("parted gtkmm3
+dosfstools jfsutils f2fs-tools btrfs-progs exfatprogs ntfs-3g reiserfsprogs udftools xfsprogs nilfs-utils polkit gpart mtools xorg-xhost")
 
-adddep=("e2fsprogs dosfstools jfsutils f2fs-tools btrfs-progs exfatprogs
-ntfs-3g reiserfsprogs udftools xfsprogs nilfs-utils polkit gpart mtools
-xorg-xhost")
+build_deps=("${adddep} intltool itstool yelp-tools polkit")
 
 build() {
   go_src_dir
