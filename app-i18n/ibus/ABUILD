@@ -1,25 +1,23 @@
 pkgname=ibus
-pkgver=1.5.27
+pkglist=("lib")
+pkgver=1.5.28
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Next Generation Input Bus for Linux.")
-longdesc=("Intelligent Input Bus for Linux/Unix OS.")
 
 source=("https://github.com/ibus/ibus/releases/download/${pkgver}/ibus-${pkgver}.tar.gz")
 
 tags=("base app-i18n")
 
-build_deps=("gobject-introspection vala intltool gnome-common gtk-doc gtk4 gtk2 qt5-base unicode-cldr unicode-character-database unicode-emoj dconf gtk3 hicolor-icon-theme libnotify dbus-python python-gobject iso-codes librsvg")
-
 adddep=("hicolor-icon-theme dbus-python python-gobject")
 
-pkglist=("lib")
+build_deps=("${adddep} gobject-introspection vala intltool gnome-common gtk-doc gtk4 gtk2 qt5-base
+unicode-cldr unicode-character-database unicode-emoj dconf gtk3 libnotify iso-codes librsvg")
 
 lib(){
   pkgname=libibus
   shortdesc=("IBus support library")
-  longdesc=("Intelligent Input Bus for Linux / Unix OS")
   tags=("libs app-i18n")
 }
 
