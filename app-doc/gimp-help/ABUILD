@@ -1,0 +1,27 @@
+pkgname=gimp-help
+pkgver=2.10.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Russian help files for Gimp.")
+
+source=("https://ftp.gimp.org/gimp/help/gimp-help-${pkgver}.tar.bz2 ")
+
+tags=("utils app-doc")
+
+build_deps=("python docbook-xsl")
+
+build() {
+  go_src_dir
+  sed -e '1s/python$/python2/' -i "tools/xml2po.py"
+  burn_patches
+# export ALL_LINGUAS="de el en es fi fr ja ko nn ru sl sv zh_CN"
+  export ALL_LINGUAS="ru"
+  ./configure \
+    --prefix=/usr \
+    --without-gimp
+  make -j${numjobs}
+# NOTE: Устанавливаем Русскоязычную документацию.
+  install -dm755 ${pkgdir}/usr/share/gimp/2.0/help/ru
+  cp -rL ${srcdir}/gimp-help-${pkgver}/html/ru ${pkgdir}/usr/share/gimp/2.0/help
+}
