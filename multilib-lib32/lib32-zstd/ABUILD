@@ -1,18 +1,17 @@
 pkgname=lib32-zstd
-pkgver=1.5.2
+pkgver=1.5.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Zstandard - Fast real-time compression algorithm (32-bit).")
-longdesc=("Zstandard is a real-time compression algorithm, providing high compression ratios. It offers a very wide range of compression / speed trade-offs, while being backed by a very fast decoder..")
 
 source=("https://github.com/facebook/zstd/releases/download/v${pkgver}/zstd-${pkgver}.tar.gz")
 
 tags=("lib32 app-arch")
 
-build_deps=("lib32-glibc lib32-gcc-libs gtest")
-
 adddep=("lib32-glibc zstd")
+
+build_deps=("${adddep} lib32-gcc-libs gtest")
 
 build() {
   go_src_dir
