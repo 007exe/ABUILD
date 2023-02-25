@@ -1,6 +1,6 @@
 # NOTE: Иногда при обновлении следует удалить python-setuptools
 pkgname=python-setuptools
-pkgver=67.3.2
+pkgver=67.3.3
 pkgbuild=1
 arch=("auto")
 
@@ -16,34 +16,33 @@ python-packaging python-pyparsing python-tomli python-validate-pyproject")
 #python-setuptools
 build_deps=("${adddep} python")
 
-#before_build(){
-#  go_src_dir
-#  burn_patches
-#  export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
-#  rm -r {pkg_resources,setuptools}/{extern,_vendor} setuptools/config/_validate_pyproject
-#  for _module in setuptools pkg_resources '' ; do
-#      find . -name \*.py -exec sed -i \
-#          -e 's/from '$_module.extern' import/import/' \
-#          -e 's/from '$_module.extern'\./from /' \
-#          -e 's/import '$_module.extern'\./import /' \
-#          -e "s/__import__('$_module.extern./__import__('/" \
-#          -e 's/from \.\.extern\./from /' \
-#          {} +
-#  done
+export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
 
-#  sed -e 's/"-m", "build", "--wheel"/"-m", "build", "--wheel", "--no-isolation"/' \
-#      -e 's/"-m", "build", "--sdist"/"-m", "build", "--sdist", "--no-isolation"/' \
-#      -i setuptools/tests/fixtures.py
-
-#  sed -e '/tag_build = .post/d' \
-#      -e '/tag_date = 1/d' \
-#      -i setup.cfg
-
-#  sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python3|" setuptools/command/easy_install.py
-#}
-
-build() {
+build(){
   go_src_dir
+#  burn_patches
+  patch -p1 -i $startdir/patches/system-validate-pyproject.patch
+  rm -r {pkg_resources,setuptools}/{extern,_vendor} setuptools/config/_validate_pyproject
+  for _module in setuptools pkg_resources '' ; do
+      find . -name \*.py -exec sed -i \
+          -e 's/from '$_module.extern' import/import/' \
+          -e 's/from '$_module.extern'\./from /' \
+          -e 's/import '$_module.extern'\./import /' \
+          -e "s/__import__('$_module.extern./__import__('/" \
+          -e 's/from \.\.extern\./from /' \
+          {} +
+  done
+  patch -p1 -i $startdir/patches/add-dependency.patch
+  sed -e 's/"-m", "build", "--wheel"/"-m", "build", "--wheel", "--no-isolation"/' \
+      -e 's/"-m", "build", "--sdist"/"-m", "build", "--sdist", "--no-isolation"/' \
+      -i setuptools/tests/fixtures.py
+
+  sed -e '/tag_build = .post/d' \
+      -e '/tag_date = 1/d' \
+      -i setup.cfg
+
+  sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python3|" setuptools/command/easy_install.py
+
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   SETUPTOOLS_USE_DISTUTILS=stdlib
   python setup.py build
