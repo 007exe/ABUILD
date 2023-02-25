@@ -1,0 +1,58 @@
+pkgname=flatpak
+pkgver=1.15.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux application sandboxing and distribution framework (formerly xdg-app).")
+
+tags=("base sys-apps")
+
+strict_version=1
+source=("git:https://github.com/flatpak/flatpak.git"
+"git:https://gitlab.gnome.org/GNOME/libglnx.git"
+"git:https://github.com/projectatomic/bubblewrap.git"
+"git:https://github.com/flatpak/xdg-dbus-proxy.git"
+"git:https://gitlab.gnome.org/alexl/variant-schema-compiler.git"
+"https://dl.flathub.org/repo/flathub.flatpakrepo")
+
+# libmalcontent ostree
+adddep=("appstream bubblewrap curl dbus fuse3 glib2 json-glib libarchive
+libseccomp libxau polkit python xdg-dbus-proxy")
+
+build_deps=("${adddep} docbook-xsl git gobject-introspection gtk-doc meson xmlto
+python-pyparsing")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  mv ${srcdir}/flatpak_git_bubblewrap.git.src ${srcdir}/bubblewrap
+  mv ${srcdir}/flatpak_git_flatpak.git.src ${srcdir}/flatpak
+  mv ${srcdir}/flatpak_git_libglnx.git.src ${srcdir}/libglnx
+  mv ${srcdir}/flatpak_git_variant-schema-compiler.git.src ${srcdir}/variant-schema-compiler
+  mv ${srcdir}/flatpak_git_xdg-dbus-proxy.git.src ${srcdir}/xdg-dbus-proxy
+  cd ${srcdir}/flatpak
+  git checkout ${pkgver}
+  burn_patches
+  git submodule init
+  git submodule set-url libglnx ${srcdir}/libglnx
+  git submodule set-url bubblewrap ${srcdir}/bubblewrap
+  git submodule set-url dbus-proxy ${srcdir}/xdg-dbus-proxy
+  git submodule set-url variant-schema-compiler ${srcdir}/variant-schema-compiler
+  git -c protocol.file.allow=always submodule update
+}
+
+build() {
+  cd ${srcdir}/flatpak
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D dbus_config_dir=/usr/share/dbus-1/system.d \
+    -D selinux_module=disabled \
+    -D system_bubblewrap=bwrap \
+    -D system_dbus_proxy=xdg-dbus-proxy
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  install -Dt ${pkgdir}/etc/profile.d -m644 ${filedir}/flatpak-bindir.sh
+  install -Dt ${pkgdir}/etc/flatpak/remotes.d ${srcache}/flathub.flatpakrepo
+  install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
+}
