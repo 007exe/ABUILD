@@ -1,5 +1,5 @@
 pkgname=lib32-harfbuzz
-pkgver=7.0.0
+pkgver=7.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/harfbu
 
 tags=("lib32 media-libs")
 
-build_deps=("lib32-glib2 lib32-icu ragel python meson harfbuzz lib32-freetype")
-
 adddep=("lib32-glibc lib32-glib2 lib32-freetype harfbuzz")
+
+build_deps=("${adddep} lib32-icu ragel python meson")
 
 build() {
   go_src_dir
