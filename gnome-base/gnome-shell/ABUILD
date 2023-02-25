@@ -1,0 +1,51 @@
+pkgname=gnome-shell
+pkgver=43.3
+pkgbuild=1
+arch=("auto")
+strict_version=1
+
+shortdesc=("Next generation desktop shell.")
+
+source=("git:https://gitlab.gnome.org/GNOME/gnome-shell.git"
+"git:https://gitlab.gnome.org/GNOME/libgnome-volume-control.git")
+
+tags=("gnome gnome-base")
+
+# libcanberra-pulse libgdm
+adddep=("accountsservice gcr gjs gnome-autoar gnome-session gnome-settings-daemon
+gsettings-desktop-schemas gtk4 libgweather-4 libibus libnma libsecret libsoup3
+mutter unzip upower")
+
+# gnome-control-center
+build_deps=("${adddep} asciidoc bash-completion evolution-data-server git
+gobject-introspection gtk-doc meson sassc")
+
+# NOTE: Это опциональные зависимости
+removedep=("evolution-data-server gnome-bluetooth-3.0 gnome-control-center
+gnome-disk-utility gst-plugin-pipewire gst-plugins-good power-profiles-daemon
+switcheroo-control")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  cd ${srcdir}
+  mv -v ${srcdir}/gnome-shell_git_gnome-shell.git.src ${srcdir}/gnome-shell
+  mv -v ${srcdir}/gnome-shell_git_libgnome-volume-control.git.src ${srcdir}/libgnome-volume-control
+  cd ${srcdir}/gnome-shell
+  git checkout ${pkgver}
+  git submodule init
+  git submodule set-url subprojects/gvc ${srcdir}/libgnome-volume-control
+  git -c protocol.file.allow=always submodule update
+}
+
+build() {
+  cd ${srcdir}/gnome-shell
+  CFLAGS="${CFLAGS/-O2/-O3} -fno-semantic-interposition"
+  LDFLAGS+=" -Wl,-Bsymbolic-functions"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
