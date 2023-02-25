@@ -4,13 +4,14 @@ pkgbuild=2
 arch=("auto")
 
 shortdesc=("Cross-platform C/C++ IDE.")
-longdesc=("The open source, cross platform, free C, C++ and Fortran IDE")
 
 source=("https://downloads.sourceforge.net/codeblocks/codeblocks-${pkgver}.tar.xz")
 
-tags=("dev-util xapps")
+tags=("dev-util apps")
 
-build_deps=("boost wxgtk3 hunspell imagemagick zip")
+adddep=("boost-libs wxwidgets-gtk3 hunspell")
+
+build_deps=("${adddep} boost imagemagick zip")
 
 build(){
   go_src_dir
@@ -20,8 +21,7 @@ build(){
   burn_patches
   ./configure \
     --prefix=/usr \
-    --with-contrib-plugins=all,-FileManager \
-    --with-wx-config=/usr/bin/wx-config-gtk3
+    --with-contrib-plugins=all,-FileManager
   sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
