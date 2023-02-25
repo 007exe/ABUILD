@@ -1,18 +1,20 @@
 pkgname=freerdp
-pkgver=2.9.0
+pkgver=2.10.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Free implementation of the Remote Desktop Protocol.")
-longdesc=("Free implementation of the Remote Desktop Protocol (RDP).")
 
 source=("https://github.com/${pkgname}/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("network net-misc")
 
-build_deps=("dbus-glib glibc gstreamer gst-plugins-base-libs libcups libgssglue libx11 libxcursor libxext
-libxdamage libxfixes libxkbcommon libxi libxinerama libxkbfile libxrandr libxrender libxtst openssl
-pcsclite wayland alsa-lib cmake docbook-xsl ffmpeg icu krb5 libjpeg-turbo libpulse libusb linux-pam xmlto xorgproto")
+adddep=("dbus-glib glibc gstreamer gst-plugins-base-libs libcups
+libgssglue libx11 libxcursor libxext libxdamage libxfixes libxkbcommon
+libxi libxinerama libxkbfile libxrandr libxrender libxtst pcsclite wayland")
+
+build_deps=("${adddep} alsa-lib cmake docbook-xsl ffmpeg icu krb5
+libjpeg-turbo libpulse libusb openssl linux-pam xmlto xorgproto")
 
 build() {
   go_src_dir
