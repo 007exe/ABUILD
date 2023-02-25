@@ -1,6 +1,6 @@
 pkgname=mesa
 pkglist=("vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau")
-pkgver=22.3.4
+pkgver=22.3.6
 pkgbuild=1
 arch=("auto")
 
