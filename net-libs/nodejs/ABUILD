@@ -1,5 +1,5 @@
 pkgname=nodejs
-pkgver=19.6.1
+pkgver=19.7.0
 pkgbuild=1
 arch=("auto")
 
