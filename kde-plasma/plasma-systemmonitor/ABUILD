@@ -1,18 +1,17 @@
 pkgname=plasma-systemmonitor
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Monitor system sensors, process information and other system resources.")
-longdesc=("An interface for monitoring system sensors, process information and other system resources.")
+shortdesc=("An interface for monitoring system sensors, process information and other system resources.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("ksystemstats kitemmodels qqc2-desktop-style kquickcharts kdeclarative extra-cmake-modules")
-
 adddep=("ksystemstats kitemmodels qqc2-desktop-style kquickcharts kdeclarative")
+
+build_deps=("${adddep} extra-cmake-modules")
 
 build() {
   go_src_dir

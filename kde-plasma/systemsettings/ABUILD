@@ -1,16 +1,17 @@
 pkgname=systemsettings
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE system manager for hardware, software, and workspaces.")
-longdesc=("Integrate the Bluetooth technology within KDE workspace and applications.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("plasma-workspace extra-cmake-modules kdoctools")
+adddep=("plasma-workspace")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir

@@ -1,23 +1,17 @@
 pkgname=kinfocenter
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A utility that provides information about a computer system.")
-longdesc=("Utility providing information about the computer hardware.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-# vulkan-tools
-build_deps=("systemsettings glu xorg-xdpyinfo dmidecode extra-cmake-modules
-plasma-framework kdoctools wayland-utils mesa-utils fwupd aha")
+adddep=("systemsettings glu vulkan-tools wayland-utils xorg-xdpyinfo mesa-utils fwupd aha dmidecode clinfo")
 
-adddep=("systemsettings glu xorg-xdpyinfo dmidecode")
-
-# vulkan-tools
-adddep=("wayland-utils mesa-utils fwupd aha")
+build_deps=("${adddep} extra-cmake-modules plasma-framework kdoctools")
 
 build() {
   go_src_dir

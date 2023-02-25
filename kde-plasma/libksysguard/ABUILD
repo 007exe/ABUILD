@@ -1,18 +1,17 @@
 pkgname=libksysguard
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Task management and system monitoring library.")
-longdesc=("Library to retrieve information on the current status of computer hardware.")
+shortdesc=("Library to retrieve information on the current status of computer hardware.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-plasma libs")
 
-build_deps=("extra-cmake-modules kdoctools qt5-tools libxres kdeclarative knewstuff qt5-webengine")
+adddep=("libxres qt5-webengine knewstuff")
 
-adddep=("knewstuff")
+build_deps=("${adddep} extra-cmake-modules kdoctools qt5-tools")
 
 build() {
   go_src_dir

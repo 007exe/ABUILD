@@ -1,18 +1,17 @@
 pkgname=sddm-kcm
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE Config Module for SDDM.")
-longdesc=("KDE Plasma control module for SDDM.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("sddm knewstuff systemsettings extra-cmake-modules kdoctools")
+adddep=("sddm knewstuff systemsettings")
 
-adddep=("sddm systemsettings")
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir

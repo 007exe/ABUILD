@@ -1,18 +1,17 @@
 pkgname=plasma-thunderbolt
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plasma integration for controlling Thunderbolt devices.")
-longdesc=("Plasma integration for controlling Thunderbolt devices.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("bolt systemsettings extra-cmake-modules")
+adddep=("bolt systemsettings")
 
-adddep=("bolt  systemsettings")
+build_deps=("${adddep} extra-cmake-modules")
 
 build() {
   go_src_dir

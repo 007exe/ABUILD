@@ -1,16 +1,17 @@
 pkgname=milou
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A dedicated search application built on top of Baloo.")
-longdesc=("Dedicated search application built on top of Baloo.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("krunner kitemmodels extra-cmake-modules kdoctools")
+adddep=("krunner kitemmodels")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir

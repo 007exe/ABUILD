@@ -1,18 +1,17 @@
 pkgname=breeze
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Breeze visual style for the Plasma desktop.")
-longdesc=("Qt component to allow applications to make use of the Wayland wl-layer-shell protocol.")
+shortdesc=("Artwork, styles and assets for the Breeze visual style for the Plasma Desktop.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("extra-cmake-modules wayland-protocols qt5-wayland breeze-icons kwayland hicolor-icon-theme")
+adddep=("frameworkintegration kdecoration breeze-icons kwayland kirigami2 hicolor-icon-theme")
 
-adddep=("breeze-icons kwayland hicolor-icon-theme")
+build_deps=("${adddep} extra-cmake-modules kcmutils")
 
 # NOTE: Это опциональные зависимости
 removedep=("breeze-gtk kcmutils")

@@ -1,9 +1,12 @@
 #!/bin/bash
 
-P_VERSION=5.26.5
+P_VERSION=5.27.1
 BUILD_VERSION=1
 
-LIST="libkscreen
+LIST="flatpak-kcm
+kpipewire
+plasma-welcome
+libkscreen
 libksysguard
 bluedevil
 kdecoration
@@ -24,7 +27,6 @@ kdeplasma-addons
 systemsettings
 kgamma5
 breeze-gtk
-discover
 drkonqi
 khotkeys
 kinfocenter
@@ -60,10 +62,10 @@ echo "============================= Начало сборки kde-plasma $P_VERS
 for i in $LIST ; do
     cd $STARTD/$i
     if mkpkg -ba -wd ~/mkpkg/build -si -bv $P_VERSION -bb $BUILD_VERSION; then
-           echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+           echo "$i ГОТОВ" >> $LOGFILE
            cd $STARTD
     else
-           echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+           echo "$i НЕ СОБРАН!!!" >> $LOGFILE
            cd $STARTD
     fi
 done

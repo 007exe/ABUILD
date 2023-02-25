@@ -1,10 +1,9 @@
 pkgname=breeze-gtk
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Breeze widget theme for GTK 2 and 3.")
-longdesc=("Official GTK+ port of Plasma's Breeze widget style.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 

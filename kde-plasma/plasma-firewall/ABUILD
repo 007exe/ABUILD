@@ -1,18 +1,17 @@
 pkgname=plasma-firewall
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Control Panel for your system firewall.")
-longdesc=("Plasma frontend for Firewalld or UFW.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("systemsettings extra-cmake-modules")
-
 adddep=("systemsettings")
+
+build_deps=("${adddep} extra-cmake-modules")
 
 # NOTE: Это опциональные зависимости
 removedep=("iproute2 firewalld ufw")

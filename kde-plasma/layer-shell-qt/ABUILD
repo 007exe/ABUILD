@@ -1,16 +1,17 @@
 pkgname=layer-shell-qt
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt component to allow applications make use of Wayland wl-layer-shell protocol.")
-longdesc=("Qt component to allow applications make use of Wayland wl-layer-shell protocol.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("qt5-wayland extra-cmake-modules wayland-protocols")
+adddep=("qt5-wayland")
+
+build_deps=("${adddep} extra-cmake-modules wayland-protocols")
 
 build() {
   go_src_dir

@@ -1,19 +1,20 @@
 pkgname=kde-gtk-config
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("GTK2 and GTK3 Configurator for KDE.")
-longdesc=("Syncs KDE Plasma theme settings to GTK applications.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("qt5-svg kdecoration kconfigwidgets kdbusaddons extra-cmake-modules gtk3 sassc")
+adddep=("qt5-svg kdecoration kconfigwidgets kdbusaddons kwindowsystem")
+
+build_deps=("${adddep} extra-cmake-modules gtk3 sassc")
 
 # NOTE: Это опциональные зависимости
-removedep=("gtk3")
+removedep=("gtk3 xsettingsd")
 
 build() {
   go_src_dir

@@ -1,21 +1,19 @@
 pkgname=plasma-desktop
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE Plasma Desktop.")
-longdesc=("KDE Plasma Desktop.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-# packagekit-qt5
-build_deps=("gawk kdelibs4support polkit-kde-agent kmenuedit systemsettings baloo xdg-user-dirs libibus
-extra-cmake-modules kdoctools xf86-input-evdev xf86-input-synaptics xf86-input-libinput xorg-server-devel
-scim kdesignerplugin kaccounts-integration intltool kinit")
+adddep=("gawk kdelibs4support polkit-kde-agent kmenuedit systemsettings baloo xdg-user-dirs")
 
-adddep=("gawk polkit-kde-agent kmenuedit systemsettings xdg-user-dirs")
+# packagekit-qt5
+build_deps=("extra-cmake-modules kdoctools xf86-input-evdev xf86-input-synaptics xf86-input-libinput
+xorg-server-devel scim kdesignerplugin kaccounts-integration intltool kinit libibus wayland-protocols")
 
 # NOTE: Это опциональные зависимости
 removedep=("plasma-nm powerdevil kscreen ibus scim kaccounts-integration packagekit-qt5")

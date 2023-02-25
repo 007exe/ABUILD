@@ -1,18 +1,17 @@
 pkgname=kwrited
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE daemon listening for wall and write messages.")
-longdesc=("KDE Plasma daemon listening for wall and write messages.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("kpty knotifications kdbusaddons extra-cmake-modules kdoctools")
+adddep=("kpty knotifications kdbusaddons oxygen-sounds")
 
-adddep=("oxygen-sounds")
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir

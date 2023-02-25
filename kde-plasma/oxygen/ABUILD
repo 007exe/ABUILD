@@ -1,18 +1,17 @@
 pkgname=oxygen
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE Oxygen style.")
-longdesc=("Oxygen visual style for the Plasma desktop.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("frameworkintegration kdecoration kwayland extra-cmake-modules kdoctools kcmutils")
+adddep=("frameworkintegration kdecoration kwayland hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} extra-cmake-modules kdoctools kcmutils")
 
 # NOTE: Это опциональные зависимости
 removedep=("kcmutils")

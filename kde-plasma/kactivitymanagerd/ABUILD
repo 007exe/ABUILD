@@ -1,16 +1,17 @@
 pkgname=kactivitymanagerd
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("System service to manage user activities and track the usage patterns.")
-longdesc=("System service to manage user's activities, track the usage patterns etc.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("kio extra-cmake-modules boost")
+adddep=("kio")
+
+build_deps=("${adddep} extra-cmake-modules boost")
 
 build() {
   go_src_dir

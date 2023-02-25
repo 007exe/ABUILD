@@ -1,5 +1,5 @@
 pkgname=khotkeys
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("plasma kde-plasma")
 
-build_deps=("plasma-workspace kdelibs4support extra-cmake-modules kdoctools kdesignerplugin kinit")
+adddep=("plasma-workspace kdelibs4support")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools kdesignerplugin kinit")
 
 build() {
   go_src_dir

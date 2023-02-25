@@ -1,18 +1,17 @@
 pkgname=xdg-desktop-portal-kde
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A backend implementation for xdg-desktop-portal using Qt/KF5.")
-longdesc=("Backend implementation for xdg-desktop-portal that is using Qt/KDE Frameworks.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("kirigami2 plasma-framework kio-fuse extra-cmake-modules plasma-wayland-protocols")
-
 adddep=("kirigami2 plasma-framework kio-fuse")
+
+build_deps=("${adddep} extra-cmake-modules plasma-wayland-protocols wayland-protocols")
 
 build() {
   go_src_dir

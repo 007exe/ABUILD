@@ -1,18 +1,17 @@
 pkgname=drkonqi
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The KDE crash handler.")
-longdesc=("Plasma crash handler, gives the user feedback if a program crashed.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("kidletime syntax-highlighting kdeclarative kirigami2 kitemmodels gdb extra-cmake-modules")
+adddep=("kidletime syntax-highlighting kirigami2 kitemmodels kuserfeedback kio gdb python-distro python-psutil qt5-tools")
 
-adddep=("kirigami2 kitemmodels gdb")
+build_deps=("${adddep} extra-cmake-modules")
 
 build() {
   go_src_dir

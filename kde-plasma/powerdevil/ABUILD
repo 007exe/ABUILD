@@ -1,16 +1,17 @@
 pkgname=powerdevil
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Power management for KDE Plasma Shell.")
-longdesc=("Manages the power consumption settings of a Plasma Shell.")
+shortdesc=("Manages the power consumption settings of a Plasma Shell.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("plasma-workspace bluez-qt networkmanager-qt extra-cmake-modules kdoctools")
+adddep=("plasma-workspace bluez-qt networkmanager-qt")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 # NOTE: Это опциональные зависимости
 removedep=("kinfocenter power-profiles-daemon")

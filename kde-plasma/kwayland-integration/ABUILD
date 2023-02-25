@@ -1,16 +1,17 @@
 pkgname=kwayland-integration
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Provides integration plugins for various KDE frameworks for Wayland.")
-longdesc=("Provides integration plugins for various KDE frameworks for the wayland windowing system.")
+shortdesc=("Provides integration plugins for various KDE frameworks for the wayland windowing system.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("kwindowsystem kidletime kwayland extra-cmake-modules wayland-protocols")
+adddep=("kwindowsystem kwayland")
+
+build_deps=("${adddep} extra-cmake-modules wayland-protocols kidletime")
 
 build() {
   go_src_dir

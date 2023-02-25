@@ -1,17 +1,17 @@
-pkgname=libkscreen
+pkgname=flatpak-kcm
 pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("KDE screen management software.")
+shortdesc=("Flatpak Permissions Management KCM.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-plasma libs")
 
-adddep=("qt5-x11extras libxrandr kwayland kconfig")
+adddep=("systemsettings flatpak")
 
-build_deps=("${adddep} extra-cmake-modules doxygen qt5-tools plasma-wayland-protocols")
+build_deps=("${adddep} extra-cmake-modules")
 
 build() {
   go_src_dir
@@ -19,8 +19,7 @@ build() {
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_TESTING=OFF \
-    -DBUILD_QCH=ON
+    -DBUILD_TESTING=OFF
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }

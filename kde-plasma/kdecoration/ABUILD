@@ -1,16 +1,17 @@
 pkgname=kdecoration
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plugin based library to create window decorations.")
-longdesc=("Plugin based library to create window decorations.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("ki18n kcoreaddons extra-cmake-modules")
+adddep=("ki18n kcoreaddons")
+
+build_deps=("${adddep} extra-cmake-modules")
 
 build() {
   go_src_dir

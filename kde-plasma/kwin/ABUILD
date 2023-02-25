@@ -1,21 +1,18 @@
 pkgname=kwin
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An easy to use, but flexible, composited Window Manager.")
-longdesc=("Flexible, composited Window Manager for windowing systems on Linux.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
 # pipewire-session-manager
-build_deps=("kscreenlocker xcb-util-cursor plasma-framework kcmutils breeze libqaccessibilityclient
-lcms2 libxcvt extra-cmake-modules qt5-tools kdoctools krunner wayland-protocols plasma-wayland-protocols python")
+adddep=("kscreenlocker xcb-util-cursor plasma-framework kcmutils breeze libqaccessibilityclient lcms2 libxcvt")
 
-# pipewire-session-manager
-adddep=("breeze")
+build_deps=("extra-cmake-modules qt5-tools kdoctools krunner wayland-protocols plasma-wayland-protocols python")
 
 # NOTE: Это опциональные зависимости
 removedep=("maliit-keyboard")

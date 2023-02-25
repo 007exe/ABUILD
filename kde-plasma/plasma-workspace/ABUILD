@@ -1,23 +1,22 @@
 pkgname=plasma-workspace
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE Plasma Workspace.")
-longdesc=("KDE Plasma workspace.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("knotifyconfig ksystemstats ktexteditor libqalculate appstream-qt xorg-xrdb xorg-xsetroot
-kactivitymanagerd kholidays xorg-xmessage milou prison kwin plasma-integration kpeople kactivities-stats
-libkscreen kquickcharts kuserfeedback accountsservice qt5-tools extra-cmake-modules kdoctools gpsd baloo
-networkmanager-qt plasma-wayland-protocols kunitconversion kinit qt5-wayland kwayland-integration xorg-xwayland
-kio-fuse kde-cli-tools")
+# kio-extras appstream-qtxorg-xrdb kpipewire
+adddep=("knotifyconfig ksystemstats ktexteditor libqalculate kde-cli-tools
+xorg-xsetroot kactivitymanagerd kholidays xorg-xmessage milou prison kwin plasma-integration
+kpeople kactivities-stats kquickcharts kuserfeedback accountsservice kio-fuse qt5-tools
+oxygen-sounds")
 
-# kio-extras
-adddep=("oxygen-sounds kio-fuse kde-cli-tools")
+build_deps=("${adddep} extra-cmake-modules kdoctools gpsd baloo networkmanager-qt
+plasma-wayland-protocols wayland-protocols kunitconversion")
 
 # NOTE: Это опциональные зависимости
 removedep=("plasma-workspace-wallpapers gpsd networkmanager-qt kdepim-addons appmenu-gtk-module baloo discover")
@@ -44,7 +43,6 @@ build() {
 plasma-wayland-session() {
   pkgname=plasma-wayland-session
   shortdesc=("Plasma Wayland session.")
-  longdesc=("KDE Plasma workspace.")
   adddep=("plasma-workspace qt5-wayland kwayland-integration xorg-xwayland")
 }
 

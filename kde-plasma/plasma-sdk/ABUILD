@@ -1,18 +1,17 @@
 pkgname=plasma-sdk
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Applications useful for Plasma development.")
-longdesc=("Useful applications for Plasma development.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("plasma-framework perl extra-cmake-modules kdoctools ktexteditor")
+adddep=("plasma-framework perl")
 
-adddep=("perl")
+build_deps=("${adddep} extra-cmake-modules kdoctools ktexteditor")
 
 build() {
   go_src_dir

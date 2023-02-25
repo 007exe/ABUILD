@@ -1,10 +1,9 @@
 pkgname=plasma-workspace-wallpapers
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Wallpapers for the Plasma workspace.")
-longdesc=("Additional wallpapers for the Plasma Workspace.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 

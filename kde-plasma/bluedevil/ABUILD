@@ -1,16 +1,17 @@
 pkgname=bluedevil
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Bluetooth stack for KDE Plasma.")
-longdesc=("Integrate the Bluetooth technology within KDE workspace and applications.")
+shortdesc=("Integrate the Bluetooth technology within KDE workspace and applications.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("bluez-qt kdeclarative extra-cmake-modules plasma-framework")
+adddep=("bluez-qt kdeclarative")
+
+build_deps=("extra-cmake-modules plasma-framework kdoctools kcmutils")
 
 # NOTE: Это опциональные зависимости
 removedep=("pulseaudio-bluetoot")

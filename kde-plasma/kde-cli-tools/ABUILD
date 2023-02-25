@@ -1,5 +1,5 @@
 pkgname=kde-cli-tools
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("plasma kde-plasma")
 
-build_deps=("kdesu kcmutils kactivities extra-cmake-modules kdoctools plasma-workspace")
+adddep=("kdesu kcmutils kactivities")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools plasma-workspace")
 
 # NOTE: Это опциональные зависимости
 removedep=("plasma-workspace")

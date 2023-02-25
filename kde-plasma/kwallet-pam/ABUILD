@@ -1,18 +1,17 @@
 pkgname=kwallet-pam
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KWallet PAM integration.")
-longdesc=("PAM module to not enter KWallet password again after login.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("socat kwallet extra-cmake-modules")
-
 adddep=("socat kwallet")
+
+build_deps=("${adddep} extra-cmake-modules")
 
 build() {
   go_src_dir

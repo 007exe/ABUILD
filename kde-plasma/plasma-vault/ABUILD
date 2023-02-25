@@ -1,18 +1,17 @@
 pkgname=plasma-vault
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plasma applet and services for creating encrypted vaults.")
-longdesc=("Plasma applet and services for creating encrypted vaults.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-build_deps=("extra-cmake-modules plasma-workspace networkmanager-qt")
+adddep=("plasma-workspace networkmanager-qt")
 
-adddep=("plasma-workspace")
+build_deps=("${adddep} extra-cmake-modules")
 
 # NOTE: Это опциональные зависимости
 removedep=("encfs cryfs gocryptfs")

@@ -1,19 +1,18 @@
 pkgname=plasma-nm
-pkgver=5.26.5
+pkgver=5.27.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("KDE Plasma applet for NetworkManager.")
-longdesc=("Plasma applet written in QML for managing network connections.")
+shortdesc=("Plasma applet written in QML for managing network connections.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
-# openconnect
-build_deps=("plasma-workspace modemmanager-qt networkmanager-qt qca-qt5 extra-cmake-modules")
+adddep=("plasma-workspace modemmanager-qt networkmanager-qt")
 
-adddep=("plasma-workspace")
+# openconnect
+build_deps=("${adddep} extra-cmake-modules")
 
 # NOTE: Это опциональные зависимости
 removedep=("openconnect")
