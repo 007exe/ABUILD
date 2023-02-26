@@ -1,16 +1,17 @@
 pkgname=hwloc
-pkgver=2.8.0
+pkgver=2.9.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Portable Hardware Locality is a portable abstraction of hierarchical architectures.")
-longdesc=("Displays the hardware topology in convenient formats.")
 
 source=("https://www.open-mpi.org/software/hwloc/v${pkgver%.*}/downloads/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("sys-apps console")
 
-build_deps=("glibc libtool libpciaccess cairo libxml2 pciutils libx11")
+adddep=("glibc libtool libpciaccess")
+
+build_deps=("${adddep} cairo libxml2 pciutils libx11")
 
 removedep=("libice ocl-icd libsm libx11 cairo ncurses libxml2")
 
