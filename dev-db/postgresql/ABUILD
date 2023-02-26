@@ -1,5 +1,6 @@
 pkgname=postgresql
-pkgver=15.1
+pkglist=("postgresql-libs postgresql-docs")
+pkgver=15.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +11,6 @@ tags=("server dev-db")
 source=("https://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.tar.bz2")
 
 build_deps=("krb5 libxml2 python perl tcl openssl linux-pam zlib icu llvm clang libxslt")
-
-pkglist=("postgresql-libs postgresql-docs")
 
 config_files=("etc/logrotate.d/postgresql
 etc/conf.d/postgresql")
