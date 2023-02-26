@@ -1,6 +1,6 @@
 # NOTE: Необходимо указать версию spirv-tools и glslang
 pkgname=shaderc
-pkgver=2022.4
+pkgver=2023.2
 _ver_spirv_tools=2022.4
 _ver_glslang=11.13.0
 pkgbuild=1
