@@ -1,5 +1,5 @@
 pkgname=pvs-studio
-pkgver=7.21.64848.262
+pkgver=7.23.68432.289
 pkgbuild=1
 arch=('x86_64')
 
