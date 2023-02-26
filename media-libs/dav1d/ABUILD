@@ -1,10 +1,9 @@
 pkgname=dav1d
-pkgver=1.0.0
+pkgver=1.1.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("AV1 cross-platform decoder focused on speed and correctness.")
-longdesc=("dav1d is a new AV1 cross-platform Decoder, open-source, and focused on speed and correctness.")
 
 source=("https://downloads.videolan.org/pub/videolan/dav1d/${pkgver}/dav1d-${pkgver}.tar.xz"
 "https://code.videolan.org/videolan/dav1d-test-data/-/archive/${pkgver}/dav1d-test-data-${pkgver}.tar.gz")
