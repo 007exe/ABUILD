@@ -1,16 +1,17 @@
 pkgname=libtiff
-pkgver=4.3.0
-pkgbuild=3
+pkgver=4.5.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for manipulation of TIFF images.")
-longdesc=("The libtiff package contains the TIFF libraries and associated utilities. The libraries are used by many programs for reading and writing TIFF files and the utilities are used for general work with TIFF files.")
 
 source=("https://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("glibc libjpeg-turbo zlib xz zstd freeglut glu mesa jbigkit")
+adddep=("freeglut glu mesa jbigkit")
+
+build_deps=("${adddep} glibc libjpeg-turbo zlib xz zstd")
 
 build() {
   go_src_dir
@@ -24,5 +25,5 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  install -Dm 644 COPYRIGHT -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
