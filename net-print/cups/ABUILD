@@ -1,20 +1,18 @@
 pkgname=cups
+pkglist=("libcups")
 pkgver=2.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The CUPS Printing System - daemon package.")
-longdesc=("The Common Unix Printing System (CUPS) is a print spooler and associated utilities. It is based on the Internet Printing Protocol and provides printing services to most PostScript and raster printers.")
 
 source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz")
 
 tags=("base net-print")
 
-build_deps=("gnutls libtiff libpng krb5 libusb acl linux-pam bc dbus hicolor-icon-theme gzip autoconf inetutils valgrind xdg-utils cups-filters")
-
 adddep=("hicolor-icon-theme libcups>=${pkgver} cups-filters")
 
-pkglist=("libcups")
+build_deps=("${adddep} gnutls libtiff libpng krb5 libusb acl linux-pam bc dbus gzip autoconf inetutils valgrind xdg-utils")
 
 config_files=("etc/cups/cupsd.conf
 etc/cups/snmp.conf
