@@ -1,5 +1,5 @@
 pkgname=opera
-pkgver=96.0.4693.20
+pkgver=96.0.4693.50
 pkgbuild=1
 arch=("auto")
 
