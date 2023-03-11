@@ -1,5 +1,5 @@
 pkgname=yandex-browser
-pkgver=23.1.1.1114_1
+pkgver=23.1.2.998_1
 pkgbuild=1
 arch=("auto")
 
@@ -10,11 +10,12 @@ source=("https://repo.yandex.ru/yandex-browser/rpm/stable/x86_64/yandex-browser-
 tags=("www-client apps")
 
 # harfbuzz-icu
-build_deps=("binutils curl ttf-liberation jq alsa-lib gtk2 gtk3 gtk4 snappy
-opus flac nss libxss libxkbfile wget xdg-utils polkit dbus-glib python rpm")
+adddep=("binutils ttf-liberation jq alsa-lib at-spi2-atk libcups curl dbus libdrm
+gdbm gtk4 nspr nss pango wayland libxcomposite libxdamage libxkbcommon libxkbfile
+libxrandr wget xdg-utils harfbuzz")
 
-adddep=("binutils curl ttf-liberation jq alsa-lib gtk2 gtk3 gtk4 snappy opus
-flac nss libxss libxkbfile wget xdg-utils polkit dbus-glib python")
+build_deps=("${adddep} rpm")
+
 
 build() {
   cd ${srcdir}
