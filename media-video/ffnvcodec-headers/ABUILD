@@ -1,10 +1,9 @@
 pkgname=ffnvcodec-headers
-pkgver=11.1.5.1
-pkgbuild=2
+pkgver=11.1.5.2
+pkgbuild=1
 arch=("noarch")
 
-shortdesc=("FFmpeg version of headers required to interface with Nvidias codec APIs")
-longdesc=("FFmpeg version of headers required to interface with Nvidia codec APIs (NVENC)")
+shortdesc=("FFmpeg version of headers required to interface with Nvidias codec APIs.")
 
 source=("https://github.com/FFmpeg/nv-codec-headers/releases/download/n${pkgver}/nv-codec-headers-${pkgver}.tar.gz")
 
