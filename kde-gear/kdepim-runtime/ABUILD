@@ -1,5 +1,5 @@
 pkgname=kdepim-runtime
-pkgver=22.12.2
+pkgver=22.12.3
 pkgbuild=1
 arch=("auto")
 
