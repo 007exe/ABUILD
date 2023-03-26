@@ -1,15 +1,17 @@
 pkgname=btrfs-progs
-pkgver=6.1.3
+pkgver=6.2.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Btrfs filesystem utilities.")
 
-source=("https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v$pkgver.tar.xz")
+source=("https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v${pkgver}.tar.xz")
 
 tags=("utils sys-fs")
 
-build_deps=("asciidoc xmlto python python-setuptools e2fsprogs reiserfsprogs glibc util-linux lzo zlib zstd libgcrypt")
+adddep=("glibc util-linux lzo zlib zstd libgcrypt")
+
+build_deps=("${adddep} asciidoc xmlto python python-setuptools e2fsprogs reiserfsprogs python-sphinx")
 
 # NOTE: Это опциональные зависимости
 removedep=("python e2fsprogs reiserfsprogs")
@@ -26,4 +28,7 @@ build(){
   make DESTDIR=${pkgdir} install install_python
 
   install -Dm644 btrfs-completion ${pkgdir}/usr/share/bash-completion/completions/btrfs
+
+  install -Dm644 ${filedir}/btrfs-scrub@.service ${pkgdir}/usr/lib/systemd/system/btrfs-scrub@.service
+  install -Dm644 ${filedir}/btrfs-scrub@.timer ${pkgdir}/usr/lib/systemd/system/btrfs-scrub@.timer
 }
