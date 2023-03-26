@@ -1,6 +1,6 @@
 pkgname=python-markdown-it-py
-pkgver=2.1.0
-pkgbuild=2
+pkgver=2.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python port of markdown-it. Markdown parsing, done right!")
@@ -9,9 +9,9 @@ source=("https://github.com/executablebooks/markdown-it-py/archive/v${pkgver}.ta
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel python-mdurl")
-
 adddep=("python-mdurl")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
