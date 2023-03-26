@@ -4,7 +4,6 @@ pkgbuild=2
 arch=("auto")
 
 shortdesc=("X11 Input extension library.")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXi-${pkgver}.tar.bz2")
 
