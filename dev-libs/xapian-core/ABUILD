@@ -1,18 +1,17 @@
 pkgname=xapian-core
-pkgver=1.4.21
+pkgver=1.4.22
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open source search engine library.")
-longdesc=("Xapian Probabilistic Information Retrieval library.")
 
 source=("https://oligarchy.co.uk/xapian/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("dev-libs libs")
 
-build_deps=("util-linux bash gcc-libs glibc zlib")
+adddep=("bash gcc-libs glibc zlib")
 
-adddep=("bash")
+build_deps=("${adddep} util-linux")
 
 build() {
   go_src_dir
