@@ -1,19 +1,20 @@
 pkgname=ffmpeg
-pkgver=5.1.2
+pkgver=6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Complete solution to record, convert and stream audio and video.")
-longdesc=("ffmpeg is a hyper fast realtime audio/video encoder, a streaming server and a generic audio and video file converter.")
 
 source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs media-video")
 
-build_deps=("avisynthplus libmfx libsoxr vmaf rav1e dav1d aom svt-av1 amf-headers zimg vidstab v4l-utils
-libvpx ffnvcodec-headers jack librsvg libpulse sdl2 fontconfig fribidi libraw1394 libssh libxml2 libwebp
-alsa-lib xz bzip2 zlib nasm yasm gmp gnutls ladspa libass libbluray libdrm gsm libmodplug lame opencore-amr
-openjpeg2 opus speex x264 x265 xvidcore clang libavc1394 libtheora srt libiec61883 libvdpau libx11 libxext libxv libxcb")
+adddep=("libmfx libsoxr vmaf rav1e dav1d aom svt-av1 zimg vidstab v4l-utils libvpx jack librsvg libpulse
+sdl2 fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib gmp gnutls ladspa libass
+libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore libavc1394 libx11
+libtheora srt libiec61883 libvdpau libxext libxv libxcb")
+
+build_deps=("${adddep} amf-headers avisynthplus clang ffnvcodec-headers ladspa mesa nasm opencl-headers vulkan-headers")
 
 removedep=("avisynthplus intel-media-sdk ladspa nvidia-utils")
 
