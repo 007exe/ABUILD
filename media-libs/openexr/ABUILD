@@ -1,10 +1,9 @@
 pkgname=openexr
-pkgver=3.1.5
+pkgver=3.1.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A high dynamic-range image file format library.")
-longdesc=("OpenEXR provides the specification and reference implementation of the EXR file format, the professional-grade image storage format of the motion picture industry.")
 
 source=("https://github.com/openexr/openexr/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
 
