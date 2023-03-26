@@ -1,16 +1,17 @@
 pkgname=librsvg
-pkgver=2.54.1
+pkgver=2.56.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("SVG rendering library.")
-longdesc=("The librsvg package contains a library and tools used to manipulate, convert and view Scalable Vector Graphic (SVG) images.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs gnome-base")
 
-build_deps=("pango gobject-introspection rust gtk-doc gdk-pixbuf shared-mime-info vala python-pygments gobject-introspection gdk-pixbuf")
+adddep=("cairo freetype gdk-pixbuf glib2 harfbuzz libxml2 pango")
+
+build_deps=("${adddep} gi-docgen gobject-introspection python-docutils rust vala")
 
 removedep=("brotli bzip2 fontconfig gcc-libs icu xz libpng")
 
