@@ -1,17 +1,22 @@
 pkgname=openmpi
-pkgver=4.1.4
+pkgver=4.1.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("High performance message passing library (MPI).")
-longdesc=("The Open MPI Project is an open source Message Passing Interface implementation that is developed and maintained by a consortium of academic, research, and industry partners.")
 
 source=("https://download.open-mpi.org/release/open-mpi/v${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("libs sys-cluster")
 
+# openpmix
+adddep=("gcc-libs glibc hwloc libevent libnl openssh zlib")
+
 # --with-cuda=/opt/cuda \ cuda
-build_deps="glibc openssh zlib libnl perl libevent inetutils valgrind gcc-fortran hwloc libltdl"
+build_deps=("${adddep} gcc-fortran inetutils valgrind")
+
+# NOTE: Это опциональные зависимости
+removedep=("cuda gcc-fortran perl")
 
 build() {
   go_src_dir
