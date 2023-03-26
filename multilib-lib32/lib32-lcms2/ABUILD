@@ -1,5 +1,5 @@
 pkgname=lib32-lcms2
-pkgver=2.14
+pkgver=2.15
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://downloads.sourceforge.net/lcms/lcms2-${pkgver}.tar.gz")
 
 tags=("lib32 media-libs")
 
-build_deps=("lib32-gcc-libs lib32-libtiff")
-
 adddep=("lcms2")
+
+build_deps=("${adddep} lib32-gcc-libs lib32-libtiff")
 
 build() {
   go_src_dir
