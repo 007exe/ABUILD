@@ -4,14 +4,15 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A real-time software synthesizer based on the SoundFont 2 specifications.")
-longdesc=("Software real-time synthesizer based on the Soundfont 2 specifications.")
 
 source=("https://github.com/${pkgname}/${pkgname}/archive/v${pkgver}.tar.gz")
 
 tags=("libs media-sound")
 
+adddep=("glibc sdl2")
+
 # libinstpatch
-build_deps=("alsa-lib cmake dbus doxygen glib2 jack ladspa libpulse libsndfile portaudio readline glibc sdl2")
+build_deps=("${adddep} alsa-lib cmake dbus doxygen glib2 jack ladspa libpulse libsndfile portaudio readline")
 
 config_files=("etc/conf.d/$pkgname")
 
