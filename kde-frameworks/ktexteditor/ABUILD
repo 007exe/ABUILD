@@ -1,5 +1,5 @@
 pkgname=ktexteditor
-pkgver=5.103.0
+pkgver=5.104.0
 pkgbuild=1
 arch=("auto")
 
