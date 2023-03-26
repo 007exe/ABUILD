@@ -1,10 +1,9 @@
 pkgname=grep
-pkgver=3.8
+pkgver=3.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A string search utility")
-longdesc=("The Grep package contains programs for searching through the contents of files.")
 
 tags=("base sys-apps")
 
