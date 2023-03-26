@@ -1,5 +1,5 @@
 pkgname=cmake
-pkgver=3.25.2
+pkgver=3.26.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("http://www.cmake.org/files/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("utils dev-util")
 
-build_deps=("libarchive curl rhash python-sphinx jsoncpp qt6-base")
+adddep=("curl libarchive hicolor-icon-theme jsoncpp libuv rhash")
+
+build_deps=("${adddep} qt6-base python-sphinx emacs")
 
 gendeps_blacklist=("usr/bin/cmake-gui")
 
