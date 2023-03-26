@@ -1,17 +1,18 @@
 pkgname=networkmanager-pptp
-pkgver=1.2.10
+pkgver=1.2.12
 pkgbuild=1
 arch=("auto")
 _pppver=2.4.9
 
 shortdesc=("NetworkManager VPN plugin for PPTP.")
-longdesc=("NetworkManager PPTP plugin. Adds support for VPN connections.")
 
 source=("https://gitlab.gnome.org/GNOME/NetworkManager-pptp/-/archive/${pkgver}/NetworkManager-pptp-${pkgver}.tar.gz")
 
 tags=("apps net-vpn")
 
-build_deps=("libsecret ppp=$_pppver intltool python libnma-gtk4 pptpclient")
+adddep=("libsecret ppp=$_pppver pptpclient networkmanager")
+
+build_deps=("${adddep} intltool python libnma libnma-gtk4")
 
 build() {
   go_src_dir
