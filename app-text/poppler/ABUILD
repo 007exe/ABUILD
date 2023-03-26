@@ -1,6 +1,6 @@
 pkgname=poppler
 pkglist=("poppler-glib poppler-qt5 poppler-qt6")
-pkgver=23.02.0
+pkgver=23.03.0
 pkgbuild=1
 arch=("auto")
 
@@ -36,6 +36,8 @@ build() {
   rm -vrf ${pkgdir}/usr/share/gtk-doc
 }
 
+################################################################################
+
 poppler-glib() {
   pkgname=poppler-glib
   shortdesc=("Poppler glib bindings.")
@@ -53,6 +55,8 @@ poppler-glib_prep() {
   rm -vf ${pkgdir}/usr/bin/poppler-glib-demo
 }
 
+################################################################################
+
 poppler-qt5() {
   pkgname=poppler-qt5
   shortdesc=("Poppler Qt5 bindings.")
@@ -67,6 +71,8 @@ poppler-qt5_prep() {
   install -m755 -d ${pkgdir}/usr/lib/pkgconfig
   install -m644 poppler-qt5.pc ${pkgdir}/usr/lib/pkgconfig/
 }
+
+################################################################################
 
 poppler-qt6() {
   pkgname=poppler-qt6
