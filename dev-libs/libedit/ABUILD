@@ -1,10 +1,9 @@
 pkgname=libedit
-pkgver=20210910_3.1
-pkgbuild=2
+pkgver=20221030_3.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("BSD replacement for libreadline.")
-longdesc=("Command line editor library providing generic line editing, history, and tokenization functions.")
 
 source=("http://www.thrysoee.dk/editline/libedit-${pkgver/_/-}.tar.gz")
 
