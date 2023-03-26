@@ -1,10 +1,10 @@
 pkgname=modemmanager
-pkgver=1.20.4
+pkglist=("libmm-glib")
+pkgver=1.20.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Mobile broadband modem management service.")
-longdesc=("ModemManager provides a unified high level API for communicating with mobile broadband modems, regardless of the protocol used to communicate with the actual device.")
 
 source=("https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/archive/${pkgver}/ModemManager-${pkgver}.tar.gz")
 
@@ -13,8 +13,6 @@ tags=("network net-misc")
 build_deps=("gtk-doc gobject-introspection vala meson bash-completion libgudev polkit ppp libqmi libmbim mobile-broadband-provider-info")
 
 adddep=("libgudev polkit ppp libqmi libmbim mobile-broadband-provider-info")
-
-pkglist=("libmm-glib")
 
 build() {
   go_src_dir
@@ -41,7 +39,6 @@ build() {
 libmm-glib() {
   pkgname=libmm-glib
   shortdesc=("ModemManager library.")
-  longdesc=("ModemManager provides a unified high level API for communicating with mobile broadband modems, regardless of the protocol used to communicate with the actual device.")
   adddep=("glib2")
 }
 
