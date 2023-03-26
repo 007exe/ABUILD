@@ -1,6 +1,6 @@
 pkgname=imlib2
-pkgver=1.10.0
-pkgbuild=2
+pkgver=1.11.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support.")
@@ -9,7 +9,12 @@ source=("https://downloads.sourceforge.net/project/enlightenment/imlib2-src/${pk
 
 tags=("libs media-libs")
 
-build_deps=("libtiff bzip2 freetype libxext libpng libjpeg-turbo libwebp giflib libid3tag libheif librsvg xz")
+adddep=("bzip2 freetype giflib libjpeg-turbo libpng libtiff libxext xz")
+
+build_deps=("${adddep} libwebp libid3tag libheif librsvg")
+
+# NOTE: Это опциональные зависимости
+removedep=("libheif libid3tag libjxl librsvg libspectre libwebp openjpeg2")
 
 build() {
   go_src_dir
