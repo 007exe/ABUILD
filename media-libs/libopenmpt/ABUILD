@@ -1,5 +1,5 @@
 pkgname=libopenmpt
-pkgver=0.6.8
+pkgver=0.6.9
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://lib.openmpt.org/files/libopenmpt/src/${pkgname}-${pkgver}+relea
 
 tags=("libs media-libs")
 
-build_deps=("autoconf-archive doxygen help2man flac gcc-libs glibc libogg libpulse libsndfile libvorbis mpg123 portaudio")
+adddep=("flac gcc-libs glibc libogg libpulse libsndfile libvorbis mpg123 portaudio")
+
+build_deps=("${adddep} autoconf-archive doxygen help2man")
 
 build() {
   go_src_dir
