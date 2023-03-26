@@ -1,6 +1,6 @@
 pkgname=gtk3
 pkglist=("gtk3-docs gtk3-demos")
-pkgver=3.24.36
+pkgver=3.24.37
 pkgbuild=1
 arch=("auto")
 
@@ -11,17 +11,12 @@ source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.ta
 tags=("libs x11-libs")
 
 # libcolord
-build_deps=("glib2 gobject-introspection gtk-doc meson sassc wayland-protocols
-adwaita-icon-theme at-spi2-atk atk cairo cantarell-fonts dconf desktop-file-utils
-fribidi gtk-update-icon-cache iso-codes libcloudproviders libcups libepoxy librsvg
-libxcomposite libxcursor libxdamage libxi libxinerama libxkbcommon libxrandr mesa
-pango shared-mime-info tracker3 wayland gdk-pixbuf")
-
-# libcolord
 adddep=("adwaita-icon-theme at-spi2-atk atk cairo cantarell-fonts dconf desktop-file-utils
 fribidi gtk-update-icon-cache iso-codes libcloudproviders libcups libepoxy librsvg
 libxcomposite libxcursor libxdamage libxi libxinerama libxkbcommon libxrandr mesa
 pango shared-mime-info tracker3 wayland gdk-pixbuf")
+
+build_deps=("${adddep} glib2 gobject-introspection gtk-doc meson sassc wayland-protocols")
 
 build() {
   go_src_dir
@@ -46,6 +41,8 @@ build() {
   rm ${pkgdir}/usr/share/man/man1/gtk-update-icon-cache.1
 }
 
+#################################################################################
+
 gtk3-docs() {
     pkgname=gtk3-docs
     shortdesc=("GObject-based multi-platform GUI toolkit documentation.")
@@ -56,6 +53,8 @@ gtk3-docs_prep(){
   install -d ${pkgdir}/usr/share/doc
   mv ${p_pkgdir}/usr/share/gtk-doc ${pkgdir}/usr/share/
 }
+
+#################################################################################
 
 gtk3-demos() {
     pkgname=gtk3-demos
