@@ -1,10 +1,9 @@
 pkgname=enchant
-pkgver=2.3.3
+pkgver=2.3.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A wrapper library for generic spell checking.")
-longdesc=("The enchant package provides a generic interface into various existing spell checking libraries.")
 
 source=("https://github.com/AbiWord/enchant/releases/download/v$pkgver/enchant-${pkgver}.tar.gz")
 
