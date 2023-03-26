@@ -1,10 +1,9 @@
 pkgname=raptor
-pkgver=2.0.15
-pkgbuild=2
+pkgver=2.0.16
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C library that parses RDF/XML/N-Triples into RDF triples.")
-longdesc=("Raptor is a C library that provides a set of parsers and serializers that generate Resource Description Framework (RDF) triples.")
 
 tags=("libs media-libs")
 
