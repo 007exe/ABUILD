@@ -1,12 +1,11 @@
 pkgname=gtk4
 # FIXME: Проблемы со сборкой документации gtk4-docs
 pkglist=("gtk-update-icon-cache gtk4-demos")
-pkgver=4.8.3
-pkgbuild=2
+pkgver=4.10.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("GObject-based multi-platform GUI toolkit.")
-longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 
 source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.tar.gz")
 
@@ -42,8 +41,9 @@ build() {
 gtk-update-icon-cache() {
     pkgname=gtk-update-icon-cache
     shortdesc=("GTK icon cache update tool.")
-    longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 }
+
+#####################################################################################################
 
 gtk-update-icon-cache_prep() {
   go_src_dir
@@ -53,22 +53,24 @@ gtk-update-icon-cache_prep() {
   ln -s gtk4-update-icon-cache gtk-update-icon-cache
 }
 
+#####################################################################################################
+
 gtk4-docs() {
     pkgname=gtk4-docs
     shortdesc=("GObject-based multi-platform GUI toolkit documentation.")
-    longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 }
 
 gtk4-docs_prep(){
   go_src_dir
-  install -d "$pkgdir"/usr/share/doc
-  mv ${p_pkgdir}/usr/share/doc "$pkgdir"/usr/share/
+  install -d ${pkgdir}/usr/share/doc
+  mv ${p_pkgdir}/usr/share/doc ${pkgdir}/usr/share/
 }
+
+#####################################################################################################
 
 gtk4-demos() {
     pkgname=gtk4-demos
     shortdesc=("GObject-based multi-platform GUI toolkit demo applications.")
-    longdesc=("The GTK 4 package contains libraries used for creating graphical user interfaces for applications.")
 }
 
 gtk4-demos_prep(){
