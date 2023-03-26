@@ -1,5 +1,5 @@
 pkgname=perl-alien-build
-pkgver=2.77
+pkgver=2.78
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Alien-Build-${pkgver
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-capture-tiny perl-ffi-checklib perl-file-chdir perl-file-which perl-path-tiny perl-test2-suite")
-
 adddep=("perl-capture-tiny perl-ffi-checklib perl-file-chdir perl-file-which perl-path-tiny")
+
+build_deps=("${adddep} perl perl-test2-suite")
 
 build(){
   go_src_dir
