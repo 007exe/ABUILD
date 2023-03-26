@@ -1,19 +1,18 @@
 pkgname=lib32-sqlite
-pkgver=3.40.1
+pkgver=3.41.1
+_srcver=3410100
 pkgbuild=1
 arch=("auto")
-_amalgamationver=3400100
 
 shortdesc=("A C library that implements an SQL database engine (32-bit).")
-longdesc=("The SQLite package is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.")
 
 tags=("lib32 dev-db")
 
-build_deps=("tcl lib32-readline zlib unzip")
-
 adddep=("sqlite")
 
-source=("http://sqlite.org/2022/sqlite-autoconf-${_amalgamationver}.tar.gz")
+build_deps=("${adddep} tcl lib32-readline zlib unzip")
+
+source=("https://www.sqlite.org/2023/sqlite-src-${_srcver}.zip")
 
 build() {
   go_src_dir
