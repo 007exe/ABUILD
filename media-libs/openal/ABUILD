@@ -1,13 +1,12 @@
 pkgname=openal
 pkglist=("openal-examples")
-pkgver=1.22.2
-strict_version=1
+pkgver=1.23.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Cross-platform 3D audio library, software implementation.")
 
-source=("git:https://github.com/kcat/openal-soft.git")
+source=("https://github.com/kcat/openal-soft/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
@@ -29,6 +28,8 @@ build() {
   make DESTDIR=${pkgdir} install
 }
 
+#####################################################################################################
+
 openal-examples() {
   pkgname=openal-examples
   shortdesc=("Cross-platform 3D audio library, software implementation example programs")
@@ -38,4 +39,15 @@ openal-examples() {
 openal-examples_prep() {
   mkdir -p $pkgdir/usr/bin
   mv ${p_pkgdir}/usr/bin/al{ffplay,hrtf,latency,loopback,multireverb,play,record,reverb,stream,tonegen} $pkgdir/usr/bin
+}
+
+#####################################################################################################
+
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+after_build(){
+  go_src_dir
+  rm ${srcache}/${pkgver}.tar.gz
 }
