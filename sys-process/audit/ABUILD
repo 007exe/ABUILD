@@ -1,5 +1,6 @@
 pkgname=audit
-pkgver=3.0.9
+pkglist=("libaudit")
+pkgver=3.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +11,6 @@ source=("http://people.redhat.com/sgrubb/audit/audit-${pkgver}.tar.gz")
 tags=("libs sys-process")
 
 build_deps=("libcap-ng openldap kernel-headers python krb5 swig")
-
-pkglist=("libaudit")
 
 config_files=("etc/libaudit.conf
 etc/audit/audit-stop.rules
