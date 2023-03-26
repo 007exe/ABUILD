@@ -1,5 +1,5 @@
 pkgname=audacious-plugins
-pkgver=4.2
+pkgver=4.3
 pkgbuild=1
 arch=("auto")
 
@@ -11,14 +11,11 @@ source=("http://distfiles.audacious-media-player.org/$pkgname-$pkgver.tar.bz2")
 tags=("apps media-plugins")
 
 # libsidplayfp
-build_deps=("audacious>=${pkgver} alsa-lib curl dbus-glib faad2 ffmpeg flac fluidsynth
-jack lame libcdio-paranoia libcue libmms libmodplug libmtp libpulse libnotify wavpack
-libsamplerate libvorbis lirc mpg123 neon libbs2b libopenmpt qt5-x11extras")
-
-# libsidplayfp
 adddep=("alsa-lib curl dbus-glib faad2 ffmpeg flac fluidsynth jack lame libcdio-paranoia
 libcue libmms libmodplug libmtp libpulse libnotify wavpack libsamplerate libvorbis lirc
 mpg123 neon libbs2b libopenmpt qt5-x11extras")
+
+build_deps=("${adddep} audacious>=${pkgver}")
 
 build(){
   go_src_dir
