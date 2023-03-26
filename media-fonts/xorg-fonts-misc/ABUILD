@@ -1,25 +1,25 @@
 pkgname=xorg-fonts-misc
-pkgver=1.0.3
+pkgver=1.0.4
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("X.org misc fonts.")
 longdesc=("The Xorg font packages provide some scalable fonts and supporting packages for Xorg applications.")
 
-source=("https://xorg.freedesktop.org/releases/individual/font/font-arabic-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-cursor-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-daewoo-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-dec-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-isas-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-jis-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-micro-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-misc-ethiopic-1.0.4.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-misc-meltho-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-misc-misc-1.1.2.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-mutt-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-schumacher-misc-1.1.2.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-sony-misc-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-sun-misc-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/font/font-arabic-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-cursor-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-daewoo-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-dec-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-isas-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-jis-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-micro-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-misc-ethiopic-1.0.5.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-misc-meltho-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-misc-misc-1.1.3.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-mutt-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-schumacher-misc-1.1.3.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-sony-misc-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-sun-misc-${pkgver}.tar.xz")
 
 tags=("media-fonts fonts")
 
