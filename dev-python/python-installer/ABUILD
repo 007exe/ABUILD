@@ -1,6 +1,6 @@
 pkgname=python-installer
-pkgver=0.6.0
-pkgbuild=2
+pkgver=0.7.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low-level library for installing a Python package from a wheel distribution.")
