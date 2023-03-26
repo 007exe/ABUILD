@@ -3,9 +3,9 @@
 _qtbasever=5.15.8
 
 pkgname=qt5-webengine
-pkgver=5.15.12
+pkgver=5.15.13
 strict_version=1
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides support for web applications using the Chromium browser project.")
@@ -16,8 +16,10 @@ source=("git:https://code.qt.io/qt/qtwebengine.git"
 
 tags=("qt5 dev-qt")
 
-build_deps=("qt5-webchannel qt5-location libxcomposite libxrandr pciutils libxss libxkbfile libevent
-snappy nss libxslt minizip ffmpeg re2 libvpx libxtst git python gperf jsoncpp ninja qt5-tools poppler nodejs")
+adddep=("qt5-webchannel qt5-location libxcomposite libxrandr pciutils libxss libxkbfile libevent
+snappy nss libxslt minizip ffmpeg re2 libvpx libxtst")
+
+build_deps=("${adddep} git python gperf jsoncpp ninja qt5-tools poppler pipewire nodejs")
 
 before_build() {
   mkdir -p ${srcdir}/build
@@ -38,6 +40,8 @@ before_build() {
   patch -p1 -d src/3rdparty -i ${startdir}/patches/qt5-webengine-chromium-python3.patch
 # Фикс сборки с использованием ffmpeg 5
   patch -p1 -d src/3rdparty -i ${startdir}/patches/qt5-webengine-ffmpeg5.patch
+
+  patch -p1 -d src/3rdparty -i ${startdir}/patches/qt5-webengine-pipewire-0.3.patch
 # Фикс сборки с использованием gcc 12
   patch -p1 -d src/3rdparty -i ${startdir}/patches/qt5-webengine-gcc12.patch
 

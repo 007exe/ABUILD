@@ -1,6 +1,6 @@
 pkgname=qtcreator
-pkgver=9.0.1
-pkgbuild=2
+pkgver=9.0.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Lightweight, cross-platform integrated development environment.")
@@ -10,8 +10,13 @@ source=("https://github.com/qt-creator/qt-creator/archive/refs/tags/v${pkgver}.t
 tags=("dev-qt develop")
 
 # clazy
-build_deps=("cmake llvm python qt6-tools qt6-svg qt6-quick3d qt6-serialport
-qt6-shadertools qt6-5compat clang yaml-cpp qt6-webengine")
+adddep=("qt6-tools qt6-svg qt6-quick3d qt6-webengine qt6-serialport qt6-shadertools
+qt6-5compat clang clazy yaml-cpp litehtml")
+
+build_deps=("${adddep} cmake llvm python")
+
+# NOTE: Это опциональные зависимости
+removedep=("qt6-doc qt6-examples gdb cmake x11-ssh-askpass git mercurial bzr valgrind perf mlocate")
 
 build() {
   go_src_dir

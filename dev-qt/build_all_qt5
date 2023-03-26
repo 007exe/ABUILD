@@ -6,9 +6,6 @@ BUILD_VERSION=1
 WEBENGINE_VERSION=5.15.11
 BUILD_VERSION_WEB=1
 
-WEBKIT_VERSION=5.212.0alpha4
-BUILD_VERSION_WEBKIT=3
-
 # NOTE: После сборки qt5-base следует пересобрать qt5-webengine
 # WARNING: Пакет qt5-webengine собирается очень долго
 
@@ -59,11 +56,11 @@ echo "============================= Начало сборки `date` ===========
 
 for i in $MLIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -bv $QT_VERSION -bb $BUILD_VERSION; then
-            echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
+    if mkpkg -ba -wd ~/mkpkg/build -si -bv $QT_VERSION -bb $BUILD_VERSION; then
+            echo "$i ГОТОВ" >> $LOGFILE
             cd $STARTD
     else
-            echo "`date` || ОШИБКА пакет: $i НЕ СОБРАН!!!" >> $LOGFILE
+            echo "$i НЕ СОБРАН!!!" >> $LOGFILE
             cd $STARTD
     fi
 done
@@ -72,22 +69,22 @@ done
 
 cd $STARTD/qt5-webengine
 # Изменить версию "_qtbasever=" на QT_VERSION
-if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -bv $WEBENGINE_VERSION -bb $BUILD_VERSION_WEB; then
-        echo "`date` || Пакет: qt5-webengine ГОТОВ" >> $LOGFILE
+if mkpkg -ba -wd ~/mkpkg/build -si -bv $WEBENGINE_VERSION -bb $BUILD_VERSION_WEB; then
+        echo "qt5-webengine ГОТОВ" >> $LOGFILE
         cd $STARTD
 else
-        echo "`date` || ОШИБКА пакет: qt5-webengine НЕ СОБРАН!!!" >> $LOGFILE
+        echo "qt5-webengine НЕ СОБРАН!!!" >> $LOGFILE
         cd $STARTD
 fi
 
 #################################################################################################################
 
 cd $STARTD/qt5-webview
-if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -bv $QT_VERSION -bb $BUILD_VERSION; then
-        echo "`date` || Пакет: qt5-webengine ГОТОВ" >> $LOGFILE
+if mkpkg -ba -wd ~/mkpkg/build -si -bv $QT_VERSION -bb $BUILD_VERSION; then
+        echo "qt5-webview ГОТОВ" >> $LOGFILE
         cd $STARTD
 else
-        echo "`date` || ОШИБКА пакет: qt5-webengine НЕ СОБРАН!!!" >> $LOGFILE
+        echo "qt5-webview НЕ СОБРАН!!!" >> $LOGFILE
         cd $STARTD
 fi
 

@@ -1,5 +1,5 @@
 pkgname=qt6-remoteobjects
-pkgver=6.4.2
+pkgver=6.4.3
 pkgbuild=1
 arch=("auto")
 

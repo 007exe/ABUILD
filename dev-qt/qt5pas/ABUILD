@@ -1,11 +1,10 @@
-_lazarus_version=2.2.0
+_lazarus_version=2.2.4
 pkgname=qt5pas
 pkgver=2.6.${_lazarus_version}
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Free Pascal Qt5 binding library updated by lazarus IDE.")
-longdesc=("Free Pascal Qt5 binding library updated by lazarus IDE.")
 
 source=("https://gitlab.com/freepascal.org/lazarus/lazarus/-/archive/lazarus_${_lazarus_version//./_}/lazarus-lazarus_${_lazarus_version//./_}.tar.bz2")
 
