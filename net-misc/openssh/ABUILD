@@ -1,5 +1,5 @@
 pkgname=openssh
-pkgver=9.2p1
+pkgver=9.3p1
 pkgbuild=1
 arch=("auto")
 
