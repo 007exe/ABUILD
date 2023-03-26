@@ -1,18 +1,21 @@
 pkgname=audacious
-pkgver=4.2
+pkgver=4.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Lightweight and versatile audio player.")
-longdesc=("Lightweight, advanced audio player focused on audio quality.")
 
 source=("https://distfiles.audacious-media-player.org/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("apps media-sound")
 
-build_deps=("qt5-base qt5-svg glib2 libguess libsm desktop-file-utils python")
+adddep=("qt5-base qt5-svg qt5-imageformats glib2 audacious-plugins hicolor-icon-theme
+desktop-file-utils")
 
-adddep=("libguess libsm audacious-plugins hicolor-icon-theme desktop-file-utils")
+build_deps=("${adddep}")
+
+# NOTE: Это опциональные зависимости
+removedep=("unzip")
 
 build(){
   go_src_dir
