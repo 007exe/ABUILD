@@ -1,16 +1,17 @@
 pkgname=v4l-utils
-pkgver=1.22.1
-pkgbuild=2
+pkgver=1.24.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Userspace tools and conversion library for Video 4 Linux.")
-longdesc=("v4l-utils provides a series of utilities for media devices, allowing to handle the proprietary formats available at most webcams (libv4l), and providing tools to test V4L devices.")
 
 source=("https://linuxtv.org/downloads/v4l-utils/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("libs media-libs")
 
-build_deps=("qt5-base alsa-lib gcc-libs libjpeg-turbo hicolor-icon-theme")
+adddep=("gcc-libs libjpeg-turbo hicolor-icon-theme")
+
+build_deps=("${adddep} qt5-base alsa-lib")
 
 # Это опциональные зависимости
 removedep=("qt5-base")
