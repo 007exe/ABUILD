@@ -1,6 +1,6 @@
 pkgname=mlt
-pkgver=7.12.0
-pkgbuild=2
+pkgver=7.14.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An open source multimedia framework.")
@@ -9,7 +9,9 @@ source=("https://github.com/mltframework/mlt/archive/v${pkgver}/${pkgname}-${pkg
 
 tags=("libs media-libs")
 
-build_deps=("libebur128 cmake ladspa frei0r-plugins libdv libsamplerate sox ffmpeg vidstab sdl_image
+adddep=("libebur128")
+
+build_deps=("${adddep} cmake ladspa frei0r-plugins libdv libsamplerate sox ffmpeg vidstab sdl_image
 qt5-svg jack libexif python swig movit eigen opencv rubberband gdk-pixbuf pango rtaudio imagemagick")
 
 # NOTE: Это опциональные зависимости
