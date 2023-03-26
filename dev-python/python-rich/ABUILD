@@ -1,5 +1,5 @@
 pkgname=python-rich
-pkgver=13.3.1
+pkgver=13.3.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,9 @@ source=("https://github.com/willmcgugan/rich/archive/v${pkgver}/rich-${pkgver}.t
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-poetry-core python-wheel
-python-colorama python-commonmark python-pygments")
+adddep=("python python-colorama python-commonmark python-pygments")
 
-adddep=("python-colorama python-commonmark python-pygments")
+build_deps=("${adddep} python-build python-installer python-poetry-core python-wheel")
 
 build() {
   go_src_dir
