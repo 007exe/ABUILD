@@ -1,16 +1,17 @@
 pkgname=libass
-pkgver=0.17.0
+pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for SSA/ASS subtitles rendering.")
-longdesc=("Libass is a portable library for SSA/ASS subtitles rendering.")
 
 source=("https://github.com/libass/libass/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("nasm fribidi glib2 harfbuzz fontconfig")
+adddep=("fontconfig fribidi glib2 glibc harfbuzz")
+
+build_deps=("${adddep} nasm")
 
 build() {
   go_src_dir
