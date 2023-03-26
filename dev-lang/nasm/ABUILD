@@ -1,5 +1,5 @@
 pkgname=nasm
-pkgver=2.16
+pkgver=2.16.01
 pkgbuild=1
 arch=("auto")
 
