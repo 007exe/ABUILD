@@ -1,18 +1,17 @@
 pkgname=glib-networking
-pkgver=2.74.0
+pkgver=2.76.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Network extensions for GLib.")
-longdesc=("The GLib Networking package contains Network related gio modules for GLib.")
 
 source=("https://gitlab.gnome.org/GNOME/glib-networking/-/archive/${pkgver}/glib-networking-${pkgver}.tar.gz")
 
 tags=("net-libs libs")
 
-build_deps=("meson glib2 gnutls gsettings-desktop-schemas libproxy")
-
 adddep=("gsettings-desktop-schemas")
+
+build_deps=("${adddep} meson glib2 gnutls libproxy")
 
 build() {
   go_src_dir
