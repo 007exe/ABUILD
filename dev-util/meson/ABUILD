@@ -1,10 +1,9 @@
 pkgname=meson
-pkgver=1.0.0
-pkgbuild=2
+pkgver=1.0.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("High productivity build system.")
-longdesc=("Meson is an open source build system meant to be both extremely fast and as user friendly as possible.")
 
 source=("https://github.com/mesonbuild/meson/releases/download/${pkgver}/meson-${pkgver}.tar.gz"
         "https://github.com/mesonbuild/meson/releases/download/${pkgver}/meson-reference.3"
@@ -12,9 +11,9 @@ source=("https://github.com/mesonbuild/meson/releases/download/${pkgver}/meson-$
 
 tags=("dev-util develop")
 
-build_deps=("python-build python-installer python-wheel ninja python")
+adddep=("ninja python")
 
-adddep=("ninja")
+build_deps=("${adddep} python-build python-installer python-wheel")
 
 build() {
   go_src_dir
@@ -31,13 +30,3 @@ build() {
   install -Dm644 ${srcache}/meson-reference.3    ${pkgdir}/usr/share/man/man3/meson-reference.3
   install -Dm644 ${srcache}/reference_manual.json ${pkgdir}/usr/share/doc/${pkgname}/reference_manual.json
 }
-
-# FIXME: Начиная с версии 0.62.0 meson запускается с ошибкой
-# В LFS рекомендуют устанавливать используя pip
-# pip3 wheel -w dist --no-build-isolation --no-deps meson
-# pip3 install --no-index --find-links dist meson
-# по этому /usr/bin/meson использую из установки pip
-#after_build(){
-#  rm ${pkgdir}/usr/bin/meson
-#  install -m755 ${filedir}/meson ${pkgdir}/usr/bin/
-#}
