@@ -1,6 +1,6 @@
 # NOTE: Возможно этот пакет стоит разделить на два harfbuzz-icu
 pkgname=harfbuzz
-pkgver=7.0.1
+pkgver=7.1.0
 pkgbuild=1
 arch=("auto")
 
