@@ -1,10 +1,9 @@
 pkgname=gnupg
-pkgver=2.2.40
+pkgver=2.2.41
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Complete and free implementation of the OpenPGP standard.")
-longdesc=("The GnuPG package is GNU's tool for secure communication and data storage.")
 
 source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
