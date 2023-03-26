@@ -1,6 +1,6 @@
 pkgname=qbittorrent
 pkglist=("qbittorrent-nox")
-pkgver=4.5.1
+pkgver=4.5.2
 pkgbuild=1
 arch=("auto")
 
@@ -12,7 +12,7 @@ tags=("apps net-p2p")
 
 adddep=("hicolor-icon-theme libtorrent-rasterbar qt6-base")
 
-build_deps=("cmake boost qt6-tools qt6-svg")
+build_deps=("${adddep} cmake boost qt6-tools qt6-svg")
 
 build(){
   go_src_dir
