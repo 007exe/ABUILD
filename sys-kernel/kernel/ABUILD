@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=6.1.12
+pkgver=6.2.7
 pkgbuild=1
 arch=("auto")
 
@@ -111,7 +111,7 @@ build() {
   echo ""
 
   make -j${numjobs} INSTALL_MOD_PATH=${pkgdir}/usr INSTALL_MOD_STRIP=1 modules_install
-  rm -rf ${pkgdir}/usr/lib/firmware
+# rm -rf ${pkgdir}/usr/lib/firmware
   rm ${pkgdir}/usr/lib/modules/${pkgver}/{source,build}
   ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/source
   ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/build
@@ -139,7 +139,6 @@ headers() {
   pkgname=kernel-headers
   arch=("noarch")
   shortdesc=("Headers and scripts for building modules for the linux kernel.")
-  longdesc=("These are the include files from the Linux kernel. You will need these to compile most system software for Linux.")
   tags=("develop sys-kernel")
 }
 
