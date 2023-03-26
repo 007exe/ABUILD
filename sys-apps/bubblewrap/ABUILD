@@ -1,16 +1,15 @@
 pkgname=bubblewrap
-pkgver=0.7.0
+pkgver=0.8.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Unprivileged sandboxing tool.")
-longdesc=("Bubblewrap is a setuid implementation of user namespaces, or sandboxing, that provides access to a subset of kernel user namespace features.")
 
 source=("https://github.com/containers/bubblewrap/releases/download/v${pkgver}/bubblewrap-${pkgver}.tar.xz")
 
 tags=("sys-apps utils")
 
-build_deps=("libxslt docbook-xsl git meson bash-completion")
+build_deps=("libxslt docbook-xsl meson bash-completion")
 
 build() {
   go_src_dir
