@@ -1,17 +1,18 @@
 pkgname=libsoup3
-pkgver=3.2.2
+pkgver=3.4.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("HTTP client/server library for GNOME.")
-longdesc=("The libsoup is a HTTP client/server library for GNOME. It uses GObject and the GLib main loop to integrate with GNOME applications and it also has an asynchronous API for use in threaded applications.")
 
 source=("https://gitlab.gnome.org/GNOME/libsoup/-/archive/${pkgver}/libsoup-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
+adddep=("brotli glib-networking glib2 krb5 libnghttp2 libpsl sqlite")
+
 # samba python-quart libsysprof-capture
-build_deps=("gobject-introspection python vala git gtk-doc meson glib2 sqlite krb5 libpsl brotli libnghttp2 glib-networking")
+build_deps=("${adddep} gobject-introspection python vala git gtk-doc meson")
 
 build() {
   go_src_dir
