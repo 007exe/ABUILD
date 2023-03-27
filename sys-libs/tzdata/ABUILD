@@ -1,10 +1,9 @@
 pkgname=tzdata
-pkgver=2022g
+pkgver=2023b
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Sources for time zone and daylight saving time data.")
-longdesc=("The Time Zone Database contains code and data that represent the history of local time for many representative locations around the globe.")
 
 source=("https://data.iana.org/time-zones/releases/${pkgname}${pkgver}.tar.gz")
 
