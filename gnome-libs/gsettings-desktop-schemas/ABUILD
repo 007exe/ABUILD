@@ -1,16 +1,18 @@
 pkgname=gsettings-desktop-schemas
-pkgver=43.0
+pkgver=44.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Shared GSettings schemas for the desktop.")
-longdesc=("The GSettings Desktop Schemas package contains a collection of GSettings schemas for settings shared by various components of a GNOME Desktop.")
 
 source=("https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas/-/archive/${pkgver}/gsettings-desktop-schemas-${pkgver}.tar.gz")
 
 tags=("gnome gnome-base")
 
-build_deps=("gobject-introspection git meson")
+# adobe-source-code-pro-fonts
+adddep=("cantarell-fonts dconf glib2")
+
+build_deps=("${adddep} gobject-introspection meson")
 
 build() {
   go_src_dir
