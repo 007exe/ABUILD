@@ -1,0 +1,31 @@
+pkgname=mako
+pkgver=1.7.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Lightweight notification daemon for Wayland.")
+
+source=("https://github.com/emersion/mako/releases/download/v${pkgver}/mako-${pkgver}.tar.gz")
+
+tags=("gui-apps apps")
+
+adddep=("gdk-pixbuf pango wayland")
+
+# scdoc
+build_deps=("${adddep} meson wayland-protocols")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D bash-completions=true \
+    -D fish-completions=true \
+    -D zsh-completions=true \
+    -D sd-bus-provider=libsystemd
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname}/ LICENSE
+  install -Dm644 -t ${pkgdir}/usr/lib/systemd/user/ contrib/systemd/mako.service
+}
