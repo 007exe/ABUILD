@@ -1,5 +1,5 @@
 pkgname=xorg-xwayland
-pkgver=22.1.8
+pkgver=23.1.0
 pkgbuild=1
 arch=("auto")
 
@@ -29,11 +29,12 @@ build() {
     -D glamor=true \
     -D xkb_dir=/usr/share/X11/xkb \
     -D xkb_output_dir=/var/lib/xkb
-  meson configure build
+#  meson configure build
   ninja -C build
-  install -m755 -Dt ${pkgdir}/usr/bin build/hw/xwayland/Xwayland
-  install -m644 -Dt ${pkgdir}/usr/share/man/man1 build/hw/xwayland/Xwayland.1
-  install -m644 -Dt ${pkgdir}/usr/lib/pkgconfig build/hw/xwayland/xwayland.pc
+  DESTDIR=${pkgdir} ninja -C build install
+  rm ${pkgdir}/usr/lib/xorg/protocol.txt
+  rmdir ${pkgdir}/usr/lib/xorg
+  rm ${pkgdir}/usr/share/man/man1/Xserver.1
 
   install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} COPYING
 }
