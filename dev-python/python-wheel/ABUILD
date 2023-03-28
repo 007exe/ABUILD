@@ -9,10 +9,9 @@ source=("https://github.com/pypa/wheel/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools
-python-packaging")
-
 adddep=("python-packaging")
+
+build_deps=("${adddep} python python-setuptools")
 
 build(){
   go_src_dir
