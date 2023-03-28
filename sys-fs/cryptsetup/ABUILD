@@ -1,16 +1,17 @@
 pkgname=cryptsetup
-pkgver=2.6.0
+pkgver=2.6.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Userspace setup tool for transparent encryption of block devices using dm-crypt.")
-longdesc=("cryptsetup is used to set up transparent encryption of block devices using the kernel crypto API.")
 
 source=("https://mirrors.edge.kernel.org/pub/linux/utils/cryptsetup/v${pkgver%.*}/cryptsetup-${pkgver}.tar.gz")
 
 tags=("utils sys-fs")
 
-build_deps=("device-mapper openssl popt util-linux json-c argon2")
+adddep=("device-mapper openssl popt util-linux json-c argon2")
+
+build_deps=("${adddep} asciidoctor")
 
 build() {
   go_src_dir
