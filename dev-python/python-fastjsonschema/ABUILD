@@ -1,5 +1,5 @@
 pkgname=python-fastjsonschema
-pkgver=2.16.2
+pkgver=2.16.3
 pkgbuild=1
 arch=("auto")
 
