@@ -1,10 +1,9 @@
 pkgname=elfutils
-pkgver=0.188
+pkgver=0.189
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Handle ELF object files and DWARF debugging information.")
-longdesc=("Libelf is a library for handling ELF (Executable and Linkable Format) files.")
 
 source=("https://sourceware.org/ftp/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2")
 
@@ -15,8 +14,10 @@ build_deps=("bzip2 curl gcc-libs libarchive libmicrohttpd sqlite xz zlib zstd")
 build() {
   go_src_dir
   burn_patches
+  sed -e 's/run-backtrace-native.sh//g' -i tests/Makefile.am
   autoreconf -fiv
   CFLAGS+=" -g"
+  CFLAGS+=" -ffat-lto-objects"
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
