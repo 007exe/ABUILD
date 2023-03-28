@@ -1,16 +1,17 @@
 pkgname=at-spi2-core
-pkgver=2.46.0
+pkgver=2.48.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Protocol definitions and daemon for D-Bus at-spi.")
-longdesc=("The At-Spi2 Core package is a part of the GNOME Accessibility Project. It provides a Service Provider Interface for the Assistive Technologies available on the GNOME platform and a library against which applications can be linked.")
 
-source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
+source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("app-accessibility libs")
 
-build_deps=("dbus glib2 libxtst gobject-introspection git gtk-doc meson")
+adddep=("dbus glib2 libx11 libxml2 libxtst")
+
+build_deps=("${adddep} gobject-introspection git gtk-doc meson")
 
 build() {
   go_src_dir
