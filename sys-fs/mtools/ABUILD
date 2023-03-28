@@ -1,10 +1,9 @@
 pkgname=mtools
-pkgver=4.0.42
+pkgver=4.0.43
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Programs for accessing MS-DOS disks without mounting the disks.")
-longdesc=("Mtools is a collection of utilities for accessing MS-DOS files. Mtools allow you to read, write and move around MS-DOS filesystem files (normally on MS-DOS floppy disks).  Mtools supports Windows95 style long file names, OS/2 Xdf disks, and 2m disks.")
 
 source=("http://ftp.gnu.org/gnu/mtools/${pkgname}-${pkgver}.tar.bz2")
 
