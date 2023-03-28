@@ -1,10 +1,9 @@
 pkgname=libmbim
-pkgver=1.28.2
+pkgver=1.28.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("MBIM modem protocol helper library.")
-longdesc=("The libmbim package contains a GLib-based library for talking to WWAN modems and devices which speak the Mobile Interface Broadband Model (MBIM) protocol.")
 
 source=("https://gitlab.freedesktop.org/mobile-broadband/libmbim/-/archive/${pkgver}/libmbim-${pkgver}.tar.gz")
 
