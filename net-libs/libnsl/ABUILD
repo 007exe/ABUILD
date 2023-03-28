@@ -3,8 +3,7 @@ pkgver=2.0.0
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("Public client interface library for NIS(YP) and NIS+")
-longdesc=("This package contains the libnsl library. This library contains the public client interface for NIS(YP) and NIS+. This code was formerly part of glibc, but is now standalone to be able to link against TI-RPC for IPv6 support.")
+shortdesc=("Public client interface library for NIS(YP) and NIS+.")
 
 source=("https://github.com/thkukuk/libnsl/archive/v${pkgver}.tar.gz")
 
