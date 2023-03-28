@@ -1,6 +1,6 @@
 # NOTE: Иногда при обновлении следует удалить python-setuptools
 pkgname=python-setuptools
-pkgver=67.3.3
+pkgver=67.6.0
 pkgbuild=1
 arch=("auto")
 
@@ -15,6 +15,14 @@ python-packaging python-pyparsing python-tomli python-validate-pyproject")
 
 #python-setuptools
 build_deps=("${adddep} python")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
 
@@ -47,12 +55,4 @@ build(){
   SETUPTOOLS_USE_DISTUTILS=stdlib
   python setup.py build
   python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build() {
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
