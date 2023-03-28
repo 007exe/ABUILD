@@ -1,18 +1,17 @@
 pkgname=bison
 pkgver=3.8.2
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("The GNU general-purpose parser generator.")
-longdesc=("The Bison package contains a parser generator.")
 
 tags=("develop sys-devel")
 
 source=("http://ftp.gnu.org/gnu/bison/bison-${pkgver}.tar.xz")
 
-build_deps=("glibc m4 bash gettext")
-
 adddep=("m4")
+
+build_deps=("${adddep} glibc bash gettext")
 
 build() {
   go_src_dir
