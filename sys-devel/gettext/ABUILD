@@ -1,16 +1,17 @@
 pkgname=gettext
 pkgver=0.21.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("GNU internationalization library.")
-longdesc=("The Gettext package contains utilities for internationalization and localization. These allow programs to be compiled with NLS (Native Language Support), enabling them to output messages in the user's native language.")
 
 source=("https://ftp.gnu.org/pub/gnu/gettext/gettext-${pkgver}.tar.gz")
 
 tags=("base sys-devel")
 
-build_deps=("gcc-libs acl libunistring libxml2 gettext")
+adddep=("gcc-libs acl libunistring")
+
+build_deps=("${adddep} libxml2 gettext")
 
 build() {
   go_src_dir
