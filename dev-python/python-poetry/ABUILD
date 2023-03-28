@@ -1,5 +1,5 @@
 pkgname=python-poetry
-pkgver=1.4.0
+pkgver=1.4.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,13 +9,11 @@ source=("https://github.com/python-poetry/poetry/archive/${pkgver}/poetry-${pkgv
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-cachecontrol python-html5lib python-packaging python-pexpect
-python-requests python-tomlkit python-virtualenv python-cleo python-keyring python-lockfile python-pkginfo
-python-requests-toolbelt python-shellingham python-poetry-core python-cachy")
-
 adddep=("python-cachecontrol python-html5lib python-packaging python-pexpect python-requests python-tomlkit
 python-virtualenv python-cleo python-keyring python-lockfile python-pkginfo python-requests-toolbelt
 python-shellingham python-poetry-core python-cachy")
+
+build_deps=("${adddep} python python-build python-installer")
 
 build() {
   go_src_dir
