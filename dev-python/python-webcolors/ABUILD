@@ -1,6 +1,6 @@
 pkgname=python-webcolors
-pkgver=1.12
-pkgbuild=2
+pkgver=1.13
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library for working with color names and color value formats defined by the HTML and CSS specifications for use in documents on the Web.")
@@ -9,10 +9,10 @@ source=("https://pypi.io/packages/source/w/webcolors/webcolors-${pkgver}.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
+  python -m build -nw
+  python -m installer -d ${pkgdir} dist/*.whl
 }
