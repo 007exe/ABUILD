@@ -1,6 +1,6 @@
 pkgname=lvm2
 pkglist=("device-mapper")
-pkgver=2.03.19
+pkgver=2.03.20
 pkgbuild=1
 arch=("auto")
 
