@@ -1,6 +1,6 @@
 # NOTE: Пересобери gobject-introspection под новый glib2
 pkgname=glib2
-pkgver=2.74.5
+pkgver=2.76.1
 pkgbuild=1
 arch=("auto")
 
