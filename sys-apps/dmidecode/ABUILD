@@ -1,5 +1,5 @@
 pkgname=dmidecode
-pkgver=3.4
+pkgver=3.5
 pkgbuild=1
 arch=("auto")
 
