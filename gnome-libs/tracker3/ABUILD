@@ -1,6 +1,6 @@
 pkgname=tracker3
-pkgver=3.4.2
-pkgbuild=2
+pkgver=3.5.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Desktop-neutral user information store, search tool and indexer.")
