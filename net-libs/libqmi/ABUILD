@@ -1,10 +1,9 @@
 pkgname=libqmi
-pkgver=1.32.2
+pkgver=1.32.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("QMI modem protocol helper library.")
-longdesc=("The libqmi package contains a GLib-based library for talking to WWAN modems and devices which speak the Qualcomm MSM Interface (QMI) protocol.")
 
 source=("https://gitlab.freedesktop.org/mobile-broadband/libqmi/-/archive/${pkgver}/libqmi-${pkgver}.tar.gz")
 
