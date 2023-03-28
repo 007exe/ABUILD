@@ -1,16 +1,17 @@
 pkgname=coreutils
-pkgver=9.1
+pkgver=9.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The basic file, shell and text manipulation utilities of the GNU operating system.")
-longdesc=("The Coreutils package contains utilities for showing and setting the basic system characteristics.")
 
 source=("http://ftp.gnu.org/gnu/coreutils/coreutils-${pkgver}.tar.xz")
 
 tags=("base sys-apps")
 
-build_deps=("acl attr gmp libcap openssl")
+adddep=("glibc acl attr gmp libcap openssl")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
