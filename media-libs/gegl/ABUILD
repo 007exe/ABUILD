@@ -1,18 +1,18 @@
 pkgname=gegl
-pkgver=0.4.40
+pkgver=0.4.42
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Graph based image processing framework.")
-longdesc=("This package provides the GEneric Graphics Library, which is a graph based image processing format.")
 
 source=("https://download.gimp.org/pub/gegl/${pkgver%.*}/gegl-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("intltool ruby mesa glu ffmpeg exiv2 vala gobject-introspection meson
-python-gobject babl json-glib gexiv2 libraw openexr librsvg libtiff luajit jasper
-lensfun suitesparse poppler poppler-glib libspiro")
+# libgexiv2
+adddep=("babl jasper json-glib lensfun libraw librsvg libspiro libtiff luajit openexr poppler-glib suitesparse")
+
+build_deps=("${adddep} exiv2 ffmpeg glu gobject-introspection intltool mesa meson python-gobject ruby vala")
 
 # FIXME: Проблемы со сборкой документации
 
