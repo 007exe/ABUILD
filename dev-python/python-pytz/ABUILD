@@ -1,5 +1,5 @@
 pkgname=python-pytz
-pkgver=2022.7
+pkgver=2022.7.1
 pkgbuild=1
 arch=("auto")
 
