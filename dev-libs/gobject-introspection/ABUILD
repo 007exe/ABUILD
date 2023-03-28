@@ -1,11 +1,10 @@
 pkgname=gobject-introspection
-pkgver=1.74.0
-_glibver=2.74.4
-pkgbuild=3
+pkgver=1.76.1
+_glibver=2.76.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Introspection system for GObject-based libraries.")
-longdesc=("The GObject Introspection is used to describe the program APIs and collect them in a uniform, machine readable format.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
