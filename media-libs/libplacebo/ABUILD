@@ -1,19 +1,18 @@
 pkgname=libplacebo
-pkgver=5.229.1
+pkgver=5.229.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Reusable library for GPU-accelerated video/image rendering primitives.")
-longdesc=("libplacebo is, in a nutshell, the core rendering algorithms and ideas of mpv rewritten as an independent library.")
 
 source=("https://code.videolan.org/videolan/libplacebo/-/archive/v${pkgver}/libplacebo-v${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("meson ninja vulkan-headers glad nuklear python python-setuptools python-mako python-markupsafe python-jinja
-vulkan-icd-loader glslang lcms2 shaderc glibc gcc-libs libunwind")
-
 adddep=("vulkan-icd-loader glslang lcms2 shaderc glibc gcc-libs libunwind")
+
+build_deps=("${adddep} meson ninja vulkan-headers glad nuklear python
+python-setuptools python-mako python-markupsafe python-jinja")
 
 build() {
   go_src_dir
