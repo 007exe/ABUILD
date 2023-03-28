@@ -1,6 +1,6 @@
 pkgname=ldb
-pkgver=2.6.1
-pkgbuild=2
+pkgver=2.7.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Schema-less, ldap like, API and database.")
