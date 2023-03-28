@@ -1,10 +1,9 @@
 pkgname=pkgconf
-pkgver=1.9.3
+pkgver=1.9.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Package compiler and linker metadata toolkit.")
-longdesc=("pkg-config compatible replacement with no dependencies other than ANSI C89.")
 
 tags=("develop dev-util")
 
