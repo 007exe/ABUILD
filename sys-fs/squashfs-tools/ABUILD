@@ -1,5 +1,5 @@
 pkgname=squashfs-tools
-pkgver=4.5.1
+pkgver=4.6.1
 pkgbuild=1
 arch=("auto")
 
@@ -11,15 +11,34 @@ tags=("sys-fs console")
 
 build_deps=("zlib lzo xz lz4")
 
-build() {
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
   go_src_dir
-  burn_patches
-  local _params=(GZIP_SUPPORT=1 XZ_SUPPORT=1 LZO_SUPPORT=1 LZMA_XZ_SUPPORT=1 LZ4_SUPPORT=1 ZSTD_SUPPORT=1 XATTR_SUPPORT=1)
-  make ${_params[@]} -C ${srcdir}/${pkgname}-${pkgver}/${pkgname}
-  make -C ${srcdir}/${pkgname}-${pkgver}/${pkgname} install INSTALL_PREFIX=${pkgdir}/usr
-  mkdir -p ${pkgdir}/usr/share/doc/${pkgname}
-  cp ${srcdir}/${pkgname}-${pkgver}/ACTIONS-README ${pkgdir}/usr/share/doc/${pkgname}/
-  cp ${srcdir}/${pkgname}-${pkgver}/CHANGES ${pkgdir}/usr/share/doc/${pkgname}/
-  cp ${srcdir}/${pkgname}-${pkgver}/USAGE ${pkgdir}/usr/share/doc/${pkgname}/
-  cp ${srcdir}/${pkgname}-${pkgver}/README-${pkgver} ${pkgdir}/usr/share/doc/${pkgname}/
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+build() {
+  cd ${srcdir}
+  local make_options=(
+    GZIP_SUPPORT=1
+    LZ4_SUPPORT=1
+    LZMA_XZ_SUPPORT=1
+    LZO_SUPPORT=1
+    XATTR_SUPPORT=1
+    XZ_SUPPORT=1
+    ZSTD_SUPPORT=1
+    -C $pkgname-$pkgver/$pkgname
+  )
+  make "${make_options[@]}"
+
+  local make_install_options=(
+    INSTALL_PREFIX="$pkgdir/usr"
+    INSTALL_MANPAGES_DIR='$(INSTALL_PREFIX)/share/man/man1'
+    install
+    -C $pkgname-$pkgver/$pkgname
+  )
+  make "${make_install_options[@]}"
+  install -vDm 644 ${pkgname}-${pkgver}/{ACTIONS-README,CHANGES,"README-$pkgver",USAGE*} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
