@@ -1,5 +1,5 @@
 pkgname=python-cryptography
-pkgver=39.0.1
+pkgver=39.0.2
 pkgbuild=1
 arch=("auto")
 
