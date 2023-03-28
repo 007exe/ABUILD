@@ -1,23 +1,29 @@
 pkgname=libdrm
-pkgver=2.4.114
+pkgver=2.4.115
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X.Org libdrm library.")
-longdesc=("Userspace interface to kernel DRM services.")
 
 source=("https://dri.freedesktop.org/$pkgname/$pkgname-$pkgver.tar.xz")
 
 tags=("libs xorg-misc")
 
-build_deps=("python-docutils meson libpciaccess")
+adddep=("libpciaccess")
+
+build_deps=("${adddep} python-docutils meson")
 
 build(){
   go_src_dir
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D udev=false
+    -D udev=false \
+    -D etnaviv=disabled \
+    -D freedreno=disabled \
+    -D vc4=disabled \
+    -D valgrind=disabled \
+    -D install-test-programs=true
   ninja -C build
   DESTDIR=${pkgdir} meson install -C build
 }
