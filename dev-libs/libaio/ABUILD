@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Linux-native asynchronous I/O facility (aio) library.")
-longdesc=("Asynchronous input/output library that uses the kernels native interface.")
 
 source=("https://releases.pagure.org/libaio/${pkgname}-${pkgver}.tar.gz")
 
