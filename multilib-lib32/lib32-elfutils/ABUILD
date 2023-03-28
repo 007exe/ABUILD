@@ -1,18 +1,17 @@
 pkgname=lib32-elfutils
-pkgver=0.188
+pkgver=0.189
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Handle ELF object files and DWARF debugging information (32-bit).")
-longdesc=("Libelf is a library for handling ELF (Executable and Linkable Format) files.")
 
 source=("https://sourceware.org/ftp/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2")
 
 tags=("lib32 dev-libs")
 
-build_deps=("lib32-glibc lib32-gcc-libs lib32-bzip2 lib32-zlib lib32-curl lib32-xz lib32-zstd")
-
 adddep=("lib32-glibc lib32-bzip2 lib32-gcc-libs lib32-zlib elfutils lib32-curl lib32-xz lib32-zstd")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
