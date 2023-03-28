@@ -1,6 +1,6 @@
 pkgname=python-hatchling
-pkgver=1.11.1
-pkgbuild=2
+pkgver=1.13.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A modern project, package, and virtual env manager (backend).")
