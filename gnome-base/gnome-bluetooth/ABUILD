@@ -1,39 +1,25 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-
 pkgname=gnome-bluetooth
-pkgver=3.7.92
+pkgver=42.5
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="The GNOME Bluetooth Subsystem"
-longdesc=("gnome-bluetooth is a fork of bluez-gnome focused on integration with the GNOME desktop environment")
+shortdesc=("GNOME Bluetooth Subsystem.")
 
-source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/gnome-bluetooth/-/archive/${pkgver}/gnome-bluetooth-${pkgver}.tar.gz")
 
-tags="gnome gnome-extra"
+tags=("gnome gnome-base")
 
-build_deps="make gcc intltool gobject-introspection itstool docbook-xsl obexd"
+adddep=("gtk4 libadwaita libnotify bluez gsound pulseaudio-bluetooth upower")
 
-adddep="obexd"
+build_deps=("${adddep} gobject-introspection gtk-doc docbook-xsl git meson")
 
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-desktop-update \
---disable-schemas-compile \
---enable-introspection"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
-
-after_build(){
-  install -m644 -D "${filedir}/61-gnome-bluetooth-rfkill.rules" \
-          "${pkgdir}/etc/udev/rules.d/61-gnome-bluetooth-rfkill.rules"
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gtk_doc=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
