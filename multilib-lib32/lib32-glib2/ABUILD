@@ -1,5 +1,5 @@
 pkgname=lib32-glib2
-pkgver=2.74.5
+pkgver=2.76.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,10 @@ source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}
 
 tags=("lib32 dev-libs")
 
-build_deps=("gettext gtk-doc lib32-dbus lib32-elfutils meson python shared-mime-info util-linux
-lib32-pcre2 lib32-util-linux lib32-zlib")
+adddep=("glib2 lib32-pcre2 lib32-util-linux lib32-zlib")
 
-adddep=("glib2")
 
+build_deps=("${adddep} gettext gtk-doc lib32-dbus lib32-elfutils meson python shared-mime-info util-linux")
 build() {
   go_src_dir
   burn_patches
