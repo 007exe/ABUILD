@@ -1,18 +1,16 @@
 pkgname=mesa-demos
-pkgver=8.5.0
+pkglist=("mesa-utils")
+pkgver=9.0.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Mesa demos.")
-longdesc=("Mesa utilities and demo programs: glxgears, glxinfo, and so on.")
+shortdesc=("Mesa utilities and demo programs: glxgears, glxinfo, and so on.")
 
-source=("https://archive.mesa3d.org/demos/${pkgver}/mesa-demos-${pkgver}.tar.bz2")
+source=("https://mesa.freedesktop.org/archive/demos/mesa-demos-${pkgver}.tar.xz")
 
 tags=("xorg-misc xorg")
 
 build_deps=("meson mesa glu freeglut wayland-protocols libglvnd glu freeglut")
-
-pkglist=("mesa-utils")
 
 build() {
   go_src_dir
@@ -22,7 +20,7 @@ build() {
     -D libdir=/usr/lib \
     -D gles1=disabled \
     -D with-system-data-files=true
-  meson configure build
+#  meson configure build
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 
@@ -38,7 +36,6 @@ build() {
 mesa-utils() {
   pkgname=mesa-utils
   shortdesc=("Essential Mesa utilities.")
-  longdesc=("Essential Mesa utilities.")
 }
 
 mesa-utils_prep() {
