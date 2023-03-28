@@ -1,6 +1,6 @@
 pkgname=python-pydantic
-pkgver=1.10.4
-pkgbuild=2
+pkgver=1.10.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Data parsing and validation using Python type hints.")
@@ -11,23 +11,23 @@ tags=("libs dev-python")
 
 # NOTE: Пакет python-typing-extensions это пакет python-typing_extensions
 
-build_deps=("python-build python-installer python-setuptools
-python-wheel python cython python python-typing_extensions")
-
 # FIXME: Какого то хрена не находит пакет python-pydantic хотя он присутствует
 adddep=("python python-typing_extensions")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools
+python-wheel python cython")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
