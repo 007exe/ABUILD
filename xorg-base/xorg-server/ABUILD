@@ -1,5 +1,6 @@
 pkgname=xorg-server
-pkgver=21.1.7
+pkglist=("xorg-server-xephyr xorg-server-xvfb xorg-server-xnest xorg-server-common xorg-server-devel")
+pkgver=21.1.8
 pkgbuild=1
 arch=("auto")
 
@@ -10,14 +11,12 @@ source=("https://xorg.freedesktop.org/releases/individual/xserver/xorg-server-${
 
 tags=("xorg xorg-base")
 
+adddep=("xorg-server-common=${pkgver} xf86-input-libinput")
+
 build_deps=("xorgproto pixman libx11 mesa xtrans libxkbfile libxfont2 libpciaccess libxv libxmu libxrender
 libxi libxaw libxtst libxres xorg-xkbcomp xorg-util-macros xorg-font-util libepoxy xcb-util xcb-util-image
 xcb-util-renderutil xcb-util-wm xcb-util-keysyms libxshmfence libunwind wayland-protocols egl-wayland libxcvt
 nettle")
-
-adddep=("xorg-server-common=${pkgver} xf86-input-libinput")
-
-pkglist=("xorg-server-xephyr xorg-server-xvfb xorg-server-xnest xorg-server-common xorg-server-devel")
 
 build() {
   go_src_dir
