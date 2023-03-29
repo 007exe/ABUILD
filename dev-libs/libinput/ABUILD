@@ -1,5 +1,5 @@
 pkgname=libinput
-pkgver=1.22.1
+pkgver=1.23.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://gitlab.freedesktop.org/libinput/libinput/-/archive/${pkgver}/${
 
 tags=("libs dev-libs")
 
-build_deps=("meson wayland-protocols mtdev libevdev libwacom gtk4")
+adddep=("mtdev libevdev libwacom")
+
+build_deps=("${adddep} meson wayland-protocols gtk4")
 
 # NOTE: Это опциональные зависимости
 removedep=("gtk4")
