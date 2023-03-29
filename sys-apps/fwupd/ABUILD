@@ -1,22 +1,21 @@
 pkgname=fwupd
-pkgver=1.8.10
+pkgver=1.8.13
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple daemon to allow session software to update firmware.")
 
-source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/fwupd/fwupd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("sys-apps utils")
-
-# libsmbios tpm2-tss flashrom libjcat fwupd-efi libcbor noto-fonts-cjk gnu-efi-libs
-build_deps=("libxmlb efivar python libgusb polkit gcab bluez gnutls libarchive curl json-glib libgudev libmm-glib
-libqmi protobuf-c meson valgrind gobject-introspection gi-docgen python-cairo noto-fonts python-gobject vala
-bash-completion python-pillow help2man")
 
 # libsmbios tpm2-tss flashrom libjcat fwupd-efi libcbor
 adddep=("shared-mime-info hicolor-icon-theme libxmlb efivar python libgusb polkit gcab bluez gnutls libarchive curl
 json-glib libgudev libmm-glib libqmi protobuf-c")
+
+# noto-fonts-cjk gnu-efi-libs
+build_deps=("${adddep} meson valgrind gobject-introspection gi-docgen python-cairo noto-fonts python-gobject vala
+bash-completion python-pillow help2man")
 
 # NOTE: Это опциональные зависимости
 removedep=("udisks")
@@ -45,12 +44,12 @@ build() {
   DESTDIR=${pkgdir} meson install -C build
 
 # Режим исправления в соответствии с polkit
-    install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
+  install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
 
 # Удаление тестов
-    rm -r ${pkgdir}/usr/share/installed-tests/
-    mv ${pkgdir}/usr/bin/{,fwupd-}dbxtool
-    mv ${pkgdir}/usr/share/man/man1/{,fwupd-}dbxtool.1
+  rm -r ${pkgdir}/usr/share/installed-tests/
+  mv ${pkgdir}/usr/bin/{,fwupd-}dbxtool
+  mv ${pkgdir}/usr/share/man/man1/{,fwupd-}dbxtool.1
 
 # Удаление модулей module-load config так, как она встроена
 #    rm ${pkgdir}/usr/lib/modules-load.d/fwupd-msr.conf
