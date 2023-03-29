@@ -1,6 +1,6 @@
 pkgname=nodejs-nopt
 _npmname=nopt
-pkgver=7.0.0
+pkgver=7.1.0
 pkgbuild=1
 
 arch=("auto")
@@ -11,9 +11,9 @@ source=("https://registry.npmjs.org/$_npmname/-/$_npmname-${pkgver}.tgz")
 
 tags=("dev-libs libs")
 
-build_deps=("npm")
-
 adddep=("nodejs")
+
+build_deps=("${adddep} npm")
 
 build() {
   cp ${srcache}/${_npmname}-${pkgver}.tgz .
