@@ -1,18 +1,16 @@
 pkgname=ghostscript
-pkgver=10.0.0
-pkgbuild=3
+pkglist=("ghostxps ghostpcl")
+pkgver=10.01.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("An interpreter for the PostScript language")
-longdesc=("Ghostscript is a versatile processor for PostScript data with the ability to render PostScript to different targets. It is a mandatory part of the cups printing stack.")
+shortdesc=("An interpreter for the PostScript language.")
 
 source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${pkgver//./}/ghostpdl-${pkgver}.tar.xz")
 
 tags=("app-text console")
 
 build_deps=("libxt libcups fontconfig zlib libpng libjpeg-turbo libtiff lcms2 dbus openjpeg2 libidn gnutls gtk3 glu freeglut jbig2dec libpaper ijs")
-
-pkglist=("ghostxps ghostpcl")
 
 build() {
   go_src_dir
@@ -23,7 +21,6 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --enable-dynamic \
     --with-ijs \
     --with-jbig2dec \
     --with-x \
@@ -35,9 +32,7 @@ build() {
     --enable-openjpeg \
     --with-system-libtiff \
     --with-libpaper \
-    --disable-compile-inits \
-    --disable-static \
-    --enable-shared
+    --disable-compile-inits
   make -j${numjobs}
   make DESTDIR=${pkgdir} install-gs install-so-gs
 
@@ -46,8 +41,7 @@ build() {
 
 ghostxps() {
   pkgname=ghostxps
-  shortdesc=("An interpreter for the PostScript language/PostScript/XPS document")
-  longdesc=("Ghostscript is a versatile processor for PostScript data with the ability to render PostScript to different targets. It is a mandatory part of the cups printing stack.")
+  shortdesc=("An interpreter for the PostScript language/PostScript/XPS document.")
   adddep=("ghostscript=${pkgver}")
 }
 
@@ -63,8 +57,7 @@ ghostxps_prep() {
 
 ghostpcl() {
   pkgname=ghostpcl
-  shortdesc=("An interpreter for the PostScript language/PostScript/PCL 6")
-  longdesc=("Ghostscript is a versatile processor for PostScript data with the ability to render PostScript to different targets. It is a mandatory part of the cups printing stack.")
+  shortdesc=("An interpreter for the PostScript language/PostScript/PCL 6.")
   adddep=("ghostscript=${pkgver}")
 }
 
