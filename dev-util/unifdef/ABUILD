@@ -1,0 +1,23 @@
+pkgname=unifdef
+pkgver=2.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Remove #ifdef'ed lines.")
+
+source=("https://dotat.at/prog/unifdef/unifdef-${pkgver}.tar.gz")
+
+tags=("develop dev-util")
+
+build_deps=("make glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  make clean
+  make -j${numjobs}
+  mkdir -p ${pkgdir}/usr/bin ${pkgdir}/usr/share/man/man1
+  install -m 0755 unifdef ${pkgdir}/usr/bin/
+  install -m 0755 unifdefall.sh ${pkgdir}/usr/bin/unifdefall
+  install -m 0644 unifdef.1 ${pkgdir}/usr/share/man/man1/
+}
