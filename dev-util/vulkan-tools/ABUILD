@@ -1,5 +1,5 @@
 pkgname=vulkan-tools
-pkgver=1.3.240
+pkgver=1.3.245
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,17 @@ source=("https://github.com/KhronosGroup/Vulkan-Tools/archive/v${pkgver}.tar.gz"
 
 tags=("utils dev-util")
 
-build_deps=("libx11 wayland cmake python vulkan-headers vulkan-icd-loader wayland-protocols glslang spirv-tools")
+adddep=("libx11 wayland")
+
+build_deps=("${adddep} cmake python vulkan-headers vulkan-icd-loader wayland-protocols glslang spirv-tools")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -57,13 +67,4 @@ build() {
 
   install -dm755 ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 ../LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/
-}
-
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
