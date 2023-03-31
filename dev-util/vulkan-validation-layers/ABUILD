@@ -1,5 +1,5 @@
 pkgname=vulkan-validation-layers
-pkgver=1.3.236.0
+pkgver=1.3.243.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/sdk-${p
 
 tags=("libs dev-util")
 
-build_deps=("cmake python-lxml libxrandr wayland gcc-libs vulkan-icd-loader vulkan-headers libx11")
-
 adddep=("vulkan-icd-loader vulkan-headers")
+
+build_deps=("${adddep} cmake python-lxml libxrandr wayland gcc-libs libx11")
 
 build() {
   go_src_dir
