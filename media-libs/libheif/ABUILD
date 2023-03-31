@@ -1,5 +1,5 @@
 pkgname=libheif
-pkgver=1.15.1
+pkgver=1.15.2
 pkgbuild=1
 arch=("auto")
 
