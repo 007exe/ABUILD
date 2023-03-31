@@ -1,5 +1,5 @@
 pkgname=graphviz
-pkgver=7.1.0
+pkgver=8.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -8,10 +8,12 @@ shortdesc=("Graph visualization software.")
 source=("https://gitlab.com/graphviz/graphviz/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("utils media-gfx")
-# mono
-build_deps=("swig lua ocaml>=4.12.0 perl python gtk2 ghostscript qt5-base guile tk r")
 
-adddep=("ghostscript")
+# gts
+adddep=("libltdl gd librsvg ghostscript pango gsfonts")
+
+# mono
+build_deps=("${adddep} swig guile lua ocaml>=4.14.0 perl python r tk qt5-base gtk2")
 
 # Это опциональные зависимости
 removedep=("mono guile lua lua51 lua52 lua53 ocaml perl python r tcl qt5-base gtk2")
