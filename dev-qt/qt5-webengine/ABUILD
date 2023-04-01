@@ -48,6 +48,9 @@ before_build() {
 # Обновляем catapult для совместимости с python3
   rm -r src/3rdparty/chromium/third_party/catapult
   mv ${srcdir}/catapult src/3rdparty/chromium/third_party
+# Фикс сборки с использованием python3.11 и выше
+  sed -e 's/\^(?i)/(?i)^/' -i src/3rdparty/chromium/tools/metrics/ukm/ukm_model.py
+  sed -e "s/'rU'/'r'/" -i src/3rdparty/chromium/tools/grit/grit/util.py
 }
 
 build() {
