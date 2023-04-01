@@ -1,0 +1,21 @@
+pkgname=perl-text-charwidth
+pkgver=0.04
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Perl/CPAN Module Text::CharWidth.")
+
+source=("https://www.cpan.org/authors/id/K/KU/KUBOTA/Text-CharWidth-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name '*.pod' -delete
+}
