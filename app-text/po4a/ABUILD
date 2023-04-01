@@ -1,0 +1,31 @@
+pkgname=po4a
+pkgver=0.69
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Tools for helping translation of documentation.")
+
+source=("https://github.com/mquinson/$pkgname/archive/v${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+adddep=("perl gettext perl-yaml-tiny perl-unicode-linebreak")
+
+build_deps=("${adddep} perl-locale-gettext perl-sgmls perl-module-build docbook-xsl
+perl-text-wrapi18n perl-term-readkey perl-pod-parser")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  perl Build.PL installdirs=vendor create_packlist=0
+  LC_ALL=en_US.UTF-8 perl Build
+  perl Build destdir=${pkgdir} install
+  find ${pkgdir} -name .packlist -o -name perllocal.pod -delete
+}
