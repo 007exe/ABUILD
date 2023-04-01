@@ -1,0 +1,23 @@
+pkgname=perl-text-wrapi18n
+pkgver=0.06
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Line wrapping module with support for multibyte, fullwidth, and combining characters and languages without whitespaces between words.")
+
+source=("https://search.cpan.org/CPAN/authors/id/K/KU/KUBOTA/Text-WrapI18N-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+adddep=("perl-text-charwidth")
+
+build_deps=("${adddep} perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  find ${pkgdir} -name '.packlist' -delete
+  find ${pkgdir} -name 'perllocal.pod' -delete
+}
