@@ -1,16 +1,17 @@
 pkgname=portmidi
-pkgver=236
-pkgbuild=2
+pkgver=2.0.4
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Library for real time MIDI input and output.")
-longdesc=("Cross platform library for interfacing with OS MIDI I/O APIs.")
+shortdesc=("Cross platform library for interfacing with OS MIDI I/O APIs.")
+
+source=("https://github.com/portmidi/portmidi/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-source=("https://github.com/mixxxdj/portmidi/archive/refs/tags/${pkgver}.tar.gz")
+adddep=("glibc")
 
-build_deps=("alsa-lib cmake glibc")
+build_deps=("${adddep} alsa-lib cmake")
 
 build() {
   go_src_dir
