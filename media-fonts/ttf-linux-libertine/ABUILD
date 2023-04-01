@@ -1,0 +1,19 @@
+pkgname=ttf-linux-libertine
+pkgver=5.3.0
+_reldate=2012_07_02
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Serif (Libertine) and Sans Serif (Biolinum) OpenType fonts with large Unicode coverage.")
+
+source=("https://downloads.sourceforge.net/project/linuxlibertine/linuxlibertine/${pkgver}/LinLibertine"{TTF,OTF}"_${pkgver}_${_reldate}.tgz")
+
+tags=("media-fonts fonts")
+
+build_deps=("mkpkg")
+
+build() {
+  go_src_dir
+  install -Dt ${pkgdir}/usr/share/fonts/${pkgname} -m644 *.ttf *.otf
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 OFL-1.1.txt LICENCE.txt
+}
