@@ -1,0 +1,19 @@
+pkgname=perl-pod-parser
+pkgver=1.65
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Modules for parsing/translating POD format documents.")
+
+source=("https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+build_deps=("perl")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
