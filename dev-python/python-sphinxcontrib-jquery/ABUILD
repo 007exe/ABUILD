@@ -1,0 +1,23 @@
+pkgname=python-sphinxcontrib-jquery
+pkgver=4.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Extension to include jQuery on newer Sphinx releases.")
+
+_name=sphinxcontrib-jquery
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/sphinxcontrib-jquery/sphinxcontrib-jquery-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-sphinx")
+
+build_deps=("${adddep} python python-build python-flit-core python-installer")
+
+build() {
+  go_src_dir
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 -t ${pkgdir}/usr/share/doc/${pkgname} README.rst
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENCE
+}
