@@ -1,10 +1,9 @@
 pkgname=libvoikko
 pkgver=4.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A spelling and grammar checker, hyphenator and collection of related linguistic data for Finnish language.")
-longdesc=("Spell checking, hyphenation and morphological analysis tool for Finnish language.")
 
 source=("https://www.puimula.org/voikko-sources/libvoikko/${pkgname}-${pkgver}.tar.gz")
 
@@ -23,7 +22,8 @@ build() {
     --with-dictionary-path=/usr/share/voikko
   make -j${numjobs}
   make -j1 DESTDIR=${pkgdir} install
-
-  mkdir -p ${pkgdir}/usr/lib/python3.10/site-packages
-  cp python/libvoikko.py ${pkgdir}/usr/lib/python3.10/site-packages/libvoikko.py
+# NOTE: Версия python
+  local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+  mkdir -p ${pkgdir}/usr/lib/${python_version}/site-packages
+  cp python/libvoikko.py ${pkgdir}/usr/lib/${python_version}/site-packages/libvoikko.py
 }
