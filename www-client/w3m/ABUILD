@@ -1,0 +1,34 @@
+pkgname=w3m
+_commit=fee038d7180e3d69276f55167a0d1da5233bc9c2
+_pkgver=0.5.3.git20230121-1
+strict_version=1
+pkgver=${_pkgver/-/_}
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Text-based Web browser as well as pager.")
+
+source=("git:https://salsa.debian.org/debian/w3m.git")
+
+tags=("network net-misc")
+
+adddep=("openssl gc ncurses gpm")
+
+build_deps=("${adddep} git imlib2")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --enable-image=x11,fb \
+    --with-imagelib=imlib2 \
+    --with-termlib=ncurses \
+    --disable-w3mmailer
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -d ${pkgdir}/usr/share/{doc,licenses}/w3m
+  install -m644 doc/* ${pkgdir}/usr/share/doc/w3m
+  ln -s ../../doc/w3m/README ${pkgdir}/usr/share/licenses/w3m
+}
