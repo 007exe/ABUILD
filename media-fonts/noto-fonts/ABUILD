@@ -1,76 +1,45 @@
 pkgname=noto-fonts
-pkgver=20220607
+pkglist=("noto-fonts-extra")
+pkgver=20230401
 strict_version=1
-_commit=c971829a87e7920f960e7277c3dafd9bedd3c601
+_commit=021feeb29f58d54a45449c89f53d17b5bfa9fd56
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Google Noto TTF fonts.")
-longdesc=("Google font family that aims to support all the world languages.")
 
-source=("git:https://github.com/notofonts/noto-fonts")
+source=("git:https://github.com/notofonts/notofonts.github.io.git")
 
 tags=("media-fonts fonts")
 
 build_deps=("git python-fonttools")
 
-pkglist=("noto-fonts-extra ttf-croscore")
-
 before_build() {
   go_src_dir
   git checkout ${_commit}
-# https://github.com/googlefonts/noto-fonts/issues/2350
-  cd hinted/ttf/Arimo
-  ttx Arimo-BoldItalic.ttf
-  sed -e 's|usWeightClass value=\"400\"|usWeightClass value=\"700\"|' -i Arimo-BoldItalic.ttx
-  ttx -f Arimo-BoldItalic.ttx
 }
 
 build() {
   go_src_dir
-# Удаляем дублирующиеся шрифты
-  rm {un,}hinted/ttf/NotoSansTifinagh/NotoSansTifinagh[AGHRST]*.ttf
-
-  install -Dm644 unhinted/ttf/Noto*/*.tt[fc] -t ${pkgdir}/usr/share/fonts/noto
-  install -Dm644 hinted/ttf/Noto*/*.tt[fc] -t ${pkgdir}/usr/share/fonts/noto
+  install -Dm644 fonts/*/hinted/ttf/*.tt[fc] -t ${pkgdir}/usr/share/fonts/noto
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/noto-fonts
-
-# Перемещаем к noto-fonts-extra
-  rm -f ${pkgdir}/usr/share/fonts/noto/Noto*{Condensed,SemiBold,Extra}*.ttf
-
-# Установка
+# Находится в noto-fonts-extra
+  rm -f ${pkgdir}/usr/share/fonts/noto/Noto*{-Condensed,-Semi,-Extra}*.ttf
+# Установка конфигурационных файлов
   install -Dm644 ${filedir}/*.conf -t ${pkgdir}/usr/share/fontconfig/conf.avail/
   install -d ${pkgdir}/usr/share/fontconfig/conf.default
   ln -rs ${pkgdir}/usr/share/fontconfig/conf.avail/* ${pkgdir}/usr/share/fontconfig/conf.default
-
-# https://github.com/googlefonts/noto-fonts/issues/2315
-  rm ${pkgdir}/usr/share/fonts/noto/NotoSans-Display*
 }
+
+################################################################################################
 
 noto-fonts-extra() {
   pkgname=noto-fonts-extra
   shortdesc=("Google Noto TTF fonts - additional variants.")
-  longdesc=("Google font family that aims to support all the world languages.")
   adddep=("noto-fonts")
 }
 
 noto-fonts-extra_prep() {
   go_src_dir
-  mkdir -p ${pkgdir}/usr/share/fonts/noto
-  cp hinted/ttf/Noto*/*{Condensed,SemiBold,Extra}*.tt[fc] ${pkgdir}/usr/share/fonts/noto
-
-# https://github.com/googlefonts/noto-fonts/issues/2315
-  rm ${pkgdir}/usr/share/fonts/noto/NotoSans-Display*
-}
-
-ttf-croscore() {
-  pkgname=ttf-croscore
-  shortdesc=("Chrome OS core fonts.")
-  longdesc=("Google font family that aims to support all the world languages.")
-}
-
-ttf-croscore_prep() {
-  go_src_dir
-  install -Dm644 hinted/ttf/{Arimo,Cousine,Tinos}/*.ttf -t ${pkgdir}/usr/share/fonts/croscore
-  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/ttf-croscore
+  install -Dm644 fonts/*/hinted/ttf/*{-Condensed,-Semi,-Extra}*.tt[fc] -t ${pkgdir}/usr/share/fonts/noto
 }
