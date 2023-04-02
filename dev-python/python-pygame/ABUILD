@@ -9,10 +9,9 @@ source=("https://pypi.io/packages/source/p/pygame/pygame-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python-setuptools sdl2 
-sdl2_mixer sdl2_ttf sdl2_image portmidi")
-
 adddep=("sdl2_mixer sdl2_ttf sdl2_image portmidi")
+
+build_deps=("${adddep} python-setuptools sdl2")
 
 build() {
   go_src_dir
