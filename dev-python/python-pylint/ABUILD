@@ -1,5 +1,5 @@
 pkgname=python-pylint
-pkgver=2.15.9
+pkgver=2.17.1
 pkgbuild=1
 arch=("auto")
 
@@ -15,9 +15,8 @@ python-astroid python-colorama python-dill python-isort python-mccabe python-pla
 build() {
   go_src_dir
   burn_patches
+  sed -i -E '/^requires/s/~=[0-9.]+//g' pyproject.toml
   sed -i -e '/>=/{s/>.*//;p}' -e '/python_requires/d' setup.cfg
-  sed -i -e '/^markers =/a\    pathdependent: Does not play nice' setup.cfg
-  sed -i -e '/test_do_not_import_files_from_local_directory_with_pythonpath/i\    @pytest.mark.pathdependent' tests/test_self.py
   python -m build -wn
 #  make PYTHONPATH="$PWD/build/lib" -C doc man
   python -m installer -d ${pkgdir} dist/*.whl
