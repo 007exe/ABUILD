@@ -1,4 +1,4 @@
-pkgname=lib32-at-spi2-atk
+pkgname=lib32-at-spi2-core
 pkgver=2.46.0
 pkgbuild=1
 arch=("auto")
@@ -9,9 +9,9 @@ source=("https://gitlab.gnome.org/GNOME/at-spi2-core/-/archive/AT_SPI2_CORE_${pk
 
 tags=("app-accessibility lib32")
 
-build_deps=("meson lib32-dbus lib32-glib2 lib32-libx11 lib32-libxml2 lib32-libxtst")
+adddep=("at-spi2-core lib32-dbus lib32-glib2 lib32-libx11 lib32-libxml2 lib32-libxtst")
 
-adddep=("at-spi2-atk")
+build_deps=("${adddep} meson dbus-broker")
 
 build() {
   go_src_dir
