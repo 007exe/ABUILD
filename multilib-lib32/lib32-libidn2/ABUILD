@@ -1,22 +1,23 @@
 pkgname=lib32-libidn2
 pkgver=2.3.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Free software implementation of IDNA2008, Punycode and TR46 (32-bit).")
-longdesc=("libidn2 is a package designed for internationalized string handling based on standards from the Internet Engineering Task Force (IETF)'s IDN working group, designed for internationalized domain names.")
 
 source=("http://ftp.gnu.org/gnu/libidn/libidn2-${pkgver}.tar.gz")
 
 tags=("lib32 net-dns")
 
-build_deps=("lib32-glibc lib32-gcc-libs lib32-libunistring gtk-doc")
+adddep=("libidn2 lib32-glibc lib32-libunistring")
 
-adddep=("lib32-glibc libidn2 lib32-glibc lib32-libunistring")
+# ruby-ronn-ng
+build_deps=("${adddep} lib32-gcc-libs gtk-doc")
 
 build() {
   go_src_dir
   burn_patches
+  autoreconf -fvi
   export CC='gcc -m32'
   export CXX='g++ -m32'
   export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
