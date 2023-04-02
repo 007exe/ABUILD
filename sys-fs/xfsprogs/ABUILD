@@ -1,5 +1,5 @@
 pkgname=xfsprogs
-pkgver=6.1.1
+pkgver=6.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,12 @@ tags=("base sys-fs")
 
 source=("https://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git/snapshot/xfsprogs-dev-${pkgver}.tar.gz")
 
-build_deps=("util-linux libinih device-mapper icu liburcu")
+adddep=("device-mapper util-linux libinih liburcu")
 
-adddep=("device-mapper")
+build_deps=("${adddep} icu")
+
+# NOTE: Это опциональные зависимости
+removedep=("icu python smtp-forwarder")
 
 build() {
   go_src_dir
