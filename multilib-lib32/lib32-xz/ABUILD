@@ -1,5 +1,5 @@
 pkgname=lib32-xz
-pkgver=5.4.1
+pkgver=5.4.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("http://tukaani.org/xz/xz-${pkgver}.tar.gz")
 
 tags=("lib32 app-arch")
 
-build_deps=("lib32-glibc lib32-gcc-libs")
-
 adddep=("lib32-glibc xz")
+
+build_deps=("${adddep} lib32-gcc-libs")
 
 build() {
   go_src_dir
