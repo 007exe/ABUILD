@@ -1,0 +1,29 @@
+pkgname=publicsuffix-list
+pkgver=20230222.1337.ab05301
+strict_version=1
+# NOTE: коммит версии
+_commit=ab0530155af1fe4b58194fe6792c4ec9731666bf
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Cross-vendor public domain suffix database.")
+
+source=("git:https://github.com/publicsuffix/list.git")
+
+tags=("libs dev-libs")
+
+build_deps=("gtk-doc intltool gobject-introspection gtk3")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
+build() {
+  go_src_dir
+  install -Dm 644 public_suffix_list.dat tests/test_psl.txt -t ${pkgdir}/usr/share/publicsuffix
+  ln -s public_suffix_list.dat ${pkgdir}/usr/share/publicsuffix/effective_tld_names.dat
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
