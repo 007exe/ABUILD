@@ -1,18 +1,17 @@
 pkgname=lib32-freetype
-pkgver=2.12.1
+pkgver=2.13.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Font rasterization library (32-bit).")
-longdesc=("The FreeType2 package contains a library which allows applications to properly render TrueType fonts.")
 
 source=("http://downloads.sourceforge.net/sourceforge/freetype/freetype-${pkgver}.tar.xz")
 
 tags=("lib32 media-libs")
 
-build_deps=("meson freetype lib32-zlib lib32-bzip2 lib32-libpng lib32-brotli lib32-harfbuzz")
-
 adddep=("freetype lib32-zlib lib32-bzip2 lib32-libpng lib32-harfbuzz lib32-brotli")
+
+build_deps=("${adddep} meson")
 
 build() {
   go_src_dir
