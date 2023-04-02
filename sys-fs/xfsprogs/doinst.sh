@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend xfsprogs capabilities:"
+echo -e "icu: for xfs_scrub"
+echo -e "python: for xfs_scrub_all script"
+echo -e "smtp-forwarder: for xfs_scrub_fail script"
+echo -e " "
