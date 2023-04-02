@@ -4,15 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A package manager for javascript.")
-longdesc=("A package manager for javascript.")
 
 source=("https://github.com/npm/cli/archive/v${pkgver}.tar.gz")
 
 tags=("develop dev-java")
 
-build_deps=("npm procps-ng python nodejs node-gyp nodejs-nopt semver marked marked-man libxi")
-
 adddep=("nodejs node-gyp nodejs-nopt semver")
+
+build_deps=("${adddep} npm procps-ng python marked marked-man libxi")
 
 build() {
   go_src_dir
