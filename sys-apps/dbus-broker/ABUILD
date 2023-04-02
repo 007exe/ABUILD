@@ -1,0 +1,29 @@
+pkgname=dbus-broker
+pkgver=33
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux D-Bus Message Broker.")
+
+source=("https://github.com/bus1/dbus-broker/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("sys-apps libs")
+
+adddep=("audit expat")
+
+# systemd
+build_deps=("${adddep} meson python-docutils")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D audit=true \
+    -D docs=true \
+    -D linux-4-17=true \
+    -D system-console-users=gdm,sddm,lightdm,lxdm
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
