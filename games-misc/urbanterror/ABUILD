@@ -1,55 +1,36 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=urbanterror
-pkgver=4.2.014
+pkgver=4.3.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A team-based tactical shooter based on the Quake 3 Engine"
+shortdesc=("A team-based tactical shooter based on the Quake 3 Engine.")
 
-source=("https://github.com/Barbatos/ioq3-for-UrbanTerror-4/archive/release-${pkgver}.tar.gz")
+source=("http://www.happyurtday.com/releases/4x/UrbanTerror${pkgver//.}_full.zip")
 
 tags="games games-fps"
 
-build_deps="sdl openal curl"
+adddep=("sdl openal curl")
 
-adddep="urbanterror-data=>${pkgver} openal curl"
+build_deps=("${adddep} mesa")
 
-custom_opts="no_copydoc"
-
-#===================================
-before_build(){
-  cd ${srcdir}/ioq3-for-UrbanTerror-4-release-${pkgver}
-  sed -i 's|"Quake III Arena"|"Urban Terror"|g' \
-         code/q3_ui/ui_mods.c \
-         code//q3_ui/ui_servers2.c
-  sed -i 's|"/.q3a"|"/.urbanterror"|g' \
-         code/sys/sys_unix.c \
-         code/unix/unix_shared.c
-  echo "End before_build"
-}
-
-#===================================
 build(){
-  cd ${srcdir}/ioq3-for-UrbanTerror-4-release-${pkgver}
-  make
-  echo "End build"
-}
+  install -d ${pkgdir}/opt/urbanterror
 
-#===================================
-after_build(){
-  cd ${srcdir}/ioq3-for-UrbanTerror-4-release-${pkgver}
-  install -dm755 ${pkgdir}/usr/doc/${pkgname}-${pkgver}
-  install -Dm644 ./{COPYING.txt,ChangeLog,README,id-readme.txt,md4-readme.txt,ioUrbanTerror_README.txt} \
-                ${pkgdir}/usr/doc/${pkgname}-${pkgver}
+  cd ${pkgdir}/opt/urbanterror
 
-  # Copy binaries.
-  install -Dm755 build/release-linux-*/Quake3-UrT-Ded.* ${pkgdir}/usr/bin/ioUrTded
-  install -Dm755 build/release-linux-*/Quake3-UrT.* ${pkgdir}/usr/bin/ioUrbanTerror
+# Копирую бинарники
+  install -m755 ${srcdir}/UrbanTerror43/Quake3-UrT.x86_64 urbanterror
+  install -m755 ${srcdir}/UrbanTerror43/Quake3-UrT-Ded.x86_64 urbanterror-ded
 
-  # Copy launch scripts.
+# Копирую ресурсы
+  cp -r ${srcdir}/UrbanTerror43/q3ut4 ${pkgdir}/opt/urbanterror/q3ut4
+  install -Dm644 ${srcdir}/UrbanTerror43/q3ut4/readme43.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  echo -e "\nseta cl_cURLLib \"/usr/lib/libcurl.so.4\"" >> ${pkgdir}/opt/urbanterror/q3ut4/autoexec.cfg
+
+# Копирую скрипты запуска
   install -Dm755 ${filedir}/urbanterror.sh ${pkgdir}/usr/bin/urbanterror
   install -Dm755 ${filedir}/urbanterror-server.sh ${pkgdir}/usr/bin/urbanterror-server
-  install -Dm644  code/unix/iourbanterror.png ${pkgdir}/usr/share/pixmaps/urbanterror.png
-  echo "End after_build"
+
+  install -Dm644 ${filedir}/urbanterror.desktop ${pkgdir}/usr/share/applications/urbanterror.desktop
+  install -Dm644 ${filedir}/urbanterror.png ${pkgdir}/usr/share/pixmaps/urbanterror.png
 }
