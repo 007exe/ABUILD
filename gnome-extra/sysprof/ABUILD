@@ -1,0 +1,25 @@
+pkgname=sysprof
+pkgver=3.48.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Kernel based performance profiler.")
+
+source=("https://gitlab.gnome.org/GNOME/sysprof/-/archive/${pkgver}/sysprof-${pkgver}.tar.gz")
+
+tags=("gnome-extra gnome")
+
+adddep=("libadwaita polkit")
+
+build_deps=("${adddep} meson yelp-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=" -ffat-lto-objects"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
