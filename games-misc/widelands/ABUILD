@@ -1,30 +1,41 @@
-#ABUILD created by/создан: PavelVyazovoi, vyazovoi at googlemail.com 
-
 pkgname=widelands
-pkgver=16
+pkgver=1.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A realtime strategy game with emphasis on economy and transport"
-longdesc=("A realtime strategy game with emphasis on economy and transport (Similar to famous settlers2)"
-)
+shortdesc=("A realtime strategy game with emphasis on economy and transport.")
 
-source=("http://launchpad.net/${pkgname}/build${pkgver}/build${pkgver}/+download/$pkgname-build${pkgver}-src.tar.bz2")
+source=("https://github.com/widelands/widelands/archive/refs/tags/v${pkgver}.tar.gz")
 
-tags="games games-strategy"
+tags=("games games-strategy")
 
-# Почему-то в x86 сборке не находит зависимости
-# P.S. не помешала бы возможность указать параметр для сборки под конкретной архитектурой, чтобы не плодить абилды в таких случаях
-adddep="ggz-client-libs sdl_gfx sdl libpng zlib cxxlibs glibc-solibs lua glew gcc libgl libggz"
+adddep=("sdl2_mixer sdl2_image sdl2_ttf lua glew python dbus minizip")
 
-build_deps="cmake boost"
+build_deps=("${adddep} cmake mesa ninja asio")
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DWL_INSTALL_PREFIX=/usr \
--DWL_INSTALL_DATADIR=share/$pkgname \
--DWL_INSTALL_BINDIR=bin \
--DCMAKE_BUILD_TYPE=RELEASE \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake \
+      -GNinja \
+      -Bbuild \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DWL_INSTALL_BINDIR=bin \
+      -DWL_INSTALL_BASEDIR=/usr \
+      -DWL_INSTALL_DATADIR=/usr/share/widelands
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  mv ${pkgdir}/usr/{VERSION,ChangeLog,CREDITS} ${pkgdir}/usr/share/widelands
+
+  mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
+  mv ${pkgdir}/usr/COPYING ${pkgdir}/usr/share/licenses/${pkgname}
+}
