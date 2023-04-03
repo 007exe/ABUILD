@@ -1,11 +1,11 @@
 # NOTE: Мне крайне не нравится идея использовать части systemd. Всёткаи придётся переводить дистрибутив на systemd так как это решит ряд проблем.
 pkgname=udev
-pkgver=251.4
+pkglist=("sysusers tmpfiles eudev")
+pkgver=253.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Userspace device file manager.")
-longdesc=("User space device file manager extracted from systemd.")
 
 source=("https://github.com/systemd/systemd-stable/archive/refs/tags/v${pkgver}.tar.gz")
 
@@ -14,8 +14,6 @@ tags=("base sys-apps")
 build_deps=("acl kmod util-linux libcap kbd gperf intltool meson docbook-xsl rsync python-jinja")
 
 adddep=("sysusers tmpfiles")
-
-pkglist=("sysusers tmpfiles eudev")
 
 _get_libudev() {
     echo "$(readlink build/libudev.so.1)"
@@ -154,7 +152,6 @@ build() {
 sysusers() {
   pkgname=sysusers
   shortdesc=("Declarative allocation of system users and groups.")
-  longdesc=("Systemd utility for handling /usr/lib/sysusers.d files.")
 }
 
 sysusers_prep() {
@@ -177,7 +174,6 @@ sysusers_prep() {
 tmpfiles() {
   pkgname=tmpfiles
   shortdesc=("Configuration for creation, deletion and cleaning of volatile and temporary files.")
-  longdesc=("Systemd utility for handling /usr/lib/tmpfiles.d files.")
 }
 
 tmpfiles_prep() {
@@ -199,7 +195,6 @@ tmpfiles_prep() {
 eudev() {
   pkgname=eudev
   shortdesc=("The userspace dev tools (udev) forked by Gentoo.")
-  longdesc=("This is a shell package designed to satisfy dependencies in the process of being replaced by udev.")
   tags=("virtual sys-fs")
   adddep=("udev")
 }
