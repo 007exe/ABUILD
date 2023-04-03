@@ -1,6 +1,6 @@
 pkgname=python-wheel
-pkgver=0.38.4
-pkgbuild=2
+pkgver=0.40.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A built-package format for Python.")
@@ -11,23 +11,25 @@ tags=("libs dev-python")
 
 adddep=("python-packaging")
 
-build_deps=("${adddep} python python-setuptools")
-
-build(){
-  go_src_dir
-  sed -i 's/--cov=wheel//' setup.cfg
-  rm -r src/wheel/vendored
-  sed -i 's/from .vendored.packaging import tags/from packaging import tags/' src/wheel/bdist_wheel.py
-  sed -i 's/from wheel.vendored.packaging import tags/from packaging import tags/' tests/test_bdist_wheel.py
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
-  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
-}
+build_deps=("${adddep} python python-setuptools python-build python-flit-core python-installer")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
   go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+build(){
+  go_src_dir
+  # https://github.com/pypa/wheel/pull/365 but why?
+  rm -r src/wheel/vendored
+  sed -i 's/from .vendored.packaging.requirements import Requirement/from packaging.requirements import Requirement/' src/wheel/metadata.py
+  sed -i 's/from .vendored.packaging import tags/from packaging import tags/' src/wheel/bdist_wheel.py
+  sed -i 's/from .vendored.packaging import version as _packaging_version/from packaging import version as _packaging_version/' src/wheel/bdist_wheel.py
+  sed -i 's/from wheel.vendored.packaging import tags/from packaging import tags/' tests/test_bdist_wheel.py
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
