@@ -1,0 +1,35 @@
+pkgname=js
+pkgver=102.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("JavaScript interpreter and libraries.")
+
+source=("https://archive.mozilla.org/pub/firefox/releases/${pkgver}esr/source/firefox-${pkgver}esr.source.tar.xz")
+
+tags=("libs dev-libs")
+
+adddep=("gcc-libs readline zlib")
+
+build_deps=("${adddep} zip icu rust llvm clang lld")
+
+build() {
+  go_src_dir
+# Фикс сборки с python3.11
+  grep -rl \"rU\" | xargs sed -i 's/"rU"/"r"/'
+  mkdir -p obj
+  cd obj
+  sh ../js/src/configure.in \
+    --prefix=/usr \
+    --with-intl-api \
+    --with-system-zlib \
+    --with-system-icu \
+    --disable-jemalloc \
+    --disable-debug-symbols \
+    --enable-readline
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -v ${pkgdir}/usr/lib/libjs_static.ajs
+  sed -i '/@NSPR_CFLAGS@/d' ${pkgdir}/usr/bin/js102-config
+}
