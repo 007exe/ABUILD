@@ -10,9 +10,9 @@ source=("https://pocoproject.org/releases/poco-${_pkgver%p?}/poco-${_pkgver}-all
 
 tags=("libs dev-libs")
 
-build_deps=("cmake ninja mariadb-libs openssl unixodbc")
-
 adddep=("mariadb-libs openssl unixodbc")
+
+build_deps=("${adddep} cmake ninja")
 
 build() {
   go_src_dir
@@ -21,6 +21,7 @@ build() {
     -GNinja \
     -Bbuild \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
