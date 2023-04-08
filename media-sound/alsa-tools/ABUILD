@@ -3,16 +3,17 @@ pkgver=1.2.5
 pkgbuild=1
 arch="auto"
 
-shortdesc=("Advanced tools for certain sound cards")
-longdesc=("Advanced Linux Sound Architecture (ALSA) utils. Modularized architecture with support for a large range of ISA and PCI cards. Fully compatible with OSS/Lite (kernel sound drivers), but contains many enhanced features.")
+shortdesc=("Advanced tools for certain sound cards.")
 
 tags=('libs media-libs')
 
-source=("https://www.alsa-project.org/files/pub/tools/$pkgname-$pkgver.tar.bz2")
+source=("https://www.alsa-project.org/files/pub/tools/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="glibc gcc-libs alsa-lib gtk2 gtk3"
+adddep=("gcc-libs glibc")
 
-# qlo10k1 is removed, because it is broken
+build_deps=("${adddep} alsa-lib fltk gtk2 gtk3")
+
+#NOTE: qlo10k1 Удалён, потому что он сломан
 _tools=('as10k1' 'envy24control' 'hdsploader' 'hdspconf' 'hdspmixer'
 'mixartloader' 'pcxhrloader' 'rmedigicontrol' 'sb16_csp' 'seq/sbiload'
 'sscape_ctl' 'us428control usx2yloader' 'vxloader' 'echomixer' 'ld10k1'
@@ -22,7 +23,7 @@ build(){
   go_src_dir
   burn_patches
 
-# not using upstream's global makefile as it's trying to be too clever
+#NOTE: Не используем корневой makefile, а собираем каждый проект отдельно
   for tool in ${_tools[@]}; do
     (
     cd $tool
@@ -30,7 +31,7 @@ build(){
     ./configure \
       --prefix=/usr \
       --sbindir=/usr/bin \
-      --libdir=/usr/lib$LIBDIRSUFFIX
+      --libdir=/usr/lib
     make -j${numjobs}
     make DESTDIR=${pkgdir} install
     )
