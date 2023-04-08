@@ -21,6 +21,7 @@ build() {
   cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_SYSCONFDIR=/etc \
     -DQT_PLUGINS_DIR=lib/qt/plugins \
     -DBUILD_TESTING=OFF \
@@ -44,7 +45,6 @@ build() {
 marble-qt() {
   pkgname=marble-qt
   shortdesc=("Common libraries and plugins for Marble Qt version.")
-  longdesc=("Virtual Globe and World Atlas to learn more about Earth.")
 }
 
 marble-qt_prep() {
@@ -57,7 +57,6 @@ marble-qt_prep() {
 marble() {
   pkgname=marble
   shortdesc=("marble-common knewstuff kparts.")
-  longdesc=("Virtual Globe and World Atlas to learn more about Earth.")
   adddep=("marble-common knewstuff kparts")
 # NOTE: Это опциональные зависимости
   removedep=("krunner")
@@ -77,7 +76,6 @@ marble_prep() {
 marble-maps() {
   pkgname=marble
   shortdesc=("OpenStreetMap Navigation.")
-  longdesc=("Virtual Globe and World Atlas to learn more about Earth.")
   adddep=("marble-common kirigami2")
 }
 
