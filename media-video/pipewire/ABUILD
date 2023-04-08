@@ -3,7 +3,7 @@
 # pipewire-pulse gst-plugin-pipewire pipewire-zeroconf pipewire-v4l2 pipewire-x11-bell
 # NOTE: Рассмотреть заману pulseaudio на pipewire
 pkgname=pipewire
-pkgver=0.3.67
+pkgver=0.3.68
 pkgbuild=1
 arch=("auto")
 
