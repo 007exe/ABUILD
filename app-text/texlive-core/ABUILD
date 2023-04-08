@@ -1,20 +1,22 @@
 pkgname=texlive-core
-pkgver=2022.63035
-_revnr=${pkgver#2022.}
+pkgver=2023.66587
+_revnr=${pkgver#2023.}
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("TeX Live core distribution.")
-longdesc=("A complete TeX distribution.")
 
 source=("https://sources.archlinux.org/other/texlive/${pkgname}-${pkgver}-src.zip")
 
 tags=("app-text tex")
 
-build_deps=("perl")
-
 # texlive-bin
 adddep=("perl")
+
+build_deps=("${adddep} perl")
+
+# NOTE: Это опциональные зависимости
+removedep=("dialog ghostscript java-runtime perl-tk psutils python ruby t1utils wdiff")
 
 config_files=("etc/texmf/web2c/texmf.cnf
 etc/texmf/chktex/chktexrc
