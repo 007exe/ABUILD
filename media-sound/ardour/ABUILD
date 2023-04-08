@@ -1,28 +1,65 @@
 pkgname=ardour
-pkgver=2.8.12
-pkgbuild=2
-arch=('auto')
-shortdesc="A multichannel hard disk recorder and digital audio workstation"
-longdesc=("A multichannel hard disk recorder and digital audio workstation"
-)
-source=("ftp://ftp.archlinux.org/other/ardour/${pkgname}-${pkgver}.tar.bz2")
-tags="utils media-sound"
-build_deps="scons liblrdf liblo"
+pkgver=7.3
+pkgbuild=1
+strict_version=1
+arch=("auto")
 
-build()
-{
-    go_src_dir
-    sed -i '/-O3/d' SConstruct || exit 1
+shortdesc=("Professional-grade digital audio workstation.")
 
-    scons ARCH="${CFLAGS}" \
-        PREFIX="/usr" \
-		DIST_LIBDIR="lib${LIBDIRSUFFIX}" \
-		FREEDESKTOP=0 \
-		FREESOUND=1 \
-		LV2=0 \
-		DESTDIR="${pkgdir}" || exit 1
-    scons PREFIX="/usr" \
-    	FREEDESKTOP=0 \
-    	FREESOUND=1 \
-    	DESTDIR="${pkgdir}" install || exit 1
+source=("git:https://github.com/ardour/ardour.git"
+"http://stuff.ardour.org/loops/ArdourBundledMedia.zip")
+
+tags=("utils media-sound")
+
+adddep=("cairo gcc-libs glibc gtkmm libx11 taglib")
+
+# suil
+build_deps=("${adddep} atkmm aubio boost cairomm cppunit curl dbus doxygen fftw
+flac fluidsynth fontconfig freetype gdk-pixbuf git glib2 glibmm graphviz gtk2
+hidapi itstool jack libarchive liblo liblrdf libltc libogg libpulse
+libsamplerate libsndfile libusb libwebsockets libxml2 lilv lv2 pango pangomm
+readline rubberband serd sord sratom unzip waf vamp-plugin-sdk")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  cd ${srcdir}/ardour_git_ardour.git.src
+  git checkout ${pkgver}
+}
+
+build(){
+  cd ${srcdir}/ardour_git_ardour.git.src
+  burn_patches
+# сброс настроек gtk2 rc (FS#54389)
+  sed -e '8iexport GTK2_RC_FILES=/dev/null' -i gtk2_ardour/ardour.sh.in
+# Исправления для использования системного waf
+  touch __init__.py
+# создание древнего 'misc.py " включить доступно для установленной системы, если
+  sed -e "s/('misc')/('misc', tooldir='tools')/" -i {gtk2_ardour,headless,luasession,session_utils,libs/fst}/wscript
+# сделать пользовательский параметр "autowaf" совместимым с установленным в системе waf
+  find . -type f -iname "*wscript*" -exec sed -e 's/from waflib.extras import autowaf/from tools import autowaf/g' \
+       -e 's/import waflib.extras.autowaf/from tools import autowaf/g' -i {} \;
+
+  export LINKFLAGS="$LDFLAGS"
+  waf configure --prefix=/usr \
+                --configdir=/etc \
+                --cxx11 \
+                --freedesktop \
+                --lxvst \
+                --nls \
+                --no-phone-home \
+                --optimize \
+                --ptformat \
+                --use-external-libs \
+                --with-backends="alsa,dummy,jack,pulseaudio"
+  waf build -v
+  waf i18n --destdir=${pkgdir}
+  waf install --destdir=${pkgdir}
+  install -vDm 644 ${pkgname}.1 -t ${pkgdir}/usr/share/man/man1/
+  install -vdm 755 ${pkgdir}/usr/share/${pkgname}${pkgver/.*/}/media/
+  unzip ${srcache}/ArdourBundledMedia.zip -d ${pkgdir}/usr/share/${pkgname}${pkgver/.*/}/media/
+  install -vdm 755 ${pkgdir}/usr/share/licenses/${pkgname}/
+  ln -s /usr/share/${pkgname}${pkgver/.*/}/media/MIDI Beats/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.beats
+  ln -s /usr/share/${pkgname}${pkgver/.*/}/media/MIDI Chords/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.chords
+  ln -s /usr/share/${pkgname}${pkgver/.*/}/media/MIDI Progressions/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.progressions
 }
