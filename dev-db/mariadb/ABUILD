@@ -1,10 +1,9 @@
 pkgname=mariadb
-pkgver=10.9.4
+pkgver=10.11.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fast SQL database server, derived from MySQL.")
-longdesc=("MariaDB Server is one of the most popular open source relational databases.")
 
 source=("https://rsync.osuosl.org/pub/mariadb/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz")
 
@@ -12,9 +11,11 @@ tags=("server dev-db")
 
 pkglist=("mariadb-libs mariadb-clients mytop")
 
-build_deps=("boost bzip2 cmake jemalloc libaio libxml2 lz4 lzo openssl zlib zstd curl krb5 cracklib judy")
+# libxcrypt perl-dbd-mariadb
+build_deps=("boost bzip2 cmake cracklib curl jemalloc judy krb5 liburing libxml2 lz4 openssl zlib zstd xz
+perl perl-term-readkey ncurses lz4")
 
-adddep=("mariadb-clients=${pkgver}")
+adddep=("mariadb-clients=${pkgver} bzip2 lz4 libxml2 zstd")
 
 config_files=("etc/my.cnf
 etc/my.cnf.d/client.cnf
@@ -97,12 +98,14 @@ build() {
   rm usr/share/man/man1/mysql-test-run.pl.1
 }
 
+##################################################################################################################
 
 mariadb-libs() {
   pkgname=mariadb-libs
   shortdesc=("MariaDB libraries.")
-  longdesc=("MariaDB Server is one of the most popular open source relational databases.")
   tags=("libs dev-db")
+# libxcrypt
+  adddep=("liburing openssl zlib zstd")
 }
 
 mariadb-libs_prep() {
@@ -127,11 +130,12 @@ mariadb-libs_prep() {
   rm -r usr/share/man
 }
 
+##################################################################################################################
+
 mariadb-clients() {
   pkgname=mariadb-clients
   shortdesc=("MariaDB client tools.")
-  longdesc=("MariaDB Server is one of the most popular open source relational databases.")
-  adddep="mariadb-libs=${pkgver}"
+  adddep=("mariadb-libs=${pkgver} jemalloc ncurses")
 }
 
 mariadb-clients_prep() {
@@ -145,10 +149,13 @@ mariadb-clients_prep() {
   done
 }
 
+##################################################################################################################
+
 mytop() {
   pkgname=mytop
   shortdesc=("Top clone for MariaDB.")
-  longdesc=("MariaDB Server is one of the most popular open source relational databases.")
+# perl-dbd-mariadb
+  adddep=("perl perl-term-readkey")
 }
 
 mytop_prep() {
