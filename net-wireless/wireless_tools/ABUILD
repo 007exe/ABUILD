@@ -3,8 +3,7 @@ pkgver=30.pre9
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("Tools allowing to manipulate the Wireless Extensions")
-longdesc=("The Wireless Tools (WT) package is a set of tools allowing manipulation of the Wireless Extensions. They use a textual interface to support the full Wireless Extension.")
+shortdesc=("Tools allowing to manipulate the Wireless Extensions.")
 
 tags=("network net-wireless")
 
@@ -20,13 +19,13 @@ build() {
   burn_patches
   make CFLAGS="${CFLAGS} -I." LDFLAGS="${LDFLAGS}"
   make \
-    INSTALL_DIR="${pkgdir}/sbin" \
+    INSTALL_DIR="${pkgdir}/usr/bin" \
     INSTALL_LIB="${pkgdir}/usr/lib" \
     INSTALL_INC="${pkgdir}/usr/include" \
-    INSTALL_MAN="${pkgdir}/usr/man" \
+    INSTALL_MAN="${pkgdir}/usr/share/man" \
     install
 
   mkdir -p ${pkgdir}/etc/rc.d
-  cp $filedir/rc.wireless* ${pkgdir}/etc/rc.d
+  cp ${filedir}/rc.wireless* ${pkgdir}/etc/rc.d
 }
 
