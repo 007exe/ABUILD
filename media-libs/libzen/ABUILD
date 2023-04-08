@@ -1,5 +1,5 @@
 pkgname=libzen
-pkgver=0.4.40
+pkgver=0.4.41
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mediaarea.net/download/source/libzen/${pkgver}/libzen_${pkgver}
 
 tags=("dev-libs libs")
 
-build_deps=("libtool automake autoconf gcc-libs")
+adddep=("glibc gcc-libs")
+
+build_deps=("${adddep} libtool automake autoconf")
 
 build() {
   go_src_dir
