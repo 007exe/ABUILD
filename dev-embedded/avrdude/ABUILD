@@ -27,6 +27,7 @@ build() {
   cmake -B build \
     -G Ninja \
     -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
     -D CMAKE_INSTALL_SYSCONFDIR=/etc \
     -D CMAKE_BUILD_TYPE=RelWithDebInfo \
     -D BUILD_SHARED_LIBS=1 \
