@@ -1,0 +1,8 @@
+echo -e " "
+echo -e "The following packages extend doublecmd-gtk2 capabilities:"
+echo -e "lua: scripting"
+echo -e "unzip: support extracting zip archives"
+echo -e "zip: suport packing zip archives"
+echo -e "p7zip: support for 7zip archives"
+echo -e "libunrar: support for rar archives"
+echo -e " "

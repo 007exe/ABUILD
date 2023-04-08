@@ -1,0 +1,34 @@
+pkgname=doublecmd-gtk
+pkgver=1.0.11
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Twin-panel (commander-style) file manager (GTK2).")
+
+source=("http://sourceforge.net/projects/doublecmd/files/Double%20Commander%20Source/doublecmd-${pkgver}-src.tar.gz")
+
+tags=("app-misc apps")
+
+adddep=("desktop-file-utils hicolor-icon-theme shared-mime-info")
+
+build_deps=("${adddep} lazarus gtk2")
+
+# NOTE: Это опциональные зависимости
+removedep=("lua unzip zip p7zip libunrar")
+
+conflicts=("doublecmd-qt5 doublecmd-qt doublecmd-gtk2")
+
+before_build(){
+  cd ${srcdir}
+  cp -a /usr/lib/lazarus ./
+
+  cd ${srcdir}/doublecmd-${pkgver}
+  sed -e 's/LIB_SUFFIX=.*/LIB_SUFFIX=/g' -i install/linux/install.sh
+  sed -e "s@=\$(which lazbuild)@=\"\$(which lazbuild) --lazarusdir=$srcdir/lazarus\"@" -i build.sh
+}
+
+build(){
+  cd ${srcdir}/doublecmd-${pkgver}
+  ./build.sh beta gtk2
+  install/linux/install.sh --install-prefix=${pkgdir}
+}
