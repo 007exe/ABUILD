@@ -1,10 +1,9 @@
 pkgname=os-prober
-pkgver=1.80
+pkgver=1.81
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility to detect other OSes on a set of drives.")
-longdesc=("This is a small package that may be depended on by any bootloader installer package to detect other filesystems with operating systems on them, and work out how to boot other linux installs.")
 
 source=("http://http.debian.net/debian/pool/main/o/${pkgname}/${pkgname}_${pkgver}.tar.xz")
 
@@ -17,6 +16,10 @@ adddep=("bash")
 build() {
   go_src_dir
   burn_patches
+#FIX: Обнаружение 64х разрядных дистрибутивов
+  sed -i -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" os-probes/mounted/common/90linux-distro
+  rm -f Makefile
+
   make -j${numjobs} newns
 
   install -Dm 755 os-prober linux-boot-prober -t ${pkgdir}/usr/bin
