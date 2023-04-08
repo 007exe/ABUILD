@@ -16,6 +16,7 @@ build() {
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=/usr/lib \
     -DBUILD_TESTS=OFF \
     -DBoost_NO_BOOST_CMAKE=ON
   make -C build -j${numjobs}
