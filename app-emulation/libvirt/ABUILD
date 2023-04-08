@@ -9,9 +9,10 @@ source=("https://libvirt.org/sources/libvirt-${pkgver}.tar.xz")
 
 tags=("app-emulation libs")
 
-# open-iscsi libiscsi ceph-libs glusterfs qemu-base
-build_deps=("meson libxslt python-docutils lvm2 rpcsvc-proto dnsmasq
-iproute2 libpciaccess yajl fuse3 gnutls parted libssh libxml2 numactl polkit")
+adddep=("libpciaccess yajl fuse3 gnutls parted libssh libxml2 numactl polkit")
+
+# open-iscsi libiscsi glusterfs qemu-base
+build_deps=("${adddep} meson libxslt python-docutils lvm2 bash-completion rpcsvc-proto dnsmasq iproute2")
 
 config_files=("etc/libvirt/libvirt-admin.conf
 etc/libvirt/libvirt.conf
@@ -80,6 +81,7 @@ build() {
     src/qemu/test_libvirtd_qemu.aug.in
   meson build \
     -D prefix=/usr \
+    -D sbindir=bin \
     -D libdir=/usr/lib \
     -D runstatedir=/run \
     -D qemu_user=libvirt-qemu \
