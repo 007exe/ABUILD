@@ -1,5 +1,5 @@
 pkgname=mac
-pkgver=9.04
+pkgver=10.08
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,21 @@ source=("https://monkeysaudio.com/files/MAC_${pkgver//./}_SDK.zip")
 
 tags=("libs media-sound")
 
-build_deps=("python-html2text gcc-libs")
+adddep=("glibc gcc-libs")
+
+build_deps=("${adddep} python-html2text cmake")
 
 build(){
   cd ${srcdir}
   burn_patches
-  make -C Source/Projects/NonWindows
-  make DESTDIR=${pkgdir} prefix=/usr install -C Source/Projects/NonWindows
+  cmake \
+    -B build \
+    -D CMAKE_BUILD_TYPE='None' \
+    -D CMAKE_INSTALL_PREFIX='/usr'
+  cmake --build build
+  html2text --ignore-links "$pkgname-$pkgver-license.html" \
+    | sed -n '/^## License$/,$p' \
+    > LICENSE.md
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE.md
 }
