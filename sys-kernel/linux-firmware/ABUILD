@@ -1,5 +1,5 @@
 pkgname=linux-firmware
-pkgver=20230210
+pkgver=20230310
 pkgbuild=1
 arch=("fw")
 
