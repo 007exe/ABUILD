@@ -4,13 +4,14 @@ pkgbuild=2
 arch=("auto")
 
 shortdesc=("Xorg Openchrome drivers.")
-longdesc=("A free and Open Source video driver for the VIA/S3G UniChrome and UniChrome Pro graphics chipsets. (CLE266, KN400, KM400, K8M800, PM800, CN400, VN800)")
 
 source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-video-openchrome-${pkgver}.tar.bz2")
 
 tags=("xorg xorg-drivers")
 
-build_deps=("libdrm libxvmc xorg-server-devel libxv")
+adddep=("libdrm libxvmc")
+
+build_deps=("${adddep} xorg-server-devel libxv")
 
 build() {
   go_src_dir
@@ -19,6 +20,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
+    --sbindir=/usr/bin \
     --enable-viaregtool \
     --disable-static
   make -j${numjobs}
