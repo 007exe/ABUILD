@@ -3,8 +3,7 @@ pkgver=4.2.8p15
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Network Time Protocol reference implementation")
-longdesc=("The ntp package contains a client and server to keep the time synchronized between various computers over a network. This package is the official reference implementation of the NTP protocol.")
+shortdesc=("Network Time Protocol reference implementation.")
 
 source=("https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${pkgver/p /.p}.tar.gz")
 
@@ -22,6 +21,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
+    --sbindir=/usr/bin \
     --enable-linuxcaps \
     --enable-ntp-signd \
     --sysconfdir=/etc \
