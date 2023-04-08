@@ -20,6 +20,7 @@ build() {
   cmake \
     -DENABLE_DISCORD=ON \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DINSTALL_SUBDIR_BIN=bin \
     -DCMAKE_BUILD_TYPE=Release
   make -j${numjobs}
