@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fuse-filesystem utilizing the sftp service.")
-longdesc=("FUSE client based on the SSH File Transfer Protocol.")
 
 source=("https://github.com/libfuse/sshfs/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("network net-fs")
 
-build_deps=("meson python-docutils fuse3 glib2 openssh")
+adddep=("fuse3 glib2 openssh")
+
+build_deps=("${adddep} meson python-docutils")
 
 build() {
   go_src_dir
@@ -20,6 +21,7 @@ build() {
   cd build
   meson .. \
     -D prefix=/usr \
+    -D sbindir=bin \
     -D libdir=/usr/lib
   ninja -j${numjobs}
   DESTDIR=${pkgdir} ninja install
