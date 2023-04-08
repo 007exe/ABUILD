@@ -10,9 +10,9 @@ source=("https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/archive/
 
 tags=("network net-misc")
 
-build_deps=("gtk-doc gobject-introspection vala meson bash-completion libgudev polkit ppp libqmi libmbim mobile-broadband-provider-info")
-
 adddep=("libgudev polkit ppp libqmi libmbim mobile-broadband-provider-info")
+
+build_deps=("${adddep} gtk-doc gobject-introspection vala meson bash-completion")
 
 build() {
   go_src_dir
@@ -20,6 +20,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
+    -D sbindir=bin \
     -D dbus_policy_dir=/usr/share/dbus-1/system.d \
     -D dist_version="\"$pkgver\"" \
     -D gtk_doc=true \
