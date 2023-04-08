@@ -1,5 +1,5 @@
 pkgname=hplip-plugin
-pkgver=3.22.10
+pkgver=3.23.3
 pkgbuild=1
 arch=("auto")
 
