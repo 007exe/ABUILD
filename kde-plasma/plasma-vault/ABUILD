@@ -1,11 +1,11 @@
 pkgname=plasma-vault
-pkgver=5.27.3
+pkgver=5.27.4.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plasma applet and services for creating encrypted vaults.")
 
-source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 

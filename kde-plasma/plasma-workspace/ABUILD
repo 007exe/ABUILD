@@ -1,11 +1,12 @@
 pkgname=plasma-workspace
-pkgver=5.27.3
+pkglist=("plasma-wayland-session")
+pkgver=5.27.4.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KDE Plasma Workspace.")
 
-source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
@@ -22,8 +23,6 @@ plasma-wayland-protocols wayland-protocols kunitconversion")
 removedep=("plasma-workspace-wallpapers gpsd networkmanager-qt kdepim-addons appmenu-gtk-module baloo discover")
 
 config_files=("etc/pam.d/kde")
-
-pkglist=("plasma-wayland-session")
 
 build() {
   go_src_dir
