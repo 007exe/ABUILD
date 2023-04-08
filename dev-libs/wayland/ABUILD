@@ -1,16 +1,17 @@
 pkgname=wayland
-pkgver=1.21.0
+pkgver=1.22.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A computer display server protocol.")
-longdesc=("Wayland is a project to define a protocol for a compositor to talk to its clients as well as a library implementation of the protocol.")
 
 source=("https://gitlab.freedesktop.org/wayland/wayland/-/releases/${pkgver}/downloads/wayland-${pkgver}.tar.xz")
 
 tags=("dev-libs libs")
 
-build_deps=("meson ninja libxslt doxygen xmlto graphviz docbook-xsl glibc libffi expat libxml2")
+adddep=("glibc libffi expat libxml2")
+
+build_deps=("${adddep} meson libxslt doxygen xmlto graphviz docbook-xsl")
 
 build() {
   go_src_dir
@@ -19,8 +20,6 @@ build() {
     --buildtype=release \
     --prefix=/usr \
     --libdir=/usr/lib
-#    -D documentation=false
-# FIXME: Проблемы со сборкой документации
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
 
