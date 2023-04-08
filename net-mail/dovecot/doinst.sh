@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend dovecot capabilities:"
+echo -e "libldap: ldap plugin"
+echo -e "lua53: LUA auth and push support"
+echo -e "clucene: alternative FTS indexer"
+echo -e " "

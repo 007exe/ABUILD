@@ -1,7 +1,7 @@
 pkgname=dovecot
-pkgver=2.3.19.1
+pkgver=2.3.20
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("An IMAP and POP3 server written with security primarily in mind.")
 
@@ -9,8 +9,9 @@ source=("https://dovecot.org/releases/2.3/${pkgname}-${pkgver}.tar.gz")
 
 tags=("server net-mail")
 
-build_deps=("libcap openldap lua53 xz clucene sqlite
-mariadb-libs libsodium postgresql-libs bzip2 lz4 expat curl linux-pam")
+adddep=("krb5 openssl sqlite mariadb-libs libsodium postgresql-libs bzip2 lz4 expat curl linux-pam")
+
+build_deps=("${adddep} libcap openldap lua53 xz clucene")
 
 # NOTE: Это опциональные зависимости
 removedep=("openldap lua53 clucene")
@@ -23,6 +24,7 @@ build() {
   sed -i 's:OPENSSLCONFIG=${OPENSSLCONFIG-dovecot-openssl.cnf}:OPENSSLCONFIG=${OPENSSLCONFIG- /etc/ssl/dovecot-openssl.cnf}:' doc/mkcert.sh
   ./configure \
     --prefix=/usr \
+    --sbindir=/usr/bin \
     --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
