@@ -1,16 +1,20 @@
 pkgname=feh
-pkgver=3.9.1
+pkgver=3.10
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fast and light imlib2-based image viewer.")
-longdesc=("Feh is a fast, lightweight image viewer which uses Imlib2.")
 
 source=(" https://feh.finalrewind.org/feh-${pkgver}.tar.bz2")
 
 tags=("media-gfx apps")
 
-build_deps=("libxt curl libxinerama imlib2 libexif")
+adddep=("curl file imlib2 libexif libxinerama")
+
+build_deps=("${adddep} libxt")
+
+# NOTE: Это опциональные зависимости
+removedep=("imagemagick jpegexiforient")
 
 build() {
   go_src_dir
