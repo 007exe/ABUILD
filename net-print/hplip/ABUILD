@@ -1,6 +1,6 @@
 pkgname=hplip
-pkgver=3.22.10
-pkgbuild=2
+pkgver=3.23.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet.")
