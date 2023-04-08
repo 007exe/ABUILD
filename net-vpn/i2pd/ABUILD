@@ -1,5 +1,5 @@
 pkgname=i2pd
-pkgver=2.44.0
+pkgver=2.47.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/PurpleI2P/i2pd/archive/${pkgver}/${pkgname}-${pkgver
 
 tags=("network net-vpn")
 
-build_deps=("cmake boost boost-libs openssl zlib miniupnpc")
+adddep=("boost-libs openssl zlib")
+
+build_deps=("${adddep} cmake boost check")
 
 config_files=("etc/i2pd/i2pd.conf
 etc/i2pd/tunnels.conf
@@ -23,6 +25,7 @@ build() {
     -S ${srcdir}/${pkgname}-${pkgver}/build \
     -DCMAKE_BUILD_TYPE:STRING='None' \
     -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
+    -DCMAKE_INSTALL_LIBDIR:PATH='/usr/lib' \
     -DBUILD_SHARED_LIBS:BOOL='ON' \
     -DWITH_UPNP:BOOL='ON' \
     -Wno-dev
