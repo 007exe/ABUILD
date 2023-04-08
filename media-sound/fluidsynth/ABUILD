@@ -1,5 +1,5 @@
 pkgname=fluidsynth
-pkgver=2.3.1
+pkgver=2.3.2
 pkgbuild=1
 arch=("auto")
 
@@ -16,12 +16,20 @@ build_deps=("${adddep} alsa-lib cmake dbus doxygen glib2 jack ladspa libpulse li
 
 config_files=("etc/conf.d/$pkgname")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
 build() {
   go_src_dir
   burn_patches
   cmake -B build -S . \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_SUFFIX="" \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=None \
     -DFLUID_DAEMON_ENV_FILE=/etc/conf.d/fluidsynth \
     -Denable-ladspa=ON \
@@ -34,12 +42,4 @@ build() {
   install -vDm 644 build/${pkgname}.conf ${pkgdir}/etc/conf.d/${pkgname}
 
   install -vDm 644 {AUTHORS,ChangeLog,{CONTRIBUTING,README}.md,THANKS,TODO} -t ${pkgdir}/usr/share/doc/${pkgname}
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
