@@ -1,0 +1,8 @@
+echo -e " "
+echo -e "The following packages extend gutenprint capabilities:"
+echo -e "gimp:	adds gutenprint plugin to gimp"
+echo -e "libusb:	required for drivers that depend on gutenprint52usb backend"
+echo -e "foomatic-db-gutenprint-ppds: prebuilt ppd files"
+echo -e "perl:	to run cups-genppdupdate"
+echo -e "cups:	to use cups printer spooler(recommended)"
+echo -e " "

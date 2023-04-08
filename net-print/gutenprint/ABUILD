@@ -9,12 +9,20 @@ tags=("console net-print")
 
 source=("https://downloads.sourceforge.net/gimp-print/${pkgname}-${pkgver}.tar.xz")
 
+adddep=("cups cups-filters")
+
 # docbook-utils texi2html texlive-bin
-build_deps=("gimp gtk2 cups ghostscript dialog doxygen")
+build_deps=("${adddep} gimp gtk2 ghostscript dialog doxygen")
+
+# NOTE: Это опциональные зависимости
+removedep=("gimp libusb foomatic-db-gutenprint-ppds perl")
 
 build() {
   go_src_dir
   burn_patches
+#FIX: sbin
+  sed -i "s:cups_sbindir=\"\${cups_exec_prefix}\/sbin\":cups_sbindir=\"\${cups_exec_prefix}\/bin\":" m4local/stp_cups.m4
+  autoreconf -vfi
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
