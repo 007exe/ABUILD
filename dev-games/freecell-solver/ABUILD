@@ -9,7 +9,10 @@ source=("https://fc-solve.shlomifish.org/downloads/fc-solve/${pkgname}-${pkgver}
 
 tags=("dev-games libs")
 
-build_deps=("cmake gperf perl-moo perl-path-tiny perl-template-toolkit python-random2 python-six python-pysol_cards rinutils")
+adddep=("bash")
+
+build_deps=("${adddep} cmake gperf perl-moo perl-path-tiny perl-template-toolkit
+python-random2 python-six python-pysol_cards rinutils")
 
 # NOTE: Это опциональные зависимости
 removedep=("python-random2 python-pysol_cards python-six")
@@ -19,6 +22,7 @@ build() {
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DFCS_WITH_TEST_SUITE=OFF \
     -DBUILD_STATIC_LIBRARY=OFF
   cmake --build build
