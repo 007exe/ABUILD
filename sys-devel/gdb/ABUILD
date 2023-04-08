@@ -1,6 +1,6 @@
 pkgname=gdb
-pkgver=12.1
-pkgbuild=2
+pkgver=13.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The GNU Debugger.")
@@ -9,7 +9,9 @@ source=("http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
 
 tags=("develop sys-devel")
 
-build_deps=("glibc gcc-libs texinfo python guile ncurses expat xz mpfr source-highlight readline")
+adddep=("glibc ncurses gcc-libs expat xz mpfr source-highlight readline guile python python guile elfutils")
+
+build_deps=("${adddep} texinfo python guile boost")
 
 config_files=("etc/gdb/gdbinit")
 
