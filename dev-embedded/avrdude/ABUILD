@@ -1,27 +1,37 @@
 pkgname=avrdude
-pkgver=7.0
+pkgver=7.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("AVR Downloader/UploaDEr.")
-longdesc=("Download/upload/manipulate the ROM and EEPROM contents of AVR microcontrollers.")
+shortdesc=("Download/upload/manipulate the ROM and EEPROM contents of AVR microcontrollers.")
 
-source=("https://download.savannah.gnu.org/releases/avrdude/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/avrdudes/avrdude/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("utils dev-embedded")
 
-build_deps=("readline libftdi libusb-compat elfutils")
+adddep=("elfutils hidapi libftdi libusb-compat readline")
+
+build_deps=("${adddep} cmake ninja")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --mandir=/usr/share/man \
-    --sysconfdir=/etc \
-    --enable-linuxgpio \
-    --enable-linuxspi
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake -B build \
+    -G Ninja \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_SYSCONFDIR=/etc \
+    -D CMAKE_BUILD_TYPE=RelWithDebInfo \
+    -D BUILD_SHARED_LIBS=1 \
+    -D HAVE_LINUXGPIO=1 \
+    -D HAVE_LINUXSPI=1
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
 }
