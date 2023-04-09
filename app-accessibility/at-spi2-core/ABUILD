@@ -13,6 +13,8 @@ adddep=("dbus glib2 libx11 libxml2 libxtst")
 
 build_deps=("${adddep} gobject-introspection git gtk-doc meson")
 
+conflicts=("at-spi2-atk")
+
 build() {
   go_src_dir
   burn_patches
@@ -20,7 +22,7 @@ build() {
     -D prefix=/usr \
     -D buildtype=release \
     -D default_bus=dbus-broker \
-    -D docs=true
+    -D docs=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
