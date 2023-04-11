@@ -1,10 +1,9 @@
 pkgname=gucharmap
-pkgver=15.0.1
+pkgver=15.0.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Gnome Unicode Charmap.")
-longdesc=("Unicode character map viewer and library.")
 
 source=("https://gitlab.gnome.org/GNOME/gucharmap/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
