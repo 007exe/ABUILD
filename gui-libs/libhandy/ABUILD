@@ -12,7 +12,7 @@ tags=("gui-libs libs")
 
 build_deps=("glib2 gtk3 gobject-introspection meson vala glade")
 
-removedep=("atk cairo fribidi gdk-pixbuf pango glade")
+removedep=("at-spi2-core cairo fribidi gdk-pixbuf pango glade")
 
 build() {
   go_src_dir
