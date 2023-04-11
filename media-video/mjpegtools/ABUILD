@@ -12,7 +12,7 @@ tags=("libs media-video")
 
 build_deps=("libjpeg-turbo libpng gcc-libs libdv v4l-utils")
 
-removedep=("libx11 atk cairo fontconfig freetype gdk-pixbuf glib2 harfbuzz pango zlib sdl gtk2")
+removedep=("libx11 at-spi2-core cairo fontconfig freetype gdk-pixbuf glib2 harfbuzz pango zlib sdl gtk2")
 
 build() {
   go_src_dir
