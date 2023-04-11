@@ -1,5 +1,5 @@
 pkgname=python-isort
-pkgver=5.11.4
+pkgver=5.12.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,9 @@ source=("https://github.com/PyCQA/isort/archive/${pkgver}/isort-${pkgver}.tar.gz
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-poetry-core
-python-toml python-tomli")
-
 adddep=("python-toml python-tomli")
+
+build_deps=("${adddep} python python-build python-installer python-wheel python-poetry-core")
 
 build() {
   go_src_dir
