@@ -4,15 +4,14 @@ pkgbuild=2
 arch=("auto")
 
 shortdesc=("A text entry and UI navigation application (on-screen keyboard).")
-longdesc=("A text entry and UI navigation application (on-screen keyboard).")
 
 source=("https://download.gnome.org/sources/caribou/${pkgver%.*}/caribou-${pkgver}.tar.xz")
 
 tags=("app-accessibility accessibility")
 
-build_deps=("intltool docbook-xsl gtk2 gobject-introspection vala git gnome-common at-spi2-atk python-atspi python-gobject gtk3 libxklavier libgee clutter dconf")
-
 adddep=("python-atspi python-gobject dconf")
+
+build_deps=("${adddep} intltool docbook-xsl gtk2 gobject-introspection vala git gnome-common at-spi2-core gtk3 libxklavier libgee clutter")
 
 build() {
   go_src_dir
