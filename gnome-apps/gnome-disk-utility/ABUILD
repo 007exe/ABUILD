@@ -1,5 +1,5 @@
 pkgname=gnome-disk-utility
-pkgver=43.0
+pkgver=44.0
 pkgbuild=1
 arch=("auto")
 
