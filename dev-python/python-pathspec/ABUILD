@@ -1,5 +1,5 @@
 pkgname=python-pathspec
-pkgver=0.10.3
+pkgver=0.11.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,10 +10,10 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/pathspec/pat
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel")
+build_deps=("python python-build python-flit-core python-installer python-wheel")
 
 build() {
   go_src_dir
   python -m build --wheel --skip-dependency-check --no-isolation
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
