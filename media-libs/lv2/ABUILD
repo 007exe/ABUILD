@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plugin standard for audio systems.")
-longdesc=("A simple but extensible successor of LADSPA.")
 
 source=("https://lv2plug.in/spec/lv2-${pkgver}.tar.xz")
 
@@ -15,7 +14,7 @@ build_deps=("asciidoc codespell doxygen flake8 gtk2 libsamplerate libsndfile mes
 python-lxml python-markdown python-pygments python-rdflib serd sord")
 
 # NOTE: Это опциональные зависимости
-removedep=("sord libsndfile atk cairo fontconfig freetype glib2 gtk2 harfbuzz pango python-pygments python-rdflib")
+removedep=("sord libsndfile cairo fontconfig freetype glib2 gtk2 harfbuzz pango python-pygments python-rdflib")
 
 build() {
   go_src_dir
