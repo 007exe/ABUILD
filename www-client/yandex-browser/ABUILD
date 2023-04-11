@@ -10,7 +10,7 @@ source=("https://repo.yandex.ru/yandex-browser/rpm/stable/x86_64/yandex-browser-
 tags=("www-client apps")
 
 # harfbuzz-icu
-adddep=("binutils ttf-liberation jq alsa-lib at-spi2-atk libcups curl dbus libdrm
+adddep=("binutils ttf-liberation jq alsa-lib at-spi2-core libcups curl dbus libdrm
 gdbm gtk4 nspr nss pango wayland libxcomposite libxdamage libxkbcommon libxkbfile
 libxrandr wget xdg-utils harfbuzz")
 
