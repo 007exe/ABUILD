@@ -12,9 +12,9 @@ tags=("www-client apps")
 adddep=("gtk3 desktop-file-utils shared-mime-info hicolor-icon-theme")
 
 build_deps=("${adddep} alsa-lib curl nss libcups rpm libxss libnotify glibc
-libx11 libxcomposite libxdamage libxext libxfixes libxrandr alsa-lib atk
+libx11 libxcomposite libxdamage libxext libxfixes libxrandr alsa-lib pango
 at-spi2-core cairo libcups curl dbus libdrm expat mesa gcc-libs glib2 nspr
-nss pango libxcb libxkbcommon")
+nss libxcb libxkbcommon")
 
 build() {
   cd ${srcdir}
