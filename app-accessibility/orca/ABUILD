@@ -1,5 +1,5 @@
 pkgname=orca
-pkgver=43.0
+pkgver=43.1
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ source=("https://gitlab.gnome.org/GNOME/orca/-/archive/ORCA_${pkgver//./_}/orca-
 tags=("accessibility app-accessibility")
 
 # python-xdg
-build_deps=("gtk3 at-spi2-atk python-atspi speech-dispatcher dbus-python xorg-xmodmap brltty
+build_deps=("gtk3 at-spi2-core python-atspi speech-dispatcher dbus-python xorg-xmodmap brltty
 liblouis gsettings-desktop-schemas gst-plugins-base gst-plugins-good itstool yelp-tools python-setproctitle")
 
 # python-xdg
