@@ -9,10 +9,9 @@ source=("https://github.com/ofek/hatch/archive/refs/tags/hatchling-v${pkgver}.ta
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel
-python-tomli python-packaging python-pathspec python-pluggy python-editables")
-
 adddep=("python-tomli python-packaging python-pathspec python-pluggy python-editables")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
