@@ -1,16 +1,17 @@
 pkgname=xorg-xwininfo
-pkgver=1.1.5
+pkgver=1.1.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Command-line utility to print information about windows on an X server.")
-longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xwininfo-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xwininfo-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
-build_deps=("libxcb xorg-util-macros libx11")
+adddep=("libxcb")
+
+build_deps=("${adddep} xorg-util-macros libx11")
 
 build() {
   go_src_dir
