@@ -1,5 +1,5 @@
 pkgname=python-yaspin
-pkgver=2.2.0
+pkgver=2.3.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,9 @@ source=("https://github.com/pavdmyt/yaspin/archive/v${pkgver}/${pkgname}-${pkgve
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-poetry-core
-python-termcolor")
-
 adddep=("python-termcolor")
+
+build_deps=("${adddep} python python-build python-installer python-poetry-core")
 
 build(){
   go_src_dir
