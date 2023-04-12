@@ -9,9 +9,9 @@ source=("https://gitlab.gnome.org/GNOME/pyatspi2/-/archive/PYATSPI_${pkgver//./_
 
 tags=("libs dev-python")
 
-build_deps=("python-gobject at-spi2-core")
-
 adddep=("python-gobject at-spi2-core")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
