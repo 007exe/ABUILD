@@ -1,16 +1,17 @@
 pkgname=luit
-pkgver=20221028
+pkgver=20230201
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Filter that can be run between an arbitrary application and a UTF-8 terminal emulator")
-longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
 source=("https://invisible-mirror.net/archives/luit/luit-${pkgver}.tgz")
 
 tags=("xorg xorg-apps")
 
-build_deps="libfontenc libx11"
+adddep=("libfontenc")
+
+build_deps=("${adddep} libx11")
 
 build() {
   go_src_dir
