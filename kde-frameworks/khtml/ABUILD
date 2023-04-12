@@ -1,5 +1,5 @@
 pkgname=khtml
-pkgver=5.104.0
+pkgver=5.105.0
 pkgbuild=1
 arch=("auto")
 
