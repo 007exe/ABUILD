@@ -10,10 +10,9 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/keyring/keyr
 
 tags=("libs dev-python")
 
-build_deps=("python python-jaraco.classes python-jeepney python-secretstorage
-python-build python-installer python-setuptools-scm python-wheel")
-
 adddep=("python-jaraco.classes python-jeepney python-secretstorage")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools-scm python-wheel")
 
 build() {
   go_src_dir
