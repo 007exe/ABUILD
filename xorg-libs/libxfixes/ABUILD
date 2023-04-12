@@ -1,16 +1,17 @@
 pkgname=libxfixes
-pkgver=6.0.0
-pkgbuild=2
+pkgver=6.0.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 miscellaneous 'fixes' extension library.")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXfixes-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXfixes-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
-build_deps=("libx11 xorg-util-macros xorgproto")
+adddep=("libx11")
+
+build_deps=("${adddep} xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
