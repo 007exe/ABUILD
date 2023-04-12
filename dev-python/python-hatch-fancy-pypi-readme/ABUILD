@@ -9,9 +9,9 @@ source=("https://github.com/hynek/hatch-fancy-pypi-readme/archive/${pkgver}/${pk
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-hatchling")
-
 adddep=("python-hatchling")
+
+build_deps=("${adddep} python python-build python-installer")
 
 build() {
   go_src_dir
