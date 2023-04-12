@@ -1,32 +1,22 @@
 pkgname=python-myst-parser
-pkgver=0.18.1
-pkgbuild=2
+pkgver=1.0.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("  An extended commonmark compliant parser, with bridges to docutils/sphinx.")
+shortdesc=("An extended commonmark compliant parser, with bridges to docutils/sphinx.")
 
-source=("https://github.com/executablebooks/MyST-Parser/archive/v${pkgver}.tar.gz")
+source=("https://github.com/executablebooks/MyST-Parser/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-flit-core python-wheel
-python-docutils python-jinja python-markdown-it-py python-mdit_py_plugins
-python-typing_extensions python-sphinx python-yaml")
-
 adddep=("python-docutils python-jinja python-markdown-it-py python-mdit_py_plugins
 python-typing_extensions python-sphinx python-yaml")
+
+build_deps=("${adddep} python python-build python-installer python-flit-core python-wheel")
 
 build() {
   go_src_dir
   python -m build -wn
   python -m installer -d ${pkgdir} dist/*.whl
   install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
