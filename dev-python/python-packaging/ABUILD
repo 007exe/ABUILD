@@ -9,9 +9,9 @@ tags=("dev-python libs")
 
 source=("https://github.com/pypa/packaging/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps=("python python-setuptools python-pyparsing")
-
 adddep=("python-pyparsing python-six")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
