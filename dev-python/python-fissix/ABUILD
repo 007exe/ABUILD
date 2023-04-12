@@ -9,9 +9,9 @@ source=("https://pypi.python.org/packages/source/f/fissix/fissix-${pkgver}.tar.g
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-flit-core python-appdirs")
-
 adddep=("python-appdirs")
+
+build_deps=("${adddep} python python-build python-installer python-flit-core")
 
 build() {
   go_src_dir
