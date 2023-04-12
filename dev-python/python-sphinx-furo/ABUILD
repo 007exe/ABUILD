@@ -1,5 +1,5 @@
 pkgname=python-sphinx-furo
-pkgver=2022.12.07
+pkgver=2023.03.27
 pkgbuild=1
 arch=("auto")
 
@@ -15,17 +15,17 @@ adddep=("python-sphinx-basic-ng python-pygments python-beautifulsoup4")
 build_deps=("${adddep} python python-build python-installer npm
 python-sphinx-theme-builder python-flit-core")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
 build() {
   go_src_dir
 #  STB_USE_SYSTEM_NODE=true
   python -m build -nw
   python -m installer --destdir=${pkgdir} dist/*.whl
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
 }
