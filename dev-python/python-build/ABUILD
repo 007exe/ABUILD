@@ -18,6 +18,14 @@ python-sphinx-autodoc-typehints python-sphinx-furo")
 # NOTE: Это опциональные зависимости
 removedep=("python-virtualenv")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
 build() {
   go_src_dir
   python -m build --wheel --skip-dependency-check --no-isolation
@@ -29,12 +37,4 @@ build() {
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d ${pkgdir}/usr/share/licenses/${pkgname}
   ln -s ${site_packages}/build-${pkgver}.dist-info/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
 }
