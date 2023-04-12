@@ -9,10 +9,9 @@ source=("https://pypi.io/packages/source/t/tinycss2/tinycss2-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-flit-core
-python-webencodings")
-
 adddep=("python-webencodings")
+
+build_deps=("${adddep} python python-build python-installer python-flit-core")
 
 build() {
   go_src_dir
