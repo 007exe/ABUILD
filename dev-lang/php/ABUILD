@@ -1,7 +1,7 @@
 pkgname=php
 pkglist=("php-cgi php-apache php-fpm php-embed php-phpdbg php-dblib php-enchant php-gd php-imap php-intl
 php-sodium php-odbc php-pgsql php-pspell php-snmp php-sqlite php-tidy php-xsl")
-pkgver=8.2.4
+pkgver=8.2.5
 pkgbuild=1
 arch=("auto")
 
