@@ -1,5 +1,5 @@
 pkgname=qt6-imageformats
-pkgver=6.4.3
+pkgver=6.5.0
 pkgbuild=1
 arch=("auto")
 
