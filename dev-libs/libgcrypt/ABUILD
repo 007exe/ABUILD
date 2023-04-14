@@ -1,20 +1,23 @@
 pkgname=libgcrypt
-pkgver=1.10.1
-pkgbuild=2
+pkgver=1.10.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("General purpose cryptographic library based on the code from GnuPG.")
-longdesc=("The libgcrypt package contains a general purpose crypto library based on the code used in GnuPG. The library provides a high level interface to cryptographic building blocks using an extendable and flexible API.")
 
 source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("dev-libs libs")
 
-build_deps=("libgpg-error autoconf")
+adddep=("libgpg-error")
+
+build_deps=("${adddep} autoconf")
 
 build() {
   go_src_dir
   burn_patches
+  sed -i "s:t-secmem::" tests/Makefile.am
+  sed -i "s:t-sexp::" tests/Makefile.am
   autoreconf -vfi
   ./configure \
     --prefix=/usr \
