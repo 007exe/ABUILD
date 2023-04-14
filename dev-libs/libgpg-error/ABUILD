@@ -1,18 +1,17 @@
 pkgname=libgpg-error
-pkgver=1.46
-pkgbuild=2
+pkgver=1.47
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Support library for libgcrypt.")
-longdesc=("The libgpg-error package contains a library that defines common error values for all GnuPG components.")
 
 source=("https://www.gnupg.org/ftp/gcrypt/libgpg-error/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("dev-libs libs")
 
-build_deps=("glibc")
+adddep=("bash glibc")
 
-adddep=("bash")
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
