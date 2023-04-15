@@ -9,15 +9,14 @@ source=("https://pypi.io/packages/source/S/SQLAlchemy/SQLAlchemy-${pkgver}.tar.g
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-build python-installer python-wheel
-python-greenlet")
-
 adddep=("python-greenlet")
+
+build_deps=("${adddep} python python-setuptools python-build python-installer python-wheel")
 
 build(){
   go_src_dir
   sed -i '/warnings.filterwarnings("error", category=DeprecationWarning)/a \    warnings.filterwarnings("ignore", category=DeprecationWarning, message="Creating a LegacyVersion has been deprecated and will be removed in the next major release")' \
-      SQLAlchemy-$pkgver/lib/sqlalchemy/testing/warnings.py
+      lib/sqlalchemy/testing/warnings.py
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
