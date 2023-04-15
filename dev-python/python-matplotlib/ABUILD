@@ -1,5 +1,5 @@
 pkgname=python-matplotlib
-pkgver=3.6.2
+pkgver=3.7.1
 pkgbuild=1
 arch=("auto")
 
@@ -18,12 +18,31 @@ build_deps=("${adddep} python python-setuptools-scm python-certifi")
 removedep=("tk pyside2 pyside6 python-pyqt5 python-pyqt6 python-gobject python-wxpython python-cairo python-cairocffi
 python-tornado ffmpeg imagemagick ghostscript texlive-bin texlive-latexextra python-certifi")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+
+  rm -f -r .git
+  sed -e 's|oldest-supported-numpy|numpy|' -i pyproject.toml
+  sed -e 's|#system_freetype = False|system_freetype = True|' -e 's|#system_qhull = False|system_qhull = True|' mplsetup.cfg.template > mplsetup.cfg
+  burn_patches
+  sed -e 's|2_000_000|2_500_000|' -i lib/matplotlib/tests/test_backends_interactive.py
+  sed -i 's|#tests = False|tests = True|' mplsetup.cfg
+
+#  for _module in matplotlib mpl_toolkits
+#  do
+#    cp -r lib/${_module}/* lib/${_module}
+#  done
+}
+
 build() {
   go_src_dir
-  burn_patches
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
-  python setup.py build
-  python setup.py install --root ${pkgdir} --prefix=/usr --optimize=1 --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 doc/users/project/license.rst -t ${pkgdir}/usr/share/licenses/${pkgname}/
-  rm -r ${pkgdir}$(python -c "import site; print(site.getsitepackages()[0])")/{matplotlib,mpl_toolkits}/tests/
+  rm -r "${pkgdir}"$(python -c "import site; print(site.getsitepackages()[0])")/{matplotlib,mpl_toolkits/*}/tests/
 }
