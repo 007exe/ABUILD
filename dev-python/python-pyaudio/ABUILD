@@ -9,14 +9,14 @@ source=("https://files.pythonhosted.org/packages/source/P/PyAudio/PyAudio-${pkgv
 
 tags=("libs dev-python")
 
-build_deps=("portaudio python")
-
 adddep=("portaudio")
+
+build_deps=("${adddep} python")
 
 build(){
   go_src_dir
   burn_patches
   python setup.py build
   python3 setup.py install --root ${pkgdir} --optimize=1
-  install -Dm644 README ${pkgdir}/usr/share/licenses/${pkgname}/README
+  install -Dm644 README.md ${pkgdir}/usr/share/licenses/${pkgname}/README
 }
