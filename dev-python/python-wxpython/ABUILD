@@ -9,10 +9,10 @@ source=("https://files.pythonhosted.org/packages/source/w/wxPython/wxPython-${pk
 
 tags=("libs dev-python")
 
-build_deps=("mesa glu webkit2gtk python-requests python-setuptools python-attrdict sip doxygen waf
-wxwidgets-gtk3 python-six")
-
 adddep=("wxwidgets-gtk3 python-six")
+
+build_deps=("${adddep} mesa glu webkit2gtk python-requests python-setuptools python-attrdict
+sip doxygen waf")
 
 build() {
   go_src_dir
