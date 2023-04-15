@@ -1,5 +1,5 @@
 pkgname=python-django
-pkgver=4.1.5
+pkgver=4.1.7
 pkgbuild=1
 arch=("auto")
 
@@ -13,6 +13,14 @@ adddep=("python-pytz python-sqlparse python-asgiref")
 
 build_deps=("${adddep} python python-setuptools")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
 build(){
   go_src_dir
   python setup.py build
@@ -24,12 +32,4 @@ build(){
   ln -s django-admin.py ${pkgdir}/usr/share/bash-completion/completions/django-admin
   ln -s django-admin.py ${pkgdir}/usr/share/bash-completion/completions/manage.py
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
 }
