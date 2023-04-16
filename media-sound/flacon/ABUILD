@@ -1,5 +1,5 @@
 pkgname=flacon
-pkgver=9.5.1
+pkgver=10.0.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://github.com/flacon/${pkgname}/archive/v${pkgver}.tar.gz")
 
 tags=("apps media-sound")
 
-build_deps=("cmake icu qt5-tools hicolor-icon-theme qt5-base uchardet taglib")
+adddep=("hicolor-icon-theme qt5-base uchardet taglib")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} cmake icu qt5-tools")
 
 # NOTE: Это опциональные зависимости
 removedep=("flac lame mac mp3gain opus-tools sox ttaenc vorbis-tools vorbisgain wavpack")
