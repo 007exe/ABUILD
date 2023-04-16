@@ -1,16 +1,17 @@
 pkgname=parted
-pkgver=3.5
+pkgver=3.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A program for creating, destroying, resizing, checking and copying partitions.")
-longdesc=("The Parted package is a disk partitioning and partition resizing tool.")
 
 source=("http://ftp.gnu.org/gnu/parted/${pkgname}-${pkgver}.tar.xz")
 
 tags=("console sys-block")
 
-build_deps=("device-mapper util-linux")
+adddep=("device-mapper util-linux")
+
+build_deps=("${adddep} pkgconf")
 
 build() {
   go_src_dir
