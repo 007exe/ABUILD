@@ -1,38 +1,32 @@
 pkgname=kicad
-pkgver=6.0.1
+pkgver=7.0.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("Electronic schematic and printed circuit board (PCB) design tools")
-longdesc=("Kicad is an open source (GPL) program for the creation of electronic schematic diagrams and printed circuit board artwork.")
 
-source=("https://gitlab.com/kicad/code/kicad/-/archive/$pkgver/kicad-$pkgver.tar.bz2")
+source=("https://gitlab.com/kicad/code/kicad/-/archive/${pkgver}/kicad-${pkgver}.tar.bz2")
 
-tags="develop dev-embedded"
+tags=("develop dev-embedded")
 
-build_deps="cmake mesa boost swig wxgtk3 python glew curl glm ngspice opencascade python-wxpython"
+adddep=("boost-libs curl glew glm ngspice opencascade python python-wxpython wxwidgets-gtk3 unixodbc")
 
-adddep="python-wxpython"
+build_deps=("${adddep} cmake ninja mesa boost swig")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
-    -DKICAD_USE_OCC=ON \
-    -DKICAD_SCRIPTING_WXPYTHON=ON \
-    -DwxWidgets_CONFIG_EXECUTABLE=/usr/bin/wx-config-gtk3 \
-    -DKICAD_BUILD_I18N=ON \
-    -DKICAD_I18N_UNIX_STRICT_PATH=ON \
-    -DKICAD_BUILD_QA_TESTS=OFF \
-    -DKICAD_DOCS=/usr/share/doc \
-    -DKICAD_SCRIPTING_WXPYTHON=ON \
-    -DKICAD_STABLE_VERSION=ON \
-    -Wno-dev
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake -B build \
+    -G Ninja \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D KICAD_USE_OCE=ON \
+    -D KICAD_USE_EGL=ON \
+    -D KICAD_BUILD_I18N=ON \
+    -D KICAD_I18N_UNIX_STRICT_PATH=ON \
+    -D KICAD_BUILD_QA_TESTS=OFF \
+    -W no-dev
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+#  strip "$STRIP_SHARED" ${pkgdir}/usr/lib/python*/site-packages/_pcbnew.so
 }

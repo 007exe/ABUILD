@@ -1,28 +1,26 @@
 pkgname=kicad-library
-pkgver=6.0.1
+pkglist=("kicad-library-3d")
+pkgver=7.0.1
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
 
-shortdesc=("KiCad symbol, footprint and template libraries")
-longdesc=("Kicad-library is a collection of libraries required for kicad.")
+shortdesc=("KiCad symbol, footprint and template libraries.")
 
-source=("https://gitlab.com/kicad/libraries/kicad-symbols/-/archive/$pkgver/kicad-symbols-$pkgver.tar.bz2"
-"https://gitlab.com/kicad/libraries/kicad-footprints/-/archive/$pkgver/kicad-footprints-$pkgver.tar.bz2"
-"https://gitlab.com/kicad/libraries/kicad-footprints/-/archive/$pkgver/kicad-templates-$pkgver.tar.bz2"
-"https://gitlab.com/kicad/libraries/kicad-packages3D/-/archive/$pkgver/kicad-packages3D-$pkgver.tar.bz2")
+source=("https://gitlab.com/kicad/libraries/kicad-symbols/-/archive/${pkgver}/kicad-symbols-${pkgver}.tar.bz2"
+"https://gitlab.com/kicad/libraries/kicad-footprints/-/archive/${pkgver}/kicad-footprints-${pkgver}.tar.bz2"
+"https://gitlab.com/kicad/libraries/kicad-footprints/-/archive/${pkgver}/kicad-templates-${pkgver}.tar.bz2"
+"https://gitlab.com/kicad/libraries/kicad-packages3D/-/archive/${pkgver}/kicad-packages3D-${pkgver}.tar.bz2")
 
-tags="libs dev-embedded"
+tags=("libs dev-embedded")
 
-build_deps="cmake"
+adddep=("kicad")
 
-adddep="kicad"
+build_deps=("${adddep} cmake")
 
-pkglist="kicad-library-3d"
-
-custom_opts="skip_gendeps"
+custom_opts=("skip_gendeps")
 
 before_build() {
-  mv kicad-footprints-$pkgver-* kicad-templates-$pkgver
+  mv kicad-footprints-${pkgver}-* kicad-templates-${pkgver}
 }
 
 build() {
@@ -32,24 +30,23 @@ build() {
        -S "kicad-$package-$pkgver" \
        -DCMAKE_INSTALL_PREFIX=/usr
      cmake --build "build-$package"
-     DESTDIR="$pkgdir" cmake --install "build-$package"
+     DESTDIR=${pkgdir} cmake --install "build-$package"
   done
 }
 
 kicad-library-3d() {
   pkgname=kicad-library-3d
   shortdesc=("KiCad 3D model libraries")
-  longdesc=("Kicad-library-3d is a collection of 3D libraries required for kicad.")
-  arch="noarch"
-  adddep="kicad"
-  custom_opts="skip_gendeps"
+  arch=("noarch")
+  adddep=("kicad")
+  custom_opts=("skip_gendeps")
 }
 
 kicad-library-3d_prep() {
   cmake \
        -B build-packages3D \
-       -S kicad-packages3D-$pkgver \
+       -S kicad-packages3D-${pkgver} \
        -DCMAKE_INSTALL_PREFIX=/usr
   cmake --build build-packages3D
-  DESTDIR="$pkgdir" cmake --install build-packages3D
+  DESTDIR=${pkgdir} cmake --install build-packages3D
 }
