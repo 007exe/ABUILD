@@ -1,11 +1,11 @@
 pkgname=libvisual
-pkgver=0.4.1
+pkgver=0.4.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Abstraction library that comes between applications and audio visualisation plugins.")
 
-source=("https://downloads.sourceforge.net/sourceforge/libvisual/libvisual-${pkgver}.tar.gz")
+source=("https://github.com/Libvisual/libvisual/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
