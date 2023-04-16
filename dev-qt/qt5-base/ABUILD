@@ -1,5 +1,5 @@
 pkgname=qt5-base
-pkgver=5.15.8
+pkgver=5.15.9
 pkgbuild=1
 arch=("auto")
 

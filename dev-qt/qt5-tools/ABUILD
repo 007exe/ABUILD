@@ -1,5 +1,5 @@
 pkgname=qt5-tools
-pkgver=5.15.8
+pkgver=5.15.9
 pkgbuild=2
 arch=("auto")
 
