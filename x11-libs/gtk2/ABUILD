@@ -9,10 +9,13 @@ source=("https://download.gnome.org/sources/gtk+/${pkgver%.*}/gtk+-${pkgver}.tar
 
 tags=("libs x11-libs")
 
-adddep=("gtk-update-icon-cache shared-mime-info hicolor-icon-theme")
+adddep=("gtk-update-icon-cache shared-mime-info hicolor-icon-theme at-spi2-core pango gdk-pixbuf libxcursor
+libxinerama libxrandr libxi libxcomposite libxdamage cairo libcups librsvg desktop-file-utils gdk-pixbuf pango")
 
-build_deps=("${adddep} at-spi2-core pango gdk-pixbuf libxcursor libxinerama libxrandr libxi libxcomposite
-libxdamage cairo gobject-introspection libcups librsvg desktop-file-utils gtk-doc gdk-pixbuf pango")
+build_deps=("${adddep} gobject-introspection gtk-doc")
+
+# NOTE: Это опциональные зависимости
+removedep=("adwaita-icon-theme gnome-themes-standard python")
 
 config_files=("etc/gtk-2.0/im-multipress.conf")
 

@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend gtk2 capabilities:"
+echo -e "adwaita-icon-theme: Default icon theme"
+echo -e "gnome-themes-standard: Default widget theme"
+echo -e "python: gtk-builder-convert"
+echo -e " "
