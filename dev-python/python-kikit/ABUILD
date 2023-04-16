@@ -1,20 +1,26 @@
 pkgname=python-kikit
-pkgver=1.1.2
+pkgver=1.3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Automation tools for KiCAD.")
 
-source=("https://github.com/yaqwsx/KiKit/releases/download/v${pkgver}/KiKit-${pkgver}.tar.gz")
+source=("https://github.com/yaqwsx/KiKit/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel
-kicad python-numpy python-shapely python-click python-markdown2 python-pybars3
-python-solidpython python-pcbnewtransition python-commentjson")
+adddep=("kicad python-numpy python-shapely python-click python-markdown2
+python-pybars3 python-solidpython python-pcbnewtransition python-commentjson")
 
-adddep=("kicad python-numpy python-shapely python-click python-markdown2 python-pybars3
-python-solidpython python-pcbnewtransition python-commentjson")
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
