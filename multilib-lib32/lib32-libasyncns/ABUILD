@@ -1,0 +1,33 @@
+pkgname=lib32-libasyncns
+pkgver=0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A C library for executing name service queries asynchronously (32-bit).")
+
+source=("http://0pointer.de/lennart/projects/libasyncns/libasyncns-${pkgver}.tar.gz")
+
+tags=("lib32 net-misc")
+
+adddep=("lib32-glibc libasyncns")
+
+build_deps=("${adddep} lib32-gcc-libs lynx")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libdir=/usr/lib32 \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/usr/{include,share}
+}
