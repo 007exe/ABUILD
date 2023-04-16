@@ -11,8 +11,8 @@ source=("https://brltty.app/archive/${pkgname}-${pkgver}.tar.bz2")
 tags=("accessibility app-accessibility")
 
 # java-environment strip-nondeterminism festival
-build_deps=("alsa-lib at-spi2-atk at-spi2-core atk bluez-libs cython dbus
-dracut espeak-ng expat gcc-libs glibc glib2 gpm icu liblouis libspeechd
+build_deps=("alsa-lib at-spi2-core bluez-libs cython dbus dracut
+espeak-ng expat gcc-libs glibc glib2 gpm icu liblouis libspeechd
 libxaw ncurses ocaml-ctypes ocaml-findlib pcre2 polkit python-setuptools
 speech-dispatcher")
 
