@@ -1,19 +1,18 @@
 pkgname=postfix
-pkgver=3.7.3
+pkgver=3.8.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fast, easy to administer, secure mail server.")
-longdesc=("The Postfix package contains a Mail Transport Agent (MTA). This is useful for sending email to other users of your host machine.")
 
 source=("https://de.postfix.org/ftpmirror/official/${pkgname}-${pkgver}.tar.gz")
 
 tags=("server mail-mta")
 
-# libldap libsasl tinycdb
-build_deps=("db icu libnsl lmdb mariadb-libs openssl pcre2 postgresql-libs sqlite zlib")
+# tinycdb libsasl
+build_deps=("db icu openldap libnsl lmdb mariadb-libs openssl pcre2 postgresql-libs sqlite zlib")
 
-conflicts="sendmail"
+conflicts=("sendmail")
 
 build(){
   go_src_dir
@@ -27,4 +26,9 @@ build(){
      makefiles &&
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+
+# SystemD
+  install -vDm 644 ${filedir}/${pkgname}.service -t ${pkgdir}/usr/lib/systemd/system/
+  install -vDm 644 ${filedir}/${pkgname}.sysusers ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
+  install -vDm 644 ${filedir}/${pkgname}.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf
 }
