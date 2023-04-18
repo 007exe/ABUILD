@@ -9,10 +9,17 @@ source="https://github.com/linuxmint/python3-xapp/archive/${pkgver}.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python meson
-python-psutil")
-
 adddep=("python-psutil")
+
+build_deps=("${adddep} python meson")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
