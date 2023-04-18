@@ -1,11 +1,14 @@
 pkgname=gstreamer
-pkgver=1.20.4
+pkglist=("gst-plugins-bad-libs gst-plugins-base-libs gst-plugins-base gst-plugins-good
+gst-plugins-bad gst-plugin-gtk gst-plugin-msdk gst-plugin-opencv gst-plugin-qmlgl
+gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server
+gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
+pkgver=1.22.1
 strict_version=1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Multimedia graph framework - core")
-longdesc=("gstreamer is a streaming media framework that enables applications to share a common set of plugins for tasks such as video encoding and decoding, audio encoding and decoding, audio and video filters, audio visualisation, web streaming and anything else that streams in real-time or otherwise. This package only provides base functionality and libraries. You may need at least gst-plugins-base-1.18.4 and one of Good, Bad, Ugly or Libav plugins.")
+shortdesc=("Multimedia graph framework - core.")
 
 source=("git:https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
 "https://gstreamer.freedesktop.org/src/gstreamer-docs/gstreamer-docs-${pkgver}.tar.xz")
@@ -26,11 +29,6 @@ wpewebkit libldac libfreeaptx qrencode json-glib libva libxkbcommon-x11 a52dec
 opencore-amr libcdio libdvdread libmpeg2 libsidplay x264 ffmpeg libxrandr python-gobject
 qt5-wayland")
 
-pkglist=("gst-plugins-bad-libs gst-plugins-base-libs gst-plugins-base gst-plugins-good
-gst-plugins-bad gst-plugin-gtk gst-plugin-msdk gst-plugin-opencv gst-plugin-qmlgl
-gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server
-gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
-
 _install() {
   local src dir
   for src in "${files[@]}"; do
@@ -44,14 +42,6 @@ build() {
   cd ${srcdir}/gstreamer_git_gstreamer.git.src
 # Переходим на тег текущей версии
   git checkout ${pkgver}
-
-# Фикс линковки с orc
-  sed -i "s/get_option('orc')/false/" meson.build
-
-# Отключаем тесты
-  sed -i "/subdir('tests')/d" subprojects/{gst-editing-services,gstreamer-vaapi}/meson.build
-  sed -i "/subdir('testsuite')/d" subprojects/gst-python/meson.build
-  sed -i "/'gst\/rtspserver'/d" subprojects/gst-rtsp-server/tests/check/meson.build
 
 # Исправляем неправельные префиксы
 # https://github.com/mesonbuild/meson/issues/5482
@@ -134,7 +124,6 @@ build() {
 gst-plugins-bad-libs() {
   pkgname=gst-plugins-bad-libs
   shortdesc=("Multimedia graph framework - bad.")
-  longdesc=("Less plugins for GStreamer.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -239,7 +228,6 @@ gst-plugins-bad-libs_prep() {
 gst-plugins-base-libs() {
   pkgname=gst-plugins-base-libs
   shortdesc=("Multimedia graph framework - base")
-  longdesc=("The GStreamer Base Plug-ins is a well-groomed and well-maintained collection of GStreamer plug-ins and elements, spanning the range of possible types of elements one would want to write for GStreamer.")
   tags=("libs media-plugins")
 }
 
@@ -271,9 +259,8 @@ gst-plugins-base-libs_prep() {
     usr/lib/gstreamer-1.0/libgstsubparse.so
     usr/lib/gstreamer-1.0/libgsttcp.so
     usr/lib/gstreamer-1.0/libgsttypefindfunctions.so
-    usr/lib/gstreamer-1.0/libgstvideoconvert.so
+    usr/lib/gstreamer-1.0/libgstvideoconvertscale.so
     usr/lib/gstreamer-1.0/libgstvideorate.so
-    usr/lib/gstreamer-1.0/libgstvideoscale.so
     usr/lib/gstreamer-1.0/libgstvideotestsrc.so
     usr/lib/gstreamer-1.0/libgstvolume.so
     usr/lib/gstreamer-1.0/libgstximagesink.so
@@ -292,7 +279,6 @@ gst-plugins-base-libs_prep() {
 gst-plugins-base() {
   pkgname=gst-plugins-base
   shortdesc=("Multimedia graph framework - base plugins")
-  longdesc=("The GStreamer Base Plug-ins is a well-groomed and well-maintained collection of GStreamer plug-ins and elements, spanning the range of possible types of elements one would want to write for GStreamer.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -316,7 +302,6 @@ gst-plugins-base_prep() {
 gst-plugins-good() {
   pkgname=gst-plugins-good
   shortdesc=("Multimedia graph framework - good plugins.")
-  longdesc=("The GStreamer Good Plug-ins is a set of plug-ins considered by the GStreamer developers to have good quality code, correct functionality, and the preferred license.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -406,7 +391,6 @@ gst-plugins-good_prep() {
 gst-plugins-bad() {
   pkgname=gst-plugins-bad
   shortdesc=("Multimedia graph framework - bad plugins.")
-  longdesc=("Less plugins for GStreamer.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-bad-libs=${pkgver}")
 }
@@ -484,7 +468,6 @@ gst-plugins-bad_prep() {
 gst-plugin-gtk() {
   pkgname=gst-plugin-gtk
   shortdesc=("Multimedia graph framework - gtk plugin.")
-  longdesc=("Multimedia graph framework - gtk plugin.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -500,7 +483,6 @@ gst-plugin-gtk_prep() {
 gst-plugin-msdk() {
   pkgname=gst-plugin-msdk
   shortdesc=("Multimedia graph framework - msdk plugin.")
-  longdesc=("Multimedia graph framework - msdk plugin.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-bad-libs=${pkgver}")
 }
@@ -516,7 +498,6 @@ gst-plugin-msdk_prep() {
 gst-plugin-opencv() {
   pkgname=gst-plugin-opencv
   shortdesc=("Multimedia graph framework - opencv plugin.")
-  longdesc=("Multimedia graph framework - opencv plugin.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -535,7 +516,6 @@ gst-plugin-opencv_prep() {
 gst-plugin-qmlgl() {
   pkgname=gst-plugin-qmlgl
   shortdesc=("Multimedia graph framework - qmlgl plugin.")
-  longdesc=("Multimedia graph framework - qmlgl plugin.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -551,7 +531,6 @@ gst-plugin-qmlgl_prep() {
 gst-plugin-va() {
   pkgname=gst-plugin-va
   shortdesc=("Multimedia graph framework - va plugin.")
-  longdesc=("Multimedia graph framework - va plugin.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-bad-libs=${pkgver}")
 }
@@ -569,7 +548,6 @@ gst-plugin-va_prep() {
 gst-plugin-wpe() {
   pkgname=gst-plugin-wpe
   shortdesc=("Multimedia graph framework - wpe plugin.")
-  longdesc=("Multimedia graph framework - wpe plugin.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -586,7 +564,6 @@ gst-plugin-wpe_prep() {
 gst-plugins-ugly() {
   pkgname=gst-plugins-ugly
   shortdesc=("Multimedia graph framework - ugly plugins.")
-  longdesc=("Multimedia graph framework - ugly plugins.")
   tags=("libs media-plugins")
 }
 
@@ -617,7 +594,6 @@ gst-plugins-ugly_prep() {
 gst-libav() {
   pkgname=gst-libav
   shortdesc=("Multimedia graph framework - libav plugin.")
-  longdesc=("Multimedia graph framework - libav plugin.")
   tags=("libs media-plugins")
   adddep=("gst-libav=${pkgver}")
 }
@@ -632,7 +608,6 @@ gst-libav_prep() {
 gst-rtsp-server() {
   pkgname=gst-rtsp-server
   shortdesc=("Multimedia graph framework - rtsp server.")
-  longdesc=("Multimedia graph framework - rtsp server.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -654,7 +629,6 @@ gst-rtsp-server_prep() {
 gst-editing-services() {
   pkgname=gst-editing-services
   shortdesc=("Multimedia graph framework - editing services.")
-  longdesc=("Multimedia graph framework - editing services.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-base-libs=${pkgver}")
 }
@@ -687,7 +661,6 @@ gst-editing-services_prep() {
 gstreamer-vaapi() {
   pkgname=gstreamer-vaapi
   shortdesc=("Multimedia graph framework - vaapi plugin.")
-  longdesc=("Multimedia graph framework - vaapi plugin.")
   tags=("libs media-plugins")
   adddep=("gst-plugins-bad-libs=${pkgver}")
 }
@@ -704,7 +677,6 @@ gstreamer-vaapi_prep() {
 gst-python() {
   pkgname=gst-python
   shortdesc=("Multimedia graph framework - python plugin.")
-  longdesc=("Multimedia graph framework - python plugin.")
   tags=("libs dev-python")
   adddep=("gst-plugins-base-libs=${pkgver} python-gobject")
 }
@@ -724,7 +696,6 @@ gst-pytho_prep() {
 gstreamer-docs() {
   pkgname=gstreamer-docs
   shortdesc=("Multimedia graph framework - documentation.")
-  longdesc=("Multimedia graph framework - documentation.")
 }
 
 gstreamer-docs_prep() {
