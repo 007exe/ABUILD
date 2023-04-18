@@ -1,5 +1,5 @@
 pkgname=libvirt-python
-pkgver=8.10.0
+pkgver=9.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://libvirt.org/sources/python/libvirt-python-${pkgver}.tar.gz")
 
 tags=("dev-python apps")
 
-build_deps=("python python-setuptools libvirt")
-
 adddep=("libvirt")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
