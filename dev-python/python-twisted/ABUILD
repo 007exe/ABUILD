@@ -9,11 +9,10 @@ source=("https://github.com/twisted/twisted/archive/twisted-${pkgver}.tar.gz")
 
 tags=("dev-python libs")
 
-build_deps=("python-setuptools python-zope-interface python-constantly python-incremental
-python-automat python-hyperlink python-attrs python-typing_extensions")
-
 adddep=("python-zope-interface python-constantly python-incremental python-automat
 python-hyperlink python-attrs python-typing_extensions")
+
+build_deps=("${adddep} python-setuptools")
 
 # NOTE: Это опциональные зависимости
 removedep=("python-pyopenssl python-service-identity python-idna python-cryptography
