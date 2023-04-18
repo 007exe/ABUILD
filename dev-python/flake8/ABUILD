@@ -9,16 +9,15 @@ source=("https://github.com/PyCQA/flake8/archive/${pkgver}/${pkgname}-${pkgver}.
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pyflakes python-mccabe python-pycodestyle python-entrypoints")
-
 adddep=("python-pyflakes python-mccabe python-pycodestyle python-entrypoints")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
   burn_patches
   sed -i -e 's/,<[0-9=.]*//' setup.cfg
   sed -i '/error/a \    ignore:Creating a LegacyVersion has been deprecated and will be removed in the next major release:DeprecationWarning' pytest.ini
-
   python setup.py build
   python setup.py install --root=${pkgdir} --prefix=/usr --optimize=1
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
