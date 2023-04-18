@@ -9,9 +9,9 @@ source=("https://pypi.org/packages/source/t/typogrify/typogrify-${pkgver}.tar.gz
 
 tags=("libs dev-python")
 
-build_deps=("python python-smartypants python-setuptools")
-
 adddep=("python-smartypants")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
