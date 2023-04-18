@@ -1,5 +1,5 @@
 pkgname=sip
-pkgver=6.7.6
+pkgver=6.7.7
 pkgbuild=1
 arch=("auto")
 
@@ -9,12 +9,12 @@ source=("https://pypi.python.org/packages/source/s/sip/${pkgname}-${pkgver}.tar.
 
 tags=("dev-python libs")
 
-build_deps=("python python-toml python-packaging python-setuptools python-ply")
-
 adddep=("python-toml python-packaging python-setuptools python-ply")
+
+build_deps=("${adddep} python python-build python-installer python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --skip-build --root=${pkgdir} --optimize=1
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
