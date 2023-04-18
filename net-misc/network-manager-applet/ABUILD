@@ -1,18 +1,17 @@
 pkgname=network-manager-applet
-pkgver=1.30.0
+pkgver=1.32.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Applet for managing network connections.")
-longdesc=("The NetworkManager Applet provides a tool and a panel applet used to configure wired and wireless network connections through GUI. It's designed for use with any desktop environment that uses GTK+, such as Xfce and LXDE.")
 
 source=(" https://download.gnome.org/sources/network-manager-applet/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("network net-misc")
 
-build_deps=("libsecret libnotify libmm-glib gobject-introspection gtk-doc meson libnma libnma-common libgudev")
+adddep=("networkmanager ppp libappindicator-gtk3 libmm-glib libnma libsecret networkmanager")
 
-adddep=("networkmanager ppp")
+build_deps=("${adddep} gobject-introspection gtk-doc libgudev meson")
 
 build() {
   go_src_dir
