@@ -13,7 +13,7 @@ tags=("dev-util develop")
 
 adddep=("ninja python")
 
-build_deps=("${adddep} python-build python-installer python-wheel")
+build_deps=("${adddep} python-build python-installer python-wheel python-setuptools")
 
 build() {
   go_src_dir
