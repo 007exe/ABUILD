@@ -1,6 +1,6 @@
 pkgname=pybind11
-pkgver=2.10.0
-pkgbuild=2
+pkgver=2.10.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A lightweight header-only library that exposes C++ types in Python and vice versa.")
