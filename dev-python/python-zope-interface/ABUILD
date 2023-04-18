@@ -1,5 +1,5 @@
 pkgname=python-zope-interface
-pkgver=5.5.2
+pkgver=6.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://pypi.io/packages/source/z/zope.interface/zope.interface-${pkgve
 
 tags=("dev-python libs")
 
-build_deps=("python python-setuptools")
-
 adddep=("python-setuptools")
+
+build_deps=("${adddep} python")
 
 build() {
   go_src_dir
