@@ -1,6 +1,6 @@
 pkgname=python-wcwidth
-pkgver=0.2.5
-pkgbuild=3
+pkgver=0.2.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Measures number of Terminal column cells of wide-character codes.")
@@ -9,10 +9,11 @@ source=(https://files.pythonhosted.org/packages/source/w/wcwidth/wcwidth-${pkgve
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python3 setup.py install --root=${pkgdir} --optimize=1
-  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
