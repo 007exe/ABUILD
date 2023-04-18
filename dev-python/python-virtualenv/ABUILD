@@ -9,11 +9,10 @@ source=("https://github.com/pypa/virtualenv/archive/${pkgver}/python-virtualenv-
 
 tags=("libs dev-python")
 
-build_deps=("python-setuptools python-platformdirs python-distlib python-filelock python-six
-python-setuptools-scm python-sphinx python-sphinx_rtd_theme python-sphinx-argparse towncrier
-python-importlib-metadata")
-
 adddep=("python-platformdirs python-distlib python-filelock python-six python-importlib-metadata")
+
+build_deps=("${adddep} python-setuptools python-setuptools-scm python-sphinx python-sphinx_rtd_theme
+python-sphinx-argparse towncrier python-importlib-metadata")
 
 build() {
   go_src_dir
