@@ -10,7 +10,9 @@ source=("https://download.gnome.org/sources/atkmm/${pkgver%.*}/atkmm-${pkgver}.t
 
 tags=("libs dev-cpp")
 
-build_deps=("meson mm-common glibmm-docs atk glibmm")
+adddep=("glibmm at-spi2-core")
+
+build_deps=("${adddep} meson mm-common glibmm-docs glibmm")
 
 build() {
   go_src_dir
