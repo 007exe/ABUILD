@@ -9,9 +9,9 @@ source=("https://github.com/aio-libs/aiosignal/archive/v${pkgver}/${pkgname}-${p
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-frozenlist")
-
 adddep=("python-frozenlist")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
