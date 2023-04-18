@@ -1,5 +1,5 @@
 pkgname=lxqt-archiver
-pkgver=0.7.0
+pkgver=0.8.0
 pkgbuild=1
 arch=("auto")
 

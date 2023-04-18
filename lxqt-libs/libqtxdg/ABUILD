@@ -1,5 +1,5 @@
 pkgname=libqtxdg
-pkgver=3.10.0
+pkgver=3.11.0
 pkgbuild=1
 arch=("auto")
 

@@ -1,9 +1,9 @@
 pkgname=pcmanfm-qt
-pkgver=1.2.1
+pkgver=1.3.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("The LXQt file manager, Qt port of PCManFM")
+shortdesc=("The LXQt file manager, Qt port of PCManFM.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 

@@ -1,9 +1,9 @@
 pkgname=lxqt-runner
-pkgver=1.2.0
+pkgver=1.3.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("LXQt quick launcher")
+shortdesc=("LXQt quick launcher.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
