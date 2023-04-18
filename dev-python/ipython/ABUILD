@@ -1,5 +1,5 @@
 pkgname=ipython
-pkgver=8.8.0
+pkgver=8.12.0
 pkgbuild=1
 arch=("auto")
 
