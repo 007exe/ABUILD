@@ -1,6 +1,6 @@
 pkgname=python-pysol_cards
-pkgver=0.14.2
-pkgbuild=2
+pkgver=0.14.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Deal PySol FC Cards.")
@@ -9,9 +9,9 @@ source=("https://pypi.io/packages/source/p/pysol_cards/pysol_cards-${pkgver}.tar
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pbr")
-
 adddep=("python-pbr")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
