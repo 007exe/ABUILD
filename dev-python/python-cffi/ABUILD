@@ -9,9 +9,9 @@ source=("https://foss.heptapod.net/pypy/cffi/-/archive/v${pkgver}/cffi-v${pkgver
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pycparser")
-
 adddep=("python-pycparser")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
