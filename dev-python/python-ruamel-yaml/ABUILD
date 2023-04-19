@@ -9,9 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/r/ruamel.yaml/ruamel.yam
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
-
 adddep=("python-ruamel.yaml.clib")
+
+build_deps=("${adddep} python")
 
 build() {
   go_src_dir
