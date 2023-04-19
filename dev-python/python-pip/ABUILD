@@ -14,6 +14,14 @@ adddep=("python-attrs python-cryptography python-wheel")
 build_deps=("${adddep} python python-build python-installer python-myst-parser python-setuptools
 python-sphinx python-sphinx-copybutton python-sphinx-inline-tabs python-sphinxcontrib-towncrier")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
 build(){
   go_src_dir
   burn_patches
@@ -29,12 +37,4 @@ build(){
   install -vDm 644 {NEWS,README}.rst -t ${pkgdir}/usr/share/doc/${pkgname}/
   PYTHONPATH=${pkgdir}/${_site_packages} ${pkgdir}/usr/bin/pip completion --bash | install -vDm 644 /dev/stdin ${pkgdir}/usr/share/bash-completion/completions/pip
   PYTHONPATH=${pkgdir}/${_site_packages} ${pkgdir}/usr/bin/pip completion --fish | install -vDm 644 /dev/stdin ${pkgdir}/usr/share/fish/vendor_completions.d/pip.fish
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
 }
