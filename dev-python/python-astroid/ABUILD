@@ -1,5 +1,5 @@
 pkgname=python-astroid
-pkgver=2.12.13
+pkgver=2.15.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,9 @@ source=("https://github.com/PyCQA/astroid/archive/v${pkgver}/astroid-${pkgver}.t
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-setuptools
-python-typing_extensions python-wrapt python-lazy-object-proxy")
-
 adddep=("python-typing_extensions python-wrapt python-lazy-object-proxy")
+
+build_deps=("${adddep} python python-build python-installer python-wheel python-setuptools")
 
 build() {
   go_src_dir
