@@ -1,6 +1,6 @@
 pkgname=python-sphinxcontrib-htmlhelp
-pkgver=2.0.0
-pkgbuild=3
+pkgver=2.0.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("HTML help file support for the Sphinx documentation generator.")
