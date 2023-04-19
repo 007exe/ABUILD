@@ -9,9 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/i/isodate/isodate-${pkgv
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-six")
-
 adddep=("python-six")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
