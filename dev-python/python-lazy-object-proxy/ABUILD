@@ -1,5 +1,5 @@
 pkgname=python-lazy-object-proxy
-pkgver=1.8.0
+pkgver=1.9.0
 pkgbuild=1
 arch=("auto")
 
