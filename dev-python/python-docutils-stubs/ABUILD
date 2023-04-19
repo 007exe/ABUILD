@@ -10,10 +10,9 @@ source=("https://pypi.org/packages/source/${_pkgname:0:1}/docutils-stubs/docutil
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel
-python-docutils")
-
 adddep=("python-docutils")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
