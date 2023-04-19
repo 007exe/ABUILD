@@ -11,16 +11,16 @@ tags=("libs dev-python")
 
 build_deps=("python")
 
-build(){
-  go_src_dir
-  python setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
-}
-
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
 # ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
+before_build(){
   go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build(){
+  go_src_dir
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
