@@ -9,10 +9,9 @@ source=("https://github.com/pyca/service-identity/archive/${pkgver}/${pkgname}-$
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-idna
-python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six")
-
 adddep=("python-attrs python-pyasn1-modules python-pyasn1 python-cryptography python-six")
+
+build_deps=("${adddep} python python-setuptools python-idna")
 
 build() {
   go_src_dir
