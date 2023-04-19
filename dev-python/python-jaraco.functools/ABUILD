@@ -1,17 +1,17 @@
 pkgname=python-jaraco.functools
-pkgver=3.5.2
-pkgbuild=2
+pkgver=3.6.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("  Functools like those found in stdlib.")
+shortdesc=("Functools like those found in stdlib.")
 
 source=("https://files.pythonhosted.org/packages/source/j/jaraco.functools/jaraco.functools-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools-scm python-wheel python-more-itertools")
-
 adddep=("python-more-itertools")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools-scm python-wheel")
 
 build() {
   go_src_dir
