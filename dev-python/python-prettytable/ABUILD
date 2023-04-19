@@ -1,5 +1,5 @@
 pkgname=python-prettytable
-pkgver=2.3.0
+pkgver=3.6.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/p/prettyTable/prettytabl
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-hatchling python-hatch-vcs
-python-wcwidth")
-
 adddep=("python-wcwidth")
+
+build_deps=("${adddep} python python-build python-installer python-hatchling python-hatch-vcs")
 
 build() {
   go_src_dir
