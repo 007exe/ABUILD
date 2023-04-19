@@ -9,10 +9,9 @@ source="https://files.pythonhosted.org/packages/source/${pkgname:0:1}/python-pam
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel
-linux-pam python-six")
-
 adddep=("linux-pam python-six")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
