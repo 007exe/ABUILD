@@ -10,19 +10,19 @@ source=("https://github.com/mpi4py/mpi4py/archive/refs/tags/${pkgver}.tar.gz")
 tags=("dev-python libs")
 
 # FIXME: Для сборки требует ccache но это косяк mkpkg
-build_deps=("python python-setuptools cython openmpi ccache")
+build_deps=("python python-setuptools cython openmpi")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build(){
   go_src_dir
   python setup.py build
   python setup.py install --root=${pkgdir} --skip-build --optimize=1
   install -Dm644 LICENSE.rst -t ${pkgdir}/usr/share/licenses/${pkgname}/
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
 }
