@@ -9,9 +9,9 @@ source=("https://github.com/glyph/automat/archive/v${pkgver}/${pkgname}-${pkgver
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-wheel python-attrs python-six")
-
 adddep=("python-attrs python-six")
+
+build_deps=("${adddep} python python-setuptools-scm python-wheel")
 
 # NOTE: Это опциональные зависимости
 removedep=("python-graphviz python-twisted")
