@@ -1,6 +1,6 @@
 pkgname=python-mypy_extensions
-pkgver=0.4.3
-pkgbuild=2
+pkgver=1.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Experimental type system extensions for programs checked with the mypy typechecker.")
