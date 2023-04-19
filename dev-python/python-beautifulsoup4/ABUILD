@@ -1,6 +1,6 @@
 pkgname=python-beautifulsoup4
-pkgver=4.11.1
-pkgbuild=2
+pkgver=4.11.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Python HTML/XML parser designed for quick turnaround projects like screen-scraping.")
@@ -9,9 +9,9 @@ source=("https://pypi.io/packages/source/b/beautifulsoup4/beautifulsoup4-${pkgve
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-soupsieve")
-
 adddep=("python-soupsieve")
+
+build_deps=("${adddep} python python-setuptools")
 
 # NOTE: Это опциональные зависимости
 removedep=("python-chardet python-lxml python-html5lib")
