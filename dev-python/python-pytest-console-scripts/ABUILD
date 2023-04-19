@@ -9,10 +9,9 @@ source=("https://pypi.python.org/packages/source/p/pytest-console-scripts/pytest
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools-scm python-wheel
-python-pytest python-setuptools")
-
 adddep=("python-pytest python-setuptools")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools-scm python-wheel")
 
 build() {
   go_src_dir
