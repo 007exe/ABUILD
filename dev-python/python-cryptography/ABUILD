@@ -1,5 +1,5 @@
 pkgname=python-cryptography
-pkgver=39.0.2
+pkgver=40.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://pypi.io/packages/source/c/cryptography/cryptography-${pkgver}.t
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-rust python-cffi")
-
 adddep=("python-cffi")
+
+build_deps=("${adddep} python python-setuptools-rust")
 
 build() {
   go_src_dir
