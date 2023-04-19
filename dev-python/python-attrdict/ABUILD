@@ -14,6 +14,8 @@ build_deps=("python python-build python-installer python-setuptools python-wheel
 
 build() {
   go_src_dir
+# Фикс python 3.10
+  find . -type f -iname '*.py' -exec sed -i 's/collections/collections.abc/g' {} +
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
