@@ -1,6 +1,6 @@
 pkgname=python-inflect
-pkgver=6.0.2
-pkgbuild=2
+pkgver=6.0.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Correctly generate plurals, singular nouns, ordinals, indefinite articles.")
@@ -10,9 +10,9 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/inflect/infl
 
 tags=("libs dev-python")
 
-build_deps=("python-build python-installer python-setuptools-scm python-toml python-wheel")
-
 adddep=("python-pydantic")
+
+build_deps=("${adddep} python-build python-installer python-setuptools-scm python-toml python-wheel")
 
 build() {
   go_src_dir
