@@ -9,9 +9,10 @@ source=("https://github.com/lxml/lxml/archive/lxml-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pygments python-sphinx python-sphinx_rtd_theme cython libxslt libxml2")
-
 adddep=("libxslt")
+
+build_deps=("${adddep} python python-setuptools python-pygments python-sphinx
+python-sphinx_rtd_theme cython libxslt libxml2")
 
 build(){
   go_src_dir
