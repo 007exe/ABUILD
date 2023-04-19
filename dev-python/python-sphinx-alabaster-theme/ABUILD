@@ -1,6 +1,6 @@
 pkgname=python-sphinx-alabaster-theme
-pkgver=0.7.12
-pkgbuild=3
+pkgver=0.7.13
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Sphinx default theme.")
