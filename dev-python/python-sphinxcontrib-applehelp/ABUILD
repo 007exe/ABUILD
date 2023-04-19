@@ -1,6 +1,6 @@
 pkgname=python-sphinxcontrib-applehelp
-pkgver=1.0.2
-pkgbuild=3
+pkgver=1.0.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Apple help file support for the Sphinx documentation generator.")
