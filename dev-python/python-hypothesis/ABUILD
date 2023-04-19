@@ -9,10 +9,9 @@ source=("https://pypi.io/packages/source/h/hypothesis/hypothesis-${pkgver}.tar.g
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel
-python-attrs python-sortedcontainers python-exceptiongroup")
-
 adddep=("python-attrs python-sortedcontainers python-exceptiongroup")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build(){
   go_src_dir
