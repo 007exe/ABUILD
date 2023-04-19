@@ -9,9 +9,9 @@ source=("https://github.com/PyO3/setuptools-rust/archive/v${pkgver}/${pkgname}-$
 
 tags=("dev-python libs")
 
-build_deps=("python rust python-setuptools python-semantic-version python-typing_extensions")
-
 adddep=("rust python-setuptools python-semantic-version python-typing_extensions")
+
+build_deps=("${adddep} python")
 
 build() {
   go_src_dir
