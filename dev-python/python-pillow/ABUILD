@@ -9,10 +9,10 @@ source=("https://files.pythonhosted.org/packages/source/P/Pillow/Pillow-${pkgver
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-setuptools libwebp tk
-freetype lcms2 libraqm libtiff openjpeg2 libimagequant libxcb")
-
 adddep=("freetype lcms2 libraqm libtiff openjpeg2 libimagequant libxcb")
+
+build_deps=("${adddep} python python-build python-installer python-wheel
+python-setuptools libwebp tk")
 
 # NOTE: Это опциональные зависимости
 removedep=("libwebp tk python-olefile python-pyqt5")
