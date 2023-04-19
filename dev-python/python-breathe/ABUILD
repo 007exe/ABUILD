@@ -1,5 +1,5 @@
 pkgname=python-breathe
-pkgver=4.34.0
+pkgver=4.35.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,14 +9,13 @@ source=("https://github.com/michaeljones/breathe/archive/v${pkgver}/${pkgname}-$
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools
-python-sphinx python-docutils")
-
 adddep=("python-sphinx python-docutils")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --skip-build --optimize=1
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
