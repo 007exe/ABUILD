@@ -9,9 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/${pkgname::1}/${pkgname}
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel gnupg")
-
 adddep=("gnupg")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
