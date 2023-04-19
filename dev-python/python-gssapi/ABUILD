@@ -9,9 +9,9 @@ source=("https://github.com/pythongssapi/python-gssapi/archive/v${pkgver}/${pkgn
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools cython python-decorator krb5")
-
 adddep=("python-decorator krb5")
+
+build_deps=("${adddep} python python-setuptools cython")
 
 build() {
   go_src_dir
