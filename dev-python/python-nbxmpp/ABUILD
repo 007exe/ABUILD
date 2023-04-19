@@ -1,6 +1,6 @@
 pkgname=python-nbxmpp
-pkgver=3.2.5
-pkgbuild=2
+pkgver=4.2.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Python library to use Jabber/XMPP networks in a non-blocking way.")
@@ -9,13 +9,13 @@ source=("https://dev.gajim.org/gajim/python-nbxmpp/-/archive/$pkgver/python-nbxm
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools libsoup python-gobject python-idna python-precis_i18n")
-
 adddep=("libsoup python-gobject python-idna python-precis_i18n")
+
+build_deps=("${adddep} python python-build python-installer python-wheel python-setuptools")
 
 build() {
   go_src_dir
   burn_patches
-  python setup.py build
-  python setup.py install --root=${pkgdir}
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
 }
