@@ -5,7 +5,7 @@ arch=("auto")
 
 shortdesc=("Make Sphinx better at documenting Python functions and methods.")
 
-source=("https://github.com/python-trio/sphinxcontrib-trio/archive/v${pkgver}/${_pyname}-${pkgver}.tar.gz")
+source=("https://github.com/python-trio/sphinxcontrib-trio/archive/v${pkgver}/sphinxcontrib-trio-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
