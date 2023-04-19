@@ -1,27 +1,23 @@
 pkgname=python-progress
-pkgver=1.6
-pkgbuild=4
+pkgver=4.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Easy to use progress bars for Python.")
 
-source=("https://github.com/verigak/progress/archive/${pkgver}.tar.gz")
+_name=progressbar2
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/progressbar2/progressbar2-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+adddep=("python-utils")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-sphinx python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
-  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 {CHANGES,CONTRIBUTING,README}.rst -t ${pkgdir}/usr/share/doc/${pkgname}/
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
