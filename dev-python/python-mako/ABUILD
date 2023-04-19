@@ -9,9 +9,9 @@ tags=("dev-python libs")
 
 source=("https://pypi.python.org/packages/source/M/Mako/Mako-${pkgver}.tar.gz")
 
-build_deps=("python python-setuptools")
-
 adddep=("python-markupsafe python-beaker python-setuptools")
+
+build_deps=("${adddep} python python-setuptools")
 
 build(){
   go_src_dir
