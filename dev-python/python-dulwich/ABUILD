@@ -10,9 +10,9 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/dulwich/dulw
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel python-urllib3")
-
 adddep=("python-urllib3")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
