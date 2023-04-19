@@ -1,5 +1,5 @@
 pkgname=python-fonttools
-pkgver=4.38.0
+pkgver=4.39.3
 pkgbuild=1
 arch=("auto")
 
