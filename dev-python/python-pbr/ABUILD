@@ -1,5 +1,5 @@
 pkgname=python-pbr
-pkgver=5.11.0
+pkgver=5.11.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,17 @@ source=("https://github.com/openstack-dev/pbr/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-importlib-metadata python-setuptools")
-
 adddep=("python-setuptools")
+
+build_deps=("${adddep} python python-importlib-metadata")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -19,12 +27,4 @@ build() {
   python setup.py build
   python setup.py install -O1 --root=${pkgdir}
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
 }
