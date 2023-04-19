@@ -9,9 +9,9 @@ source=("https://github.com/python/importlib_metadata/archive/v${pkgver}/${pkgna
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools-scm python-toml python-wheel python-zipp")
-
 adddep=("python-zipp")
+
+build_deps=("${adddep} python python-setuptools-scm python-toml python-wheel")
 
 build(){
   go_src_dir
