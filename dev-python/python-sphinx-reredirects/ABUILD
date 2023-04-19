@@ -9,9 +9,9 @@ source=("https://gitlab.com/documatt/sphinx-reredirects/-/archive/v${pkgver}/sph
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel python-sphinx")
-
 adddep=("python-sphinx")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
