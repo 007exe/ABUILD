@@ -12,10 +12,9 @@ source=("git:https://github.com/tox-dev/sphinx-autodoc-typehints.git")
 
 tags=("libs dev-python")
 
-build_deps=("python git python-build python-installer python-hatchling python-hatch-vcs
-python-sphinx python-typing_extensions")
-
 adddep=("python-sphinx python-typing_extensions")
+
+build_deps=("${adddep} python git python-build python-installer python-hatchling python-hatch-vcs")
 
 # NOTE: Переходим к коммиту
 # FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
