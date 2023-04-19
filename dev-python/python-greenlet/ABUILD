@@ -1,5 +1,5 @@
 pkgname=python-greenlet
-pkgver=2.0.1
+pkgver=2.0.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,11 @@ source=("https://files.pythonhosted.org/packages/source/g/greenlet/greenlet-${pk
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 build(){
   go_src_dir
-  python setup.py build
-  python setup.py install -O1 --root=${pkgdir}
+  python -m build --wheel --skip-dependency-check --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE.PSF -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
