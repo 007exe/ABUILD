@@ -9,9 +9,9 @@ source=("https://github.com/paramiko/paramiko/archive/${pkgver}/python-paramiko-
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-bcrypt python-cryptography python-pynacl python-bcrypt python-cryptography python-pynacl")
-
 adddep=("python-bcrypt python-cryptography python-pynacl")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
