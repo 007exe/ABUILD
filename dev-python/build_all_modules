@@ -9,7 +9,7 @@ gst-python
 ipython
 libvirt-python
 pybind11
-pypy
+#pypy
 pyqt-builder
 python-aiofiles
 python-aiohttp
@@ -190,7 +190,6 @@ python-pathspec
 python-patiencediff
 python-pbr
 python-pcbnewtransition
-python-pep517
 python-pep621
 python-pexpect
 python-pickleshare
@@ -234,7 +233,6 @@ python-pynacl
 python-pyopenssl
 python-pyparsing
 python-pypng
-python-pyproject2setuppy
 python-pyproject-hooks
 python-pyproject-metadata
 python-pyqt5
@@ -279,7 +277,6 @@ python-setproctitle
 python-setuptools
 python-setuptools-rust
 python-setuptools-scm
-python-setuptools-scm-git-archive
 python-sgmllib3k
 python-sh
 python-shapely
