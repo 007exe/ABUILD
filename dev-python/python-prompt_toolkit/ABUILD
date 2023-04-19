@@ -1,5 +1,5 @@
 pkgname=python-prompt_toolkit
-pkgver=3.0.36
+pkgver=3.0.38
 pkgbuild=1
 arch=("auto")
 
