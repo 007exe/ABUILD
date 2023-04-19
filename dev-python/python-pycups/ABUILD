@@ -9,21 +9,21 @@ source=("https://github.com/OpenPrinting/pycups/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python libcups")
-
 adddep=("libcups")
+
+build_deps=("${adddep} python")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
   burn_patches
   python setup.py build
   python setup.py install --root=${pkgdir} --optimize=1
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
