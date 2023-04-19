@@ -9,9 +9,9 @@ source=("https://github.com/hawkowl/incremental/archive/incremental-${pkgver}.ta
 
 tags=("libs dev-python")
 
-build_deps=("python python-click python-setuptools python-twisted")
-
 adddep=("python-click python-setuptools python-twisted")
+
+build_deps=("${adddep} python")
 
 build() {
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
