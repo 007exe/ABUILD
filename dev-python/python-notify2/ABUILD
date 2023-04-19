@@ -10,9 +10,9 @@ source=("https://files.pythonhosted.org/packages/source/${_name::1}/notify2/noti
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools dbus-python")
-
 adddep=("dbus-python")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
