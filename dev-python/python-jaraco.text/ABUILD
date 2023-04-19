@@ -9,10 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/j/jaraco.text/jaraco.tex
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools-scm python-wheel
-python-jaraco.functools python-jaraco.context python-autocommand python-inflect python-more-itertools")
-
 adddep=("python-jaraco.functools python-jaraco.context python-autocommand python-inflect python-more-itertools")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools-scm python-wheel")
 
 build() {
   go_src_dir
