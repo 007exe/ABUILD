@@ -9,9 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/n/ndg-httpsclient/ndg_ht
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pyopenssl python-pyasn1")
-
 adddep=("python-pyopenssl python-pyasn1")
+
+build_deps=("${adddep} python python-setuptools")
 
 build(){
   go_src_dir
