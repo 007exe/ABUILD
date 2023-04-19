@@ -9,10 +9,17 @@ source=("https://github.com/Julian/jsonschema/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-hatchling python-hatch-vcs python-hatch-fancy-pypi-readme
-python-attrs python-importlib-metadata python-pyrsistent python-rfc3987 python-jsonpointer python-typing_extensions python-webcolors")
-
 adddep=("python-attrs python-importlib-metadata python-pyrsistent python-rfc3987 python-jsonpointer python-typing_extensions python-webcolors")
+
+build_deps=("${adddep} python python-build python-installer python-hatchling python-hatch-vcs python-hatch-fancy-pypi-readme")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -20,12 +27,4 @@ build() {
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
   install -D -m644 json/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
