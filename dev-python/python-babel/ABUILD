@@ -11,9 +11,9 @@ source=("https://github.com/python-babel/babel/archive/v${pkgver}.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pytz")
-
 adddep=("python python-pytz")
+
+build_deps=("${adddep} python-setuptools")
 
 build() {
   cp ${srcache}/core.zip babel-${pkgver}/cldr/cldr-core-${_core}.zip
