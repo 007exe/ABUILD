@@ -9,9 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/j/jaraco.classes/jaraco.
 
 tags=("libs dev-python")
 
-build_deps=("python python-more-itertools python-build python-installer python-setuptools-scm python-wheel")
-
 adddep=("python-more-itertools")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools-scm python-wheel")
 
 build() {
   go_src_dir
