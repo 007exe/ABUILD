@@ -9,10 +9,18 @@ source=("https://github.com/pyudev/pyudev/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python-build python-installer python-setuptools python-wheel python-sphinx
-python-six")
-
 adddep=("python-six")
+
+build_deps=("${adddep} python-build python-installer python-setuptools
+python-wheel python-sphinx")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -26,12 +34,4 @@ build() {
   install -dm 755 ${pkgdir}/usr/share/doc/${pkgname}
   cp -r -a --no-preserve=ownership doc/html ${pkgdir}/usr/share/doc/${pkgname}
   rm -rf ${pkgdir}/usr/share/doc/${pkgname}/html/.doctrees
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
