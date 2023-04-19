@@ -9,9 +9,9 @@ source=("https://pypi.python.org/packages/source/G/GeoIP/GeoIP-${pkgver}.tar.gz"
 
 tags=("libs dev-python")
 
-build_deps=("python geoip")
-
 adddep=("geoip")
+
+build_deps=("${adddep} python")
 
 build() {
   go_src_dir
