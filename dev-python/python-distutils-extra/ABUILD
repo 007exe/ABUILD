@@ -9,9 +9,9 @@ source=("http://launchpad.net/python-distutils-extra/trunk/${pkgver}/+download/$
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools intltool")
-
 adddep=("intltool")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
