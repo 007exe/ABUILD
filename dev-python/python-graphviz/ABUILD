@@ -10,9 +10,9 @@ source=("https://github.com/xflr6/graphviz/archive/${pkgver}/graphviz-${pkgver}.
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel graphviz")
-
 adddep=("graphviz")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
