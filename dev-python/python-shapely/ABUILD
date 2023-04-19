@@ -9,9 +9,9 @@ source=("https://pypi.io/packages/source/S/Shapely/Shapely-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-packaging python-numpy cython geos")
-
 adddep=("geos")
+
+build_deps=("${adddep} python python-setuptools python-packaging python-numpy cython")
 
 build() {
   go_src_dir
