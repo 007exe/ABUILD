@@ -9,9 +9,9 @@ source=("https://github.com/certifi/python-certifi/archive/${pkgver}/${pkgname}-
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel ca-certificates")
-
 adddep=("ca-certificates")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
