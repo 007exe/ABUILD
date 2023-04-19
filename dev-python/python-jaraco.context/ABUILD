@@ -9,7 +9,7 @@ source=("https://github.com/jaraco/jaraco.context/archive/v${pkgver}/${pkgname}-
 
 tags=("libs dev-python")
 
-build_deps="python python-setuptools-scm python-build python-installer python-wheel python>=3.11.1"
+build_deps=("python python-setuptools-scm python-build python-installer python-wheel python")
 
 export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
