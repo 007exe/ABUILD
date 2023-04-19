@@ -9,9 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/J/Jinja2/Jinja2-${pkgver
 
 tags=("dev-python libs")
 
-build_deps=("python python-setuptools python-markupsafe")
-
 adddep=("python-markupsafe")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
