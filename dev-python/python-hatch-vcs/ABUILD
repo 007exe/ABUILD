@@ -9,9 +9,9 @@ source=("https://github.com/ofek/hatch-vcs/archive/v${pkgver}/${pkgname}-${pkgve
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-hatchling python-setuptools-scm")
-
 adddep=("python-hatchling python-setuptools-scm")
+
+build_deps=("${adddep} python python-build python-installer")
 
 build() {
   go_src_dir
