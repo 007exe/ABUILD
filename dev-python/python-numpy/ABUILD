@@ -9,9 +9,9 @@ source=("https://github.com/numpy/numpy/releases/download/v${pkgver}/numpy-${pkg
 
 tags=("libs dev-python")
 
-build_deps=("cblas lapack python python-setuptools gcc-fortran cython")
-
 adddep=("cblas lapack")
+
+build_deps=("${adddep} python python-setuptools gcc-fortran cython")
 
 build() {
   go_src_dir
