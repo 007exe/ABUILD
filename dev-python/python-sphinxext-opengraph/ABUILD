@@ -1,5 +1,5 @@
 pkgname=python-sphinxext-opengraph
-pkgver=0.7.5
+pkgver=0.8.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,9 @@ source=("https://files.pythonhosted.org/packages/source/s/sphinxext-opengraph/sp
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-setuptools-scm
-python-sphinx")
-
 adddep=("python-sphinx")
+
+build_deps=("${adddep} python python-setuptools python-setuptools-scm")
 
 build() {
   go_src_dir
