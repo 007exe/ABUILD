@@ -9,9 +9,9 @@ source=("https://pypi.io/packages/source/p/pyasn1-modules/pyasn1-modules-${pkgve
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-pyasn1")
-
 adddep=("python-pyasn1")
+
+build_deps=("${adddep} python python-setuptools")
 
 build() {
   go_src_dir
