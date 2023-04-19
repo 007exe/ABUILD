@@ -9,9 +9,9 @@ source=("https://pypi.python.org/packages/source/n/nose/nose-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
-
 adddep=("python-setuptools")
+
+build_deps=("${adddep} python")
 
 build() {
   go_src_dir
