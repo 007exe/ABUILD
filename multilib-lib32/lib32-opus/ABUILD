@@ -1,17 +1,25 @@
 pkgname=lib32-opus
-pkgver=1.3.1
+pkgver=1.4
 pkgbuild=1
+strict_version=1
 arch=("auto")
 
 shortdesc=("Totally open, royalty-free, highly versatile audio codec (32-bit).")
 
-source=("https://archive.mozilla.org/pub/opus/opus-${pkgver}.tar.gz")
+source=("git:https://github.com/xiph/opus.git")
 
 tags=("media-libs lib32")
 
-build_deps=("lib32-glibc")
+adddep=("opus lib32-glibc")
 
-adddep=("opus")
+build_deps=("${adddep} meson")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
 
 build() {
   go_src_dir
@@ -19,15 +27,14 @@ build() {
   export CC='gcc -m32'
   export CXX='g++ -m32'
   export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib32 \
-    --disable-static \
-    --enable-custom-modes
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
-
-  rm -r ${pkgdir}/usr/{include,share}
-  install -d ${pkgdir}/usr/share/licenses
-  ln -s opus ${pkgdir}/usr/share/licenses/${pkgname}
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32 \
+    -D asm=disabled \
+    -D custom-modes=true \
+    -D docs=disabled
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  rm -r ${pkgdir}/usr/include
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
 }
