@@ -1,10 +1,9 @@
 pkgname=lib32-libxml2
-pkgver=2.10.3
+pkgver=2.10.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("XML parsing library, version 2 (32-bit).")
-longdesc=("The libxml2 package contains libraries and utilities used for parsing XML files.")
 
 source=("https://download.gnome.org/sources/libxml2/${pkgver%.*}/libxml2-${pkgver}.tar.xz")
 
