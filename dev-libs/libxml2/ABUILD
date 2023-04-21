@@ -1,17 +1,18 @@
 # NOTE: Обязательно пересобрать при обновлениии icu
 pkgname=libxml2
-pkgver=2.10.3
-pkgbuild=2
+pkgver=2.10.4
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("XML parsing library, version 2.")
-longdesc=("The libxml2 package contains libraries and utilities used for parsing XML files.")
+shortdesc=("XML C parser and toolkit")
 
 source=("https://download.gnome.org/sources/libxml2/${pkgver%.*}/libxml2-${pkgver}.tar.xz")
 
 tags=("dev-libs libs")
 
-build_deps=("zlib readline ncurses xz icu python")
+adddep=("icu ncurses readline xz zlib")
+
+build_deps=("${adddep} python")
 
 build() {
   go_src_dir
