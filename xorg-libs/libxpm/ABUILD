@@ -1,5 +1,5 @@
 pkgname=libxpm
-pkgver=3.5.15
+pkgver=3.5.16
 pkgbuild=1
 arch=("auto")
 
