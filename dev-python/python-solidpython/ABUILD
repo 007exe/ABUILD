@@ -2,35 +2,34 @@ pkgname=python-solidpython
 pkgver=1.1.3
 # NOTE: Коммит 1.1.3
 _commit=0a4f539c31a25df52a42bab2ceeffafd45596f73
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python frontend for solid modelling that compiles to OpenSCAD.")
-longdesc=("SolidPython is a generalization of Phillip Tiefenbacher's openscad module, found on Thingiverse. It generates valid OpenSCAD code from Python code with minimal overhead.")
 
-#source=("https://github.com/SolidCode/SolidPython/archive/refs/tags/v${pkgver}.tar.gz")
 source=("https://github.com/SolidCode/SolidPython/archive/${_commit}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-poetry python-setuptools-scm
-python-wheel python-euclid3 python-pypng python-prettytable")
-
 adddep=("python-euclid3 python-pypng python-prettytable")
+
+build_deps=("${adddep} python python-build python-installer
+python-poetry python-setuptools-scm python-wheel")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${_commit}.tar.gz
+}
 
 export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
 build() {
   go_src_dir
+  burn_patches
   sed -i -e '/tox/d' -e 's|setuptools>=.*|setuptools\",|' pyproject.toml
   python -m build --wheel --no-isolation
   python -m installer --destdir=${pkgdir} dist/*.whl
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/${_commit}.tar.gz
 }
