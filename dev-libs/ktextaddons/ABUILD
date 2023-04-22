@@ -13,6 +13,9 @@ adddep=("kxmlgui qtkeychain-qt5 qt5-speech")
 
 build_deps=("${adddep} extra-cmake-modules doxygen qt5-tools")
 
+# NOTE: Это опциональные зависимости
+removedep=("languagetool grammalecte libreoffice")
+
 build() {
   go_src_dir
   burn_patches

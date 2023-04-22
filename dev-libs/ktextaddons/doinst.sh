@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend ktextaddons capabilities:"
+echo -e "languagetool: Grammar checking"
+echo -e "grammalecte: French grammar checking"
+echo -e "libreoffice: Use autocorrection data from LibreOffice"
+echo -e " "
