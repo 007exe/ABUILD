@@ -1,0 +1,26 @@
+pkgname=kdsoap
+pkgver=2.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt-based client-side and server-side SOAP component.")
+
+source=("https://github.com/KDAB/KDSoap/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("net-libs libs")
+
+adddep=("qt5-base")
+
+build_deps=("${adddep} cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
