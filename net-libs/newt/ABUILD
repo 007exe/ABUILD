@@ -19,13 +19,13 @@ removedep=("python tcl")
 build() {
   go_src_dir
   burn_patches
-  sed -i -e 's:-lslang:-lslang -lncurses:g' \
-      -e 's:instroot:DESTDIR:g' Makefile.in
+  echo '#define USE_INTERP_RESULT 1' >> config.h
+  sed -i "s:tcl8.4:tcl$_tclver:" Makefile.in
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
     --with-gpm-support \
-    --with-python=python3.10
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} prefix="/usr" RPM_OPT_FLAGS="ERROR" install
 }
