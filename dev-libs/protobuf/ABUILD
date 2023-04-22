@@ -1,29 +1,25 @@
 pkgname=protobuf
+pkglist=("python_protobuf")
 pkgver=21.12
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Protocol Buffers - Google's data interchange format.")
-longdesc=("Google's Protocol Buffers - Extensible mechanism for serializing structured data.")
 
 source=("https://github.com/protocolbuffers/protobuf/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("python-setuptools cmake gtest gcc-libs glibc zlib")
+adddep=("gcc-libs glibc zlib")
 
-pkglist=("python_protobuf")
-
-before_build() {
-  cd ${srcdir}
-  patch -d ${pkgname}-${pkgver} -Rp1 < ${filedir}/ABI.patch
-}
+build_deps=("${adddep} python-setuptools cmake gtest")
 
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -Dprotobuf_USE_EXTERNAL_GTEST=ON \
     -Dprotobuf_BUILD_SHARED_LIBS=ON
   cmake --build build -j${numjobs}
@@ -31,7 +27,7 @@ build() {
   ln -rs build src/.libs
   cd python
   PROTOC=../build/protoc \
-  python setup.py build --cpp_implementation
+  python -m build --wheel --no-isolation
 
   cd ..
   DESTDIR=${pkgdir} cmake --install build
@@ -45,22 +41,12 @@ build() {
 python_protobuf(){
   pkgname=python-protobuf
   shortdesc=("Python 3 bindings for Google Protocol Buffers.")
-  longdesc=("Google's Protocol Buffers - Extensible mechanism for serializing structured data.")
   tags=("libs dev-python")
-  adddep=("protobuf=${pkgver} python-six")
+  adddep=("protobuf=${pkgver} python")
 }
 
 python_protobuf_prep() {
   go_src_dir
-  local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-
-  (
-    cd python
-    PYTHONPATH="$PWD/build/lib.linux-$CARCH-${python_version}:PYTHONPATH" \
-    python setup.py install --skip-build \
-                            --cpp_implementation \
-                            --optimize=1 \
-                            --root=${pkgdir}
-  )
+  python -m installer --destdir=${pkgdir} python/dist/*.whl
   install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
