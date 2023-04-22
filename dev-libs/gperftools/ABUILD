@@ -1,0 +1,31 @@
+pkgname=gperftools
+pkgver=2.10
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fast, multi-threaded malloc and nifty performance analysis tools.")
+
+source=("https://github.com/gperftools/gperftools/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+adddep=("perl libunwind")
+
+build_deps=("${adddep}")
+
+# NOTE: Это опциональные зависимости
+removedep=("graphviz gv")
+
+build(){
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --enable-frame-pointers \
+    --enable-libunwind
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
