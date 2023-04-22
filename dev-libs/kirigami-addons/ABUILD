@@ -1,0 +1,25 @@
+pkgname=kirigami-addons
+pkgver=0.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Add-ons for the Kirigami framework.")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("dev-libs libs")
+
+adddep=("kirigami2")
+
+build_deps=("${adddep} extra-cmake-modules ki18n")
+
+build() {
+  go_src_dir
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
