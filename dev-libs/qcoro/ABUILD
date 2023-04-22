@@ -1,0 +1,47 @@
+pkgname=qcoro-qt5
+pkglist=("qcoro-qt6")
+pkgver=0.8.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ Coroutines for Qt5.")
+
+source=("https://github.com/danvratil/qcoro/archive/v${pkgver}/qcoro-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("qt5-websockets qt5-declarative")
+
+build_deps=("${adddep} cmake qt6-websockets qt6-declarative")
+
+build() {
+  cd ${srcdir}
+  cmake -B build5 -S qcoro-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DUSE_QT_VERSION=5 \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build5 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build5
+  install -Dm644 ${srcdir}/qcoro-${pkgver}/LICENSES/MIT.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
+######################################################################################################
+
+qcoro-qt6() {
+  pkgname=qcoro-qt6
+  shortdesc=("C++ Coroutines for Qt6.")
+  adddep=("qt6-websockets qt6-declarative")
+}
+
+qcoro-qt6_prep() {
+  cd ${srcdir}
+  cmake -B build6 -S qcoro-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DUSE_QT_VERSION=6 \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build6 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build6
+  install -Dm644 ${srcdir}/qcoro-${pkgver}/LICENSES/MIT.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
