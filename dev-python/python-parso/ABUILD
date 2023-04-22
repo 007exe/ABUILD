@@ -1,0 +1,23 @@
+pkgname=python-parso
+pkgver=0.8.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python parser that supports error recovery and round-trip parsing for different Python versions.")
+
+source=("https://github.com/davidhalter/parso/archive/v${pkgver}/parso-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python-setuptools python-sphinx")
+
+build() {
+  go_src_dir
+  python setup.py build
+  sphinx-build -b text docs docs/_build/text
+  sphinx-build -b man docs docs/_build/man
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 CHANGELOG.rst README.rst docs/_build/text/*.txt -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 docs/_build/man/parso.1 ${pkgdir}/usr/share/man/man1/${pkgname}.1
+}
