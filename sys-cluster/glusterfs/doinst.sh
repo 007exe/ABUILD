@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend glusterfs capabilities:"
+echo -e "glib2: qemu-block"
+echo -e "python-prettytable: gluster-georep-sshkey"
+echo -e " "

@@ -9,8 +9,19 @@ source=("https://download.gluster.org/pub/gluster/glusterfs/${pkgver%%.*}/${pkgv
 
 tags=("utils sys-cluster")
 
-# gperftools
-build_deps=("rpcsvc-proto fuse python libxml2 libaio liburcu attr rpcbind liburing")
+adddep=("fuse python libxml2 libaio liburcu attr rpcbind liburing gperftools")
+
+build_deps=("${adddep} rpcsvc-proto")
+
+# NOTE: Это опциональные зависимости
+removedep=("glib2 python-prettytable")
+
+config_files=("etc/glusterfs/eventsconfig.json
+etc/glusterfs/gluster-rsyslog-5.8.conf
+etc/glusterfs/gluster-rsyslog-7.2.conf
+etc/glusterfs/glusterd.vol
+etc/glusterfs/glusterfs-georep-logrotate
+etc/glusterfs/glusterfs-logrotate")
 
 build() {
   go_src_dir
