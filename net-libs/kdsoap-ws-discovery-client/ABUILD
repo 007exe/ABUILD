@@ -1,0 +1,28 @@
+pkgname=kdsoap-ws-discovery-client
+pkgver=0.2_git20200927
+# NOTE: Снапшот версии
+_commit=dcefb65c88e76f1f9eda8b0318006e93d15a0e1e
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("WS-Discovery client library based on KDSoap.")
+
+source=("https://gitlab.com/caspermeijn/kdsoap-ws-discovery-client/-/archive/${_commit}/${pkgname}-${_commit}.tar.gz")
+
+tags=("net-libs libs")
+
+adddep=("kdsoap")
+
+build_deps=("${adddep} extra-cmake-modules doxygen qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_QCH=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSES/* -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
