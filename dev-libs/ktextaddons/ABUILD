@@ -1,0 +1,27 @@
+pkgname=ktextaddons
+pkgver=1.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Various text handling addons.")
+
+source=("https://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop dev-libs")
+
+adddep=("kxmlgui qtkeychain-qt5 qt5-speech")
+
+build_deps=("${adddep} extra-cmake-modules doxygen qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON \
+    -DBUILD_DESIGNERPLUGIN=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
