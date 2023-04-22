@@ -1,0 +1,26 @@
+pkgname=signon-plugin-oauth2
+pkgver=0.25
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("OAuth 2 plugin for signon.")
+
+source=("https://gitlab.com/accounts-sso/signon-plugin-oauth2/-/archive/VERSION_${pkgver}/signon-plugin-oauth2-VERSION_${pkgver}.tar.bz2")
+
+tags=("net-libs libs")
+
+adddep=("signond")
+
+build_deps=("${adddep} qt5-xmlpatterns")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i '/-Werror/d' common-project-config.pri
+# NOTE: не устанавливать тесты и примеры
+  echo 'INSTALLS =' >>tests/tests.pro
+  echo 'INSTALLS =' >>example/example.pro
+  qmake-qt5 PREFIX=/usr LIBDIR=/usr/lib
+  make -j${numjobs}
+  make INSTALL_ROOT=${pkgdir} install
+}
