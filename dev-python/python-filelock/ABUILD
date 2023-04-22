@@ -1,28 +1,27 @@
 pkgname=python-filelock
-pkgver=3.8.2
-pkgbuild=2
+pkgver=3.12.0
+pkgbuild=1
+strict_version=1
 arch=("auto")
 
 shortdesc=("A platform independent file lock.")
 
-source=("https://github.com/benediktschmitt/py-filelock/archive/${pkgver}.tar.gz")
+source=("git:https://github.com/benediktschmitt/py-filelock.git")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-setuptools-scm")
+build_deps=("python python-build python-installer python-hatchling python-hatch-vcs")
 
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-before_build(){
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
   go_src_dir
-  rm -f ${srcache}/${pkgver}.tar.gz
+  git checkout ${pkgver}
 }
 
 build() {
   go_src_dir
-  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1
-  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
