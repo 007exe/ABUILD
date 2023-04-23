@@ -1,7 +1,7 @@
 pkgname=gtk4
 # FIXME: Проблемы со сборкой документации gtk4-docs
-pkglist=("gtk-update-icon-cache gtk4-demos")
-pkgver=4.10.1
+pkglist=("gtk-update-icon-cache gtk4-demos gtk4-docs")
+pkgver=4.10.3
 pkgbuild=1
 arch=("auto")
 
@@ -29,8 +29,8 @@ build() {
     -D broadway-backend=true \
     -D cloudproviders=enabled \
     -D colord=enabled \
-    -D gtk_doc=false \
-    -D man-pages=false \
+    -D gtk_doc=true \
+    -D man-pages=true \
     ..
   meson compile
   meson install --destdir ${pkgdir}
@@ -80,6 +80,6 @@ gtk4-demos_prep(){
   mv ${p_pkgdir}/usr/share/applications ${pkgdir}/usr/share
   mv ${p_pkgdir}/usr/share/glib-2.0/schemas/org.gtk.Demo4.gschema.xml ${pkgdir}/usr/share/glib-2.0/schemas/org.gtk.Demo4.gschema.xml
   mv ${p_pkgdir}/usr/share/icons/ ${pkgdir}/usr/share
-#  mv ${p_pkgdir}/usr/share/man/man1/gtk4-{demo,demo-application,icon-browser,widget-factory}.1 ${pkgdir}/usr/share/man/man1
+  mv ${p_pkgdir}/usr/share/man/man1/gtk4-{demo,demo-application,icon-browser,widget-factory}.1 ${pkgdir}/usr/share/man/man1
   mv ${p_pkgdir}/usr/share/metainfo/ ${pkgdir}/usr/share/
 }
