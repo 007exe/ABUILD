@@ -1,18 +1,17 @@
 pkgname=blueman
-pkgver=2.3.4
+pkgver=2.3.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("GTK+ Bluetooth Manager.")
-longdesc=("Simple and intuitive GTK+ Bluetooth Manager.")
 
 source=("https://github.com/blueman-project/$pkgname/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("apps net-wireless")
 
-build_deps=("python-cython intltool iproute2 bluez bluez-libs gtk3 networkmanager python-cairo python-gobject")
+adddep=("bluez gtk3 networkmanager python-cairo python-gobject")
 
-adddep=("python-cairo python-gobject")
+build_deps=("${adddep} cython intltool iproute2")
 
 # NOTE: Это опциональные зависимости
 removedep=("dnsmasq iproute2 networkmanager pulseaudio-bluetooth")
