@@ -1,7 +1,7 @@
 pkgname=poppler-data
-pkgver=0.4.11
+pkgver=0.4.12
 _POPPLER_DATA_EXTRA_VERSION="0.4.11-2"
-pkgbuild=2
+pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Encoding data for the poppler PDF rendering library.")
@@ -14,11 +14,10 @@ source=("https://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.gz"
 build_deps=("mkpkg")
 
 build() {
-  go_src_dir
-  burn_patches
+  cd ${srcdir}/poppler-data-${pkgver}
   make prefix=/usr libdir=/usr/lib DESTDIR=${pkgdir} install
 
-# дополнительные карты для ghostscript - FS#76416
+# Дополнительные карты для ghostscript - FS#76416
   cp ${srcdir}/${pkgname}-${_POPPLER_DATA_EXTRA_VERSION}-extra/Identity-* ${pkgdir}/usr/share/poppler/cMap
 
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
