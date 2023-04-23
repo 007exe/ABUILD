@@ -11,8 +11,6 @@ tags=("network net-wireless")
 
 build_deps=("glibc libnl openssl sqlite")
 
-config_files=("etc/${pkgname}/${pkgname}.{accept,conf,deny,eap_user,radius_clients,vlan,wpa_psk}")
-
 build() {
   go_src_dir
   burn_patches
@@ -24,19 +22,19 @@ build() {
       -e 's|hostapd_wps_pin_requests|hostapd/wps_pin_requests|g' \
       -i hostapd/hostapd.conf
   cat README |head -n47 |tail -n5 > LICENSE
-  ln -sv ${filedir}/config .config
+  ln -sv ${filedir}/config ${pkgname}/.config
   make -C ${pkgname}
   make -C ${pkgname} install DESTDIR=${pkgdir} BINDIR=/usr/bin
 
 # SystemD
   install -vDm 644 ${filedir}/${pkgname}.service -t ${pkgdir}/usr/lib/systemd/system/
 
-  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
-  install -vDm 640 ${pkgname}.{accept,conf,deny,eap_user,radius_clients,vlan,wpa_psk} -t ${pkgdir}/etc/${pkgname}
-  install -vDm 644 {hostapd.sim_db,wired.conf,hlr_auc_gw.{txt,milenage_db}} {README*,ChangeLog} -t ${pkgdir}/usr/share/doc/${pkgname}
-  install -vDm 644 ${pkgname}.8 -t ${pkgdir}/usr/share/man/man8/
-  install -vDm 644 ${pkgname}_cli.1 -t ${pkgdir}/usr/share/man/man1/
-  install -vdm 750 ${pkgdir}/var/lib/${pkgname}
+  install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname/"
+  install -vDm 640 "${pkgname}/${pkgname}."{accept,conf,deny,eap_user,radius_clients,vlan,wpa_psk} -t "${pkgdir}/etc/${pkgname}"
+  install -vDm 644 "${pkgname}/"{hostapd.sim_db,wired.conf,hlr_auc_gw.{txt,milenage_db}} "${pkgname}/"{README*,ChangeLog} -t "${pkgdir}/usr/share/doc/${pkgname}"
+  install -vDm 644 "${pkgname}/${pkgname}.8" -t "$pkgdir/usr/share/man/man8/"
+  install -vDm 644 "${pkgname}/${pkgname}_cli.1" -t "$pkgdir/usr/share/man/man1/"
+  install -vdm 750 "${pkgdir}/var/lib/${pkgname}"
 
 # OpenRC
   mkdir -p ${pkgdir}/etc/{conf.d,init.d}
