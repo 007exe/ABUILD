@@ -1,8 +1,8 @@
 pkgname=openjdk
-_majorver=19
+_majorver=20
 _minorver=0
 _securityver=1
-_updatever=10
+_updatever=9
 _git_tag=jdk-${_majorver}.${_minorver}.${_securityver}+${_updatever}
 pkgver=${_majorver}.${_minorver}.${_securityver}.u${_updatever}
 pkgbuild=1
@@ -13,7 +13,7 @@ shortdesc=("OpenJDK Java ${_majorver} development kit.")
 tags=("libs dev-java")
 
 source=("https://github.com/openjdk/jdk${_majorver}u/archive/refs/tags/${_git_tag}.tar.gz"
-"https://download.java.net/java/GA/jdk${_majorver}.${_minorver}.${_securityver}/afdd2e245b014143b62ccb916125e3ce/${_updatever}/GPL/openjdk-${_majorver}.${_minorver}.${_securityver}_linux-x64_bin.tar.gz")
+"https://download.java.net/java/GA/jdk${_majorver}.${_minorver}.${_securityver}/b4887098932d415489976708ad6d1a4b/${_updatever}/GPL/openjdk-${_majorver}.${_minorver}.${_securityver}_linux-x64_bin.tar.gz")
 
 build_deps=("cpio unzip zip libcups libx11 libxrender libxtst libxt libxext
 libxrandr alsa-lib graphviz freetype libjpeg-turbo giflib libpng lcms2
@@ -31,7 +31,7 @@ _nonheadless=(lib/libawt_xawt.{so,debuginfo}
               lib/libsplashscreen.{so,debuginfo})
 
 build() {
-  cd ${srcdir}/jdk19u-jdk-${_majorver}.${_minorver}.${_securityver}-${_updatever}
+  cd ${srcdir}/jdk${_majorver}u-jdk-${_majorver}.${_minorver}.${_securityver}-${_updatever}
   unset CFLAGS
   unset CXXFLAGS
   unset LDFLAGS
