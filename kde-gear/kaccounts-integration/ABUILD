@@ -1,5 +1,5 @@
 pkgname=kaccounts-integration
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-gear")
 
-# signon-plugin-oauth2 signon-ui
-build_deps=("extra-cmake-modules kdoctools kcmutils signon-kwallet-extension")
+adddep=("kcmutils signon-kwallet-extension signon-plugin-oauth2 signon-ui")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools qcoro-qt5")
 
 build() {
   go_src_dir

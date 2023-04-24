@@ -1,5 +1,5 @@
 pkgname=kontact
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-pim")
 
-# kjots
-build_deps=("extra-cmake-modules kdoctools akregator kaddressbook kmail knotes korganizer zanshin")
+adddep=("kontactinterface kmail-account-wizard")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 # NOTE: Это опциональные зависимости
 removedep=("kleopatra kdepim-addons")

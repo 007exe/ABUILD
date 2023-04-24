@@ -1,5 +1,5 @@
 pkgname=kmail-account-wizard
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-pim")
 
-build_deps=("kidentitymanagement pimcommon kmailtransport kross libkleo extra-cmake-modules kdoctools qt5-tools knotifyconfig ktexteditor")
+adddep=("kidentitymanagement pimcommon kmailtransport kross libkleo")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools qt5-tools knotifyconfig ktexteditor")
 
 build() {
   go_src_dir

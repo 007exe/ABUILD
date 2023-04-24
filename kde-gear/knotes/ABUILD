@@ -1,5 +1,5 @@
 pkgname=knotes
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-pim")
 
-build_deps=("kdepim-runtime kdnssd kontactinterface extra-cmake-modules kdoctools")
+adddep=("kdepim-runtime kdnssd kontactinterface")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir

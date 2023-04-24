@@ -1,5 +1,5 @@
 pkgname=pimcommon
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("libs kde-gear")
 
-build_deps=("libkdepim kimap kldap akonadi-contacts akonadi-search purpose kpimtextedit extra-cmake-modules qt5-tools doxygen")
+adddep=("libkdepim kimap kldap akonadi-contacts akonadi-search purpose kpimtextedit ktextaddons")
+
+build_deps=("${adddep} extra-cmake-modules qt5-tools doxygen")
 
 build() {
   go_src_dir
@@ -18,7 +20,8 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_TESTING=OFF
+    -DBUILD_TESTING=OFF \
+    -DBUILD_QCH=ON
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }

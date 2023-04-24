@@ -1,5 +1,5 @@
 pkgname=kdepim-addons
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-pim")
 
-build_deps=("incidenceeditor ktnef libksieve akonadi-import-wizard poppler-qt5 kitinerary kontactinterface discount extra-cmake-modules kdoctools kaddressbook")
+adddep=("incidenceeditor ktnef libksieve akonadi-import-wizard kitinerary kontactinterface discount")
 
-adddep=("incidenceeditor ktnef libksieve akonadi-import-wizard poppler-qt5 kitinerary kontactinterface discount")
+build_deps=("${adddep} extra-cmake-modules kdoctools kaddressbook")
 
 # NOTE: Это опциональные зависимости
 removedep=("grammalecte")

@@ -1,5 +1,5 @@
 pkgname=audiocd-kio
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,12 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-multimedia")
 
-build_deps=("extra-cmake-modules kdoctools kcmutils libkcddb libkcompactdisc lame")
+adddep=("kcmutils libkcddb libkcompactdisc lame")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
+
+# NOTE: Это опциональные зависимости
+removedep=("opus-tools")
 
 build() {
   go_src_dir

@@ -1,5 +1,5 @@
 pkgname=kdenetwork-filesharing
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-network")
 
-build_deps=("samba kdeclarative extra-cmake-modules")
+adddep=("samba kio")
+
+build_deps=("${adddep} extra-cmake-modules qcoro-qt5")
 
 build() {
   go_src_dir

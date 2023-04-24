@@ -1,5 +1,5 @@
 pkgname=kde-dev-scripts
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 

@@ -1,5 +1,6 @@
 pkgname=marble-common
-pkgver=22.12.3
+pkglist=("marble-qt marble-maps marble")
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +10,14 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("libs kde-education")
 
-# libwlocate shapelib
-build_deps=("extra-cmake-modules gpsd kdoctools knewstuff kparts krunner
-phonon qt5-serialport qt5-tools protobuf qt5-webengine plasma-workspace")
+adddep=("qt5-svg qt5-webengine phonon protobuf")
 
-pkglist=("marble-qt marble-maps marble")
+# libwlocate shapelib
+build_deps=("${adddep} extra-cmake-modules gpsd kdoctools
+kparts krunner plasma-workspace qt5-serialport qt5-tools")
+
+# NOTE: Это опциональные зависимости
+removedep=("gpsd libwlocate qt5-serialport shapelib")
 
 build() {
   go_src_dir
@@ -33,7 +37,6 @@ build() {
   DESTDIR=${pkgdir} cmake --install build
   rm -r ${pkgdir}/usr/share/{config.kcfg,kxmlgui5,metainfo,plasma} \
         ${pkgdir}/usr/bin \
-        ${pkgdir}/usr/share/knsrcfiles \
         ${pkgdir}/usr/lib/qt/{qml,plugins/*.so,plugins/kf5} \
         ${pkgdir}/usr/share/applications/{marble_geo.desktop,marble_worldwind.desktop,org.kde.marble*.desktop} \
         ${pkgdir}/usr/share/kservices5/{plasma-*,marble_part.desktop} \
@@ -45,6 +48,7 @@ build() {
 marble-qt() {
   pkgname=marble-qt
   shortdesc=("Common libraries and plugins for Marble Qt version.")
+  adddep=("marble-common")
 }
 
 marble-qt_prep() {
@@ -57,7 +61,7 @@ marble-qt_prep() {
 marble() {
   pkgname=marble
   shortdesc=("marble-common knewstuff kparts.")
-  adddep=("marble-common knewstuff kparts")
+  adddep=("marble-common kparts")
 # NOTE: Это опциональные зависимости
   removedep=("krunner")
 }

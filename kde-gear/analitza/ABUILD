@@ -1,5 +1,5 @@
 pkgname=analitza
-pkgver=22.12.3
+pkgver=23.04.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("libs kde-gear")
 
-build_deps=("qt5-svg qt5-declarative extra-cmake-modules kdoctools eigen qt5-tools")
+adddep=("qt5-svg qt5-declarative")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools eigen qt5-tools")
 
 build() {
   go_src_dir
