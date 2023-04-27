@@ -1,12 +1,11 @@
 pkgname=libmtp
-pkgver=1.1.19
-pkgbuild=2
+pkgver=1.1.21
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library implementation of the Media Transfer Protocol.")
-longdesc=("libmtp is an Initiator implementation of the Media Transfer Protocol (MTP) in the form of a library suitable primarily for POSIX compliant operating systems. We implement MTP Basic, the stuff proposed for standardization.")
 
-source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
