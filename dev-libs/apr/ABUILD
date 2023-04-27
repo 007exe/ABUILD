@@ -1,11 +1,11 @@
 pkgname=apr
-pkgver=1.7.2
+pkgver=1.7.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Apache Portable Runtime.")
 
-source=("https://dlcdn.apache.org/apr/apr-${pkgver}.tar.bz2")
+source=("https://archive.apache.org/dist/apr/apr-${pkgver}.tar.bz2")
 
 tags=("libs dev-libs")
 
