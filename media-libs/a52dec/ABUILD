@@ -1,12 +1,11 @@
 pkgname=a52dec
-pkgver=0.7.4
+pkgver=0.8.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A free library for decoding ATSC A/52 streams.")
-longdesc=("library for decoding ATSC A/52 streams used in DVD.")
 
-source=("http://liba52.sourceforge.net/files/${pkgname}-${pkgver}.tar.gz")
+source=("https://distfiles.adelielinux.org/source/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
@@ -15,9 +14,6 @@ build_deps=("glibc")
 build() {
   go_src_dir
   burn_patches
-  sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.in
-  mv configure.in configure.ac
-  ./bootstrap
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
