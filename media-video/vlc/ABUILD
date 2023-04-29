@@ -1,3 +1,4 @@
+
 pkgname=vlc
 pkgver=3.0.18
 pkgbuild=1
@@ -9,13 +10,17 @@ longdesc=("Media player and framework with support for most multimedia files and
 source=("https://download.videolan.org/vlc/${pkgver}/vlc-${pkgver}.tar.xz")
 
 tags=("apps media-video")
-# live-media xosd smbclient vcdimager libtiger sdl_image libgoom2 projectm aribb24 aribb25 pcsclite libdvbpsi libmatroska libupnp libta
-build_deps=("gst-plugins-base-libs libnotify libbluray flac libavc1394 gtk3 librsvg avahi chromaprint libdca
-libmtp libdvdcss libssh2 mesa libnfs mpg123 libdvdread libdvdnav libogg libmodplug libvpx libkate a52dec libmpeg2
-libvorbis speex opus libtheora libpng libjpeg-turbo libass libpulse alsa-lib jack protobuf libshout zvbi
-libsamplerate libsoxr lirc aom srt dav1d libxpm libproxy lua52 libidn taglib libmpcdec aalib libmicrodns
-ffmpeg faad2 libmad xcb-util-keysyms libxinerama libsecret libarchive qt5-base qt5-x11extras libgme twolame
-qt5-svg freetype fribidi harfbuzz fontconfig libxml2 gnutls libplacebo wayland-protocols libdc1394 libcaca")
+
+adddep=("a52dec libdvbpsi libxpm libdca libproxy lua52 libidn libmatroska taglib libmpcdec ffmpeg faad2
+libmad libmpeg2 xcb-util-keysyms libtar libxinerama libsecret libupnp libarchive qt5-base qt5-x11extras
+qt5-svg freetype fribidi harfbuzz fontconfig libxml2 gnutls libplacebo")
+
+# live-media xosd smbclient libtiger libgoom2 projectm aribb24 aribb25
+build_deps=("${adddep} gst-plugins-base-libs libnotify libbluray flac libdc1394 libavc1394 libcaca gtk3
+librsvg libgme twolame aalib avahi libmtp libmicrodns libdvdcss vcdimager libssh2 mesa protobuf libnfs
+mpg123 libdvdread libdvdnav libogg libshout libmodplug libvpx libvorbis speex opus libtheora libpng
+libjpeg-turbo zvbi libass libkate sdl_image libpulse alsa-lib jack libsamplerate libsoxr lirc aom srt
+dav1d pcsclite wayland-protocols")
 
 # NOTE: Это опциональные зависимости
 removedep=("avahi aom gst-plugins-base-libs dav1d libdvdcss libavc1394 libdc1394 kwallet libva-vdpau-driver
@@ -28,13 +33,20 @@ aribb25 pcsclit")
 build() {
   go_src_dir
   burn_patches
+  sed -e 's:truetype/ttf-dejavu:TTF:g' -i modules/visualization/projectm.cpp
+  sed -e 's|-Werror-implicit-function-declaration||g' -i configure
+  sed 's|whoami|echo builduser|g' -i configure
+  sed 's|hostname -f|echo arch|g' -i configure
   autoreconf -vf
-# FIX: https://trac.videolan.org/vlc/ticket/25036
+  export CFLAGS+=" -I/usr/include/samba-4.0 -ffat-lto-objects"
+  export CPPFLAGS+=" -I/usr/include/samba-4.0"
+  export CXXFLAGS+=" -std=c++11"
+  export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig"
+# upstream doesn't support lua 5.4 yet: https://trac.videolan.org/vlc/ticket/25036
   export LUAC=/usr/bin/luac5.2
   export LUA_LIBS="$(pkg-config --libs lua5.2)"
-  export CPPFLAGS="$(pkg-config --cflags lua52)"
   export RCC=/usr/bin/rcc-qt5
-  export CXXFLAGS+=" -std=c++11"
+#  export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig/:$PKG_CONFIG_PATH"
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
