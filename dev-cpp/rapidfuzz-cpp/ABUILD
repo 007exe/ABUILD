@@ -1,0 +1,23 @@
+pkgname=rapidfuzz-cpp
+pkgver=1.11.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Rapid fuzzy string matching in C++ using the Levenshtein Distance.")
+
+source=("https://github.com/maxbachmann/rapidfuzz-cpp/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
