@@ -1,5 +1,5 @@
 pkgname=python-tomlkit
-pkgver=0.11.7
+pkgver=0.11.8
 pkgbuild=1
 arch=("auto")
 
