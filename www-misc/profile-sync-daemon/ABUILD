@@ -1,27 +1,31 @@
 pkgname=profile-sync-daemon
-pkgver=5.64
+pkgver=6.48
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Syncs browser profiles to tmpfs reducing SSD/HDD calls and speeding-up browsers."
+shortdesc=("Symlinks and syncs browser profile dirs to RAM.")
 
-source=("http://repo-ck.com/source/$pkgname/$pkgname-$pkgver.tar.xz")
+source=("https://github.com/graysky2/${pkgname}/archive/v${pkgver}.tar.gz")
 
+tags=("base www-misc")
 
-tags="base app-admin"
+adddep=("bash findutils procps-ng rsync")
 
-build_deps="gcc"
+build_deps=("${adddep} gcc")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build(){
   go_src_dir
   burn_patches
-  make
-   make DESTDIR="$pkgdir" install-openrc-all
-mkdir -p ${pkgdir}/etc/init.d
-cp $filedir/* ${pkgdir}/etc/init.d
-
-chmod 755 ${pkgdir}/etc/init.d/*
-
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -vDm 644 MIT -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
 }
-
