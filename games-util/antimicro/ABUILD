@@ -1,64 +1,37 @@
-#ABUILD created by/создан: Kroll, krlgs at front.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=antimicro
-pkgver=2.0
+pkgver=3.3.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="AntiMicro is a graphical program used to map keyboard keys and mouse controls to a gamepad."
-#longdesc=(""
-#)
+shortdesc=("Graphical program used to map keyboard buttons and mouse controls to a gamepad.")
 
-source=("https://github.com/Ryochan7/${pkgname}/archive/${pkgver}.tar.gz")
-wgetopts"--no-check-certificate"
+source=("https://github.com/AntiMicroX/antimicrox/archive/refs/tags/${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("apps games-util")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps games-util"
+adddep=("desktop-file-utils hicolor-icon-theme libxtst qt5-x11extras sdl2")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep} cmake extra-cmake-modules gettext itstool qt5-tools")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-before_build()
-{
-    cd ${srcdir}/${pkgname}-${pkgver}/src
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
 }
 
-BUILD_SYSTEM="qmake"
-BUILD_KEYS="*.pro INSTALL_PREFIX=/usr"
-
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DUSE_SDL_2=ON \
+    -DAPPDATA=ON \
+    -DWITH_UINPUT=ON \
+    -DWITH_X11=ON \
+    -DWITH_XTEST=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
