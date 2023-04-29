@@ -1,6 +1,6 @@
 pkgname=lib32-sqlite
-pkgver=3.41.1
-_srcver=3410100
+pkgver=3.41.2
+_srcver=3410200
 pkgbuild=1
 arch=("auto")
 
