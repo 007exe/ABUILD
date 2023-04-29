@@ -1,0 +1,45 @@
+pkgname=efl
+pkgver=1.26.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Enlightenment Foundation Libraries.")
+
+source=("https://download.enlightenment.org/rel/libs/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+# mailcap
+adddep=("libxrender libxss libxtst lua52 mesa openjpeg2 openssl shared-mime-info util-linux wayland zlib
+curl dbus fontconfig freetype fribidi giflib glib2 gstreamer gst-plugins-base-libs harfbuzz hicolor-icon-theme
+libglvnd libinput libjpeg-turbo libpng libpulse libsndfile libtiff libunwind libwebp libx11 libxcb libxcomposite
+libxcursor libxdamage libxext libxfixes libxi libxinerama libxkbcommon libxrandr libxkbcommon-x11")
+
+build_deps=("${adddep} doxygen libraw librsvg libspectre meson ninja poppler python scim texlive-core wayland-protocols")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav libraw libreoffice
+librsvg libspectre poppler scim")
+
+build() {
+  go_src_dir
+  burn_patches
+  rm -rf build
+  mkdir -p build
+  export CFLAGS="$CFLAGS -fvisibility=hidden"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D fb=true \
+    -D drm=true \
+    -D wl=true \
+    -D network-backend=connman \
+    -D lua-interpreter=lua \
+    -D bindings= \
+    -D build-examples=false \
+    -D build-tests=false
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm644 licenses/COPYING.BSD ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.BSD
+  install -Dm644 licenses/COPYING.SMALL ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.SMALL
+}
