@@ -1,30 +1,33 @@
 pkgname=qjoypad
-pkgver=4.1.0
-pkgbuild=2
-arch=('auto')
+pkgver=4.3.1
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Joystick Configuration Utility"
-longdesc=("QJoyPad is a convenient little program with a QT interface that converts movement and button presses on a gamepad or joystick into key presses, mouse clicks, and mouse movement in XWindows."
-"Homepage: http://qjoypad.sourceforge.net/")
+shortdesc=("Program with a QT interface that converts gamepad/joystick events into key strokes and mouse actions in XWindows.")
 
-source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
-tags="xapps games-util"
-build_deps="qt4 libXtst"
+source=("https://github.com/panzi/${pkgname}/archive/v${pkgver}.tar.gz")
 
-build()
-{
-	go_src_dir
-	cd src
-	burn_patches
-	./config --prefix=/usr --install-dir=$pkgdir --devdir=/dev/input --debug
-	make || exit 1
-	make DESTDIR="$pkgdir" install
+tags=("apps games-util")
+
+adddep=("qt5-base libxtst qt5-x11extras")
+
+build_deps=("${adddep} qt5-tools cmake")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
 }
 
-after_build()
-{
-	install -d ${pkgdir}/usr/share/icons/hicolor/24x24/apps/
-	install -d ${pkgdir}/usr/share/icons/hicolor/64x64/apps/
-	install -m644 ${srcdir}/$pkgname-$pkgver/icons/gamepad4-24x24.png ${pkgdir}/usr/share/icons/hicolor/24x24/apps/qjoypad.png
-	install -m644 ${srcdir}/$pkgname-$pkgver/icons/gamepad4-64x64.png ${pkgdir}/usr/share/icons/hicolor/64x64/apps/qjoypad.png
+build(){
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 }
