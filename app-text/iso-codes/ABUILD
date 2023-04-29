@@ -1,11 +1,11 @@
 pkgname=iso-codes
-pkgver=4.13.0
+pkgver=4.15.0
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Lists of the country, language, and currency names.")
 
-source=("http://ftp.debian.org/debian/pool/main/i/iso-codes/iso-codes_${pkgver}.orig.tar.xz")
+source=("https://salsa.debian.org/iso-codes-team/iso-codes/-/archive/v${pkgver}/iso-codes-v${pkgver}.tar.gz")
 
 tags=("libs app-text")
 
