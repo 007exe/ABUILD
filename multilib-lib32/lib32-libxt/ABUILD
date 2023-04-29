@@ -1,18 +1,17 @@
 pkgname=lib32-libxt
-pkgver=1.2.1
+pkgver=1.3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 toolkit intrinsics library (32-bit).")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXt-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXt-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
-build_deps=("lib32-libsm lib32-libx11 lib32-gcc-libs xorg-util-macros")
+adddep=("lib32-libsm lib32-libx11 libxt")
 
-adddep=("libxt")
+build_deps=("${adddep} lib32-gcc-libs xorg-util-macros")
 
 build() {
   go_src_dir
