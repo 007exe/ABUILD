@@ -1,18 +1,17 @@
 pkgname=lib32-libgpg-error
-pkgver=1.46
+pkgver=1.47
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Support library for libgcrypt (32-bit).")
-longdesc=("The libgpg-error package contains a library that defines common error values for all GnuPG components.")
 
 source=("https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${pkgver}.tar.bz2")
 
 tags=("dev-libs lib32")
 
-build_deps=("lib32-glibc lib32-gcc-libs")
+adddep=("libgpg-error lib32-glibc")
 
-adddep=("libgpg-error")
+build_deps=("${adddep} lib32-gcc-libs")
 
 build() {
   go_src_dir
