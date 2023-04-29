@@ -1,5 +1,5 @@
 pkgname=digikam
-pkgver=7.9.0
+pkgver=8.0.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,14 +9,11 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgver
 
 tags=("apps kde-misc")
 
-build_deps=("extra-cmake-modules doxygen eigen boost kdoctools
-lensfun opencv akonadi-contacts knotifyconfig libksane kfilemetadata
-qtav marble-common threadweaver kcalendarcore qt5-xmlpatterns imagemagick
-jasper glu perl-image-exiftool")
-
 adddep=("lensfun opencv akonadi-contacts knotifyconfig libksane kfilemetadata
-qtav marble-common threadweaver kcalendarcore qt5-xmlpatterns imagemagick
-jasper glu perl-image-exiftool")
+marble-common threadweaver kcalendarcore qt5-networkauth qt5-xmlpatterns
+imagemagick jasper glu perl-image-exiftool")
+
+build_deps=("${adddep} extra-cmake-modules doxygen eigen boost kdoctools")
 
 # NOTE: Это опциональные зависимости
 removedep=("hugin rawtherapee perl qt5-imageformats darktable")
