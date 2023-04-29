@@ -1,18 +1,17 @@
 pkgname=lib32-libxfixes
-pkgver=6.0.0
+pkgver=6.0.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 miscellaneous fixes extension library (32-bit).")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXfixes-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXfixes-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
-build_deps=("lib32-libx11 lib32-gcc-libs")
+adddep=("libxfixes lib32-libx11")
 
-adddep=("libxfixes")
+build_deps=("${adddep} lib32-gcc-libs")
 
 build() {
   go_src_dir
