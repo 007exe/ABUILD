@@ -1,34 +1,34 @@
 pkgname=avidemux
-pkgver=2.6.8
+pkgver=2.8.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Avidemux (Video editor)"
+shortdesc=("Video editor designed for simple cutting, filtering and encoding tasks.")
 
-source=("http://download.berlios.de/${pkgname}/${pkgname}_${pkgver}.tar.gz")
+source=("https://downloads.sourceforge.net/avidemux/avidemux_${pkgver}.tar.gz")
 
-numjobs=1
+tags=("apps media-video")
 
-tags="xapps media-video"
+adddep=("libxml2 fontconfig sqlite libvpx libva libvdpau qt5-base x264 x265 glu libxv desktop-file-utils")
 
-build_deps="sdl libdca libmad faad2 opencore-amr libvorbis faac lame twolame libmpeg2 xvidcore x264"
+build_deps=("${adddep} cmake libxslt jack libvorbis opus alsa-lib lame xvidcore faad2 faac libsamplerate
+opencore-amr yasm mesa libpulse intltool libdca fribidi qt5-tools twolame libfdk-aac libass")
 
-adddep="sdl libdca libmad faad2 opencore-amr libvorbis faac lame twolame libmpeg2 xvidcore x264"
 
+# NOTE: Это опциональные зависимости
+removedep=("lame faac faad2 opus opencore-amr jack libpulse x264 libx264 x265 xvidcore qt5-base libdca
+libfdk-aac twolame libass fribidi")
 
-build()
-{
+build(){
   go_src_dir
- bash bootStrap.bash
-    sed -i -e 's/avidemux2_gtk/avidemux3_qt4/g' avidemux2.desktop
-    sed -i -e 's/avidemux2/avidemux/g' "$pkgname"2.desktop
-
-
-    cp -r install/usr/ "$pkgdir"/
-
-    install -Dm644 "$pkgname"_icon.png "$pkgdir"/usr/share/pixmaps/"$pkgname"2.png
-
-    desktop-file-install "$pkgname"2.desktop --dir "$pkgdir"/usr/share/applications/"$pkgname".desktop
-  
+  burn_patches
+  bash bootStrap.bash --with-core --with-cli --with-plugins
+# NOTE: avidemux-cli
+  make -j${numjobs} -C buildCli DESTDIR=${pkgdir} install
+  make -j${numjobs} -C buildCore DESTDIR=${pkgdir} install
+  make -j${numjobs} -C buildPluginsCLI DESTDIR=${pkgdir} install
+  make -j${numjobs} -C buildPluginsCommon DESTDIR=${pkgdir} install
+# NOTE: avidemux-qt
+  make -j${numjobs} -C buildQt5 DESTDIR=${pkgdir} install
+  make -j${numjobs} -C buildPluginsQt5 DESTDIR=${pkgdir} install
 }
-
