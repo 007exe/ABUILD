@@ -1,5 +1,5 @@
 pkgname=iproute2
-pkgver=6.2.0
+pkgver=6.3.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,10 @@ source=("http://www.kernel.org/pub/linux/utils/net/${pkgname}/${pkgname}-${pkgve
 
 tags=("sys-apps network")
 
-build_deps=("glibc libcap db elfutils libmnl iptables")
+# libbpf
+adddep=("glibc iptables libcap elfutils")
+
+build_deps=("${adddep} db")
 
 config_files=("etc/iproute2/ematch_map
 etc/iproute2/rt_dsfield
