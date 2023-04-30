@@ -1,10 +1,9 @@
 pkgname=apache
-pkgver=2.4.54
-pkgbuild=2
+pkgver=2.4.57
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("A high performance Unix-based HTTP server")
-longdesc=("The Apache HTTPD package contains an open-source HTTP server. It is useful for creating local intranet web sites or running huge web serving operations.")
+shortdesc=("A high performance Unix-based HTTP server.")
 
 source=("https://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2")
 
