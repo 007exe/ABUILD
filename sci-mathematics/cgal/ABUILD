@@ -1,66 +1,26 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=cgal
-pkgver=3.9
+pkgver=5.5.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Computational Geometry Algorithms Library"
-#longdesc=(""
-#)
+shortdesc=("Computational Geometry Algorithms Library.")
 
-source=("https://gforge.inria.fr/frs/download.php/29125/CGAL-${pkgver}.tar.gz")
+source=("https://github.com/CGAL/cgal/releases/download/v${pkgver}/CGAL-${pkgver}.tar.xz")
 
-patch_opts=("")
+tags=("libs sci-mathematics")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="libs sci-mathematics"
+adddep=("boost eigen gmp mpfr")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep} cmake")
 
-provides=""
-conflicts=""
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
--DCMAKE_BUILD_TYPE=Release \
--DLIB_DIR=lib${LIBDIRSUFFIX} \
--DLIB_SUFFIX=${LIBDIRSUFFIX} \
-../"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+  rm -r ${pkgdir}/usr/share
+}
