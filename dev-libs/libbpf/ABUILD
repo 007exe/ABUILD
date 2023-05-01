@@ -1,0 +1,23 @@
+pkgname=libbpf
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for loading eBPF programs and reading and manipulating eBPF objects from user-space.")
+
+source=("https://github.com/libbpf/libbpf/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("glibc elfutils kernel-headers")
+
+build_deps=("rsync")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -C src -j${numjobs}
+  make -C src DESTDIR=${pkgdir} LIBSUBDIR=lib install install_headers
+  install -Dm 644 LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+}
