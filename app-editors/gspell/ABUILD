@@ -1,10 +1,9 @@
 pkgname=gspell
-pkgver=1.12.0
+pkgver=1.12.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Spell-checking library for GTK applications.")
-longdesc=("The gspell package provides a flexible API to add spell checking to a GTK+ application.")
 
 source=("https://download.gnome.org/sources/gspell/${pkgver%.*}/gspell-${pkgver}.tar.xz")
 
