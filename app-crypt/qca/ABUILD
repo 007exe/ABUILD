@@ -1,16 +1,14 @@
 pkgname=qca-qt5
-pkgver=2.3.5
+pkglist=("qca-qt6")
+pkgver=2.3.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Qt Cryptographic Architecture.")
-longdesc=("Qca aims to provide a straightforward and cross-platform crypto API, using Qt datatypes and conventions. Qca separates the API from the implementation, using plugins known as Providers.")
+shortdesc=("Qt5 Cryptographic Architecture.")
 
 source=("https://download.kde.org/stable/qca/${pkgver}/qca-${pkgver}.tar.xz")
 
 tags=("app-crypt libs")
-
-pkglist=("qca-qt6")
 
 build_deps=("cmake doxygen qt5-base ca-certificates nss qt6-5compat botan pkcs11-helper")
 
@@ -31,10 +29,11 @@ build() {
   DESTDIR=${pkgdir} cmake --install build-qt5
 }
 
+#######################################################################################
+
 qca-qt6() {
   pkgname=qca-qt6
-  shortdesc=("Qt Cryptographic Architecture.")
-  longdesc=("Qca aims to provide a straightforward and cross-platform crypto API, using Qt datatypes and conventions. Qca separates the API from the implementation, using plugins known as Providers.")
+  shortdesc=("Qt6 Cryptographic Architecture.")
   adddep=("ca-certificates")
 # NOTE: Это опциональные зависимости
   removedep=("botan pkcs11-helper nspr")
