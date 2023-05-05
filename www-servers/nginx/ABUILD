@@ -1,87 +1,108 @@
 pkgname=nginx
-pkgver=1.7.4
-pkgbuild=2
-shortdesc="lightweight HTTP server and IMAP/POP3 proxy server"
-longdesc="lightweight HTTP server and IMAP/POP3 proxy server"
-arch=('auto')
-build_deps=('pcre' 'zlib' 'openssl')
+pkgver=1.22.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Lightweight HTTP server and IMAP/POP3 proxy server/")
+
+source=("https://nginx.org/download/nginx-${pkgver}.tar.gz")
+
 tags=("server www-servers")
 
-config_files="etc/nginx/nginx.conf
-etc/nginx/sites-available/default
+# libxcrypt
+adddep=("pcre2 zlib openssl geoip mailcap")
+
+build_deps=("${adddep} mercurial")
+
+config_files=("etc/nginx/fastcgi.conf
+etc/nginx/fastcgi_params
 etc/nginx/koi-win
 etc/nginx/koi-utf
-etc/nginx/win-utf
-etc/nginx/mime.types
+etc/nginx/nginx.conf
 etc/nginx/scgi_params
 etc/nginx/uwsgi_params
-etc/nginx/fastcgi_params
-etc/nginx/fastcgi.conf
-etc/logrotate.d/nginx"
-source="http://nginx.org/download/nginx-${pkgver}.tar.gz"
+etc/nginx/win-utf
+etc/logrotate.d/nginx")
 
-nginx_home=/var/lib/nginx
-nginx_tmp_path=${nginx_home}
-nginx_log_path=/var/log/nginx
-
-NGINX_MODULES_STD="access auth_basic autoindex browser charset empty_gif fastcgi
-geo gzip limit_req limit_conn map memcached proxy referer rewrite scgi ssi
-split_clients upstream_ip_hash userid uwsgi"
-NGINX_MODULES_OPT="addition auth_request dav degradation flv geoip gunzip gzip_static
-image_filter mp4 perl random_index realip secure_link spdy stub_status sub xslt"
-NGINX_MODULES_OPT_ENABLED=("gunzip gzip_static perl xslt")
-NGINX_MODULES=''
-for mod in $NGINX_MODULES_OPT_ENABLED; do
-    NGINX_MODULES="$NGINX_MODULES --with-http_${mod}_module"
-done
-
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr/ \
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/etc/nginx \
     --conf-path=/etc/nginx/nginx.conf \
+    --sbin-path=/usr/bin/nginx \
     --pid-path=/run/nginx.pid \
     --lock-path=/run/lock/nginx.lock \
-    --user=www-data \
-    --group=www-data \
-    --http-log-path=${nginx_log_path}/access.log \
-    --error-log-path=${nginx_log_path}/error.log \
-    --http-client-body-temp-path=${nginx_tmp_path}/client-body \
-    --http-proxy-temp-path=${nginx_tmp_path}/proxy \
-    --http-fastcgi-temp-path=${nginx_tmp_path}/fastcgi \
-    --http-scgi-temp-path=${nginx_tmp_path}/scgi \
-    --http-uwsgi-temp-path=${nginx_tmp_path}/uwsgi \
-    --with-ipv6 \
-    --with-pcre-jit \
+    --user=http \
+    --group=http \
+    --http-log-path=/var/log/nginx/access.log \
+    --error-log-path=stderr \
+    --http-client-body-temp-path=/var/lib/nginx/client-body \
+    --http-proxy-temp-path=/var/lib/nginx/proxy \
+    --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+    --http-scgi-temp-path=/var/lib/nginx/scgi \
+    --http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+    --with-cc-opt="$CFLAGS $CPPFLAGS" \
+    --with-ld-opt="$LDFLAGS" \
+    --with-compat \
+    --with-debug \
     --with-file-aio \
+    --with-http_addition_module \
+    --with-http_auth_request_module \
+    --with-http_dav_module \
+    --with-http_degradation_module \
+    --with-http_flv_module \
+    --with-http_geoip_module \
+    --with-http_gunzip_module \
+    --with-http_gzip_static_module \
+    --with-http_mp4_module \
+    --with-http_realip_module \
+    --with-http_secure_link_module \
+    --with-http_slice_module \
     --with-http_ssl_module \
-    $NGINX_MODULES"
+    --with-http_stub_status_module \
+    --with-http_sub_module \
+    --with-http_v2_module \
+    --with-mail \
+    --with-mail_ssl_module \
+    --with-pcre-jit \
+    --with-stream \
+    --with-stream_geoip_module \
+    --with-stream_realip_module \
+    --with-stream_ssl_module \
+    --with-stream_ssl_preread_module \
+    --with-threads
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-after_build() {
-  go_src_dir
-  install -Dm644 contrib/vim/ftdetect/nginx.vim \
-	"$pkgdir"/usr/share/vim/vimfiles/ftdetect/nginx.vim
-  install -Dm644 contrib/vim/syntax/nginx.vim \
-	"$pkgdir"/usr/share/vim/vimfiles/syntax/nginx.vim
-  install -Dm644 contrib/vim/indent/nginx.vim \
-	"$pkgdir"/usr/share/vim/vimfiles/indent/nginx.vim
+  sed -e 's|\<user\s\+\w\+;|user http;|g' \
+    -e '44s|html|/usr/share/nginx/html|' \
+    -e '54s|html|/usr/share/nginx/html|' \
+    -i ${pkgdir}/etc/nginx/nginx.conf
 
-  mkdir -p $pkgdir/etc/nginx/sites-{available,enabled}
-  install -Dm644 $filedir/nginx.conf $pkgdir/etc/nginx/nginx.conf
-  install -Dm644 $filedir/default.conf $pkgdir/etc/nginx/sites-available/default
-  ln -s ../sites-available/default $pkgdir/etc/nginx/sites-enabled/default
-  rm $pkgdir/etc/nginx/*.default
+  rm ${pkgdir}/etc/nginx/*.default
+  rm ${pkgdir}/etc/nginx/mime.types
 
-  install -d "$pkgdir"/${nginx_tmp_path}
-  install -dm700 "$pkgdir"/${nginx_tmp_path}/proxy
+  install -d ${pkgdir}/var/lib/nginx
+  install -dm700 ${pkgdir}/var/lib/nginx/proxy
 
-  chmod 750 "$pkgdir"/var/log/nginx
-  chown www-data:www-data "$pkgdir"/var/log/nginx
+  chmod 755 ${pkgdir}/var/log/nginx
+  chown root:root ${pkgdir}/var/log/nginx
 
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -d ${pkgdir}/usr/share/nginx
+  mv ${pkgdir}/etc/nginx/html/ ${pkgdir}/usr/share/nginx
 
-  install -D -m644 "$filedir"/nginx.logrotate "$pkgdir"/etc/logrotate.d/nginx
-  install -D -m755 "$filedir"/nginx.initd $pkgdir/etc/init.d/nginx
-  mkdir -p $pkgdir/usr/share/nginx
-  mv $pkgdir/usr/html $pkgdir/usr/share/nginx/html
-  rm -rf $pkgdir/var/run
+  install -Dm644 ${filedir}/logrotate ${pkgdir}/etc/logrotate.d/nginx
+  install -Dm644 ${filedir}/service ${pkgdir}/usr/lib/systemd/system/nginx.service
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+  rmdir ${pkgdir}/run
+
+  install -d ${pkgdir}/usr/share/man/man8/
+  gzip -9c man/nginx.8 > ${pkgdir}/usr/share/man/man8/nginx.8.gz
+
+
+  for i in ftdetect ftplugin indent syntax; do
+    install -Dm644 contrib/vim/$i/nginx.vim \
+      "$pkgdir/usr/share/vim/vimfiles/$i/nginx.vim"
+  done
 }
-
