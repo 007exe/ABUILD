@@ -1,65 +1,40 @@
 pkgname=qemu
-pkgver=1.6.0
+pkgver=7.2.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="QEMU is a generic and open source machine emulator and virtualizer."
-longdesc=("When used as a machine emulator, QEMU can run OSes and programs made for one machine (e.g. an ARM board) on a different machine (e.g. your own PC). By using dynamic translation, it achieves very good performances. When used as a virtualizer, QEMU achieves near native performances by executing the guest code directly on the host CPU. A host driver called the QEMU accelerator (also known as KQEMU) is needed in this case. The virtualizer mode requires that both the host and guest machine use x86 compatible processors.")
-source=("http://wiki.qemu.org/download/${pkgname}-${pkgver}.tar.bz2")
-tags="xapps app-emulation"
-build_deps="perl python curl libaio libcap-ng nss libseccomp"
-custom_opts="no_strip"
+shortdesc=("QEMU is a generic and open source machine emulator and virtualizer.")
 
-pkglist="cacard"
+source=("https://download.qemu.org/qemu-${pkgver}.tar.xz")
 
-BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-BUILD_KEYS="--prefix=/usr \
-  --sysconfdir=/etc \
-  --mandir=/usr/man \
-  --audio-drv-list='alsa sdl' \
-  --enable-docs \
-  --enable-mixemu \
-  --disable-gtk \
-  --enable-linux-aio \
-  --enable-seccomp \
-  --localstatedir=/var"
+tags=("apps app-emulation")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+# capstone dtc glusterfs libbpf libiscsi libsasl libslirp multipath-tools ndctl vde2 virglrenderer
+build_deps=("alsa-lib brltty bzip2 cairo curl fuse3 gcc-libs zstd
+gdk-pixbuf glib2 gnutls gtk3 jack libaio libcacard libcap-ng vte3
+libepoxy libnfs libpng libpulse libseccomp libssh liburing snappy
+libusb libx11 libxml2 libxkbcommon lzo mesa meson ncurses numactl
+linux-pam pcre2 python python-sphinx python-sphinx_rtd_theme sdl2
+sdl2_image spice-protocol spice usbredir zlib")
 
-after_build() {
+build() {
   go_src_dir
-  # remove conflicting /var/run directory
-  rm -r "${pkgdir}/var"
-  install -D -m644 "${filedir}/65-kvm.rules" \
-                   "${pkgdir}/usr/lib/udev/rules.d/65-kvm.rules"
-  # bridge_helper needs suid
-  chmod u+s "${pkgdir}/usr/lib${LIBDIRSUFFIX}/qemu/qemu-bridge-helper"
-  # add sample config
-  echo "allow br0" > ${pkgdir}/etc/qemu/bridge.conf.sample
-  # strip scripts directory
-  find "${pkgdir}/usr/src/linux-${_kernver}/scripts"  -type f -perm -u+w 2>/dev/null | while read binary ; do
-    case "$(file -bi "$binary")" in
-        *application/x-executable*) # Binaries
-        /usr/bin/strip $STRIP_BINARIES "$binary";;
-    esac
-  done
-  # remove libcacard files
-  rm -rf ${pkgdir}/usr/lib${LIBDIRSUFFIX}/libcacard*
-  rm -rf ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/libcacard.pc
-  rm -rf ${pkgdir}/usr/bin/vscclient
-}
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --docdir=/usr/share/doc/qemu \
+    --enable-modules \
+    --enable-sdl \
+    --enable-slirp \
+    --enable-tpm \
+    --smbd=/usr/bin/smbd \
+    --with-coroutine=ucontext
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-cacard() {
-  pkgname="libcacard"
-  pkgdesc="Common Access Card (CAC) Emulation"
-}
-
-cacard_prep() {
-    go_src_dir
-    mkdir -p ${pkgdir}/usr/bin
-    mkdir -p ${pkgdir}/usr/lib/pkgconfig
-    cp -a ${srcdir}/qemu-${pkgver}/.libs/libcacard.so* ${pkgdir}/usr/lib/
-    cp -a ${srcdir}/qemu-${pkgver}/libcacard.pc ${pkgdir}/usr/lib/pkgconfig/
-    cp -a ${srcdir}/qemu-${pkgver}/.libs/vscclient ${pkgdir}/usr/bin/
+  install -vDm 644 bridge.conf -t ${pkgdir}/etc/qemu/bridge.conf
+  install -vDm 644 qemu-sysusers.conf ${pkgdir}/usr/lib/sysusers.d/qemu.conf
 }
