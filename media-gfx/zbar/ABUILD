@@ -4,28 +4,35 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Application and library for reading bar codes from various sources.")
-longdesc=("Library and tools for reading barcodes from images or video.")
 
-source=("https://github.com/mchehab/zbar/archive/${pkgver}.tar.gz")
+source=("https://github.com/mchehab/zbar/archive/refs/tags/${pkgver}.tar.gz")
 
-tags=("media-gfx xapps")
+tags=("media-gfx apps")
 
-build_deps=("gtk3 qt5-x11extras python xmlto docbook-xsl gobject-introspection dbus imagemagick libsm libxv v4l-utils")
+adddep=("dbus imagemagick libsm libxv v4l-utils")
+
+build_deps=("${adddep} gtk3 qt5-x11extras python xmlto docbook-xsl gobject-introspection")
 
 # NOTE: Это опциональные зависимости
 removedep=("gtk3 qt5-x11extras python")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
   burn_patches
   autoreconf -vfi
-  sed -i '/tp_print/d' python/enum.c
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    --without-qt \
+    --with-qt \
     --with-gtk=gtk3 \
-    --with-dbusconfdir=/usr/share
+    --with-dbusconfdir=/usr/share CFLAGS="$CFLAGS -DNDEBUG"
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
