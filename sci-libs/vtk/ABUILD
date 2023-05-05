@@ -1,6 +1,6 @@
 pkgname=vtk
-pkgver=9.1.0
-pkgbuild=2
+pkgver=9.2.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Software system for 3D computer graphics, image processing, and visualization.")
@@ -9,23 +9,22 @@ source=("https://www.vtk.org/files/release/${pkgver%.*}/VTK-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
-# gnuplot openimagedenoise openmp python-matplotlib
-# -DVTK_WRAP_JAVA=ON java-environment
-# -DVTKOSPRAY_ENABLE_DENOISER=ON -DVTK_ENABLE_OSPRAY=ON ospray
-
-# NOTE: Следующие модули отключены из-за отсутствия зависимостей
-# -DVTK_MODULE_ENABLE_VTK_RenderingOpenVR=DONT_WANT openvr
-# -DVTK_MODULE_ENABLE_VTK_IOPDAL=DONT_WANT pdal
-# -DVTK_MODULE_ENABLE_VTK_IOOpenVDB=DONT_WANT openvdb
-# -DVTK_MODULE_USE_EXTERNAL_VTK_cgns=OFF cgns
-# -DVTK_MODULE_USE_EXTERNAL_VTK_cli11=ON cli11
 
 adddep=("gcc-libs double-conversion pugixml tbb")
-
-build_deps=("${adddep} adios2 cmake boost doxygen ffmpeg gdal liblas libxt mariadb-libs
-openmpi postgresql-libs python-matplotlib qt5-base qt5-tools qt5-declarative tk unixodbc
-wget eigen expat fmt freetype gl2ps glew hdf5 libjpeg-turbo jsoncpp libharu proj libxml2
-lz4 xz python-mpi4py netcdf libogg libpng rapidjson sqlite libtheora libtiff utf8cpp zfp zlib")
+# NOTE: Следующие модули отключены из-за отсутствия зависимостей
+# gnuplot openimagedenoise openmp
+# -DVTK_WRAP_JAVA=ON java-environment
+# -DVTKOSPRAY_ENABLE_DENOISER=ON -DVTK_ENABLE_OSPRAY=ON ospray
+# -DVTK_MODULE_ENABLE_VTK_RenderingOpenVR=DONT_WANT openvr
+# -DVTK_MODULE_USE_EXTERNAL_VTK_cgns=OFF cgns
+# -DVTK_MODULE_ENABLE_VTK_IOOpenVDB=DONT_WANT openvdb
+# -DVTK_MODULE_USE_EXTERNAL_VTK_cli11=ON cli11
+# -DVTK_MODULE_ENABLE_VTK_IOPDAL=DONT_WANT pdal
+build_deps=("${adddep} adios2 cmake boost doxygen ffmpeg gdal liblas libxt
+mariadb-libs openmpi postgresql-libs python-matplotlib qt5-base qt5-tools
+qt5-declarative tk unixodbc wget eigen expat fmt freetype gl2ps glew hdf5
+libjpeg-turbo jsoncpp libharu proj libxml2 lz4 xz python-mpi4py netcdf
+libogg libpng rapidjson sqlite libtheora libtiff utf8cpp zfp zlib")
 
 # NOTE: Это опцианальные зависимости
 removedep=("gnuplot graphviz openmpi qt5-x11extras tk adios2 cgns ffmpeg fmt gdal gl2ps
@@ -34,13 +33,7 @@ ospray pdal postgresql proj sqlite unixodbc")
 
 build() {
   go_src_dir
-  sed -i "s|2.4.0|2.3.0|" ThirdParty/libharu/CMakeLists.txt
-  sed -i "s|8.1.0|8.0.1|" ThirdParty/fmt/CMakeLists.txt
-
-# NOTE: накладываем патчи
-  patch -p1 -d ThirdParty/vtkm/vtkvtkm/vtk-m < $startdir/patches/vtkm-tbb-2021.patch
-  patch -p1 < $startdir/patches/vtk-ffmpeg5.patch
-
+  burn_patches
   export JAVA_HOME=/usr/lib/jvm/default
 # Путь к tcl
   local _tkver=$(echo 'puts $tcl_version' | tclsh)
