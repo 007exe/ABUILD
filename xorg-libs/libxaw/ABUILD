@@ -1,12 +1,11 @@
 pkgname=libxaw
-pkgver=1.0.14
-pkgbuild=2
+pkgver=1.0.15
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("X11 Athena Widget library")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+shortdesc=("X11 Athena Widget library.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXaw-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXaw-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
