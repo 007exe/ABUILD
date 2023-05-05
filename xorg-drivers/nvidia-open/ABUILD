@@ -1,0 +1,68 @@
+pkgname=nvidia-open
+pkgver=530.41.03
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("NVIDIA open kernel modules")
+
+tags=("drivers proprietary x11-drivers")
+
+source=("https://github.com/NVIDIA/open-gpu-kernel-modules/archive/refs/tags/${pkgver}.tar.gz")
+
+# nvidia-utils
+adddep=("libglvnd")
+
+build_deps=("${adddep} kernel-headers")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+#before_build(){
+#  go_src_dir
+#  rm -f ${srcache}/${pkgver}.tar.gz
+#}
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i "s/^HOSTNAME.*/HOSTNAME = echo archlinux"/ utils.mk
+  sed -i "s/^WHOAMI.*/WHOAMI = echo archlinux-builder"/ utils.mk
+#  sed -i "s/^DATE.*/DATE = date -r version.mk"/ utils.mk
+
+  sed -i "s/__VERSION_STRING/${pkgver}/" kernel-open/dkms.conf
+  sed -i 's/__JOBS/`nproc`/' kernel-open/dkms.conf
+  sed -i 's/__EXCLUDE_MODULES//' kernel-open/dkms.conf
+  sed -i 's/__DKMS_MODULES//' kernel-open/dkms.conf
+  sed -i '$i\
+BUILT_MODULE_NAME[0]="nvidia"\
+BUILT_MODULE_LOCATION[0]="kernel-open"\
+DEST_MODULE_LOCATION[0]="/kernel/drivers/video"\
+BUILT_MODULE_NAME[1]="nvidia-uvm"\
+BUILT_MODULE_LOCATION[1]="kernel-open"\
+DEST_MODULE_LOCATION[1]="/kernel/drivers/video"\
+BUILT_MODULE_NAME[2]="nvidia-modeset"\
+BUILT_MODULE_LOCATION[2]="kernel-open"\
+DEST_MODULE_LOCATION[2]="/kernel/drivers/video"\
+BUILT_MODULE_NAME[3]="nvidia-drm"\
+BUILT_MODULE_LOCATION[3]="kernel-open"\
+DEST_MODULE_LOCATION[3]="/kernel/drivers/video"\
+BUILT_MODULE_NAME[4]="nvidia-peermem"\
+BUILT_MODULE_LOCATION[4]="kernel-open"\
+DEST_MODULE_LOCATION[4]="/kernel/drivers/video"' kernel-open/dkms.conf
+
+  export CXX=gcc
+  export CC=gcc
+
+  make SYSSRC="/usr/src/linux"
+
+  _extradir="/usr/lib/modules/$(</usr/src/linux/version)/extramodules"
+  install -Dt "${pkgdir}${_extradir}" -m644 kernel-open/*.ko
+  find "${pkgdir}" -name '*.ko' -exec strip --strip-debug {} +
+  find "${pkgdir}" -name '*.ko' -exec xz {} +
+
+  # Force module to load even on unsupported GPUs
+  mkdir -p "$pkgdir"/usr/lib/modprobe.d
+  echo "options nvidia NVreg_OpenRmEnableUnsupportedGpus=1" > "$pkgdir"/usr/lib/modprobe.d/nvidia-open.conf
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
+}
