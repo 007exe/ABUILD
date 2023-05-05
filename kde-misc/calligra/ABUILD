@@ -9,16 +9,23 @@ source=("https://invent.kde.org/office/calligra/-/archive/v${pkgver}/calligra-v$
 
 tags=("kde kde-misc")
 
-# pstoedit libetonyek vc libgit2 libspnav libodfgen cauchy
-build_deps=("extra-cmake-modules kdoctools kdesignerplugin libwpg okular eigen marble-common
-boost libvisio libwps kcalendarcore akonadi kcmutils knotifyconfig kross kactivities kdiagram
-kdelibs4support gsl imath kcontacts qca-qt5 poppler-qt5 khtml kinit")
+# libspnav libodfgen cauchy
+adddep=("kcmutils knotifyconfig kross kactivities kdiagram kdelibs4support
+gsl imath kcontacts qca-qt5 poppler-qt5 khtml kinit")
+
+# pstoedit libetonyek vc libgit2
+build_deps=("${adddep} extra-cmake-modules kdoctools kdesignerplugin libwpg okular eigen
+marble-common boost libvisio libwps kcalendarcore akonadi")
+
+# NOTE: Это опциональные зависимости
+removedep=("libwpg libwps libvisio libetonyek pstoedit poppler libgit2 kirigami2 qt5-quickcontrols qt5-webengine")
 
 build() {
   go_src_dir
   burn_patches
   cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_CXX_STANDARD=17 \
     -DBUILD_TESTING=OFF
   cmake --build build -j${numjobs}
