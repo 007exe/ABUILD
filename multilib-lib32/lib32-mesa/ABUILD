@@ -1,6 +1,6 @@
 pkgname=lib32-mesa
 pkglist=("lib32-vulkan-mesa-layers lib32-opencl-mesa lib32-vulkan-intel lib32-vulkan-radeon lib32-libva-mesa-driver lib32-mesa-vdpau")
-pkgver=22.3.1
+pkgver=23.0.3
 pkgbuild=1
 arch=("auto")
 
@@ -10,13 +10,15 @@ source=("https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
-build_deps=("python-mako lib32-libxml2 lib32-expat lib32-libx11 xorgproto lib32-libdrm
-lib32-libxshmfence lib32-libxxf86vm lib32-libxdamage lib32-libvdpau lib32-libva glslang
-lib32-wayland wayland-protocols lib32-zstd lib32-libelf lib32-llvm libclc clang lib32-clang
-lib32-libglvnd lib32-libunwind lib32-lm_sensors lib32-libxrandr lib32-vulkan-icd-loader cmake
-meson lib32-libxcb lib32-llvm-libs")
-
 adddep=("libxdamage libunwind")
+
+# lib32-libdrm lib32-libxshmfence lib32-libxdamage lib32-libvdpau lib32-libva
+# lib32-libelf lib32-llvm lib32-clang lib32-libglvnd lib32-libunwind
+# lib32-libxrandr lib32-vulkan-icd-loader lib32-llvm-libs
+
+build_deps=("python-mako lib32-libxml2 lib32-expat lib32-libx11 xorgproto lib32-libxxf86vm
+glslang wayland-protocols lib32-zstd libclc clang cmake meson lib32-libxcb lib32-wayland
+lib32-lm_sensors")
 
 build() {
   go_src_dir
@@ -36,21 +38,19 @@ END
     -D prefix=/usr \
     -D libdir=lib32 \
     -D b_ndebug=true \
-    -D b_lto=false \
     -D platforms=x11,wayland \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=amd,intel,swrast \
+    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink \
+    -D vulkan-drivers=amd,intel,intel_hasvk,virtio-experimental \
     -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D dri3=enabled \
     -D egl=enabled \
     -D gallium-extra-hud=true \
     -D gallium-nine=true \
-    -D gallium-omx=bellagio \
+    -D gallium-omx=disabled \
     -D gallium-opencl=icd \
     -D gallium-va=enabled \
     -D gallium-vdpau=enabled \
     -D gallium-xa=enabled \
-    -D gallium-xvmc=disabled \
     -D gbm=enabled \
     -D gles1=disabled \
     -D gles2=enabled \
@@ -63,7 +63,7 @@ END
     -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
-    -D valgrind=enabled
+    -D valgrind=disabled
   meson configure build
   ninja -C build
   meson compile -C build
