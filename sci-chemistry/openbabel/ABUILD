@@ -1,22 +1,23 @@
 pkgname=openbabel
+pkglist=("python-openbabel")
 pkgver=3.1.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Interconverts file formats used in molecular modeling.")
-longdesc=("A library designed to interconvert between many file formats used in molecular modeling and computational chemistry.")
 
 source=("https://github.com/openbabel/openbabel/releases/download/openbabel-${pkgver//./-}/openbabel-${pkgver}-source.tar.bz2")
 
 tags=("libs sci-chemistry")
 
-# coordgen maeparser
-build_deps=("cmake eigen wxwidgets-gtk3 boost python swig rapidjson libxml2 libsm")
+# coordgen
+adddep=("libxml2 libsm")
+
+# maeparser
+build_deps=("${adddep} cmake eigen wxwidgets-gtk3 boost python swig rapidjson")
 
 # NOTE: Это опциональные зависимости
 removedep=("wxwidgets-gtk3")
-
-pkglist=("python-openbabel")
 
 build() {
   go_src_dir
@@ -33,10 +34,11 @@ build() {
   sed -i '/scripts.cmake_install.cmake/d' build/cmake_install.cmake
 }
 
+####################################################################################
+
 python-openbabel() {
   pkgname=python-openbabel
   shortdesc=("python openbabel.")
-  longdesc=("A library designed to interconvert between many file formats used in molecular modeling and computational chemistry.")
   tags=("libs dev-python")
   adddep=("openbabel")
 }
