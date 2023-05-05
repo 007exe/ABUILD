@@ -1,24 +1,38 @@
 pkgname=cairo
-pkgver=1.17.6
+pkgver=1.17.8
 pkgbuild=1
+strict_version=1
 arch=("auto")
 
-shortdesc=("2D graphics library with support for multiple output devices")
-longdesc=("Cairo provides anti-aliased vector-based rendering for X. Paths consist of line segments and cubic splines and can be rendered at any width with various join and cap styles. All colors may be specified with optional translucence (opacity/alpha) and combined using the extended Porter/Duff compositing algebra as found in the X Render Extension.")
+shortdesc=("2D graphics library with support for multiple output devices.")
 
-source=("https://gitlab.freedesktop.org/cairo/cairo/-/archive/${pkgver}/cairo-${pkgver}.tar.gz")
+#source=("https://gitlab.freedesktop.org/cairo/cairo/-/archive/${pkgver}/cairo-${pkgver}.tar.gz")
+source=("git:https://gitlab.freedesktop.org/cairo/cairo.git")
 
 tags=("xserver x11-libs")
 
 build_deps=("lzo zlib libpng fontconfig freetype libx11 libxext libxrender libxcb glib2 pixman valgrind meson")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+
+  # https://bugs.archlinux.org/task/77432
+  # https://gitlab.freedesktop.org/cairo/cairo/-/issues/639
+  git revert -n 47a21c6e30eef91db503a5a183d5c8cf558aaa56
+}
 
 build(){
   go_src_dir
   burn_patches
   meson build \
     -D prefix=/usr \
+    -D dwrite=disabled \
+    -D gtk_doc=true \
     -D spectre=disabled \
-    -D tee=enabled \
+    -D symbol-lookup=disabled \
     -D tests=disabled
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
