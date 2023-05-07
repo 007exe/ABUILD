@@ -1,17 +1,17 @@
 pkgname=lib32-libxi
-pkgver=1.8
+pkgver=1.8.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Input extension library (32-bit).")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXi-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXi-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
-build_deps=("xorgproto xorg-util-macros lib32-gcc-libs automake lib32-libxext lib32-libxfixes")
+adddep=("lib32-libxext lib32-libxfixes libxi")
 
-adddep=("libxi")
+build_deps=("${adddep} lib32-gcc-libs xorgproto xorg-util-macros automake")
 
 build() {
   go_src_dir
