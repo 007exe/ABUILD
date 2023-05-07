@@ -1,6 +1,6 @@
 pkgname=nss
 pkglist=("ca-certificates-mozilla")
-pkgver=3.89
+pkgver=3.89.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,10 @@ source=("https://archive.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_
 
 tags=("libs net-libs")
 
+adddep=("nspr p11-kit sqlite zlib")
+
 # mercurial
-build_deps=("nspr sqlite zlib p11-kit gyp perl python gyp")
+build_deps=("${adddep} zlib gyp perl python gyp")
 
 build(){
   go_src_dir
