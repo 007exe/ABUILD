@@ -1,6 +1,5 @@
 pkgname=audit
-pkglist=("libaudit")
-pkgver=3.1
+pkgver=3.1.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +9,9 @@ source=("http://people.redhat.com/sgrubb/audit/audit-${pkgver}.tar.gz")
 
 tags=("libs sys-process")
 
-build_deps=("libcap-ng openldap kernel-headers python krb5 swig")
+adddep=("glibc krb5 libcap-ng")
+
+build_deps=("${adddep} openldap kernel-headers python swig")
 
 config_files=("etc/libaudit.conf
 etc/audit/audit-stop.rules
@@ -41,17 +42,4 @@ build() {
 
 # Создаём каталог для логов
   install -d ${pkgdir}/var/log/audit
-}
-
-# NOTE: Это временный виртуальный пакет созданный при переименовании libaudit в audit.
-# следующие пакеты зависят от libaudit: dbus linux-pam shadow
-# Как только эти пакеты перестанут требовать libaudit этот пакет следует удалить.
-libaudit() {
-  pkgname=libaudit
-  shortdesc=("This is a temporary virtual package created for compatibility when renaming libaudit.")
-  adddep=("audit")
-}
-
-libaudit_prep() {
-  echo "The virtual package libaudit has been created."
 }
