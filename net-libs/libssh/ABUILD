@@ -1,5 +1,5 @@
 pkgname=libssh
-pkgver=0.10.4
+pkgver=0.10.5
 pkgbuild=1
 arch=("auto")
 
@@ -9,20 +9,19 @@ source=("https://www.libssh.org/files/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs net-libs")
 
-build_deps=("zlib openssl cmocka cmake python openssh doxygen")
+adddep=("zlib openssl")
+
+build_deps=("${adddep} cmake cmocka doxygen python openssh")
 
 build() {
   go_src_dir
   burn_patches
-# Отключаем тесты
-  sed 's/cmocka_unit_test(torture_path_expand_tilde_unix),//' -i tests/unittests/torture_misc.c
-  mkdir build
-  cd build
-  cmake .. \
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DWITH_GSSAPI=OFF \
     -DUNIT_TESTING=ON
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake --build build
+  cmake --build build --target docs
+  DESTDIR=${pkgdir} cmake --install build
 }
