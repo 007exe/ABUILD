@@ -1,10 +1,9 @@
 pkgname=libplist
-pkgver=2.2.0
-pkgbuild=2
+pkgver=2.3.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library to handle Apple Property List format whereas it's binary or XML.")
-longdesc=("libplist is a library for manipulating Apple Binary and XML Property Lists.")
 
 tags=("libs app-pda")
 
