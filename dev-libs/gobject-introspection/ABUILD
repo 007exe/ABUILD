@@ -1,18 +1,18 @@
 pkgname=gobject-introspection
 pkgver=1.76.1
-_glibver=2.76.1
-pkgbuild=1
+_glibver=2.76.2
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Introspection system for GObject-based libraries.")
 
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
-build_deps=("cairo python-sphinx meson glib2=$_glibver python-mako python-markdown")
+tags=("libs dev-libs")
 
 addep=("python-mako python-markdown")
 
-tags=("libs dev-libs")
+build_deps=("${adddep} cairo python-sphinx meson glib2=${_glibver}")
 
 build() {
   go_src_dir
