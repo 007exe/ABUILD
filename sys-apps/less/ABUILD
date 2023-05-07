@@ -1,5 +1,5 @@
 pkgname=less
-pkgver=608
+pkgver=633
 pkgbuild=1
 arch=("auto")
 
