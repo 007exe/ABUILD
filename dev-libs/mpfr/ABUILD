@@ -1,24 +1,29 @@
 pkgname=mpfr
-pkgver=4.2.0
-pkgbuild=2
+_pkgver=4.2.0
+_patchver=4
+pkgver=${_pkgver}.p${_patchver}
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multiple-precision floating-point library.")
 
+source=("https://ftp.gnu.org/gnu/mpfr/mpfr-${_pkgver}.tar.xz")
+
 tags=("dev-libs libs")
 
-build_deps=("glibc gmp")
+adddep=("glibc gmp")
 
-source=("https://ftp.gnu.org/gnu/mpfr/mpfr-${pkgver}.tar.xz")
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
   burn_patches
+  autoreconf -fiv
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
     --enable-thread-safe \
-    --enable-shared \
-    --disable-static
+    --enable-shared
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
