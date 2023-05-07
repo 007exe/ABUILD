@@ -1,5 +1,5 @@
 pkgname=libheif
-pkgver=1.15.2
+pkgver=1.16.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,22 +9,20 @@ source=("https://github.com/strukturag/libheif/releases/download/v$pkgver/libhei
 
 tags=("libs media-libs")
 
-adddep=("libde265 x265 aom")
+adddep=("libde265 x265 aom dav1d")
 
-build_deps=("${adddep} libjpeg-turbo libpng gdk-pixbuf")
+build_deps=("${adddep} cmake libjpeg-turbo libpng gdk-pixbuf svt-av1 rav1e")
 
 # NOTE: Это опциональные зависимости
-removedep=("libjpeg-turbo libpng")
+removedep=("libjpeg-turbo libpng svt-av1 rav1e")
 
 build() {
   go_src_dir
   burn_patches
-  ./autogen.sh
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static \
-    --disable-go
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DAOM_ENCODER=ON
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
 }
