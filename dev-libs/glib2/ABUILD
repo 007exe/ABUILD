@@ -1,6 +1,6 @@
 # NOTE: Пересобери gobject-introspection под новый glib2
 pkgname=glib2
-pkgver=2.76.1
+pkgver=2.76.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,9 @@ source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgver%.*}/glib-${pkgver}
 
 tags=("libs dev-libs")
 
-build_deps=("gettext shared-mime-info python git util-linux meson dbus pcre libffi zlib elfutils gtk-doc")
+adddep=("libffi pcre2 util-linux zlib")
+
+build_deps=("${adddep} gettext shared-mime-info python git meson dbus pcre elfutils gtk-doc")
 
 config_files=("etc/profile.d/libglib2.csh
 etc/profile.d/libglib2.sh")
