@@ -1,5 +1,5 @@
 pkgname=avr-gcc
-pkgver=12.2.0
+pkgver=13.1.0
 pkgbuild=1
 arch=("auto")
 
