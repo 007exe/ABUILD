@@ -1,7 +1,7 @@
 pkgname=gcc
 pkglist=("gcc-libs gcc-ada gcc-d gcc-fortran gcc-go gcc-objc lib32-gcc-libs")
-pkgver=12.2.0
-pkgbuild=4
+pkgver=13.1.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The GNU Compiler Collection - C and C++ frontends.")
