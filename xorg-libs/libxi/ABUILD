@@ -1,15 +1,17 @@
 pkgname=libxi
-pkgver=1.8
-pkgbuild=2
+pkgver=1.8.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Input extension library.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXi-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXi-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
-build_deps=("xorg-util-macros libxfixes xorgproto libxext")
+adddep=("libxext libxfixes")
+
+build_deps=("${adddep} xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
