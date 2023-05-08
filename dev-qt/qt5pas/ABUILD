@@ -1,4 +1,4 @@
-_lazarus_version=2.2.4
+_lazarus_version=2.2.6
 pkgname=qt5pas
 pkgver=2.6.${_lazarus_version}
 pkgbuild=1
