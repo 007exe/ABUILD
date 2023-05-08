@@ -1,6 +1,6 @@
 pkgname=lazarus
 pkglist=("lazarus-gtk2 lazarus-qt5")
-pkgver=2.2.4
+pkgver=2.2.6
 pkgbuild=1
 arch=("auto")
 
