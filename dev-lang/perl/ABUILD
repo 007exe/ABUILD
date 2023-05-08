@@ -1,10 +1,9 @@
 pkgname=perl
-pkgver=5.36.0
-pkgbuild=2
+pkgver=5.36.1
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("A highly capable, feature-rich programming language")
-longdesc=("The Perl package contains the Practical Extraction and Report Language.")
+shortdesc=("A highly capable, feature-rich programming language.")
 
 source=("http://www.cpan.org/src/5.0/perl-${pkgver}.tar.xz")
 
