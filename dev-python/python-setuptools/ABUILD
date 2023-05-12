@@ -1,6 +1,6 @@
 # NOTE: Иногда при обновлении следует удалить python-setuptools
 pkgname=python-setuptools
-pkgver=67.6.1
+pkgver=67.7.0
 pkgbuild=1
 arch=("auto")
 
