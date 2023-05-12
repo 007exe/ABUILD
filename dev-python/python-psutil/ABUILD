@@ -1,6 +1,6 @@
 pkgname=python-psutil
-pkgver=5.9.4
-pkgbuild=2
+pkgver=5.9.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform process and system utilities module for Python.")
