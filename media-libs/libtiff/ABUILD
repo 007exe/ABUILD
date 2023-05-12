@@ -26,4 +26,8 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -Dm 644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
+
+# FIXME:
+  cd ${pkgdir}/usr/lib
+  ln -s libtiff.so.6.0.0 libtiff.so.5
 }
