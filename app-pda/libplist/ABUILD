@@ -22,4 +22,8 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -D -m644 cython/plist.pxd ${pkgdir}/usr/include/plist/cython/plist.pxd
+
+# FIXME:
+  cd ${pkgdir}/usr/lib
+  ln -s libplist-2.0.so.4.3.0 libplist-2.0.so.3
 }
