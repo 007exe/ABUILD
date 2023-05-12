@@ -1,5 +1,5 @@
 pkgname=python-dulwich
-pkgver=0.21.3
+pkgver=0.21.5
 pkgbuild=1
 arch=("auto")
 
