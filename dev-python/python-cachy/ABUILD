@@ -10,7 +10,7 @@ source=("https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/${_pkgna
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-wheel python-poetry")
+build_deps=("python python-build python-installer python-wheel python-poetry-core")
 
 build() {
   go_src_dir
