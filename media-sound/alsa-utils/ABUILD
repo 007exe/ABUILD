@@ -1,16 +1,17 @@
 pkgname=alsa-utils
-pkgver=1.2.8
+pkgver=1.2.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Advanced Linux Sound Architecture - Utilities.")
-longdesc=("The ALSA Utilities package contains various utilities which are useful for controlling your sound card.")
 
 source=("ftp://ftp.alsa-project.org/pub/utils/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("utils media-sound")
 
-build_deps=("alsa-lib docbook-xsl ncurses python-docutils xmlto fftw libsamplerate")
+adddep=("gcc-libs glibc pciutils psmisc")
+
+build_deps=("${adddep} alsa-lib docbook-xsl fftw libsamplerate ncurses python-docutils xmlto")
 
 build() {
   go_src_dir
@@ -20,9 +21,10 @@ build() {
     --prefix=/usr \
     --sbindir=/usr/bin \
     --libdir=/usr/lib \
-    --with-udev-rules-dir=/usr/lib/udev/rules.d \
     --disable-alsaconf \
-    --disable-xmlto
+    --sbindir=/usr/bin \
+    --with-udev-rules-dir=/usr/lib/udev/rules.d \
+    --with-systemdsystemunitdir=/usr/lib/systemd/system
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
