@@ -1,6 +1,6 @@
 pkgname=python-pygments
-pkgver=2.14.0
-pkgbuild=2
+pkgver=2.15.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python syntax highlighter.")
@@ -9,9 +9,7 @@ source=("https://github.com/pygments/pygments/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-adddep=("python-setuptools")
-
-build_deps=("${adddep} python python-sphinx python-wcag-contrast-ratio")
+build_deps=("python python-setuptools python-sphinx python-wcag-contrast-ratio python-build python-installer python-wheel")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
@@ -23,10 +21,10 @@ before_build(){
 
 build() {
   go_src_dir
+  python -m build --wheel --no-isolation
   make -C doc html
-  python3 setup.py install --root=${pkgdir} -O1
+  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
-
   mkdir -p ${pkgdir}/usr/share/doc
   cp -rT doc/_build/html ${pkgdir}/usr/share/doc/${pkgname}
   install -Dm644 doc/pygmentize.1 -t ${pkgdir}/usr/share/man/man1
