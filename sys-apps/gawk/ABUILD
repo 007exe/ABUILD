@@ -1,10 +1,9 @@
 pkgname=gawk
-pkgver=5.2.1
+pkgver=5.2.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("GNU version of awk.")
-longdesc=("The Gawk package contains programs for manipulating text files.")
+shortdesc=("The Gawk package contains programs for manipulating text files.")
 
 source=("https://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
