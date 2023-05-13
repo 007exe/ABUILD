@@ -1,26 +1,19 @@
 pkgname=python-urllib3
-pkgver=1.26.12
-pkgbuild=2
+pkgver=1.26.15
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("HTTP library with thread-safe connection pooling and file post support.")
 
-source=("https://github.com/urllib3/urllib3/archive/${pkgver}/${pkgbase}-${pkgver}.tar.gz")
+source=("https://github.com/urllib3/urllib3/archive/${pkgver}/python-urllib3-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools python-sphinx python-pyasn1 python-pyopenssl
-python-mock python-brotli python-sphinx-furo python-ndg-httpsclient python-pysocks")
+build_deps=("python-build python-installer python-setuptools python-sphinx python-sphinx-furo python-wheel")
 
 build() {
   go_src_dir
-  python setup.py build
-  cd docs
-  make html
-  cd ..
-  python setup.py install --root=${pkgdir}
-  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
-  install -d ${pkgdir}/usr/share/doc
-  cd docs
-  cp -r _build/html ${pkgdir}/usr/share/doc/python-urllib3
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
