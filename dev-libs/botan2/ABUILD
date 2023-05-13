@@ -1,0 +1,34 @@
+pkgname=botan2
+pkgver=2.19.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Crypto library written in C++ (legacy version).")
+
+tags=("libs dev-libs")
+
+source=("https://botan.randombit.net/releases/Botan-${pkgver}.tar.xz")
+
+adddep=("xz sqlite")
+
+build_deps=("${adddep} python boost")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure.py \
+    --prefix=/usr \
+    --with-bzip \
+    --with-lzma \
+    --with-zlib \
+    --with-boost \
+    --with-sqlite3 \
+    --with-os-feature=getrandom \
+    --build-targets=shared,tests
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 license.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+#NOTE: Удаляем конфликтующие файлы справки с пакетом botan
+  rm -r ${pkgdir}/usr/share/man
+}
