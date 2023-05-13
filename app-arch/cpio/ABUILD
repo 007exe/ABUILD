@@ -1,10 +1,9 @@
 pkgname=cpio
-pkgver=2.13
-pkgbuild=3
+pkgver=2.14
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The cpio package contains tools for archiving.")
-longdesc=("A tool to copy files into or out of a cpio or tar archive.")
 
 source=("https://ftp.gnu.org/gnu/cpio/cpio-${pkgver}.tar.gz")
 
