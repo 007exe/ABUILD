@@ -1,18 +1,17 @@
 pkgname=alsa-lib
-pkgver=1.2.8
+pkgver=1.2.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Config files for Advanced Linux Sound Architecture (ALSA).")
-longdesc=("Advanced Linux Sound Architecture (ALSA) is a modularized architecture which supports quite a large range of ISA and PCI cards.")
 
 source=("https://www.alsa-project.org/files/pub/lib/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("libs media-libs")
 
-build_deps=("glibc alsa-topology-conf alsa-ucm-conf")
-
 adddep=("alsa-topology-conf alsa-ucm-conf")
+
+build_deps=("${adddep} glibc alsa-topology-conf alsa-ucm-conf")
 
 build(){
   go_src_dir
