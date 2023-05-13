@@ -1,15 +1,12 @@
 pkgname=gpgme
 pkglist=("qgpgme python-gpgme")
-pkgver=1.19.0
+pkgver=1.20.0
 pkgbuild=1
 arch=("auto")
-# Получаем версию python
-_python_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4)
 
 shortdesc=("A C wrapper library for GnuPG.")
 
 source=("https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${pkgver}.tar.bz2")
-#source=("https://github.com/ueno/ruby-gpgme/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("app-crypt libs")
 
@@ -22,14 +19,14 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib \
     --disable-fd-passing \
-    --enable-languages=cpp,qt,python \
+    --disable-static \
     --disable-gpgsm-test
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 # Находится в пакетах qgpgme python-gpgme
   rm -r ${pkgdir}/usr/include/{qgpgme,QGpgME}/
   rm -r ${pkgdir}/usr/lib/{cmake/QGpgme/,libqgpgme.*}
-  rm -r ${pkgdir}/usr/lib/python*
+#  rm -r ${pkgdir}/usr/lib/python*
 }
 
 ###############################################################
@@ -42,6 +39,7 @@ qgpgme() {
 
 qgpgme_prep() {
   go_src_dir
+  echo "===================> qgpgme <==================="
   cd lang/qt
   make DESTDIR=${pkgdir} install
 }
@@ -56,6 +54,10 @@ python-gpgme() {
 
 python-gpgme_prep() {
   go_src_dir
-  cd lang/python
-  make DESTDIR=${pkgdir} install
+  echo "===================> python-gpgme <==================="
+#  cd lang/python/
+#  top_builddir=${srcdir}/qgpgme-${pkgver} python -m build --wheel --no-isolation
+#  python -m installer --destdir=${pkgdir} dist/*.whl
+  mkdir -p ${pkgdir}/usr/lib
+  mv -v ${p_pkgdir}/usr/lib/python* ${pkgdir}/usr/lib
 }
