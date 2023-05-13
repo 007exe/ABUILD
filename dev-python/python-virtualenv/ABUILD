@@ -1,6 +1,6 @@
 pkgname=python-virtualenv
-pkgver=20.17.1
-pkgbuild=2
+pkgver=20.21.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Virtual Python Environment builder.")
@@ -9,21 +9,25 @@ source=("https://github.com/pypa/virtualenv/archive/${pkgver}/python-virtualenv-
 
 tags=("libs dev-python")
 
-adddep=("python-platformdirs python-distlib python-filelock python-six python-importlib-metadata")
+adddep=("python python-distlib python-filelock python-platformdirs")
 
-build_deps=("${adddep} python-setuptools python-setuptools-scm python-sphinx python-sphinx_rtd_theme
-python-sphinx-argparse towncrier python-importlib-metadata")
+build_deps=("${adddep} python-build python-installer python-hatchling python-hatch-vcs python-importlib-metadata
+python-sphinx python-sphinx-argparse python-sphinxcontrib-towncrier python-wheel towncrier")
+
+export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 
 build() {
   go_src_dir
   sed -i "s|pkgutil.get_data(\"pip._vendor.certifi\", \"cacert.pem\")|open(os.path.join('/etc/ssl/certs/ca-certificates.crt'), 'rb').read()|" tests/conftest.py
-  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
-  python setup.py build egg_info
-  export PYTHONPATH="$PWD/build/lib:$PWD/src"
-#  sphinx-build -b man docs docs/_build/man
-  python setup.py install --prefix=/usr --root=${pkgdir} --skip-build
-#  install -Dm 644 docs/_build/man/virtualenv.1 ${pkgdir}/usr/share/man/man1/virtualenv.1
-#  ln -s virtualenv.1.gz ${pkgdir}/usr/share/man/man1/virtualenv3.1.gz
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=test_dir dist/*.whl
+  export PYTHONPATH="$PWD/test_dir/$site_packages:$PYTHONPATH"
+  sphinx-build -b man docs docs/_build/man
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm 644 docs/_build/man/virtualenv.1 -t ${pkgdir}/usr/share/man/man1/
+  ln -s virtualenv.1.gz ${pkgdir}/usr/share/man/man1/virtualenv3.1.gz
+
   ln ${pkgdir}/usr/bin/virtualenv ${pkgdir}/usr/bin/virtualenv3
   install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
