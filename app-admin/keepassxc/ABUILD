@@ -10,7 +10,9 @@ source=("https://github.com/keepassxreboot/keepassxc/releases/download/${pkgver}
 
 tags=("app-admin utils")
 
-build_deps=("asciidoctor cmake qt5-tools argon2 botan curl hicolor-icon-theme libxtst minizip pcsclite qrencode qt5-svg qt5-x11extras")
+adddep=("argon2 botan2 curl hicolor-icon-theme libxtst minizip pcsclite qrencode qt5-svg qt5-x11extras libusb")
+
+build_deps=("${adddep} asciidoctor cmake qt5-tools")
 
 build(){
   go_src_dir
