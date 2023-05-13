@@ -129,7 +129,6 @@ python-jaraco.classes
 python-jaraco.context
 python-jaraco.functools
 python-jaraco.text
-python-jarowinkler
 python-jedi
 python-jeepney
 python-jinja
