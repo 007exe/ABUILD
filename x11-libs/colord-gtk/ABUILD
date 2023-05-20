@@ -1,0 +1,66 @@
+pkgname=colord-gtk-common
+pkglist=("colord-gtk colord-gtk4")
+pkgver=0.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Additional GTK support code for colord (common files).")
+
+strict_version=1
+source=("git:https://github.com/hughsie/colord-gtk.git")
+
+tags=("apps x11-libs")
+
+# docbook-utils
+build_deps=("gobject-introspection vala gtk-doc git docbook-xsl meson lcms2 colord gtk3 gtk4")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D vapi=true \
+    -D man=false \
+    -D docs=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
+
+############################################################################
+
+colord-gtk() {
+  pkgname=colord-gtk
+  shortdesc=("Additional GTK support code for colord GTK3.")
+  adddep=("colord-gtk-common=${pkgver} gtk3")
+}
+
+colord-gtk_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/{bin,lib}
+  mv -v ${p_pkgdir}/usr/bin/cd-convert ${pkgdir}/usr/bin
+  mv -v ${p_pkgdir}/usr/lib/libcolord-gtk.so* ${pkgdir}/usr/lib
+  mv -v ${p_pkgdir}/usr/lib/pkgconfig/colord-gtk.pc ${pkgdir}/usr/lib
+}
+
+############################################################################
+
+colord-gtk4() {
+  pkgname=colord-gtk4
+  shortdesc=("Additional GTK support code for colord GTK4.")
+  adddep=("colord-gtk-common=${pkgver} gtk4")
+}
+
+colord-gtk4_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/lib
+  mv -v ${p_pkgdir}/usr/lib/libcolord-gtk4.so* ${pkgdir}/usr/lib
+  mv -v ${p_pkgdir}/usr/lib/pkgconfig/colord-gtk4.pc ${pkgdir}/usr/lib
+}
