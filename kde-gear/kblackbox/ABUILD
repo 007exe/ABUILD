@@ -1,5 +1,5 @@
 pkgname=kblackbox
-pkgver=23.04.0
+pkgver=23.04.1
 pkgbuild=1
 arch=("auto")
 
