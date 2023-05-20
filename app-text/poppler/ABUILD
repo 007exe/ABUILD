@@ -1,6 +1,6 @@
 pkgname=poppler
 pkglist=("poppler-glib poppler-qt5 poppler-qt6")
-pkgver=23.03.0
+pkgver=23.05.0
 pkgbuild=1
 arch=("auto")
 
