@@ -1,6 +1,6 @@
 pkgname=python-uc-micro-py
-pkgver=1.0.1
-pkgbuild=2
+pkgver=1.0.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Micro subset of unicode data files for linkify-it-py projects.")
@@ -9,7 +9,7 @@ source=("https://github.com/tsutsu3/uc.micro-py/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-setuptools python-wheel")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
@@ -21,8 +21,8 @@ before_build(){
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdira} dist/*.whl
   install -Dm 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
