@@ -1,10 +1,9 @@
 pkgname=zenity
-pkgver=3.42.1
+pkgver=3.44.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Display graphical dialog boxes from shell scripts.")
-longdesc=("Zenity is a rewrite of gdialog, the GNOME port of dialog which allows you to display GTK+ dialog boxes from the command line and shell scripts.")
 
 source=("https://download.gnome.org/sources/zenity/${pkgver%.*}/zenity-${pkgver}.tar.xz")
 
@@ -18,8 +17,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D libnotify=true \
-    -D webkitgtk=true
+    -D libnotify=true
+#    -D webkitgtk=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
