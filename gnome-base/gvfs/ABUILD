@@ -1,5 +1,8 @@
 pkgname=gvfs
-pkgver=1.50.2
+# -D smb=false gvfs-smb для сборки требуется smbclient (samba)
+# -D goa=false -D google=false gvfs-goa gvfs-google для сборки требуется libgdata и gnome-online-accounts
+pkglist=("gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs")
+pkgver=1.50.4
 pkgbuild=1
 arch=("auto")
 
@@ -10,14 +13,10 @@ source=("https://gitlab.gnome.org/GNOME/gvfs/-/archive/${pkgver}/gvfs-${pkgver}.
 
 tags=("gnome gnome-base")
 
-# -D smb=false gvfs-smb для сборки требуется smbclient (samba)
-# -D goa=false -D google=false gvfs-goa gvfs-google для сборки требуется libgdata и gnome-online-accounts
-pkglist=("gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs")
+adddep=("avahi dconf fuse3 gcr gsettings-desktop-schemas libarchive libbluray libcdio-paranoia libgudev libsecret libsoup3 psmisc udisks")
 
-build_deps=("dbus glib2 libusb libsecret libsoup gcr gtk3 libcdio libgudev elogind meson avahi fuse3 dbus udisks gtk-doc
-libarchive libgcrypt libxml2 libxslt openssh libbluray libimobiledevice libgphoto2 libmtp libnfs dconf psmisc gsettings-desktop-schemas")
-
-adddep=("dconf psmisc gsettings-desktop-schemas")
+# libgoa smbclient
+build_deps=("${adddep} dbus docbook-xsl gtk-doc gtk3 libgdata libgphoto2 libimobiledevice libmtp libnfs meson openssh python")
 
 build() {
   go_src_dir
