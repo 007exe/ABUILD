@@ -1,5 +1,5 @@
 pkgname=man-pages-ru
-pkgver=4.18.0
+pkgver=4.18.1
 pkgbuild=1
 arch=("noarch")
 
