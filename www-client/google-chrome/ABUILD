@@ -1,0 +1,36 @@
+pkgname=google-chrome
+pkgver=113.0.5672.126
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The popular and trusted web browser by Google (Stable Channel).")
+
+source=("https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${pkgver}-1_amd64.deb")
+
+tags=("www-client apps")
+
+adddep=("alsa-lib gtk3 libcups libxss libxtst nss ttf-liberation xdg-utils")
+
+build_deps=("${adddep}")
+
+# NOTE: Это опциональные зависимости
+removedep=("pipewire kdialog gnome-keyring kwallet")
+
+build() {
+  cd ${srcdir}
+  cp ${srcache}/google-chrome-stable_${pkgver}-1_amd64.deb .
+  ar -xv google-chrome-stable_${pkgver}-1_amd64.deb
+  bsdtar -xf data.tar.xz -C ${pkgdir}
+
+  install -m755 ${filedir}/google-chrome-stable.sh ${pkgdir}/usr/bin/google-chrome-stable
+
+  for i in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do
+        install -Dm644 ${pkgdir}/opt/google/chrome/product_logo_${i/x*/}.png \
+	${pkgdir}/usr/share/icons/hicolor/${i}/apps/google-chrome.png
+  done
+
+  install -Dm644 ${filedir}/eula_text.html ${pkgdir}/usr/share/licenses/google-chrome/eula_text.html
+  install -Dm644 ${pkgdir}/opt/google/chrome/WidevineCdm/LICENSE  ${pkgdir}/usr/share/licenses/google-chrome-stable/WidevineCdm-LICENSE.txt
+  sed -i -e "/Exec=/i\StartupWMClass=Google-chrome" -e "s/x-scheme-handler\/ftp;\?//g" ${pkgdir}/usr/share/applications/google-chrome.desktop
+  rm -r ${pkgdir}/etc/cron.daily/ ${pkgdir}/opt/google/chrome/cron/ ${pkgdir}/opt/google/chrome/product_logo_*.{png,xpm} ${pkgdir}/usr/share/menu/
+}
