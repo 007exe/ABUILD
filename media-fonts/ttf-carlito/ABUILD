@@ -1,23 +1,31 @@
 pkgname=ttf-carlito
-pkgver=20130920
+pkgver=20230509
+# NOTE: коммит версии
+_commit=3a810cab78ebd6e2e4eed42af9e8453c4f9b850a
 pkgbuild=1
+strict_version=1
 arch=("noarch")
 
 shortdesc=("Google's Carlito font.")
 
-source=("https://commondatastorage.googleapis.com/chromeos-localmirror/distfiles/crosextrafonts-carlito-${pkgver}.tar.gz")
+source=("git:https://github.com/googlefonts/carlito.git")
 
 tags=("media-fonts fonts")
 
 build_deps=("mkpkg")
 
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
 build() {
   go_src_dir
-  install -Dm644 *.ttf -t ${pkgdir}/usr/share/fonts/${pkgname#ttf-}
-  install -Dm644 ${filedir}/62-google-crosextra-carlito.conf -t ${pkgdir}/usr/share/fontconfig/conf.avail
-
+  install -Dm644 fonts/ttf/*.ttf -t ${pkgdir}/usr/share/fonts/${pkgname#ttf-}
+  install -Dm644 ${filedir}/62-carlito.conf -t ${pkgdir}/usr/share/fontconfig/conf.avail
   install -d ${pkgdir}/usr/share/fontconfig/conf.default
   ln -sr ${pkgdir}/usr/share/fontconfig/conf.avail/* ${pkgdir}/usr/share/fontconfig/conf.default/
-
-  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm644 OFL.txt -T ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
