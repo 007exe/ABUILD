@@ -1,11 +1,11 @@
 pkgname=kwin
-pkgver=5.27.4.1
+pkgver=5.27.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An easy to use, but flexible, composited Window Manager.")
 
-source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 

@@ -1,5 +1,5 @@
 pkgname=polkit-kde-agent
-pkgver=5.27.4.1
+pkgver=5.27.5.1
 pkgbuild=1
 arch=("auto")
 
