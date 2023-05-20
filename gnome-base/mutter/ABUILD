@@ -1,5 +1,5 @@
 pkgname=mutter
-pkgver=43.3
+pkgver=44.1
 pkgbuild=1
 arch=("auto")
 
