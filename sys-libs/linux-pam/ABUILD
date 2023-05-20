@@ -1,16 +1,15 @@
 pkgname=linux-pam
-pkgver=1.5.2
-pkgbuild=2
+pkgver=1.5.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A security tool which provides authentication for applications.")
-longdesc=("PAM (Pluggable Authentication Modules) is a system security tool that allows system administrators to set authentication policy without having to recompile programs that handle authentication.")
 
 source=("https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-${pkgver}.tar.xz")
 
 tags=("base sys-libs")
 
-build_deps=("db libtirpc flex docbook-xml docbook-xsl cracklib libaudit")
+build_deps=("db libtirpc flex docbook-xml docbook-xsl cracklib audit")
 
 config_files=("etc/security/access.conf
 etc/security/group.conf
