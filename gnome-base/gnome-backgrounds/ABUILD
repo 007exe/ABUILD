@@ -1,16 +1,17 @@
 pkgname=gnome-backgrounds
-pkgver=42.0
+pkgver=44.0
 pkgbuild=1
 arch=('noarch')
 
 shortdesc=("Background images and data for GNOME.")
-longdesc=("The GNOME Backgrounds package contains a collection of graphics files which can be used as backgrounds in the GNOME Desktop environment.")
 
 source=("https://download.gnome.org/sources/$pkgname/${pkgver%%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("gnome gnome-base")
 
-build_deps=("glib2 meson")
+#adddep=("webp-pixbuf-loader")
+
+build_deps=("${adddep} glib2 meson")
 
 build() {
   go_src_dir
