@@ -1,0 +1,28 @@
+pkgname=soundkonverter
+pkgver=3.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Front-end to various audio converters.")
+
+source=("https://github.com/dfaust/soundkonverter/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("kde kde-misc")
+
+adddep=("hicolor-icon-theme kdelibs4support libkcddb cdparanoia taglib phonon")
+
+build_deps=("${adddep} extra-cmake-modules kdesignerplugin kdoctools kinit")
+
+# NOTE: Это опциональные зависимости
+removedep=("faac faad2 ffmpeg flac fluidsynth lame mac mplayer opus-tools speex timidity++ twolame vorbisgain vorbis-tools wavpack sox")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -S src \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
