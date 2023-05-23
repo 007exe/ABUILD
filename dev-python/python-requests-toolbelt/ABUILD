@@ -1,6 +1,6 @@
 pkgname=python-requests-toolbelt
-pkgver=0.10.1
-pkgbuild=3
+pkgver=1.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A toolbelt of useful classes and functions to be used with python-requests.")
