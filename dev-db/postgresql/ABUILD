@@ -1,6 +1,6 @@
 pkgname=postgresql
 pkglist=("postgresql-libs postgresql-docs")
-pkgver=15.2
+pkgver=15.3
 pkgbuild=1
 arch=("auto")
 
