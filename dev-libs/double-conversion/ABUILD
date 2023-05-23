@@ -1,10 +1,9 @@
 pkgname=double-conversion
-pkgver=3.2.1
+pkgver=3.3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Binary-decimal and decimal-binary routines for IEEE doubles.")
-longdesc=("The Double-conversion package contains a library that facilitates binary-to-decimal and decimal-to-binary routines for IEEE doubles.")
 
 source=("https://github.com/google/double-conversion/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
