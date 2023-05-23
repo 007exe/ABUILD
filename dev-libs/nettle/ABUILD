@@ -1,10 +1,9 @@
 pkgname=nettle
-pkgver=3.8.1
+pkgver=3.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A low-level cryptographic library.")
-longdesc=("The Nettle package contains a low-level cryptographic library that is designed to fit easily in many contexts.")
 
 source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
