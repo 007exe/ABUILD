@@ -1,5 +1,5 @@
 pkgname=kwidgetsaddons
-pkgver=5.105.0
+pkgver=5.106.0
 pkgbuild=1
 arch=("auto")
 
