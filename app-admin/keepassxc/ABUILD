@@ -1,10 +1,9 @@
 pkgname=keepassxc
-pkgver=2.7.4
+pkgver=2.7.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("KeePassXC - KeePass Cross-platform Community Edition.")
-longdesc=("Cross-platform community-driven port of Keepass password manager.")
 
 source=("https://github.com/keepassxreboot/keepassxc/releases/download/${pkgver}/keepassxc-${pkgver}-src.tar.xz")
 
