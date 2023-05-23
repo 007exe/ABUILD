@@ -1,5 +1,5 @@
 pkgname=python-trove-classifiers
-pkgver=2023.4.22
+pkgver=2023.5.2
 pkgbuild=1
 arch=("auto")
 
