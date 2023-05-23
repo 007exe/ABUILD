@@ -1,5 +1,5 @@
 pkgname=liblc3
-pkgver=1.0.2
+pkgver=1.0.3
 pkgbuild=1
 strict_version=1
 arch=("auto")
