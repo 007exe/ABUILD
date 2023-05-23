@@ -1,10 +1,9 @@
 pkgname=sakura
-pkgver=3.8.6
+pkgver=3.8.7
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("A terminal emulator based on GTK and VTE")
-longdesc=("It's a terminal emulator with few dependencies, so you don't need a full GNOME desktop installed to have a decent terminal emulator. Current terminal emulators based on VTE are  gnome-terminal, XFCE Terminal, TermIt and a small sample program included in the vte sources.")
+shortdesc=("A terminal emulator based on GTK and VTE.")
 
 source=("https://launchpad.net/sakura/trunk/${pkgver}/+download/sakura-${pkgver}.tar.bz2")
 
