@@ -1,10 +1,9 @@
 pkgname=lua
-pkgver=5.4.4
+pkgver=5.4.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Powerful lightweight programming language designed for extending applications.")
-longdesc=("Lua is a powerful light-weight programming language designed for extending applications.")
 
 source=("http://www.lua.org/ftp/lua-${pkgver}.tar.gz")
 
