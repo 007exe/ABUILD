@@ -1,10 +1,9 @@
 pkgname=ocaml-ctypes
-pkgver=0.20.1
+pkgver=0.20.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for binding to C libraries using pure OCaml.")
-longdesc=("Ctypes is a library for binding to C libraries using pure OCaml. The primary aim is to make writing C extensions as straightforward as possible.")
 
 source=("https://github.com/ocamllabs/ocaml-ctypes/archive/$pkgver.tar.gz")
 
