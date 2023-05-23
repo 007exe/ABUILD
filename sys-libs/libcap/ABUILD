@@ -1,5 +1,5 @@
 pkgname=libcap
-pkgver=2.68
+pkgver=2.69
 pkgbuild=1
 arch=("auto")
 
