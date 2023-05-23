@@ -1,5 +1,5 @@
 pkgname=imagemagick
-pkgver=7.1.1.8
+pkgver=7.1.1.10
 pkgbuild=1
 arch=("auto")
 
