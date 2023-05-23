@@ -1,18 +1,17 @@
 pkgname=wget
-pkgver=1.21.3
+pkgver=1.21.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Network utility to retrieve files from the Web.")
-longdesc=("The Wget package contains a utility useful for non-interactive downloading of files from the Web.")
 
 source=("http://ftp.gnu.org/gnu/wget/wget-${pkgver}.tar.gz")
 
 tags=("network net-misc")
 
-build_deps=("glibc zlib gnutls libidn2 util-linux ca-certificates")
-
 adddep=("ca-certificates")
+
+build_deps=("${adddep} glibc zlib gnutls libidn2 util-linux")
 
 config_files=("etc/wgetrc")
 
