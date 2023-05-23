@@ -1,5 +1,5 @@
 pkgname=grep
-pkgver=3.10
+pkgver=3.11
 pkgbuild=1
 arch=("auto")
 
