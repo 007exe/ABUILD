@@ -1,5 +1,5 @@
 pkgname=python-docutils
-pkgver=0.20
+pkgver=0.20.1
 pkgbuild=1
 arch=("auto")
 
