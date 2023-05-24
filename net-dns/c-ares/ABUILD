@@ -1,5 +1,5 @@
 pkgname=c-ares
-pkgver=1.19.0
+pkgver=1.19.1
 pkgbuild=1
 arch=("auto")
 
