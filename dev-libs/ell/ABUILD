@@ -1,0 +1,25 @@
+pkgname=ell
+pkgver=0.57
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Embedded Linux library.")
+
+source=("https://mirrors.edge.kernel.org/pub/linux/libs/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+adddep=("gcc-libs")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
