@@ -1,11 +1,12 @@
 pkgname=polkit-kde-agent
-pkgver=5.27.5.1
+pkgver=5.27.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Daemon providing a polkit authentication UI for KDE.")
 
-source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver%.*}/${pkgname}-1-${pkgver}.tar.xz")
+# ${pkgver%.*}
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-1-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
