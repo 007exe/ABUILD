@@ -1,0 +1,24 @@
+pkgname=adwaita-icon-theme
+pkgver=44.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("GNOME standard cursors.")
+
+source=("https://gitlab.gnome.org/GNOME/adwaita-icon-theme/-/archive/${pkgver}/adwaita-icon-theme-${pkgver}.tar.gz")
+
+tags=("themes gnome-base")
+
+adddep=("hicolor-icon-theme gtk-update-icon-cache librsvg")
+
+build_deps=("${adddep} gtk3")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
