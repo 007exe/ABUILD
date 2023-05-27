@@ -1,6 +1,6 @@
 pkgname=llvm
 pkglist=("llvm_libs")
-pkgver=15.0.6
+pkgver=15.0.7
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,9 @@ source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver
 
 tags=("develop sys-devel")
 
-build_deps=("libffi python python-setuptools python-psutil python-sphinx cmake ninja libedit ncurses libxml2 python-recommonmark python-commonmark")
-
 adddep=("llvm-libs perl")
+
+build_deps=("${adddep} cmake ninja zlib zstd libffi libedit ncurses libxml2 python-setuptools python-psutil python-sphinx python-recommonmark")
 
 build() {
   cd ${srcdir}/llvm-project-llvmorg-${pkgver}/llvm
@@ -64,11 +64,13 @@ build() {
   install -Dm644 ../LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
+###############################################################################################
+
 llvm_libs() {
   pkgname=llvm-libs
   shortdesc=("Libraries and header files for LLVM.")
   tags=("libs sys-libs")
-  adddep=("llvm=${pkgver} gcc-libs zlib")
+  adddep=("llvm=${pkgver} gcc-libs zlib zstd libffi libedit ncurses libxml2")
 }
 
 llvm_libs_prep() {
