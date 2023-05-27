@@ -1,5 +1,5 @@
 pkgname=clang
-pkgver=15.0.6
+pkgver=15.0.7
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${pkgver
 
 tags=("develop sys-devel")
 
-adddep=("gcc compiler-rt")
+adddep=("llvm-libs gcc compiler-rt")
 
-build_deps=("${adddep} llvm cmake ninja python-sphinx python")
+build_deps=("${adddep} llvm cmake ninja python-sphinx python-recommonmark")
 
 # NOTE: Это опциональные зависимости
 removedep=("openmp python llvm")
