@@ -24,9 +24,9 @@ build() {
     --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
-  sed -e "s/VERSION/$pkgver/" ${filedir}/id3tag.pc > id3tag.pc
   make DESTDIR=${pkgdir} install
 
   install -vDm 644 ${filedir}/id3tag.pc -t ${pkgdir}/usr/lib/pkgconfig
   install -vDm 644 {CHANGES,CREDITS,README} -t ${pkgdir}/usr/share/doc/${pkgname}
+  sed -i "s/VERSION/$pkgver/" ${pkgdir}/usr/lib/pkgconfig/id3tag.pc
 }
