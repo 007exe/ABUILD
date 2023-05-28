@@ -1,0 +1,41 @@
+pkgname=lib32-libnghttp2
+pkgver=1.53.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Framing layer of HTTP/2 is implemented as a reusable C library (32-bit).")
+
+source=("https://github.com/nghttp2/nghttp2/archive/v${pkgver}.tar.gz")
+
+tags=("lib32 net-libs")
+
+adddep=("lib32-glibc libnghttp2")
+
+build_deps=("${adddep}")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
+  ./configure \
+    --prefix=/usr \
+    --disable-examples \
+    --disable-python-bindings \
+    --enable-lib-only \
+    --libdir=/usr/lib32
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/lib32-libnghttp2/COPYING
+  rm -r ${pkgdir}/usr/include
+}
