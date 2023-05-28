@@ -1,0 +1,30 @@
+pkgname=lib32-popt
+pkgver=1.19
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Commandline option parser (32 bit).")
+
+source=("http://ftp.rpm.org/popt/releases/popt-1.x/popt-${pkgver}.tar.gz")
+
+tags=("lib32 dev-libs")
+
+adddep=("lib32-glibc popt")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-nls \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} pkgconfigdir='/usr/lib32/pkgconfig' install
+  rm -rf ${pkgdir}/usr/{include,share}
+  install -dm755 ${pkgdir}/usr/share/licenses
+  ln -s popt ${pkgdir}/usr/share/licenses/${pkgname}
+}
