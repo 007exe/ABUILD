@@ -1,0 +1,30 @@
+pkgname=lib32-twolame
+pkgver=0.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An optimized MPEG Audio Layer 2 (MP2) encoder (32-bit).")
+
+source=("https://github.com/njh/twolame/releases/download/${pkgver}/twolame-${pkgver}.tar.gz")
+
+tags=("lib32 media-sound")
+
+adddep=("lib32-glibc twolame")
+
+build_deps=("${adddep} lib32-libsndfile")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+}
