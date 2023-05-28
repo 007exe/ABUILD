@@ -1,0 +1,25 @@
+pkgname=dht
+pkgver=0.27
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("BitTorrent DHT library.")
+
+source=("https://github.com/jech/dht/archive/refs/tags/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_INCLUDEDIR=include/dht \
+    -DCMAKE_C_FLAGS="$CFLAGS -ffat-lto-objects"
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENCE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
