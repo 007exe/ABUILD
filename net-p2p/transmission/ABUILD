@@ -1,69 +1,112 @@
 pkgname=transmission-cli
-pkgver=3.00
+pkglist=("gtk qt lib")
+pkgver=4.0.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Fast, easy, and free BitTorrent client (CLI tools, daemon and web client)")
-longdesc=("Transmission is a cross-platform, open source BitTorrent client. This is useful for downloading large files (such as Linux ISOs) and reduces the need for the distributors to provide server bandwidth.")
+shortdesc=("Fast, easy, and free BitTorrent client (CLI tools, daemon and web client).")
 
-source="https://github.com/transmission/transmission-releases/raw/master/transmission-${pkgver}.tar.xz"
+source=("https://github.com/transmission/transmission/releases/download/${pkgver}/transmission-${pkgver}.tar.xz")
 
-tags="network net-p2p"
+tags=("network net-p2p")
 
-adddep="transmission-cli transmission-gtk transmission-qt"
+adddep=("curl libevent libb64 miniupnpc libnatpmp libdeflate")
 
-build_deps="gtk3 intltool curl qt5-base libevent"
+gtk_adddep=("${adddep} gtk4 hicolor-icon-theme gtkmm-4.0")
 
-pkglist="gtk qt"
+qt_adddep=("${adddep} qt6-base qt6-svg")
+
+# systemd
+build_deps=("${gtk_adddep} ${qt_adddep} cmake dht glibmm intltool ninja npm qt6-tools")
+
+_install_component() {
+  (cd ${srcdir}/transmission-${pkgver}/build; DESTDIR=${pkgdir} ninja $1/install)
+}
+
 
 build() {
   go_src_dir
   burn_patches
-  rm -f m4/glib-gettext.m4
-#  autoreconf -fi
-  sed -i '/^Icon=/ s/$/-qt/' qt/transmission-qt.desktop
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
-  make -j${numjobs}
-  cd qt
-  qmake qtr.pro \
-    DEFINES+=TRANSLATIONS_DIR=\\\\\\\"/usr/share/transmission-qt/translations\\\\\\\"
-  make -j${numjobs}
-  lrelease translations/*.ts
-  cd ..
-  make -C daemon DESTDIR=$pkgdir install
-  make -C cli DESTDIR=$pkgdir install
-  make -C web DESTDIR=$pkgdir install
-  make -C utils DESTDIR=$pkgdir install
+  export CFLAGS+=" -ffat-lto-objects"
+  cmake -G Ninja -B build \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DENABLE_CLI=ON \
+    -DENABLE_DAEMON=ON \
+    -DENABLE_GTK=ON \
+    -DENABLE_MAC=OFF \
+    -DENABLE_QT=ON \
+    -DREBUILD_WEB=ON \
+    -DENABLE_TESTS=ON \
+    -DENABLE_UTILS=ON \
+    -DENABLE_UTP=ON \
+    -DINSTALL_LIB=ON \
+    -DUSE_SYSTEM_B64=ON \
+    -DUSE_SYSTEM_DEFLATE=ON \
+    -DUSE_SYSTEM_DHT=ON \
+    -DUSE_SYSTEM_EVENT2=ON \
+    -DUSE_SYSTEM_MINIUPNPC=ON \
+    -DUSE_SYSTEM_NATPMP=ON \
+    -DUSE_SYSTEM_PSL=ON \
+    -DUSE_SYSTEM_UTP=OFF \
+    -DWITH_CRYPTO=openssl
+  cmake --build build --config Release
+
+  for dir in daemon cli web utils; do
+    _install_component $dir
+  done
+
+  install -d ${pkgdir}/usr/share/transmission
+  cp -a build/web/public_html/ ${pkgdir}/usr/share/transmission
+
+  install -Dm644 daemon/transmission-daemon.service ${pkgdir}/usr/lib/systemd/system/transmission.service
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/transmission-cli/COPYING
+  install -Dm644 ${filedir}/transmission-cli.sysusers ${pkgdir}/usr/lib/sysusers.d/transmission.conf
+  install -Dm644 ${filedir}/transmission-cli.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/transmission.conf
 }
+
+#############################################################################################
 
 gtk() {
   pkgname=transmission-gtk
-  shortdesc=("Fast, easy, and free BitTorrent client (GTK+ GUI)")
-  longdesc=("Transmission is a cross-platform, open source BitTorrent client. This is useful for downloading large files (such as Linux ISOs) and reduces the need for the distributors to provide server bandwidth.")
-  tags="xapps net-p2p"
+  shortdesc=("Fast, easy, and free BitTorrent client (GTK+ GUI).")
+  tags=("apps net-p2p")
+  adddep=${gtk_adddep}
 }
 
 gtk_prep() {
   go_src_dir
-  make -C gtk DESTDIR=$pkgdir install
-  make -C po DESTDIR=$pkgdir install
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/transmission-gtk/COPYING"
+  _install_component gtk
+  _install_component po
+  install -Dm644 ${srcdir}/transmission-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/transmission-gtk/COPYING
 }
+
+#############################################################################################
 
 qt() {
   pkgname="transmission-qt"
-  shortdesc=("Fast, easy, and free BitTorrent client (Qt GUI)")
-  longdesc=("Transmission is a cross-platform, open source BitTorrent client. This is useful for downloading large files (such as Linux ISOs) and reduces the need for the distributors to provide server bandwidth.")
-  tags="xapps net-p2p"
+  shortdesc=("Fast, easy, and free BitTorrent client (Qt GUI).")
+  tags=("apps net-p2p")
+  adddep=${qt_adddep}
 }
 
 qt_prep() {
   go_src_dir
-  make -C qt INSTALL_ROOT=$pkgdir/usr install
-  install -Dm644 -t "$pkgdir/usr/share/transmission-qt/translations" qt/translations/*.qm
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/transmission-qt/COPYING"
-  install -Dm644 qt/icons/transmission.png "$pkgdir/usr/share/pixmaps/transmission-qt.png"
-  install -Dm644 qt/transmission-qt.desktop "$pkgdir/usr/share/applications/transmission-qt.desktop"
+  _install_component qt
+  install -Dm644 ${srcdir}/transmission-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/transmission-qt/COPYING
+}
+
+#############################################################################################
+
+lib() {
+  pkgname="libtransmission"
+  shortdesc=("Fast, easy, and free BitTorrent client (shared library).")
+  tags=("libs net-p2p")
+}
+
+lib_prep(){
+  go_src_dir
+  install -Dm644 build/libtransmission/libtransmission.a -t ${pkgdir}/usr/lib
+  install -Dm644 libtransmission/*.h -t ${pkgdir}/usr/include/transmission
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/libtransmission/COPYING
 }
