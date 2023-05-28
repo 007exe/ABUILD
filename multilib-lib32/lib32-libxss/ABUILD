@@ -1,0 +1,32 @@
+pkgname=lib32-libxss
+pkgver=1.2.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X11 Screen Saver extension library (32-bit).")
+
+tags=("xorg-libs lib32")
+
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXScrnSaver-${pkgver}.tar.bz2")
+
+adddep=("lib32-libxext libxss")
+
+build_deps=("xorg-util-macros lib32-gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib32 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libxss ${pkgdir}/usr/share/licenses/${pkgname}
+}
