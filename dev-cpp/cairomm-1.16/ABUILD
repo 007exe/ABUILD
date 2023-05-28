@@ -1,0 +1,40 @@
+pkgname=cairomm-1.16
+pkglist=("docs")
+pkgver=1.16.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ bindings for Cairo.")
+
+source=("https://gitlab.freedesktop.org/cairo/cairomm/-/archive/${pkgver}/cairomm-${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+adddep=("cairo libsigc++-3.0")
+
+build_deps=("${adddep} meson mm-common")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D maintainer-mode=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
+
+########################################################
+
+docs() {
+  pkgname=cairomm-1.16-docs
+  shortdesc=("C++ bindings for Cairo (documentation)")
+  arch="noarch"
+}
+
+docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share
+  mv ${p_pkgdir}/usr/share/{devhelp,doc} ${pkgdir}/usr/share
+  rm -r ${p_pkgdir}/usr/share
+}
