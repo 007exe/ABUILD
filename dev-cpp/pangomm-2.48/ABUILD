@@ -1,0 +1,40 @@
+pkgname=pangomm-2.48
+pkglist=("docs")
+pkgver=2.50.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ bindings for Pango.")
+
+source=("https://gitlab.gnome.org/GNOME/pangomm/-/archive/${pkgver}/pangomm-${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+adddep=("pango glibmm-2.68 cairomm-1.16")
+
+build_deps=("${adddep} meson mm-common glibmm-2.68-docs cairomm-1.16-docs")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D maintainer-mode=true \
+    -D buildtype=release
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
+
+docs() {
+  pkgname=pangomm-2.48-docs
+  shortdesc=("C++ bindings for Pango (documentation).")
+  arch="noarch"
+}
+
+docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share
+  mv ${p_pkgdir}/usr/share/{devhelp,doc} ${pkgdir}/usr/share
+  rm -r ${p_pkgdir}/usr/share
+}
