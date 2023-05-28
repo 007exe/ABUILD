@@ -1,0 +1,32 @@
+pkgname=lib32-taglib
+pkgver=1.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Library for reading and editing the meta-data of several popular audio formats (32 bit).")
+
+source=("https://taglib.github.io/releases/taglib-${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+adddep=("lib32-zlib lib32-gcc-libs taglib")
+
+build_deps=("${adddep} cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib32 \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  cd ${pkgdir}/usr
+  rm -rf {include,share}/
+  mv bin/taglib-config{,-32}
+}
