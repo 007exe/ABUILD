@@ -1,0 +1,29 @@
+pkgname=lib32-orc
+pkgver=0.4.33
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The Oil Runtime Compiler (32-bit).")
+
+source=("https://gitlab.freedesktop.org/gstreamer/orc/-/archive/${pkgver}/orc-${pkgver}.tar.bz2")
+
+tags=("lib32 dev-lang")
+
+adddep=("lib32-glibc orc")
+
+build_deps=("${adddep} gtk-doc meson valgrind")
+
+build(){
+  go_src_dir
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+  install -dm 755 ${pkgdir}/usr/share/licenses
+  ln -s orc ${pkgdir}/usr/share/licenses/lib32-orc
+}
