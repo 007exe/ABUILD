@@ -1,0 +1,40 @@
+pkgname=glibmm-2.68
+pkglist=("docs")
+pkgver=2.76.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ bindings for GLib.")
+
+source=("https://gitlab.gnome.org/GNOME/glibmm/-/archive/${pkgver}/glibmm-${pkgver}.tar.gz")
+
+tags=("dev-cpp libs")
+
+adddep=("glib2 libsigc++-3.0")
+
+build_deps=("${adddep} meson mm-common perl-xml-parser clang")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D maintainer-mode=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
+
+##################################################################################
+
+docs() {
+  pkgname=glibmm-2.68-docs
+  shortdesc=("C++ bindings for GLib (documentation).")
+  arch=("noarch")
+}
+
+docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share
+  mv -v ${p_pkgdir}/usr/share/{devhelp,doc} ${pkgdir}/usr/share
+  rm -r ${p_pkgdir}/usr/share
+}
