@@ -1,0 +1,29 @@
+pkgname=lib32-libid3tag
+pkgver=0.15.1b
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("library for id3 tagging (32-bit).")
+
+source=("https://sourceforge.net/projects/mad/files/libid3tag/${pkgver}/libid3tag-${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+adddep=("lib32-zlib libid3tag")
+
+build_deps=("${adddep} gperf")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -D -m644 ${filedir}/id3tag.pc ${pkgdir}/usr/lib32/pkgconfig/id3tag.pc
+  rm -rf ${pkgdir}/usr/include
+}
