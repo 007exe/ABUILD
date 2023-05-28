@@ -1,0 +1,29 @@
+pkgname=lib32-fribidi
+pkgver=1.0.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Free Implementation of the Unicode Bidirectional Algorithm (32-bit).")
+
+source=("https://github.com/fribidi/fribidi/releases/download/v${pkgver}/fribidi-${pkgver}.tar.xz")
+
+tags=("dev-libs lib32")
+
+adddep=("fribidi lib32-glibc")
+
+build_deps=("${adddep} meson")
+
+build(){
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32 \
+    -D docs=false
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+  rm -r ${pkgdir}/usr/{bin,include}
+}
