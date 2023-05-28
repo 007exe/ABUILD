@@ -1,0 +1,32 @@
+pkgname=lib32-libinstpatch
+pkgver=1.1.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Instrument file software library (32-bit).")
+
+source=("https://github.com/swami/libinstpatch/archive/v${pkgver}/libinstpatch-v${pkgver}.tar.gz")
+
+tags=("lib32 dev-libs")
+
+adddep=("lib32-gcc-libs lib32-glibc libinstpatch lib32-libsndfile lib32-glib2")
+
+build_deps=("${adddep} cmake python")
+
+build(){
+  go_src_dir
+  burn_patches
+  export CFLAGS+=" $CPPFLAGS"
+  export CXXFLAGS+=" $CPPFLAGS"
+  export CC='gcc -m32'
+  export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
+  cmake -B build \
+    -D CMAKE_BUILD_TYPE=None \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D LIB_INSTALL_DIR=/usr/lib32 \
+    -D LIB_SUFFIX=32 \
+    -Wno-dev
+  cmake --build build --verbose
+  DESTDIR=${pkgdir} cmake --install build
+  rm -rf ${pkgdir}/usr/include
+}
