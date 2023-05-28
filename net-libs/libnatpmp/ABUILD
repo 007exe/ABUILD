@@ -1,0 +1,22 @@
+pkgname=libnatpmp
+pkgver=20150609
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A portable and fully compliant implementation of the NAT-PMP protocol.")
+
+source=("https://miniupnp.tuxfamily.org/files/libnatpmp-${pkgver}.tar.gz")
+
+tags=("net-libs libs")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -e 's/CFLAGS = /CFLAGS += /' -i Makefile
+  make -j${numjobs}
+  make INSTALLPREFIX=${pkgdir}/usr INSTALLDIRINC=${pkgdir}/usr/include install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 natpmpc.1 ${pkgdir}/usr/share/man/man1/natpmpc.1
+}
