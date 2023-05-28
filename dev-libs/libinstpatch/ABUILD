@@ -1,0 +1,27 @@
+pkgname=libinstpatch
+pkgver=1.1.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Instrument file software library.")
+
+source=("https://github.com/swami/libinstpatch/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("glibc")
+
+build_deps=("${adddep} cmake glib2 libsndfile python")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D LIB_INSTALL_DIR=/usr/lib \
+    -D CMAKE_BUILD_TYPE=None \
+    -W no-dev
+  cmake --build build --verbose
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm 644 ./{AUTHORS,ChangeLog,README.md,TODO.tasks} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
