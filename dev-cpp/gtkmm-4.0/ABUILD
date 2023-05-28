@@ -1,0 +1,40 @@
+pkgname=gtkmm-4.0
+pkglist=("docs")
+pkgver=4.10.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ bindings for GTK 4.")
+
+source=("https://gitlab.gnome.org/GNOME/gtkmm/-/archive/${pkgver}/gtkmm-${pkgver}tar.gz")
+
+tags=("libs dev-cpp")
+
+adddep=("gtk4 pangomm-2.48")
+
+build_deps=("${adddep} cairomm-1.16-docs glibmm-2.68-docs meson mm-common pangomm-2.48-docs")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D maintainer-mode=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
+
+############################################################
+
+docs() {
+  pkgname=gtkmm-4.0-docs
+  shortdesc=("C++ bindings for GTK 4 (documentation).")
+}
+
+docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share
+  mv -v ${p_pkgdir}/usr/share/{devhelp,doc} ${pkgdir}/usr/share
+  rm -r ${p_pkgdir}/usr/share
+}
