@@ -1,0 +1,31 @@
+pkgname=lib32-tdb
+pkgver=1.4.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Trivial Database similar to GDBM but allows simultaneous commits (32-bit).")
+
+source=("http://samba.org/ftp/tdb/tdb-${pkgver}.tar.gz")
+
+tags=("lib32 sys-libs")
+
+adddep=("lib32-glibc tdb")
+
+build_deps=("${adddep} libxslt python")
+
+build(){
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --localstatedir=/var \
+    --sysconfdir=/etc/samba \
+    --disable-python
+  make -j${numjobs}
+  make -j1 DESTDIR=$pkgdir install
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+}
