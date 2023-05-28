@@ -1,12 +1,11 @@
 pkgname=libxdamage
-pkgver=1.1.5
-pkgbuild=2
+pkgver=1.1.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 damaged region extension library.")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXdamage-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXdamage-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
