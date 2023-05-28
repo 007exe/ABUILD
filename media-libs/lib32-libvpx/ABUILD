@@ -1,0 +1,53 @@
+pkgname=lib32-libvpx
+pkgver=1.13.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("VP8 and VP9 codec (32-bit).")
+
+source=("https://github.com/webmproject/libvpx/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+adddep=("lib32-gcc-libs libvpx")
+
+build_deps=("${libvpx} yasm nasm")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  CFLAGS+=' -ffat-lto-objects'
+  CXXFLAGS+=' -ffat-lto-objects'
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --target=x86-linux-gcc \
+    --disable-install-bins \
+    --disable-install-docs \
+    --disable-install-srcs \
+    --disable-unit-tests \
+    --enable-pic \
+    --enable-postproc \
+    --enable-runtime-cpu-detect \
+    --enable-shared \
+    --enable-vp8 \
+    --enable-vp9 \
+    --enable-vp9-highbitdepth \
+    --enable-vp9-temporal-denoising
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/include
+  install -dm 755 ${pkgdir}/usr/share/licenses
+  ln -s libvpx ${pkgdir}/usr/share/licenses/lib32-libvpx
+}
