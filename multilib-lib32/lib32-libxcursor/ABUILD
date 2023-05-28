@@ -1,0 +1,33 @@
+pkgname=lib32-libxcursor
+pkgver=1.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X cursor management library (32-bit).")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXcursor-${pkgver}.tar.xz")
+
+tags=("lib32 xorg-libs")
+
+adddep=("lib32-libxfixes lib32-libxrender libxcursor")
+
+build_deps=("${adddep} xorg-util-macros")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libxcursor ${pkgdir}/usr/share/licenses/${pkgname}
+}
