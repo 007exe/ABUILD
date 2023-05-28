@@ -1,0 +1,40 @@
+pkgname=lib32-ladspa
+pkgver=1.17
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux Audio Developer's Simple Plugin API (32-bit).")
+
+source=("https://ladspa.org/download/ladspa_sdk_${pkgver}.tgz")
+
+tags=("lib32 media-libs")
+
+adddep=("lib32-gcc-libs lib32-glibc ladspa")
+
+build_deps=("${adddep} lib32-libsndfile")
+
+build(){
+  go_src_dir
+  burn_patches
+  sed -e "s#-O2#${CFLAGS} ${LDFLAGS}#" -i src/Makefile
+  local make_options=(
+    CC='gcc -m32'
+    CPP='g++ -m32'
+    LD='ld -m elf_i386'
+    targets
+    -C src
+  )
+  make "${make_options[@]}"
+
+  local make_options=(
+    INSTALL_PLUGINS_DIR="$pkgdir/usr/lib32/ladspa/"
+    INSTALL_INCLUDE_DIR="$pkgdir/usr/include/"
+    INSTALL_BINARY_DIR="$pkgdir/usr/bin/"
+    install
+    -C src
+  )
+
+  make "${make_options[@]}"
+  rm -rf "$pkgdir"/usr/{bin,include}
+
+}
