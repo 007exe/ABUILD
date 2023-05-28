@@ -1,0 +1,31 @@
+pkgname=libb64
+pkgver=1.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Base64 Encoding/Decoding Routines.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.zip")
+
+tags=("dev-libs libs")
+
+adddep=("glibc")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd src
+  export CFLAGS="${CFLAGS} -fPIC"
+  make -j${numjobs}
+  export CFLAGS="${CFLAGS} -shared -Wl,-soname,${pkgname}.so.0"
+  gcc ${LDFLAGS} ${CFLAGS} *.o -o ${pkgname}.so.0
+
+  install -d ${pkgdir}/usr/lib
+  install libb64.so.0 ${pkgdir}/usr/lib
+  ln -sf /usr/lib/libb64.so.0 ${pkgdir}/usr/lib/libb64.so
+
+  cp -r ../include ${pkgdir}/usr
+  install -Dm644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
