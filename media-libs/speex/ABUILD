@@ -1,16 +1,17 @@
 pkgname=speex
-pkgver=1.2.0
-pkgbuild=2
+pkgver=1.2.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A free codec for free speech.")
-longdesc=("Speex is an audio compression format designed especially for speech. It is well-adapted to internet applications and provides useful features that are not present in most other CODECs.")
 
-source=("http://downloads.us.xiph.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.us.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps="libogg speexdsp"
+adddep=("gcc-libs libogg speexdsp")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
