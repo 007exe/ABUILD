@@ -1,0 +1,37 @@
+pkgname=lib32-libwebp
+pkgver=1.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("WebP library (32-bit).")
+
+source=("http://downloads.webmproject.org/releases/webp/libwebp-${pkgver}.tar.gz")
+
+tags=("media-libs lib32")
+
+adddep=("lib32-glibc libwebp")
+
+build_deps=("${adddep} cmake ninja")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  CFLAGS+=" -DNDEBUG"
+  CXXFLAGS+=" -DNDEBUG"
+  cmake -B build -G Ninja \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib32 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_SKIP_INSTALL_RPATH=ON \
+    -DWEBP_BUILD_EXTRAS=OFF \
+    -DWEBP_BUILD_VWEBP=OFF \
+    -DWEBP_BUILD_{C,D,GIF2,IMG2}WEBP=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  rm -r ${pkgdir}/usr/{bin,include,share}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
