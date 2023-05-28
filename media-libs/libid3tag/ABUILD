@@ -1,28 +1,32 @@
 pkgname=libid3tag
-pkgver=0.16.1
+pkgver=0.15.1b
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for reading and writing ID3v1 and ID3v2 tags.")
-longdesc=("A library for reading and (eventually) writing ID3 tags, both ID3v1 and the various versions of ID3v2.")
 
-source=("https://github.com/tenacityteam/libid3tag/archive/refs/tags/${pkgver}.tar.gz")
+source=("https://sourceforge.net/projects/mad/files/libid3tag/${pkgver}/libid3tag-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("glibc zlib gperf cmake")
+adddep=("glibc zlib")
+
+build_deps=("${adddep} gperf")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake .. \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib
+  rm compat.c frametype.c
+  touch AUTHORS ChangeLog NEWS
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
   make -j${numjobs}
+  sed -e "s/VERSION/$pkgver/" ${filedir}/id3tag.pc > id3tag.pc
   make DESTDIR=${pkgdir} install
 
-  install -vDm 644 ../{CHANGES,CREDITS,README} -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -vDm 644 ${filedir}/id3tag.pc -t ${pkgdir}/usr/lib/pkgconfig
+  install -vDm 644 {CHANGES,CREDITS,README} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
