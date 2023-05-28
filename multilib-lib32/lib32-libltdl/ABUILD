@@ -1,0 +1,25 @@
+pkgname=lib32-libltdl
+pkgver=2.4.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A generic library support script (32-bit).")
+
+source=("https://ftpmirror.gnu.org/libtool/libtool-${pkgver}.tar.gz")
+
+tags=("lib32 dev-libs")
+
+adddep=("tar lib32-glibc libtool")
+
+build_deps=("${adddep} gcc help2man")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32" CXX="g++ -m32"
+  ./configure --prefix=/usr \
+    lt_cv_sys_lib_dlsearch_path_spec="/usr/lib /usr/lib32" \
+    --libdir=/usr/lib32
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install-libLTLIBRARIES
+}
