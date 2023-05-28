@@ -9,15 +9,16 @@ source=("https://www.adebenham.com/files/mtp/${pkgname}-${pkgver}.tar.gz")
 
 tags=("console sys-fs")
 
-build_deps=("libmtp glib2 libid3tag fuse libmad")
+adddep=("libmtp glib2 libid3tag fuse libmad")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib \
-    --disable-static
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
