@@ -1,17 +1,15 @@
 pkgname=doxygen
-pkgver=1.9.6
+pkgver=1.9.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Documentation system for C++, C, Java, IDL and PHP.")
-longdesc=("Documentation system for most programming languages.")
 
 tags=("utils app-doc")
 
 source=("https://github.com/doxygen/doxygen/archive/Release_${pkgver//./_}.tar.gz")
 
-# texlive-core texlive-latexextra
-build_deps=("cmake gcc-libs flex python qt5-base graphviz ghostscript")
+build_deps=("cmake gcc-libs flex python qt5-base graphviz ghostscript texlive-core texlive-latexextra")
 
 # Это опциональные зависимости
 removedep=("graphviz qt5-base")
@@ -24,7 +22,7 @@ build() {
   cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-   -DDOC_INSTALL_DIR:PATH=share/doc/doxygen \
+    -DDOC_INSTALL_DIR:PATH=share/doc/doxygen \
     -DPYTHON_EXECUTABLE:FILE=/usr/bin/python \
     -Dbuild_wizard:BOOL=ON \
     -Dbuild_wizard=ON \
