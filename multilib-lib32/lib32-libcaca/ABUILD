@@ -1,0 +1,42 @@
+pkgname=lib32-libcaca
+pkgver=0.99.beta20
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Color AsCii Art library (32-bit).")
+
+source=("https://github.com/cacalabs/libcaca/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+adddep=("lib32-imlib2 libcaca")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fvi
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  ./configure \
+    --build=x86_64-pc-linux-gnu \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --mandir=/usr/share/man \
+    --enable-shared \
+    --disable-csharp \
+    --disable-cxx \
+    --disable-doc \
+    --disable-gl \
+    --disable-python \
+    --disable-slang \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/usr/{share,include}
+  find ${pkgdir}/usr/bin -type f -not -name caca-config -printf 'Removing %P\n' -delete
+  mv ${pkgdir}/usr/bin/caca-config{,-32}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
