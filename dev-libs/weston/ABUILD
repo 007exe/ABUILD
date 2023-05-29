@@ -1,0 +1,26 @@
+pkgname=weston
+pkgver=12.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Reference implementation of a Wayland compositor.")
+
+source=("https://gitlab.freedesktop.org/wayland/weston/-/releases/${pkgver}/downloads/weston-${pkgver}.tar.xz")
+
+tags=("dev-libs libs")
+
+# libgles seatd libpipewire
+adddep=("glibc wayland libxkbcommon libinput libunwind pixman libdrm linux-pam cairo libpng libjpeg-turbo libwebp mesa glib2 pango lcms2 mtdev libx11 libxcb dbus libva libxcursor colord gstreamer gst-plugins-base-libs")
+
+# neatvnc libpipewire
+build_deps=("${adddep} wayland-protocols meson ninja freerdp xorg-xwayland xcb-util-cursor")
+
+build() {
+  go_src_dir
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D b_lto=false
+  DESTDIR=${pkgdir} meson install -C build
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
