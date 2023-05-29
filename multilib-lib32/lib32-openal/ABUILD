@@ -1,31 +1,28 @@
 pkgname=lib32-openal
-pkgver=1.22.2
-strict_version=1
-# NOTE: Коммит версии
-_commit=dc83d99c95a42c960150ddeee06c124134b52208
+pkgver=1.23.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Cross-platform 3D audio library, software implementation (32-bit).")
-longdesc=("A software implementation of the OpenAL 3D audio API.")
 
-source=("git:https://github.com/kcat/openal-soft.git")
+source=("https://github.com/kcat/openal-soft/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("lib32 media-libs")
 
-build_deps=("lib32-gcc-libs lib32-alsa-lib lib32-libpulse lib32-fluidsynth
-lib32-portaudio lib32-jack lib32-pipewire git cmake ninja")
+adddep=("lib32-gcc-libs openal")
+
+# lib32-fluidsynth lib32-jack lib32-libpulse lib32-pipewire lib32-portaudio
+build_deps=("${adddep} lib32-gcc-libs cmake lib32-alsa-lib ninja")
 
 # NOTE: Это опциональные зависимости
 removedep=("lib32-fluidsynth")
 
-pkglist=("openal-examples")
-
-# NOTE: Переходим к коммиту
-# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
-before_build() {
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
   go_src_dir
-  git checkout ${_commit}
+  rm -f ${srcache}/${pkgver}.tar.gz
 }
 
 build() {
@@ -34,12 +31,12 @@ build() {
   export CC="gcc -m32 -mstackrealign"
   export CXX="g++ -m32 -mstackrealign"
   export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
-  cd build
-  cmake .. \
+  cmake -S . -B build \
+    -G Ninja \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib32 \
-    -DCMAKE_BUILD_TYPE=None
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_LIBDIR=lib32
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
   rm -rv ${pkgdir}/usr/{include,share,bin}
 }
