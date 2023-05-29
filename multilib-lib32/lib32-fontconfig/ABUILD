@@ -1,0 +1,35 @@
+pkgname=lib32-fontconfig
+pkgver=2.14.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for configuring and customizing font access (32-bit)..")
+
+source=("http://www.fontconfig.org/release/fontconfig-${pkgver}.tar.gz")
+
+tags=("media-libs lib32")
+
+adddep=("fontconfig lib32-expat lib32-freetype")
+
+build_deps=("${adddep} gperf meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG=i686-pc-linux-gnu-pkg-config
+  meson build \
+    -D prefix=/usr \
+    --libdir=/usr/lib32 \
+    -D doc=disabled
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+
+  rm -r ${pkgdir}/{etc,usr/{include,share}}
+
+  mv ${pkgdir}/usr/bin/fc-cache{,-32}
+  find ${pkgdir}/usr/bin -type f -not -name '*-32' -delete
+
+  install -Dm644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
