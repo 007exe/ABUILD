@@ -1,6 +1,6 @@
 pkgname=lib32-gstreamer
 pkglist=("lib32-gst-plugins-base-libs lib32-gst-plugins-base lib32-gst-plugins-good")
-pkgver=1.20.4
+pkgver=1.22.3
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -11,14 +11,16 @@ source=("git:https://gitlab.freedesktop.org/gstreamer/gstreamer.git")
 
 tags=("lib32 media-libs")
 
-build_deps=("meson git wayland-protocols lib32-glib2 lib32-libunwind lib32-gtk3 lib32-libelf lib32-alsa-lib
-lib32-cdparanoia lib32-libtheora lib32-libvisual lib32-libxv lib32-opus lib32-orc lib32-pango lib32-sdl2
-lib32-aalib lib32-cairo lib32-flac lib32-gdk-pixbuf lib32-jack lib32-libavc1394 lib32-libcaca lib32-libdv
-lib32-libgudev lib32-libiec61883 lib32-libpulse lib32-libraw1394 lib32-libshout lib32-libsoup3 lib32-libvpx
-lib32-libxdamage lib32-mpg123 lib32-speex lib32-taglib lib32-twolame lib32-v4l-utils lib32-wavpack
-lib32-libxml2 gstreamer lib32-libvorbis")
+# lib32-gtk3 lib32-cdparanoia lib32-libtheora lib32-libvisual
+# lib32-libxv lib32-orc lib32-pango lib32-aalib lib32-cairo lib32-jack lib32-libavc1394
+# lib32-libcaca lib32-libdv lib32-libiec61883 lib32-libpulse lib32-libraw1394 lib32-libshout
+# lib32-libsoup3 lib32-libvpx lib32-libxdamage lib32-speex lib32-taglib lib32-twolame lib32-wavpack
 
-adddep=("lib32-libxml2 lib32-glib2 lib32-libunwind lib32-gtk3 lib32-libelf gstreamer")
+# lib32-gtk3
+adddep=("lib32-libxml2 lib32-glib2 lib32-libunwind gstreamer lib32-elfutils")
+
+build_deps=("${adddep} meson git wayland-protocols lib32-alsa-lib lib32-opus lib32-sdl2 lib32-flac
+lib32-gdk-pixbuf lib32-libgudev lib32-mpg123 lib32-v4l-utils gstreamer lib32-libvorbis lib32-elfutils")
 
 _install() {
   local src dir
