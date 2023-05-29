@@ -1,0 +1,32 @@
+pkgname=lib32-libxft
+pkgver=2.3.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("FreeType-based font drawing library for X (32-bit).")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXft-${pkgver}.tar.xz")
+
+tags=("lib32 xorg-libs")
+
+adddep=("lib32-fontconfig lib32-libxrender")
+
+build_deps=("${adddep} lib32-gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libxft ${pkgdir}/usr/share/licenses/${pkgname}
+}
