@@ -1,5 +1,5 @@
 pkgname=cython
-pkgver=0.29.34
+pkgver=0.29.35
 pkgbuild=1
 arch=("auto")
 
