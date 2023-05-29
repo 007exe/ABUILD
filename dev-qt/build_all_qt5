@@ -3,7 +3,7 @@
 QT_VERSION=5.15.9
 BUILD_VERSION=1
 # NOTE: Измени значение переменной _qtbasever в файле qt5-webengine/ABUILD
-WEBENGINE_VERSION=5.15.13
+WEBENGINE_VERSION=5.15.14
 BUILD_VERSION_WEB=1
 
 # NOTE: После сборки qt5-base следует пересобрать qt5-webengine
