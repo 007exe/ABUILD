@@ -9,10 +9,20 @@ source=("https://github.com/cmus/cmus/archive/v${pkgver}.tar.gz")
 
 tags=("console media-sound")
 
-build_deps=("faad2 ffmpeg flac jack libao libcdio-paranoia libmad libmodplug libmp4v2 libmpcdec libpulse libsamplerate libvorbis opusfile wavpack")
+adddep=("libdiscid ncurses")
+
+build_deps=("${adddep} faad2 ffmpeg flac jack libao libcdio-paranoia libmad libmodplug libmp4v2 libmpcdec libpulse libsamplerate libvorbis opusfile wavpack")
 
 # NOTE: Это опциональные зависимости
 removedep=("alsa-lib libao libpulse faad2 ffmpeg flac jack libmad libmodplug libmp4v2 libmpcdec libsamplerate libvorbis libcdio-paranoia opusfile wavpack")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -21,12 +31,4 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -Dm644 contrib/_cmus ${pkgdir}/usr/share/zsh/site-functions/_cmus
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
