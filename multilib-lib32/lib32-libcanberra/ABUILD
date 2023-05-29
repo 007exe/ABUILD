@@ -9,9 +9,11 @@ source=("http://0pointer.de/lennart/projects/libcanberra/libcanberra-${pkgver}.t
 
 tags=("lib32 media-sound")
 
-build_deps=("gtk-doc lib32-gtk2 lib32-gtk3 lib32-libvorbis lib32-libltdl lib32-alsa-lib lib32-libpulse lib32-tdb")
+# lib32-libltdl lib32-libpulse lib32-tdb
+adddep=("lib32-libvorbis lib32-alsa-lib libcanberra")
 
-adddep=("libcanberra")
+# lib32-gtk2 lib32-gtk3
+build_deps=("${adddep} gtk-doc")
 
 build() {
   go_src_dir
