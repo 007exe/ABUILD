@@ -9,8 +9,8 @@ source=("https://download.gnome.org/sources/gtk+/2.24/gtk+-${pkgver}.tar.xz")
 
 tags=("lib32 sys-apps")
 
-# lib32-at-spi2-core lib32-pango lib32-cairo lib32-libxcursor lib32-libxrandr lib32-libxdamage
-adddep=("lib32-gdk-pixbuf lib32-libcups lib32-libxi lib32-libxinerama lib32-libxcomposite gtk2")
+adddep=("lib32-gdk-pixbuf lib32-libcups lib32-libxi lib32-libxinerama lib32-libxcomposite gtk2
+lib32-at-spi2-core lib32-pango lib32-cairo lib32-libxcursor lib32-libxrandr lib32-libxdamage")
 
 build_deps=("${adddep} python")
 
