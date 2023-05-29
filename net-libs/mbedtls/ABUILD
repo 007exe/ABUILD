@@ -1,5 +1,5 @@
 pkgname=mbedtls
-pkgver=2.28.2
+pkgver=3.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/ARMmbed/mbedtls/archive/${pkgname}-${pkgver}.tar.gz"
 
 tags=("libs net-libs")
 
-build_deps=("glibc cmake")
+#adddep=("polarssl")
+
+build_deps=("${adddep} cmake ninja python")
 
 build() {
   go_src_dir
