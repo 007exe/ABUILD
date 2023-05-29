@@ -1,0 +1,33 @@
+pkgname=lib32-libxrender
+pkgver=0.9.11
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("X Rendering Extension client library (32-bit).")
+
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXrender-${pkgver}.tar.xz")
+
+tags=("libs xorg-libs")
+
+adddep=("lib32-libx11 libxrender")
+
+build_deps=("${adddep} xorgproto lib32-gcc-libs")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --sysconfdir=/etc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/{include,share,bin}
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libxrender ${pkgdir}/usr/share/licenses/${pkgname}
+}
