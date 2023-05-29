@@ -1,5 +1,5 @@
 pkgname=vala
-pkgver=0.56.7
+pkgver=0.56.8
 pkgbuild=1
 arch=("auto")
 
