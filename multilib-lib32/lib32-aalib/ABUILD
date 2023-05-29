@@ -1,0 +1,31 @@
+pkgname=lib32-aalib
+pkgver=1.4rc5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A portable ASCII art graphic library (32 bit).")
+
+source=("https://downloads.sourceforge.net/sourceforge/aa-project/aalib-${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+adddep=("lib32-gpm lib32-libx11 aalib")
+
+build_deps=("${adddep} lib32-libxt")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --mandir=/usr/share/man \
+    --infodir=/usr/share/info \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/{bin,include,share}
+}
