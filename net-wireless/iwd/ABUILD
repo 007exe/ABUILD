@@ -1,5 +1,5 @@
 pkgname=iwd
-pkgver=2.4
+pkgver=2.5
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,7 @@ source=("https://www.kernel.org/pub/linux/network/wireless/iwd-${pkgver}.tar.xz"
 
 tags=("network net-wireless")
 
-# ell
-adddep=("glibc readline")
+adddep=("glibc readline ell")
 
 build_deps=("${adddep} python-docutils dbus")
 
