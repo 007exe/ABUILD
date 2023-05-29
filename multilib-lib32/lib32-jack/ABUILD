@@ -4,21 +4,26 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("The JACK low-latency audio server (32 bit).")
-longdesc=("Jackdmp jack implemention for multi-processor machine.")
 
 source=("https://github.com/jackaudio/jack2/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("lib32 media-sound")
 
-build_deps=("lib32-alsa-lib lib32-dbus lib32-expat waf
-lib32-libsamplerate lib32-gcc-libs lib32-glibc lib32-opus")
+adddep=("lib32-gcc-libs lib32-glibc lib32-opus jack")
 
-adddep=("jack")
+build_deps=("${adddep} lib32-alsa-lib lib32-dbus lib32-expat lib32-libsamplerate waf")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
 # Удаляем пользовательский waflib
-  touch __init__.py
   rm -rv waflib
   export LINKFLAGS="$LDFLAGS"
   export PYTHONPATH="$PWD:$PYTHONPATH"
@@ -27,6 +32,7 @@ build() {
   export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
   export CXXFLAGS+=' -m32'
   export CFLAGS+=' -m32'
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
   waf configure \
     --prefix=/usr \
     --libdir=/usr/lib32 \
