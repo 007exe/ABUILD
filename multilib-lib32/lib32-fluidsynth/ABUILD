@@ -1,5 +1,5 @@
 pkgname=lib32-fluidsynth
-pkgver=2.3.0
+pkgver=2.3.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,19 @@ source=("https://github.com/fluidsynth/fluidsynth/archive/v${pkgver}.tar.gz")
 
 tags=("lib32 media-sound")
 
-build_deps=("cmake lib32-alsa-lib lib32-dbus lib32-glib2 lib32-jack lib32-ladspa lib32-libinstpatch lib32-libsndfile lib32-portaudio
-lib32-glibc lib32-libpulse lib32-readline lib32-sdl2")
+# lib32-libpulse
+adddep=("fluidsynth lib32-dbus lib32-gcc-libs lib32-glibc lib32-readline lib32-sdl2")
 
-adddep=("fluidsynth")
+# lib32-jack lib32-ladspa lib32-libinstpatch lib32-portaudio lib32-libpipewire
+build_deps=("${adddep} cmake lib32-alsa-lib lib32-glib2 lib32-libsndfile")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
