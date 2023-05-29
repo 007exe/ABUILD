@@ -9,11 +9,11 @@ source=("http://www.freedesktop.org/software/colord/releases/colord-${pkgver}.ta
 
 tags=("lib32 x11-misc")
 
-# argyllcms
-build_deps=("bash-completion gobject-introspection intltool lib32-dbus lib32-dconf lib32-libgudev lib32-libgusb lib32-polkit lib32-sqlite meson sane vala
-lib32-glib2 lib32-lcms2")
+adddep=("colord lib32-glib2 lib32-lcms2")
 
-adddep=("colord")
+# argyllcms
+build_deps=("${adddep} bash-completion gobject-introspection intltool lib32-dbus
+lib32-dconf lib32-libgudev lib32-libgusb lib32-polkit lib32-sqlite meson sane vala")
 
 build() {
   go_src_dir
