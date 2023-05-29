@@ -1,5 +1,5 @@
 pkgname=diffutils
-pkgver=3.9
+pkgver=3.10
 pkgbuild=1
 arch=("auto")
 
