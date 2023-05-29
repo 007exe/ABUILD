@@ -1,11 +1,12 @@
 pkgname=kde-cli-tools
-pkgver=5.27.5
+pkgver=5.27.5.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Tools based on KDE Frameworks 5 to better interact with the system.")
 
-source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+_dirver=$(echo $pkgver | cut -d. -f1-3)
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${_dirver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("plasma kde-plasma")
 
