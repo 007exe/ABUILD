@@ -9,9 +9,17 @@ source=("https://github.com/portaudio/portaudio/archive/refs/tags/v${pkgver}.tar
 
 tags=("lib32 media-libs")
 
-build_deps=("lib32-glibc lib32-alsa-lib lib32-jack")
+adddep=("lib32-gcc-libs lib32-glibc portaudio")
 
-adddep=("portaudio")
+build_deps=("${adddep} lib32-alsa-lib lib32-jack")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -34,12 +42,4 @@ build() {
   rm -rf ${pkgdir}/usr/include
   install -vDm 644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
   install -vDm 644 README.* -t ${pkgdir}/usr/share/doc/${pkgname}
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
