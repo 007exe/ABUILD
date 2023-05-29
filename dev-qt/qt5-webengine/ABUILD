@@ -3,7 +3,7 @@
 _qtbasever=5.15.9
 
 pkgname=qt5-webengine
-pkgver=5.15.13
+pkgver=5.15.14
 strict_version=1
 pkgbuild=1
 arch=("auto")
