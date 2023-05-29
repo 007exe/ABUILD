@@ -1,18 +1,18 @@
+# NOTE: В будущем этот пакет стоит разделить на несколько lib32-pipewire lib32-libpipewire lib32-pipewire-jack lib32-pipewire-v4l2
 pkgname=lib32-pipewire
-pkgver=0.3.63
+pkgver=0.3.71
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Low-latency audio/video router and processor (32-bit).")
-longdesc=("The pipewire package contains a server and user-space API to handle multimedia pipelines.")
 
 source=("https://github.com/PipeWire/pipewire/archive/${pkgver}/pipewire-${pkgver}.tar.gz")
 
 tags=("lib32 media-libs")
 
-build_deps=("lib32-alsa-lib lib32-dbus lib32-glib2 meson")
-
 adddep=("pipewire")
+
+build_deps=("${adddep} lib32-alsa-lib lib32-dbus lib32-glib2 meson")
 
 build() {
   go_src_dir
@@ -20,6 +20,7 @@ build() {
   export CC="gcc -m32"
   export CXX="g++ -m32"
   export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
   meson build \
     -D prefix=/usr \
     --libdir /usr/lib32 \
