@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend lib32-imlib2 capabilities:"
+echo -e "lib32-libid3tag: ID3 loader"
+echo -e "lib32-librsvg: SVG loader"
+echo -e "lib32-libwebp: WEBP loader"
+echo -e " "

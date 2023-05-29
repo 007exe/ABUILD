@@ -1,0 +1,40 @@
+pkgname=lib32-imlib2
+pkgver=1.11.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support (32-bit).")
+
+source=("https://downloads.sourceforge.net/project/enlightenment/imlib2-src/${pkgver}/imlib2-${pkgver}.tar.xz")
+
+tags=("lib32 media-libs")
+
+adddep=("imlib2 lib32-bzip2 lib32-freetype lib32-giflib lib32-libjpeg-turbo lib32-libpng lib32-libtiff lib32-libxext lib32-xz")
+
+build_deps=("${adddep} lib32-libid3tag lib32-librsvg lib32-libwebp")
+
+# NOTE: Это опциональные зависимости
+removedep=("lib32-libid3tag lib32-librsvg lib32-libwebp")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc/imlib2 \
+    --x-libraries=/usr/lib32 \
+    --enable-mmx \
+    --disable-amd64 \
+    --libdir=/usr/lib32 \
+    --libexecdir=/usr/lib32 \
+    --without-heif
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  cd ${pkgdir}/usr
+  rm -rf {bin,include,share/imlib2}/
+  go_src_dir
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
