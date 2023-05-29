@@ -1,5 +1,5 @@
 pkgname=lib32-at-spi2-core
-pkgver=2.46.0
+pkgver=2.48.3
 pkgbuild=1
 arch=("auto")
 
@@ -7,11 +7,12 @@ shortdesc=("A GTK+ module that bridges ATK to D-Bus at-spi (32-bit).")
 
 source=("https://gitlab.gnome.org/GNOME/at-spi2-core/-/archive/AT_SPI2_CORE_${pkgver//\./_}/at-spi2-core-AT_SPI2_CORE_${pkgver//\./_}.tar.bz2")
 
-tags=("app-accessibility lib32")
+tags=("lib32 media-libs")
 
 adddep=("at-spi2-core lib32-dbus lib32-glib2 lib32-libx11 lib32-libxml2 lib32-libxtst")
 
-build_deps=("${adddep} meson dbus-broker")
+# dbus-broker Требует systemd
+build_deps=("${adddep} meson")
 
 build() {
   go_src_dir
@@ -22,9 +23,9 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib32 \
-    -D introspection=no \
-    -D default_bus=dbus-broker \
-    -D docs=false
+    -D docs=false \
+    -D introspection=disabled
+#    -D default_bus=dbus-broker
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
   rm -r ${pkgdir}/{etc,usr/{include,lib,share}}
