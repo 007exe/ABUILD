@@ -1,74 +1,42 @@
-#ABUILD created by/создан: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=solfege
-pkgver=3.22.1
+pkgver=3.23.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="GNU Solfege - free ear training software"
-#longdesc=(""
-#)
+shortdesc=("Music education and ear training software.")
 
-source=("http://downloads.sourceforge.net/project/solfege/solfege-stable/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://git.savannah.gnu.org/cgit/solfege.git/snapshot/${pkgname}-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("apps media-sound")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps media-sound"
+adddep=("gtk3 python-cairo python-gobject")
 
-#dependencies only needed to build package
-build_deps=""
+# lilypond txt2man
+build_deps=("${adddep} docbook-xsl ghostscript itstool swig texinfo")
 
-provides=""
-conflicts=""
+# NOTE: Это опциональные зависимости
+removedep=("csound timidity++ mpg123 vorbis-tools lilypond texlive-bin")
 
-adddep="timidity++"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+build(){
+  go_src_dir
+  burn_patches
+  sed -e '38,40d' -i topdocs/AUTHORS.texi
+  sed -e '169d' -i topdocs/README.texi
+  sed -e '28i\ \ \ \ webbrowser.register_standard_browsers()' -i "./solfege/mainwin.py"
+  iconv -f ISO-8859-2 -t UTF-8 po/hu.po -o po/hu.po.new
+  sed -i 's/charset=iso-8859-2/charset=utf-8/' po/hu.po.new
+  mv po/hu.po.new po/hu.po
+  echo "version_info ={'git_sha': None}" > _version.py
+  sed -E 's|(PYTHON_INCLUDES=).+|\1"$(pkg-config --cflags-only-I python3)"|g' \
+      -i acinclude.m4
+  aclocal $ACINCLUDE
+  autoconf
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc
+  make
+  make update-manual
+  make DESTDIR=${pkgdir} install
+  python -m compileall -d /usr/share/${pkgname}/${pkgname} ${pkgdir}/usr/share/${pkgname}/${pkgname}
+  python -O -m compileall -d /usr/share/${pkgname}/${pkgname} ${pkgdir}/usr/share/${pkgname}/${pkgname}
+}
