@@ -1,0 +1,45 @@
+pkgname=lib32-cairo
+pkgver=1.17.8
+pkgbuild=1
+strict_version=1
+arch=("auto")
+
+shortdesc=("2D graphics library with support for multiple output devices (32-bit).")
+
+source=("git:https://gitlab.freedesktop.org/cairo/cairo.git")
+
+tags=("lib32 x11-libs")
+
+adddep=("cairo lib32-fontconfig lib32-freetype lib32-glib2 lib32-libpng lib32-libx11 lib32-libxcb lib32-libxext lib32-libxrender lib32-pixman lib32-zlib")
+
+build_deps=("${adddep} meson valgrind")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+
+  # https://bugs.archlinux.org/task/77432
+  # https://gitlab.freedesktop.org/cairo/cairo/-/issues/639
+  git revert -n 47a21c6e30eef91db503a5a183d5c8cf558aaa56
+}
+
+build(){
+  go_src_dir
+  burn_patches
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32
+    -D dwrite=disabled
+    -D gtk_doc=false
+    -D spectre=disabled
+    -D symbol-lookup=disabled
+    -D tests=disabled
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+  rm -r ${pkgdir}/usr/{include,bin}
+}
