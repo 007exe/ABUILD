@@ -1,0 +1,29 @@
+pkgname=lib32-libglvnd
+pkgver=1.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The GL Vendor-Neutral Dispatch library (32-bit).")
+
+source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v${pkgver}/libglvnd-v${pkgver}.tar.gz")
+
+tags=("lib32 media-libs")
+
+adddep=("lib32-libxext libglvnd lib32-mesa")
+
+build_deps=("${adddep} lib32-libx11 lib32-libxext xorgproto python meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib32 \
+    -D headers=false \
+    -D gles1=false
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  rm -r ${pkgdir}/usr/include
+  mkdir -p ${pkgdir}/usr/share/licenses
+  ln -s libglvnd ${pkgdir}/usr/share/licenses/${pkgname}
+}
