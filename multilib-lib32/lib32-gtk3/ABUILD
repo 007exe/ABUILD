@@ -1,5 +1,5 @@
 pkgname=lib32-gtk3
-pkgver=3.24.35
+pkgver=3.24.38
 pkgbuild=1
 arch=("auto")
 
@@ -9,14 +9,10 @@ source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgver%.*}/gtk+-${pkgver}
 
 tags=("lib32 x11-libs")
 
-build_deps=("meson sassc wayland-protocols lib32-at-spi2-atk lib32-colord lib32-dbus
-lib32-gdk-pixbuf lib32-libcanberra lib32-libcups lib32-libepoxy lib32-librsvg
-lib32-libxcomposite lib32-libxcursor lib32-libxdamage lib32-libxinerama
-lib32-libxkbcommon lib32-libxrandr lib32-mesa lib32-pango lib32-wayland")
+adddep=("gtk3 lib32-gdk-pixbuf lib32-libcups lib32-libxcomposite lib32-libxinerama lib32-wayland lib32-libxrandr lib32-mesa
+lib32-libxcursor lib32-libxdamage lib32-pango lib32-libcanberra lib32-libepoxy lib32-librsvg lib32-libxkbcommon")
 
-adddep=("gtk3 lib32-gdk-pixbuf lib32-libcanberra lib32-libcups lib32-libepoxy lib32-librsvg
-lib32-libxcomposite lib32-libxcursor lib32-libxdamage lib32-libxinerama lib32-libxkbcommon
-lib32-libxrandr lib32-mesa lib32-pango lib32-wayland")
+build_deps=("${adddep} meson sassc wayland-protocols lib32-dbus lib32-at-spi2-core lib32-colord")
 
 build() {
   go_src_dir
