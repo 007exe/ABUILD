@@ -1,5 +1,5 @@
 pkgname=lib32-curl
-pkgver=8.1.0
+pkgver=8.1.2
 pkgbuild=1
 arch=("auto")
 
@@ -20,6 +20,8 @@ build() {
   export CC="gcc -m32"
   export CXX="g++ -m32"
   export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+
+  autoreconf -fi
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib32 \
