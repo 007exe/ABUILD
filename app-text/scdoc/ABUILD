@@ -1,0 +1,27 @@
+pkgname=scdoc
+pkgver=1.11.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tool for generating roff manual pages.")
+
+source=("https://git.sr.ht/~sircmpwn/$pkgname/archive/${pkgver}.tar.gz")
+
+tags=("utils app-text")
+
+build_deps=("glibc")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+before_build(){
+  go_src_dir
+  make PREFIX=/usr LDFLAGS="$LDFLAGS"
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+  install -Dm644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
