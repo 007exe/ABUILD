@@ -9,9 +9,13 @@ source=("https://repo.steampowered.com/${pkgname}/pool/${pkgname}/s/${pkgname}/$
 
 tags=("games games-util")
 
+# lib32-vulkan-driver
+adddep_x86_64=("lib32-mesa lib32-gcc-libs lib32-libx11 lib32-libxss lib32-alsa-plugins
+lib32-libgpg-error lib32-nss lib32-vulkan-icd-loader")
+
 # vulkan-driver
-adddep=("bash desktop-file-utils diffutils hicolor-icon-theme curl dbus freetype gdk-pixbuf
-zenity lsb-release nss usbutils xorg-xrandr vulkan-icd-loader lsof python")
+adddep=("${adddep_x86_64} bash desktop-file-utils diffutils hicolor-icon-theme curl dbus
+freetype gdk-pixbuf zenity lsb-release nss usbutils xorg-xrandr vulkan-icd-loader lsof python")
 
 build_deps=("${adddep}")
 
