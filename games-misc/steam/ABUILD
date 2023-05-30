@@ -1,0 +1,44 @@
+pkgname=steam
+pkgver=1.0.0.78
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Valve's digital software delivery system.")
+
+source=("https://repo.steampowered.com/${pkgname}/pool/${pkgname}/s/${pkgname}/${pkgname}_${pkgver}.tar.gz")
+
+tags=("games games-util")
+
+# vulkan-driver
+adddep=("bash desktop-file-utils diffutils hicolor-icon-theme curl dbus freetype gdk-pixbuf
+zenity lsb-release nss usbutils xorg-xrandr vulkan-icd-loader lsof python")
+
+build_deps=("${adddep}")
+
+build(){
+  go_src_dir
+# Настройка правил udev
+  sed -r 's|("0666")|"0660", TAG+="uaccess"|g' -i subprojects/steam-devices/60-steam-input.rules
+  sed -r 's|("misc")|\1, OPTIONS+="static_node=uinput"|g' -i subprojects/steam-devices/60-steam-input.rules
+  sed -r 's|(, TAG\+="uaccess")|, MODE="0660"\1|g' -i subprojects/steam-devices/60-steam-vr.rules
+
+#
+  sed -r 's|(Name=Steam)|\1 (Runtime)|' -i steam.desktop
+  sed -r 's|(/usr/bin/steam)|\1-runtime|' -i steam.desktop
+
+  make DESTDIR=${pkgdir} install
+
+  install -Dm 755 ${filedir}/steam-runtime.sh ${pkgdir}/usr/bin/steam-runtime
+  install -d ${pkgdir}/usr/lib/steam
+  mv ${pkgdir}/usr/bin/steam ${pkgdir}/usr/lib/steam/steam
+  ln -sf /usr/bin/steam-runtime ${pkgdir}/usr/bin/steam
+
+  install -Dm 644 COPYING steam_subscriber_agreement.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+  install -Dm 644 debian/changelog -t ${pkgdir}/usr/share/doc/${pkgname}
+
+# Пустые пароли для apt-get
+  ln -sf /usr/bin/true ${pkgdir}/usr/bin/steamdeps
+
+  install -Dm 644 subprojects/steam-devices/60-steam-input.rules ${pkgdir}/usr/lib/udev/rules.d/70-steam-input.rules
+  install -Dm 644 subprojects/steam-devices/60-steam-vr.rules ${pkgdir}/usr/lib/udev/rules.d/70-steam-vr.rules
+}
