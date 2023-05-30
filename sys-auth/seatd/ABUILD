@@ -1,0 +1,38 @@
+pkgname=seatd
+pkgver=0.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A minimal seat management daemon, and a universal seat management library.")
+
+source=("https://git.sr.ht/~kennylevinsen/seatd/archive/${pkgver}.tar.gz")
+
+tags=("libs sys-auth")
+
+#systemd
+build_deps=("${adddep} meson ninja scdoc")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D examples="disabled" \
+    -D server="enabled" \
+    -D man-pages="enabled"
+#    -D libseat-logind="systemd" \
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+
+  install -Dm644 contrib/systemd/seatd.service -t ${pkgdir}/usr/lib/systemd/system/
+  install -Dm644 ${filedir}/sysuser.conf ${pkgdir}/usr/lib/sysusers.d/seatd.conf
+}
