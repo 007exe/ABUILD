@@ -1,6 +1,6 @@
 pkgname=libtorrent-rasterbar
-pkgver=2.0.8
-pkgbuild=2
+pkgver=2.0.9
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ BitTorrent implementation focusing on efficiency and scalability.")
@@ -9,7 +9,9 @@ source=("https://github.com/arvidn/libtorrent/releases/download/v${pkgver}/${pkg
 
 tags=("libs net-libs")
 
-build_deps=("boost cmake ninja python-setuptools openssl")
+adddep=("boost-libs openssl")
+
+build_deps=("${adddep} boost cmake ninja python-setuptools")
 
 build() {
   go_src_dir
