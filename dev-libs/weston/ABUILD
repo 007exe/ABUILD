@@ -1,5 +1,5 @@
 pkgname=weston
-pkgver=12.0.0
+pkgver=12.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,11 @@ source=("https://gitlab.freedesktop.org/wayland/weston/-/releases/${pkgver}/down
 
 tags=("dev-libs libs")
 
-# libgles seatd libpipewire
-adddep=("glibc wayland libxkbcommon libinput libunwind pixman libdrm linux-pam cairo libpng libjpeg-turbo libwebp mesa glib2 pango lcms2 mtdev libx11 libxcb dbus libva libxcursor colord gstreamer gst-plugins-base-libs")
+adddep=("glibc wayland libxkbcommon libinput libunwind pixman libdrm linux-pam cairo libpng
+libjpeg-turbo libwebp mesa glib2 pango lcms2 mtdev libx11 libxcb dbus libva libxcursor colord
+gstreamer gst-plugins-base-libs pipewire seatd libgles")
 
-# neatvnc libpipewire
+# neatvnc
 build_deps=("${adddep} wayland-protocols meson ninja freerdp xorg-xwayland xcb-util-cursor")
 
 build() {
