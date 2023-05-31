@@ -5,339 +5,497 @@
 
 # FIXME: Проблемы со сборкой документации
 
-LIST="multilib-lib32/lib32-glib2
-x11-libs/intel-media-driver
-multilib-lib32/lib32-faudio
-x11-libs/libva
-media-gfx/graphicsmagick
-media-video/rav1e
-kde-misc/kjots
-dev-python/python-jarowinkler
-dev-python/python-rapidfuzz
-dev-python/python-sphinxcontrib-towncrier
-dev-python/python-pip
-dev-python/python-solidpython
-multilib-lib32/lib32-libsamplerate
-multilib-lib32/lib32-jack
-multilib-lib32/lib32-portaudio
-multilib-lib32/lib32-pipewire
-multilib-lib32/lib32-at-spi2-atk
-multilib-lib32/lib32-linux-pam
-multilib-lib32/lib32-polkit
-multilib-lib32/lib32-colord
-       lib32-gtk2
-multilib-lib32/lib32-gtk3
-       lib32-libltdl
-       lib32-libpulse
-       lib32-tdb
-multilib-lib32/lib32-libcanberra
-       lib32-libepoxy
-       lib32-librsvg
-       lib32-libxcursor
-       lib32-libxdamage
-       lib32-libxkbcommon
-       lib32-libxrandr
-multilib-lib32/lib32-mesa
-       lib32-pango
-       lib32-wayland
-       lib32-libasyncns
-       lib32-libcap
-multilib-lib32/lib32-libpulse
-       lib32-ladspa
-       lib32-libinstpatch
-       lib32-libxss
-multilib-lib32/lib32-libdrm
-       lib32-libxshmfence
-       lib32-libvdpau
-       lib32-libva
-       lib32-libelf
-       lib32-llvm
-       lib32-clang
-       lib32-libglvnd
-       lib32-libunwind
-       lib32-lm_sensors
-       lib32-llvm-libs
-       lib32-libxrender
-multilib-lib32/lib32-sdl2
-multilib-lib32/lib32-fluidsynth
-multilib-lib32/lib32-openal
-multilib-lib32/lib32-mpg123
-       lib32-cdparanoia
-       lib32-libtheora
-       lib32-libvisual
-       lib32-libxv
-       lib32-orc
-       lib32-aalib
-       lib32-cairo
-       lib32-libavc1394
-       lib32-libcaca
-       lib32-libdv
-       lib32-libiec61883
-       lib32-libraw1394
-       lib32-libshout
-       lib32-libsoup3
-       lib32-libvpx
-       lib32-speex
-       lib32-taglib
-       lib32-twolame
-       lib32-wavpack
-multilib-lib32/lib32-gstreamer
-app-emulation/wine
-multilib-lib32/lib32-faudio
-app-text/qpdf
-net-news/liferea
-net-p2p/deluge
-(ДОРАБОТАТЬ_ПАКЕТ_foo2zjs)
-net-print/foo2zjs
-net-print/foomatic-db-engine
-net-voip/mumble
-net-wireless/hostapd
-sys-fs/f2fs-tools
-sys-fs/ncdu
+# Конфликты
+# python-pyproject-metadata || python-pep621
+# 
+# python-pyxdg || python-xdg
+# CudaText 1.192.0
+
+# https://gitlab.freedesktop.org/groups/xorg/-/archived
+# xorg-apps/luit
+# driver/xf86-input-*: большинство драйверов больше не поддерживаются, за исключением xf86-input-libinput, xf86-input-evdev, xf86-input-keyboard, xf86-input-mouse, xf86-input-elographics, xf86-input-joystick, xf86-input-synaptics, xf86-input-vmmouse и xf86-input-void.
+
+# dev-qt/qt6-base
+# dev-qt/qt6-shadertools
+# dev-qt/qt6-languageserver
+# dev-qt/qt6-declarative
+# dev-qt/qt6-5compat
+# dev-qt/qt6-charts
+# dev-qt/qt6-connectivity
+# dev-qt/qt6-datavis3d
+# dev-qt/qt6-imageformats
+# dev-qt/qt6-lottie
+# dev-qt/qt6-multimedia
+# dev-qt/qt6-networkauth
+# dev-qt/qt6-serialport
+# dev-qt/qt6-positioning
+# dev-qt/qt6-quick3d
+# dev-qt/qt6-3d
+# dev-qt/qt6-quicktimeline
+# dev-qt/qt6-remoteobjects
+# dev-qt/qt6-scxml
+# dev-qt/qt6-sensors
+# dev-qt/qt6-serialbus
+# dev-qt/qt6-svg
+# dev-qt/qt6-tools
+# dev-qt/qt6-translations
+# dev-qt/qt6-virtualkeyboard
+# dev-qt/qt6-wayland
+# dev-qt/qt6-websockets
+# dev-qt/qt6-webchannel
+# dev-qt/qt6-webengine
+# dev-qt/qt6-webview
+
+# http://bygone.clairexen.net/stfl/stfl-0.24.tar.gz
+
+# python-bsddb
+# python-mutagen
+# python-simplejson
+# python-pylast
+# python3-keybinder 
+# apache-orc
+# gflags
+# grpc
+# google-glog
+# thrift
+# uriparser
+# xsimd
+# gmock
+# flatbuffers
+# dotnet-sdk
+# dotnet-runtime
+# zeroc-ice
+# sqlcipher
+# qcustomplot
+# qhexedit2
+# gperftools
+# ocaml-compiler-libs
+# gtkspell3
+# ocaml-cairo
+# libpst
+# libytnef
+# cmark
+# bogofilter
+# spamassassin
+# amtk
+# tepl
+# ecl
+# sbcl
+# python3-dateutils
+# strip-nondeterminism
+# python3-keybinder
+
+LIST="dev-python/python-jaraco.functools
+dev-util/gc
+multilib-lib32/lib32-openssl
+gnome-base/librsvg
+dev-libs/openssl
+dev-lang/orc
+dev-libs/openssl-1.1
+media-gfx/imagemagick
+dev-libs/libatasmart
+dev-libs/libcdio-paranoia
+dev-libs/liblouis
+dev-libs/libmanette
+x11-libs/libxklavier
+media-video/pipewire
+www-client/google-chrome
+dev-python/python-rich
+app-text/djvulibre
+sys-devel/gcc
 sys-kernel/bbswitch
-dev-db/freetds
-dev-db/postgis
-dev-db/mysql-workbench
-       sqlcipher 
-       qcustomplot
-       qhexedit2
-x11-libs/qscintilla
-dev-db/sqlitebrowser
-sys-libs/efivar
-sys-apps/fbset
-dev-libs/libx86emu
-sys-apps/hwinfo
-sys-apps/mlocate
-sys-apps/tcp_wrappers
-app-arch/mgard
-app-arch/unace
-app-crypt/gpgme
-app-i18n/poedit
-app-text/a2ps
-app-text/dblatex
-app-text/fbreader
-app-text/libgepub
-dev-java/bcprov
-       strip-nondeterminism
-app-text/pdftk
-app-text/podofo
-app-text/xpdf
-app-text/texlive-bin
-dev-libs/tl-expected
-dev-lang/julia
-dev-lang/tcc
-dev-lang/mono
-dev-libs/cloog
-dev-libs/cudnn
-app-text/docbook-utils
-dev-libs/gmime
-dev-libs/libphonenumber
+dev-libs/libportal-qt5
 dev-libs/js78
+dev-libs/unibilium
+dev-libs/libportal-docs
+dev-libs/libphonenumber
 dev-libs/js91
-dev-util/codeblocks
-net-analyzer/nmap
-net-fs/cifs-utils
-       gperftools
-sys-cluster/glusterfs
-       python3-dateutils
-net-fs/samba
-net-ftp/filezilla
+dev-libs/tl-expected
+dev-libs/cloog
+dev-libs/mm
+dev-libs/kuserfeedback
+dev-libs/link-grammar
+dev-libs/libev
+dev-libs/arrow
+dev-libs/gmime
+dev-libs/libx86emu
+dev-libs/cudnn
+dev-libs/libdbi-drivers
+dev-libs/apr-util
+dev-libs/libxmlb
+dev-libs/libportal-gtk4
+dev-libs/libtomcrypt
+dev-libs/libptytty
+dev-libs/lockdev
+dev-libs/opensc
+dev-libs/stfl
+dev-libs/kdevelop-pg-qt
+dev-libs/adios2
+xfce-extra/xfce4-artwork
+xfce-extra/xfce4-alsa-plugin
+xfce-extra/thunar-shares-plugin
+sci-geosciences/qgis
+sci-geosciences/liblas
+dev-embedded/arduino
+dev-embedded/avr-libc
+dev-embedded/mspdebug
+dev-embedded/stm32flash
 net-ftp/tftp-hpa
-net-im/ejabberd
-net-libs/farstream
-net-libs/libotr
-net-libs/serf
-net-libs/gupnp-igd
+dev-ruby/asciidoctor
+net-dialup/xl2tpd
+net-dialup/rp-pppoe
+net-dialup/freeradius-client
+mate-extra/atril
+sys-process/iotop
+sys-process/dcron
+sys-process/latencytop
+sys-process/at
+media-fonts/wqy-zenhei
+media-fonts/ubuntu-font-family
+games-engines/love
+sys-libs/glibc_x64x
+sys-libs/compiler-rt
+dev-lua/luafilesystem
+app-accessibility/flite
+media-sound/gpodder
+media-sound/easytag
+media-sound/qjackctl
+media-sound/ario
+media-sound/beets
+media-sound/gmpc
+media-sound/kid3
+media-sound/normalize
+media-sound/shntool
+media-sound/soundconverter
+media-sound/lmms
+media-sound/musique
+media-sound/lash
+media-sound/strawberry
+media-sound/solfege
+media-sound/cmus
+media-sound/clementine
+media-sound/foobnix
+media-sound/lollypop
+media-sound/pragha
+media-sound/gqradio
+media-sound/ardour
+media-sound/audacity
+app-pda/usbmuxd
+app-pda/libimobiledevice
+app-pda/libplist
+app-admin/keepassxc
+app-admin/hddtemp
+media-video/obs-studio
+media-video/rage
+media-video/handbrake
+media-video/pitivi
+media-video/dvgrab
+media-video/mkvtoolnix
+media-video/ffmpeg2theora
+media-video/dvdauthor
+media-video/dirac
+media-video/kino
+media-video/aegisub
+media-video/motion
+media-video/openshot
+media-video/recordmydesktop
+media-video/movit
+media-libs/opencv
+media-libs/libtg_owt
+media-libs/imlib2
+media-libs/libgpod
+media-libs/devil
+media-libs/libjxl
+media-libs/intel-media-sdk
+media-libs/qtav
+media-libs/projectm
+media-libs/libquvi
+media-libs/spandsp
+media-libs/libtiger
+media-libs/vigra
+media-libs/liblqr
+media-libs/ilmbase
+media-libs/gnonlin
+media-libs/imlib
+media-libs/phonon-gstreamer
+media-libs/svgalib
+media-libs/chromaprint
+media-libs/libvpx
+media-libs/libplacebo
+media-libs/plib
+media-libs/flickcurl
+media-libs/phonon-vlc
+media-libs/libofa
+media-libs/giblib
+media-libs/libicns
+media-libs/ffmpegsource
+media-libs/libv4l
+media-libs/libpgf
+media-libs/libmikmod
+media-libs/mutagen
+media-libs/quesoglc
+media-libs/freealut
+media-libs/libiptcdata
+media-libs/lcms
+media-libs/sdl_sound
+media-libs/stk
+x11-libs/qscintilla
+x11-libs/goffice
+x11-libs/gtkmathview
+dev-vcs/subversion
+dev-vcs/tortoisehg
+dev-vcs/git-cola
+dev-vcs/cvs
+media-gfx/zbar
+media-gfx/graphicsmagick
+media-gfx/pinta
+media-gfx/librecad
+app-crypt/gpgme
 net-libs/wpewebkit
 net-libs/webkit2gtk
 net-libs/webkit2gtk-4.1
 net-libs/webkit2gtk-5.0
-gnome-extra/yad
-ocaml-compiler-libs
-       gtkspell3
-       ocaml-cairo
-dev-ml/lablgtk3
-net-misc/unison
-x11-misc/xsel
-x11-misc/synergy
-app-accessibility/flite
-media-libs/qtav
-media-libs/projectm
-media-libs/libquvi
-       python-bsddb
-       gst-python
-       python-mutagen
-media-sound/exaile
-       python-simplejson
-       python-pylast
-       python-mutagen
-       python3-keybinder
-media-sound/foobnix
-media-sound/lollypop
-media-libs/libjxl
+net-libs/farstream
+net-libs/libotr
+net-libs/gupnp-igd
+net-libs/gssdp
+dev-python/python-rapidfuzz
+dev-python/python-cleo
+dev-python/python-crashtest
+dev-python/python-keyring
+dev-python/python-markdown-it-py
+dev-python/python-pastel
+dev-python/python-poetry
+dev-python/python-tomlkit
+dev-python/python-pydantic
+dev-python/python-platformdirs
+dev-python/python-certifi
+dev-python/python-sphinx_rtd_theme
+dev-python/python-jedi
+dev-python/python-urllib3
+app-i18n/poedit
+multilib-lib32/lib32-at-spi2-core
+multilib-lib32/lib32-libcap
+multilib-lib32/lib32-linux-pam
+multilib-lib32/lib32-pipewire
+multilib-lib32/lib32-jack
+multilib-lib32/lib32-portaudio
+multilib-lib32/lib32-polkit
+multilib-lib32/lib32-colord
+multilib-lib32/lib32-fontconfig
+multilib-lib32/lib32-libxft
+multilib-lib32/lib32-cairo
+multilib-lib32/lib32-pango
+multilib-lib32/lib32-pixman
+multilib-lib32/lib32-gtk2
+multilib-lib32/lib32-libdrm
+multilib-lib32/lib32-libglvnd
+multilib-lib32/lib32-libva
+multilib-lib32/lib32-mesa
+multilib-lib32/lib32-libcanberra
+multilib-lib32/lib32-libepoxy
+multilib-lib32/lib32-librsvg
+multilib-lib32/lib32-libxkbcommon
+multilib-lib32/lib32-gtk3
+multilib-lib32/lib32-libpulse
+multilib-lib32/lib32-fluidsynth
+multilib-lib32/lib32-openal
+multilib-lib32/lib32-libtheora
+multilib-lib32/lib32-libvisual
+multilib-lib32/lib32-gpm
+multilib-lib32/lib32-aalib
+multilib-lib32/lib32-imlib2
+multilib-lib32/lib32-libcaca
+multilib-lib32/lib32-libshout
+multilib-lib32/lib32-libproxy
+multilib-lib32/lib32-glib-networking
+multilib-lib32/lib32-libsoup3
+multilib-lib32/lib32-taglib
+multilib-lib32/lib32-gstreamer
+app-emulation/wine
+app-emulation/wine-gecko
+app-emulation/aqemu
+app-emulation/virt-manager
+app-emulation/virt-viewer
+app-emulation/qemu
+app-emulation/virtualbox
+app-emulation/winetricks
+app-emulation/libvirt-glib
+dev-util/meson
+dev-util/pvs-studio
+dev-util/how-to-use-pvs-studio-free
+dev-util/apitrace
+dev-util/oprofile
+dev-util/gpp
+dev-util/codeblocks
+sys-apps/fwupd
+sys-apps/dbus-broker
+sys-apps/fbset
+sys-apps/flatpak
+sys-apps/tcp_wrappers
+sys-apps/accountsservice
+sys-apps/mlocate
+sys-apps/dmidecode
+sys-apps/hwinfo
+dev-perl/perl-uri
+dev-lang/ocaml
+dev-lang/julia
+dev-lang/tcc
+dev-lang/mono
+kde-plasma/flatpak-kcm
+kde-gear/kdepim-addons
+kde-gear/kitinerary
+kde-gear/kio-extras
+kde-gear/kdenetwork-filesharing
+gnome-base/gnome-session
+gnome-base/gnome-control-center
+gnome-base/gnome-shell
+gnome-base/gnome-settings-daemon
+gnome-base/gnome-applets
+gnome-base/yelp
+gnome-base/nautilus
+gnome-base/gnome-panel
+gnome-base/gdm
+www-apache/mod_perl
+www-apache/mod_wsgi
+games-emulation/desmume
+net-fs/netatalk
+net-fs/davfs2
+net-fs/cifs-utils
+net-fs/samba
+sci-chemistry/openbabel
+xorg-apps/xorg-xdm
+kde-misc/calligra
+kde-misc/kjots
+app-arch/lzlib
+app-arch/snappy
+app-arch/rpm
+app-arch/mgard
+app-arch/unace
+app-arch/lzip
+sci-libs/gdal
+sci-libs/vtk
+sci-libs/avogadrolibs
+sci-libs/spglib
+sci-libs/cln
+sci-libs/netcdf
+app-text/qpdf
+app-text/a2ps
+app-text/dblatex
+app-text/fbreader
+app-text/libgepub
+app-text/pdftk
+app-text/podofo
+app-text/xpdf
+app-text/texlive-bin
+app-text/docbook-utils
+app-text/psiconv
+app-text/pandoc
+app-text/mythes
+app-text/asciidoc
+net-news/liferea
+net-p2p/deluge
+net-voip/mumble
+dev-db/postgis
+dev-db/mysql-workbench
+dev-db/sqlitebrowser
+dev-java/bcprov
 dev-java/eclipse-ecj
 dev-java/icedtea-web
+net-analyzer/nmap
+net-analyzer/wireshark
+net-analyzer/cacti
+net-im/poezio
+net-im/ejabberd
+gnome-extra/yad
+gnome-extra/sysprof
+gnome-extra/nautilus-sendto
+gnome-extra/gnome-user-share
+dev-ml/lablgtk3
+net-misc/unison
+net-misc/freerdp
+net-misc/bridge-utils
+x11-misc/xsel
+x11-misc/synergy
+x11-misc/xmobar
+x11-misc/wmctrl
+x11-misc/xlockmore
 gnome-libs/retro-gtk
 gnome-libs/gnome-games
+gnome-libs/evolution-data-server
+gnome-libs/libgweather-4
+gnome-libs/gnome-online-accounts
 app-editors/neovim
-
-x11-libs/goffice
-media-gfx/graphicsmagick
-app-text/psiconv
+app-editors/leafpad
 app-office/abiword
-dev-libs/libdbi-drivers
 app-office/gnucash
 app-office/gnumeric
 app-office/libreoffice
 app-office/scribus
 app-office/unoconv
-xorg-apps/xorg-xdm
-sci-libs/avogadrolibs
-
-dev-lang/ghc
-dev-haskell/haskell-hscolour
-dev-haskell/alex
-dev-haskell/happy
-dev-haskell/uusi
-dev-haskell/haskell-erf
-dev-haskell/haskell-splitmix
-dev-haskell/haskell-random
-dev-haskell/haskell-quickcheck
-
-       haskell-hspec
-       haskell-silently
-dev-haskell/haskell-nanospec
-dev-haskell/haskell-call-stack
-dev-haskell/haskell-hunit
-       haskell-libxml
-       haskell-ansi-terminal
-       haskell-ansi-wl-pprint
-       haskell-hostname
-       haskell-old-locale
-       haskell-regex-posix
-       haskell-xml
-dev-haskell/haskell-test-framework
-Неудовлетворённые зависимости: haskell-test-framework-quickcheck2
-dev-haskell/haskell-diff
-
-dev-haskell/haskell-tasty
-dev-haskell/haskell-tasty-golden
-dev-haskell/haskell-tasty-hunit
-dev-haskell/haskell-tasty-lua
-dev-haskell/haskell-tasty-quickcheck
-dev-haskell/haskell-glob
-dev-haskell/haskell-juicypixels
-dev-haskell/haskell-sha
-dev-haskell/haskell-aeson
-dev-haskell/haskell-aeson-pretty
-dev-haskell/haskell-attoparsec
-dev-haskell/haskell-base64
-dev-haskell/haskell-blaze-html
-dev-haskell/haskell-blaze-markup
-dev-haskell/haskell-case-insensitive
-dev-haskell/haskell-citeproc
-dev-haskell/haskell-commonmark
-dev-haskell/haskell-commonmark-extensions
-dev-haskell/haskell-commonmark-pandoc
-dev-haskell/haskell-connection
-dev-haskell/haskell-data-default
-dev-haskell/haskell-doclayout
-dev-haskell/haskell-doctemplates
-dev-haskell/haskell-emojis
-dev-haskell/haskell-file-embed
-dev-haskell/haskell-gridtables
-dev-haskell/haskell-haddock-library
-dev-haskell/haskell-hslua
-dev-haskell/haskell-hslua-aeson
-dev-haskell/haskell-hslua-module-doclayout
-dev-haskell/haskell-hslua-module-path
-dev-haskell/haskell-hslua-module-system
-dev-haskell/haskell-hslua-module-text
-dev-haskell/haskell-hslua-module-version
-dev-haskell/haskell-http-client
-dev-haskell/haskell-http-client-tls
-dev-haskell/haskell-http-types
-dev-haskell/haskell-ipynb
-dev-haskell/haskell-jira-wiki-markup
-dev-haskell/haskell-lpeg
-dev-haskell/haskell-network
-dev-haskell/haskell-network-uri
-dev-haskell/haskell-pandoc-lua-marshal
-dev-haskell/haskell-pandoc-types
-dev-haskell/haskell-pretty-show
-dev-haskell/haskell-safe
-dev-haskell/haskell-scientific
-dev-haskell/haskell-servant-server
-dev-haskell/haskell-skylighting
-dev-haskell/haskell-skylighting-core
-dev-haskell/haskell-split
-dev-haskell/haskell-syb
-dev-haskell/haskell-tagsoup
-dev-haskell/haskell-temporary
-dev-haskell/haskell-texmath
-dev-haskell/haskell-text-conversions
-dev-haskell/haskell-unicode-collation
-dev-haskell/haskell-unicode-transforms
-dev-haskell/haskell-wai
-dev-haskell/haskell-wai-extra
-dev-haskell/haskell-warp
-dev-haskell/haskell-xml
-dev-haskell/haskell-xml-conduit
-dev-haskell/haskell-xml-types
-dev-haskell/haskell-yaml
-dev-haskell/haskell-zip-archive
-dev-haskell/haskell-zlib
-app-text/pandoc
-app-admin/conky
-net-libs/gssdp
-       haskell-x11
-       haskell-x11-xft
-       haskell-utf8-string
-       haskell-network-uri
-       haskell-hinotify
-       haskell-parsec-numbers
-       haskell-regex-compat
-       haskell-old-locale
-       haskell-http
-       haskell-dbus
-       haskell-libmpd
-       haskell-cereal
-       haskell-netlink
-       haskell-async
-       haskell-aeson
-       haskell-timezone-olson
-       haskell-timezone-series
-       haskell-extensible-exceptions
-       haskell-http-conduit
-       haskell-http-types
-       haskell-http-client-tls
-       haskell-alsa-core
-       haskell-alsa-mixer
-x11-misc/xmobar
-www-client/firefox"
+app-office/homebank
+app-office/openoffice
+www-client/seamonkey
+www-client/firefox
+www-client/elinks
+www-client/luakit
+www-client/chromium
+www-client/midori
+cinnamon-base/cjs
+cinnamon-base/cinnamon-session
+gnome-apps/gedit
+gnome-apps/gtg
+gnome-apps/evolution
+gnome-apps/lollypop
+gnome-apps/gnome-power-manager
+gnome-apps/gnome-mplayer
+gnome-apps/gnome-terminal
+www-servers/nginx
+sci-mathematics/maxima
+sys-power/acpi_call
+mail-mta/msmtp
+mail-mta/exim
+sci-astronomy/stellarium
+sci-astronomy/kstars
+mail-client/sylpheed
+mail-client/claws-mail
+mail-client/mailx
+app-doc/gimp-help
+sys-boot/unetbootin
+sys-boot/plymouth
+x11-wm/enlightenment
+mail-filter/maildrop
+sci-electronics/ngspice
+sci-electronics/iverilog
+app-antivirus/clamav
+app-antivirus/clamtk
+sci-physics/bullet
+dev-scheme/slib"
 
 STARTD=`pwd`
-#LOGFILE=~/Yandex.Disk/build.log
-LOGFILE=~/build.log
+LOGFILE=~/Yandex.Disk
 
-echo "============================= Начало сборки `date` =============================" >> $LOGFILE
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE/build.log
+echo "============================= Начало сборки `date` =============================" >> $LOGFILE/build_error.log
 
 # -pod ~/Yandex.Disk/Testing_x86_64/repository/pkg
 
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -wd ~/mkpkg/build -si ; then
-           echo "$i ГОТОВ" >> $LOGFILE
+    if mkpkg -ba -wd ~/mkpkg/build -si -pod ~/Yandex.Disk/Testing_x86_64/repository/pkg ; then
+           echo "$i" >> $LOGFILE/build.log
            cd $STARTD
     else
-           echo "$i НЕ СОБРАН!!!" >> $LOGFILE
+           echo "$i" >> $LOGFILE/build_error.log
            cd $STARTD
     fi
+    sleep 1
 done
 
-echo "============================= Завершено `date` =============================" >> $LOGFILE
+echo "============================= Завершено `date` =============================" >> $LOGFILE/build.log
+echo "============================= Завершено `date` =============================" >> $LOGFILE/build_error.log
 
-mpkg-index Yandex.Disk/Testing_x86_64/repository/
+mpkg-index /home/chip/Yandex.Disk/Testing_x86_64/repository/
 mpkg-update
 mpkg-upgradeall
 
@@ -345,4 +503,5 @@ rm -f dupes.log
 rm -f index.log
 rm -f package_list
 
-sudo poweroff
+#sleep 240
+#sudo poweroff
