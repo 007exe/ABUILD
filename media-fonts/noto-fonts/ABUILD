@@ -1,8 +1,8 @@
 pkgname=noto-fonts
 pkglist=("noto-fonts-extra")
-pkgver=20230501
+pkgver=20230601
 strict_version=1
-_commit=8f03a57b371df199e1c73b2bd5d342fbbe4ce840
+_commit=f20eb388d2742b5ebf2cf3d1a2992303cce67cf6
 pkgbuild=1
 arch=("noarch")
 
