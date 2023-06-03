@@ -5,7 +5,7 @@ gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server
 gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
 pkgver=1.22.3
 strict_version=1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Multimedia graph framework - core.")
@@ -26,7 +26,7 @@ fluidsynth libgme libkate liblrdf ladspa libde265 lilv lv2 libmicrodns mjpegtool
 libmpcdec neon openal libdvdnav rtmpdump sbc soundtouch spandsp libsrtp svt-hevc zvbi
 libnice webrtc-audio-processing wildmidi zxing-cpp zbar nettle libxml2 gsm libopenmpt
 wpewebkit libldac libfreeaptx qrencode json-glib libva libxkbcommon-x11 a52dec
-opencore-amr libcdio libdvdread libmpeg2 libsidplay x264 ffmpeg libxrandr python-gobject
+opencore-amr libcdio libdvdread libmpeg2 x264 ffmpeg libxrandr python-gobject
 qt5-wayland")
 
 _install() {
@@ -580,7 +580,6 @@ gst-plugins-ugly_prep() {
     usr/lib/gstreamer-1.0/libgstdvdsub.so
     usr/lib/gstreamer-1.0/libgstmpeg2dec.so
     usr/lib/gstreamer-1.0/libgstrealmedia.so
-    usr/lib/gstreamer-1.0/libgstsid.so
     usr/lib/gstreamer-1.0/libgstx264.so
     usr/lib/gstreamer-1.0/libgstxingmux.so
 
