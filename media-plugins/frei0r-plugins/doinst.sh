@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend frei0r-plugins capabilities:"
+echo -e "cairo: cairoaffineblend, cairoblend, cairogradient and cairoimagegrid plugins"
+echo -e "gavl: rgbparade, scale0tilt and vectorscope plugins"
+echo -e "opencv: facebl0r and facedetect plugins"
+echo -e " "
