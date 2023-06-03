@@ -1,10 +1,9 @@
 pkgname=gc
-pkgver=8.2.2
+pkgver=8.2.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A garbage collector for C and C++.")
-longdesc=("Boehm's GC is a garbage collecting storage allocator that is intended to be used as a plug-in replacement for C's malloc.")
 
 source=("https://github.com/ivmai/bdwgc/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
