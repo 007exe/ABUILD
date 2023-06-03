@@ -1,5 +1,5 @@
 pkgname=faudio
-pkgver=23.05
+pkgver=23.06
 pkgbuild=1
 arch=("auto")
 
