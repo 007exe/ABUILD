@@ -1,5 +1,5 @@
 pkgname=openssl-1.1
-pkgver=1.1.1t
+pkgver=1.1.1u
 pkgbuild=1
 arch=("auto")
 
