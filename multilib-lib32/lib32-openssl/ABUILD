@@ -1,5 +1,5 @@
 pkgname=lib32-openssl
-pkgver=3.0.8
+pkgver=3.0.9
 pkgbuild=1
 arch=("auto")
 
