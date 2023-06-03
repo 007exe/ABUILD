@@ -1,10 +1,9 @@
 pkgname=orc
-pkgver=0.4.33
+pkgver=0.4.34
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Oil Runtime Compiler.")
-longdesc=("Orc is a library and set of tools for compiling and executing very simple programs that operate on arrays of data.")
 
 source=("https://gitlab.freedesktop.org/gstreamer/orc/-/archive/${pkgver}/orc-${pkgver}.tar.bz2")
 
