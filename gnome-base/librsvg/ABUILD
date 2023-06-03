@@ -1,5 +1,5 @@
 pkgname=librsvg
-pkgver=2.56.0
+pkgver=2.56.1
 pkgbuild=1
 arch=("auto")
 
