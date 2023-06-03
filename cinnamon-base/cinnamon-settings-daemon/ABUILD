@@ -1,5 +1,5 @@
 pkgname=cinnamon-settings-daemon
-pkgver=5.6.1
+pkgver=5.8.0
 pkgbuild=1
 arch=("auto")
 

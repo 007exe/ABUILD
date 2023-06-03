@@ -1,5 +1,5 @@
 pkgname=cinnamon-menus
-pkgver=5.6.0
+pkgver=5.8.0
 pkgbuild=1
 arch=("auto")
 

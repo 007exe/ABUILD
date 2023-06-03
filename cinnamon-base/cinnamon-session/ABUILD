@@ -1,11 +1,11 @@
 pkgname=cinnamon-session
-pkgver=5.6.0
+pkgver=5.8.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Cinnamon Session Handler.")
 
-source=("https://github.com/linuxmint/cinnamon/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/linuxmint/cinnamon-session/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
