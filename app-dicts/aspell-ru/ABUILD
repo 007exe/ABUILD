@@ -1,11 +1,12 @@
 pkgname=aspell-ru
-pkgver=0.99f7
+_pkgver=0.99f7-1
+pkgver=${_pkgver//-/.}
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Russian dictionary for aspell")
 
-source=("ftp://ftp.gnu.org/gnu/aspell/dict/ru/aspell6-ru-${pkgver}-1.tar.bz2")
+source=("https://ftp.gnu.org/gnu/aspell/dict/ru/aspell6-ru-${_pkgver}.tar.bz2")
 
 tags=("app-dicts libs")
 
