@@ -1,6 +1,6 @@
 pkgname=cups
 pkglist=("libcups")
-pkgver=2.4.2
+pkgver=2.4.3
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,11 @@ source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-
 
 tags=("base net-print")
 
-adddep=("hicolor-icon-theme libcups>=${pkgver} cups-filters")
+_adddep=("hicolor-icon-theme cups-filters")
 
-build_deps=("${adddep} gnutls libtiff libpng krb5 libusb acl linux-pam bc dbus gzip autoconf inetutils valgrind xdg-utils")
+adddep=("${_adddep} libcups>=${pkgver}")
+
+build_deps=("${_adddep} gnutls libtiff libpng krb5 libusb acl linux-pam bc dbus gzip autoconf inetutils valgrind xdg-utils")
 
 config_files=("etc/cups/cupsd.conf
 etc/cups/snmp.conf
