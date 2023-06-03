@@ -1,5 +1,5 @@
 pkgname=lib32-nettle
-pkgver=3.9
+pkgver=3.9.1
 pkgbuild=1
 arch=("auto")
 
