@@ -1,10 +1,9 @@
 pkgname=liburing
-pkgver=2.3
+pkgver=2.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux-native io_uring I/O access library.")
-longdesc=("Provides native async IO for the Linux kernel, in a fast and efficient manner, for both buffered and O_DIRECT.")
 
 source=("https://brick.kernel.dk/snaps/liburing-${pkgver}.tar.bz2")
 
