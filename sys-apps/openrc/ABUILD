@@ -1,5 +1,5 @@
 pkgname=openrc
-pkgver=0.46
+pkgver=0.47.1
 pkgbuild=1
 arch=("auto")
 
@@ -82,4 +82,9 @@ build() {
   sed -i 's/default8x16/cyr-sun16/g' ${pkgdir}/etc/conf.d/consolefont
 
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+# Создаём уровень запуска X11
+  mkdir -p ${pkgdir}/etc/runlevels/X11
+  cd ${pkgdir}/etc/runlevels/X11
+  ln -s ../default default
 }
