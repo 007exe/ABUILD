@@ -1,5 +1,5 @@
 pkgname=libx11
-pkgver=1.8.4
+pkgver=1.8.5
 pkgbuild=1
 arch=("auto")
 
