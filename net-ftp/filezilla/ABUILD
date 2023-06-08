@@ -1,17 +1,17 @@
 pkgname=filezilla
-pkgver=3.62.2
+pkgver=3.64.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fast and reliable FTP, FTPS and SFTP client.")
 
-source=("https://download.filezilla-project.org/client/FileZilla_${pkgver}_src.tar.bz2")
+source=("https://download.filezilla-project.org/client/FileZilla_${pkgver}_src.tar.xz")
 
 tags=("network net-ftp")
 
-build_deps=("dbus xdg-utils wxwidgets-gtk3 libidn hicolor-icon-theme sqlite gnutls libfilezilla")
-
 adddep=("dbus xdg-utils wxwidgets-gtk3 libidn hicolor-icon-theme sqlite gnutls libfilezilla")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
