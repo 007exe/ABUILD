@@ -1,5 +1,5 @@
 pkgname=lib32-orc
-pkgver=0.4.33
+pkgver=0.4.34
 pkgbuild=1
 arch=("auto")
 
