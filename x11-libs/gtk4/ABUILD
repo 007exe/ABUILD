@@ -1,7 +1,6 @@
 pkgname=gtk4
-# FIXME: Проблемы со сборкой документации gtk4-docs
 pkglist=("gtk-update-icon-cache gtk4-demos gtk4-docs")
-pkgver=4.10.3
+pkgver=4.10.4
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +10,7 @@ source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.ta
 
 tags=("libs x11-libs")
 
-build_deps=("git gdk-pixbuf sassc colord libcloudproviders gi-docgen meson gobject-introspection docbook-xsl glib2 cairo pango fribidi
+build_deps=("gdk-pixbuf sassc colord libcloudproviders gi-docgen meson gobject-introspection docbook-xsl glib2 cairo pango fribidi
 libepoxy harfbuzz libxkbcommon graphene iso-codes wayland wayland-protocols libxrandr libx11 libxrender libxi libxext libxcursor libxdamage
 libxfixes fontconfig libxinerama libcups json-glib gst-plugins-bad librsvg dconf shared-mime-info desktop-file-utils adwaita-icon-theme
 cantarell-fonts rest shaderc")
