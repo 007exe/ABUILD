@@ -1,16 +1,17 @@
 pkgname=xorg-xwd
-pkgver=1.0.8
+pkgver=1.0.9
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("X Window System image dumping utility")
-longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
+shortdesc=("X Window System image dumping utility.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xwd-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xwd-${pkgver}.tar.xz")
 
 tags=("xorg-apps xorg")
 
-build_deps=("libxkbfile xorg-util-macros libxt")
+adddep=("libxkbfile libx11 glibc")
+
+build_deps=("${adddep} xorg-util-macros libxt")
 
 build() {
   go_src_dir
