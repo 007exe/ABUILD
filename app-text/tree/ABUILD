@@ -1,12 +1,11 @@
 pkgname=tree
-pkgver=2.1.0
+pkgver=2.1.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility which displays a tree view of directory contents.")
-longdesc=("The tree utility recursively displays the contents of directories in a tree-like format.")
 
-source=("http://deb.debian.org/debian/pool/main/t/tree/${pkgname}_${pkgver}.orig.tar.gz")
+source=("https://gitlab.com/OldManProgrammer/unix-tree/-/archive/${pkgver}/unix-tree-${pkgver}.tar.gz")
 
 tags=("utils app-text")
 
@@ -14,6 +13,7 @@ build_deps=("glibc")
 
 build() {
   go_src_dir
+  sed -i -e '/^CFLAGS/d' -e '/^LDFLAGS/d' Makefile
   make -j${numjobs}
   make prefix=${pkgdir}/usr MANDIR=${pkgdir}/usr/share/man/man1 LIBDIR=/usr/lib install
 }
