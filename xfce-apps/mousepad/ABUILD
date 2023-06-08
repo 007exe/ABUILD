@@ -1,18 +1,17 @@
 pkgname=mousepad
-pkgver=0.5.10
+pkgver=0.6.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple Xfce oriented text editor.")
-longdesc=("Mousepad is a simple GTK+ 3 text editor for the Xfce desktop environment.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("gtksourceview4 intltool desktop-file-utils")
+adddep=("gtksourceview4 desktop-file-utils hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} gspell polkit")
 
 build() {
   go_src_dir
