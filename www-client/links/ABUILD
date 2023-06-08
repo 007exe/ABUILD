@@ -1,16 +1,20 @@
 pkgname=links
-pkgver=2.24
+pkgver=2.29
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Lynx-like text WWW browser")
-longdesc=("Links is a console mode WWW browser, supporting colors, correct table rendering, background downloading, frames, Javascript, and a menu driven configuration interface. The default is text output, but graphical output (using -g) is also supported using the Linux framebuffer console or SVGAlib. links was written by Mikulas Patocka.")
+shortdesc=("A text WWW browser, similar to Lynx.")
 
 tags=("network www-client")
 
 source=("http://links.twibright.com/download/${pkgname}-${pkgver}.tar.bz2")
 
-build_deps="bzip2 gpm libevent pcre xz libpng"
+adddep=("brotli bzip2 gpm libevent openssl xz zstd")
+
+build_deps=("${adddep} libtiff libpng libxt librsvg")
+
+# NOTE: Это опциональные зависимости
+removedep=("libx11 libtiff libpng librsvg")
 
 build(){
   go_src_dir
@@ -18,7 +22,7 @@ build(){
 
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --disable-javascript \
     --disable-graphics \
