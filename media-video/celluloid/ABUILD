@@ -1,5 +1,5 @@
 pkgname=celluloid
-pkgver=0.24
+pkgver=0.25
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://github.com/celluloid-player/${pkgname}/releases/download/v${pkg
 
 tags=("apps media-video")
 
-build_deps=("appstream-glib meson gtk4 mpv libadwaita")
+adddep=("gtk4 mpv libadwaita")
 
-adddep=("mpv")
+build_deps=("${adddep} appstream-glib meson")
 
 build(){
   go_src_dir
