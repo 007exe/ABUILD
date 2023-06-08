@@ -1,16 +1,17 @@
 pkgname=xorg-xrdb
-pkgver=1.2.1
+pkgver=1.2.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X server resource database utility.")
-longdesc=("The Xorg applications provide the expected applications available in previous X Window implementations.")
 
-source=("http://xorg.freedesktop.org/archive/individual/app/xrdb-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/app/xrdb-${pkgver}.tar.xz")
 
 tags=("xorg xorg-apps")
 
-build_deps=("libx11 libxmu xorg-util-macros")
+adddep=("libx11 libxmu glibc")
+
+build_deps=("${adddep} xorg-util-macros")
 
 build() {
   go_src_dir
