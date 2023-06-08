@@ -1,5 +1,5 @@
 pkgname=libfilezilla
-pkgver=0.39.2
+pkgver=0.43.0
 pkgbuild=1
 arch=("auto")
 
@@ -7,11 +7,11 @@ shortdesc=("Small and modern C++ library, offering some basic functionality to b
 
 tags=("libs dev-libs")
 
-source=("https://download.filezilla-project.org/libfilezilla/libfilezilla-${pkgver}.tar.bz2")
-
-build_deps=("clang glibc gcc-libs nettle gnutls")
+source=("https://download.filezilla-project.org/libfilezilla/libfilezilla-${pkgver}.tar.xz")
 
 adddep=("glibc gcc-libs nettle gnutls")
+
+build_deps=("${adddep} clang")
 
 build() {
   go_src_dir
