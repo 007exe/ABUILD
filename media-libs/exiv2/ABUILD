@@ -1,5 +1,5 @@
 pkgname=exiv2
-pkgver=0.27.6
+pkgver=0.28.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/Exiv2/exiv2/archive/v${pkgver}/${pkgname}-${pkgver}.
 
 tags=("libs media-libs")
 
-build_deps=("cmake gtest ninja gcc-libs zlib expat gettext curl")
+adddep=("gcc-libs zlib expat gettext curl libinih")
+
+build_deps=("${adddep} cmake gtest ninja")
 
 build() {
   go_src_dir
