@@ -1,11 +1,11 @@
 pkgname=yandex-browser
-pkgver=23.5.1.667_1
+pkgver=23.5.1.750
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The web browser from Yandex.")
 
-source=("https://repo.yandex.ru/yandex-browser/rpm/stable/x86_64/yandex-browser-stable-${pkgver//_/-}.x86_64.rpm")
+source=("https://repo.yandex.ru/yandex-browser/rpm/stable/x86_64/yandex-browser-stable-${pkgver}-1.x86_64.rpm")
 
 tags=("www-client apps")
 
