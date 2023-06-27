@@ -1,16 +1,17 @@
 pkgname=xfce4-dev-tools
-pkgver=4.16.0
+pkgver=4.18.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Xfce developer tools")
-longdesc=("This package contains common tools required by Xfce developers and people that want to build Xfce from SVN. In addition, this package contains the Xfce developer handbook.")
+shortdesc=("Xfce developer tools.")
 
 source=("https://archive.xfce.org/src/xfce/xfce4-dev-tools/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
 tags="develop dev-util"
 
-build_deps="glib2 intltool gtk-doc"
+adddep=("glib2 intltool gtk-doc")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
