@@ -1,0 +1,56 @@
+pkgname=consolekit
+pkgver=1.2.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc="A framework for defining and tracking users, login sessions, and seats."
+
+source=("https://github.com/ConsoleKit2/ConsoleKit2/archive/refs/tags/${pkgver}.tar.gz")
+
+tags="libs sys-auth"
+
+# polkit-consolekit
+adddep=("dbus glib2 libx11 eudev zlib python")
+
+build_deps=("acl xmlto docbook-xsl")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/Имя_архива_исходников
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh  \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --sbindir=/usr/bin \
+        --with-rundir=/run \
+        --libexecdir=/usr/lib/ConsoleKit \
+        --localstatedir=/var \
+        --enable-polkit \
+        --enable-pam-module \
+        --enable-udev-acl \
+        --enable-docbook-docs \
+        --with-dbus-services=/usr/share/dbus-1/services \
+        --with-xinitrc-dir=/etc/X11/xinit/xinitrc.d \
+        --with-pam-module-dir=/usr/lib/security \
+        --without-systemdsystemunitdir \
+        --disable-cgroups
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m644 "${filedir}"/consolekit.logrotate "${pkgdir}"/etc/logrotate.d/consolekit
+  install -D -m644 data/90-consolekit "${pkgdir}"/etc/X11/xinit/xinitrc.d/90-consolekit
+
+  install -D -m644 "${filedir}"/consolekit.tmpfiles.conf "${pkgdir}"/usr/lib/tmpfiles.d/consolekit.conf
+
+  rm -rf "${pkgdir}"/var/run
+  install -d -m700 ${pkgdir}/etc/polkit-1/rules.d/
+  install -D -m644 ${filedir}/75-consolekit.rules ${pkgdir}/etc/polkit-1/rules.d/
+  chown 102 ${pkgdir}/etc/polkit-1/rules.d
+}
