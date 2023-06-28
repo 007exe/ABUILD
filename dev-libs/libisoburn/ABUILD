@@ -1,16 +1,17 @@
 pkgname=libisoburn
-pkgver=1.5.4
-pkgbuild=2
+pkgver=1.5.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Frontend for libraries libburn and libisofs.")
-longdesc=("Libisoburn is a frontend for libraries libburn and libisofs which enables creation and expansion of ISO-9660 filesystems on all CD/DVD/BD media supported by libburn.")
 
 tags=("libs media-libs")
 
 source=("http://files.libburnia-project.org/releases/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="libburn libisofs readline"
+adddep=("libburn libisofs readline")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
