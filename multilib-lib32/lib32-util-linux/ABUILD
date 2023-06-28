@@ -1,13 +1,12 @@
 pkgname=lib32-util-linux
 _pkgmajor=2.39
-_realver=${_pkgmajor}
-pkgver=${_realver/-/}
+pkgver=2.39.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Miscellaneous system utilities for Linux (32-bit).")
 
-source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/util-linux-${_realver}.tar.xz")
+source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/util-linux-${pkgver}.tar.xz")
 
 tags=("lib32 sys-apps")
 
