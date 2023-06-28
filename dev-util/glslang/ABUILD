@@ -1,5 +1,5 @@
 pkgname=glslang
-pkgver=12.1.0
+pkgver=12.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/KhronosGroup/glslang/archive/${pkgver}.tar.gz")
 
 tags=("dev-util develop")
 
-build_deps=("gcc-libs python cmake ninja")
+adddep=("gcc-libs")
+
+build_deps=("${adddep} cmake ninja spirv-tools spirv-headers python")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
