@@ -1,6 +1,6 @@
 pkgname=qbittorrent
 pkglist=("qbittorrent-nox")
-pkgver=4.5.3
+pkgver=4.5.4
 pkgbuild=1
 arch=("auto")
 
