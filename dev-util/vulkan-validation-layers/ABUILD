@@ -1,5 +1,5 @@
 pkgname=vulkan-validation-layers
-pkgver=1.3.243.0
+pkgver=1.3.250.0
 pkgbuild=1
 arch=("auto")
 
