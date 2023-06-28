@@ -1,5 +1,5 @@
 pkgname=linux-firmware
-pkgver=20230404
+pkgver=20230625
 pkgbuild=1
 arch=("fw")
 
@@ -16,6 +16,5 @@ conflicts=("kernel-firmware")
 build() {
   go_src_dir
   make DESTDIR=${pkgdir} FIRMWAREDIR=/usr/lib/firmware install
-
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICEN* WHENCE
 }
