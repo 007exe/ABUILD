@@ -1,5 +1,5 @@
 pkgname=xkeyboard-config
-pkgver=2.38
+pkgver=2.39
 pkgbuild=1
 arch=("noarch")
 
