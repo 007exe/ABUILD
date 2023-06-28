@@ -1,10 +1,9 @@
 pkgname=libmd
-pkgver=1.0.4
-pkgbuild=2
+pkgver=1.1.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Message Digest functions from BSD systems.")
-longdesc=("This library provides message digest functions found on BSD systems either on their libc (NetBSD, OpenBSD) or libmd (FreeBSD, DragonflyBSD, macOS, Solaris) libraries and lacking on others like GNU systems.")
 
 source=("https://libbsd.freedesktop.org/releases/$pkgname-$pkgver.tar.xz")
 
