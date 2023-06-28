@@ -1,10 +1,9 @@
 pkgname=xorgproto
-pkgver=2022.2
+pkgver=2023.2
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Combined X.Org X11 Protocol headers.")
-longdesc=("The xorgproto package provides the header files required to build the X Window system, and to allow other applications to build against the installed X Window system.")
 
 source=("https://xorg.freedesktop.org/archive/individual/proto/${pkgname}-${pkgver}.tar.xz")
 
