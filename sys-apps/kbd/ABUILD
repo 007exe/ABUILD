@@ -1,16 +1,17 @@
 pkgname=kbd
-pkgver=2.5.1
+pkgver=2.6.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Keytable files and keyboard utilities.")
-longdesc=("The Kbd package contains key-table files, console fonts, and keyboard utilities.")
 
 source=("https://git.kernel.org/pub/scm/linux/kernel/git/legion/kbd.git/snapshot/kbd-${pkgver}.tar.gz")
 
 tags=("base sys-apps")
 
-build_deps=("glibc linux-pam check")
+adddep=("glibc linux-pam")
+
+build_deps=("${adddep} check")
 
 config_files=("etc/pam.d/vlock")
 
