@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Embeddable Javascript engine.")
-longdesc=("Duktape is an embeddable Javascript engine, with a focus on portability and compact footprint..")
 
 source=("https://duktape.org/${pkgname}-${pkgver}.tar.xz")
 
