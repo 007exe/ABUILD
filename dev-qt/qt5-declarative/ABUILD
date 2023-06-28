@@ -1,5 +1,5 @@
 pkgname=qt5-declarative
-pkgver=5.15.9
+pkgver=5.15.10
 pkgbuild=1
 arch=("auto")
 

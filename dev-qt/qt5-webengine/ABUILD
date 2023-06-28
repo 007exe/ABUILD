@@ -1,6 +1,6 @@
 # NOTE: Этот пакет собирается очень долго и требует много оперативной памяти
 # Версия qt5-base
-_qtbasever=5.15.9
+_qtbasever=5.15.10
 
 pkgname=qt5-webengine
 pkgver=5.15.14

@@ -1,6 +1,6 @@
 pkgname=qt5-tools
-pkgver=5.15.9
-pkgbuild=2
+pkgver=5.15.10
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework.")
