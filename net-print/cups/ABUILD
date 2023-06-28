@@ -1,6 +1,6 @@
 pkgname=cups
 pkglist=("libcups")
-pkgver=2.4.4
+pkgver=2.4.6
 pkgbuild=1
 arch=("auto")
 
