@@ -1,16 +1,17 @@
 pkgname=libisofs
-pkgver=1.5.4
-pkgbuild=2
+pkgver=1.5.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library to pack up hard disk files and directories into a ISO 9660 disk image")
-longdesc=("Libisofs is a library to create an ISO-9660 filesystem with extensions like RockRidge or Joliet.")
 
 source=("http://files.libburnia-project.org/releases/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("acl zlib")
+adddep=("acl zlib")
+
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
