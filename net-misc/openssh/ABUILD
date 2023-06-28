@@ -9,8 +9,11 @@ source=("https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.
 
 tags=("net-misc network")
 
-#ldns libxcrypt libfido2
-build_deps=("linux-pam inetutils glibc krb5 openssl libedit zlib")
+#libxcrypt ldns
+adddep=("glibc krb5 libedit openssl linux-pam zlib")
+
+# libfido2
+build_deps=("${adddep} kernel-headers")
 
 config_files=("etc/ssh/ssh_config
 etc/ssh/sshd_config
