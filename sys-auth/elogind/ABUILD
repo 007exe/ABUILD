@@ -1,6 +1,6 @@
 pkgname=elogind
-pkgver=246.10
-pkgbuild=4
+pkgver=252.9
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Standalone logind fork.")
@@ -57,7 +57,7 @@ build() {
 
 # Каждому пользователю необходимо будет зарегистрировать сеанс пользователя с помощью Linux-PAM при входе в систему.
   cp ${filedir}/system-session.pam ${pkgdir}/etc/pam.d/system-session
-  rm ${pkgdir}/etc/pam.d/elogind-user
+#  rm ${pkgdir}/etc/pam.d/elogind-user
   cp ${filedir}/elogind-user.pam ${pkgdir}/etc/pam.d/elogind-user
 
   mkdir -p ${pkgdir}/etc/elogind/{logind.conf.d,sleep.conf.d}
