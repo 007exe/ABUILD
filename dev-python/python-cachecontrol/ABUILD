@@ -1,6 +1,6 @@
 pkgname=python-cachecontrol
-pkgver=0.12.11
-pkgbuild=3
+pkgver=0.13.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("httplib2 caching for requests.")
@@ -9,9 +9,9 @@ source=("https://github.com/ionrock/cachecontrol/archive/v${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-adddep=("python-msgpack python-requests")
+adddep=("python-filelock python-msgpack python-requests python-urllib3")
 
-build_deps=("${adddep} python python-setuptools")
+build_deps=("${adddep} python python-build python-flit-core python-installer python-wheel")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
@@ -23,6 +23,7 @@ before_build(){
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 README.rst -t ${pkgdir}/usr/share/doc/${pkgname}
 }
