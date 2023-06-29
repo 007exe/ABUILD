@@ -1,5 +1,5 @@
 pkgname=fwupd
-pkgver=1.8.15
+pkgver=1.9.2
 pkgbuild=1
 arch=("auto")
 
@@ -20,8 +20,8 @@ bash-completion python-pillow help2man")
 # NOTE: Это опциональные зависимости
 removedep=("udisks")
 
-config_files=("etc/fwupd/daemon.conf
-etc/fwupd/redfish.conf
+#etc/fwupd/remotes.d/dell-esrt.conf
+config_files=("etc/fwupd/fwupd.conf
 etc/fwupd/remotes.d/fwupd-tests.conf
 etc/fwupd/remotes.d/lvfs-testing.conf
 etc/fwupd/remotes.d/lvfs.conf
