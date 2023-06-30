@@ -1,5 +1,5 @@
 pkgname=freetype
-pkgver=2.13.0
+pkgver=2.13.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,13 @@ source=("http://downloads.sourceforge.net/sourceforge/freetype/freetype-${pkgver
 
 tags=("libs media-libs")
 
-adddep=("bash brotli harfbuzz libpng")
+adddep=("brotli bzip2 libpng bash zlib harfbuzz")
 
-build_deps=("${adddep} bzip2 zlib")
+build_deps=("${adddep} librsvg libx11 qt5-base")
 
 conflicts=("freetype2")
+
+config_files=("etc/profile.d/freetype2.sh")
 
 build() {
   go_src_dir
