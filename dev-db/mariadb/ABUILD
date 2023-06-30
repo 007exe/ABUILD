@@ -1,5 +1,6 @@
 pkgname=mariadb
-pkgver=10.11.2
+pkglist=("mariadb-libs mariadb-clients mytop")
+pkgver=11.0.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,13 +10,23 @@ source=("https://rsync.osuosl.org/pub/mariadb/mariadb-${pkgver}/source/mariadb-$
 
 tags=("server dev-db")
 
-pkglist=("mariadb-libs mariadb-clients mytop")
+# libxcrypt
+adddep_libs=("liburing openssl pcre2 zlib zstd")
 
-# libxcrypt perl-dbd-mariadb
-build_deps=("boost bzip2 cmake cracklib curl jemalloc judy krb5 liburing libxml2 lz4 openssl zlib zstd xz
-perl perl-term-readkey ncurses lz4")
+adddep_clients=("jemalloc ncurses")
 
-adddep=("mariadb-clients=${pkgver} bzip2 lz4 libxml2 zstd")
+adddep_mariadb=("bzip2 libxml2 lz4 zstd")
+
+# perl-dbd-mariadb
+adddep_mytop=("perl perl-term-readkey")
+
+# libxcrypt
+build_deps=("${adddep_mariadb} ${adddep_libs} ${adddep_clients} ${adddep_mytop} boost cmake cracklib curl jemalloc judy krb5 lz4 xz")
+
+adddep=("mariadb-clients=${pkgver} ${adddep_mariadb}")
+
+# NOTE: Это опциональные зависимости
+removedep=("cracklib curl galera judy perl-dbd-mariadb python-mysqlclient xz")
 
 config_files=("etc/my.cnf
 etc/my.cnf.d/client.cnf
@@ -71,6 +82,10 @@ build() {
 
   cd ${pkgdir}
 
+  rm -r etc/logrotate.d
+  rm usr/bin/rcmysql
+  rm usr/share/mysql/{binary-configure,mysql{,d_multi}.server}
+
   install -d usr/share/licenses/mariadb
   mv usr/share/doc/mariadb/COPYING* usr/share/licenses/mariadb/
 
@@ -82,30 +97,29 @@ build() {
 
   rm usr/bin/{mariadb{_,-},mysql_}config
   rm -r usr/include/
-  rm usr/share/man/man1/mysql_config.1
+  rm usr/share/man/man1/{mariadb,mysql}_config.1
   rm -r usr/share/aclocal
   rm usr/lib/lib*
   rm -r usr/lib/pkgconfig
-  rm usr/lib/mysql/plugin/{auth_gssapi_client,caching_sha2_password,client_ed25519,dialog,mysql_clear_password,sha256_password}.so
+  rm usr/lib/mysql/plugin/{auth_gssapi_client,caching_sha2_password,client_ed25519,dialog,mysql_clear_password,sha256_password,zstd}.so
 
-  rm usr/bin/mysql{,_plugin,_upgrade,admin,binlog,check,dump,import,show,slap,test}
-  rm usr/bin/mariadb{,-{admin,binlog,check,conv,dump,import,plugin,show,slap,test,upgrade}}
-  rm usr/share/man/man1/mysql{,_plugin,_upgrade,admin,binlog,check,dump,import,show,slap,test}.1
+  for bin in $(find ${pkgdir}/../mariadb-clients/usr/bin/ ! -type d); do
+    rm ${pkgdir}/usr/bin/"$(basename "${bin}")" ${pkgdir}/usr/share/man/man1/"$(basename "${bin}")".1
+  done
 
   rm usr/bin/mytop
 
-  rm -r usr/{mysql-test,sql-bench,lib}
+  rm -r usr/{mysql-test,sql-bench}
   rm usr/share/man/man1/mysql-test-run.pl.1
 }
 
-##################################################################################################################
+# mariadb-libs #################################################################################################################
 
 mariadb-libs() {
   pkgname=mariadb-libs
   shortdesc=("MariaDB libraries.")
   tags=("libs dev-db")
-# libxcrypt
-  adddep=("liburing openssl zlib zstd")
+  adddep=("${adddep_libs}")
 }
 
 mariadb-libs_prep() {
@@ -116,49 +130,47 @@ mariadb-libs_prep() {
     make -C ${dir} DESTDIR=${pkgdir} install
   done
 
+  rm ${pkgdir}/usr/lib/*.a
+  rm -r ${pkgdir}/usr/share/man
+
   ln -s mariadb_config ${pkgdir}/usr/bin/mariadb-config
   ln -s mariadb_config ${pkgdir}/usr/bin/mysql_config
-  install -D -m0644 ${srcdir}/mariadb-${pkgver}/man/mysql_config.1 ${pkgdir}/usr/share/man/man1/mysql_config.1
+  install -D -m0644 ${srcdir}/mariadb-${pkgver}/man/mariadb_config.1 ${pkgdir}/usr/share/man/man1/mariadb_config.1
+  ln -s mariadb_config.1 ${pkgdir}/usr/share/man/man1/mariadb-config.1
+  ln -s mariadb_config.1 ${pkgdir}/usr/share/man/man1/mysql_config.1
 
   install -D -m0644 support-files/mariadb.pc ${pkgdir}/usr/share/pkgconfig/mariadb.pc
   install -D -m0644 ${srcdir}/mariadb-${pkgver}/support-files/mysql.m4 ${pkgdir}/usr/share/aclocal/mysql.m4
-
-  cd ${pkgdir}
-
-  rm usr/lib/*.a
-
-  rm -r usr/share/man
 }
 
-##################################################################################################################
+# mariadb-clients #################################################################################################################
 
 mariadb-clients() {
   pkgname=mariadb-clients
   shortdesc=("MariaDB client tools.")
-  adddep=("mariadb-libs=${pkgver} jemalloc ncurses")
+  adddep=("mariadb-libs=${pkgver} ${adddep_clients}")
 }
 
 mariadb-clients_prep() {
   go_src_dir
   cd build
-
   make -C client DESTDIR=${pkgdir} install
 
-  for man in mysql mysql_plugin mysql_upgrade mysqladmin mysqlbinlog mysqlcheck mysqldump mysqlimport mysqlshow mysqlslap mysqltest; do
-    install -D -m0644 ${srcdir}/mariadb-${pkgver}/man/"$man.1" ${pkgdir}/usr/share/man/man1/"$man.1"
+  make -C man DESTDIR=${srcdir}/client-man install
+  install -d -m0755 ${pkgdir}/usr/share/man/man1/
+  for man in $(find ${pkgdir}/usr/bin/ ! -type d); do
+    install -D -m0644 -t ${pkgdir}/usr/share/man/man1/ ${srcdir}/client-man/usr/share/man/man1/"$(basename "${man}")".1
   done
 }
 
-##################################################################################################################
+# mytop #################################################################################################################
 
 mytop() {
   pkgname=mytop
   shortdesc=("Top clone for MariaDB.")
-# perl-dbd-mariadb
-  adddep=("perl perl-term-readkey")
+  adddep=("${adddep_mytop}")
 }
 
 mytop_prep() {
-  go_src_dir
-  install -D -m0755 build/scripts/mytop ${pkgdir}/usr/bin/mytop
+  install -D -m0755 ${srcdir}/mariadb-${pkgver}/build/scripts/mytop ${pkgdir}/usr/bin/mytop
 }
