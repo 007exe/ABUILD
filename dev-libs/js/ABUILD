@@ -1,5 +1,5 @@
 pkgname=js
-pkgver=102.8.0
+pkgver=102.12.0
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ tags=("libs dev-libs")
 
 adddep=("gcc-libs readline zlib")
 
-build_deps=("${adddep} zip icu rust llvm clang lld")
+build_deps=("${adddep} autoconf2.13 clang lld llvm python-psutil python-setuptools rust zip")
 
 build() {
   go_src_dir
