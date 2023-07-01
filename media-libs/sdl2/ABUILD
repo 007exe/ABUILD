@@ -1,5 +1,5 @@
 pkgname=sdl2
-pkgver=2.26.5
+pkgver=2.28.0
 pkgbuild=1
 arch=("auto")
 
