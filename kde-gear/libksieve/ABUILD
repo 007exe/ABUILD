@@ -1,5 +1,5 @@
 pkgname=libksieve
-pkgver=23.04.1
+pkgver=23.04.2
 pkgbuild=1
 arch=("auto")
 

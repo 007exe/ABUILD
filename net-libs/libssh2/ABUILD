@@ -1,10 +1,9 @@
 pkgname=libssh2
-pkgver=1.10.0
+pkgver=1.11.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library implementing the SSH2 protocol as defined by Internet Drafts.")
-longdesc=("Libssh2 package is a client-side C library implementing the SSH2 protocol.")
 
 source=("http://www.libssh2.org/download/${pkgname}-${pkgver}.tar.gz")
 
