@@ -1,0 +1,50 @@
+pkgname=thrift
+pkgver=0.18.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Scalable cross-language services framework for IPC/RPC.")
+
+source=("https://github.com/apache/thrift/archive/v${pkgver}.zip")
+
+tags=("libs dev-libs")
+
+adddep=("gcc-libs openssl")
+
+# emacs-nox
+build_deps=("${adddep} qt5-base boost libevent")
+
+# NOTE: Это опциональные зависимости
+removedep=("qt5-base")
+
+build() {
+  go_src_dir
+  ./bootstrap.sh
+  ./configure \
+    --prefix=/usr \
+    --enable-plugin \
+    --with-cpp \
+    --with-c_glib \
+    --with-qt5 \
+    --with-libevent \
+    --with-csharp \
+    --without-haskell \
+    --without-php \
+    --without-ruby \
+    --without-python \
+    --without-erlang \
+    --without-perl \
+    --without-java \
+    --without-c_sharp \
+    --without-d \
+    --without-php \
+    --without-go \
+    --without-lua \
+    --without-nodejs
+  make DESTDIR=${pkgdir} install
+  emacs -Q --batch -f batch-byte-compile contrib/thrift.el
+  make DESTDIR=${pkgdir} install
+  install -m0644 -D contrib/thrift.vim ${pkgdir}/usr/share/vim/vimfiles/syntax/thrift.vim
+  install -m0644 -D contrib/thrift.el  ${pkgdir}/usr/share/emacs/site-lisp/thrift.el
+  install -m0644 -D contrib/thrift.elc ${pkgdir}/usr/share/emacs/site-lisp/thrift.elc
+}
