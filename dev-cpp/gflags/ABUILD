@@ -1,0 +1,38 @@
+pkgname=gflags
+pkgver=2.2.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ Library for commandline flag processing.")
+
+source=("https://github.com/schuhschuh/gflags/archive/v${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+adddep=("gcc-libs")
+
+build_deps=("${adddep} cmake")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake . \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DREGISTER_INSTALL_PREFIX=OFF \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_STATIC_LIBS=ON \
+    -DBUILD_TESTING=ON
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -D -m644 COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.txt
+}
