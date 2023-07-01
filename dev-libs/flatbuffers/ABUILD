@@ -1,0 +1,44 @@
+pkgname=flatbuffers
+pkglist=("python-flatbuffers")
+pkgver=23.5.26
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An efficient cross platform serialization library for C++, with support for Java, C# and Go.")
+
+source=("https://github.com/google/flatbuffers/archive/v${pkgver}/flatbuffers-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("gcc-libs")
+
+build_deps=("cmake python-setuptools python-numpy")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's/-Werror=/-W/g;s/-Werror//g' CMakeLists.txt
+  sed -i 's#${test_dir}/../flatc#${test_dir}/../../build/flatc#' tests/PythonTest.sh
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DFLATBUFFERS_BUILD_FLATLIB=OFF \
+    -DFLATBUFFERS_BUILD_SHAREDLIB=ON
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
+
+#############################################################
+
+python-flatbuffers() {
+  pkgname=python-flatbuffers
+  shortdesc=("An efficient cross platform serialization library for Python.")
+  tags=("libs dev-python")
+}
+
+python-flatbuffers_prep() {
+  go_src_dir
+  cd python
+  VERSION=$pkgver python setup.py build
+  VERSION=$pkgver python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}
