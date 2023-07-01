@@ -1,10 +1,9 @@
 pkgname=libpng
-pkgver=1.6.39
+pkgver=1.6.40
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library of functions for manipulating PNG image format files")
-longdesc=("The libpng package contains a library of functions for creating and manipulating PNG (Portable Network Graphics) image format files. PNG is a bit-mapped graphics format similar to the GIF format. PNG was created to replace the GIF format, since GIF uses a patented data compression algorithm.")
 
 source=("https://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.xz")
 
