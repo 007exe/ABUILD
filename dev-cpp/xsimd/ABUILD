@@ -1,0 +1,23 @@
+pkgname=xsimd
+pkgver=11.1.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("QuantStack tools library - Multi-dimensional arrays with broadcasting and lazy computing.")
+
+source=("https://github.com/QuantStack/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-cpp")
+
+build_deps=("cmake gtest")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
