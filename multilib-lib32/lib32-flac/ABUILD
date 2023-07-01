@@ -1,5 +1,5 @@
 pkgname=lib32-flac
-pkgver=1.4.2
+pkgver=1.4.3
 pkgbuild=1
 arch=("auto")
 
