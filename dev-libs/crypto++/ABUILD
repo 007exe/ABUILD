@@ -1,5 +1,5 @@
 pkgname=crypto++
-pkgver=8.7.0
+pkgver=8.8.0
 pkgbuild=1
 arch=("auto")
 
