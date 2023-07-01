@@ -1,5 +1,5 @@
 pkgname=lib32-eudev
-pkgver=3.2.11
+pkgver=3.2.12
 pkgbuild=1
 arch=("auto")
 
