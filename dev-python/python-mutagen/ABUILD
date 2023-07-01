@@ -1,0 +1,19 @@
+pkgname=python-mutagen
+pkgver=1.46.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("An audio metadata tag reader and writer (python library).")
+
+source=("https://github.com/quodlibet/mutagen/releases/download/release-${pkgver}/mutagen-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-build python-installer python-setuptools python-wheel")
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 {NEWS,README.rst} -t ${pkgdir}/usr/share/doc/${pkgname}
+}
