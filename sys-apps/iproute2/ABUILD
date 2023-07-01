@@ -1,5 +1,5 @@
 pkgname=iproute2
-pkgver=6.3.0
+pkgver=6.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,7 @@ source=("http://www.kernel.org/pub/linux/utils/net/${pkgname}/${pkgname}-${pkgve
 
 tags=("sys-apps network")
 
-# libbpf
-adddep=("glibc iptables libcap elfutils")
+adddep=("glibc iptables libcap elfutils libbpf")
 
 build_deps=("${adddep} db")
 
