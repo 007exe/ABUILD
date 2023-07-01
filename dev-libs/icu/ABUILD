@@ -1,17 +1,25 @@
-# NOTE: Обязательно пересобрать libxml2
+# NOTE: После обновления данного пакета необходимо пересобрать следующие пакеты:
+# libxml2 - необходимо собрать вручную и установить после чего следует пересобрать пакет libxml2, поскольку поломка пакета libxml2 приводит
+# к не работоспособноости пакетного менеджера mpkg.
+#
+# boost brltty dovecot fcitx freerdp fwbuilder gspell harfbuzz js js78 kdeplasma-addons konsole libcdr libical libphonenumber libqalculate
+# libvisio libxml2 ncmpcpp nodejs openttd perl-xml-libxml php plasma-workspace r raptor strawberry tracker3 vte3 vte4 webkit2gtk webkit2gtk-4.1
+# webkit2gtk-5.0 widelands wpewebkit xerces-c qt5-base qt5-webengine qt6-5compat qt6-base qt6-webengine
+
 pkgname=icu
-pkgver=72.1
+pkgver=73.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("International Components for Unicode.")
-longdesc=("The International Components for Unicode (ICU) package is a mature, widely used set of C/C++ libraries providing Unicode and Globalization support for software applications. ICU is widely portable and gives applications the same results on all platforms.")
 
 source=("https://github.com/unicode-org/icu/releases/download/release-${pkgver//./-}/${pkgname}4c-${pkgver//./_}-src.tgz")
 
 tags=("dev-libs libs")
 
-build_deps=("glibc gcc clang")
+adddep=("gcc-libs glibc")
+
+build_deps=("${adddep} python clang")
 
 build() {
   go_src_dir
