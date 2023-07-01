@@ -1,0 +1,22 @@
+pkgname=python-bsddb
+pkgver=6.2.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Python interface for BerkeleyDB.")
+
+source=("https://files.pythonhosted.org/packages/source/b/bsddb3/bsddb3-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("db")
+
+build_deps=("${adddep} python")
+
+build() {
+  go_src_dir
+  sed -i 's/YES_I_HAVE_THE_RIGHT_TO_USE_THIS_BERKELEY_DB_VERSION/LINKING_IS_NOT_A_DERIVATIVE_WORK/g' setup3.py test3.py
+  LINKING_IS_NOT_A_DERIVATIVE_WORK=1 python3 setup.py --berkeley-db=/usr build
+  LINKING_IS_NOT_A_DERIVATIVE_WORK=1 python3 setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
