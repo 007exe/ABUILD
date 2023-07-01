@@ -1,0 +1,26 @@
+pkgname=uriparser
+pkgver=0.9.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Uriparser is a strictly RFC 3986 compliant URI parsing library. uriparser is cross-platform, fast, supports Unicode.")
+
+source=("https://github.com/uriparser/uriparser/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DURIPARSER_BUILD_DOCS=OFF \
+    -DURIPARSER_BUILD_TESTS=OFF
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -D -m0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
