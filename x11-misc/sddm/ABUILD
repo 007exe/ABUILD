@@ -1,16 +1,17 @@
 pkgname=sddm
-pkgver=0.19.0
+pkgver=0.20.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple Desktop Display Manager.")
-longdesc=("QML based X11 and Wayland display manager.")
 
-source=("https://github.com/$pkgname/${pkgname}/archive/v${pkgver}.tar.gz")
+source=("https://github.com/${pkgname}/${pkgname}/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("xapps x11-misc")
 
-build_deps=("extra-cmake-modules python-docutils qt5-tools qt5-declarative xorg-xauth xorg-server")
+adddep=("qt5-declarative xorg-xauth xorg-server")
+
+build_deps=("${adddep} extra-cmake-modules python-docutils qt5-tools")
 
 config_files=("usr/share/sddm/scripts/Xsetup
 usr/share/sddm/scripts/Xstop
