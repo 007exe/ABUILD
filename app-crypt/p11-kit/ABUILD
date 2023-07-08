@@ -1,18 +1,17 @@
 pkgname=p11-kit
-pkgver=0.24.1
-pkgbuild=4
+pkgver=0.25.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Load and enumerate PKCS#11 modules.")
-longdesc=("The p11-kit package provides a way to load and enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules.")
 
 source=("https://github.com/p11-glue/p11-kit/releases/download/$pkgver/p11-kit-$pkgver.tar.xz")
 
 tags=("app-crypt libs")
 
-build_deps=("meson ninja libtasn1 libffi bash-completion gtk-doc")
+adddep=("glibc libffi libtasn1")
 
-adddep=("bash-completion")
+build_deps=("${adddep} bash-completion gtk-doc meson")
 
 build() {
   go_src_dir
