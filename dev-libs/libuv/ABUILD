@@ -1,16 +1,17 @@
 pkgname=libuv
-pkgver=1.44.2
+pkgver=1.46.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multi-platform support library with a focus on asynchronous I/O.")
-longdesc=("The libuv package is a multi-platform support library with a focus on asynchronous I/O.")
 
 source=("https://dist.libuv.org/dist/v$pkgver/libuv-v$pkgver.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("python-sphinx")
+adddep=("glibc libnsl")
+
+build_deps=("${adddep} python-sphinx")
 
 build() {
   go_src_dir
