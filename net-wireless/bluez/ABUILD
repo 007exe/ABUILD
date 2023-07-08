@@ -1,23 +1,20 @@
 pkgname=bluez
-pkgver=5.66
+pkglist=("bluez-libs bluez-cups bluez-hid2hci")
+pkgver=5.68
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Daemons for the bluetooth protocol stack.")
-longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
 
 source=("http://www.kernel.org/pub/linux/bluetooth/bluez-${pkgver}.tar.gz")
 
 tags=("network net-wireless")
 
-# ell
-build_deps=("dbus alsa-lib json-c python-docutils libical")
-
 adddep=("bluez-libs>=${pkgver}")
 
-config_files=("etc/bluetooth/main.conf")
+build_deps=("dbus alsa-lib json-c python-docutils libical ell")
 
-pkglist=("bluez-libs bluez-cups bluez-hid2hci")
+config_files=("etc/bluetooth/main.conf")
 
 build() {
   go_src_dir
