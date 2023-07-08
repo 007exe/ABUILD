@@ -1,6 +1,6 @@
 pkgname=pcsclite
-pkgver=1.9.9
-pkgbuild=2
+pkgver=2.0.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("PC/SC Architecture smartcard middleware library.")
@@ -9,7 +9,9 @@ source=("https://pcsclite.apdu.fr/files/pcsc-lite-${pkgver}.tar.bz2")
 
 tags=("sys-apps libs")
 
-build_deps=("python eudev")
+adddep=("polkit eudev")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
