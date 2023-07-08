@@ -1,5 +1,5 @@
 pkgname=python-typing_extensions
-pkgver=4.6.3
+pkgver=4.7.0
 pkgbuild=1
 arch=("auto")
 
