@@ -1,0 +1,24 @@
+pkgname=tinyxml2
+pkgver=9.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple XML parser made for easy integration.")
+
+source=("https://github.com/leethomason/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("zlib")
+
+build_deps=("${adddep} cmake ninja setconf")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -Dtinyxml2_SHARED_LIBS=ON
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
