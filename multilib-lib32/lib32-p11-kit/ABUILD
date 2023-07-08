@@ -1,18 +1,17 @@
 pkgname=lib32-p11-kit
-pkgver=0.24.1
+pkgver=0.25.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Loads and enumerates PKCS#11 modules (32-bit).")
-longdesc=("The p11-kit package provides a way to load and enumerate PKCS #11 (a Cryptographic Token Interface Standard) modules.")
 
 source=("https://github.com/p11-glue/p11-kit/releases/download/${pkgver}/p11-kit-${pkgver}.tar.xz")
 
 tags=("lib32 app-crypt")
 
-build_deps=("lib32-glibc lib32-gcc-libs lib32-libtasn1 lib32-libffi meson")
-
 adddep=("lib32-glibc lib32-libtasn1 lib32-libffi p11-kit")
+
+build_deps=("${adddep} lib32-gcc-libs meson")
 
 build() {
   go_src_dir
