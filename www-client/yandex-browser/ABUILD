@@ -1,5 +1,5 @@
 pkgname=yandex-browser
-pkgver=23.5.1.800
+pkgver=23.5.4.685
 pkgbuild=1
 arch=("auto")
 
@@ -15,7 +15,6 @@ gdbm gtk4 nspr nss pango wayland libxcomposite libxdamage libxkbcommon libxkbfil
 libxrandr wget xdg-utils harfbuzz")
 
 build_deps=("${adddep} rpm")
-
 
 build() {
   cd ${srcdir}

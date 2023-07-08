@@ -1,0 +1,54 @@
+pkgname=qcustomplot
+pkglist=("qcustomplot-doc")
+pkgver=2.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt C++ widget for plotting and data visualization.")
+
+source=("https://gitlab.com/DerManu/QCustomPlot/-/archive/v${pkgver}/QCustomPlot-v${pkgver}.tar.bz2"
+"https://www.qcustomplot.com/release/${pkgver}/QCustomPlot-source.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("qt5-base")
+
+build_deps=("${adddep} doxygen graphviz qt5-tools")
+
+before_build() {
+  cd ${srcdir}
+  mv -v ${srcdir}/QCustomPlot-v${pkgver} ${srcdir}/qcustomplot-${pkgver}
+  cd ${srcdir}/qcustomplot-${pkgver}
+  mv -v "../${pkgname}-source/"*.{cpp,h} .
+}
+
+build() {
+  cd ${srcdir}/qcustomplot-${pkgver}
+  qmake-qt5 sharedlib/sharedlib-compilation/sharedlib-compilation.pro
+  make -j${numjobs}
+  doxygen
+  qhelpgenerator documentation/html/index.qhp -o documentation/qthelp/qcustomplot.qch
+  find documentation/html -type f -iname "*.qhp" -or -iname "*.map" -or -iname "*.md5" -delete
+
+  install -vDm 644 ${pkgname}.h -t ${pkgdir}/usr/include/
+  install -vdm 755 ${pkgdir}/usr/lib/
+  cp -av "lib${pkgname}.so"* ${pkgdir}/usr/lib/
+  install -vDm 644 changelog.txt -t ${pkgdir}/usr/share/doc/${pkgname}/
+}
+
+# qcustomplot-doc ##########################################################################
+
+qcustomplot-doc() {
+  pkgname=qcustomplot-doc
+  shortdesc=("Qt C++ widget for plotting and data visualization (docs).")
+}
+
+qcustomplot-doc_prep() {
+  cd ${srcdir}/qcustomplot-${pkgver}
+  install -vDm 644 documentation/qthelp/*.qch -t ${pkgdir}/usr/share/doc/qt/
+  find examples -type f -exec install -vDm 644 {} "${pkgdir}/usr/share/doc/qcustomplot/"{} \;
+  (
+    cd documentation
+    find html -type f -exec install -vDm 644 {} "${pkgdir}/usr/share/doc/qcustomplot/"{} \;
+  )
+}
