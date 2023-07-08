@@ -1,16 +1,25 @@
 pkgname=srt
-pkgver=1.5.1
+pkgver=1.5.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Secure Reliable Transport library.")
-longdesc=("Secure Reliable Transport (SRT) is an open source transport technology that optimizes streaming performance across unpredictable networks, such as the Internet.")
 
 source=("https://github.com/Haivision/srt/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
-build_deps=("openssl cmake")
+adddep=("gcc-libs openssl")
+
+build_deps=("${adddep} cmake ninja")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
