@@ -1,0 +1,19 @@
+pkgname=python-h11
+pkgver=0.14.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A pure-Python, bring-your-own-I/O implementation of HTTP/1.1.")
+
+source=("https://pypi.io/packages/source/h/h11/h11-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+build_deps=("python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install -O1 --root=${pkgdir} --skip-build
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
