@@ -1,0 +1,21 @@
+pkgname=python-h2
+pkgver=4.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("HTTP/2 State-Machine based protocol implementation.")
+
+source=("https://github.com/python-hyper/h2/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-hpack python-hyperframe")
+
+build_deps=("${adddep} python python-setuptools")
+
+build(){
+  go_src_dir
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
