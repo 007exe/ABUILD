@@ -1,5 +1,5 @@
 pkgname=kde-cli-tools
-pkgver=5.27.5.1
+pkgver=5.27.6
 pkgbuild=1
 arch=("auto")
 

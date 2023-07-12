@@ -1,5 +1,5 @@
 pkgname=bluedevil
-pkgver=5.27.5
+pkgver=5.27.6
 pkgbuild=1
 arch=("auto")
 
