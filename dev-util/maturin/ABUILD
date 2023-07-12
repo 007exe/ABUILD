@@ -1,0 +1,51 @@
+pkgname=maturin
+pkglist=("python-maturin")
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Build and publish crates with pyo3, rust-cpython and cffi bindings.")
+
+source=("https://github.com/PyO3/maturin/archive/v$pkgver/$pkgname-v$pkgver.tar.gz ${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-util libs")
+
+adddep=("bzip2 gcc-libs glibc rust")
+
+build_deps=("${adddep} python-build python-installer python-setuptools python-setuptools-rust python-wheel")
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 {Changelog,README}.md -t ${pkgdir}/usr/share/doc/${pkgname}
+
+  (
+    cd ${pkgdir}
+    _pick python-maturin usr/lib
+  )
+
+}
+
+######################################
+
+python-maturin() {
+  pkgname=python-maturin
+  shortdesc=("Build and publish crates with pyo3, rust-cpython and cffi bindings - Python bindings.")
+  adddep=("maturin=${pkgver}")
+}
+
+python-maturin_prep() {
+  mv -v ${srcdir}/maturin/* ${pkgdir}
+}
