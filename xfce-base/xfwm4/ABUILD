@@ -4,15 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Xfce's window manager.")
-longdesc=("Xfwm4 is the window manager for Xfce.")
 
 source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
-build_deps=("libxfce4ui xfconf libwnck3 libepoxy libxpresent")
+adddep=("libxfce4ui xfconf libwnck3 libepoxy libxpresent hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
