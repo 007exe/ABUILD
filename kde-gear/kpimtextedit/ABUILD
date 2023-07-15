@@ -1,5 +1,5 @@
 pkgname=kpimtextedit
-pkgver=23.04.2
+pkgver=23.04.3
 pkgbuild=1
 arch=("auto")
 

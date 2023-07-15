@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KDE_GEAR_VERSION=23.04.2
+KDE_GEAR_VERSION=23.04.3
 
 LIST="libkdcraw
 libkexiv2
