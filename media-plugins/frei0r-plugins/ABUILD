@@ -1,23 +1,24 @@
 pkgname=frei0r-plugins
-pkgver=1.8.0
-pkgbuild=2
+pkgver=2.3.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Minimalistic plugin API for video effects.")
 
-source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/dyne/frei0r/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-plugins")
 
-build_deps=("cmake doxygen ninja opencv cairo gavl")
+adddep=("gcc-libs glibc")
+
+build_deps=("${adddep} cairo cmake gavl ninja opencv")
 
 # NOTE: Это опциональные зависимости
-removedep=("opencv")
+removedep=("cairo gavl opencv")
 
 build() {
-  cd ${srcdir}
-  cmake -S ${pkgname}-${pkgver} \
-    -B build \
+  go_src_dir
+  cmake -B build \
     -G Ninja \
     -DCMAKE_INSTALL_PREFIX='/usr' \
     -DCMAKE_INSTALL_LIBDIR=lib
