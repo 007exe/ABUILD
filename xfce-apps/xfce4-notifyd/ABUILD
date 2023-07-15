@@ -1,18 +1,17 @@
 pkgname=xfce4-notifyd
-pkgver=0.6.5
+pkgver=0.8.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Notification daemon for the Xfce desktop.")
-longdesc=("The Xfce4 Notification Daemon is a small program that implements the "server-side" portion of the Freedesktop desktop notifications specification. Applications that wish to pop up a notification bubble in a standard way can use Xfce4-Notifyd to do so by sending standard messages over D-Bus using the org.freedesktop.Notifications interface.")
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("libxfce4ui libnotify intltool python xfce4-panel")
+adddep=("libxfce4ui libxfce4util libnotify xfconf sqlite libcanberra hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool python xfce4-panel xfce4-dev-tools")
 
 build() {
   go_src_dir
