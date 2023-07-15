@@ -1,17 +1,17 @@
 pkgname=mate-panel
-pkgver=1.26.2
+pkgver=1.26.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The MATE Panel.")
-longdesc=("The MATE panel.")
 
 source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("mate mate-base")
 
-build_deps=("dbus-glib libwnck3 libcanberra libmateweather libsm mate-menus mate-desktop gettext
-gtk-layer-shell itstool gobject-introspection mate-common yelp-tools autoconf-archive")
+adddep=("dbus-glib libwnck3 libcanberra libmateweather libsm mate-menus mate-desktop gettext gtk-layer-shell")
+
+build_deps=("${adddep} itstool gobject-introspection mate-common yelp-tools autoconf-archive")
 
 build() {
   go_src_dir
