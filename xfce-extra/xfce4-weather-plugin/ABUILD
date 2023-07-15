@@ -1,5 +1,5 @@
 pkgname=xfce4-weather-plugin
-pkgver=0.11.0
+pkgver=0.11.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://archive.xfce.org/src/panel-plugins/$pkgname/${pkgver%.*}/$pkgna
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel libxml2 libsoup intltool")
+adddep=("xfce4-panel libxml2 libsoup hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
