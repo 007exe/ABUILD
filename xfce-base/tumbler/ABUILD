@@ -1,16 +1,17 @@
 pkgname=tumbler
-pkgver=4.18.0
+pkgver=4.18.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("D-Bus service for applications to request thumbnails.")
-longdesc=("The Tumbler package contains a D-Bus thumbnailing service based on the thumbnail management D-Bus specification. This is useful for generating thumbnail images of files.")
+shortdesc=("Thumbnail service implementing the thumbnail management D-Bus specification.")
 
 source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("intltool python ffmpegthumbnailer poppler libgsf libgepub libopenraw freetype gdk-pixbuf")
+adddep=("libxfce4util gdk-pixbuf")
+
+build_deps=("${adddep} intltool python ffmpegthumbnailer poppler-glib libgsf libgepub libopenraw freetype")
 
 removedep=("ffmpegthumbnailer poppler-glib libgsf libgepub libopenraw freetype")
 
