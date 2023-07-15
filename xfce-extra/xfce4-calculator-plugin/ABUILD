@@ -1,5 +1,5 @@
 pkgname=xfce4-calculator-plugin
-pkgver=0.7.1
+pkgver=0.7.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pk
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel intltool")
+adddep=("intltool xfce4-panel")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
