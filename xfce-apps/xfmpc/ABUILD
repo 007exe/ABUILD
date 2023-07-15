@@ -1,16 +1,17 @@
 pkgname=xfmpc
-pkgver=0.3.0
+pkgver=0.3.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A graphical GTK+ MPD client focusing on low footprint.")
-longdesc=("Music Player Daemon (MPD) client for the Xfce desktop environment.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("libxfce4ui libmpd xfce4-dev-tools vala")
+adddep=("libxfce4ui libmpd")
+
+build_deps=("${adddep} xfce4-dev-tools vala")
 
 build() {
   go_src_dir
