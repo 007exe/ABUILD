@@ -1,6 +1,6 @@
 pkgname=ghostscript
 pkglist=("ghostxps ghostpcl")
-pkgver=10.01.1
+pkgver=10.01.2
 pkgbuild=1
 arch=("auto")
 
