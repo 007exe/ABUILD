@@ -1,16 +1,17 @@
 pkgname=marco
-pkgver=1.26.0
+pkgver=1.26.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A window manager for MATE.")
-longdesc=("MATE default window manager.")
 
 source=("https://pub.mate-desktop.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("mate mate-base")
 
-build_deps=("libcanberra libgtop mate-desktop zenity libxpresent gettext intltool")
+adddep=("libcanberra libgtop mate-desktop zenity libxpresent gettext libxres libsm")
+
+build_deps=("${adddep} itstool")
 
 build() {
   go_src_dir
