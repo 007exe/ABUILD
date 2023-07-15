@@ -1,18 +1,17 @@
 pkgname=libxfce4ui
-pkgver=4.18.0
+pkgver=4.18.4
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Commonly used Xfce widgets among Xfce applications.")
-longdesc=("The libxfce4ui package contains GTK widgets that are used by other Xfce applications.")
+shortdesc=("Widgets library for the Xfce desktop environment.")
 
-source=("https://archive.xfce.org/src/xfce/$pkgname/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce xfce-base")
+tags=("libs xfce-base")
 
-build_deps=("libxfce4util gtk3 xfconf libsm startup-notification libgtop libepoxy intltool gobject-introspection vala")
+adddep=("libxfce4util gtk3 xfconf libsm startup-notification libgtop libepoxy hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool gobject-introspection vala")
 
 build() {
   go_src_dir
