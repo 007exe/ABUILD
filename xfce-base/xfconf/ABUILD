@@ -1,16 +1,17 @@
 pkgname=xfconf
-pkgver=4.18.0
+pkgver=4.18.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Flexible, easy-to-use configuration management system.")
-longdesc=("Xfconf is the configuration storage system for Xfce.")
+shortdesc=("D-Bus-based configuration storage system.")
 
 source=("http://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
-build_deps=("libxfce4util intltool gobject-introspection vala")
+adddep=("libxfce4util")
+
+build_deps=("${adddep} intltool gobject-introspection vala")
 
 build() {
   go_src_dir
