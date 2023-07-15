@@ -1,5 +1,5 @@
 pkgname=libqalculate
-pkgver=4.6.1
+pkgver=4.7.0
 pkgbuild=1
 arch=("auto")
 
