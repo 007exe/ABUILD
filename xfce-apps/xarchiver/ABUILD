@@ -1,16 +1,17 @@
 pkgname=xarchiver
-pkgver=0.5.4.20
+pkgver=0.5.4.21
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("GTK+ frontend to various command line archivers.")
-longdesc=("XArchiver is a GTK+ archive manager with support for tar, xz, bzip2, gzip, zip, 7z, rar, lzo and many other archive formats.")
 
 source=("https://github.com/ib/xarchiver/archive/${pkgver}/xarchiver-${pkgver}.tar.gz")
 
 tags=("xfce xfce-apps")
 
-build_deps=("gtk3 docbook-xsl intltool xmlto")
+adddep=("gtk3")
+
+build_deps=("${adddep} docbook-xsl intltool xmlto")
 
 # NOTE: Это опциональные зависимости
 removedep=("arj binutils bzip2 cpio gzip lha lrzip lz4 lzip lzop p7zip tar unarj unrar unzip xdg-utils xz zip zstd")
