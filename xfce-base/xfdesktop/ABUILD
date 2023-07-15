@@ -1,18 +1,17 @@
 pkgname=xfdesktop
-pkgver=4.18.0
+pkgver=4.18.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A desktop manager for Xfce.")
-longdesc=("Xfdesktop is a desktop manager for the Xfce Desktop Environment. Xfdesktop sets the background image / color, creates the right click menu and window list and displays the file icons on the desktop using Thunar libraries.")
 
 source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
-build_deps=("libxfce4ui libwnck3 exo thunar garcon intltool")
+adddep=("libxfce4ui libwnck3 exo thunar garcon hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
