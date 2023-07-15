@@ -1,5 +1,5 @@
 pkgname=xfce4-pulseaudio-plugin
-pkgver=0.4.5
+pkgver=0.4.7
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,12 @@ source=("http://archive.xfce.org/src/panel-plugins/xfce4-pulseaudio-plugin/${pkg
 
 tags=("xfce xfce-apps")
 
-build_deps=("xfce4-panel libpulse libkeybinder3 libnotify intltool dbus-glib xfce4-dev-tools")
+adddep=("xfce4-panel libpulse libkeybinder3 libnotify libcanberra")
+
+build_deps=("${adddep} intltool")
+
+# NOTE: Это опциональные зависимости
+removedep=("pavucontrol")
 
 build() {
   go_src_dir
