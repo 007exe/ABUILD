@@ -1,16 +1,17 @@
 pkgname=ccache
-pkgver=4.7.3
+pkgver=4.8.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Fast compiler cache.")
-longdesc=("Compiler cache that speeds up recompilation by caching previous compilations.")
+shortdesc=("Compiler cache that speeds up recompilation by caching previous compilations.")
 
 source=("https://github.com/ccache/ccache/releases/download/v${pkgver}/ccache-${pkgver}.tar.xz")
 
 tags=("develop dev-util")
 
-build_deps=("cmake asciidoctor perl glibc gcc-libs hiredis zstd")
+adddep=("glibc gcc-libs hiredis zstd")
+
+build_deps=("${adddep} cmake asciidoctor perl")
 
 build() {
   go_src_dir
