@@ -1,16 +1,17 @@
 pkgname=xfce4-whiskermenu-plugin
-pkgver=2.7.1
+pkgver=2.7.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Menu for Xfce4.")
-longdesc=("Whisker Menu is an alternate application launcher for Xfce.")
 
 source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("garcon xfce4-panel gtk3 cmake ninja")
+adddep=("garcon xfce4-panel gtk3")
+
+build_deps=("${adddep} cmake ninja")
 
 build() {
   go_src_dir
