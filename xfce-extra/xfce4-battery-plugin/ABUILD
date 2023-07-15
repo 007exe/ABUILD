@@ -1,16 +1,17 @@
 pkgname=xfce4-battery-plugin
-pkgver=1.1.4
-pkgbuild=2
+pkgver=1.1.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A battery monitor plugin for the Xfce panel.")
-longdesc=("Battery monitor panel plugin for the Xfce Desktop Environment.")
 
 source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel intltool")
+adddep=("xfce4-panel")
+
+build_deps=("${addep} intltool")
 
 build() {
   go_src_dir
