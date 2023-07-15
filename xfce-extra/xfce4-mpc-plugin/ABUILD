@@ -1,16 +1,17 @@
 pkgname=xfce4-mpc-plugin
-pkgver=0.5.2
-pkgbuild=2
+pkgver=0.5.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Control the Music Player Daemon from the Xfce4 panel.")
-longdesc=("This is a simple Xfce panel client plugin for Music Player Daemon.")
 
 source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel libmpd intltool")
+adddep=("xfce4-panel libmpd")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
