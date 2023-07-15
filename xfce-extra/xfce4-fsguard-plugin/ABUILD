@@ -1,16 +1,17 @@
 pkgname=xfce4-fsguard-plugin
-pkgver=1.1.2
-pkgbuild=2
+pkgver=1.1.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("File system usage monitor plugin for the Xfce4 panel")
-longdesc=("Disk space panel plugin for the Xfce Desktop Environment.")
 
 source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel intltool")
+adddep=("xfce4-panel")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
