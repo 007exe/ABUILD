@@ -1,18 +1,17 @@
 pkgname=thunar-archive-plugin
-pkgver=0.5.0
+pkgver=0.5.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Adds archive operations to the Thunar file context menus.")
-longdesc=("The thunar-archive-plugin is a plugin for the Thunar File Manager, which adds archive operations to the file context menus. Using this plugin you will be able to extract and create archive files from within Thunar using a single click.")
 
 source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("intltool")
-
 adddep=("thunar hicolor-icon-theme")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
