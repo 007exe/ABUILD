@@ -1,16 +1,17 @@
 pkgname=ristretto
-pkgver=0.12.4
+pkgver=0.13.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A fast and lightweight picture viewer for Xfce.")
-longdesc=("Ristretto is a fast and lightweight image viewer for the Xfce desktop.")
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("libxfce4ui xfconf tumbler libexif file intltool")
+adddep=("libxfce4ui xfconf tumbler libexif file")
+
+build_deps=("${adddep} python")
 
 build() {
   go_src_dir
