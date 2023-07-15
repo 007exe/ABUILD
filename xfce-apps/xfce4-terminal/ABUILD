@@ -4,15 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A modern terminal emulator primarily for the Xfce desktop environment.")
-longdesc=("Xfce4 Terminal is a GTK+3 terminal emulator. This is useful for running commands or programs in the comfort of an Xorg window; you can drag and drop files into the Xfce4 Terminal or copy and paste text with your mouse.")
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("libxfce4ui vte intltool")
+adddep=("libxfce4ui vte3 hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir

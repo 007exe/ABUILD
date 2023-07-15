@@ -1,18 +1,17 @@
 pkgname=xfdashboard
-pkgver=0.9.91
+pkgver=1.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Maybe a Gnome shell like dashboard for Xfce.")
-longdesc=("Maybe a GNOME shell like dashboard for the Xfce desktop environment.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("libwnck3 clutter garcon")
+adddep=("libwnck3 clutter garcon")
 
-adddep=("clutter garcon")
+build_deps=("${adddep} xfce4-dev-tools")
 
 build() {
   go_src_dir
