@@ -1,18 +1,17 @@
 pkgname=xfce4-notes-plugin
-pkgver=1.9.0
-pkgbuild=2
+pkgver=1.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Notes plugin for the Xfce panel.")
-longdesc=("xfce4-notes-plugin is a notes panel plugin for the Xfce Desktop Environment. It provides a simple system for managing sticky notes on your desktop.")
 
 source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel intltool")
+adddep=("xfce4-panel hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
