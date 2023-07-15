@@ -1,5 +1,5 @@
 pkgname=perl-net-http
-pkgver=6.22
+pkgver=6.23
 pkgbuild=1
 arch=("noarch")
 
