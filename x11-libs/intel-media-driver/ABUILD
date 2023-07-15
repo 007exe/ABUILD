@@ -1,5 +1,5 @@
 pkgname=intel-media-driver
-pkgver=23.1.0
+pkgver=23.2.3
 pkgbuild=1
 arch=("auto")
 
