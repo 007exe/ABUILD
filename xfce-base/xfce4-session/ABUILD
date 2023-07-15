@@ -1,18 +1,17 @@
 pkgname=xfce4-session
-pkgver=4.18.0
+pkgver=4.18.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Session manager for Xfce.")
-longdesc=("Xfce4 Session is a session manager for Xfce. Its task is to save the state of your desktop (opened applications and their location) and restore it during a next startup. You can create several different sessions and choose one of them on startup.")
 
 source=("https://archive.xfce.org/src/xfce/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-base")
 
-build_deps=("intltool libxfce4ui libwnck3 xfconf libsm polkit")
-
 adddep=("xorg-iceauth xorg-xinit xorg-xrdb polkit-gnome hicolor-icon-theme")
+
+build_deps=("${adddep} intltool")
 
 # NOTE: Это опциональные зависимости
 removedep=("gnome-keyring xfce4-screensaver xscreensaver gnome-screensaver xlockmore slock")
