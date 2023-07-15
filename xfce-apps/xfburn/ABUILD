@@ -1,16 +1,17 @@
 pkgname=xfburn
-pkgver=0.6.2
+pkgver=0.7.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("A simple CD/DVD burning tool based on libburnia libraries.")
-longdesc=("Xfburn is a GTK+ 3 GUI frontend for Libisoburn. This is useful for creating CDs and DVDs from files on your computer or ISO images downloaded from elsewhere.")
 
 source=("https://archive.xfce.org/src/apps/xfburn/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("libburn libisofs gtk3 libxfce4ui exo gst-plugins-base-libs libgudev desktop-file-utils intltool")
+adddep=("libburn libisofs gtk3 libxfce4ui exo gst-plugins-base-libs libgudev desktop-file-utils")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
