@@ -1,18 +1,17 @@
 pkgname=orage
-pkgver=4.16.0
+pkgver=4.18.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Calendar for Xfce Desktop Environment.")
-longdesc=("A simple calendar application with reminders for Xfce.")
+shortdesc=("A simple calendar application with reminders for Xfce.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags="xfce xfce-apps"
 
-build_deps=("xfce4-panel libnotify dbus-glib libical")
+adddep=("libxfce4ui libnotify libical")
 
-adddep=("xfce4-panel libnotify dbus-glib libical")
+build_deps=("${adddep} xfce4-dev-tools")
 
 build() {
   go_src_dir
