@@ -1,16 +1,17 @@
 pkgname=xfce4-places-plugin
-pkgver=1.8.1
-pkgbuild=2
+pkgver=1.8.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("This plugin brings much of the functionality of GNOME's Places menu to Xfce.")
-longdesc=("This plugin brings much of the functionality of GNOME's Places menu to Xfce.")
 
 source=("http://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel libnotify intltool")
+adddep=("libnotify xfce4-panel")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
