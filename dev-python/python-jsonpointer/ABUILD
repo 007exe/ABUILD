@@ -1,6 +1,6 @@
 pkgname=python-jsonpointer
-pkgver=2.3
-pkgbuild=2
+pkgver=2.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Identify specific nodes in a JSON document (RFC 6901).")
