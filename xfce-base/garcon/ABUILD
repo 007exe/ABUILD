@@ -1,16 +1,17 @@
 pkgname=garcon
-pkgver=4.18.0
+pkgver=4.18.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Implementation of the freedesktop.org menu specification.")
-longdesc=("The Garcon package contains a freedesktop.org compliant menu implementation based on GLib and GIO.")
+shortdesc=("Freedesktop.org compliant menu library.")
 
 source=("https://archive.xfce.org/src/xfce/garcon/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
-tags=("xfce xfce-base")
+tags=("libs xfce-base")
 
-build_deps=("libxfce4ui intltool python gobject-introspection")
+adddep=("libxfce4ui")
+
+build_deps=("${adddep} intltool python gobject-introspection")
 
 build() {
   go_src_dir
