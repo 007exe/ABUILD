@@ -1,18 +1,17 @@
 pkgname=xfce4-panel-profiles
-pkgver=1.0.13
+pkgver=1.0.14
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple application to manage Xfce panel layouts.")
-longdesc=("Simple application to manage Xfce panel layouts.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("intltool xfce4-panel python-gobject")
-
 adddep=("xfce4-panel python-gobject")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
