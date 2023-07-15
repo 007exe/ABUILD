@@ -1,18 +1,17 @@
 pkgname=xfce4-genmon-plugin
-pkgver=4.1.1
-pkgbuild=2
+pkgver=4.2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plugin that monitors customizable programs stdout for the Xfce4 panel.")
-longdesc=("This plugin cyclically spawns the indicated script/program, captures its output (stdout) and displays the resulting string into the panel.")
 
 source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel intltool")
+adddep=("xfce4-panel hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
