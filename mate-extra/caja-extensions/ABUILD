@@ -1,5 +1,6 @@
 pkgname=caja-extensions-common
-pkgver=1.26.0
+pkglist=("caja-image-converter caja-open-terminal caja-sendto caja-share caja-wallpaper caja-xattr-tags")
+pkgver=1.26.1
 pkgbuild=1
 arch=("auto")
 
@@ -11,8 +12,6 @@ tags=("mate mate-extra")
 
 # samba
 build_deps=("caja gettext dbus-glib gupnp imagemagick python")
-
-pkglist=("caja-image-converter caja-open-terminal caja-sendto caja-share caja-wallpaper caja-xattr-tags")
 
 build() {
   go_src_dir
