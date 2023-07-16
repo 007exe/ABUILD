@@ -1,16 +1,17 @@
 pkgname=libxmlb
-pkgver=0.3.10
+pkgver=0.3.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library to help create and query binary XML blobs.")
-longdesc=("Library to help create and query binary XML blobs.")
 
-source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/hughsie/libxmlb/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs dev-libs")
 
-build_deps=("meson gobject-introspection gtk-doc glib2 xz libstemmer")
+adddep=("glib2 libstemmer xz zstd")
+
+build_deps=("${adddep} meson gobject-introspection gtk-doc")
 
 build() {
   go_src_dir
