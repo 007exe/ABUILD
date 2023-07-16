@@ -1,0 +1,32 @@
+From 31e4f404c218eae7ba999c4df5346d30f971451c Mon Sep 17 00:00:00 2001
+From: Adeel Mujahid <3840695+am11@users.noreply.github.com>
+Date: Fri, 20 Jan 2023 21:19:11 +0200
+Subject: [PATCH] Append version to RID only with valid characters (#80901)
+
+* Append version to RID only with valid characters
+
+* Handle empty version case
+---
+ src/native/corehost/hostmisc/pal.unix.cpp | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/native/corehost/hostmisc/pal.unix.cpp b/src/native/corehost/hostmisc/pal.unix.cpp
+index f1ad41ac104c9..fafcb90d679f0 100644
+--- a/src/native/corehost/hostmisc/pal.unix.cpp
++++ b/src/native/corehost/hostmisc/pal.unix.cpp
+@@ -842,8 +842,13 @@ pal::string_t pal::get_current_os_rid_platform()
+                     size_t pos = line.find(strVersionID);
+                     if ((pos != std::string::npos) && (pos == 0))
+                     {
+-                        valVersionID.append(line.substr(11));
+-                        fFoundVersion = true;
++                        pal::string_t version = line.substr(11);
++                        // check if version characters are valid (quotes are trimmed at a later stage)
++                        if (!version.empty() && version.find_first_not_of("0123456789.\"'") == std::string::npos)
++                        {
++                            valVersionID.append(version);
++                            fFoundVersion = true;
++                        }
+                     }
+                 }
+ 
