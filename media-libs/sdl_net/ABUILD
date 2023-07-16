@@ -1,0 +1,27 @@
+pkgname=sdl_net
+pkgver=1.2.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A small sample cross-platform networking library.")
+
+source=("http://www.libsdl.org/projects/SDL_net/release/SDL_net-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+adddep=("sdl")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
