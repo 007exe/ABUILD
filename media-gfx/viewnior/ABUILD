@@ -1,0 +1,24 @@
+pkgname=viewnior
+pkgver=1.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A simple, fast and elegant image viewer program.")
+
+source=("https://github.com/hellosiyan/Viewnior/archive/viewnior-${pkgver}.tar.gz")
+
+tags=("media-gfx apps")
+
+adddep=("gtk2 exiv2")
+
+build_deps=("${adddep} meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  ninja -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
