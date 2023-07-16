@@ -1,0 +1,21 @@
+pkgname=mypaint
+pkgver=2.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Fast and easy painting application for digital painters, with brush dynamics.")
+
+source=("https://github.com/mypaint/$pkgname/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps media-gfx")
+
+adddep=("gtk3 libmypaint mypaint-brushes python-cairo python-gobject python-numpy")
+
+build_deps=("${adddep} python-setuptools swig")
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build
+  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}
