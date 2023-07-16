@@ -1,0 +1,29 @@
+pkgname=sdl_ttf
+pkgver=2.0.11
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that allows you to use TrueType fonts in your SDL applications.")
+
+source=("http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+adddep=("sdl freetype")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  touch NEWS README AUTHORS ChangeLog
+  autoreconf -vi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
