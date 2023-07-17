@@ -1,0 +1,21 @@
+pkgname=ttf-ubuntu-font-family
+pkgver=0.83
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Ubuntu Font Family.")
+
+source=("https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-${pkgver}.zip")
+
+tags=("media-fonts xserver")
+
+build_deps=("fontconfig")
+
+build() {
+  go_src_dir
+  install -dm755 ${pkgdir}/usr/share/fontconfig/conf.default
+  install -Dm644 -t ${pkgdir}/usr/share/fonts/ubuntu *.ttf
+  install -Dm644 LICENCE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENCE
+  install -Dm644 ${filedir}/81-ubuntu.conf ${pkgdir}/usr/share/fontconfig/conf.avail/81-ubuntu.conf
+  ln -s ../conf.avail/81-ubuntu.conf ${pkgdir}/usr/share/fontconfig/conf.default/81-ubuntu.conf
+}
