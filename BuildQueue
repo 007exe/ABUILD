@@ -1,13 +1,10 @@
 #!/bin/bash
 
 # NOTE: Этот скрипт предназначен для организации очереди сборки пакетов
-# WARNING: Скрипт не умеер разделять мультипакеты на категории
-
-# FIXME: Проблемы со сборкой документации
 
 # Конфликты
 # python-pyproject-metadata || python-pep621
-# 
+#
 # python-pyxdg || python-xdg
 # CudaText 1.192.0
 
@@ -15,58 +12,9 @@
 # xorg-apps/luit
 # driver/xf86-input-*: большинство драйверов больше не поддерживаются, за исключением xf86-input-libinput, xf86-input-evdev, xf86-input-keyboard, xf86-input-mouse, xf86-input-elographics, xf86-input-joystick, xf86-input-synaptics, xf86-input-vmmouse и xf86-input-void.
 
-# dev-qt/qt6-base
-# dev-qt/qt6-shadertools
-# dev-qt/qt6-languageserver
-# dev-qt/qt6-declarative
-# dev-qt/qt6-5compat
-# dev-qt/qt6-charts
-# dev-qt/qt6-connectivity
-# dev-qt/qt6-datavis3d
-# dev-qt/qt6-imageformats
-# dev-qt/qt6-lottie
-# dev-qt/qt6-multimedia
-# dev-qt/qt6-networkauth
-# dev-qt/qt6-serialport
-# dev-qt/qt6-positioning
-# dev-qt/qt6-quick3d
-# dev-qt/qt6-3d
-# dev-qt/qt6-quicktimeline
-# dev-qt/qt6-remoteobjects
-# dev-qt/qt6-scxml
-# dev-qt/qt6-sensors
-# dev-qt/qt6-serialbus
-# dev-qt/qt6-svg
-# dev-qt/qt6-tools
-# dev-qt/qt6-translations
-# dev-qt/qt6-virtualkeyboard
-# dev-qt/qt6-wayland
-# dev-qt/qt6-websockets
-# dev-qt/qt6-webchannel
-# dev-qt/qt6-webengine
-# dev-qt/qt6-webview
+# php-legacy
+# net-libs/grpc
 
-# http://bygone.clairexen.net/stfl/stfl-0.24.tar.gz
-
-# python-bsddb
-# python-mutagen
-# python-simplejson
-# python-pylast
-# python3-keybinder 
-# apache-orc
-# gflags
-# grpc
-# google-glog
-# thrift
-# uriparser
-# xsimd
-# gmock
-# flatbuffers
-# dotnet-sdk
-# dotnet-runtime
-# zeroc-ice
-# sqlcipher
-# qcustomplot
 # qhexedit2
 # gperftools
 # ocaml-compiler-libs
@@ -83,80 +31,55 @@
 # sbcl
 # python3-dateutils
 # strip-nondeterminism
-# python3-keybinder
 
-LIST="dev-python/python-jaraco.functools
-dev-util/gc
-multilib-lib32/lib32-openssl
-gnome-base/librsvg
-dev-libs/openssl
-dev-lang/orc
-dev-libs/openssl-1.1
-media-gfx/imagemagick
-dev-libs/libatasmart
-dev-libs/libcdio-paranoia
-dev-libs/liblouis
-dev-libs/libmanette
-x11-libs/libxklavier
-media-video/pipewire
-www-client/google-chrome
-dev-python/python-rich
-app-text/djvulibre
-sys-devel/gcc
-sys-kernel/bbswitch
-dev-libs/libportal-qt5
-dev-libs/js78
-dev-libs/unibilium
-dev-libs/libportal-docs
-dev-libs/libphonenumber
-dev-libs/js91
-dev-libs/tl-expected
-dev-libs/cloog
-dev-libs/mm
-dev-libs/kuserfeedback
-dev-libs/link-grammar
-dev-libs/libev
-dev-libs/arrow
-dev-libs/gmime
-dev-libs/libx86emu
-dev-libs/cudnn
-dev-libs/libdbi-drivers
-dev-libs/apr-util
-dev-libs/libxmlb
-dev-libs/libportal-gtk4
-dev-libs/libtomcrypt
-dev-libs/libptytty
-dev-libs/lockdev
-dev-libs/opensc
-dev-libs/stfl
-dev-libs/kdevelop-pg-qt
-dev-libs/adios2
-xfce-extra/xfce4-artwork
-xfce-extra/xfce4-alsa-plugin
-xfce-extra/thunar-shares-plugin
-sci-geosciences/qgis
-sci-geosciences/liblas
-dev-embedded/arduino
-dev-embedded/avr-libc
-dev-embedded/mspdebug
-dev-embedded/stm32flash
-net-ftp/tftp-hpa
-dev-ruby/asciidoctor
-net-dialup/xl2tpd
-net-dialup/rp-pppoe
-net-dialup/freeradius-client
-mate-extra/atril
-sys-process/iotop
-sys-process/dcron
-sys-process/latencytop
-sys-process/at
-media-fonts/wqy-zenhei
-media-fonts/ubuntu-font-family
-games-engines/love
-sys-libs/glibc_x64x
-sys-libs/compiler-rt
-dev-lua/luafilesystem
-app-accessibility/flite
+# apache-orc
+# google-glog
+# gmock
+# zeroc-ice
+
+# libndctl
+# libnvme
+# sys-libs/libblockdev
+# sys-fs/udisks
+
+
+LIST="dev-util/meson
+app-admin/sudo
+media-libs/avisynthplus
+media-libs/devil
+media-libs/imlib2
+media-libs/intel-media-sdk
+media-libs/libjxl
+media-libs/libgpod
+media-libs/qtav
+media-libs/projectm
+media-libs/libquvi
+media-libs/libtiger
+media-libs/vigra
+media-libs/liblqr
+media-libs/ilmbase
+media-libs/gnonlin
+media-libs/imlib
+media-libs/phonon-gstreamer
+media-libs/svgalib
+media-libs/chromaprint
+media-libs/libvpx
+media-libs/plib
+media-libs/flickcurl
+media-libs/phonon-vlc
+media-libs/libofa
+media-libs/giblib
+media-libs/libicns
+media-libs/ffmpegsource
+media-libs/libv4l
+media-libs/libpgf
+media-libs/libmikmod
+media-libs/mutagen
+media-libs/quesoglc
+media-libs/libiptcdata
+media-libs/lcms
+media-libs/sdl_sound
+media-libs/stk
 media-sound/gpodder
 media-sound/easytag
 media-sound/qjackctl
@@ -180,14 +103,7 @@ media-sound/pragha
 media-sound/gqradio
 media-sound/ardour
 media-sound/audacity
-app-pda/usbmuxd
-app-pda/libimobiledevice
-app-pda/libplist
-app-admin/keepassxc
-app-admin/hddtemp
-media-video/obs-studio
-media-video/rage
-media-video/handbrake
+media-sound/qmmp
 media-video/pitivi
 media-video/dvgrab
 media-video/mkvtoolnix
@@ -200,80 +116,9 @@ media-video/motion
 media-video/openshot
 media-video/recordmydesktop
 media-video/movit
-media-libs/opencv
-media-libs/libtg_owt
-media-libs/imlib2
-media-libs/libgpod
-media-libs/devil
-media-libs/libjxl
-media-libs/intel-media-sdk
-media-libs/qtav
-media-libs/projectm
-media-libs/libquvi
-media-libs/spandsp
-media-libs/libtiger
-media-libs/vigra
-media-libs/liblqr
-media-libs/ilmbase
-media-libs/gnonlin
-media-libs/imlib
-media-libs/phonon-gstreamer
-media-libs/svgalib
-media-libs/chromaprint
-media-libs/libvpx
-media-libs/libplacebo
-media-libs/plib
-media-libs/flickcurl
-media-libs/phonon-vlc
-media-libs/libofa
-media-libs/giblib
-media-libs/libicns
-media-libs/ffmpegsource
-media-libs/libv4l
-media-libs/libpgf
-media-libs/libmikmod
-media-libs/mutagen
-media-libs/quesoglc
-media-libs/freealut
-media-libs/libiptcdata
-media-libs/lcms
-media-libs/sdl_sound
-media-libs/stk
-x11-libs/qscintilla
-x11-libs/goffice
-x11-libs/gtkmathview
-dev-vcs/subversion
-dev-vcs/tortoisehg
-dev-vcs/git-cola
-dev-vcs/cvs
-media-gfx/zbar
-media-gfx/graphicsmagick
-media-gfx/pinta
-media-gfx/librecad
-app-crypt/gpgme
-net-libs/wpewebkit
-net-libs/webkit2gtk
-net-libs/webkit2gtk-4.1
-net-libs/webkit2gtk-5.0
-net-libs/farstream
-net-libs/libotr
-net-libs/gupnp-igd
-net-libs/gssdp
-dev-python/python-rapidfuzz
-dev-python/python-cleo
-dev-python/python-crashtest
-dev-python/python-keyring
-dev-python/python-markdown-it-py
-dev-python/python-pastel
-dev-python/python-poetry
-dev-python/python-tomlkit
-dev-python/python-pydantic
-dev-python/python-platformdirs
-dev-python/python-certifi
-dev-python/python-sphinx_rtd_theme
-dev-python/python-jedi
-dev-python/python-urllib3
-app-i18n/poedit
+media-video/handbrake
+media-video/obs-studio
+media-video/rage
 multilib-lib32/lib32-at-spi2-core
 multilib-lib32/lib32-libcap
 multilib-lib32/lib32-linux-pam
@@ -286,7 +131,6 @@ multilib-lib32/lib32-fontconfig
 multilib-lib32/lib32-libxft
 multilib-lib32/lib32-cairo
 multilib-lib32/lib32-pango
-multilib-lib32/lib32-pixman
 multilib-lib32/lib32-gtk2
 multilib-lib32/lib32-libdrm
 multilib-lib32/lib32-libglvnd
@@ -314,145 +158,94 @@ multilib-lib32/lib32-taglib
 multilib-lib32/lib32-gstreamer
 app-emulation/wine
 app-emulation/wine-gecko
-app-emulation/aqemu
-app-emulation/virt-manager
-app-emulation/virt-viewer
-app-emulation/qemu
-app-emulation/virtualbox
-app-emulation/winetricks
-app-emulation/libvirt-glib
-dev-util/meson
-dev-util/pvs-studio
-dev-util/how-to-use-pvs-studio-free
-dev-util/apitrace
-dev-util/oprofile
-dev-util/gpp
-dev-util/codeblocks
-sys-apps/fwupd
-sys-apps/dbus-broker
-sys-apps/fbset
-sys-apps/flatpak
-sys-apps/tcp_wrappers
-sys-apps/accountsservice
-sys-apps/mlocate
-sys-apps/dmidecode
-sys-apps/hwinfo
-dev-perl/perl-uri
-dev-lang/ocaml
-dev-lang/julia
-dev-lang/tcc
-dev-lang/mono
-kde-plasma/flatpak-kcm
-kde-gear/kdepim-addons
-kde-gear/kitinerary
-kde-gear/kio-extras
-kde-gear/kdenetwork-filesharing
-gnome-base/gnome-session
-gnome-base/gnome-control-center
-gnome-base/gnome-shell
-gnome-base/gnome-settings-daemon
-gnome-base/gnome-applets
-gnome-base/yelp
-gnome-base/nautilus
-gnome-base/gnome-panel
-gnome-base/gdm
-www-apache/mod_perl
-www-apache/mod_wsgi
-games-emulation/desmume
+multilib-lib32/lib32-freetype
+multilib-lib32/lib32-harfbuzz
+multilib-lib32/lib32-libwebp
+multilib-lib32/lib32-libxslt
 net-fs/netatalk
 net-fs/davfs2
 net-fs/cifs-utils
 net-fs/samba
-sci-chemistry/openbabel
-xorg-apps/xorg-xdm
-kde-misc/calligra
-kde-misc/kjots
-app-arch/lzlib
-app-arch/snappy
-app-arch/rpm
-app-arch/mgard
-app-arch/unace
-app-arch/lzip
+net-libs/grpc
+net-libs/wpewebkit
+net-libs/webkit2gtk
+net-libs/webkit2gtk-4.1
+net-libs/webkit2gtk-5.0
+net-libs/farstream
+net-libs/libotr
+net-libs/gupnp-igd
+net-libs/gssdp
+net-misc/connman
+net-misc/unison
+net-misc/freerdp
+net-misc/bridge-utils
+net-news/liferea
+net-p2p/deluge
 sci-libs/gdal
 sci-libs/vtk
 sci-libs/avogadrolibs
 sci-libs/spglib
 sci-libs/cln
 sci-libs/netcdf
-app-text/qpdf
-app-text/a2ps
-app-text/dblatex
-app-text/fbreader
-app-text/libgepub
-app-text/pdftk
-app-text/podofo
-app-text/xpdf
-app-text/texlive-bin
-app-text/docbook-utils
-app-text/psiconv
-app-text/pandoc
-app-text/mythes
-app-text/asciidoc
-net-news/liferea
-net-p2p/deluge
-net-voip/mumble
-dev-db/postgis
-dev-db/mysql-workbench
-dev-db/sqlitebrowser
-dev-java/bcprov
-dev-java/eclipse-ecj
-dev-java/icedtea-web
-net-analyzer/nmap
-net-analyzer/wireshark
-net-analyzer/cacti
-net-im/poezio
-net-im/ejabberd
-gnome-extra/yad
-gnome-extra/sysprof
-gnome-extra/nautilus-sendto
-gnome-extra/gnome-user-share
-dev-ml/lablgtk3
-net-misc/unison
-net-misc/freerdp
-net-misc/bridge-utils
-x11-misc/xsel
-x11-misc/synergy
-x11-misc/xmobar
-x11-misc/wmctrl
-x11-misc/xlockmore
-gnome-libs/retro-gtk
-gnome-libs/gnome-games
-gnome-libs/evolution-data-server
-gnome-libs/libgweather-4
-gnome-libs/gnome-online-accounts
-app-editors/neovim
-app-editors/leafpad
-app-office/abiword
-app-office/gnucash
-app-office/gnumeric
-app-office/libreoffice
-app-office/scribus
-app-office/unoconv
-app-office/homebank
-app-office/openoffice
+sys-apps/accountsservice
+sys-apps/groff
+sys-apps/dbus-broker
+sys-apps/fbset
+sys-apps/flatpak
+sys-apps/tcp_wrappers
+sys-apps/mlocate
+sys-apps/dmidecode
+sys-apps/hwinfo
+sys-devel/gettext
+sys-libs/compiler-rt
+sys-libs/glibc_x64x
+sys-power/upower
+sys-power/acpi_call
+sys-process/procps-ng
+sys-process/iotop
+sys-process/dcron
+sys-process/latencytop
+sys-process/at
 www-client/seamonkey
 www-client/firefox
 www-client/elinks
 www-client/luakit
 www-client/chromium
 www-client/midori
-cinnamon-base/cjs
-cinnamon-base/cinnamon-session
-gnome-apps/gedit
-gnome-apps/gtg
-gnome-apps/evolution
-gnome-apps/lollypop
-gnome-apps/gnome-power-manager
-gnome-apps/gnome-mplayer
-gnome-apps/gnome-terminal
+x11-libs/qscintilla
+x11-libs/goffice
+x11-libs/gtkmathview
+dev-dotnet/dotnet-sdk
+dev-vcs/subversion
+dev-vcs/tortoisehg
+dev-vcs/git-cola
+dev-vcs/cvs
+media-gfx/zbar
+media-gfx/graphicsmagick
+media-gfx/pinta
+media-gfx/librecad
+www-apache/mod_perl
+www-apache/mod_wsgi
+games-emulation/desmume
+sci-chemistry/openbabel
+xorg-apps/xorg-xdm
+kde-misc/calligra
+kde-misc/kjots
+net-voip/mumble
+net-analyzer/nmap
+net-analyzer/wireshark
+net-analyzer/cacti
+net-im/poezio
+net-im/ejabberd
+x11-misc/xsel
+x11-misc/synergy
+x11-misc/xmobar
+x11-misc/wmctrl
+x11-misc/xlockmore
+app-editors/neovim
+app-editors/leafpad
 www-servers/nginx
 sci-mathematics/maxima
-sys-power/acpi_call
 mail-mta/msmtp
 mail-mta/exim
 sci-astronomy/stellarium
@@ -460,7 +253,6 @@ sci-astronomy/kstars
 mail-client/sylpheed
 mail-client/claws-mail
 mail-client/mailx
-app-doc/gimp-help
 sys-boot/unetbootin
 sys-boot/plymouth
 x11-wm/enlightenment
@@ -470,7 +262,205 @@ sci-electronics/iverilog
 app-antivirus/clamav
 app-antivirus/clamtk
 sci-physics/bullet
-dev-scheme/slib"
+dev-scheme/slib
+games-misc/widelands
+xfce-extra/xfce4-artwork
+xfce-extra/thunar-shares-plugin
+kde-frameworks/kapidox
+kde-frameworks/kapidox
+kde-plasma/plasma-sdk
+sys-kernel/bbswitch
+sci-geosciences/qgis
+sci-geosciences/liblas
+dev-embedded/arduino
+dev-embedded/mspdebug
+dev-embedded/stm32flash
+kde-gear/kitinerary
+net-ftp/tftp-hpa
+dev-ruby/asciidoctor
+net-dialup/xl2tpd
+net-dialup/rp-pppoe
+net-dialup/freeradius-client
+dev-lua/luafilesystem
+app-accessibility/brltty
+app-accessibility/flite
+app-pda/usbmuxd
+app-pda/libimobiledevice
+app-pda/libplist
+dev-python/python-jaraco.classes
+media-libs/opencv
+app-arch/rpm
+app-arch/snappy
+app-arch/lzlib
+app-arch/mgard
+app-arch/unace
+app-emulation/aqemu
+app-emulation/virt-manager
+app-emulation/virt-viewer
+app-emulation/qemu
+app-emulation/virtualbox
+app-emulation/winetricks
+app-emulation/libvirt-glib
+app-i18n/poedit
+app-text/docbook-utils
+app-text/poppler
+app-text/qpdf
+app-text/a2ps
+app-text/dblatex
+app-text/fbreader
+app-text/libgepub
+app-text/pdftk
+app-text/podofo
+app-text/xpdf
+app-text/texlive-bin
+app-text/psiconv
+app-text/pandoc
+app-text/mythes
+app-text/asciidoc
+app-office/abiword
+app-office/gnucash
+app-office/gnumeric
+app-office/libreoffice
+app-office/scribus
+app-office/unoconv
+app-office/homebank
+app-office/openoffice
+dev-db/postgis
+dev-db/mysql-workbench
+dev-db/sqlitebrowser
+dev-java/npm
+dev-java/bcprov
+dev-java/eclipse-ecj
+dev-java/icedtea-web
+dev-lang/ocaml
+dev-lang/julia
+dev-lang/tcc
+dev-lang/mono
+dev-libs/apr-util
+dev-libs/js91
+dev-libs/libgudev
+dev-libs/libphonenumber
+dev-libs/libxml2
+dev-libs/libxslt
+dev-libs/nodejs-nopt
+dev-libs/protobuf
+dev-libs/libportal-qt5
+dev-libs/tl-expected
+dev-libs/cloog
+dev-libs/mm
+dev-libs/link-grammar
+dev-libs/arrow
+dev-libs/gmime
+dev-libs/libx86emu
+dev-libs/libdbi-drivers
+dev-libs/libtomcrypt
+dev-libs/lockdev
+dev-libs/opensc
+dev-libs/stfl
+dev-libs/kdevelop-pg-qt
+dev-libs/adios2
+dev-ml/lablgtk3
+dev-perl/perl-uri
+dev-python/cython
+dev-python/python-aiofiles
+dev-python/python-certifi
+dev-python/python-cleo
+dev-python/python-inflect
+dev-python/python-jaraco.functools
+dev-python/python-jedi
+dev-python/python-jsonschema
+dev-python/python-keyring
+dev-python/python-numpy
+dev-python/python-platformdirs
+dev-python/python-poetry
+dev-python/python-pydantic
+dev-python/python-rapidfuzz
+dev-python/python-rich
+dev-python/python-sphinx_rtd_theme
+dev-python/python-anyio
+dev-python/python-httpcore
+dev-python/python-httpx
+dev-python/python-jsonschema-specifications
+dev-python/python-pylast
+dev-python/python-referencing
+dev-python/python-rpds-py
+dev-python/python-trio
+dev-python/python-crashtest
+dev-python/python-markdown-it-py
+dev-python/python-pastel
+dev-python/python-tomlkit
+dev-python/python-certifi
+dev-python/python-jedi
+dev-python/python-urllib3
+dev-python/python-jaraco.functools
+dev-python/cython
+dev-python/python-rich
+dev-python/python-mutagen
+dev-qt/qt6-base
+dev-qt/qt6-shadertools
+dev-qt/qt6-languageserver
+dev-qt/qt6-declarative
+dev-qt/qt6-5compat
+dev-qt/qt6-charts
+dev-qt/qt6-connectivity
+dev-qt/qt6-datavis3d
+dev-qt/qt6-imageformats
+dev-qt/qt6-lottie
+dev-qt/qt6-multimedia
+dev-qt/qt6-networkauth
+dev-qt/qt6-serialport
+dev-qt/qt6-positioning
+dev-qt/qt6-quick3d
+dev-qt/qt6-3d
+dev-qt/qt6-quicktimeline
+dev-qt/qt6-remoteobjects
+dev-qt/qt6-scxml
+dev-qt/qt6-sensors
+dev-qt/qt6-serialbus
+dev-qt/qt6-svg
+dev-qt/qt6-tools
+dev-qt/qt6-translations
+dev-qt/qt6-virtualkeyboard
+dev-qt/qt6-wayland
+dev-qt/qt6-websockets
+dev-qt/qt6-webchannel
+dev-qt/qt6-webengine
+dev-qt/qt6-webview
+dev-qt/qtcreator
+dev-util/cppcheck
+dev-util/pvs-studio
+dev-util/how-to-use-pvs-studio-free
+dev-util/apitrace
+dev-util/oprofile
+dev-util/gpp
+dev-util/maturin
+gnome-apps/evolution
+gnome-apps/gedit
+gnome-apps/gtg
+gnome-apps/lollypop
+gnome-apps/gnome-power-manager
+gnome-apps/gnome-mplayer
+gnome-apps/gnome-terminal
+gnome-base/gnome-control-center
+gnome-base/gnome-session
+gnome-base/gnome-shell
+gnome-base/gnome-settings-daemon
+gnome-base/gnome-applets
+gnome-base/yelp
+gnome-base/nautilus
+gnome-base/gnome-panel
+gnome-base/gdm
+gnome-extra/yad
+gnome-extra/sysprof
+gnome-extra/nautilus-sendto
+gnome-extra/gnome-user-share
+gnome-libs/evolution-data-server
+gnome-libs/gcab
+gnome-libs/libgweather-4
+gnome-libs/retro-gtk
+gnome-libs/gnome-games
+gnome-libs/gnome-online-accounts
+mate-extra/atril"
 
 STARTD=`pwd`
 LOGFILE=~/Yandex.Disk
