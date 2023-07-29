@@ -1,5 +1,5 @@
 pkgname=libnghttp2
-pkgver=1.55.0
+pkgver=1.55.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,6 +10,14 @@ source=("https://github.com/nghttp2/nghttp2/archive/v${pkgver}.tar.gz")
 tags=("libs net-libs")
 
 build_deps=("glibc")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -25,12 +33,4 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/libnghttp2/COPYING
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
