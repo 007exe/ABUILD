@@ -1,10 +1,9 @@
 pkgname=procps-ng
-pkgver=3.3.17
+pkgver=4.0.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utilities for monitoring your system and its processes.")
-longdesc=("The Procps-ng package contains programs for monitoring processes.")
 
 source=("https://downloads.sourceforge.net/project/procps-ng/Production/procps-ng-${pkgver}.tar.xz")
 
@@ -14,6 +13,8 @@ build_deps=("ncurses glibc")
 
 build() {
   go_src_dir
+#NOTE: Фикс сборки
+  sed 's:<ncursesw/:<:g' -i src/watch.c
   ./configure \
     --prefix=/usr \
     --exec-prefix=/ \
