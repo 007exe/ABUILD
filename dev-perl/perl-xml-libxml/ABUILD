@@ -9,9 +9,9 @@ source=("https://www.cpan.org/authors/id/S/SH/SHLOMIF/XML-LibXML-${pkgver}.tar.g
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-alien-libxml2 perl-xml-sax perl-xml-namespacesupport pkgconf")
-
 adddep=("perl-alien-libxml2 perl-xml-sax perl-xml-namespacesupport")
+
+build_deps=("${adddep} perl pkgconf")
 
 build(){
   go_src_dir
