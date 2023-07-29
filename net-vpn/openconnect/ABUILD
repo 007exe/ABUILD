@@ -1,0 +1,28 @@
+pkgname=openconnect
+pkgver=9.12
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Open client for Cisco AnyConnect VPN.")
+
+source=("https://www.infradead.org/openconnect/download/openconnect-${pkgver}.tar.gz")
+
+tags=("network net-vpn")
+
+adddep=("libxml2 gnutls libproxy vpnc krb5 lz4 pcsclite stoken tpm2-tss oath-toolkit libproxy p11-kit xdg-utils")
+
+build_deps=("${adddep} intltool python")
+
+build() {
+  go_src_dir
+  burn_patches
+  PYTHON=/usr/bin/python \
+    ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libexecdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
