@@ -1,6 +1,6 @@
 pkgname=libarchive
-pkgver=3.6.2
-pkgbuild=2
+pkgver=3.7.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multi-format archive and compression library.")
