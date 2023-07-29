@@ -1,5 +1,5 @@
 pkgname=gdb
-pkgver=13.1
+pkgver=13.2
 pkgbuild=1
 arch=("auto")
 
