@@ -3,7 +3,7 @@ pkglist=("gst-plugins-bad-libs gst-plugins-base-libs gst-plugins-base gst-plugin
 gst-plugins-bad gst-plugin-gtk gst-plugin-msdk gst-plugin-opencv gst-plugin-qmlgl
 gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server
 gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
-pkgver=1.22.4
+pkgver=1.22.5
 strict_version=1
 pkgbuild=1
 arch=("auto")
