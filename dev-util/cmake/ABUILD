@@ -1,5 +1,5 @@
 pkgname=cmake
-pkgver=3.26.4
+pkgver=3.27.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("http://www.cmake.org/files/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("utils dev-util")
 
-adddep=("curl libarchive hicolor-icon-theme jsoncpp libuv rhash")
+adddep=("curl libarchive hicolor-icon-theme jsoncpp libuv rhash cppdap")
 
 build_deps=("${adddep} qt6-base python-sphinx emacs")
 
