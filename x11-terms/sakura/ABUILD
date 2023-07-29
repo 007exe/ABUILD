@@ -9,7 +9,7 @@ source=("https://launchpad.net/sakura/trunk/${pkgver}/+download/sakura-${pkgver}
 
 tags="x11-terms xapps"
 
-build_deps="vte libxft cmake"
+build_deps="vte3 libxft cmake"
 
 build() {
   go_src_dir
