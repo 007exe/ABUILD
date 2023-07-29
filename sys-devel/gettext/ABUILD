@@ -1,6 +1,6 @@
 pkgname=gettext
-pkgver=0.21.1
-pkgbuild=2
+pkgver=0.22
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("GNU internationalization library.")
