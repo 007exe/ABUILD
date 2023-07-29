@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=6.4.3
+pkgver=6.4.7
 pkgbuild=1
 arch=("auto")
 
