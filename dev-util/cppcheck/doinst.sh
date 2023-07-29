@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend cppcheck capabilities:"
+echo -e "qt5-tools: run cppcheck-gui"
+echo -e "python-pygments: cppcheck-htmlreport"
+echo -e "clang: for cppcheck-gui integration"
+echo -e " "

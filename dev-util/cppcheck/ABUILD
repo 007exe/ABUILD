@@ -1,0 +1,49 @@
+pkgname=cppcheck
+pkgver=2.11
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A tool for static C/C++ code analysis.")
+
+source=("https://github.com/danmar/cppcheck/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("develop dev-util")
+
+adddep=("python-pygments tinyxml2 pcre")
+
+build_deps=("${adddep} docbook-xsl qt5-tools qt5-base python pandoc cmake clang")
+
+# NOTE: Это опциональные зависимости
+removedep=("qt5-tools python-pygments clang")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  export CXXFLAGS+=" -DNDEBUG"
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DUSE_MATCHCOMPILER=ON \
+    -DHAVE_RULES=ON \
+    -DBUILD_GUI=ON \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DBUILD_TESTS=ON \
+    -DFILESDIR=/usr/share/cppcheck \
+    -DUSE_BUNDLED_TINYXML2=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm644 -t ${pkgdir}/usr/share/man/man1 cppcheck.1
+  install -vDm755 -t ${pkgdir}/usr/bin htmlreport/cppcheck-htmlreport
+
+  # Fix
+  install -d ${pkgdir}/usr/share/cppcheck/cfg/lang
+  mv ${pkgdir}/usr/bin/cppcheck_*.qm ${pkgdir}/usr/share/cppcheck/cfg/lang/
+}
