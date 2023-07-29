@@ -1,5 +1,5 @@
 pkgname=opencv
-pkgver=4.7.0
+pkgver=4.8.0
 pkgbuild=1
 arch=("auto")
 
