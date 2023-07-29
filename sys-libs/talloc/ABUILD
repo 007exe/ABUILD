@@ -1,5 +1,5 @@
 pkgname=talloc
-pkgver=2.4.0
+pkgver=2.4.1
 pkgbuild=1
 arch=("auto")
 
