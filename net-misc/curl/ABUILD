@@ -1,5 +1,5 @@
 pkgname=curl
-pkgver=8.1.2
+pkgver=8.2.0
 pkgbuild=1
 arch=("auto")
 
