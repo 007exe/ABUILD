@@ -1,0 +1,28 @@
+pkgname=python-pylast
+pkgver=5.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A Python interface to Last.fm and Libre.fm.")
+
+source=("https://github.com/pylast/pylast/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-httpx python-importlib-metadata")
+
+build_deps=("${adddep} python python-build python-hatch-vcs python-hatchling python-installer")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+}
