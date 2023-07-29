@@ -1,0 +1,25 @@
+pkgname=cppdap
+pkgver=1.58.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C++ library for the Debug Adapter Protocol.")
+
+source=("https://github.com/google/cppdap/archive/dap-${pkgver}-a.tar.gz")
+
+tags=("libs dev-cpp")
+
+adddep=("gcc-libs")
+
+build_deps=("${adddep} cmake nlohmann-json")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCPPDAP_USE_EXTERNAL_NLOHMANN_JSON_PACKAGE=ON \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
