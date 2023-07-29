@@ -1,5 +1,5 @@
 pkgname=libtiff
-pkgver=4.5.0
+pkgver=4.5.1
 pkgbuild=1
 arch=("auto")
 
