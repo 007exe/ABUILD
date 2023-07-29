@@ -1,18 +1,17 @@
 pkgname=lib32-icu
-pkgver=72.1
+pkgver=73.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("International Components for Unicode library (32 bit).")
-longdesc=("The International Components for Unicode (ICU) package is a mature, widely used set of C/C++ libraries providing Unicode and Globalization support for software applications. ICU is widely portable and gives applications the same results on all platforms.")
 
 source=("https://github.com/unicode-org/icu/releases/download/release-${pkgver//./-}/icu4c-${pkgver//./_}-src.tgz")
 
 tags=("lib32 dev-libs")
 
-build_deps=("lib32-glibc lib32-gcc-libs lib32-gcc-libs")
-
 adddep=("lib32-glibc lib32-gcc-libs icu")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
