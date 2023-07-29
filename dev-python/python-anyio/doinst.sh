@@ -1,0 +1,7 @@
+echo -e " "
+echo -e "The following packages extend python-anyio capabilities:"
+echo -e "python-trio: trio backend"
+echo -e "python-outcome: trio backend"
+echo -e "python-uvloop: use uvloop for asyncio backend"
+echo -e "python-pytest: pytest plugin"
+echo -e " "

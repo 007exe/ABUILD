@@ -1,0 +1,28 @@
+pkgname=python-anyio
+pkgver=3.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("High level compatibility layer for multiple asynchronous event loop implementations.")
+
+source=("https://github.com/agronholm/anyio/archive/${pkgver}/anyio-${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-idna python-sniffio")
+
+build_deps=("${adddep} python python-build python-installer python-setuptools python-setuptools-scm
+python-wheel python-uvloop python-trio")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-trio python-outcome python-uvloop python-pytest")
+
+build(){
+  go_src_dir
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
+  sed -i '/"error"/d' pyproject.toml
+  sed -i '/"trio"/d' tests/conftest.py
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
