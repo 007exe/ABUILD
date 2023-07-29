@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend python-httpcore capabilities:"
+echo -e "python-h2: for HTTP/2 support"
+echo -e "python-socksio: for SOCKS support"
+echo -e "python-trio: for trio backend"
+echo -e " "
