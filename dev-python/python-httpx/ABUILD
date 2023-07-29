@@ -1,0 +1,33 @@
+pkgname=python-httpx
+pkgver=0.24.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A next generation HTTP client for Python.")
+
+source=("https://github.com/encode/httpx/archive/${pkgver}.tar.gz")
+
+tags=("libs dev-python")
+
+adddep=("python-certifi python-httpcore python-idna python-sniffio")
+
+build_deps=("${adddep} python")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-brotli python-brotlicffi python-h2 python-socksio python-click python-rich python-pygments python-trio")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  sed -i '/"error",/d' pyproject.toml
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
+}
