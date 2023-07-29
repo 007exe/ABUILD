@@ -1,5 +1,5 @@
 pkgname=gspell
-pkgver=1.12.1
+pkgver=1.12.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://download.gnome.org/sources/gspell/${pkgver%.*}/gspell-${pkgver}
 
 tags=("gnome app-editors")
 
-build_deps=("gobject-introspection vala gtk-doc autoconf-archive glib2 gtk3 enchant icu")
+adddep=("enchant glib2 gtk3 icu")
+
+build_deps=("${adddep} autoconf-archive gobject-introspection gtk-doc vala")
 
 build(){
   go_src_dir
