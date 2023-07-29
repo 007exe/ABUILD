@@ -1,6 +1,6 @@
 pkgname=mpfr
 _pkgver=4.2.0
-_patchver=9
+_patchver=12
 pkgver=${_pkgver}.p${_patchver}
 pkgbuild=1
 arch=("auto")
