@@ -1,7 +1,7 @@
 pkgname=libtg_owt
 # NOTE: Коммит версии
-_commit=dcb5069ff76bd293e86928804208737e6cee2ccc
-pkgver=0.git22.${_commit:0:7}
+_commit=a45d8b8f0a99bd0e5118dda1dc4a8b7b3ad5dcfd
+pkgver=0.git23.${_commit:0:7}
 pkgbuild=1
 arch=("auto")
 
@@ -15,7 +15,9 @@ source=("git:https://github.com/desktop-app/tg_owt.git"
 
 tags=("libs media-libs")
 
-build_deps=("libdrm git ninja unzip cmake protobuf libxrandr libxcomposite openssl glibc ffmpeg libva opus yasm libjpeg-turbo pipewire libxtst abseil-cpp libepoxy")
+adddep=("libdrm")
+
+build_deps=("${adddep} git ninja unzip cmake protobuf libxrandr libxcomposite openssl glibc ffmpeg libva opus yasm libjpeg-turbo pipewire libxtst abseil-cpp libepoxy")
 
 before_build() {
   cd ${srcdir}
