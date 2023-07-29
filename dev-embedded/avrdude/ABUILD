@@ -1,5 +1,5 @@
 pkgname=avrdude
-pkgver=7.1
+pkgver=7.2
 pkgbuild=1
 arch=("auto")
 
