@@ -1,16 +1,17 @@
 pkgname=avisynthplus
-pkgver=3.7.2
+pkgver=3.7.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An improved version of the AviSynth frameserver.")
-longdesc=("AviSynth+ is a fork of the well-known frameserver, but with community contributions that avoided mainline inclusion until now. In the hope of modernizing AviSynth to meet present day needs and expectations, the project encourages everybody to help reach our goals: add long-sought features, energize the community, and improve developer and user friendliness. AviSynth+ is fully compatible with plugins and scripts written for AviSynth.")
 
 source=("https://github.com/AviSynth/AviSynthPlus/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-video")
 
-build_deps=("gcc-libs cmake devil")
+adddep=("gcc-libs hicolor-icon-theme")
+
+build_deps=("${adddep} cmake devil")
 
 build(){
   go_src_dir
