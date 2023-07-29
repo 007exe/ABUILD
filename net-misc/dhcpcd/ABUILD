@@ -1,19 +1,18 @@
 pkgname=dhcpcd
-pkgver=9.4.1
-pkgbuild=2
+pkgver=10.0.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("RFC2131 compliant DHCP client daemon.")
-longdesc=("Dhcpcd is an implementation of the DHCP client specified in RFC2131. A DHCP client is useful for connecting your computer to a network which uses DHCP to assign network addresses. dhcpcd strives to be a fully featured, yet very lightweight DHCP client.")
 
-source=("http://roy.marples.name/downloads/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/NetworkConfiguration/dhcpcd/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("network net-misc")
 
+build_deps=("glibc bash eudev")
+
 config_files=("etc/dhcpcd.conf
 etc/conf.d/dhcpcd")
-
-build_deps=("glibc bash eudev")
 
 build() {
   go_src_dir
