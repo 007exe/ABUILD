@@ -1,6 +1,6 @@
 pkgname=python-keyring
-pkgver=23.11.0
-pkgbuild=2
+pkgver=23.13.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Store and access your passwords safely.")
