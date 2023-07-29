@@ -1,0 +1,48 @@
+pkgname=connman
+pkgver=1.41
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Intel's modular network connection manager.")
+
+source=("https://www.kernel.org/pub/linux/network/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("net-misc network")
+
+adddep=("dbus iptables gnutls glib2")
+
+build_deps=("${adddep} bluez wpa_supplicant openconnect openvpn ppp iwd")
+
+# NOTE: Это опциональные зависимости
+removedep=("bluez wpa_supplicant pptpclient openvpn iwd")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/bin \
+    --with-systemdunitdir=/usr/lib/systemd/system \
+    --enable-pptp \
+    --enable-openconnect \
+    --enable-vpnc \
+    --enable-openvpn \
+    --enable-polkit \
+    --enable-client \
+    --enable-nmcompat \
+    --enable-test \
+    --enable-pie \
+    --enable-iwd
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm755 client/${pkgname}ctl ${pkgdir}/usr/bin/${pkgname}ctl
+  install -Dm644 src/main.conf ${pkgdir}/etc/connman/main.conf
+  find ${pkgdir}/usr -name \*.service -exec sed -i 's/s\(bin\)/\1/' {} +
+# See FS#48044
+  sed -i 's/ProtectSystem=full/ProtectSystem=true/' ${pkgdir}/usr/lib/systemd/system/connman.service
+  rm -r ${pkgdir}/usr/lib/tmpfiles.d
+}
