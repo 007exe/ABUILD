@@ -1,20 +1,18 @@
 pkgname=cudnn
-pkgver=8.6.0.163
-_cudaver=11.5
+pkgver=8.9.2.26
+_cudaver=12
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("NVIDIA CUDA Deep Neural Network library.")
-longdesc=("NVIDIA Accelerated Deep Learning on GPU library.")
 
-source=("https://developer.download.nvidia.com/compute/redist/cudnn/v${pkgver%.*}/local_installers/${_cudaver}/cudnn-linux-x86_64-${pkgver}_cuda${_cudaver}-archive.tar.xz")
+source=("https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/cudnn-linux-x86_64-${pkgver}_cuda${_cudaver}-archive.tar.xz")
 
 tags=("dev-libs libs")
 
-# cuda
-build_deps=("glibc gcc-libs zlib")
-
 #adddep=("cuda>='"${_cudaver}")
+
+build_deps=("${adddep} glibc gcc-libs zlib")
 
 build() {
   go_src_dir
