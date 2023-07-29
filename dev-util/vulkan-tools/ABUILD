@@ -1,5 +1,5 @@
 pkgname=vulkan-tools
-pkgver=1.3.245
+pkgver=1.3.255
 pkgbuild=1
 arch=("auto")
 
