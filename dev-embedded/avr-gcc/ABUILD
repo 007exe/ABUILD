@@ -10,7 +10,9 @@ source=("https://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.xz")
 
 tags=("develop dev-embedded")
 
-build_deps=("avr-binutils gcc-libs libmpc isl zstd")
+adddep=("avr-binutils gcc-libs libmpc zstd")
+
+build_deps=("${adddep}")
 
 build(){
   mkdir ${srcdir}/build
