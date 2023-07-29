@@ -1,0 +1,28 @@
+pkgname=python-jsonschema-specifications
+pkgver=2023.06.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The JSON Schema meta-schemas and vocabularies, exposed as a Registry.")
+
+source=("https://github.com/python-jsonschema/jsonschema-specifications/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("dev-python libs")
+
+adddep=("python-referencing")
+
+build_deps=("${adddep} python python-build python-installer python-hatchling python-hatch-vcs")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+}
