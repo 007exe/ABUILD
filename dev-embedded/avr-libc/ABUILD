@@ -3,25 +3,21 @@ pkgver=2.1.0
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("C library for Atmel AVR microcontrollers.")
-longdesc=("The C runtime library for the AVR family of microcontrollers.")
+shortdesc=("The C runtime library for the AVR family of microcontrollers.")
 
 source=("https://download.savannah.gnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("develop dev-embedded")
 
-build_deps=("mkpkg")
-
 adddep=("avr-gcc")
+
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
   burn_patches
   ./bootstrap
-  ./configure \
-    --prefix=/usr \
-    --build=$(./config.guess) \
-    --host=avr
+  ./configure --build=$(./config.guess) --host=avr --prefix=/usr --host=avr
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
