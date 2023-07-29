@@ -1,23 +1,16 @@
 pkgname=noto-fonts
 pkglist=("noto-fonts-extra")
-pkgver=20230601
-strict_version=1
-_commit=f20eb388d2742b5ebf2cf3d1a2992303cce67cf6
+pkgver=23.7.1
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Google Noto TTF fonts.")
 
-source=("git:https://github.com/notofonts/notofonts.github.io.git")
+source=("https://github.com/notofonts/notofonts.github.io/archive/noto-monthly-release-${pkgver}.tar.gz")
 
 tags=("media-fonts fonts")
 
 build_deps=("git python-fonttools")
-
-before_build() {
-  go_src_dir
-  git checkout ${_commit}
-}
 
 build() {
   go_src_dir
