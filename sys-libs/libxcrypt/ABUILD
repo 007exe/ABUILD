@@ -1,10 +1,9 @@
 pkgname=libxcrypt
-pkgver=4.4.31
+pkgver=4.4.36
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Modern library for one-way hashing of passwords.")
-longdesc=("libxcrypt is a modern library for one-way hashing of passwords.")
 
 source=("https://github.com/besser82/libxcrypt/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
@@ -15,18 +14,13 @@ build_deps=("glibc")
 build(){
   go_src_dir
   burn_patches
-echo "============================================================"
-echo "Интеграция этого пакета пока вызывает проблемы"
-echo "его функции предоставляет пакет glibc"
-echo "============================================================"
-#  ./configure \
-#    --prefix=/usr \
-#    --libdir=/usr/lib$LIBDIRSUFFIX \
-#    --disable-static \
-#    --enable-hashes=strong,glibc \
-#    --enable-obsolete-api=no \
-#    --disable-failure-tokens
-#  make -j${numjobs}
-#  make DESTDIR=$pkgdir install
-ERROR
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --enable-hashes=strong,glibc \
+    --enable-obsolete-api=no \
+    --disable-failure-tokens
+  make -j${numjobs}
+  make DESTDIR=$pkgdir install
 }
