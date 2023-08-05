@@ -1,0 +1,31 @@
+pkgname=libfido2
+pkgver=1.13.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library functionality for FIDO 2.0, including communication with a device over USB.")
+
+source=("https://developers.yubico.com/libfido2/Releases/libfido2-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("glibc openssl libcbor hidapi zlib")
+
+# systemd
+build_deps=("cmake libcbor")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_C_FLAGS="${CFLAGS} ${CPPFLAGS}" \
+    -Wno-dev \
+    -S .
+  make -j${numjobs} -C build VERBOSE=1
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm 644 NEWS README.adoc -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
