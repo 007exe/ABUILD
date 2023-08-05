@@ -1,0 +1,30 @@
+pkgname=libcbor
+pkgver=0.10.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C library for parsing and generating CBOR, the general-purpose schema-less binary data format.")
+
+source=("https://github.com/PJK/libcbor/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("glibc")
+
+build_deps=("${adddep} cmake cmocka")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake . \
+    -Bbuild \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_C_FLAGS="${CFLAGS} ${CPPFLAGS}" \
+    -DBUILD_SHARED_LIBS=ON \
+    -DWITH_TESTS=1
+  make -C build VERBOSE=1 -j${numjobs}
+#  make -C build/test VERBOSE=1
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm 644 README.md CHANGELOG.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
