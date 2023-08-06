@@ -1,18 +1,17 @@
 pkgname=lib32-gmp
-pkgver=6.2.1
+pkgver=6.3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A free library for arbitrary precision arithmetic (32-bit).")
-longdesc=("The GMP package contains math libraries. These have useful functions for arbitrary precision arithmetic.")
 
 source=("https://gmplib.org/download/gmp/gmp-${pkgver}.tar.xz")
 
 tags=("lib32 dev-libs")
 
-build_deps=("lib32-glibc lib32-gcc-libs")
-
 adddep=("lib32-glibc lib32-gcc-libs gmp")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
