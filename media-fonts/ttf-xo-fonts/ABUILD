@@ -1,11 +1,11 @@
 pkgname=ttf-xo-fonts
 # Поддельная версия, оригинал не имеет версии
-pkgver=20220717
+_ver=`date +%y.%m`
+pkgver=${_ver}
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("The family of original free fonts HO_Fonts for use in any applications and on any platforms.")
-longdesc=("The original XO_Fonts fonts are designed with modern typography trends in mind and are available to the developer community for free to use and modify. ")
+shortdesc=("XO by MyOffice provide metric-compatible fonts with Microsoft to display documents without distortion and violation of the structure.")
 
 source=("https://myoffice.ru/files/fonts/all_fonts_myoffice.zip")
 
