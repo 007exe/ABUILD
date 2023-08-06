@@ -1,5 +1,5 @@
 pkgname=kernel
-pkgver=6.4.7
+pkgver=6.4.8
 pkgbuild=1
 arch=("auto")
 
@@ -102,6 +102,8 @@ build() {
 
   mkdir -p ${pkgdir}/boot
   cp arch/x86/boot/bzImage ${pkgdir}/boot/vmlinuz-linux
+  cp System.map $pkgdir/boot/System.map-${kernel_ver}
+  cp .config $pkgdir/boot/config-${kernel_ver}
 
   echo "*******************************************************"
   echo "*                                                     *"
