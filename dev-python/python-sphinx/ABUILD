@@ -1,12 +1,11 @@
 pkgname=python-sphinx
-pkgver=7.0.1
+pkgver=7.1.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python documentation generator.")
-longdesc=("Sphinx is a tool that facilitates the creation of beautiful documentation for Python projects from reStructuredText sources.")
 
-source=("https://pypi.org/packages/source/S/Sphinx/Sphinx-${pkgver}.tar.gz")
+source=("https://github.com/sphinx-doc/sphinx/archive/v${pkgver}/sphinx-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
