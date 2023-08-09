@@ -1,5 +1,5 @@
 pkgname=perl-cairo-gobject
-pkgver=1.004
+pkgver=1.005
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://cpan.metacpan.org/authors/id/X/XA/XAOC/Cairo-GObject-${pkgver}.
 
 tags=("libs dev-perl")
 
-build_deps=("perl glib-perl cairo-perl pkgconf")
-
 adddep=("glib-perl cairo-perl")
+
+build_deps=("${adddep} perl perl-extutils-depends perl-extutils-pkgconfig")
 
 build(){
   go_src_dir
