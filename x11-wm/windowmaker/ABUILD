@@ -1,16 +1,17 @@
 pkgname=windowmaker
-pkgver=0.95.9
+pkgver=0.96.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The fast and light GNUstep window manager.")
-longdesc=("An X11 window manager with a NEXTSTEP look and feel.")
 
-source=("http://windowmaker.org/pub/source/release/WindowMaker-$pkgver.tar.gz")
+source=("https://github.com/window-maker/wmaker/releases/download/wmaker-${pkgver}/WindowMaker-${pkgver}.tar.gz")
 
 tags=("apps x11-wm")
 
-build_deps=("libxinerama libxrandr libxmu libpng libxpm libxft libtiff giflib libbsd imagemagick")
+adddep=("libxinerama libxrandr libxmu libpng libxpm libxft libtiff giflib imagemagick libbsd")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
@@ -27,7 +28,7 @@ build() {
     --enable-modelock \
     --enable-randr
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0 /g' -e 's/    if test "$export_dynamic" = yes && test -n "$export_dynamic_flag_spec"; then/      func_append compile_command " -Wl,-O1,--as-needed"\n      func_append finalize_command " -Wl,-O1,--as-needed"\n\0/' libtool
-  make V=0
+  make V=0 -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -D -m644 COPYING.WTFPL ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.WTFPL
   install -D -m644 ${filedir}/wmaker.desktop ${pkgdir}/usr/share/xsessions/wmaker.desktop
