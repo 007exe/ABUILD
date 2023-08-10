@@ -1,0 +1,26 @@
+pkgname=ephoto
+pkgver=1.6.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("EFL photo gallery viewer.")
+
+source=("https://download.enlightenment.org/rel/apps/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps media-gfx")
+
+adddep=("efl libexif")
+
+build_deps=("${adddep} meson ninja")
+
+build(){
+  go_src_dir
+  burn_patches
+  export CFLAGS="${CFLAGS} -fvisibility=hidden"
+  meson build \
+    --prefix=/usr \
+    -D libdir=/usr/lib
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname}/ AUTHORS
+}
