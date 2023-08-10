@@ -1,0 +1,23 @@
+pkgname=ecrire
+pkgver=0.2.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("EFL Simple Text editor.")
+
+source=("https://download.enlightenment.org/rel/apps/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("app-text apps")
+
+adddep=("efl")
+
+build_deps=("${adddep} meson ninja")
+
+build() {
+  go_src_dir
+  export CFLAGS="${CFLAGS} -fvisibility=hidden"
+  meson build --prefix=/usr
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname}/ AUTHORS
+}
