@@ -1,18 +1,17 @@
 pkgname=sublime-text-4
-pkgver=4.4143
+pkgver=4.4152
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Sophisticated text editor for code, html and prose.")
-removedep=("Sophisticated text editor for code, markup and prose.")
 
 source=("https://download.sublimetext.com/sublime_text_build_${pkgver:2}_x64.tar.xz")
 
 tags=("develop app-editors")
 
-build_deps=("libpng gtk3")
-
 adddep=("gtk3 libpng")
+
+build_deps=("${adddep}")
 
 build() {
   cd ${srcdir}
