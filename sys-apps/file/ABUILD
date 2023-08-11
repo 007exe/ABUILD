@@ -1,18 +1,17 @@
 pkgname=file
-pkgver=5.44
+pkgver=5.45
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("File type identification utility.")
-longdesc=("The File package contains a utility for determining the type of a given file or files.")
 
 source=("https://astron.com/pub/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("sys-apps base")
 
-build_deps=("glibc zlib xz bzip2 libseccomp")
+adddep=("glibc zlib xz bzip2 libseccomp zstd")
 
-adddep=("libseccomp")
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
