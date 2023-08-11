@@ -1,19 +1,18 @@
 pkgname=tar
-pkgver=1.34
-pkgbuild=2
+pkgver=1.35
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Utility used to store, backup, and transport files.")
-longdesc=("The Tar package provides the ability to create tar archives as well as perform various other kinds of archive manipulation. Tar can be used on previously created archives to extract files, to store additional files, or to update or list files which were already stored.")
 
 source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz"
 "ftp://ftp.gnu.org/gnu/tar/tar-1.13.tar.gz")
 
 tags=("base app-arch")
 
-build_deps=("glibc acl attr")
+adddep=("glibc acl")
 
-adddep=("attr")
+build_deps=("${adddep}")
 
 build() {
 #FIXME: Версии старше 1.13 при упаковку удаляют символические ссылки. Данная версия tar используется только для упаковки пакетов сценарием makepkg,
