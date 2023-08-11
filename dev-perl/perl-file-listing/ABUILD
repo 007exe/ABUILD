@@ -1,5 +1,5 @@
 pkgname=perl-file-listing
-pkgver=6.15
+pkgver=6.16
 pkgbuild=1
 arch=("noarch")
 
@@ -9,9 +9,9 @@ source=("https://search.cpan.org/CPAN/authors/id/P/PL/PLICEASE/File-Listing-${pk
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-http-date")
-
 adddep=("perl-http-date")
+
+build_deps=("${adddep} perl")
 
 build(){
   go_src_dir
