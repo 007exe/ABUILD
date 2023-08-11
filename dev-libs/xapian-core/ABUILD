@@ -1,5 +1,5 @@
 pkgname=xapian-core
-pkgver=1.4.22
+pkgver=1.4.23
 pkgbuild=1
 arch=("auto")
 
