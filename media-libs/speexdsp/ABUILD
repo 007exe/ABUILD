@@ -1,10 +1,9 @@
 pkgname=speexdsp
-pkgver=1.2.0
-pkgbuild=2
+pkgver=1.2.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("DSP library derived from Speex.")
-longdesc=("Audio compression format designed for speech -- DSP.")
 
 source=("https://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
 
