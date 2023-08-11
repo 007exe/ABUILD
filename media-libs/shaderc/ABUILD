@@ -1,10 +1,12 @@
 # NOTE: Необходимо указать версию spirv-tools и glslang
 pkgname=shaderc
-pkgver=2023.3
-_ver_spirv_tools=2022.4
-_ver_glslang=	12.1.0
+pkgver=2023.4
 pkgbuild=1
 arch=("auto")
+
+#NOTE: Узнаём версию spirv-tools и glslang
+_ver_spirv_tools=`spirv-as --version | grep SPIRV-Tools | cut -d " " -f2 | cut -c2-`
+_ver_glslang=`glslangValidator --version | grep Glslang\ Version | cut -d ':' -f3`
 
 shortdesc=("Collection of tools, libraries and tests for shader compilation.")
 
