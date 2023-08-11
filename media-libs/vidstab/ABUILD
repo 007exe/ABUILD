@@ -1,16 +1,25 @@
 pkgname=vidstab
-pkgver=1.1.0
-pkgbuild=2
+pkgver=1.1.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Video stabilization library.")
-longdesc=("This package contains libraries and signature files for developing applications that use vidstab.")
 
 source=("https://github.com/georgmartius/vid.stab/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("cmake")
+adddep=("gcc-libs glibc")
+
+build_deps=("${adddep} cmake ninja")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
