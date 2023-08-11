@@ -1,6 +1,6 @@
 pkgname=nss
 pkglist=("ca-certificates-mozilla")
-pkgver=3.91
+pkgver=3.92
 pkgbuild=1
 arch=("auto")
 
