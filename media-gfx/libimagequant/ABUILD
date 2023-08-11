@@ -1,10 +1,9 @@
 pkgname=libimagequant
-pkgver=4.0.4
+pkgver=4.2.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Palette quantization library that powers pngquant and other PNG optimizers.")
-longdesc=("Library for high-quality conversion of RGBA images to 8-bit indexed-color (palette) images.")
 
 source=("https://github.com/ImageOptim/libimagequant/archive/${pkgver}/libimagequant-${pkgver}.tar.gz")
 
