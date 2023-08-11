@@ -9,11 +9,10 @@ source=("https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.
 
 tags=("net-misc network")
 
-#libxcrypt ldns
-adddep=("glibc krb5 libedit openssl linux-pam zlib")
 
-# libfido2
-build_deps=("${adddep} kernel-headers")
+adddep=("glibc krb5 libedit openssl linux-pam zlib libxcrypt ldns")
+
+build_deps=("${adddep} kernel-headers libfido2")
 
 config_files=("etc/ssh/ssh_config
 etc/ssh/sshd_config
@@ -34,9 +33,9 @@ build() {
     --with-kerberos5=/usr \
     --with-xauth=/usr/bin/xauth \
     --with-pid-dir=/run \
-    --with-default-path=/usr/local/sbin:/usr/local/bin:/usr/bin
-#--with-security-key-builtin
-#--with-ldns
+    --with-default-path=/usr/local/sbin:/usr/local/bin:/usr/bin \
+    --with-ldns \
+    --with-security-key-builtin
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
