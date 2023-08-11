@@ -1,6 +1,6 @@
 pkgname=python-cairo
-pkgver=1.23.0
-pkgbuild=3
+pkgver=1.24.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Python bindings for the cairo graphics library.")
@@ -11,7 +11,7 @@ source=("https://github.com/pygobject/pycairo/releases/download/v${pkgver}/pycai
 
 adddep=("cairo")
 
-build_deps=("${adddep} python meson")
+build_deps=("${adddep} python meson python-sphinx python-sphinx_rtd_theme")
 
 build() {
   go_src_dir
