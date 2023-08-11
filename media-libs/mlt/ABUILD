@@ -1,5 +1,5 @@
 pkgname=mlt
-pkgver=7.16.0
+pkgver=7.18.0
 pkgbuild=1
 arch=("auto")
 
