@@ -4,9 +4,8 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Framebuffer setup utility.")
-longdesc=("Fbset is a utility for querying and changing video modes of fbcon consoles.")
 
-source=("http://users.telenet.be/geertu/Linux/fbdev/fbset-${pkgver}.tar.gz")
+source=("http://web.archive.org/web/20220901004551/http://users.telenet.be/geertu/Linux/fbdev/fbset-$pkgver.tar.gz")
 
 tags=("console sys-apps")
 
