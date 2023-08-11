@@ -1,5 +1,5 @@
 pkgname=zig
-pkgver=0.10.0
+pkgver=0.10.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://ziglang.org/download/${pkgver}/zig-${pkgver}.tar.xz")
 
 tags=("develop dev-lang")
 
-build_deps=("clang cmake llvm lld")
+adddep=("clang lld llvm-libs")
+
+build_deps=("${adddep} cmake llvm")
 
 build(){
   go_src_dir
