@@ -1,10 +1,9 @@
 pkgname=cfitsio
-pkgver=4.2.0
+pkgver=4.3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library of C and Fortran subroutines for reading and writing data files in FITS (Flexible Image Transport System) data format")
-longdesc=("C and Fortran library for manipulating FITS files.")
 
 source=("https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-$pkgver.tar.gz")
 
