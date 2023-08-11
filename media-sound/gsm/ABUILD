@@ -1,10 +1,9 @@
 pkgname=gsm
-pkgver=1.0.19
+pkgver=1.0.22
 pkgbuild=2
 arch=("auto")
 
 shortdesc=("Shared libraries for GSM speech compressor.")
-longdesc=("Contains runtime shared libraries for libgsm, an implementation of the European GSM 06.10 provisional standard for full-rate speech transcoding, prI-ETS 300 036, which uses RPE/LTP (residual pulse excitation/long term prediction) coding at 13 kbit/s.")
 
 source=("http://www.quut.com/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
