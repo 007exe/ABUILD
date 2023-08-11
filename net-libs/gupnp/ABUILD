@@ -1,16 +1,17 @@
 pkgname=gupnp
-pkgver=1.6.3
+pkgver=1.6.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An object-oriented UPNP framework.")
-longdesc=("An object-oriented framework for creating UPnP devs and control points.")
 
 source=("https://gitlab.gnome.org/GNOME/gupnp/-/archive/gupnp-${pkgver}/gupnp-gupnp-${pkgver}.tar.gz")
 
 tags=("libs net-libs")
 
-build_deps=("glib2 gssdp util-linux libxml2 gobject-introspection gtk-doc vala meson")
+adddep=("glib2 gssdp libxml2")
+
+build_deps=("${adddep} gi-docgen gobject-introspection meson vala")
 
 build() {
   go_src_dir
