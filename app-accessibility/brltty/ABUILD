@@ -1,10 +1,9 @@
 pkgname=brltty
-pkgver=6.5
+pkgver=6.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Braille display driver for Linux/Unix.")
-longdesc=("Daemon that provides access to the Linux/Unix console for a blind person.")
 
 source=("https://brltty.app/archive/${pkgname}-${pkgver}.tar.bz2")
 
