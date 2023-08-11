@@ -1,34 +1,35 @@
 pkgname=bullet
-pkgver=2.82
-_rev=2704
+pkgver=3.25
 pkgbuild=1
 arch=('auto')
-shortdesc="A 3D Collision Detection and Rigid Body Dynamics Library for games and animation"
-source=("http://bullet.googlecode.com/files/${pkgname}-${pkgver}-r${_rev}.tgz")
-tags="dev-libs develop"
-build_deps="cmake doxygen graphviz mesa"
 
-BUILD_SYSTEM="cmake"
-BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
-  -DCMAKE_BUILD_TYPE=RELEASE \
-  -DLIB_DIR=lib${LIBDIRSUFFIX} \
-  -DLIB_SUFFIX=${LIBDIRSUFFIX} \
-  -DBUILD_SHARED_LIBS=1 \
-  -DBUILD_DEMOS=0 \
-  -DBUILD_MULTITHREADING=1 \
-  -DBUILD_EXTRAS=1 \
-  -DINSTALL_LIBS=1 \
-  -DINSTALL_EXTRA_LIBS=1 \
-  -DCMAKE_BUILD_TYPE=Release \
-  ../"
+shortdesc=("A 3D Collision Detection and Rigid Body Dynamics Library for games and animation.")
 
-after_build() {
+source=("https://github.com/bulletphysics/bullet3/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("sci-physics develop")
+
+build_deps=("cmake doxygen graphviz mesa glu python python-numpy python-setuptools ninja")
+
+build() {
   go_src_dir
-
-  mkdir -p "${pkgdir}"/usr/lib${LIBDIRSUFFIX}/pkgconfig
-  sed -e "s|%VERSION%|${pkgver}|g" \
-      -e "s|%LIBDIRSUFFIX%|${LIBDIRSUFFIX}|g" \
-      ${filedir}/bullet.pc > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/bullet.pc
-
-  install -Dm644 BulletLicense.txt ${pkgdir}/usr/share/licenses/${pkgbase}/LICENSE
+  burn_patches
+  sed -i '/SET_TARGET_PROPERTIES(pybullet PROPERTIES PREFIX/d' examples/pybullet/CMakeLists.txt
+  export CXXFLAGS+=" -ffat-lto-objects"
+  cmake -B build -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=1 \
+    -DINSTALL_LIBS=1 \
+    -DINSTALL_EXTRA_LIBS=1 \
+    -DBUILD_PYBULLET=ON \
+    -DBUILD_PYBULLET_NUMPY=ON \
+    -DBUILD_OPENGL3_DEMOS=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBULLET2_MULTITHREADING=ON \
+    -DCMAKE_SKIP_RPATH=YES
+  ninja -C build
+  python setup.py build
+  doxygen
+  DESTDIR=${pkgdir} ninja -C build install
 }
