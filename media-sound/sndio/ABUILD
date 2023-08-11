@@ -1,16 +1,17 @@
 pkgname=sndio
-pkgver=1.8.1
-pkgbuild=2
+pkgver=1.9.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A small audio and MIDI framework part of the OpenBSD project.")
-longdesc=("Sndio is a small audio and MIDI framework part of the OpenBSD project and ported to FreeBSD, Linux and NetBSD.")
 
 source=("https://sndio.org/sndio-$pkgver.tar.gz")
 
 tags=("libs media-sound")
 
-build_deps=("alsa-lib libbsd")
+adddep=("alsa-lib libbsd")
+
+build_deps=("${adddep}")
 
 config_files=("etc/default/sndiod")
 
