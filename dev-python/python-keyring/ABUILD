@@ -1,5 +1,5 @@
 pkgname=python-keyring
-pkgver=23.13.1
+pkgver=24.2.0
 pkgbuild=1
 arch=("auto")
 
