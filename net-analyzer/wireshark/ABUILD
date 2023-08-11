@@ -1,12 +1,11 @@
 pkgname=wireshark
-pkgver=4.0.1
+pkgver=4.0.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Network traffic and protocol analyzer/sniffer.")
-longdesc=("The Wireshark package contains a network protocol analyzer, also known as a sniffer.")
 
-source=("https://www.wireshark.org/download/src/${pkgname}-${pkgver}.tar.xz")
+source=("https://www.wireshark.org/download/src/wireshark-${pkgver}.tar.xz")
 
 tags=("network net-analyzer")
 
