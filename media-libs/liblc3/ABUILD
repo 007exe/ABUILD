@@ -1,5 +1,5 @@
 pkgname=liblc3
-pkgver=1.0.3
+pkgver=1.0.4
 pkgbuild=1
 strict_version=1
 arch=("auto")
@@ -17,9 +17,6 @@ build_deps=("meson glibc")
 before_build() {
   go_src_dir
   git checkout v${pkgver}
-
-  git cherry-pick -n 214c343165006b664402c1667f4936e640c4376f  # add soversion
-  git cherry-pick -n 5c2f8916e71490dddbef0e43793cc09206da0ef1  # fix build
 }
 
 build() {
