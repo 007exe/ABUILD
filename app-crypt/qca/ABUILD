@@ -1,12 +1,12 @@
 pkgname=qca-qt5
 pkglist=("qca-qt6")
-pkgver=2.3.6
+pkgver=2.3.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt5 Cryptographic Architecture.")
 
-source=("https://download.kde.org/stable/qca/${pkgver}/qca-${pkgver}.tar.xz")
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/qca/${pkgver}/qca-${pkgver}.tar.xz")
 
 tags=("app-crypt libs")
 
