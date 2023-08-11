@@ -1,5 +1,5 @@
 pkgname=python-numpy
-pkgver=1.24.3
+pkgver=1.25.1
 pkgbuild=1
 arch=("auto")
 
