@@ -1,5 +1,5 @@
 pkgname=lib32-faudio
-pkgver=23.06
+pkgver=23.07
 pkgbuild=1
 arch=("auto")
 
