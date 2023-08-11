@@ -1,5 +1,5 @@
 pkgname=rubberband
-pkgver=3.2.1
+pkgver=3.3.0
 pkgbuild=1
 arch=("auto")
 
