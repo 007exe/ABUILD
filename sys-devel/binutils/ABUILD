@@ -1,5 +1,5 @@
 pkgname=binutils
-pkgver=2.40
+pkgver=2.41
 pkgbuild=1
 arch=("auto")
 
