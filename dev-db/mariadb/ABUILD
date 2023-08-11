@@ -10,8 +10,7 @@ source=("https://rsync.osuosl.org/pub/mariadb/mariadb-${pkgver}/source/mariadb-$
 
 tags=("server dev-db")
 
-# libxcrypt
-adddep_libs=("liburing openssl pcre2 zlib zstd")
+adddep_libs=("liburing openssl pcre2 zlib zstd libxcrypt")
 
 adddep_clients=("jemalloc ncurses")
 
