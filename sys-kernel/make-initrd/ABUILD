@@ -1,0 +1,56 @@
+pkgname=make-initrd
+pkgver=2.37.0
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("This is a tool for building initramfs format images used for booting Linux OS..")
+
+source=("git:https://github.com/osboot/make-initrd.git")
+
+tags=("base sys-kernel")
+
+# busybox libshell
+adddep=("bash make sed coreutils findutils grep glibc util-linux")
+
+build_deps=("${adddep} autoconf eudev flex bison kmod elfutils zlib bzip2 xz zstd help2man")
+
+config_files=("etc/initrd.mk
+etc/initrd.mk.d/debug.mk.example
+etc/initrd.mk.d/guestfs.mk.example
+etc/initrd.mk.d/rescue.mk.example")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+# NOTE: Подмодули busybox и libshell
+  git submodule init
+  git submodule update
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --with-imagename='initrd-linux.img' \
+    --with-runtimedir=/usr/lib/initrd \
+    --with-bootdir=/boot \
+    --with-kbddir=/lib/kbd \
+    --with-busybox \
+    --with-libelf \
+    --with-zlib \
+    --with-bzip2 \
+    --with-lzma \
+    --with-zstd
+  make # -j${numjobs}
+  make DESTDIR=$pkgdir install
+
+# MPKG hooks
+#  install -Dm0755 $filedir/dracut-generate-initrd.sh ${pkgdir}/etc/mpkg/hooks/dracut-generate-initrd.sh
+}
+
