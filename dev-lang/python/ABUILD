@@ -10,9 +10,8 @@ source=("https://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz
 
 tags=("develop dev-lang")
 
-# mpdecimal libxcrypt
 build_deps=("tk sqlite llvm gdb bzip2 expat gdbm libffi libnsl openssl zlib
-bzip2 expat gdbm libffi libnsl openssl zlib")
+bzip2 expat gdbm libffi libnsl openssl zlib libxcrypt mpdecimal")
 
 adddep=("bzip2 expat gdbm libffi libnsl openssl zlib")
 
