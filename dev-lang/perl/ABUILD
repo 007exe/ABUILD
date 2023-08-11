@@ -1,5 +1,5 @@
 pkgname=perl
-pkgver=5.36.1
+pkgver=5.38.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("http://www.cpan.org/src/5.0/perl-${pkgver}.tar.xz")
 
 tags=("dev-lang develop")
 
-build_deps=("gdbm db glibc")
+adddep=("gdbm db5 db glibc libxcrypt")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
