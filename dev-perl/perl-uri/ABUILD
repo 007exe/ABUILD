@@ -1,11 +1,11 @@
 pkgname=perl-uri
-pkgver=5.17
+pkgver=5.19
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Uniform Resource Identifiers (absolute and relative) for Perl.")
 
-source=("https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-${pkgver}.tar.gz")
+source=("https://cpan.metacpan.org/authors/id/S/SI/SIMBABQUE/URI-${pkgver}.tar.gz")
 
 tags=("dev-perl libs")
 
