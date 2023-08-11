@@ -1,5 +1,5 @@
 pkgname=python-more-itertools
-pkgver=9.1.1
+pkgver=10.0.1
 pkgbuild=1
 arch=("auto")
 
