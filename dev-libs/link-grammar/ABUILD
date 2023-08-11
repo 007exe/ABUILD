@@ -1,5 +1,5 @@
 pkgname=link-grammar
-pkgver=5.11.0
+pkgver=5.12.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,10 @@ source=("https://www.abisource.com/downloads/${pkgname}/${pkgver}/${pkgname}-${p
 
 tags=("libs dev-libs")
 
-build_deps=("python swig hunspell sqlite libedit")
+adddep=("hunspell sqlite libedit")
+
+# apache-ant java-environment=11
+build_deps=("${adddep} python swig")
 
 build(){
   go_src_dir
