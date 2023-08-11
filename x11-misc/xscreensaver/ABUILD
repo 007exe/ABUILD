@@ -1,20 +1,22 @@
 pkgname=xscreensaver
-pkgver=6.04
+pkgver=6.06
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Screen saver and locker for the X Window System.")
-longdesc=("The XScreenSaver package is a modular screen saver and locker for the X Window System. It is highly customizable and allows the use of any program that can draw on the root window as a display mode. The purpose of XScreenSaver is to display pretty pictures on your screen when it is not in use, in keeping with the philosophy that unattended monitors should always be doing something interesting, just like they do in the movies. However, XScreenSaver can also be used as a screen locker, to prevent others from using your terminal while you are away.")
 
 source=("https://www.jwz.org/xscreensaver/${pkgname}-${pkgver}.tar.gz")
 
 tags=("xapps x11-misc")
 
-# libxcrypt xorg-appres
-build_deps=("gtk2 glu libglvnd libjpeg-turbo libx11 libxext libxft libxi libxinerama libxmu libxrandr elogind
-libxt libxxf86vm perl-libwww linux-pam glibc glib2 gdk-pixbuf gdk-pixbuf-xlib bc intltool libxpm")
+adddep=("gtk3 glu xorg-appres libglvnd libjpeg-turbo libx11 libxcrypt libxext libxft libxi
+libxinerama libxmu libxrandr libxt libxxf86vm perl-libwww linux-pam glibc glib2 gdk-pixbuf")
 
-adddep=("perl-libwww")
+# systemd gdm
+build_deps=("${adddep} bc intltool libxpm")
+
+# NOTE: Это опциональные зависимости
+removedep=("gdm")
 
 config_files=("etc/pam.d/xscreensaver")
 
