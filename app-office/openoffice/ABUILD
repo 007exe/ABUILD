@@ -1,19 +1,20 @@
 pkgname=openoffice
-pkgver=4.1.13
+pkgver=4.1.14
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("OpenOffice.org (a full-featured open-source office suite).")
-longdesc=("OpenOffice.org is a full-featured open-source office suite that is compatible with all other major office software. This is a repackaging of the official OpenOffice.org binary RPM's distributed by the upstream developers.")
 
 source=("https://downloads.apache.org/openoffice/$pkgver/binaries/ru/Apache_OpenOffice_${pkgver}_Linux_x86-64_install-rpm_ru.tar.gz")
 
 tags=("app-office apps")
 
-# libxcrypt-compat
+adddep=("hicolor-icon-theme desktop-file-utils shared-mime-info libxcrypt")
+
 build_deps=("rpm freetype glibc gtk2 hicolor-icon-theme desktop-file-utils shared-mime-info")
 
-adddep=("hicolor-icon-theme desktop-file-utils shared-mime-info")
+# NOTE: Это опциональные зависимости
+removedep=("apr-util java-environment gconf gstreamer-base mesa mime-types nss python raptor1 sqlite")
 
 config_files=("opt/openoffice4/program/sofficerc")
 
