@@ -1,6 +1,6 @@
 pkgname=python-sphinx-inline-tabs
-pkgver=2022.01.02.beta11
-pkgbuild=2
+pkgver=2023.04.21
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Add inline tabbed content to your Sphinx documentation.")
