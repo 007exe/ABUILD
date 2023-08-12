@@ -23,6 +23,7 @@ before_build(){
 
 build() {
   go_src_dir
+  burn_patches
   CXXFLAGS+=" -ffat-lto-objects"
   cmake \
     -Bbuild-shared \
@@ -50,7 +51,4 @@ build() {
   for lib in *.so; do
     ln -sf ${lib} ${lib}.0
   done
-# NOTE: Отсутствующая символическая ссылка glslangValidator
-  cd ${pkgdir}/usr/bin
-  ln -s glslang glslangValidator
 }
