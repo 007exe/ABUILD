@@ -1,5 +1,5 @@
 pkgname=python-cryptography
-pkgver=41.0.2
+pkgver=41.0.3
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ tags=("libs dev-python")
 
 adddep=("python-cffi")
 
-build_deps=("${adddep} python python-setuptools-rust")
+build_deps=("${adddep} python python-setuptools-rust llvm clang lld")
 
 build() {
   go_src_dir
