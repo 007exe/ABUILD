@@ -1,5 +1,5 @@
 pkgname=ntp
-pkgver=4.2.8p15
+pkgver=4.2.8p17
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${pkgver/p /
 
 tags=("net-misc network")
 
-build_deps=("openssl perl libcap libedit")
+adddep=("openssl perl libcap libedit")
+
+build_deps=("${adddep}")
 
 config_files=("etc/ntp.conf
 etc/conf.d/ntpd
