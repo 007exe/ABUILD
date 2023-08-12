@@ -1,6 +1,6 @@
 pkgname=glslang
 pkgver=12.3.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("OpenGL and OpenGL ES shader front end and validator.")
@@ -23,6 +23,7 @@ before_build(){
 
 build() {
   go_src_dir
+  CXXFLAGS+=" -ffat-lto-objects"
   cmake \
     -Bbuild-shared \
     -GNinja \
@@ -45,8 +46,11 @@ build() {
 
   install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-    cd ${pkgdir}/usr/lib
+  cd ${pkgdir}/usr/lib
   for lib in *.so; do
     ln -sf ${lib} ${lib}.0
   done
+# NOTE: Отсутствующая символическая ссылка glslangValidator
+  cd ${pkgdir}/usr/bin
+  ln -s glslang glslangValidator
 }
