@@ -9,7 +9,8 @@ source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v${pkgver}/libg
 
 tags=("lib32 media-libs")
 
-adddep=("lib32-libxext libglvnd lib32-mesa")
+# lib32-mesa
+adddep=("lib32-libxext libglvnd")
 
 build_deps=("${adddep} lib32-libx11 lib32-libxext xorgproto python meson")
 
