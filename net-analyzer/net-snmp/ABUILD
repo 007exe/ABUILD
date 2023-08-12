@@ -1,16 +1,17 @@
 pkgname=net-snmp
 pkgver=5.9.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Software for generating and retrieving SNMP data.")
-longdesc=("A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6.")
+shortdesc=("A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6.")
 
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("network net-misc")
 
-build_deps=("libnsl lm_sensors libpcap pciutils pcre python-setuptools")
+adddep=("libnsl libpcap lm_sensors pciutils pcre")
+
+build_deps=("${adddep} python-setuptools")
 
 config_files=("etc/conf.d/snmpd
 etc/conf.d/snmptrapd")
@@ -21,15 +22,13 @@ build() {
   autoreconf -i
   ./configure \
     --prefix=/usr \
-    --sbindir=/usr/bin \
-    --sysconfdir=/etc \
-    --mandir=/usr/share/man \
     --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --sbindir=/usr/bin \
+    --mandir=/usr/share/man \
     --enable-ucd-snmp-compatibility \
     --enable-ipv6 \
-    --with-libwrap \
     --with-python-modules \
-    --without-rpm \
     --with-default-snmp-version="3" \
     --with-sys-contact="root@localhost" \
     --with-sys-location="Unknown" \
