@@ -1,6 +1,6 @@
 pkgname=mesa
 pkglist=("vulkan-mesa-layers opencl-mesa vulkan-intel vulkan-radeon vulkan-swrast libva-mesa-driver mesa-vdpau")
-pkgver=23.1.4
+pkgver=23.1.5
 pkgbuild=1
 arch=("auto")
 
@@ -8,13 +8,27 @@ shortdesc=("Mesa is an OpenGL compatible 3D graphics library.")
 
 tags=("libs xorg-libs")
 
-build_deps=("python-mako libxml2 libx11 xorgproto libdrm libxshmfence libxxf86vm libxdamage zstd elfutils llvm
-clang valgrind cmake meson libvdpau vulkan-icd-loader wayland glslang libva libclc libglvnd libunwind
-wayland-protocols lm_sensors llvm-libs libxcb python expat elfutils libomxil-bellagio directx-headers")
+deps_vulkan_mesa_layers=("python libdrm libxcb wayland")
+deps_opencl_mesa=("clang expat libdrm elfutils spirv-llvm-translator zstd libclc")
+# systemd
+deps_vulkan_intel=("libdrm libx11 libxshmfence wayland zstd")
+# systemd
+deps_vulkan_radeon=("libdrm elfutils libx11 libxshmfence llvm-libs  wayland zstd")
+# systemd
+deps_vulkan_swrast=("libdrm libunwind libx11 libxshmfence llvm-libs wayland zstd")
+deps_libva_mesa_driver=("expat libdrm elfutils libx11 libxshmfence llvm-libs zstd")
+deps_mesa_vdpau=("expat libdrm elfutils libx11 libxshmfence llvm-libs zstd")
+adddep=("libxdamage libunwind")
+
+# systemd
+build_deps=("${adddep} ${deps_vulkan_mesa_layers} ${deps_opencl_mesa} ${deps_vulkan_intel}
+${deps_vulkan_radeon} ${deps_vulkan_swrast} ${deps_libva_mesa_driver} ${deps_mesa_vdpau}
+libglvnd libva libvdpau libxml2 libxrandr libxxf86vm llvm lm_sensors rust spirv-tools
+vulkan-icd-loader cmake glslang meson python-mako python-ply rust-bindgen xorgproto valgrind
+wayland-protocols directx-headers libomxil-bellagio")
 
 source=("https://mesa.freedesktop.org/archive/mesa-${pkgver}.tar.xz")
 
-adddep=("libxdamage libunwind")
 
 build() {
   go_src_dir
@@ -24,18 +38,16 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=lib \
+    -D android-libbacktrace=disabled \
     -D b_ndebug=true \
-    -D b_lto=false \
-    -D platforms=x11,wayland \
-    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,iris,crocus,zink,d3d12 \
-    -D vulkan-drivers=amd,intel,swrast \
-    -D vulkan-layers=device-select,intel-nullhw,overlay \
     -D dri3=enabled \
     -D egl=enabled \
+    -D gallium-drivers=r300,r600,radeonsi,nouveau,virgl,svga,swrast,i915,iris,crocus,zink,d3d12 \
     -D gallium-extra-hud=true \
     -D gallium-nine=true \
     -D gallium-omx=bellagio \
     -D gallium-opencl=icd \
+    -D gallium-rusticl=true \
     -D gallium-va=enabled \
     -D gallium-vdpau=enabled \
     -D gallium-xa=enabled \
@@ -44,14 +56,19 @@ build() {
     -D gles2=enabled \
     -D glvnd=true \
     -D glx=dri \
+    -D intel-clc=enabled \
     -D libunwind=enabled \
     -D llvm=enabled \
     -D lmsensors=enabled \
-    -D osmesa=true \
-    -D shared-glapi=enabled \
     -D microsoft-clc=disabled \
+    -D osmesa=true \
+    -D platforms=x11,wayland \
+    -D rust_std=2021 \
+    -D shared-glapi=enabled \
+    -D valgrind=enabled \
     -D video-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc \
-    -D valgrind=enabled
+    -D vulkan-drivers=amd,intel,intel_hasvk,swrast,virtio-experimental \
+    -D vulkan-layers=device-select,intel-nullhw,overlay
 #  meson configure build
   ninja -C build
   meson compile -C build
@@ -63,7 +80,7 @@ build() {
 vulkan-mesa-layers() {
   pkgname=vulkan-mesa-layers
   shortdesc=("Mesa Vulkan layers.")
-  adddep=("python")
+  adddep=("${deps_vulkan_mesa_layers}")
 }
 
 vulkan-mesa-layers_prep() {
@@ -79,7 +96,7 @@ vulkan-mesa-layers_prep() {
 opencl-mesa() {
   pkgname=opencl-mesa
   shortdesc=("OpenCL support for AMD/ATI Radeon mesa drivers.")
-  adddep=("libclc")
+  adddep=("${deps_opencl_mesa}")
 }
 
 opencl-mesa_prep() {
@@ -94,6 +111,7 @@ opencl-mesa_prep() {
 vulkan-intel() {
   pkgname=vulkan-intel
   shortdesc=("Intel Vulkan mesa driver.")
+  adddep=("${deps_vulkan_intel}")
 }
 
 vulkan-intel_prep() {
@@ -107,6 +125,7 @@ vulkan-intel_prep() {
 vulkan-radeon() {
   pkgname=vulkan-radeon
   shortdesc=("Radeon Vulkan mesa driver.")
+  adddep=("${deps_vulkan_radeon}")
 }
 
 vulkan-radeon_prep() {
@@ -120,6 +139,7 @@ vulkan-radeon_prep() {
 vulkan-swrast() {
   pkgname=vulkan-swrast
   shortdesc=("Vulkan software rasteriser driver.")
+  adddep=("${deps_vulkan_swrast}")
 }
 
 vulkan-swrast_prep() {
@@ -133,6 +153,7 @@ vulkan-swrast_prep() {
 libva-mesa-driver() {
   pkgname=libva-mesa-driver
   shortdesc=("VA-API implementation for gallium.")
+  adddep=("${deps_libva_mesa_driver}")
 }
 
 libva-mesa-driver_prep() {
@@ -145,6 +166,7 @@ libva-mesa-driver_prep() {
 mesa-vdpau() {
   pkgname=mesa-vdpau
   shortdesc=("Mesa VDPAU drivers.")
+  adddep=("${deps_mesa_vdpau}")
 }
 
 mesa-vdpau_prep() {
