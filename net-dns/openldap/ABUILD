@@ -1,6 +1,6 @@
 pkgname=openldap
 pkgver=2.6.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Lightweight Directory Access Protocol (LDAP) client and server.")
@@ -14,50 +14,32 @@ etc/conf.d/slapd
 etc/openldap/slapd.ldif
 etc/openldap/slapd.conf")
 
-# libsasl
-# wiredtiger --disable-wt
-build_deps=("libtool e2fsprogs util-linux chrpath unixodbc e2fsprogs libsodium groff")
+# systemd libsasl
+build_deps=("libtool util-linux chrpath unixodbc libsodium")
 
 before_build() {
   go_src_dir
   burn_patches
-#  sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap,libldap_r}/Makefile.in
+  sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap}/Makefile.in
+
   sed -i 's|#define LDAPI_SOCK LDAP_RUNDIR LDAP_DIRSEP "run" LDAP_DIRSEP "ldapi"|#define LDAPI_SOCK LDAP_DIRSEP "run" LDAP_DIRSEP "openldap" LDAP_DIRSEP "ldapi"|' include/ldap_defaults.h
   sed -i 's|%LOCALSTATEDIR%/run|/run/openldap|' servers/slapd/slapd.{conf,ldif}
   sed -i 's|-$(MKDIR) $(DESTDIR)$(localstatedir)/run|-$(MKDIR) $(DESTDIR)/run/openldap|' servers/slapd/Makefile.in
+
+  sed -i -e "s|EnvironmentFile.*|EnvironmentFile=-/etc/conf.d/slapd|" -e "s/slapd -d 0/\0 -u ldap -g ldap/" servers/slapd/slapd.service
+
 }
 
 build() {
   go_src_dir
   burn_patches
-# Изменение прав с 0644 на 0755
-  sed -i 's|-m 644 $(LIBRARY)|-m 755 $(LIBRARY)|' libraries/{liblber,libldap}/Makefile.in
-
-# Заменить rundir на /run/openldap
-  sed -i 's|#define LDAPI_SOCK LDAP_RUNDIR LDAP_DIRSEP "run" LDAP_DIRSEP "ldapi"|#define LDAPI_SOCK LDAP_DIRSEP "run" LDAP_DIRSEP "openldap" LDAP_DIRSEP "ldapi"|' include/ldap_defaults.h
-  sed -i 's|%LOCALSTATEDIR%/run|/run/openldap|' servers/slapd/slapd.{conf,ldif}
-  sed -i 's|-$(MKDIR) $(DESTDIR)$(localstatedir)/run|-$(MKDIR) $(DESTDIR)/run/openldap|' servers/slapd/Makefile.in
-
   autoconf
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib \
+    --libexecdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var/lib/openldap \
     --sbindir=/usr/bin \
-    --enable-proctitle \
-    --enable-cleartext \
-    --enable-lmpasswd \
-    --enable-perl \
-    --enable-shell \
-    --enable-ldap \
-    --enable-slapd \
-    --enable-dynacl \
-    --enable-aci \
-    --enable-rewrite \
-    --enable-rlookups \
-    --enable-slapi \
-    --enable-wrappers \
     --enable-dynamic \
     --enable-syslog \
     --enable-ipv6 \
@@ -66,16 +48,13 @@ build() {
     --enable-spasswd \
     --enable-modules \
     --enable-backends \
-    --enable-slapd \
-    --disable-ndb \
-    --disable-sql \
-    --disable-static \
-    --disable-debug \
-    --enable-overlays=mod \
-    --with-tls \
-    --with-cyrus-sasl \
+    --enable-argon2 \
+    --with-argon2=libsodium \
     --disable-wt \
+    --enable-overlays=mod \
+    --with-cyrus-sasl \
     --with-threads
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
