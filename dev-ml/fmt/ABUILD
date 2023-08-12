@@ -1,16 +1,17 @@
 pkgname=fmt
-pkgver=9.1.0
+pkgver=10.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open-source formatting library for C++.")
-longdesc=("Combinators to devise OCaml Format pretty-printing functions.")
 
 source=("https://github.com/fmtlib/fmt/archive/refs/tags/${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("cmake doxygen ninja npm python-pip python-virtualenv")
+adddep=("gcc-libs")
+
+build_deps=("${adddep} cmake doxygen ninja npm python-breathe python-docutils python-jinja python-six python-sphinx python-wheel")
 
 build() {
   go_src_dir
@@ -20,8 +21,8 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=/usr/lib \
     -DBUILD_SHARED_LIBS=ON
-  cmake --build build
-#  cmake --build build --target doc
+  cmake --build build -j${numjobs}
+#  cmake --build build --target doc -j${numjobs}
   DESTDIR=${pkgdir} cmake --build build --target install
   install -Dm 644 LICENSE.rst -t ${pkgdir}/usr/share/licenses/fmt/
 }
