@@ -1,0 +1,32 @@
+pkgname=rust-bindgen
+_pkgname=bindgen
+pkgver=0.66.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Automatically generates Rust FFI bindings to C (and some C++) libraries.")
+
+source=("https://github.com/rust-lang/rust-bindgen/archive/v${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+adddep=("gcc-libs clang")
+
+build_deps=("${adddep} rust")
+
+build() {
+  go_src_dir
+  cargo fetch --locked --target x86_64-unknown-linux-gnu
+  mkdir -p completions
+  cargo build --release --frozen
+  local _completion="target/release/$_pkgname --generate-shell-completions"
+  $_completion bash > "completions/$_pkgname"
+  $_completion fish > "completions/$_pkgname.fish"
+  $_completion zsh  > "completions/_$_pkgname"
+  install -Dm755 "target/release/$_pkgname" ${pkgdir}/usr/bin/bindgen
+  install -Dm644 README.md ${pkgdir}/usr/share/doc/${pkgname}/README.md
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm664 "completions/$_pkgname" -t ${pkgdir}/usr/share/bash-completion/completions/
+  install -Dm664 "completions/$_pkgname.fish" -t ${pkgdir}/usr/share/fish/vendor_completions.d/
+  install -Dm664 "completions/_$_pkgname" -t ${pkgdir}/usr/share/zsh/site-functions/
+}
