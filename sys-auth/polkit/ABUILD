@@ -1,16 +1,18 @@
 pkgname=polkit
-pkgver=122
-pkgbuild=2
+pkgver=123
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Application development toolkit for controlling system-wide privileges.")
-longdesc=("Polkit is a toolkit for defining and handling authorizations. It is used for allowing unprivileged processes to communicate with privileged processes.")
 
 source=("https://gitlab.freedesktop.org/polkit/polkit/-/archive/${pkgver}/polkit-${pkgver}.tar.gz")
 
 tags=("libs sys-auth")
 
-build_deps=("meson gtk-doc gobject-introspection glib2 linux-pam expat elogind js78 duktape")
+# systemd
+adddep=("duktape expat glib2 linux-pam elogind")
+
+build_deps=("gobject-introspection gtk-doc meson")
 
 config_files=("etc/pam.d/polkit-1")
 
@@ -41,7 +43,7 @@ session  include        system-session
 EOF
 
 # Удаляем бесполезные сервисы systemd
-  rm -r ${pkgdir}/tmp
+#  rm -r ${pkgdir}/tmp
 
   install -d -o root -g 102 -m 750 ${pkgdir}/{etc,usr/share}/polkit-1/rules.d
 
