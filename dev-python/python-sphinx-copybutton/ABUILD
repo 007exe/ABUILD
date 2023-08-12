@@ -1,5 +1,5 @@
 pkgname=python-sphinx-copybutton
-pkgver=0.5.1
+pkgver=0.5.2
 pkgbuild=1
 arch=("auto")
 
