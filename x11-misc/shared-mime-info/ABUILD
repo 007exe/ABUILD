@@ -1,34 +1,28 @@
 pkgname=shared-mime-info
-pkgver=2.1
-pkgbuild=2
+pkgver=2.2
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Shared MIME-Info Specification")
-longdesc=("This is the freedesktop.org shared MIME info database.")
+shortdesc=("Freedesktop.org Shared MIME Info.")
 
 # NOTE: xdgmime Необходим только для тестов
-source=("https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/${pkgver}/shared-mime-info-${pkgver}.tar.gz"
-"https://anduin.linuxfromscratch.org/BLFS/xdgmime/xdgmime.tar.xz")
+source=("https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/${pkgver}/shared-mime-info-${pkgver}.tar.gz")
 
 tags=("utils x11-misc")
 
-build_deps=("libxml2 glib2 itstool gettext xmlto docbook-xsl meson")
-
 adddep=("libxml2 glib2")
 
-before_build(){
-  cd ${srcdir}/xdgmime
-  make -j${numjobs}
-}
+build_deps=("${adddep} gettext xmlto docbook-xsl meson")
 
 build() {
   go_src_dir
   burn_patches
+#  CFLAGS= make -C xdgmime
   meson build \
     -D prefix=/usr \
     -D update-mimedb=false \
     -D xdgmime-path=${srcdir}/xdgmime
-  meson configure build
+#  meson configure build
   ninja -C build
   meson test -C build --print-errorlogs
   DESTDIR=${pkgdir} meson install -C build
