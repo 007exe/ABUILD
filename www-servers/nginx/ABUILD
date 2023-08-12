@@ -1,5 +1,5 @@
 pkgname=nginx
-pkgver=1.22.1
+pkgver=1.24.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,8 @@ source=("https://nginx.org/download/nginx-${pkgver}.tar.gz")
 
 tags=("server www-servers")
 
-# libxcrypt
-adddep=("pcre2 zlib openssl geoip mailcap")
+# mailcap
+adddep=("pcre2 zlib openssl geoip libxcrypt")
 
 build_deps=("${adddep} mercurial")
 
