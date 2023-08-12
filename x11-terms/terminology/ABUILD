@@ -1,0 +1,22 @@
+pkgname=terminology
+pkgver=1.13.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("EFL based terminal emulator.")
+
+source=("https://download.enlightenment.org/rel/apps/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("apps x11-terms")
+
+build_deps=("meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS="${CFLAGS} -fvisibility=hidden"
+  meson builddir --prefix=/usr
+  ninja -C builddir
+  DESTDIR=${pkgdir} ninja -C builddir install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
