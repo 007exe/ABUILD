@@ -9,7 +9,8 @@ source=("https://github.com/encode/httpx/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
-adddep=("python-certifi python-httpcore python-idna python-sniffio")
+# python-httpcore
+adddep=("python-certifi python-idna python-sniffio")
 
 build_deps=("${adddep} python")
 
