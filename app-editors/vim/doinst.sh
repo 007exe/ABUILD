@@ -1,0 +1,7 @@
+echo -e " "
+echo -e "The following packages extend vim capabilities:"
+echo -e "python: Python language support"
+echo -e "ruby: Ruby language support"
+echo -e "lua: Lua language support"
+echo -e "tcl: Tcl language support"
+echo -e " "

@@ -1,5 +1,5 @@
 pkgname=vim
-pkgver=9.0.0910
+pkgver=9.0.1678
 pkgbuild=1
 arch=("auto")
 
@@ -22,11 +22,24 @@ source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz"
 
 tags=("app-editors console")
 
-build_deps=("glibc libgcrypt gpm python ruby gawk tcl pcre zlib acl ncurses")
+adddep=("gpm acl glibc libgcrypt zlib perl")
 
+build_deps=("${adddep} python ruby libxt lua gawk tcl libcanberra")
+
+# NOTE: Это опциональные зависимости
+removedep=("python ruby lua tcl")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
+  burn_patches
   ./configure \
     --prefix=/usr \
     --with-features=huge \
