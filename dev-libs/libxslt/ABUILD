@@ -1,10 +1,9 @@
 pkgname=libxslt
-pkgver=1.1.37
+pkgver=1.1.38
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("XML stylesheet transformation library.")
-longdesc="This C library allows to transform XML files into other XML files (or HTML, text, ...) using the standard XSLT stylesheet transformation mechanism."
 
 source=("https://download.gnome.org/sources/libxslt/1.1/libxslt-${pkgver}.tar.xz")
 
