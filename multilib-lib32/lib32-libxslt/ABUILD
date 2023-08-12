@@ -1,18 +1,17 @@
 pkgname=lib32-libxslt
-pkgver=1.1.37
+pkgver=1.1.38
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("XML stylesheet transformation library (32-bit).")
-longdesc=("This C library allows to transform XML files into other XML files (or HTML, text, ...) using the standard XSLT stylesheet transformation mechanism.")
 
 source=("https://download.gnome.org/sources/libxslt/1.1/libxslt-${pkgver}.tar.xz")
 
 tags=("lib32 dev-libs")
 
-build_deps=("lib32-libgcrypt lib32-libxml2 lib32-xz")
-
 adddep=("libxslt")
+
+build_deps=("${adddep} lib32-libgcrypt lib32-libxml2 lib32-xz")
 
 build() {
   go_src_dir
