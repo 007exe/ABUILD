@@ -1,5 +1,5 @@
 pkgname=python-more-itertools
-pkgver=10.0.1
+pkgver=10.1.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/more-itertools/more-itertools/archive/refs/tags/v${p
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-installer python-setuptools python-wheel python-flit")
+build_deps=("python python-build python-installer python-wheel python-flit-core")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
