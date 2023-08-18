@@ -1,6 +1,6 @@
 pkgname=fuse3
 pkglist=("fuse-common")
-pkgver=3.15.1
+pkgver=3.16.1
 pkgbuild=1
 arch=("auto")
 
