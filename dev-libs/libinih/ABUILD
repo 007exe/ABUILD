@@ -1,16 +1,17 @@
 pkgname=libinih
-pkgver=56
+pkgver=57
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A simple .INI file parser written in C.")
-longdesc=("inih is a simple .INI file parser written in C. It's only a couple of pages of code, and it was designed to be small and simple, so it's good for embedded systems.")
 
 source=("https://github.com/benhoyt/inih/archive/r${pkgver}/inih-r${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
-build_deps=("meson")
+adddep=("gcc-libs glibc")
+
+build_deps=("${adddep} meson")
 
 build() {
   go_src_dir
