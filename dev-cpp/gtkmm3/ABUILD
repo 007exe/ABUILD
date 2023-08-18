@@ -1,16 +1,17 @@
 pkgname=gtkmm3
-pkgver=3.24.7
+pkgver=3.24.8
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("gtkmm is the official C++ interface for the popular GUI library for gtk3.")
-longdesc=("The Gtkmm package provides a C++ interface to GTK+ 3.")
 
 source=("http://ftp.gnome.org/pub/GNOME/sources/gtkmm/${pkgver%.*}/gtkmm-${pkgver}.tar.xz")
 
 tags=("libs dev-cpp")
 
-build_deps=("meson mm-common gtk3 atkmm pangomm")
+adddep=("atkmm gtk3 pangomm")
+
+build_deps=("${adddep} atkmm cairomm glibmm meson mm-common pangomm")
 
 build() {
   go_src_dir
