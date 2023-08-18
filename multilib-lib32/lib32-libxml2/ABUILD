@@ -1,5 +1,5 @@
 pkgname=lib32-libxml2
-pkgver=2.11.4
+pkgver=2.11.5
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://download.gnome.org/sources/libxml2/${pkgver%.*}/libxml2-${pkgve
 
 tags=("dev-libs lib32")
 
-build_deps=("lib32-icu lib32-xz lib32-zlib")
+adddep=("lib32-icu lib32-xz lib32-zlib libxml2")
 
-adddep=("libxml2")
+build_deps=("${adddep} ")
 
 build() {
   go_src_dir
