@@ -1,16 +1,17 @@
 pkgname=xdg-dbus-proxy
-pkgver=0.1.4
+pkgver=0.1.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Filtering proxy for D-Bus connections.")
-longdesc=("xdg-dbus-proxy is a filtering proxy for D-Bus connections.")
 
 source=("https://github.com/flatpak/xdg-dbus-proxy/releases/download/$pkgver/xdg-dbus-proxy-$pkgver.tar.xz")
 
 tags=("base sys-apps")
 
-build_deps=("glib2 dbus autoconf-archive autoconf docbook-xsl")
+adddep=("dbus glib2")
+
+build_deps=("${adddep} docbook-xsl meson")
 
 build() {
   go_src_dir
