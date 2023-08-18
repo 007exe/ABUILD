@@ -1,5 +1,5 @@
 pkgname=lib32-speexdsp
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://downloads.us.xiph.org/releases/speex/speexdsp-${pkgver}.tar.gz"
 
 tags=("lib32 media-libs")
 
-build_deps=("lib32-gcc-libs")
+adddep=("speexdsp lib32-gcc-libs")
 
-adddep=("speexdsp")
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
