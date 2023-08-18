@@ -9,8 +9,7 @@ source=("https://downloads.sourceforge.net/sourceforge/mpg123/mpg123-${pkgver}.t
 
 tags=("lib32 media-sound")
 
-# lib32-sdl2
-adddep=("mpg123 lib32-glibc lib32-libtool lib32-alsa-lib")
+adddep=("mpg123 lib32-glibc lib32-libtool lib32-alsa-lib lib32-sdl2")
 
 build_deps=("${adddep} lib32-gcc-libs")
 
@@ -25,8 +24,7 @@ build() {
     --libdir=/usr/lib32 \
     --enable-int-quality \
     --with-cpu=i586 \
-    --with-audio="alsa"
-#    --with-audio="alsa sdl"
+    --with-audio="alsa sdl"
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
