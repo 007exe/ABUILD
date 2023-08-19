@@ -1,5 +1,5 @@
 pkgname=spice-gtk
-pkgver=0.41
+pkgver=0.42
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,12 @@ source=("https://www.spice-space.org/download/gtk/${pkgname}-${pkgver}.tar.xz")
 
 tags=("net-misc apps")
 
-build_deps=("gobject-introspection meson spice-protocol usbutils vala phodav
-wayland-protocols gst-plugins-base gst-plugins-good libcacard polkit usbredir")
+adddep=("acl cairo gdk-pixbuf glib2 gst-plugins-base gst-plugins-good gstreamer
+gtk3 json-glib libcacard libcap-ng libepoxy libjpeg-turbo cyrus-sasl libsoup3 libusb
+libx11 lz4 openssl opus phodav pixman polkit spice-protocol usbredir wayland zlib")
+
+build_deps=("${adddep} gobject-introspection meson python-six python-pyparsing
+usbutils vala wayland-protocols")
 
 build() {
   go_src_dir
