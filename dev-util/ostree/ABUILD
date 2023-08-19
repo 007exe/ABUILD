@@ -1,5 +1,5 @@
 pkgname=ostree
-pkgver=2023.2
+pkgver=2023.5
 pkgbuild=1
 strict_version=1
 arch=("auto")
@@ -26,9 +26,6 @@ before_build() {
   cd ${srcdir}/ostree
   git checkout v${pkgver}
 
-# Фикс сборки с GLib 2.76
-  git cherry-pick -n 376c9d7effa01fa020711a3f12829fe9b18b8bca \
-                     813c439352297622e74a288aadf3cd700d19bc2f
   burn_patches
 
 # Удаляем не рабочие тесты: https://github.com/ostreedev/ostree/issues/2790
