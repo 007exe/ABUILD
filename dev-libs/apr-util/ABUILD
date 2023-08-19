@@ -1,16 +1,17 @@
 pkgname=apr-util
-pkgver=1.6.1
-pkgbuild=3
+pkgver=1.6.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Apache Portable Runtime.")
-longdesc=("The Apache Portable Runtime Utility Library provides a predictable and consistent interface to underlying client library interfaces.")
 
 source=("https://www.apache.org/dist/apr/apr-util-${pkgver}.tar.bz2")
 
 tags=("dev-libs libs")
 
-build_deps=("apr expat gdbm unixodbc openssl nss sqlite mariadb-libs db postgresql python postgresql-libs openldap")
+adddep=("apr expat libxcrypt")
+
+build_deps=("${adddep} gdbm openldap unixodbc openssl nss sqlite mariadb-libs db postgresql-libs python")
 
 # NOTE: Это опциональные зависимости
 removedep=("gdbm libldap unixodbc mariadb-libs postgresql-libs db sqlite nss openssl")
@@ -18,7 +19,6 @@ removedep=("gdbm libldap unixodbc mariadb-libs postgresql-libs db sqlite nss ope
 build() {
   go_src_dir
   burn_patches
-  ./buildconf --with-apr=`apr-1-config --srcdir`
   ./configure \
     --prefix=/usr \
     --with-apr=/usr \
