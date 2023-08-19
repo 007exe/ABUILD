@@ -1,24 +1,27 @@
 pkgname=spice
-pkgver=0.15.0
+pkgver=0.15.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("SPICE server.")
-longdesc=("The SPICE project aims to provide a complete open source solution for remote access to virtual machines in a seamless way so you can play videos, record audio, share usb devices and share folders without complications.")
 
 source=("https://www.spice-space.org/download/releases/spice-server/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("app-emulation xapps")
 
-# libsasl
-build_deps=("pixman opus libjpeg-turbo glib2 lz4 meson spice-protocol libcacard")
+adddep=("pixman opus libjpeg-turbo glib2 cyrus-sasl lz4 spice-protocol libcacard")
+
+build_deps=("${adddep} meson python-six python-pyparsing")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  sed -i "s/if not version_info.contains('git')/if version_info.length() >= 4/" server/meson.build
+  sed -i "/meson-dist/d" meson.build
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D gstreamer=no
+  ninja -C build
+  DESTDIR=${pkgdir} meson install -C build
 }
