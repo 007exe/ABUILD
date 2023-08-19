@@ -4,16 +4,17 @@ _relver=${pkgver}rel.1
 pkgbuild=1
 arch=('auto')
 
-shortdesc=("A text browser for the World Wide Web")
-longdesc=("Lynx is a text based web browser.")
+shortdesc=("A text browser for the World Wide Web.")
 
 source=("https://invisible-mirror.net/archives/lynx/tarballs/${pkgname}${_relver}.tar.bz2")
 
-tags="network net-misc"
+tags=("network net-misc")
 
-build_deps="openssl libidn"
+adddep=("openssl libidn ncurses")
 
-config_files='/etc/lynx.cfg'
+build_deps=("${adddep}")
+
+config_files=("/etc/lynx.cfg")
 
 build() {
   go_src_dir
@@ -21,7 +22,7 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --with-ssl=/usr \
     --enable-nls \
     --enable-ipv6 \
