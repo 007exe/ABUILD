@@ -1,12 +1,12 @@
 pkgname=python-sphinxcontrib-qthelp
-pkgver=1.0.3
-pkgbuild=3
+pkgver=1.0.6
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Sphinx extension which outputs QtHelp document.")
 
-_name=sphinxcontrib-qthelp
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/sphinxcontrib-qthelp/sphinxcontrib-qthelp-${pkgver}.tar.gz")
+_name=sphinxcontrib_qthelp
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
 
 tags=("libs dev-python")
 
