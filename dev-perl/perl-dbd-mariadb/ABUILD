@@ -1,0 +1,21 @@
+pkgname=perl-dbd-mariadb
+pkgver=1.22
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("MariaDB and MySQL driver for the Perl5 Database Interface (DBI).")
+
+source=("https://cpan.metacpan.org/authors/id/P/PA/PALI/DBD-MariaDB-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+adddep=("mariadb-libs perl-dbi")
+
+build_deps=("${adddep} perl perl-devel-checklib")
+
+build(){
+  go_src_dir
+  perl Makefile.PL INSTALLDIRS=vendor --testsocket=/tmp/socket.mysql
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+}
