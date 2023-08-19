@@ -1,5 +1,5 @@
 pkgname=zenity
-pkgver=3.44.1
+pkgver=3.44.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://download.gnome.org/sources/zenity/${pkgver%.*}/zenity-${pkgver}
 
 tags=("gnome-extra gnome")
 
-build_deps=("yelp-tools meson webkit2gtk libnotify")
+adddep=("gtk3 libnotify")
+
+build_deps=("${adddep} meson yelp-tools")
 
 build() {
   go_src_dir
@@ -18,7 +20,6 @@ build() {
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D libnotify=true
-#    -D webkitgtk=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
