@@ -1,25 +1,32 @@
 pkgname=cargo-c
-pkgver=0.9.14
+pkgver=0.9.23
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Helper program to build and install c-like libraries.")
-longdesc=("A cargo subcommand to build and install C-ABI compatibile dynamic and static libraries.")
+shortdesc=("A cargo subcommand to build and install C-ABI compatibile dynamic and static libraries.")
 
-source=("https://github.com/lu-zero/cargo-c/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/lu-zero/cargo-c/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
+"https://github.com/lu-zero/cargo-c/releases/download/v${pkgver}/Cargo.lock")
 
 tags=("dev-util libs")
 
-build_deps=("curl openssl zlib rust")
+adddep=("curl openssl zlib")
+
+build_deps=("${adddep} rust")
+
+before_build() {
+  go_src_dir
+  ln -sf ${srcache}/Cargo.lock Cargo.lock
+  cargo fetch --locked --target x86_64-unknown-linux-gnu --manifest-path=Cargo.toml
+}
 
 build() {
   go_src_dir
   burn_patches
-  cargo build \
-    --release
-  cargo install \
-    --no-track \
-    --root ${pkgdir}/usr \
-    --path .
+  export CFLAGS+=' -ffat-lto-objects'
+  export RUSTUP_TOOLCHAIN='stable'
+  export CARGO_TARGET_DIR=target
+  cargo build --release --frozen --manifest-path=Cargo.toml
+  find target/release -maxdepth 1 -type f -executable -exec install -D -m755 -t ${pkgdir}/usr/bin {} +
   install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
