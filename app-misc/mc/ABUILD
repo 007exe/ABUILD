@@ -1,5 +1,5 @@
 pkgname=mc
-pkgver=4.8.29
+pkgver=4.8.30
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("http://ftp.midnight-commander.org/${pkgname}-${pkgver}.tar.xz")
 
 tags=("console app-misc")
 
-build_deps=("glibc e2fsprogs glib2 gpm libssh2 slang which libxt libx11 unzip")
+adddep=("e2fsprogs glib2 gpm libssh2 slang which")
 
-adddep=("which")
+build_deps=("${adddep} aspell libxt libx11 unzip")
 
 # NOTE: Это опциональные зависимости
 removedep=("aspell cabextract cdparanoia cdrkit cvs gawk mtools p7zip
