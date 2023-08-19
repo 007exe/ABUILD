@@ -9,8 +9,7 @@ source=("https://nginx.org/download/nginx-${pkgver}.tar.gz")
 
 tags=("server www-servers")
 
-# mailcap
-adddep=("pcre2 zlib openssl geoip libxcrypt")
+adddep=("pcre2 zlib openssl geoip libxcrypt mailcap")
 
 build_deps=("${adddep} mercurial")
 
