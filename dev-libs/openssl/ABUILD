@@ -9,17 +9,11 @@ source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
-build_deps=("perl")
+adddep=("glibc")
+
+build_deps=("${adddep} perl")
 
 config_files=("etc/ssl/openssl.cnf")
-
-# NOTE: когда все пакеты будут пересобраны под третью версию openssl эту зависимость следует удалить
-# Пакеты зависящие от openssl
-# coreutils, cryptsetup, curl, freerdp, git, gstreamer, kdelibs4support, khtml, kmod, krb5, libevent
-# pulseaudio, libshout, libssh, libssh2, libtorrent-rasterbar, neon, net-snmp, openssh, openvpn, qca
-# opusfile, pipewire, pkcs11-helper, postgresql, python, python-cryptography, python-pycurl, vsftpd
-# qbittorrent, qpdf, qt6-base, rsync, serf, socat, ppp, srt, sudo, wpa_supplicant
-adddep=("openssl-1.1")
 
 build() {
   go_src_dir
