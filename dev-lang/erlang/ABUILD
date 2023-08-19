@@ -1,5 +1,6 @@
 pkgname=erlang
-pkgver=25.1.2
+pkglist=("erlang-unixodbc")
+pkgver=26.0.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,26 +10,36 @@ source=("https://github.com/erlang/otp/archive/refs/tags/OTP-${pkgver}.tar.gz")
 
 tags=("develop dev-lang")
 
-# fop lksctp-tools
-build_deps=("glu libxslt mesa perl unixodbc wxwidgets-gtk3 glu ncurses openssl webkit2gtk wxwidgets-gtk3")
-
+# erlang-nox
+dep_unixodbc=("unixodbc")
 adddep=("glu ncurses openssl webkit2gtk wxwidgets-gtk3")
+
+# fop lksctp-tools java-environment
+build_deps=("${adddep} ${dep_unixodbc} glu libxslt mesa perl unixodbc wxwidgets-gtk3")
 
 build() {
   go_src_dir
   burn_patches
   sed -i 's/^LDFLAGS = /LDFLAGS += /g' lib/{odbc/c_src,megaco/src/flex}/Makefile.in
-  export CFLAGS+=' -ffat-lto-objects'
-  export WX_GKT_VER='3.2'
   ./otp_build autoconf
   ./configure \
-    --enable-builtin-zlib \
-    --enable-smp-support \
+    --enable-threads \
+    --enable-shared-zlib \
+    --enable-ssl=dynamic-ssl-lib \
     --prefix=/usr \
     --with-odbc
-  make -j${numjobs}
-  export PATH="$srcdir/bin:$PATH"
-  make DESTDIR=${pkgdir} install
+  make DOC_TARGETS=chunks all -j${numjobs}
+  make DOC_TARGETS=chunks docs -j${numjobs}
+
+  export PATH=${srcdir}/bin:$PATH
+  make DESTDIR=${pkgdir} DOC_TARGETS=chunks install install-docs
+
+# Перемещаем файлы относящиеся к пакету erlang-unixodbc
+  mkdir -p ${srcdir}/unixodbc
+  mv "${pkgdir}/usr/lib/erlang/lib/odbc"* ${srcdir}/unixodbc/
+
+# man pages
+#  cp -r -v man ${pkgdir}/usr/lib/erlang/
 
   install -Dm644 ${filedir}/epmd.service ${pkgdir}/usr/lib/systemd/system/epmd.service
   install -Dm644 ${filedir}/epmd.socket ${pkgdir}/usr/lib/systemd/system/epmd.socket
@@ -38,4 +49,19 @@ build() {
   install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
   install -Dm644 CONTRIBUTING.md ${pkgdir}/usr/share/doc/${pkgname}/CONTRIBUTING.md
   install -Dm644 AUTHORS ${pkgdir}/usr/share/doc/${pkgname}/AUTHORS
+}
+
+#############################################################################
+
+erlang-unixodbc() {
+  pkgname=erlang-unixodbc
+  shortdesc=("Unixodbc support for Erlang.")
+  adddep=("${dep_unixodbc}")
+}
+
+erlang-unixodbc_prep() {
+  cd ${srcdir}
+  install -d ${pkgdir}/usr/lib/erlang/lib
+  mv ${srcdir}/unixodbc/* ${pkgdir}/usr/lib/erlang/lib/
+  install -Dm644 ${srcdir}/otp-OTP-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENCE.txt
 }
