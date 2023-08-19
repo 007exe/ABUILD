@@ -17,6 +17,19 @@ config_files=("etc/ssh/ssh_config
 etc/ssh/sshd_config
 etc/pam.d/sshd")
 
+before_build() {
+  go_src_dir
+# удалить переменную из первой строки конфигурации (относящуюся к вышестоящему VCS)
+  sed '/^#.*\$.*\$$/d' -i ssh{,d}_config
+# добавить опцию предварительной настройки, чтобы включить дополнительные файлы конфигурации для sshd_config
+  printf "# Include drop-in configurations\nInclude /etc/ssh/sshd_config.d/*.conf\n" | cat - sshd_config > sshd_config.tmp
+  mv -v sshd_config.tmp sshd_config
+# prepend configuration option to include drop-in configuration files for ssh_config
+  printf "# Include drop-in configurations\nInclude /etc/ssh/ssh_config.d/*.conf\n" | cat - ssh_config > ssh_config.tmp
+  mv -v ssh_config.tmp ssh_config
+
+}
+
 build() {
   go_src_dir
   burn_patches
@@ -25,16 +38,16 @@ build() {
     --sbindir=/usr/bin \
     --sysconfdir=/etc/ssh \
     --disable-strip \
+    --with-ldns \
     --with-libedit \
+    --with-security-key-builtin \
     --with-ssl-engine \
     --with-pam \
     --with-privsep-user=nobody \
     --with-kerberos5=/usr \
     --with-xauth=/usr/bin/xauth \
     --with-pid-dir=/run \
-    --with-default-path=/usr/local/sbin:/usr/local/bin:/usr/bin \
-    --with-ldns \
-    --with-security-key-builtin
+    --with-default-path='/usr/local/sbin:/usr/local/bin:/usr/bin'
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
