@@ -1,16 +1,17 @@
 pkgname=ppp
 pkgver=2.4.9
-pkgbuild=2
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Point-to-Point Protocol (PPP).")
-longdesc=("A daemon which implements the Point-to-Point Protocol for dial-up networking.")
+shortdesc=("A daemon which implements the Point-to-Point Protocol for dial-up networking.")
 
 source=(https://download.samba.org/pub/ppp/ppp-${pkgver}.tar.gz)
 
 tags=("net-dialup network")
 
-build_deps=("glibc libpcap openssl")
+adddep=("glibc libpcap libxcrypt openssl")
+
+build_deps=("${adddep}")
 
 config_files=("etc/ppp/chap-secrets
 etc/ppp/pap-secrets
@@ -21,14 +22,15 @@ etc/ppp/ip-down")
 build(){
   go_src_dir
   burn_patches
-# включить активный фильтр
-  sed -i "s:^#FILTER=y:FILTER=y:" pppd/Makefile.linux
-# включить поддержку ipv6
-  sed -i "s:^#HAVE_INET6=y:HAVE_INET6=y:" pppd/Makefile.linux
-# включить проприетарный протокол управления обратным вызовом Microsoft
-  sed -i "s:^#CBCP=y:CBCP=y:" pppd/Makefile.linux
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --sysconfdir=/etc \
+    --runstatedir=/run \
+    --enable-cbcp \
+    --enable-multilink
+#    --enable-systemd
 
-  CFLAGS="$CPPFLAGS $CFLAGS -D_GNU_SOURCE" LDFLAGS="$LDFLAGS" ./configure --prefix=/usr
   make -j${numjobs}
   make INSTROOT=${pkgdir} install
 
