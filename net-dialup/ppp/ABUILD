@@ -1,6 +1,6 @@
 pkgname=ppp
 pkgver=2.4.9
-pkgbuild=1
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("A daemon which implements the Point-to-Point Protocol for dial-up networking.")
