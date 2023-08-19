@@ -1,6 +1,6 @@
 pkgname=mariadb
 pkglist=("mariadb-libs mariadb-clients mytop")
-pkgver=11.0.2
+pkgver=11.0.3
 pkgbuild=1
 arch=("auto")
 
@@ -11,16 +11,11 @@ source=("https://rsync.osuosl.org/pub/mariadb/mariadb-${pkgver}/source/mariadb-$
 tags=("server dev-db")
 
 adddep_libs=("liburing openssl pcre2 zlib zstd libxcrypt")
-
 adddep_clients=("jemalloc ncurses")
-
 adddep_mariadb=("bzip2 libxml2 lz4 zstd")
+adddep_mytop=("perl perl-term-readkey perl-dbd-mariadb")
 
-# perl-dbd-mariadb
-adddep_mytop=("perl perl-term-readkey")
-
-# libxcrypt
-build_deps=("${adddep_mariadb} ${adddep_libs} ${adddep_clients} ${adddep_mytop} boost cmake cracklib curl jemalloc judy krb5 lz4 xz")
+build_deps=("${adddep_mariadb} ${adddep_libs} ${adddep_clients} ${adddep_mytop} boost cmake cracklib curl jemalloc judy krb5 lz4 xz libxcrypt")
 
 adddep=("mariadb-clients=${pkgver} ${adddep_mariadb}")
 
