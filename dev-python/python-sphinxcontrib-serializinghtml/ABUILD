@@ -1,12 +1,12 @@
 pkgname=python-sphinxcontrib-serializinghtml
-pkgver=1.1.5
-pkgbuild=3
+pkgver=1.1.8
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Serialized HTML file support for the Sphinx documentation generator.")
 
-_name=sphinxcontrib-serializinghtml
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/sphinxcontrib-serializinghtml/sphinxcontrib-serializinghtml-${pkgver}.tar.gz")
+_name=sphinxcontrib_serializinghtml
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
 
 tags=("libs dev-python")
 
