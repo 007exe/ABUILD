@@ -1,5 +1,5 @@
 pkgname=glusterfs
-pkgver=10.3
+pkgver=11.0
 pkgbuild=1
 arch=("auto")
 
