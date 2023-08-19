@@ -1,7 +1,7 @@
 # NOTE: Мне крайне не нравится идея использовать части systemd. Всёткаи придётся переводить дистрибутив на systemd так как это решит ряд проблем.
 pkgname=udev
 pkglist=("sysusers tmpfiles eudev")
-pkgver=253.2
+pkgver=254.1
 pkgbuild=1
 arch=("auto")
 
