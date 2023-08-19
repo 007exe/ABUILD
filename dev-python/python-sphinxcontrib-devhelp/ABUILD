@@ -1,12 +1,12 @@
 pkgname=python-sphinxcontrib-devhelp
-pkgver=1.0.2
-pkgbuild=3
+pkgver=1.0.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Devhelp help file support for the Sphinx documentation generator.")
 
-_name=sphinxcontrib-devhelp
-source=("https://files.pythonhosted.org/packages/source/${_name::1}/sphinxcontrib-devhelp/sphinxcontrib-devhelp-${pkgver}.tar.gz")
+_name=sphinxcontrib_devhelp
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
 
 tags=("libs dev-python")
 
