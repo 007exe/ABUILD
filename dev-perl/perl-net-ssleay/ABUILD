@@ -1,5 +1,5 @@
 pkgname=perl-net-ssleay
-pkgver=1.90
+pkgver=1.92
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-${pkgver}.t
 
 tags=("libs dev-perl")
 
-build_deps=("perl openssl")
+adddep=("openssl")
+
+build_deps=("${adddep} perl")
 
 build(){
   go_src_dir
