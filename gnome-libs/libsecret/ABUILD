@@ -1,25 +1,25 @@
 pkgname=libsecret
-pkgver=0.20.5
+pkgver=0.21.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for storing and retrieving passwords and other secrets.")
-longdesc=("The libsecret package contains a GObject based library for accessing the Secret Service API.")
 
 source=("https://gitlab.gnome.org/GNOME/libsecret/-/archive/${pkgver}/libsecret-${pkgver}.tar.gz")
 
 tags=("libs app-crypt")
 
-build_deps=("docbook-xsl gobject-introspection vala gtk-doc meson valgrind dbus-glib")
+# tpm2-tss
+adddep=("glib2 libgcrypt")
 
-# FIXME: Проблемы со сборкой документации
+build_deps=("${adddep} bash-completion gi-docgen gobject-introspection meson vala")
 
 build() {
   go_src_dir
   burn_patches
   meson build \
-    -D prefix=/usr \
-    -D gtk_doc=false
+    -D prefix=/usr
+#    -D gtk_doc=false
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
 }
