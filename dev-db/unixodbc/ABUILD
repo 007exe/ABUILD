@@ -1,16 +1,17 @@
 pkgname=unixodbc
-pkgver=2.3.11
+pkgver=2.3.12
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Complete ODBC driver manager.")
-longdesc=("UnixODBC is a free/open specification for providing application developers with a predictable API with which to access Data Sources. Data Sources include SQL Servers and any Data Source with an ODBC Driver.")
+shortdesc=("ODBC is an open specification for providing application developers with a predictable API with which to access Data Sources.")
 
 source=(http://www.unixodbc.org/unixODBC-$pkgver.tar.gz)
 
 tags=("libs dev-db")
 
-build_deps=("readline libltdl")
+adddep=("readline libltdl glibc")
+
+build_deps=("${adddep}")
 
 config_files=("/etc/odbc.ini
 /etc/odbcinst.ini")
@@ -21,6 +22,7 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib \
     --sysconfdir=/etc
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   touch ${pkgdir}/etc/{odbc,odbcinst}.ini
