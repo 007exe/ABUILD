@@ -1,5 +1,5 @@
 pkgname=mac
-pkgver=10.11
+pkgver=10.18
 pkgbuild=1
 arch=("auto")
 
