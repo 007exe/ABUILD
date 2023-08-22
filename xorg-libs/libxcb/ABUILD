@@ -1,5 +1,5 @@
 pkgname=libxcb
-pkgver=1.15
+pkgver=1.16
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,9 @@ source=("https://xorg.freedesktop.org/archive/individual/lib/$pkgname-$pkgver.ta
 
 tags=("libs xorg-libs")
 
-build_deps=("xorgproto xorg-util-macros python libxslt xcb-proto libxdmcp libxau")
+adddep=("xcb-proto libxdmcp libxau glibc")
 
-adddep=("xcb-proto")
+build_deps=("${adddep} libxslt python xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
@@ -23,6 +23,7 @@ build() {
     --enable-xinput \
     --enable-xkb \
     --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
