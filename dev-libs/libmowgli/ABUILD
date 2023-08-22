@@ -1,5 +1,5 @@
 pkgname=libmowgli
-pkgver=2.1.0
+pkgver=2.1.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,17 @@ source=("https://github.com/atheme/libmowgli-2/archive/refs/tags/v${pkgver}.tar.
 
 tags=("libs dev-libs")
 
-build_deps=("glibc")
+adddep=("glibc openssl")
+
+build_deps=("${adddep}")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -22,12 +32,4 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
