@@ -1,5 +1,5 @@
 pkgname=far2l
-pkgver=2.5.0
+pkgver=2.5.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,20 @@ tags=("apps app-misc")
 
 source=("https://github.com/elfmz/far2l/archive/refs/tags/v_${pkgver}.tar.gz")
 
-# smbclient
-build_deps="cmake gtkmm3 openssl gvfs spdlog xerces-c fmt uchardet libssh libnfs neon pcre libarchive"
+adddep=("xerces-c fmt uchardet wxwidgets-gtk3")
+
+build_deps=("${adddep} cmake")
+
+# NOTE: Это опциональные зависимости
+removedep=("libxi openssl libssh smbclient libnfs neon pcre libarchive")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v_${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -24,12 +36,4 @@ build() {
     -DCMAKE_CXX_FLAGS=-w
   make -j${numjobs}
   make DESTDIR=$pkgdir install
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v_${pkgver}.tar.gz
 }
