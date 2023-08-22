@@ -1,6 +1,6 @@
 pkgname=kicad-library
 pkglist=("kicad-library-3d")
-pkgver=7.0.1
+pkgver=7.0.7
 pkgbuild=1
 arch=("noarch")
 
