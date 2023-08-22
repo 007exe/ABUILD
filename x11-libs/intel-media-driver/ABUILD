@@ -1,5 +1,5 @@
 pkgname=intel-media-driver
-pkgver=23.3.0
+pkgver=23.3.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/intel/media-driver/archive/${pkgname%-*}-${pkgver}.t
 
 tags=("libs media-video")
 
-build_deps=("gcc-libs intel-gmmlib libva libpciaccess cmake")
+adddep=("gcc-libs intel-gmmlib libva")
+
+build_deps=("${adddep} cmake")
 
 build() {
   go_src_dir
