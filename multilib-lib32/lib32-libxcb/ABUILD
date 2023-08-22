@@ -1,18 +1,17 @@
 pkgname=lib32-libxcb
-pkgver=1.15
+pkgver=1.16
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 client-side library (32-bit).")
-longdesc=("The libxcb package provides an interface to the X Window System protocol, which replaces the current Xlib interface. Xlib can also use XCB as a transport layer, allowing software to make requests and receive responses with both.")
 
 source=("https://xorg.freedesktop.org/archive/individual/lib/libxcb-${pkgver}.tar.xz")
 
 tags=("lib32 xorg-libs")
 
-build_deps=("lib32-glibc lib32-libxdmcp lib32-libxau lib32-gcc-libs pkgconf libxslt python xorg-util-macros autoconf xorgproto")
-
 adddep=("lib32-glibc lib32-libxdmcp lib32-libxau libxcb")
+
+build_deps=("${adddep} lib32-gcc-libs pkgconf libxslt python xorg-util-macros autoconf xorgproto")
 
 build() {
   go_src_dir
