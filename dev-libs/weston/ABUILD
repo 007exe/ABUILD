@@ -1,5 +1,5 @@
 pkgname=weston
-pkgver=12.0.1
+pkgver=12.0.2
 pkgbuild=1
 arch=("auto")
 
