@@ -1,10 +1,9 @@
 pkgname=xcb-proto
-pkgver=1.15.2
+pkgver=1.16.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("XML-XCB protocol descriptions.")
-longdesc=("The xcb-proto package provides the XML-XCB protocol descriptions that libxcb uses to generate the majority of its code and API.")
 
 source=("https://xorg.freedesktop.org/archive/individual/proto/$pkgname-$pkgver.tar.xz")
 
