@@ -1,6 +1,6 @@
 pkgname=luajit
-_commit=8635cbabf3094c4d8bd00578c7d812bea87bb2d3
-pkgver=2.1.0.beta3.r493.g${_commit::8}
+_commit=72efc42ef2258086a9cb797c676e2916b0a9e7e1
+pkgver=2.1.0.beta3.r505.g${_commit::8}
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,9 @@ source=("https://repo.or.cz/luajit-2.0.git/snapshot/${_commit}.tar.gz")
 
 tags=("dev-lang develop")
 
-build_deps=("gcc gcc-libs")
+adddep=("gcc-libs")
+
+build_deps=("${adddep} gcc")
 
 build() {
   go_src_dir
