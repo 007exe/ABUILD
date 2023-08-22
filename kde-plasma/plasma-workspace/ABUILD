@@ -1,6 +1,6 @@
 pkgname=plasma-workspace
 pkglist=("plasma-wayland-session")
-pkgver=5.27.6
+pkgver=5.27.7
 pkgbuild=1
 arch=("auto")
 
@@ -11,11 +11,11 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("plasma kde-plasma")
 
-# kio-extras appstream-qtxorg-xrdb kpipewire
-adddep=("knotifyconfig ksystemstats ktexteditor libqalculate kde-cli-tools
-xorg-xsetroot kactivitymanagerd kholidays xorg-xmessage milou prison kwin plasma-integration
-kpeople kactivities-stats kquickcharts kuserfeedback accountsservice kio-fuse qt5-tools
-oxygen-sounds")
+# kio-extras
+adddep=("knotifyconfig ksystemstats ktexteditor libqalculate kde-cli-tools appstream-qt
+xorg-xrdb xorg-xsetroot kactivitymanagerd kholidays xorg-xmessage milou prison kwin
+plasma-integration kpeople kactivities-stats kquickcharts kuserfeedback kpipewire
+accountsservice kio-fuse qt5-tools oxygen-sounds")
 
 build_deps=("${adddep} extra-cmake-modules kdoctools gpsd baloo networkmanager-qt
 plasma-wayland-protocols wayland-protocols kunitconversion")

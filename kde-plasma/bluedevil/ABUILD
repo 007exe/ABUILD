@@ -1,5 +1,5 @@
 pkgname=bluedevil
-pkgver=5.27.6
+pkgver=5.27.7
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ tags=("plasma kde-plasma")
 
 adddep=("bluez-qt kdeclarative")
 
-build_deps=("extra-cmake-modules plasma-framework kdoctools kcmutils")
+build_deps=("${adddep} extra-cmake-modules plasma-framework kdoctools kcmutils")
 
 # NOTE: Это опциональные зависимости
 removedep=("pulseaudio-bluetoot")
