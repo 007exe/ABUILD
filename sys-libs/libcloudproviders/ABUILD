@@ -1,16 +1,17 @@
 pkgname=libcloudproviders
-pkgver=0.3.1
-pkgbuild=3
+pkgver=0.3.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("DBus API that allows cloud storage sync clients to expose their services")
-longdesc=("Cross desktop library for desktop integration of cloud storage providers and sync tools.")
 
 source=("https://gitlab.gnome.org/World/libcloudproviders/-/archive/${pkgver}/libcloudproviders-${pkgver}.tar.gz")
 
 tags=("libs sys-libs")
 
-build_deps=("glib2")
+adddep=("glib2")
+
+build_deps=("${adddep} gobject-introspection gtk-doc meson vala")
 
 build() {
   go_src_dir
