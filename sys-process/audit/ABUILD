@@ -1,5 +1,5 @@
 pkgname=audit
-pkgver=3.1.1
+pkgver=3.1.2
 pkgbuild=1
 arch=("auto")
 
