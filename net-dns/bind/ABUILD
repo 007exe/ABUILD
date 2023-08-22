@@ -1,18 +1,19 @@
 pkgname=bind
-pkgver=9.18.8
+pkgver=9.18.18
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A complete, highly portable implementation of the DNS protocol.")
-longdesc=("The BIND package includes the client side programs nslookup, dig and host. If you install BIND server, these programs will be installed automatically.")
 
 source=("http://ftp.isc.org/isc/bind9/${pkgver}/bind-${pkgver}.tar.xz");
 
 tags=("net-dns network")
 
-build_deps=("openssl glibc libuv libidn2 libnghttp2 python-pygments python-ply python-babel python-jinja")
+# libmaxminddb
+adddep=("bash dnssec-anchors e2fsprogs glibc icu libedit json-c krb5 libcap libidn2
+libnsl libuv libxml2 lmdb openssl readline xz zlib jemalloc libnghttp2")
 
-adddeps=("python-ply")
+build_deps=("${adddep}")
 
 config_files=("etc/named.conf
 var/named/127.0.0.zone
@@ -25,9 +26,6 @@ build() {
   export CFLAGS
 # Поддержка отслеживания цепочек подписей DNSSEC
   CFLAGS+=' -DDIG_SIGCHASE'
-# Компиляция с использованием gcc10, https://gcc.gnu.org/gcc-10/porting_to.html
-  CFLAGS+=' -fcommon'
-
   ./configure \
     --prefix=/usr \
     --sbindir=/usr/bin \
