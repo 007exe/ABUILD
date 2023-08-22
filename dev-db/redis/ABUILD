@@ -1,5 +1,5 @@
 pkgname=redis
-pkgver=7.0.5
+pkgver=7.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,12 +9,21 @@ source=("https://github.com/redis/redis/archive/${pkgver}.tar.gz")
 
 tags=("dev-db server")
 
-build_deps=("openssl jemalloc grep shadow")
-
+# systemd
 adddep=("jemalloc grep shadow")
+
+build_deps=("${adddep} openssl")
 
 config_files=("etc/redis/redis.conf
 etc/redis/sentinel.conf")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
