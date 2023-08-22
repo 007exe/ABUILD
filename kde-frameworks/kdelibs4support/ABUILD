@@ -1,5 +1,5 @@
 pkgname=kdelibs4support
-pkgver=5.108.0
+pkgver=5.109.0
 pkgbuild=1
 arch=("auto")
 
