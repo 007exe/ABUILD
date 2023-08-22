@@ -1,10 +1,9 @@
 pkgname=libsndfile
-pkgver=1.2.0
+pkgver=1.2.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A C library for reading and writing files containing sampled audio data.")
-longdesc=("Libsndfile is a library of C routines for reading and writing files containing sampled audio data.")
 
 source=("https://github.com/${pkgname}/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
