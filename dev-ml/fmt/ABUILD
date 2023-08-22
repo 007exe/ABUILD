@@ -1,5 +1,5 @@
 pkgname=fmt
-pkgver=10.0.0
+pkgver=10.1.0
 pkgbuild=1
 arch=("auto")
 
