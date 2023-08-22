@@ -1,5 +1,5 @@
 pkgname=less
-pkgver=633
+pkgver=643
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,8 @@ source=("http://www.greenwoodsoftware.com/${pkgname}/${pkgname}-${pkgver}.tar.gz
 
 tags=("base sys-apps")
 
-build_deps=("glibc pcre2 ncurses")
+adddep=("glibc pcre2 ncurses")
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
