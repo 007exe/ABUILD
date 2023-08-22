@@ -1,5 +1,5 @@
 pkgname=python-sphinx
-pkgver=7.1.2
+pkgver=7.2.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,19 +9,14 @@ source=("https://github.com/sphinx-doc/sphinx/archive/v${pkgver}/sphinx-${pkgver
 
 tags=("libs dev-python")
 
-build_deps=("python python-build python-flit-core python-installer python-babel
-python-docutils python-imagesize python-jinja python-packaging python-pygments
-python-requests python-snowballstemmer python-sphinx-alabaster-theme
-python-sphinxcontrib-devhelp python-sphinxcontrib-htmlhelp
-python-sphinxcontrib-applehelp python-sphinxcontrib-jsmath
-python-sphinxcontrib-qthelp python-sphinxcontrib-serializinghtml")
-
 adddep=("python-babel python-docutils python-imagesize python-jinja
 python-packaging python-pygments python-requests python-snowballstemmer
 python-sphinx-alabaster-theme python-sphinxcontrib-devhelp
 python-sphinxcontrib-htmlhelp python-sphinxcontrib-applehelp
 python-sphinxcontrib-jsmath python-sphinxcontrib-qthelp
 python-sphinxcontrib-serializinghtml")
+
+build_deps=("${adddep} python python-build python-flit-core python-installer")
 
 # NOTE: Это опциональные зависимости
 removedep=("imagemagick texlive-latexextra")
