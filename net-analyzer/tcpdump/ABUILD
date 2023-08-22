@@ -1,5 +1,5 @@
 pkgname=tcpdump
-pkgver=4.99.1
+pkgver=4.99.4
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://www.tcpdump.org/release/${pkgname}-${pkgver}.tar.gz")
 
 tags=("network net-analyzer")
 
-build_deps=("cmake libpcap libcap-ng glibc openssl")
+adddep=("glibc")
+
+build_deps=("${adddep} cmake libpcap libcap-ng glibc openssl")
 
 build() {
   go_src_dir
