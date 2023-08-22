@@ -1,6 +1,6 @@
 pkgname=util-linux
 _pkgmajor=2.39
-pkgver=2.39.1
+pkgver=2.39.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,10 @@ source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor
 
 tags=("base sys-apps")
 
-build_deps=("eudev linux-pam acl shadow coreutils asciidoctor")
+# systemd
+adddep=("linux-pam shadow coreutils libcap-ng libutempter libxcrypt glibc")
 
-adddep=("coreutils")
+build_deps=("${adddep} asciidoctor bash-completion python")
 
 config_files=("etc/pam.d/chfn
 etc/pam.d/chsh
