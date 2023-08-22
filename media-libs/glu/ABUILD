@@ -1,16 +1,17 @@
 pkgname=glu
-pkgver=9.0.2
-pkgbuild=2
+pkgver=9.0.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Mesa OpenGL Utility library.")
-longdesc=("This package provides the Mesa OpenGL Utility library.")
 
-source=("ftp://ftp.freedesktop.org/pub/mesa/$pkgname/$pkgname-$pkgver.tar.xz")
+source=("https://mesa.freedesktop.org/archive/glu/glu-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("meson mesa")
+adddep=("mesa gcc-libs glibc")
+
+build_deps=("${adddep} meson")
 
 build() {
   go_src_dir
@@ -19,7 +20,7 @@ build() {
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D default_library=shared
-  meson configure build
+#  meson configure build
   ninja -C build
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
