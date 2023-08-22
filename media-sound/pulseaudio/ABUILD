@@ -1,22 +1,29 @@
 pkgname=pulseaudio
+pkglist=("pulseaudio-zeroconf pulseaudio-bluetooth pulseaudio-equalizer
+libpulse pulseaudio-jack pulseaudio-lirc pulseaudio-rtp")
 pkgver=16.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("PulseAudio sound server.")
-longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
+shortdesc=("A featureful, general-purpose sound server.")
 
 source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-sound")
 
-build_deps=("libcap attr dbus openssl orc check meson valgrind tdb libsndfile doxygen libxtst
-libsm gtk3 libxcb libasyncns sbc fftw lirc avahi bluez jack speexdsp libnsl")
-
-adddep=("libpulse=$pkgver alsa-utils libnsl")
-
-pkglist=("libpulse pulseaudio-bluetooth pulseaudio-equalizer pulseaudio-jack pulseaudio-lirc
-pulseaudio-rtp pulseaudio-zeroconf")
+dep_jack=("jack")
+dep_lirc=("lirc")
+dep_zeroconf=("avahi")
+dep_equalizer=("dbus-python python-pyqt5")
+dep_bluetooth=("bluez bluez-libs gst-plugins-base-libs sbc")
+dep_rtp=("gst-plugins-base gst-plugins-base-libs gst-plugins-good openssl")
+# systemd
+dep_libpulse=("dbus libasyncns libsndfile libxcb")
+dep_pulse=("alsa-lib fftw libcap libltdl libsm libsoxr libxtst orc speexdsp tdb webrtc-audio-processing rtkit")
+adddep=("libpulse=${pkgver} ${dep_pulse}")
+# systemd
+build_deps=("${dep_pulse} ${dep_libpulse} ${dep_zeroconf} ${dep_lirc} ${dep_jack} ${dep_bluetooth} ${dep_equalizer}
+${dep_rtp} alsa-lib attr check doxygen gtk3 meson valgrind xmltoman")
 
 config_files=("etc/pulse/daemon.conf
 etc/pulse/default.pa
@@ -29,7 +36,10 @@ build() {
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D systemd=disabled \
+    -D elogind=enabled \
     -D samplerate=disabled \
+    -D tcpwrap=disabled \
+    -D stream-restore-clear-old-devices=true \
     -D alsa=enabled \
     -D speex=enabled \
     -D udev=enabled \
@@ -53,25 +63,24 @@ build() {
 
   cd ${pkgdir}
 
-  install -Dm755 ${filedir}/pulseaudio.initd ${pkgdir}/etc/init.d/pulseaudio
-  install -Dm644 ${filedir}/${pkgname}.confd ${pkgdir}/etc/conf.d/${pkgname}
-
-# Заменяется активацией сокета
-  sed -e '/autospawn/iautospawn = no' -i etc/pulse/client.conf
+# Заменяется активацией сокета systemd
+#  sed -e '/autospawn/iautospawn = no' -i ${pkgdir}/etc/pulse/client.conf
 
 # Отключение модуля пробкового запроса
-  sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' -i usr/bin/start-pulseaudio-x11
+  sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' -i ${pkgdir}/usr/bin/start-pulseaudio-x11
 
 # Требуется qpaeq
-  sed -e '/Load several protocols/aload-module module-dbus-protocol' -i etc/pulse/default.pa
+  sed -e '/Load several protocols/aload-module module-dbus-protocol' -i ${pkgdir}/etc/pulse/default.pa
 
   rm -r etc/dbus-1
 }
 
+#######################################################################################################################
+
 libpulse(){
   pkgname=libpulse
-  shortdesc=("PulseAudio sound server libraries.")
-  longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
+  shortdesc=("A featureful, general-purpose sound server  (client library).")
+  adddep=("${dep_libpulse}")
   config_files=("etc/pulse/client.conf")
 }
 
@@ -91,11 +100,12 @@ libpulse_prep() {
   mv ${p_pkgdir}/usr/share/zsh ${pkgdir}/usr/share/zsh
 }
 
+#######################################################################################################################
+
 pulseaudio-bluetooth() {
   pkgname=pulseaudio-bluetooth
   shortdesc=("Bluetooth support for PulseAudio.")
-  longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
-  adddep=("pulseaudio=${pkgver}")
+  adddep=("pulseaudio=${pkgver} ${dep_bluetooth}")
 }
 
 pulseaudio-bluetooth_prep() {
@@ -105,11 +115,12 @@ pulseaudio-bluetooth_prep() {
   mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-bluez5-{discover,device}.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
+#######################################################################################################################
+
 pulseaudio-equalizer() {
   pkgname=pulseaudio-equalizer
   shortdesc=("Graphical equalizer for PulseAudio.")
-  longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
-  adddep=("pulseaudio=${pkgver}")
+  adddep=("pulseaudio=${pkgver} ${dep_equalizer}")
 }
 
 pulseaudio-equalizer_prep() {
@@ -118,11 +129,12 @@ pulseaudio-equalizer_prep() {
   mv ${p_pkgdir}/usr/bin/qpaeq ${pkgdir}/usr/bin
 }
 
+#######################################################################################################################
+
 pulseaudio-jack() {
   pkgname=pulseaudio-jack
   shortdesc=("Jack support for PulseAudio.")
-  longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
-  adddep=("pulseaudio=${pkgver}")
+  adddep=("pulseaudio=${pkgver} ${dep_jack}")
 }
 
 pulseaudio-jack_prep() {
@@ -131,11 +143,12 @@ pulseaudio-jack_prep() {
   mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-jackdbus-detect.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
+#######################################################################################################################
+
 pulseaudio-lirc() {
   pkgname=pulseaudio-lirc
   shortdesc=("IR (lirc) support for PulseAudio.")
-  longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
-  adddep=("pulseaudio=${pkgver}")
+  adddep=("pulseaudio=${pkgver} ${dep_lirc}")
 }
 
 pulseaudio-lirc_prep() {
@@ -143,11 +156,12 @@ pulseaudio-lirc_prep() {
   mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-lirc.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
+#######################################################################################################################
+
 pulseaudio-rtp() {
   pkgname=pulseaudio-rtp
   shortdesc=("RTP and RAOP support for PulseAudio.")
-  longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
-  adddep=("pulseaudio=${pkgver}")
+  adddep=("pulseaudio=${pkgver} ${dep_rtp}")
 }
 
 pulseaudio-rtp_prep() {
@@ -157,11 +171,12 @@ pulseaudio-rtp_prep() {
   mv ${p_pkgdir}/usr/lib/pulseaudio/modules/module-raop-sink.so ${pkgdir}/usr/lib/pulseaudio/modules
 }
 
+#######################################################################################################################
+
 pulseaudio-zeroconf() {
   pkgname=pulseaudio-zeroconf
   shortdesc=("Zeroconf support for PulseAudio.")
-  longdesc=("PulseAudio is a sound system for POSIX OSes, meaning that it is a proxy for sound applications. It allows you to do advanced operations on your sound data as it passes between your application and your hardware.")
-  adddep=("pulseaudio=${pkgver}")
+  adddep=("pulseaudio=${pkgver} ${dep_zeroconf}")
 }
 
 pulseaudio-zeroconf_prep() {
