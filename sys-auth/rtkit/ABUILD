@@ -1,0 +1,39 @@
+pkgname=rtkit
+pkgver=0.13
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Realtime Policy and Watchdog Daemon.")
+
+source=("https://github.com/heftig/rtkit/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("libs sys-auth")
+
+#systemd
+adddep=("dbus polkit")
+
+build_deps=("${adddep} meson vim")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D installed_tests=false
+  meson install -C build --destdir ${pkgdir}
+  echo 'u rtkit 133 "RealtimeKit" /proc' |
+    install -Dm644 /dev/stdin ${pkgdir}/usr/lib/sysusers.d/rtkit.conf
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
+
+  sed -ne '4,25p' rtkit/rtkit.c |
+    install -Dm644 /dev/stdin ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
