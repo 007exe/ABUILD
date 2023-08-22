@@ -1,18 +1,18 @@
 pkgname=ngspice
-pkgver=37
-_docver=36
+pkgver=41
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Mixed-level/Mixed-signal circuit simulator based on Spice3f5, Ciber1b1, and Xspice.")
-longdesc=("KiKit is a Python library, KiCAD plugin and a CLI tool to automate several tasks in a standard KiCAD workflow.")
 
-source=("https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/${pkgver}/ngspice-${pkgver}.tar.gz"
-"http://ngspice.sourceforge.net/docs/ngspice-${_docver}-manual.pdf")
+source=("https://downloads.sourceforge.net/project/${pkgname}/ng-spice-rework/${pkgver}/${pkgname}-${pkgver}.tar.gz"
+"https://ngspice.sourceforge.net/docs/ngspice-${pkgver}-manual.pdf")
 
 tags=("utils sci-electronics")
 
-build_deps=("libxaw libedit gcc-libs")
+adddep=("gcc-libs libedit libxaw")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
@@ -44,11 +44,12 @@ build() {
   make DESTDIR=${pkgdir} install
 
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-  install -D -m644  ${srcache}/ngspice-${_docver}-manual.pdf ${pkgdir}/usr/share/doc/${pkgname}/manual.pdf
+  install -vDm644  ${srcache}/ngspice-${pkgver}-manual.pdf ${pkgdir}/usr/share/doc/${pkgname}/manual.pdf
 
-  install -Dm755 src/.libs/libngspice.so.0.0.4 ${pkgdir}/usr/lib/libngspice.so.0.0.4
-  ln -s libngspice.so.0.0.4 ${pkgdir}/usr/lib/libngspice.so.0
-  ln -s libngspice.so.0.0.4 ${pkgdir}/usr/lib/libngspice.so
+  local _sover="0.0.8"
+  install -vDm755 "src/.libs/libngspice.so.$_sover" "$pkgdir/usr/lib/libngspice.so.$_sover"
+  ln -s "libngspice.so.$_sover" ${pkgdir}/usr/lib/libngspice.so.0
+  ln -s "libngspice.so.$_sover" ${pkgdir}/usr/lib/libngspice.so
 
   install -Dm644 ngspice.pc ${pkgdir}/usr/lib/pkgconfig/ngspice.pc
   install -Dm644 src/include/ngspice/sharedspice.h ${pkgdir}/usr/include/ngspice/sharedspice.h
