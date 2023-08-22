@@ -1,6 +1,6 @@
 pkgname=noto-fonts
 pkglist=("noto-fonts-extra")
-pkgver=23.7.1
+pkgver=23.8.1
 pkgbuild=1
 arch=("noarch")
 
