@@ -1,6 +1,6 @@
 pkgname=lib32-util-linux
 _pkgmajor=2.39
-pkgver=2.39.1
+pkgver=2.39.2
 pkgbuild=1
 arch=("auto")
 
