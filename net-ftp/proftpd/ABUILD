@@ -1,16 +1,17 @@
 pkgname=proftpd
-pkgver=1.3.7e
+pkgver=1.3.8
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An advanced and very configurable FTP server.")
-longdesc=("The ProFTPD package contains a secure and highly configurable FTP daemon. This is useful for serving large file archives over a network..")
+shortdesc=("High-performance, scalable FTP server.")
 
 source=("ftp://ftp.proftpd.org/distrib/source/proftpd-${pkgver}.tar.gz")
 
 tags=("server net-ftp")
 
-build_deps=("mariadb-libs postgresql-libs libcap linux-pam hiredis")
+adddep=("mariadb-libs postgresql-libs libcap linux-pam hiredis")
+
+build_deps=("${adddep}")
 
 config_files=("etc/proftpd.conf")
 
