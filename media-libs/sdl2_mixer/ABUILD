@@ -9,9 +9,9 @@ source=("https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-${pkgver}.
 
 tags=("media-libs libs")
 
-build_deps=("fluidsynth sdl2 libvorbis libmodplug mpg123 flac opusfile")
+adddep=("sdl2 libvorbis libmodplug mpg123 flac opusfile")
 
-adddep=("libvorbis libmodplug mpg123 flac opusfile")
+build_deps=("${adddep} fluidsynth")
 
 build() {
   go_src_dir
@@ -19,6 +19,12 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
+    --enable-music-ogg-vorbis \
+    --enable-music-flac-libflac \
+    --enable-music-mp3-mpg123 \
+    --disable-music-ogg-stb \
+    --disable-music-flac-drflac \
+    --disable-music-mp3-drmp3 \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
