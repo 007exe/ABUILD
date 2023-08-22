@@ -1,20 +1,19 @@
 pkgname=speech-dispatcher
-pkgver=0.11.4
+pkglist=("libspeechd")
+pkgver=0.11.5
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Speech synthesis interface.")
-longdesc=("High-level device independent layer for speech synthesis interface.")
+shortdesc=("High-level device independent layer for speech synthesis interface.")
 
 source=("https://github.com/brailcom/speechd/releases/download/${pkgver}/speech-dispatcher-${pkgver}.tar.gz")
 
 tags=("libs app-accessibility")
 
-pkglist=("libspeechd")
-
-build_deps=("glib2 intltool espeak-ng libtool python-pyxdg dotconf libpulse libao")
-
-adddep=("libspeechd=${pkgver} python-pyxdg")
+dep_libspeechd=("glib2 libtool")
+dep_adddep=("python-pyxdg dotconf libpulse libao")
+adddep=("libspeechd=${pkgver} ${dep_adddep}")
+build_deps=("${dep_adddep} ${dep_libspeechd} intltool espeak-ng")
 
 # NOTE: Это опциональные зависимости
 removedep=("festival espeak-ng pulseaudio")
@@ -52,8 +51,8 @@ build() {
 
 libspeechd() {
   pkgname=libspeechd
-  shortdesc=("Speech synthesis interface.")
-  longdesc=("High-level device independent layer for speech synthesis interface.")
+  shortdesc=("High-level device independent layer for speech synthesis interface.")
+  adddep=("${dep_libspeechd}")
 }
 
 libspeechd_prep() {
