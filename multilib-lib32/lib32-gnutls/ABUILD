@@ -1,5 +1,5 @@
 pkgname=lib32-gnutls
-pkgver=3.8.0
+pkgver=3.8.1
 pkgbuild=1
 arch=("auto")
 
