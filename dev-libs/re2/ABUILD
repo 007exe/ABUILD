@@ -1,5 +1,5 @@
 pkgname=re2
-_re2ver=2023-03-01
+_re2ver=2023-08-01
 pkgver=${_re2ver//-}
 pkgbuild=1
 arch=("auto")
@@ -10,7 +10,9 @@ source=("https://github.com/google/re2/archive/$_re2ver.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("gobject-introspection glib2 meson")
+adddep=("gcc-libs abseil-cpp")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
