@@ -1,23 +1,20 @@
 pkgname=xdg-utils
-pkgver=1.1.3+25+g8ae0263
+pkgver=1.1.3+45+g301a1a4
 # NOTE: Коммит версии
-_commit=8ae02631a9806da11b34cd6b274af02d28aee5da
+_commit=301a1a4772f1f934a22e106ff032c62ef705462b
 strict_version=1
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("Command line tools that assist applications with a variety of desktop integration tasks")
-longdesc=("Is a set of command line tools that assist applications with a variety of desktop integration tasks.")
 
-#source=("https://portland.freedesktop.org/download/xdg-utils-${pkgver}.tar.gz")
 source=("git:https://gitlab.freedesktop.org/xdg/xdg-utils.git")
 
 tags=("xorg-base xorg")
 
-build_deps=("which file xorg-xset xorg-xprop docbook-xsl xmlto lynx")
+adddep=("bash file xorg-xset xorg-xprop")
 
-adddep=("bash xorg-xprop xorg-xset")
-
+build_deps=("${adddep} docbook-xsl lynx xmlto git")
 
 # NOTE: Переходим к коммиту
 # FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
