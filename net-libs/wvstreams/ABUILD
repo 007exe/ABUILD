@@ -9,8 +9,9 @@ source=("https://storage.googleapis.com/google-code-archive-downloads/v2/code.go
 
 tags=("net-libs libs")
 
-build_deps=("zlib linux-pam xplc openssl readline")
+adddep=("zlib linux-pam xplc openssl readline")
 
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
