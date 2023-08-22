@@ -9,7 +9,10 @@ source=("http://www.squid-cache.org/Versions/v5/${pkgname}-${pkgver}.tar.xz")
 
 tags=("server net-proxy")
 
-build_deps=("krb5 openldap")
+# systemd
+adddep=("openssl linux-pam perl libltdl libcap nettle gnutls libnsl libxml2 tdb")
+
+build_deps=("${adddep} krb5 openldap")
 
 config_files=("etc/squid/squid.conf
 etc/squid/cachemgr.conf
