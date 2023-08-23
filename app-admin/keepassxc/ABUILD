@@ -1,5 +1,5 @@
 pkgname=keepassxc
-pkgver=2.7.5
+pkgver=2.7.6
 pkgbuild=1
 arch=("auto")
 
