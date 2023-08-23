@@ -1,0 +1,43 @@
+pkgname=lazygit
+pkgver=0.40.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple terminal UI for git commands.")
+
+source=("https://github.com/jesseduffield/lazygit//archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-vcs develop")
+
+adddep=("git glibc")
+
+build_deps=("${adddep} gcc-go")
+
+# NOTE: Это опциональные зависимости
+removedep=("tk perl-libwww perl-term-readkey perl-io-socket-ssl perl-authen-sasl
+perl-mediawiki-api perl-datetime-format-iso8601 perl-lwp-protocol-https perl-cgi
+python subversion org.freedesktop.secrets libsecret")
+
+config_files=("etc/conf.d/git-daemon")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CGO_CPPFLAGS="${CPPFLAGS}"
+  export CGO_CFLAGS="${CFLAGS}"
+  export CGO_CXXFLAGS="${CXXFLAGS}"
+  export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw -x -v"
+  go build \
+    -ldflags "\
+      -linkmode external \
+      -extldflags '${LDFLAGS}' \
+      -X main.date=$(date --date=@${SOURCE_DATE_EPOCH} -u +%Y-%m-%dT%H:%M:%SZ) \
+      -X main.buildSource=binaryRelease \
+      -X main.version=${pkgver} \
+      -X main.commit=v${pkgver} \
+    "
+  install -Dm 755 lazygit -t ${pkgdir}/usr/bin
+  install -Dm 644 README*.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  cp -r docs/* -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
