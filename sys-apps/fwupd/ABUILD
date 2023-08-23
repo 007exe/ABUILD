@@ -1,5 +1,5 @@
 pkgname=fwupd
-pkgver=1.9.3
+pkgver=1.9.4
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://github.com/fwupd/fwupd/releases/download/${pkgver}/${pkgname}-$
 
 tags=("sys-apps utils")
 
-# libsmbios tpm2-tss flashrom libjcat fwupd-efi libcbor
+# libsmbios tpm2-tss flashrom libjcat fwupd-efi
 adddep=("shared-mime-info hicolor-icon-theme libxmlb efivar python libgusb polkit gcab bluez gnutls libarchive curl
-json-glib libgudev libmm-glib libqmi protobuf-c")
+json-glib libgudev libmm-glib libqmi protobuf-c libcbor")
 
 # noto-fonts-cjk gnu-efi-libs
 build_deps=("${adddep} meson valgrind gobject-introspection gi-docgen python-cairo noto-fonts python-gobject vala
