@@ -1,0 +1,39 @@
+pkgname=ttf-roboto-mono
+pkgver=3.000
+_commit="4df0b673c9b316ad5e8de8fa70b0768ab66c87d6"
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A monospaced addition to the Roboto type family..")
+
+source=("https://github.com/google/fonts/raw/$_commit/apache/robotomono/LICENSE.txt"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-Bold.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-BoldItalic.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-Italic.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-Light.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-LightItalic.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-Medium.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-MediumItalic.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-Regular.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-Thin.ttf"
+	"https://github.com/google/fonts/raw/$_commit/apache/robotomono/static/RobotoMono-ThinItalic.ttf")
+
+tags=("media-fonts fonts")
+
+build_deps=("mkpkg")
+
+build() {
+  cd ${srcdir}
+  install -d ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-Bold.ttf		${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-BoldItalic.ttf	${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-Italic.ttf	${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-Light.ttf		${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-LightItalic.ttf	${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-Medium.ttf	${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-MediumItalic.ttf	${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-Regular.ttf	${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-Thin.ttf		${pkgdir}/usr/share/fonts/TTF/
+  install -m644 ${srcache}/RobotoMono-ThinItalic.ttf	${pkgdir}/usr/share/fonts/TTF/
+  install -D -m644 ${srcache}/LICENSE.txt		${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
