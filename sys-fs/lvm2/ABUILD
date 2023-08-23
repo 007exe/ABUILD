@@ -10,9 +10,13 @@ source=("https://github.com/lvmteam/lvm2/archive/v${pkgver//./_}.tar.gz")
 
 tags=("base sys-fs")
 
-build_deps=("readline eudev libaio util-linux glibc")
+# systemd
+dep_device=("glibc eudev")
+# systemd thin-provisioning-tools
+dep_lvm2=("bash util-linux readline libaio")
+build_deps=("${dep_lvm2} ${dep_device}")
 
-adddep=("device-mapper>=${pkgver}")
+adddep=("${dep_lvm2} device-mapper>=${pkgver}")
 
 config_files=("etc/lvm/lvm.conf
 etc/lvm/lvmlocal.conf")
@@ -59,9 +63,12 @@ build() {
   install -m755  ${filedir}/lvm.init ${pkgdir}/etc/init.d/lvm
 }
 
+##############################################################################
+
 device-mapper() {
   pkgname=device-mapper
   shortdesc=("Device mapper userspace library and tools.")
+  adddep=("${dep_device}")
 }
 
 device-mapper_prep() {
