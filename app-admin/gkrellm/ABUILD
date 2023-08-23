@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("System monitor package for GTK2.")
-longdesc=("Single process stack of various system monitors.")
 
 source=("http://gkrellm.srcbox.net/releases/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("apps app-admin")
 
-build_deps=("gtk2 libsm lm_sensors gettext")
+adddep=("gtk2 libsm lm_sensors")
+
+build_deps=("${adddep} gettext")
 
 config_files=("etc/gkrellmd.conf")
 
