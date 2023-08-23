@@ -77,9 +77,10 @@ build(){
     --enable-libvmaf \
     --enable-libmfx \
     --enable-nonfree \
-    --enable-avisynth
-
-#--enable-libsoxr
+    --enable-avisynth \
+    --enable-libopenmpt
+#    --enable-libjxl
+#    --enable-libsoxr
 
   make -j${numjobs}
   make tools/qt-faststart -j${numjobs}
