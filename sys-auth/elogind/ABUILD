@@ -3,16 +3,15 @@ pkgver=252.9
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Standalone logind fork.")
-longdesc=("The systemd project's logind, extracted to a standalone package.")
+shortdesc=("The systemd project's logind, extracted to a standalone package.")
 
 source=("https://github.com/elogind/elogind/archive/v${pkgver}/elogind-${pkgver}.tar.gz")
 
 tags=("base sys-base")
 
-build_deps=("meson dbus linux-pam docbook-xml docbook-xsl libxslt")
+adddep=("dbus libselinux linux-pam audit util-linux libcap acl polkit")
 
-adddep=("dbus")
+build_deps=("${adddep} meson docbook-xml docbook-xsl libxslt")
 
 config_files=("etc/elogind/logind.conf")
 
