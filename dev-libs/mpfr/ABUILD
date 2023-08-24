@@ -1,7 +1,11 @@
 pkgname=mpfr
-_pkgver=4.2.0
-_patchver=12
-pkgver=${_pkgver}.p${_patchver}
+_pkgver=4.2.1
+_patchver=0
+if (( _patchver == 0 )); then
+  pkgver=$_pkgver
+else
+  pkgver=$_pkgver.p$_patchver
+fi
 pkgbuild=1
 arch=("auto")
 
