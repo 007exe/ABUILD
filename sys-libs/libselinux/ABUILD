@@ -1,0 +1,31 @@
+pkgname=libselinux
+pkgver=3.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SELinux library and simple utilities.")
+
+source=("https://github.com/SELinuxProject/selinux/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs sys-libs")
+
+adddep=("pcre libsepol")
+# python-pip
+build_deps=("${adddep} python python-setuptools ruby xz swig")
+
+build() {
+  go_src_dir
+  burn_patches
+  export DISABLE_RPM=y
+  export CFLAGS="${CFLAGS} -fno-semantic-interposition"
+  make swigify
+  make all
+  make PYTHON=/usr/bin/python3 pywrap
+  make RUBY=/usr/bin/ruby rubywrap
+  make DESTDIR=${pkgdir} SBINDIR=/usr/bin SHLIBDIR=/usr/lib install
+#  make DESTDIR=${pkgdir} PYTHON=/usr/bin/python3 SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-pywrap
+  make DESTDIR=${pkgdir} RUBY=/usr/bin/ruby SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-rubywrap
+  /usr/bin/python3 -m compileall ${pkgdir}/$(/usr/bin/python3 -c 'from distutils.sysconfig import *; print(get_python_lib(plat_specific=1))')
+  install -Dm 0644 ${filedir}/libselinux.tmpfiles.d ${pkgdir}/usr/lib/tmpfiles.d/libselinux.conf
+  install -Dm 0644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
