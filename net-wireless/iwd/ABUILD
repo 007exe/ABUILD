@@ -1,5 +1,5 @@
 pkgname=iwd
-pkgver=2.7
+pkgver=2.8
 pkgbuild=1
 arch=("auto")
 
