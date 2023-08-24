@@ -16,8 +16,24 @@ build_deps=("${adddep} kernel-headers")
 build() {
   go_src_dir
   burn_patches
-  make DYNAMIC=yes KERNEL_HEADERS=/usr/include CC="gcc -m32" lib=lib32 prefix=/usr sbindir=bin
-  make DESTDIR=${pkgdir} RAISE_SETFCAP=no lib=lib32 prefix=/usr sbindir=bin install
+  local make_options=(
+    CC="gcc -m32"
+    DYNAMIC=yes
+    KERNEL_HEADERS=/usr/include
+    lib=lib32
+    prefix=/usr
+    sbindir=bin
+  )
+  make "${make_options[@]}"
+  local make_install=(
+    DESTDIR="$pkgdir"
+    RAISE_SETFCAP=no
+    lib=lib32
+    prefix=/usr
+    sbindir=bin
+    install
+  )
+  make "${make_install[@]}"
   install -vDm 644 {CHANGELOG,README} -t ${pkgdir}/usr/share/doc/${pkgname}/
   rm -rv ${pkgdir}/usr/{include,share/man,bin}
 }
