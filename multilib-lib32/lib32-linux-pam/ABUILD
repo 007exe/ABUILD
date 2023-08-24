@@ -11,7 +11,7 @@ tags=("lib32 sys-libs")
 
 adddep=("linux-pam lib32-libtirpc")
 
-build_deps=("${adddep} docbook-xml docbook-xsl lib32-flex w3m")
+build_deps=("${adddep} docbook-xml docbook-xsl lib32-flex w3m lib32-libnsl")
 
 build() {
   go_src_dir
@@ -19,13 +19,15 @@ build() {
   autoreconf -fvi
   export CC="gcc -m32 -mstackrealign"
   export CXX="g++ -m32 -mstackrealign"
-  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
+#  export PKG_CONFIG="i686-pc-linux-gnu-pkg-config"
   export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib32 \
     --sbindir=/usr/bin \
-    --disable-db
+    --enable-logind \
+    --disable-db \
+    --disable-doc
   make -j${numjobs}
   make DESTDIR=${pkgdir} SCONFIGDIR=/etc/security install
 
