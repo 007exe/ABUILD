@@ -1,0 +1,22 @@
+pkgname=libsepol
+pkgver=3.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SELinux binary policy manipulation library.")
+
+source=("https://github.com/SELinuxProject/selinux/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs sys-libs")
+
+adddep=("glibc")
+
+build_deps=("${adddep} flex")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS="${CFLAGS} -fno-semantic-interposition"
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} SHLIBDIR=/usr/lib install
+}
