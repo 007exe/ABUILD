@@ -1,18 +1,16 @@
 pkgname=zlib
-pkgver=1.2.13
+pkglist=("minizip")
+pkgver=1.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Compression library implementing the deflate compression method found in gzip and PKZIP.")
-longdesc=("The Zlib package contains compression and decompression routines used by some programs.")
 
 source=("https://zlib.net/zlib-${pkgver}.tar.gz")
 
 tags=("libs sys-libs")
 
 build_deps=("glibc")
-
-pkglist=("minizip")
 
 build() {
   go_src_dir
@@ -24,13 +22,12 @@ build() {
 # Удаляем ненужную статическую библиотеку
   rm -fv ${pkgdir}/usr/lib/libz.a
 
-  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/zlib/LICENSE"
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/zlib/LICENSE
 }
 
 minizip() {
   pkgname=minizip
   shortdesc=("Mini zip and unzip based on zlib.")
-  longdesc=("The Zlib package contains compression and decompression routines used by some programs.")
   adddep=("zlib")
 }
 
