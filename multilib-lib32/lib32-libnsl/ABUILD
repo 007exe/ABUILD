@@ -1,0 +1,39 @@
+pkgname=lib32-libnsl
+pkgver=2.0.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Public client interface library for NIS(YP) and NIS+ (32-bit).")
+
+source=("https://github.com/thkukuk/libnsl/archive/v${pkgver}.tar.gz")
+
+tags=("lib32 net-libs")
+
+adddep=("lib32-glibc lib32-libtirpc libnsl")
+
+build_deps=("${adddep}")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  export CC='gcc -m32'
+  export CXX='g++ -m32'
+  export PKG_CONFIG_PATH='/usr/lib32/pkg-config'
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  rm -rf ${pkgdir}/usr/include
+}
