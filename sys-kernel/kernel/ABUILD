@@ -1,5 +1,6 @@
 pkgname=kernel
-pkgver=6.4.9
+pkglist=("kernel-headers kernel-sources")
+pkgver=6.4.12
 pkgbuild=1
 arch=("auto")
 
@@ -23,9 +24,7 @@ skip_gendeps=1
 build_deps=("bc kmod cpio perl tar xz xmlto rsync diffutils ncurses bison flex elfutils
 python-sphinx python-sphinx_rtd_theme graphviz imagemagick")
 
-adddep=("coreutils kmod dracut")
-
-pkglist=("headers sources")
+adddep=("coreutils kmod")
 
 before_build() {
   go_src_dir
@@ -137,14 +136,15 @@ EOF
 
 #################################################################################################################################
 
-headers() {
+kernel-headers() {
   pkgname=kernel-headers
   arch=("noarch")
   shortdesc=("Headers and scripts for building modules for the linux kernel.")
+  skip_gendeps=1
   tags=("develop sys-kernel")
 }
 
-headers_prep() {
+kernel-headers_prep() {
   go_src_dir
   echo "*******************************************************"
   echo "*                                                     *"
@@ -159,15 +159,15 @@ headers_prep() {
 #################################################################################################################################
 # NOTE: Возможно этот пакет более не нужен но на всякий случай его создадим
 
-sources() {
+kernel-sources() {
   pkgname=kernel-source
   arch=("noarch")
-  shortdesc=("Linux kernel source.")
-  longdesc=("Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.")
+  shortdesc=("Source code for Linus Torvalds Linux kernel. This is the complete source code for the Linux kernel.")
+  skip_gendeps=1
   tags=("develop sys-kernel")
 }
 
-sources_prep() {
+kernel-sources_prep() {
   go_src_dir
   mkdir -p ${pkgdir}/usr/src/linux-${pkgver}
   echo "*******************************************************"
