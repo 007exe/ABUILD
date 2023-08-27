@@ -1,17 +1,19 @@
-pkgname=kalendar
-pkgver=23.04.3
+pkgname=merkuro
+pkgver=23.08.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Command line interface to KDE calendars.")
+shortdesc=("A calendar application using Akonadi to sync with external services.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde kde-pim")
 
-adddep=("kdepim-runtime mailcommon eventviews qqc2-desktop-style kirigami-addons")
+adddep=("kdepim-runtime mailcommon qqc2-desktop-style kirigami-addons")
 
 build_deps=("${adddep} extra-cmake-modules")
+
+conflicts=("kalendar")
 
 build() {
   go_src_dir
