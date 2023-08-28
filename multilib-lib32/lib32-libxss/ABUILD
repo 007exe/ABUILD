@@ -1,5 +1,5 @@
 pkgname=lib32-libxss
-pkgver=1.2.3
+pkgver=1.2.4
 pkgbuild=1
 arch=("auto")
 
@@ -7,7 +7,7 @@ shortdesc=("X11 Screen Saver extension library (32-bit).")
 
 tags=("xorg-libs lib32")
 
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXScrnSaver-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXScrnSaver-${pkgver}.tar.xz")
 
 adddep=("lib32-libxext libxss")
 
