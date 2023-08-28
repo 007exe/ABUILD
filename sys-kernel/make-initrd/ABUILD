@@ -1,5 +1,5 @@
 pkgname=make-initrd
-pkgver=2.37.0
+pkgver=2.38.0
 pkgbuild=1
 arch=("auto")
 strict_version='yes'
@@ -51,6 +51,5 @@ build() {
   make DESTDIR=$pkgdir install
 
 # MPKG hooks
-#  install -Dm0755 $filedir/dracut-generate-initrd.sh ${pkgdir}/etc/mpkg/hooks/dracut-generate-initrd.sh
+  install -Dm0755 ${filedir}/kernel-make-initrd.sh ${pkgdir}/etc/mpkg/hooks/kernel-make-initrd.sh
 }
-
