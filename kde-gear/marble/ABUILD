@@ -1,6 +1,6 @@
 pkgname=marble-common
 pkglist=("marble-qt marble-maps marble")
-pkgver=23.04.3
+pkgver=23.08.0
 pkgbuild=1
 arch=("auto")
 
@@ -11,10 +11,11 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 tags=("libs kde-education")
 
 adddep=("qt5-svg qt5-webengine phonon protobuf")
-
+dep_marble=("kparts")
+dep_marble_maps=("kirigami2")
 # libwlocate shapelib
-build_deps=("${adddep} extra-cmake-modules gpsd kdoctools
-kparts krunner plasma-workspace qt5-serialport qt5-tools")
+build_deps=("${adddep} ${dep_marble} extra-cmake-modules gpsd kdoctools kparts krunner
+plasma-workspace qt5-serialport qt5-tools qt5-webengine protobuf")
 
 # NOTE: Это опциональные зависимости
 removedep=("gpsd libwlocate qt5-serialport shapelib")
@@ -27,6 +28,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DCMAKE_CXX_STANDARD=17 \
     -DQT_PLUGINS_DIR=lib/qt/plugins \
     -DBUILD_TESTING=OFF \
     -DBUILD_TOUCH=ON \
@@ -61,7 +63,7 @@ marble-qt_prep() {
 marble() {
   pkgname=marble
   shortdesc=("marble-common knewstuff kparts.")
-  adddep=("marble-common kparts")
+  adddep=("${dep_marble} marble-common")
 # NOTE: Это опциональные зависимости
   removedep=("krunner")
 }
@@ -78,9 +80,9 @@ marble_prep() {
 #######################################################################################################################
 
 marble-maps() {
-  pkgname=marble
+  pkgname=marble-maps
   shortdesc=("OpenStreetMap Navigation.")
-  adddep=("marble-common kirigami2")
+  adddep=("${dep_marble_maps} marble-common")
 }
 
 marble-maps_prep() {

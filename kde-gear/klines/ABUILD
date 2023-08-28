@@ -1,5 +1,5 @@
 pkgname=klines
-pkgver=23.04.3
+pkgver=23.08.0
 pkgbuild=1
 arch=("auto")
 

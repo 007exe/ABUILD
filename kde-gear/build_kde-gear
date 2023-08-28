@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KDE_GEAR_VERSION=23.04.3
+KDE_GEAR_VERSION=23.08.0
 
 LIST="libkdcraw
 libkexiv2
@@ -115,7 +115,7 @@ eventviews
 falkon
 grantlee-editor
 kaccounts-providers
-kalendar
+merkuro
 kbackup
 kdebugsettings
 kdeconnect
