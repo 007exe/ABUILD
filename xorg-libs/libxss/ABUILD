@@ -1,16 +1,17 @@
 pkgname=libxss
-pkgver=1.2.3
-pkgbuild=2
+pkgver=1.2.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("X11 Screen Saver extension library.")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
 tags=("xorg-libs libs")
 
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXScrnSaver-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXScrnSaver-${pkgver}.tar.xz")
 
-build_deps=("xorg-util-macros xorgproto libxext")
+adddep=("libxext libx11 glibc")
+
+build_deps=("${adddep} xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
