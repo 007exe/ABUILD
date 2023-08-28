@@ -1,8 +1,8 @@
 # NOTE: Обнови vulkan-icd-loader
 pkgname=vulkan-headers
-pkgver=1.3.257
+pkgver=1.3.262
 pkgbuild=1
-arch=("auto")
+arch=("noarch")
 
 shortdesc=("Vulkan Header files and API registry.")
 
