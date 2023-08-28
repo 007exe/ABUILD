@@ -1,0 +1,39 @@
+pkgname=qhexedit2
+pkgver=0.8.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Hex editor widget written in C++ for the Qt framework.")
+
+source=("https://github.com/Simsys/qhexedit2/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils app-editors")
+
+adddep=("qt5-base")
+
+build_deps=("${adddep} cmake qt5-tools")
+
+build() {
+  go_src_dir
+  qmake-qt5 src/qhexedit.pro
+  make -j${numjobs}
+  cat > ${pkgname}.pc <<EOF
+prefix=/usr
+libdir=\${prefix}/lib
+includedir=\${prefix}/include/${pkgname}
+
+Name: ${pkgname}
+Description: ${pkgdesc}
+Version: ${pkgver}
+Cflags: -I\${includedir}
+Libs: -L\${libdir} -lqhexedit
+EOF
+
+  install -Dm 644 src/*.h -t ${pkgdir}/usr/include/${pkgname}
+  install -d ${pkgdir}/usr/lib
+  cp -a *.so* ${pkgdir}/usr/lib
+  install -Dm 644 ${pkgname}.pc -t ${pkgdir}/usr/share/pkgconfig
+
+  install -Dm 744 readme.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 744 src/license.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
