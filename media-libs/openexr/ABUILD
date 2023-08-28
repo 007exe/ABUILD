@@ -1,26 +1,26 @@
 pkgname=openexr
-pkgver=3.1.10
+pkgver=3.1.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A high dynamic-range image file format library.")
 
-source=("https://github.com/openexr/openexr/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+source=("https://github.com/openexr/openexr/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("cmake zlib imath")
+adddep=("zlib imath")
+
+build_deps=("${adddep} cmake")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake .. \
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=None
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
-  install -Dm644 ../LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 LICENSE.md -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
