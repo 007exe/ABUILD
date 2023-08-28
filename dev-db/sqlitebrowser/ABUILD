@@ -2,17 +2,25 @@ pkgname=sqlitebrowser
 pkgver=3.12.2
 pkgbuild=1
 arch=("auto")
+strict_version='yes'
 
-shortdesc=("A light GUI editor for SQLite databases.")
-longdesc=("SQLite Database browser is a light GUI editor for SQLite databases, built on top of Qt.")
+shortdesc=("SQLite Database browser is a light GUI editor for SQLite databases, built on top of Qt.")
 
-source=("https://github.com/sqlitebrowser/sqlitebrowser/archive/refs/tags/v3.12.2.tar.gz")
+source=("git:https://github.com/sqlitebrowser/sqlitebrowser.git")
 
 tags=("utils dev-db")
 
-build_deps=("cmake ninja qt5-tools qt5-base sqlcipher qcustomplot qhexedit2 qscintilla-qt5")
+# qscintilla-qt5
+adddep=("qt5-base hicolor-icon-theme sqlcipher qcustomplot qhexedit2")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} cmake ninja qt5-tools")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
 
 build() {
   go_src_dir
