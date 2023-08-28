@@ -1,6 +1,6 @@
 pkgname=bluez
 pkglist=("bluez-libs bluez-cups bluez-hid2hci")
-pkgver=5.68
+pkgver=5.69
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,13 @@ source=("http://www.kernel.org/pub/linux/bluetooth/bluez-${pkgver}.tar.gz")
 
 tags=("network net-wireless")
 
+# systemd
+dep_bluez_hid2hci=("glibc")
+dep_bluez_cups=("cups glib2 glibc dbus")
+dep_bluez_libs=("glibc")
+# systemd
+build_deps=("${dep_bluez_libs} ${dep_bluez_cups} ${dep_bluez_hid2hci} dbus libical alsa-lib json-c ell python-docutils")
 adddep=("bluez-libs>=${pkgver}")
-
-build_deps=("dbus alsa-lib json-c python-docutils libical ell")
 
 config_files=("etc/bluetooth/main.conf")
 
@@ -56,12 +60,13 @@ build() {
   install -Dm755 ${filedir}/bluetooth.init ${pkgdir}/etc/init.d/bluetooth
 }
 
+#####################################################################
 
 bluez-libs() {
   pkgname=bluez-libs
   shortdesc=("Deprecated libraries for the bluetooth protocol stack.")
-  longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
   tags=("libs net-wireless")
+  adddep=("${dep_bluez_libs}")
 }
 
 bluez-libs_prep() {
@@ -72,10 +77,12 @@ bluez-libs_prep() {
     install-pkgconfigDATA
 }
 
+#####################################################################
+
 bluez-cups() {
   pkgname=bluez-cups
   shortdesc=("CUPS printer backend for Bluetooth printers.")
-  longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
+  adddep=("${dep_bluez_cups}")
 }
 
 bluez-cups_prep() {
@@ -83,11 +90,12 @@ bluez-cups_prep() {
   make DESTDIR=${pkgdir} install-cupsPROGRAMS
 }
 
+#####################################################################
 
 bluez-hid2hci() {
   pkgname=bluez-hid2hci
   shortdesc=("Put HID proxying bluetooth HCI's into HCI mode.")
-  longdesc=("The BlueZ package contains the Bluetooth protocol stack for Linux.")
+  adddep=("${dep_bluez_hid2hci}")
 }
 
 bluez-hid2hci_prep() {
