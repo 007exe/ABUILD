@@ -1,16 +1,18 @@
 pkgname=sqlite
 pkglist=("sqlite-doc")
-pkgver=3.42.0
+pkgver=3.43.0
 pkgbuild=1
 arch=("auto")
-_srcver=3420000
+_srcver=3430000
 _docver=${_srcver}
 
 shortdesc=("A C library that implements an SQL database engine.")
 
 tags=("libs dev-db")
 
-build_deps=("tcl readline zlib unzip")
+adddep=("readline zlib glibc")
+
+build_deps=("${adddep} tcl unzip")
 
 source=("https://www.sqlite.org/2023/sqlite-src-${_srcver}.zip"
 "https://www.sqlite.org/2023/sqlite-doc-${_docver}.zip")
@@ -47,6 +49,8 @@ build() {
   install -m755 -d ${pkgdir}/usr/share/man/man1
   install -m644 sqlite3.1 ${pkgdir}/usr/share/man/man1/
 }
+
+#####################################################################
 
 sqlite-doc() {
   pkgname=sqlite-doc
