@@ -1,10 +1,9 @@
 pkgname=sysvinit
-pkgver=3.01
-pkgbuild=2
+pkgver=3.04
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classical init system")
-longdesc=("The Sysvinit package contains programs for controlling the startup, running, and shutdown of the system.")
 
 tags=("base sys-apps")
 
