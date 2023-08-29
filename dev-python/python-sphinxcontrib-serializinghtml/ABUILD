@@ -1,5 +1,5 @@
 pkgname=python-sphinxcontrib-serializinghtml
-pkgver=1.1.8
+pkgver=1.1.9
 pkgbuild=1
 arch=("auto")
 
