@@ -9,7 +9,7 @@ source=("http://www.cpan.org/src/5.0/perl-${pkgver}.tar.xz")
 
 tags=("dev-lang develop")
 
-adddep=("gdbm db5 db glibc libxcrypt")
+adddep=("gdbm db db glibc libxcrypt")
 
 build_deps=("${adddep}")
 
