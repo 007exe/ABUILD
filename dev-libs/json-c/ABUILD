@@ -1,16 +1,17 @@
 pkgname=json-c
-pkgver=0.16
+pkgver=0.17
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A JSON implementation in C.")
-longdesc=("The JSON-C implements a reference counting object model that allows you to easily construct JSON objects in C, output them as JSON formatted strings and parse JSON formatted strings back into the C representation of JSON objects.")
 
 source=("https://s3.amazonaws.com/json-c_releases/releases/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("cmake ninja glibc")
+adddep=("glibc")
+
+build_deps=("${adddep} cmake ninja")
 
 build() {
   go_src_dir
