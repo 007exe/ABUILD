@@ -1,0 +1,37 @@
+pkgname=vscodium
+pkgver=1.81.1.23222
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Free/Libre Open Source Software Binaries of VSCode.")
+
+source=("https://github.com/VSCodium/vscodium/releases/download/${pkgver}/VSCodium-linux-x64-${pkgver}.tar.gz")
+
+tags=("develop app-editors")
+
+adddep=("fontconfig libxtst gtk3 python cairo alsa-lib nss gcc-libs libnotify libxss glibc bash")
+
+build_deps=("${adddep}")
+
+shopt -s extglob
+
+build() {
+  cd ${srcdir}
+  install -d -m755 ${pkgdir}/opt/${pkgname}
+  install -d -m755 ${pkgdir}/usr/bin
+  install -d -m755 ${pkgdir}/usr/share/{applications,pixmaps}
+  cp -r ${srcdir}/!(vscodium-bin?(-uri-handler).desktop|VSCodium-linux-x64-${pkgver}.tar.gz) ${pkgdir}/opt/${pkgname}
+  ln -s /opt/${pkgname}/bin/codium ${pkgdir}/usr/bin/codium
+  ln -s /opt/${pkgname}/bin/codium ${pkgdir}/usr/bin/vscodium
+
+  install -D -m644 ${filedir}/vscodium.desktop ${pkgdir}/usr/share/applications/codium.desktop
+  install -D -m644 ${filedir}/vscodium-wayland.desktop ${pkgdir}/usr/share/applications/codium-wayland.desktop
+  install -D -m644 ${filedir}/vscodium-uri-handler.desktop ${pkgdir}/usr/share/applications/codium-uri-handler.desktop
+  install -D -m644 ${srcdir}/resources/app/resources/linux/code.png ${pkgdir}/usr/share/pixmaps/vscodium.png
+  install -m755 ${filedir}/${pkgname}.sh ${pkgdir}/usr/bin/codium
+
+  install -d -m755 ${pkgdir}/usr/share/zsh/site-functions
+  install -d -m755 ${pkgdir}/usr/share/bash-completion/completions
+  ln -s /opt/${pkgname}/resources/completions/zsh/_codium ${pkgdir}/usr/share/zsh/site-functions
+  ln -s /opt/${pkgname}/resources/completions/bash/codium ${pkgdir}/usr/share/bash-completion/completions
+}
