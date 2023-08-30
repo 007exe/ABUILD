@@ -6,7 +6,8 @@
 # в пост установочные скрипты пакетов которые это требуют
 
 pkgname=appstream
-pkgver=0.16.2
+pkgver=0.16.3
+pkglist=("appstream-qt")
 pkgbuild=1
 arch=("auto")
 
@@ -17,8 +18,6 @@ source=("https://www.freedesktop.org/software/appstream/releases/AppStream-${pkg
 tags=("libs dev-libs")
 
 build_deps=("meson xmlto gobject-introspection gtk-doc qt5-tools itstool vala gperf curl librsvg libyaml libxmlb libsoup")
-
-pkglist=("appstream-qt")
 
 build() {
   go_src_dir
