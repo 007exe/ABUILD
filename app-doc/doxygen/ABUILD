@@ -1,5 +1,5 @@
 pkgname=doxygen
-pkgver=1.9.7
+pkgver=1.9.8
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,8 @@ tags=("utils app-doc")
 
 source=("https://github.com/doxygen/doxygen/archive/Release_${pkgver//./_}.tar.gz")
 
-build_deps=("cmake gcc-libs flex python qt5-base graphviz ghostscript texlive-core texlive-latexextra")
+# texlive-fontutils texlive-fontsrecommended texlive-plaingeneric
+build_deps=("cmake gcc-libs flex qt5-base ghostscript texlive-latexextra graphviz python")
 
 # Это опциональные зависимости
 removedep=("graphviz qt5-base")
