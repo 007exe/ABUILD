@@ -1,5 +1,5 @@
 pkgname=libxmlb
-pkgver=0.3.11
+pkgver=0.3.14
 pkgbuild=1
 arch=("auto")
 
