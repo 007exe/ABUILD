@@ -1,6 +1,6 @@
 pkgname=lib32-llvm
 pkglist=("libs")
-pkgver=15.0.7
+pkgver=16.0.6
 pkgbuild=1
 arch=("auto")
 
