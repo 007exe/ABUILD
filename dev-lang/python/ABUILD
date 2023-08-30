@@ -1,6 +1,6 @@
 pkgname=python
 pkglist=("python-tests")
-pkgver=3.11.3
+pkgver=3.11.5
 pkgbuild=1
 arch=("auto")
 
@@ -10,10 +10,9 @@ source=("https://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz
 
 tags=("develop dev-lang")
 
-build_deps=("tk sqlite llvm gdb bzip2 expat gdbm libffi libnsl openssl zlib
-bzip2 expat gdbm libffi libnsl openssl zlib libxcrypt mpdecimal")
-
 adddep=("bzip2 expat gdbm libffi libnsl openssl zlib")
+
+build_deps=("${adddep} tk sqlite llvm gdb libxcrypt mpdecimal")
 
 # NOTE: Это опциональные зависимости python-setuptools python-pip sqlite mpdecimal xz tk
 removedep=("libx11 tcl libtirpc sqlite mpdecimal xz tk")
