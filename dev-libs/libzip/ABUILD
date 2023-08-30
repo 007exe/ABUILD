@@ -1,5 +1,5 @@
 pkgname=libzip
-pkgver=1.10.0
+pkgver=1.10.1
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,11 @@ source=("http://www.nih.at/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs dev-libs")
 
-build_deps=("cmake zlib bzip2 zstd openssl gnutls")
+adddep=("zlib bzip2 zstd openssl gnutls")
+
+build_deps=("${adddep} cmake")
 
 removedep=("xz nettle")
-
-adddep=("openssl zlib")
 
 build() {
   go_src_dir
@@ -21,8 +21,10 @@ build() {
   mkdir build
   cd build
   cmake .. \
+    -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -Wno-dev
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
