@@ -1,6 +1,6 @@
 pkgname=rust
 pkglist=("lib32-rust-libs rust-src")
-pkgver=1.71.1
+pkgver=1.72.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,12 @@ source=("https://static.rust-lang.org/dist/rustc-${pkgver}-src.tar.gz")
 
 tags=("develop dev-lang")
 
-build_deps=("rust libffi lib32-gcc-libs gcc-libs gcc perl python cmake ninja lld llvm-libs curl libssh2")
+dep_lib32=("lib32-gcc-libs rust")
+
+adddep=("curl gcc gcc-libs libssh2 llvm-libs")
+
+# wasi-libc
+build_deps=("${adddep} ${dep_lib32} cmake libffi lld llvm ninja perl python")
 
 ################################################################################################
 # NOTE: Функция переноса файлов
@@ -121,7 +126,7 @@ build() {
 lib32-rust-libs() {
   pkgname=lib32-rust-libs
   shortdesc=("32-bit target and libraries for Rust.")
-  adddep=("rust lib32-gcc-libs")
+  adddep=("${dep_lib32}")
 }
 
 lib32-rust-libs_prep() {
@@ -138,6 +143,7 @@ rust-src() {
   pkgname=rust-src
   shortdesc=("Source code for the Rust standard library.")
   adddep=("rust")
+  custom_opts=("skip_gendeps")
 }
 
 rust-src_prep() {
