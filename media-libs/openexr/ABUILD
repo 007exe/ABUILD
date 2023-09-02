@@ -1,5 +1,5 @@
 pkgname=openexr
-pkgver=3.1.11
+pkgver=3.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/openexr/openexr/archive/v${pkgver}/${pkgname}-${pkgv
 
 tags=("libs media-libs")
 
-adddep=("zlib imath")
+adddep=("zlib imath libdeflate")
 
 build_deps=("${adddep} cmake")
 
