@@ -1,5 +1,5 @@
 pkgname=aom
-pkgver=3.6.1
+pkgver=3.7.0
 pkgbuild=1
 arch=("auto")
 
