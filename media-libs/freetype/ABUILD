@@ -1,5 +1,5 @@
 pkgname=freetype
-pkgver=2.13.1
+pkgver=2.13.2
 pkgbuild=1
 arch=("auto")
 
