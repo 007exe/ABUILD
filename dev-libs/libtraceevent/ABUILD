@@ -1,0 +1,21 @@
+pkgname=libtraceevent
+pkgver=1.7.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux kernel trace event library.")
+
+source=("https://git.kernel.org/pub/scm/libs/libtrace/${pkgname}.git/snapshot/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("glibc")
+
+build_deps=("${adddep} asciidoc xmlto")
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+  make libdir_relative=lib prefix=/usr DESTDIR=${pkgdir} install
+}
