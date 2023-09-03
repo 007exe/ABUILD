@@ -1,6 +1,6 @@
 pkgname=discount
-pkgver=2.2.7.c
-_pkgver=2.2.7c
+pkgver=3.0.0.a
+_pkgver=3.0.0a
 pkgbuild=1
 arch=("auto")
 
@@ -19,7 +19,6 @@ build() {
     --prefix=/usr \
     --enable-all-features \
     --with-fenced-code \
-    --github-checkbox \
     --shared
   make -j${numjobs}
 # Исправлен вызов ldconfig
