@@ -1,0 +1,33 @@
+pkgname=libnvme
+pkgver=1.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("C Library for NVM Express on Linux.")
+
+source=("https://github.com/linux-nvme/${pkgname}/archive/v${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+adddep=("json-c openssl keyutils dbus")
+# systemd
+build_deps=("${adddep} meson asciidoc python swig")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  meson \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libdbus=auto \
+    -D docs-build=true \
+    .build
+  DESTDIR=${pkgdir} meson install -C .build
+}
