@@ -27,7 +27,8 @@ build() {
   mkdir build
   cd build
   cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
