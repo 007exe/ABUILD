@@ -1,73 +1,79 @@
 pkgname=mumble
-pkglist=("murmur")
-pkgver=1.4.287
+pkglist=("server")
+pkgver=1.5.517
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An Open Source, low-latency, high quality voice chat software.")
+shortdesc=("An Open Source, low-latency, high quality voice chat software (client).")
 
 source=("https://github.com/mumble-voip/mumble/releases/download/v${pkgver}/mumble-${pkgver}.tar.gz")
 
 tags=("network net-voip")
 
-build_deps=("avahi boost cmake poco protobuf python qt5-tools speech-dispatcher libcap
-alsa-lib hicolor-icon-theme jack libpulse libsndfile libspeechd libx11 libxi grpc zeroc-ice
-mesa opus qt5-svg speex xdg-utils")
+adddep=("alsa-lib avahi hicolor-icon-theme jack protobuf libpulse libsndfile
+libspeechd libx11 libxi openssl opus poco qt5-svg rnnoise speexdsp xdg-utils")
+# zeroc-ice
+dep_server=("avahi libcap openssl protobuf")
+build_deps=("${adddep} ${dep_server} boost cmake python qt5-tools")
 
-adddep=("hicolor-icon-theme")
+# NOTE: Это опциональные зависимости
+removedep=("lib32-glibc espeak-ng speech-dispatcher")
 
 build() {
   go_src_dir
   burn_patches
-  export PKG_CONFIG_PATH=/usr/lib/openssl-1.1/pkgconfig
-  local _build_number="$(cut -d '.' -f 3 <<< "$pkgver")"
-  cmake \
-    -D CMAKE_INSTALL_PREFIX=/usr \
-    -D CMAKE_BUILD_TYPE=None \
-    -D BUILD_NUMBER="$_build_number" \
-    -D warnings-as-errors=OFF \
-    -W no-dev \
-    -D bundled-opus=OFF \
-    -D bundled-speex=OFF \
-    -D update=OFF \
-    -D server=OFF \
+  sed -e 's|CMAKE_CXX_STANDARD 14|CMAKE_CXX_STANDARD 17|' -i CMakeLists.txt
+  local default_options=(
+    -D CMAKE_INSTALL_PREFIX=/usr
+    -D CMAKE_INSTALL_LIBDIR=lib
+    -D CMAKE_BUILD_TYPE=None
+    # https://github.com/mumble-voip/mumble/issues/5538
+    -D BUILD_NUMBER="${pkgver/*./}"
+    -D tests=ON
+    -D warnings-as-errors=OFF
+    -W no-dev
+  )
+  local cmake_options_client=(
+    -D update=OFF
+    -D server=OFF
     -B build-client
-  make VERBOSE=1 -C build-client
-  make DESTDIR=${pkgdir} install -C build-client
+    -D bundled-json=OFF
+    -D bundled-rnnoise=OFF
+    -D bundled-speex=OFF
+  )
+  local cmake_options_server=(
+    -D MUMBLE_INSTALL_ABS_SYSCONFDIR=/etc/mumble-server
+    -D CMAKE_INSTALL_SYSCONFDIR=/etc
+    -D client=OFF
+    -B build-server
+  )
+
+echo "================> build-client <================"
+  cmake "${default_options[@]}" "${cmake_options_client[@]}"
+  cmake --build build-client --verbose
+
+echo "================> build-server <================"
+  cmake "${default_options[@]}" "${cmake_options_server[@]}"
+  cmake --build build-server --verbose
+
+  DESTDIR=${pkgdir} cmake --install build-client
   install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
-murmur() {
-  pkgname=murmur
+######################################################################################
+
+server() {
+  pkgname=mumble-server
   shortdesc=("An Open Source, low-latency, high quality voice chat software (server).")
+  adddep=("${dep_server}")
   config_files=("etc/murmur.ini")
 }
 
-murmur_prep() {
+server_prep() {
   go_src_dir
-  export PKG_CONFIG_PATH=/usr/lib/openssl-1.1/pkgconfig
-  local _build_number="$(cut -d '.' -f 3 <<< "$pkgver")"
-  cmake \
-    -D CMAKE_INSTALL_PREFIX=/usr
-    -D CMAKE_BUILD_TYPE=None
-    -D BUILD_NUMBER="$_build_number"
-    -D warnings-as-errors=OFF
-    -W no-dev
-    -D grpc=ON \
-    -D client=OFF \
-    -B build-server
-  make VERBOSE=1 -C build-server
-  make DESTDIR=${pkgdir} install -C build-server
-  mv -v ${pkgdir}/usr/bin/{mumble-server,murmurd}
-  mv -v ${pkgdir}/usr/share/man/man1/{mumble-server,murmurd}.1
-  mv -v ${pkgdir}/usr/share/man/man1/{mumble-server,murmur}-user-wrapper.1
-  (
-    cd ..
-    install -vDm 640 scripts/murmur.ini -t ${pkgdir}/etc
-    install -vDm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
-    install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
-    install -vDm 644 src/murmur/{Murmur.ice,MurmurRPC.proto} -t ${pkgdir}/usr/share/${pkgname}
-  )
+  DESTDIR=${pkgdir} cmake --install build-server
+  install -vDm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+  chmod 640 ${pkgdir}/etc/mumble/${pkgname}.ini
   install -vDm 644 ${filedir}/murmur.dbus.conf ${pkgdir}/usr/share/dbus-1/system.d/murmur.conf
   install -vDm 644 ${filedir}/murmur.service -t ${pkgdir}/usr/lib/systemd/system/
   install -vDm 644 ${filedir}/murmur.sysusers ${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf
