@@ -16,12 +16,12 @@ build_deps=("${adddep} cmake cmocka")
 build() {
   go_src_dir
   burn_patches
-  cmake . \
-    -Bbuild \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_C_FLAGS="${CFLAGS} ${CPPFLAGS}" \
-    -DBUILD_SHARED_LIBS=ON \
-    -DWITH_TESTS=1
+  cmake -B build . \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
+    -D CMAKE_C_FLAGS="${CFLAGS} ${CPPFLAGS}" \
+    -D BUILD_SHARED_LIBS=ON \
+    -D WITH_TESTS=1
   make -C build VERBOSE=1 -j${numjobs}
 #  make -C build/test VERBOSE=1
   make -C build DESTDIR=${pkgdir} install
