@@ -1,0 +1,49 @@
+pkgname=libc++
+pkglist=("libc++abi")
+pkgver=16.0.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("LLVM C++ standard library.")
+
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/llvm-project-${pkgver}.src.tar.xz")
+
+tags=("libs dev-libs")
+
+build_deps=("clang cmake ninja python")
+
+adddep=("libc++abi=${pkgver} gcc-libs")
+
+build() {
+  cd ${srcdir}
+  sed -i 's/CREDITS.TXT/CREDITS/' ${srcdir}/llvm-project-${pkgver}.src/libcxx{,abi}/LICENSE.TXT
+  mkdir -p ${srcdir}/build
+  cd build
+  cmake -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
+    -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+    -DLLVM_ENABLE_PIC=ON \
+    ../llvm-project-${pkgver}.src/runtimes
+  ninja cxx cxxabi
+  DESTDIR=${pkgdir} ninja install-cxx
+  install -Dm0644 ${srcdir}/llvm-project-${pkgver}.src/libcxx/CREDITS.TXT ${pkgdir}/usr/share/licenses/${pkgname}/CREDITS
+  install -Dm0644 ${srcdir}/llvm-project-${pkgver}.src/libcxx/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+######################################################
+
+libc++abi() {
+  pkgname=libc++abi
+  shortdesc=("Low level support for the LLVM C++ standard library.")
+}
+
+libc++abi_prep() {
+  cd ${srcdir}
+  DESTDIR=${pkgdir} ninja -C build install-cxxabi
+  install -Dm0644 ${srcdir}/llvm-project-${pkgver}.src/libcxxabi/CREDITS.TXT ${pkgdir}/usr/share/licenses/${pkgname}/CREDITS
+  install -Dm0644 ${srcdir}/llvm-project-${pkgver}.src/libcxxabi/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
