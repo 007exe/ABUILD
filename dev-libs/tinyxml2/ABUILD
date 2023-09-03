@@ -17,8 +17,10 @@ build() {
   go_src_dir
   burn_patches
   cmake -B build \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -Dtinyxml2_SHARED_LIBS=ON
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
+    -D tinyxml2_SHARED_LIBS=ON
   cmake --build build
   DESTDIR=${pkgdir} cmake --install build
+  install -vDm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
