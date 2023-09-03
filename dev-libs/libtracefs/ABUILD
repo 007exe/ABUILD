@@ -1,0 +1,26 @@
+pkgname=libtracefs
+pkgver=1.7.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Linux kernel trace file system library.")
+
+source=("https://git.kernel.org/pub/scm/libs/libtrace/libtracefs.git/snapshot/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("glibc libtraceevent")
+
+build_deps=("${adddep} asciidoc xmlto")
+
+build() {
+  go_src_dir
+  burn_patches
+  cd ${srcdir}
+  make -C ${pkgname}-${pkgver}
+  make sqlhist -C ${pkgname}-${pkgver}
+  make doc -C ${pkgname}-${pkgver}
+  make libdir_relative=lib prefix=/usr DESTDIR=${pkgdir} install -C ${pkgname}-${pkgver}
+  make libdir_relative=lib prefix=/usr DESTDIR=${pkgdir} install -C ${pkgname}-${pkgver}/Documentation
+  install -vDm 755 ${pkgname}-${pkgver}/bin/sqlhist -t ${pkgdir}/usr/bin/
+}
