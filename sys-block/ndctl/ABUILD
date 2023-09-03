@@ -1,0 +1,29 @@
+pkgname=ndctl
+pkgver=76.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Utility library for managing the libnvdimm (non-volatile memory device) sub-system in the Linux kernel.")
+
+source=("https://github.com/pmem/ndctl/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("utils sys-block")
+
+# systemd
+adddep=("iniparser json-c keyutils kmod util-linux libtraceevent libtracefs")
+
+build_deps=("${adddep} asciidoctor bash-completion cmake meson xmlto")
+
+build() {
+  go_src_dir
+  sed -i "s|^modprobedatadir =.*|modprobedatadir = '/usr/lib/modprobe.d/'|" contrib/meson.build
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D systemd=disabled
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+# NOTE: meson не устанавливает правила udev если не используется systemd
+  mkdir -p ${pkgdir}/usr/lib/udev/rules.d/
+  install -Dm644 daxctl/90-daxctl-device.rules ${pkgdir}/usr/lib/udev/rules.d/
+}
