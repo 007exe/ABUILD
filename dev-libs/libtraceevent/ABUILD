@@ -17,5 +17,7 @@ build() {
   go_src_dir
   burn_patches
   make -j${numjobs}
+  make -j${numjobs} -C Documentation
   make libdir_relative=lib prefix=/usr DESTDIR=${pkgdir} install
+  make libdir_relative=lib prefix=/usr DESTDIR=${pkgdir} install -C Documentation
 }
