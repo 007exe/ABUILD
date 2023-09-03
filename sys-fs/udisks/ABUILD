@@ -1,16 +1,17 @@
 pkgname=udisks
-pkgver=2.9.4
-pkgbuild=2
+pkgver=2.10.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Disk Management Service, version 2.")
-longdesc=("The UDisks package provides a daemon, tools and libraries to access and manipulate disks and storage devices.")
 
 source=("https://github.com/storaged-project/udisks/archive/udisks-$pkgver.tar.gz")
 
 tags=("sys-fs base")
 
-build_deps=("docbook-xsl gobject-introspection parted gtk-doc polkit libatasmart eudev libblockdev")
+adddep=("acl polkit glib2 gcc-libs glibc libatasmart libblockdev util-linux")
+
+build_deps=("gobject-introspection gtk-doc")
 
 config_files=("etc/udisks2/udisks2.conf")
 
