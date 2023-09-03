@@ -1,16 +1,20 @@
 pkgname=libblockdev
-pkgver=2.28
+pkgver=3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library for manipulating block devices.")
-longdesc=("libblockdev is a C library supporting GObject Introspection for manipulation of block devices. It has a plugin-based architecture where each technology (like LVM, Btrfs, MD RAID, Swap,...) is implemented in a separate plugin, possibly with multiple implementations (e.g. using LVM CLI or the new LVM DBus API).")
 
 source=("https://github.com/storaged-project/libblockdev/releases/download/$pkgver-1/libblockdev-$pkgver.tar.gz")
 
 tags=("libs sys-libs")
 
-build_deps="autoconf gobject-introspection python btrfs-progs dosfstools lvm2 mdadm parted xfsprogs kmod libbytesize libyaml volume_key"
+adddep=("cryptsetup device-mapper e2fsprogs gcc-libs glib2 glibc gptfdisk kmod libbytesize mdadm nss parted util-linux volume_key")
+
+build_deps=("${adddep} autoconf-archive gobject-introspection gtk-doc python ndctl")
+
+# NOTE: Это опциональные зависимости
+removedep=("btrfs-progs dosfstools lvm2 ndctl ntfs-3g xfsprogs")
 
 build() {
   go_src_dir
@@ -19,11 +23,13 @@ build() {
     --prefix=/usr \
     --libdir=/usr/lib \
     --sysconfdir=/etc \
-    --with-python3 \
-    --without-gtk-doc \
-    --without-nvdimm \
-    --without-dm \
-    --without-lvm_dbus
+    --without-bcache \
+    --without-lvm_dbus \
+    --without-mpath
+#   --without-vdo
+#   --without-dmraid
+#   --without-kbd
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
