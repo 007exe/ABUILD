@@ -18,6 +18,7 @@ build() {
   burn_patches
   cmake -B build  \
     -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
     -D PODOFO_BUILD_TOOLS=True \
     -D PODOFO_HAVE_JPEG_LIB=True \
     -D PODOFO_HAVE_PNG_LIB=True \
