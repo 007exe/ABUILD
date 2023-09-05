@@ -1,5 +1,5 @@
 pkgname=cinnamon-control-center
-pkgver=5.8.0
+pkgver=5.8.2
 pkgbuild=1
 arch=("auto")
 
@@ -12,7 +12,7 @@ tags=("cinnamon cinnamon-base")
 adddep=("cinnamon-settings-daemon cinnamon-menus colord
 libgnomekbd libmm-glib network-manager-applet")
 
-build_deps=("meson samurai gnome-online-accounts")
+build_deps=("${adddep} meson samurai gnome-online-accounts")
 
 # NOTE: Это опциональные зависимости
 removedep=("gnome-color-manager gnome-online-accounts")
