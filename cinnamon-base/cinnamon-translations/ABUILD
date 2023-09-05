@@ -1,5 +1,5 @@
 pkgname=cinnamon-translations
-pkgver=5.8.0
+pkgver=5.8.2
 pkgbuild=1
 arch=("auto")
 
