@@ -1,9 +1,9 @@
 pkgname=zig
-pkgver=0.10.1
+pkgver=0.11.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A robust, optimal, and maintainable programming language.")
+shortdesc=("A general-purpose programming language and toolchain for maintaining robust, optimal, and reusable software.")
 
 source=("https://ziglang.org/download/${pkgver}/zig-${pkgver}.tar.xz")
 
@@ -15,13 +15,14 @@ build_deps=("${adddep} cmake llvm")
 
 build(){
   go_src_dir
-  cmake -B build \
-    -DCMAKE_BUILD_TYPE=None \
+  burn_patches
+  cmake -B build . \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_PREFIX_PATH=/usr/lib/llvm14 \
-    -DZIG_PREFER_CLANG_CPP_DYLIB=ON \
-    .
-    cmake --build build
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DZIG_SHARED_LLVM=ON \
+    -DZIG_TARGET_MCPU=baseline
+  cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
