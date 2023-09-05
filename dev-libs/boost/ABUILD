@@ -1,6 +1,6 @@
 pkgname=boost
 pkglist=("boost-libs")
-pkgver=1.81.0
+pkgver=1.83.0
 pkgbuild=1
 arch=("auto")
 
