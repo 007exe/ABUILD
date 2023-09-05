@@ -1,5 +1,5 @@
 pkgname=ncdu
-pkgver=2.2.2
+pkgver=2.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,21 +9,21 @@ source=("https://dev.yorhel.nl/download/${pkgname}-${pkgver}.tar.gz")
 
 tags=("sys-fs console")
 
-build_deps=("ncurses zig")
+adddep=("ncurses")
+
+build_deps=("${adddep} zig")
 
 build(){
   go_src_dir
   burn_patches
-  zig build-exe \
-    -target x86_64-linux.5.10-gnu.2.34 -mcpu baseline \
-    -L /usr/local/lib -L /usr/lib \
-    -isystem /usr/local/include -isystem /usr/include \
-    ./src/main.zig ./src/ncurses_refs.c \
-    -lc -lncursesw \
-    -OReleaseSafe \
-    --name ncdu \
-    -D _DEFAULT_SOURCE -D _XOPEN_SOURCE=600 \
-    -fPIE \
-    -z relro -z now \
-    -fno-each-lib-rpath
+  DESTDIR="build" zig build \
+      --prefix /usr \
+      --search-prefix /usr \
+      -Dtarget=native-linux.5.15-gnu \
+      -Dcpu=baseline \
+      -Doptimize=ReleaseSafe \
+      -Dpie=true
+  cp -a build/* ${pkgdir}
+  make install-doc PREFIX=${pkgdir}/usr
+  install --verbose -D --mode=644 LICENSES/MIT.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
