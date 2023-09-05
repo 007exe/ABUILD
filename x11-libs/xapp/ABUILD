@@ -1,0 +1,28 @@
+pkgname=xapp
+pkgver=2.6.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Common library for X-Apps project.")
+
+source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("libdbusmenu-gtk3 libgnomekbd")
+
+build_deps=("${adddep} meson samurai gobject-introspection python-gobject vala")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    --buildtype=debugoptimized
+  samu -C build
+  DESTDIR=${pkgdir} samu -C build install
+  rm -r ${pkgdir}/usr/bin
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  python -m compileall -o 0 -o 1 -o 2 --hardlink-dupes -s "${pkgdir}" "${pkgdir}"${site_packages}
+}
