@@ -33,6 +33,8 @@ adddep="ca-certificates-java"
 
 tags="libs sys-libs"
 
+build_deps=(" ")
+
 pkglist="jre7 jdk7 jdk7-source"
 _jvmdir=/opt/openjdk7
 
