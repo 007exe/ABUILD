@@ -1,5 +1,5 @@
 pkgname=procps-ng
-pkgver=4.0.3
+pkgver=4.0.4
 pkgbuild=1
 arch=("auto")
 
@@ -8,6 +8,9 @@ shortdesc=("Utilities for monitoring your system and its processes.")
 source=("https://downloads.sourceforge.net/project/procps-ng/Production/procps-ng-${pkgver}.tar.xz")
 
 tags=("base sys-process")
+
+# systemd --with-systemd
+adddep=("glibc ncurses")
 
 build_deps=("ncurses glibc")
 
