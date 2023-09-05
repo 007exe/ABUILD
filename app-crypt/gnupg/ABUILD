@@ -9,13 +9,15 @@ source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("app-crypt network")
 
-# libldap
-build_deps=("libusb-compat libgpg-error libgcrypt bzip2 readline
-gnutls sqlite zlib glibc libassuan libksba npth pcsclite pinentry")
+# libldap заменён openldap
+adddep=("bzip2 glibc gnutls libgcrypt libgpg-error libksba libassuan openldap libusb npth pinentry readline bash sqlite zlib")
+
+build_deps=("${adddep} pcsclite")
 
 build() {
   go_src_dir
   burn_patches
+  rm doc/gnupg.info*
   ./autogen.sh
   ./configure \
     --prefix=/usr \
