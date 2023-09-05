@@ -1,5 +1,5 @@
 pkgname=cinnamon
-pkgver=5.6.8
+pkgver=5.8.4
 pkgbuild=1
 arch=("auto")
 
@@ -9,12 +9,11 @@ source=("https://github.com/linuxmint/cinnamon/archive/${pkgver}/${pkgname}-${pk
 
 tags=("cinnamon cinnamon-base")
 
-# gsound xapps
 adddep=("accountsservice caribou cinnamon-control-center cinnamon-menus cinnamon-screensaver
 cinnamon-session cinnamon-settings-daemon cjs gnome-backgrounds gnome-themes-extra gstreamer
 libcroco libgnomekbd libkeybinder3 librsvg muffin network-manager-applet nemo polkit-gnome
 python-cairo dbus-python python-gobject python-pam python-pexpect python-pillow timezonemap
-python-pyinotify python-pytz python-tinycss2 python-xapp python-requests")
+python-pyinotify python-pytz python-tinycss2 python-xapp python-requests gsound xapp")
 
 build_deps=("${adddep} meson samurai gobject-introspection intltool")
 
@@ -23,6 +22,9 @@ removedep=("blueberry gnome-panel metacity system-config-printer wget")
 
 build() {
   go_src_dir
+  sed -i 's/mintinstall.desktop/org.gnome.Software.desktop/' data/org.cinnamon.gschema.xml
+  sed -i 's/RequiredComponents=\(.*\)$/RequiredComponents=\1polkit-gnome-authentication-agent-1;/' cinnamon*.session.in
+  sed -i 's|/usr/share/cinnamon-background-properties|/usr/share/gnome-background-properties|' files/usr/share/cinnamon/cinnamon-settings/modules/cs_backgrounds.py
   burn_patches
   mkdir -p build
   cd build
