@@ -1,5 +1,5 @@
 pkgname=fwupd
-pkgver=1.9.4
+pkgver=1.9.5
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/fwupd/fwupd/releases/download/${pkgver}/${pkgname}-$
 
 tags=("sys-apps utils")
 
-# libsmbios tpm2-tss flashrom libjcat fwupd-efi
+# libsmbios tpm2-tss flashrom libjcat fwupd-efi passim
 adddep=("shared-mime-info hicolor-icon-theme libxmlb efivar python libgusb polkit gcab bluez gnutls libarchive curl
 json-glib libgudev libmm-glib libqmi protobuf-c libcbor")
 
