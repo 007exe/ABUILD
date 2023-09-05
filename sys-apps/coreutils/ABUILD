@@ -1,5 +1,5 @@
 pkgname=coreutils
-pkgver=9.3
+pkgver=9.4
 pkgbuild=1
 arch=("auto")
 
@@ -21,13 +21,13 @@ build() {
 # Поскольку сборка выполняется в среде fakeroot, следует снять ряд ограничений.
   FORCE_UNSAFE_CONFIGURE=1 ./configure \
     --prefix=/usr \
-    --enable-no-install-program=groups,hostname,kill,uptime \
+    --sysconfdir=/etc \
     --enable-install-program=arch \
     --enable-largefile \
     --with-openssl \
     --with-tty-group \
     --without-selinux \
-    --sysconfdir=/etc
+    --enable-no-install-program=groups,hostname,kill,uptime
 # NOTE: groups, hostname предоставляются пакетом inetutils.
 # kill предоставляется пакетом psmisc.
 # uptime предоставляется пакетом procps.
