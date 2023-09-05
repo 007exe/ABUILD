@@ -20,6 +20,7 @@ build() {
   cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DBINARY_ICONS_RESOURCE=ON \
     -DBUILD_TESTING=OFF \
     -DBUILD_QCH=ON
