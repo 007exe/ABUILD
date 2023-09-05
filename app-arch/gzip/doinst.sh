@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend gzip capabilities:"
+echo -e "less: zless support"
+echo -e "util-linux: zmore support"
+echo -e "diffutils: zdiff/zcmp support"
+echo -e " "

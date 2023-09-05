@@ -1,18 +1,20 @@
 pkgname=gzip
-pkgver=1.12
+pkgver=1.13
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("GNU compression utility.")
-longdesc=("The Gzip package contains programs for compressing and decompressing files.")
+shortdesc=("The Gzip package contains programs for compressing and decompressing files.")
 
 source=("https://ftp.gnu.org/pub/gnu/gzip/gzip-$pkgver.tar.xz")
 
 tags=("base app-arch")
 
-build_deps=("glibc bash less")
+adddep=("glibc bash coreutils sed grep")
 
-adddep=("bash less")
+build_deps=("${adddep}")
+
+# NOTE: Это опциональные зависимости
+removedep=("less util-linux diffutils")
 
 build() {
   go_src_dir
