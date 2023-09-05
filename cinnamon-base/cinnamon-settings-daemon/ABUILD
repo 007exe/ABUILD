@@ -1,5 +1,5 @@
 pkgname=cinnamon-settings-daemon
-pkgver=5.8.0
+pkgver=5.8.1
 pkgbuild=1
 arch=("auto")
 
@@ -15,6 +15,14 @@ libgnomekbd libgudev libnotify librsvg libwacom nss polkit upower")
 
 build_deps=("${adddep} meson samurai xf86-input-wacom")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
 build() {
   go_src_dir
   burn_patches
@@ -26,12 +34,4 @@ build() {
     --buildtype=plain ..
   samu
   DESTDIR=${pkgdir} samu install
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
 }
