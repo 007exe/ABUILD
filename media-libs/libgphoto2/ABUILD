@@ -1,5 +1,5 @@
 pkgname=libgphoto2
-pkgver=2.5.30
+pkgver=2.5.31
 pkgbuild=1
 arch=("auto")
 
