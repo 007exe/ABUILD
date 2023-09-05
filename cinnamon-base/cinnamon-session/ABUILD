@@ -1,5 +1,5 @@
 pkgname=cinnamon-session
-pkgver=5.8.0
+pkgver=5.8.1
 pkgbuild=1
 arch=("auto")
 
