@@ -1,5 +1,5 @@
 pkgname=lib32-sdl2
-pkgver=2.28.2
+pkgver=2.28.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,12 @@ source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
 
 tags=("media-libs lib32")
 
-# lib32-libxrender lib32-libgl lib32-libxcursor
-adddep=("lib32-glibc lib32-libxext lib32-libx11 sdl2")
+# lib32-libgl
+adddep=("lib32-glibc lib32-libxext lib32-libx11 sdl2 lib32-libxrender lib32-libxcursor")
 
-# lib32-libpulse lib32-libxkbcommon lib32-libxrandr lib32-libxss lib32-mesa lib32-pipewire
-build_deps=("${adddep} cmake jack lib32-alsa-lib lib32-libxinerama lib32-wayland ninja wayland-protocols")
+# lib32-libpulse lib32-libxkbcommon lib32-mesa lib32-pipewire
+build_deps=("${adddep} cmake jack lib32-alsa-lib lib32-libxinerama lib32-wayland ninja
+wayland-protocols lib32-libxrandr lib32-libxss")
 
 # NOTE: Это опциональные зависимости
 removedep=("lib32-alsa-lib lib32-jack lib32-libpulse lib32-pipewire")
