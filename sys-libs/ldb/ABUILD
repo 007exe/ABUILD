@@ -1,5 +1,5 @@
 pkgname=ldb
-pkgver=2.7.2
+pkgver=2.8.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs sys-libs")
 
-build_deps=("python cmocka docbook-xsl tevent")
+adddep=("talloc tdb popt lmdb")
+
+build_deps=("${adddep} python cmocka docbook-xsl tevent")
 
 build() {
   go_src_dir
