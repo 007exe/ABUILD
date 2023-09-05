@@ -1,6 +1,6 @@
 pkgname=gpgme
-pkglist=("qgpgme python-gpgme")
-pkgver=1.21.0
+pkglist=("qgpgme python-gpgme qgpgme-qt5 qgpgme-qt6")
+pkgver=1.22.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,11 +10,17 @@ source=("https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${pkgver}.tar.bz2")
 
 tags=("app-crypt libs")
 
-build_deps=("libgpg-error gnupg qt5-base python swig")
+dep_qt5=("qt5-base")
+dep_qt6=("qt6-base")
+adddep=("libgpg-error gnupg")
+build_deps=("${adddep} ${dep_qt5} ${dep_qt6} python python-build python-installer python-setuptools python-wheel swig")
 
 build() {
   go_src_dir
   burn_patches
+  sed -i 's/-unknown//' autogen.sh
+  autoreconf -fi
+  cp -r ${srcdir}/gpgme-${pkgver}{,-qt6}
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
@@ -22,29 +28,27 @@ build() {
     --disable-static \
     --disable-gpgsm-test
   make -j${numjobs}
+  (
+    cd lang/python/
+    top_builddir=${srcdir}/gpgme-${pkgver} python -m build --wheel --no-isolation
+  )
+
   make DESTDIR=${pkgdir} install
-# Находится в пакетах qgpgme python-gpgme
-  rm -r ${pkgdir}/usr/include/{qgpgme,QGpgME}/
   rm -r ${pkgdir}/usr/lib/{cmake/QGpgme/,libqgpgme.*}
-#  rm -r ${pkgdir}/usr/lib/python*
+  rm -r ${pkgdir}/usr/lib/python*
+
+  cd ${srcdir}/gpgme-${pkgver}-qt6
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-fd-passing \
+    --disable-static \
+    --disable-gpgsm-test \
+    --enable-languages=cpp,qt6
+  make -j${numjobs}
 }
 
-###############################################################
-
-qgpgme() {
-  pkgname=qgpgme
-  shortdesc=("Qt bindings for GPGme.")
-  adddep=("gpgme=${pkgver}")
-}
-
-qgpgme_prep() {
-  go_src_dir
-  echo "===================> qgpgme <==================="
-  cd lang/qt
-  make DESTDIR=${pkgdir} install
-}
-
-###############################################################
+# python-gpgme ##############################################################
 
 python-gpgme() {
   pkgname=python-gpgme
@@ -53,11 +57,35 @@ python-gpgme() {
 }
 
 python-gpgme_prep() {
-  go_src_dir
-  echo "===================> python-gpgme <==================="
-#  cd lang/python/
-#  top_builddir=${srcdir}/qgpgme-${pkgver} python -m build --wheel --no-isolation
-#  python -m installer --destdir=${pkgdir} dist/*.whl
-  mkdir -p ${pkgdir}/usr/lib
-  mv -v ${p_pkgdir}/usr/lib/python* ${pkgdir}/usr/lib
+  cd ${srcdir}/gpgme-${pkgver}/lang/python
+  python -m installer --destdir=${pkgdir} dist/*.whl
+}
+
+# qgpgme-qt5 ##############################################################
+
+qgpgme-qt5() {
+  pkgname=qgpgme-qt5
+  shortdesc=("Qt6 bindings for GPGme")
+  adddep=("gpgme=${pkgver} ${dep_qt5}")
+}
+
+qgpgme-qt5_prep() {
+  cd ${srcdir}/gpgme-${pkgver}/lang/qt
+  make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/usr/include
+}
+
+# qgpgme-qt6 ##############################################################
+
+qgpgme-qt6() {
+  pkgname=qgpgme-qt6
+  shortdesc=("Qt6 bindings for GPGme.")
+  adddep=("gpgme=${pkgver} ${dep_qt6}")
+}
+
+qgpgme-qt6_prep() {
+  cd ${srcdir}/gpgme-${pkgver}-qt6/lang/qt
+
+  make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/usr/include
 }
