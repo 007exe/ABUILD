@@ -9,15 +9,17 @@ source=("http://www.frodo.looijaard.name/system/files/software/${pkgname}/${pkgn
 
 tags=("utils app-text")
 
-build_deps=("bc graphicsmagick")
+adddep=("graphicsmagick")
+
+build_deps=("${adddep} bc")
 
 config_files=("etc/psiconv/psiconv.conf")
 
 build() {
   go_src_dir
-  burn_patches
   sed -e 's|Magick-config|GraphicsMagick-config|g' -i configure.in
   autoreconf -vi
+  burn_patches
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
