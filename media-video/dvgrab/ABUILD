@@ -1,74 +1,35 @@
-#ABUILD created by/создан: Unnamed_Hero, sorry at email.hide 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=dvgrab
 pkgver=3.5
+_commit=e46042e0c7b3523b6854ee547b0534e8310b7460
 pkgbuild=1
-arch=('auto')
+arch=("auto")
+strict_version=1
 
-shortdesc="dvgrab is a program that captures DV video and audio data from digital camcorders via an IEEE1394 link"
-#longdesc=(""
-#)
+shortdesc=("Saves audio and video data from an IEEE (FireWire) digital source.")
 
-source=("http://downloads.sourceforge.net/sourceforge/kino/${pkgname}-${pkgver}.tar.gz")
+source=("git:https://github.com/ddennedy/dvgrab.git")
 
-patch_opts=("")
+tags=("utils media-video")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="utils media-video"
+adddep=("gcc-libs glibc libdv libavc1394 libjpeg-turbo libiec61883 libraw1394")
 
-#dependencies only needed to build package
-build_deps="libv4l>0.8.5"
+build_deps=("${adddep} git")
 
-provides=""
-conflicts=""
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
 
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
