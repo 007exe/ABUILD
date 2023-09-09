@@ -1,69 +1,46 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=arduino
-pkgver=1.0
+pkgver=1.8.19
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A microcontroller programming environment intended for complete noobs"
-#longdesc=(""
-#)
+shortdesc=("Arduino prototyping platform SDK.")
 
-source=("http://arduino.googlecode.com/files/arduino-${pkgver}-linux${LIBDIRSUFFIX}.tgz")
+source=("https://github.com/arduino/Arduino/releases/download/${pkgver}/arduino-${pkgver}.tar.xz"
+"https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v0.12.0/WiFi101-Updater-ArduinoIDE-Plugin-0.12.0.zip"
+"https://github.com/arduino/arduino-examples/archive/refs/tags/1.9.1.zip"
+"https://downloads.arduino.cc/libastylej-2.05.1-5.zip"
+"https://downloads.arduino.cc/liblistSerials/liblistSerials-1.4.2-2.zip")
 
-patch_opts=("")
+tags=("develop dev-embedded")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="develop dev-embedded"
+adddep=("gtk3 desktop-file-utils shared-mime-info java-runtime arduino-builder")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep} gtk2-compat java-environment ant unzip asciidoc")
 
-provides=""
-conflicts=""
+build{
+  cd ${srcdir}/arduino-${pkgver}/build
+  # Сборка с использованием java8
+  export PATH=/usr/lib/jvm/default/bin/:"$PATH"
+  ant clean dist \
+    -Dversion="${pkgver}" build \
+    -Dlight_bundle=true \
+    -Dno_docs=true \
+    -Dlocal_sources=true \
+    -Dno_arduino_builder=true
+# Сборка документации
+  a2x -f manpage shared/manpage.adoc
 
-adddep="toolchain-avr jre"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-build()
-{
-go_src_dir
-burn_patches
-mkdir -p ${pkgdir}/opt/ ${pkgdir}/usr/bin/
-cp -Rfv ${srcdir}/* ${pkgdir}/opt/${pkgname}-${pkgver}
-ln -sf /opt/${pkgname}-${pkgver}/${pkgname} ${pkgdir}/usr/bin/${pkgname}
+  cd ${srcdir}/arduino-${pkgver}/build/linux/work
+  install -dm755 ${pkgdir}/usr/share/{doc,icons/hicolor,applications,mime/packages}
+  cp -a . ${pkgdir}/usr/share/arduino
+  install -Dm755 ${filedir}/arduino.sh ${pkgdir}/usr/bin/arduino
+  ln -s /usr/bin/arduino-builder ${pkgdir}/usr/share/arduino/arduino-builder
+  install -dm755 ${pkgdir}/usr/share/arduino/tools-builder
+  cp -a lib/icons/* ${pkgdir}/usr/share/icons/hicolor
+  rm -rf ${pkgdir}/usr/share/arduino/lib/icons
+  ln -s /usr/share/icons/hicolor ${pkgdir}/usr/share/arduino/lib/icons
+  sed "s,<BINARY_LOCATION>,arduino %U,g;s,<ICON_NAME>,arduino,g" lib/desktop.template \
+    > ${pkgdir}/usr/share/applications/arduino.desktop
+  ln -s /usr/share/arduino/lib/arduino-arduinoide.xml ${pkgdir}/usr/share/mime/packages/arduino.xml
+  install -Dm644 ${srcdir}/arduino-${pkgver}/build/shared/arduino.1 ${pkgdir}/usr/share/man/man1/arduino.1
 }
-
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
