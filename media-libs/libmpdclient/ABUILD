@@ -1,26 +1,26 @@
 pkgname=libmpdclient
-pkgver=2.9
+pkgver=2.20
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="LibMPDclient (MPD client library)"
-longdesc=("A library for interfacing MPD in the C, C++ & Objective C languages."
-	  "http://sourceforge.net/projects/musicpd/files/libmpdclient/"
-)
+shortdesc=("C library to implement a MPD client.")
 
-source=("http://www.musicpd.org/download/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-tags="libs media-libs"
-build_deps="glibc"
+source=("https://www.musicpd.org/download/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
+tags=("libs media-libs")
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --disable-static \
-  --mandir=/usr/man \
-  --docdir=/usr/doc/${pkgname}-${pkgver} \
-  --program-prefix= \
-  --program-suffix="
-INSTALL_KEYS="DESTDIR=$pkgdir"
+adddep=("glibc")
+
+build_deps=("meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  install -vdm 755 ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -sv /usr/share/doc/${pkgname}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
