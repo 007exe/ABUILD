@@ -1,69 +1,27 @@
-#ABUILD created by/создан: agr3ss0r, agr3ss0r86 at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=libtiger
 pkgver=0.3.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A rendering library for Kate streams using Pango and Cairo"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Libtiger is a work in progress, and doesn't support everything Kate streams can do, and may render some streams incorrectly. Likewise, the API is subject to change without notice."
-	  ""
-	  "Homepage: http://libtiger.googlecode.com/"
-)
+shortdesc=("A rendering library for Kate streams using Pango and Cairo.")
 
-source=("http://libtiger.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
+source=("https://download.videolan.org/contrib/tiger/${pkgname}-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("libs media-libs")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
+adddep=("pango libkate")
 
-tags="libs media-libs"     			#short and long tags / длинный и короткий тег
-build_deps="" 			#
+build_deps=("${adddep} pkgconf")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-
-#numjobs=1 #Set number of jobs while compliling, otherwise it'll be autodetected
-
-docs=				#additional files should be copied into /usr/docs/${pkgname} dir from sources
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---docdir=/usr/doc/${pkgname}-${pkgver} \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-static=no \
+    --disable-doc \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
