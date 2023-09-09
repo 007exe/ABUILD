@@ -1,0 +1,25 @@
+pkgname=libmilter
+pkgver=8.17.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Implementation of the sendmail Mail Filter API.")
+
+source=("https://ftp.sendmail.org/sendmail.${pkgver}.tar.gz")
+
+tags=("libs net-mail")
+
+build_deps=("glibc")
+
+build() {
+  go_src_dir
+  burn_patches
+  cp ${filedir}/site.config.m4 devtools/Site
+  cd ${pkgname}
+  ./Build
+  cd ..
+  install -vd ${pkgdir}/usr/lib
+  ./Build DESTDIR=${pkgdir} install
+  install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ../LICENSE
+  chown -R root:root ${pkgdir}
+}
