@@ -1,74 +1,38 @@
-#ABUILD created by/создан: Drakmail, coder at dps.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=aegisub
-pkgver=2.1.9
+pkgver=3.3.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
+strict_version=1
 
-shortdesc="BSDL licensed cross-platform subtitle editor."
-#longdesc=(""
-#)
+shortdesc=("A general-purpose subtitle editor with ASS/SSA support.")
 
-source=("http://ftp.aegisub.org/pub/releases/${pkgname}-${pkgver}.tar.gz")
+source=("git:https://github.com/wangqr/Aegisub.git")
 
-patch_opts=("")
+tags=("apps media-video")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps media-video"
+adddep=("alsa-lib boost-libs fftw fontconfig hunspell icu mesa libpulse uchardet wxwidgets-gtk3 zlib")
 
-#dependencies only needed to build package
-build_deps="wxwidgets perl-xml-parser"
+build_deps=("${adddep} boost cmake git mesa ninja")
 
-provides=""
-conflicts=""
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
 
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DWITH_OSS=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -dm 755 ${pkgdir}/usr/share/aegisub/automation/include
+  cp -dr --no-preserve=ownership automation/{autoload,demos} ${pkgdir}/usr/share/aegisub/automation/
+  cp -dr --no-preserve=ownership automation/include/{aegisub,*.lua} ${pkgdir}/usr/share/aegisub/automation/include/
+  install -Dm 644 LICENCE -t ${pkgdir}/usr/share/licenses/aegisub/
+}
