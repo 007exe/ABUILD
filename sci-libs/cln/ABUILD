@@ -1,25 +1,26 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=cln
-pkgver=1.3.2
-pkgbuild=2
-arch=('auto')
+pkgver=1.3.6
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Class Library for Numbers"
-source=("http://www.ginac.de/CLN/${pkgname}-${pkgver}.tar.bz2")
+shortdesc=("Class library for numbers.")
 
-tags="libs sci-mathematics"
+source=("https://www.ginac.de/CLN/${pkgname}-${pkgver}.tar.bz2")
 
-BUILD_SYSTEM="autotools"
+tags=("libs sci-libs")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+adddep=("gmp")
 
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
+build_deps=("${adddep}")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  burn_patches
+  sed -i -e '/^SUBDIRS.*=/s/examples doc benchmarks/doc/' Makefile.in || die
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs} all html pdf
+  make DESTDIR=${pkgdir} install install-html install-pdf
+}
