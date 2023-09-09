@@ -1,73 +1,27 @@
-#ABUILD created by/создан: agr3ss0r, agr3ss0r86 at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=ario
-pkgver=1.5
-pkgbuild=2
-arch=('auto')
+pkgver=1.6
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Ario (a GTK2 client for MPD)"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Ario is a GTK2 client for MPD (Music player daemon). The interface used to browse the library is inspired by Rhythmbox but Ario aims to be much lighter and faster."
-	  "Homepage: http://ario-player.sourceforge.net/"
-)
+shortdesc=("A GTK client for MPD inspired by Rhythmbox but much lighter and faster.")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}-player/${pkgname}-${pkgver}.tar.gz")
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}-player/${pkgname}-${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("apps media-sound")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps media-sound"
+adddep=("avahi curl dbus-glib gnutls gtk3 libmpdclient libnotify libsoup taglib xdg-utils")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep} intltool perl-xml-parser patch")
 
-provides=""
-conflicts=""
-
-adddep="mpd"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into /usr/docs/${pkgname} dir from sources
-docs=
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 }
