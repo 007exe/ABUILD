@@ -11,15 +11,18 @@ source=("git:https://gitlab.com/mbunkus/mkvtoolnix.git")
 
 tags=("apps media-video")
 
-dep_gui=("cmark hicolor-icon-theme qt6-multimedia qt6-svg")
+dep_gui=("hicolor-icon-theme qt6-multimedia qt6-svg cmark")
 adddep=("boost-libs gcc-libs glibc pugixml qt6-base libdvdread zlib")
-build_deps=("${adddep} ${dep_gui} boost docbook-xsl flac git libvorbis po4a qt6-multimedia qt6-svg qt6-tools ruby-rake")
+build_deps=("${adddep} ${dep_gui} boost docbook-xsl flac git libvorbis
+po4a qt6-multimedia qt6-svg qt6-tools ruby-rake")
 
 # NOTE: Переходим к коммиту
 # FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
 before_build() {
   go_src_dir
-  git checkout ${_commit}
+  git checkout release-${pkgver}
+  git submodule init
+  git submodule update
 }
 
 build() {
