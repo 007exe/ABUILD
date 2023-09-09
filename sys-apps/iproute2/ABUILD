@@ -1,5 +1,5 @@
 pkgname=iproute2
-pkgver=6.4.0
+pkgver=6.5.0
 pkgbuild=1
 arch=("auto")
 
@@ -13,18 +13,12 @@ adddep=("glibc iptables libcap elfutils libbpf")
 
 build_deps=("${adddep} db")
 
-config_files=("etc/iproute2/ematch_map
-etc/iproute2/rt_dsfield
-etc/iproute2/rt_protos
-etc/iproute2/rt_realms
-etc/iproute2/rt_scopes
-etc/iproute2/rt_tables")
-
 build() {
   go_src_dir
   burn_patches
 # Не рассматривать предупреждения как ошибки
   sed -i 's/-Werror//' Makefile
+  export CFLAGS+=' -ffat-lto-objects'
   ./configure
   make -j${numjobs}
   make DESTDIR=${pkgdir} SBINDIR="/usr/bin" install
