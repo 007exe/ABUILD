@@ -1,56 +1,53 @@
-#ABUILD created by/создан: Ben, ivan29m at rambler.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=msmtp
-pkgver=1.4.30
+pkglist=("mta")
+pkgver=1.8.22
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="An SMTP client. Includes queue scripts and vim syntax highlighting"
+shortdesc=("A mini smtp client.")
 
-source=("http://sourceforge.net/projects/${pkgname}/files/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://marlam.de/msmtp/releases/msmtp-${pkgver}.tar.xz")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="network net-mail"
+tags=("network mail-mta")
 
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
+adddep=("libsecret gsasl")
 
+build_deps=("${adddep} texlive-plainextra libsecret gsasl")
 
-BUILD_SYSTEM="autotools"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --with-libgsasl \
+    --disable-static
+  make -j${numjobs}
+  make -C doc html pdf
+  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} -C doc install-html install-pdf
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+  install -d ${pkgdir}/usr/share/doc/msmtp
+  cp -r scripts/{find_alias,msmtpqueue,msmtpq,set_sendmail} ${pkgdir}/usr/share/doc/msmtp/
+  install -D -m644 doc/*.example ${pkgdir}/usr/share/doc/msmtp/
 
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
+  install -D -m644 scripts/vim/msmtp.vim ${pkgdir}/usr/share/vim/vimfiles/syntax/msmtp.vim
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+  chmod 755 ${pkgdir}/usr/share/doc/msmtp/{find_alias,msmtpqueue,set_sendmail}/*.sh
+  chmod 755 ${pkgdir}/usr/share/doc/msmtp/msmtpq/msmtp*
+}
 
-#ran after function build() 
-#после сборки
-after_build()
-{
- install -Dm644 scripts/vim/msmtp.vim \
-    $pkgdir/usr/share/vim/vimfiles/syntax/msmtp.vim
+# msmtp-mta ##########################################################################
 
-  sed -i "s:LOG=~/log/msmtp.queue.log:LOG=~/.msmtp.queue/msmtp.queue.log:g" scripts/msmtpq/msmtpq
+mta() {
+  pkgname=msmtp-mta
+  shortdesc=("A mini smtp client - the regular MTA.")
+  adddep=("msmtp")
+}
 
-  for _i in msmtp{q,-queue}; do
-    install -D scripts/msmtpq/$_i $pkgdir/usr/bin/$_i
-  done
-
-  install -Dm644 scripts/msmtpq/README.msmtpq \
-    $pkgdir/usr/share/doc/msmtp/README.msmtpq
-  for _i in msmtprc-{system,user}.example; do
-    install -Dm644 doc/$_i $pkgdir/usr/share/doc/msmtp/$_i
-  done
-
-
+mta_prep() {
+  go_src_dir
+  install -d ${pkgdir}/usr/bin
+  ln -s msmtp ${pkgdir}/usr/bin/sendmail
 }
