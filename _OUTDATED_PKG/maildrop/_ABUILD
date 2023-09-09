@@ -1,0 +1,38 @@
+pkgname=maildrop
+pkgver=3.1.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("mail delivery agent - procmail like but nicer syntax.")
+
+source=("http://downloads.sourceforge.net/project/courier/${_srcname}/${pkgver}/${_srcname}-${pkgver}.tar.bz2")
+
+tags=("utils net-mail")
+
+adddep=("courier-authlib gamin pcre2 gdbm courier-unicode libidn")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc/courier \
+    --localstatedir=/var \
+    --mandir=/usr/share/man \
+    --with-db=gdbm \
+    --with-devel \
+    --enable-dovecotauth \
+    --disable-static
+  make -j${numjobs} LDFLAGS+=-lstdc++
+  make DESTDIR=${pkgdir} install
+
+  chmod u+s ${pkgdir}/usr/bin/maildrop
+  cd ${pkgdir}/usr/share/doc/maildrop/html
+  for _files in *; do
+    install -Dm644 "${_files}" "${pkgdir}/usr/share/htmldoc/${_files}"
+  done
+  rm -rf ${pkgdir}/usr/share/maildrop
+}
