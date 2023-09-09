@@ -1,5 +1,5 @@
 pkgname=vscodium
-pkgver=1.81.1.23222
+pkgver=1.82.0.23250
 pkgbuild=1
 arch=("auto")
 
