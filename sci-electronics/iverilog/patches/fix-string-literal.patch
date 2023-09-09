@@ -1,0 +1,22 @@
+From 23e51ef7a8e8e4ba42208936e0a6a25901f58c65 Mon Sep 17 00:00:00 2001
+From: Martin Whitaker <icarus@martin-whitaker.me.uk>
+Date: Sat, 31 Dec 2022 16:51:28 +0000
+Subject: [PATCH] Fix compilation with -Werror=format-security.
+
+---
+ pform_package.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pform_package.cc b/pform_package.cc
+index 856f8c1035..3006ab58e7 100644
+--- a/pform_package.cc
++++ b/pform_package.cc
+@@ -62,7 +62,7 @@ void pform_end_package_declaration(const struct vlltype&loc)
+ 	    ostringstream msg;
+ 	    msg << "error: Package " << use_name << " was already declared here: "
+ 		<< test->second->get_fileline() << ends;
+-	    VLerror(loc, msg.str().c_str());
++	    VLerror(loc, "%s", msg.str().c_str());
+       }
+ 
+ 
