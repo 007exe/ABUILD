@@ -1,74 +1,55 @@
-#ABUILD created by/создан: fat0troll, fat0troll at riseup.net 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
-pkgname=mkvtoolnix
-pkgver=4.8.0
+pkgname=mkvtoolnix-cli
+pkglist=("gui")
+pkgver=79.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
+strict_version=1
 
-shortdesc="Set of tools to create, edit and inspect Matroska files"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("MKVToolnix is a set of tools to create, alter and inspect Matroska files under Linux, other Unices and Windows. They do for Matroska what the OGMtools do for the OGM format and then some."
-)
+shortdesc=("Set of tools to create, edit and inspect Matroska files.")
 
-source=("http://www.bunkus.org/videotools/${pkgname}/sources/${pkgname}-${pkgver}.tar.bz2")
+source=("git:https://gitlab.com/mbunkus/mkvtoolnix.git")
 
-patch_opts=("")
+tags=("apps media-video")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps media-video"
+dep_gui=("cmark hicolor-icon-theme qt6-multimedia qt6-svg")
+adddep=("boost-libs gcc-libs glibc pugixml qt6-base libdvdread zlib")
+build_deps=("${adddep} ${dep_gui} boost docbook-xsl flac git libvorbis po4a qt6-multimedia qt6-svg qt6-tools ruby-rake")
 
-#dependencies only needed to build package
-build_deps=""
-
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-build()
-{
-go_src_dir
-burn_patches
-export CFLAGS="${CFLAGS} -DBOOST_FILESYSTEM_VERSION=2"
-export CXXFLAGS="${CXXFLAGS} -DBOOST_FILESYSTEM_VERSION=2"
-./configure --prefix=/usr \
-	--libdir=/usr/lib$LIBDIRSUFFIX \
-	--with-boost-libdir=/usr/lib$LIBDIRSUFFIX || exit 1
-./drake || exit 1
-./drake DESTDIR="${pkgdir}" install || exit 1
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
 }
 
+build() {
+  go_src_dir
+  burn_patches
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-update-check \
+    --disable-static
+  rake $MAKEFLAGS
+  rake DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/share/{applications,icons,metainfo,mime,mkvtoolnix}
+  find ${pkgdir} -name mkvtoolnix-gui* -delete
+}
 
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+# mkvtoolnix-gui #############################################################################
+
+gui() {
+  pkgname=mkvtoolnix-gui
+  shortdesc=("Set of tools to create, edit and inspect Matroska files GUI.")
+  adddep=("${dep_gui} mkvtoolnix-cli")
+}
+
+gui_prep() {
+  go_src_dir
+  rake DESTDIR=${pkgdir} install
+  rm -rf ${pkgdir}/usr/share/locale
+  for t in mkv{extract,info,merge,propedit}; do
+    find ${pkgdir} -name $t* -delete
+  done
 }
