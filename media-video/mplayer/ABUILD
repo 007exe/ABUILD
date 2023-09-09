@@ -26,6 +26,8 @@ build() {
   go_src_dir
   burn_patches
   ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
     --enable-runtime-cpudetection \
     --disable-gui \
     --disable-arts \
