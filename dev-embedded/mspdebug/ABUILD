@@ -1,68 +1,30 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=mspdebug
-pkgver=0.17
+pkgver=0.25
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="An Ti msp430 debug and ISP tool"
-#longdesc=(""
-#)
+shortdesc=("A free debugger and firmware downloader for the MSP430/CC430 MCU family.")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/dlbeer/${pkgname}/archive/v${pkgver}.tar.gz")
 
-patch_opts=("")
+tags=("utils dev-embedded")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="utils dev-embedded"
+adddep=("libusb readline libusb-compat")
 
-#dependencies only needed to build package
-build_deps="libusb"
+build_deps=("${adddep}")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-build()
-{
-go_src_dir
-burn_patches
-make 
-DESTDIR=$pkgdir PREFIX=/usr make install
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
 }
 
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+build(){
+  go_src_dir
+  burn_patches
+  make clean
+  make -j${numjobs}
+  make PREFIX=${pkgdir}/usr install
+}
