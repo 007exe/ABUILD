@@ -12,6 +12,8 @@ tags=("libs dev-python")
 
 build_deps=("python python-setuptools")
 
+conflicts=("python-xdg")
+
 build() {
   go_src_dir
   python setup.py build
