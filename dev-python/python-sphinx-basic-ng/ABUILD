@@ -1,6 +1,6 @@
 pkgname=python-sphinx-basic-ng
-pkgver=1.0.0b1
-pkgbuild=2
+pkgver=1.0.0b2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Modernised skeleton for Sphinx themes.")
