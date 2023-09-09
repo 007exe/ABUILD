@@ -1,18 +1,17 @@
 pkgname=grub
 pkgver=2.06
-_UNIFONT_VER=14.0.02
-pkgbuild=3
+_UNIFONT_VER=15.0.06
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("GNU GRUB is a Multiboot boot loader")
-longdesc=("GNU GRUB is a Multiboot boot loader. It was derived from GRUB, the GRand Unified Bootloader, which was originally designed and implemented by Erich Stefan Boleyn.")
+shortdesc=("GNU GRand Unified Bootloader (2).")
 
 source=("https://ftp.gnu.org/gnu/grub/grub-${pkgver}.tar.gz"
 "https://ftp.gnu.org/gnu/unifont/unifont-${_UNIFONT_VER}/unifont-${_UNIFONT_VER}.bdf.gz")
 
 tags=("base sys-boot")
 
-build_deps=("fuse device-mapper python bzip2 xz freetype gettext texinfo bdf-unifont libarchive efibootmgr libisoburn mtools rsync")
+build_deps=("${adddep} rsync xz freetype ttf-dejavu python autogen texinfo help2man gettext device-mapper fuse3")
 
 adddep=("os-prober gettext")
 
