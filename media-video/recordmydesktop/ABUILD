@@ -1,30 +1,26 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=recordmydesktop
-pkgver=0.3.8.1
+pkgver=0.4.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="recordMyDesktop is a program that captures audio-video data of a linux desktop session"
+shortdesc=("Produces a OGG encapsulated Theora/Vorbis recording of your desktop.")
 
-source=("http://sourceforge.net/projects/recordmydesktop/files/recordmydesktop/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/Enselic/recordmydesktop/releases/download/v${pkgver}/recordmydesktop-${pkgver}.tar.gz")
 
-tags="media-video xapps"
+tags=("media-video apps")
 
-build_deps=""
+adddep=("alsa-lib zlib libvorbis libxdamage libxext libtheora libsm jack popt")
 
-BUILD_SYSTEM="autotools"
+build_deps=("${adddep} jack")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --enable-jack=yes \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
