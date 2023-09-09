@@ -6,7 +6,7 @@ arch=("auto")
 shortdesc=("Python library to access freedesktop.org standards.")
 
 pkgbase=pyxdg
-source=("https://files.pythonhosted.org/packages/source/${pkgbase::1}/pyxdg/pyxdg-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/${pkgbase::1}/${pkgbase}/${pkgbase}-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
