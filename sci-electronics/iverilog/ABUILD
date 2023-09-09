@@ -1,74 +1,33 @@
-#ABUILD created by/создан: Necromant, agilia at necromant.ath.cx 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=iverilog
-pkgver=0.9.4
+pkgver=12.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Verilog simulation and synthesis tool"
-#longdesc=(""
-#)
+shortdesc=("Icarus Verilog compiler and simulation tool.")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgver}/verilog-${pkgver}.tar.gz")
+source=("https://github.com/steveicarus/iverilog/archive/refs/tags/v${pkgver//./_}.tar.gz")
 
-patch_opts=("")
+tags=("sci-electronics utils")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="dev-embedded utils"
+adddep=("zlib bzip2")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep} gperf")
 
-provides=""
-conflicts=""
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver//./_}.tar.gz
+}
 
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой.
-#before_build()
-#{
-#
-#}
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
-#ran after function build() 
-#после сборки
-#after_build()
-#{
-
-#}
+build() {
+  go_src_dir
+  burn_patches
+  aclocal
+  autoconf
+  CFLAGS+=' -ffat-lto-objects -fcommon'
+  CXXCPP=/usr/bin/cpp ./configure --prefix=/usr
+  make -j1
+  make -j1 DESTDIR=${pkgdir} install
+}
