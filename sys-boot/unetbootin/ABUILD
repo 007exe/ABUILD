@@ -1,39 +1,45 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=unetbootin
-pkgver=608
+pkgver=702
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Create bootable Live USB drives"
+shortdesc=("Create bootable Live USB drives.")
 
-source=("http://downloads.sourceforge.net/project/${pkgname}/UNetbootin/${pkgver}/${pkgname}-source-${pkgver}.tar.gz")
+source=("https://github.com/unetbootin/unetbootin/archive/${pkgver}.tar.gz")
 
-tags="sys-fs xapps"
+tags=("sys-fs apps")
 
-build_deps="gcc-g++ qt4"
+adddep=("hicolor-icon-theme mtools p7zip qt5-base syslinux")
 
-adddep="polkit"
+build_deps=("${adddep} qt5-tools setconf")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
-  lupdate unetbootin.pro
-  lrelease unetbootin.pro
-  qmake "DEFINES += NOSTATIC" "RESOURCES -= unetbootin.qrc"
-  make
-}
+  cd src/${pkgname}
+  setconf "${pkgname}.desktop" 'Exec' "/usr/bin/${pkgname}"
+  sed -i '/^RESOURCES/d' "${pkgname}.pro"
+  lupdate-qt5 "${pkgname}.pro"
+  lrelease-qt5 "${pkgname}.pro"
+  qmake-qt5 "${pkgname}.pro" -config release "DEFINES += NOSTATIC" "RESOURCES -= ${pkgname}.qrc"
+  make -j${numjobs}
 
-after_build(){
-  go_src_dir
-  install -Dm755 "${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
-  mkdir -p "${pkgdir}/usr/share/${pkgname}"
-  install -m644 "${pkgname}"_*.qm "${pkgdir}/usr/share/${pkgname}/"
-  install -Dm644 "${pkgname}.desktop" \
-                 "${pkgdir}/usr/share/applications/${pkgname}.desktop"
-  for i in 16 22 24 32 48 256; do
-      install -D "${pkgname}_${i}.png" \
-      "${pkgdir}/usr/share/icons/hicolor/${i}x${i}/apps/${pkgname}.png"
+  install -Dvm755 ${filedir}/${pkgname}.sh ${pkgdir}/usr/bin/${pkgname}
+  install -Dm644 ${filedir}/'org.agilialinux.pkexec.unetbootin.policy' ${pkgdir}/usr/share/polkit-1/actions/org.agilialinux.pkexec.unetbootin.policy
+
+  install -Dvm644 ${pkgname}_*.qm -t ${pkgdir}/usr/share/${pkgname}
+  install -Dvm755 ${pkgname} ${pkgdir}/usr/bin/${pkgname}.elf
+  install -Dvm644 ${pkgname}.desktop -t ${pkgdir}/usr/share/applications
+  install -Dvm644 readme.md -t ${pkgdir}/usr/share/doc/${pkgname}
+
+  for i in 16 24 32 48 64 128 256 512; do
+    install -Dvm644 ${pkgname}_${i}.png ${pkgdir}/usr/share/icons/hicolor/${i}x${i}/apps/${pkgname}.png
   done
-  install -Dm644 ${filedir}/'org.agilialinux.pkexec.unetbootin.policy' \
-                 "${pkgdir}/usr/share/polkit-1/actions/org.agilialinux.pkexec.unetbootin.policy"
 }
