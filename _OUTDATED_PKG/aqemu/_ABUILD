@@ -1,0 +1,23 @@
+pkgname=aqemu
+pkgver=0.9.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("QEMU GUI written in Qt5.")
+
+source=("https://github.com/TBK/aqemu/archive/v${pkgver}.tar.gz")
+
+tags=("apps app-emulation")
+
+adddep=("qemu qt5-base libvncserver")
+
+build_deps=("cmake qt5-base")
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|#include <vector>|#include <vector>\n#include <stdexcept>|' src/docopt/docopt_value.h
+  cmake -DCMAKE_INSTALL_PREFIX=/usr/ -DQT_QMAKE_EXECUTABLE=qmake4
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
