@@ -1,68 +1,22 @@
-#ABUILD created by/создан: Unnamed_Hero, sorry at email.hide 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=wine-gecko
-pkgver=1.5
+pkgver=2.47.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Custom version of Mozilla's Gecko Layout Engine for Wine."
-#-ruler---|--------------------------------------------------------------------------|
+shortdesc=("Wine's built-in replacement for Microsoft's Internet Explorer.")
 
-source=("http://downloads.sourceforge.net/wine/wine_gecko-${pkgver}-x86.msi n")
-if [ "${ARCH}" == "x86_64" ]; then 
-    source+=("http://downloads.sourceforge.net/wine/wine_gecko-${pkgver}-x86_64.msi n")
-fi
+source=("https://dl.winehq.org/wine/wine-gecko/${pkgver}/wine-gecko-${pkgver}-x86_64.tar.xz"
+"https://dl.winehq.org/wine/wine-gecko/${pkgver}/wine-gecko-${pkgver}-x86.tar.xz")
 
-patch_opts=("")
+tags=("app-emulation libs")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="app-emulation libs"
+adddep=("wine")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep}")
 
-provides=""
-conflicts=""
-
-adddep="wine>=1.5.0"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-build()
-{
-go_src_dir
-burn_patches
-mkdir -p ${pkgdir}/usr/share/wine/gecko
-cp -a ${srcache}/wine_gecko-${pkgver}-x86.msi ${pkgdir}/usr/share/wine/gecko
-if [ "${ARCH}" == "x86_64" ]; then 
-    cp -a ${srcache}/wine_gecko-${pkgver}-x86_64.msi ${pkgdir}/usr/share/wine/gecko
-fi
-
+build(){
+  cd ${srcdir}
+  install -d -m755 ${pkgdir}/usr/share/wine/gecko/
+  cp -dr --no-preserve='ownership' ${srcdir}/${pkgname}-${pkgver}-x86_64 ${pkgdir}/usr/share/wine/gecko/
+  cp -dr --no-preserve='ownership' ${srcdir}/${pkgname}-${pkgver}-x86 ${pkgdir}/usr/share/wine/gecko/
 }
-
-
