@@ -1,49 +1,60 @@
 pkgname=clamav
-pkgver=0.104.1
+pkgver=1.2.0
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("nti-virus toolkit for Unix")
-longdesc=("Clam AntiVirus is an anti-virus toolkit for Unix. The main purpose of this software is the integration with mail seversions (attachment scanning). The package provides a flexible and scalable multi-threaded daemon, a command-line scanner, and a tool for automatic updating via Internet. The programs are based on a shared library distributed with the Clam AntiVirus package, which you can use in your own software.")
+shortdesc=("Anti-virus toolkit for Unix.")
 
-source=("https://www.clamav.net/downloads/production/${pkgname}-${pkgver}.tar.gz")
+#source=("https://www.clamav.net/downloads/production/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/Cisco-Talos/clamav/archive/refs/tags/clamav-1.2.0.tar.gz")
 
-tags="utils app-misc"
+tags=("utils app-misc")
 
-build_deps="bzip2 libltdl libxml2 curl pcre2 json-c libmspack ncurses libmilter cmake ninja python"
+# systemd
+adddep=("bzip2 libltdl libxml2 curl pcre2 json-c libmspack ncurses")
 
-config_files="etc/clamav/clamd.conf
+build_deps=("${adddep} cmake ninja python rust libmilter")
+
+config_files=("etc/clamav/clamd.conf
 etc/clamav/freshclam.conf
 etc/clamav/clamav-milter.conf
-etc/logrotate.d/clamav"
+etc/logrotate.d/clamav")
 
 build() {
   go_src_dir
   burn_patches
-  cmake \
+ls
+pwd
+  sed -E 's|^(Example)$|#\1|' -i etc/{clamd,freshclam,clamav-milter}.conf.sample
+  sed -E 's|#(User) .+|\1 clamav|' -i etc/{clamd,freshclam,clamav-milter}.conf.sample
+  sed -E 's|#(LogFile) .+|\1 /var/log/clamav/clamd.log|' -i etc/clamd.conf.sample
+  sed -E 's|#(LogTime) .+|\1 yes|' -i etc/clamd.conf.sample etc/clamav-milter.conf.sample
+  sed -E 's|#(PidFile) .+|\1 /run/clamav/clamd.pid|' -i etc/clamd.conf.sample
+  sed -E 's|#(TemporaryDirectory) .+|\1 /tmp|' -i etc/{clamd,clamav-milter}.conf.sample
+  sed -E 's|#(LocalSocket) .+|\1 /run/clamav/clamd.ctl|' -i etc/clamd.conf.sample
+  sed -E 's|#(UpdateLogFile) .+|\1 /var/log/clamav/freshclam.log|' -i etc/freshclam.conf.sample
+  sed -E 's|#(DatabaseMirror) .+|\1 database.clamav.net|' -i etc/freshclam.conf.sample
+  sed -E 's|#(NotifyClamd) .+|\1 /etc/clamav/clamd.conf|' -i etc/freshclam.conf.sample
+  sed -E 's|#(PidFile) .+|\1 /run/clamav/freshclam.pid|' -i etc/freshclam.conf.sample
+  sed -E 's|#(LogFile) .+|\1 /var/log/clamav/clamav-milter.log|' -i etc/clamav-milter.conf.sample
+  sed -E 's|#(PidFile) .+|\1 /run/clamav/clamav-milter.pid|' -i etc/clamav-milter.conf.sample
+  sed -E "s|(\\[Unit\\])|\\1\\nWants=network-online.target\\nAfter=network-online.target|" -i freshclam/clamav-freshclam.service.in
+
+  cmake -B build -G Ninja -S . \
     -DCMAKE_BUILD_TYPE='None' \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_SBINDIR=bin \
     -DAPP_CONFIG_DIRECTORY=/etc/clamav \
     -DDATABASE_DIRECTORY=/var/lib/clamav \
-    -DENABLE_EXTERNAL_MSPACK=ON \
-    -Wno-dev \
-    -B build \
-    -G Ninja \
-    -S .
+    -DENABLE_EXTERNAL_MSPACK=ON
   ninja -C build
-  DESTDIR="${pkgdir}" ninja -C build install
+  DESTDIR=${pkgdir} ninja -C build install
 
   mv ${pkgdir}/etc/clamav/freshclam.conf{.sample,}
   mv ${pkgdir}/etc/clamav/clamd.conf{.sample,}
   mv ${pkgdir}/etc/clamav/clamav-milter.conf{.sample,}
 
-  install -D -m644 "${filedir}/clamav.logrotate" "${pkgdir}/etc/logrotate.d/clamav"
-  install -D -m755 "${filedir}/clamav.initd" "${pkgdir}/etc/init.d/clamav"
-  install -D -m644 "${filedir}/clamav.confd" "${pkgdir}/etc/conf.d/clamav"
-  install -d -o 64 -g 64 ${pkgdir}/var/{clamav,log/clamav,lib/clamav,run/clamav}
-  chown clamav:clamav ${pkgdir}/var/clamav \
-                      ${pkgdir}/var/run/clamav \
-                      ${pkgdir}/var/log/clamav \
-                      ${pkgdir}/var/lib/clamav
+  install -D -m644 ${filedir}/clamav.logrotate ${pkgdir}/etc/logrotate.d/clamav
+  install -D -m755 ${filedir}/clamav.initd ${pkgdir}/etc/init.d/clamav
+  install -D -m644 ${filedir}/clamav.confd ${pkgdir}/etc/conf.d/clamav
 }
