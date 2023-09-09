@@ -1,5 +1,5 @@
 pkgname=python-hatchling
-pkgver=1.16.1
+pkgver=1.18.0
 pkgbuild=1
 arch=("auto")
 
