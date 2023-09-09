@@ -1,64 +1,49 @@
-#ABUILD created by/создан: Ben, ivan29m at rambler.ru 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=librecad
-pkgver=2.0
+pkgver=2.2.0.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A 2D CAD drawing tool based on the community edition of QCad."
+shortdesc=("A 2D CAD drawing tool based on the community edition of QCad.")
 
-source=("git:git://github.com/LibreCAD/LibreCAD.git")
+source=("https://github.com/LibreCAD/LibreCAD/archive/${pkgver}.tar.gz")
 
+tags=("apps media-gfx")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps app-editors"
+adddep=("qt5-base qt5-svg libxcb muparser")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep} qt5-tools boost imagemagick librsvg")
 
-provides=""
-conflicts=""
-
-adddep=""
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip no_ccache
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-
-build()
-{
-go_src_dir
-export CPPFLAGS="-std=c++0x"
-  qmake librecad.pro
-  make
-
-
-
-  install -D -m 755 unix/librecad "${pkgdir}/usr/bin/librecad"
-  install -D -m 755 unix/ttf2lff "${pkgdir}/usr/bin/ttf2lff"
-
-  mkdir -p "${pkgdir}/usr/share/librecad"
-  cp -r unix/resources/{doc,plugins,library,patterns,fonts,qm} "${pkgdir}/usr/share/librecad"
-
-  install -D -m 644 "${filedir}/librecad.desktop" "${pkgdir}/usr/share/applications/librecad.desktop"
-  install -D -m 644 librecad/res/main/librecad.png "${pkgdir}/usr/share/pixmaps/librecad.png"
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
 }
 
+build(){
+  go_src_dir
+  sed -i "/^SCMREVISION/c SCMREVISION=\"${pkgver}\"" librecad/src/src.pro
+  qmake-qt5 librecad.pro
+  make qmake_all
+  sed -i '/INCPATH/s|-isystem /usr/include ||' librecad/src/Makefile
+  make -j${numjobs}
+  install -D -m0755 unix/librecad ${pkgdir}/usr/bin/librecad
+  install -D -m0755 unix/ttf2lff ${pkgdir}/usr/bin/ttf2lff
+  install -D -m0644 desktop/librecad.desktop ${pkgdir}/usr/share/applications/librecad.desktop
+  install -D -m0644 desktop/librecad.1 ${pkgdir}/usr/share/man/man1/librecad.1
+  install -D -m0644 librecad/support/doc/README ${pkgdir}/usr/share/doc/librecad/index.README
+  install -D -m0644 librecad/support/doc/index.html ${pkgdir}/usr/share/doc/librecad/index.html
+  install -D -m0644 librecad/support/doc/style.css ${pkgdir}/usr/share/doc/librecad/style.css
+  install -D -m0644 librecad/support/doc/img/librecadlogo.png ${pkgdir}/usr/share/doc/librecad/img/librecadlogo.png
+  for SIZE in 16 24 32 48 64 96 128; do
+        convert -scale ${SIZE} +set date:create +set date:modify \
+	desktop/graphics_icons_and_splash/Icon\ LibreCAD/Icon_Librecad.svg \
+	${srcdir}/librecad.png
+	install -D -m0644 ${srcdir}/librecad.png ${pkgdir}/usr/share/icons/hicolor/${SIZE}x${SIZE}/apps/librecad.png
+  done
+  install -D -m0644 desktop/graphics_icons_and_splash/Icon\ LibreCAD/Icon_Librecad.svg ${pkgdir}/usr/share/icons/hicolor/scalable/apps/librecad.svg
 
+  mkdir -p ${pkgdir}/usr/share/librecad/
+  cp -r unix/resources/{library,patterns,fonts,qm} ${pkgdir}/usr/share/librecad/
+}
