@@ -1,0 +1,45 @@
+pkgname=beets
+pkgver=1.6.0
+pkgbuild=1
+arch=("noarch")
+strict_version=1
+
+shortdesc=("Flexible music library manager and tagger.")
+
+source=("git:https://github.com/beetbox/beets.git")
+
+tags=("libs dev-python")
+
+adddep=("python-confuse python-jellyfish python-mediafile python-munkres python-musicbrainzngs
+python-reflink python-setuptools python-six python-unidecode python-yaml")
+
+build_deps=("${adddep} git python-setuptools python-sphinx")
+
+# NOTE: Это опциональные зависимости
+removedep=("bash-completion chromaprint ffmpeg gst-plugins-bad gst-plugins-good gst-plugins-ugly
+gst-libav gst-python imagemagick python-beautifulsoup4 python-discogs-client python-flask
+python-gobject python-mpd2 python-pyacoustid python-pylast python-requests python-requests-oauthlib
+python-xdg")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+
+  git cherry-pick -n 5ae1e0f3c8d3a450cb39f7933aa49bb78c2bc0d9
+  git cherry-pick -n d5f998b3120c8027986b55b9288b530fbf165fcc
+  git cherry-pick -n 2106f471affd1dab35b4b26187b9c74d034528c5
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  python setup.py build sdist
+  python setup.py install --root=${pkgdir} --optimize=1
+  install -Dm 644 beet -t ${pkgdir}/usr/share/bash-completion/completions/
+  install -Dm 644 extra/_beet -t ${pkgdir}/usr/share/zsh/site-functions/
+  install -Dm 644 man/beet.1 -t ${pkgdir}/usr/share/man/man1/
+  install -Dm 644 man/beetsconfig.5 -t ${pkgdir}/usr/share/man/man5/
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/beets/
+}
