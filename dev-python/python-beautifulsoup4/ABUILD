@@ -1,5 +1,5 @@
 pkgname=python-beautifulsoup4
-pkgver=4.11.2
+pkgver=4.12.2
 pkgbuild=1
 arch=("auto")
 
@@ -11,13 +11,14 @@ tags=("libs dev-python")
 
 adddep=("python-soupsieve")
 
-build_deps=("${adddep} python python-setuptools")
+build_deps=("${adddep} python python-build python-installer python-hatchling")
 
 # NOTE: Это опциональные зависимости
 removedep=("python-chardet python-lxml python-html5lib")
 
 build() {
   go_src_dir
-  python setup.py build
-  python setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
 }
