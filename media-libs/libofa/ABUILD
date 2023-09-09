@@ -1,28 +1,25 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=libofa
-pkgver=0.9.4
+pkgver=0.9.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Open Fingerprint Architecture"
-longdesc=("Bindings for MusicBrainz OFA API")
+shortdesc=("An open-source audio fingerprint by MusicIP.")
 
-source=("http://users.musicbrainz.org/~robert/$pkgname-$pkgver-test.tar.gz")
+source=("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/musicip-libofa/libofa-${pkgver}.tar.gz")
 
-tags="libs media-sound"
+tags=("libs media-sound")
 
-BUILD_SYSTEM="autotools"
+adddep=("expat curl fftw")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+build_deps=("${adddep}")
 
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-examples"
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
