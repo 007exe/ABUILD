@@ -1,68 +1,29 @@
-#ABUILD created by/создан: Coldead, firedead117 at gmail.com 
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=luakit
-pkgver=2011
+pkgver=2.3.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
+strict_version=1
 
-shortdesc="luakit micro-browser"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("luakit is a highly configurable, micro-browser framework based on the WebKit web content engine and the GTK+ toolkit."
-)
+shortdesc=("Fast, small, webkit based browser framework extensible by Lua.")
 
-source=("git:git://github.com/mason-larobina/${pkgname}.git")
+source=("git:https://github.com/luakit/luakit.git")
 
-patch_opts=("")
+tags=("apps www-client")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
-#short and long tags / длинный и короткий тег
-tags="xapps www-client"
+adddep=("lua51-filesystem luajit webkit2gtk")
 
-#dependencies only needed to build package
-build_deps=""
+build_deps=("${adddep} git help2man")
 
-provides=""
-conflicts=""
-
-adddep="luafilesystem"
-removedep=""
-
-#for multi pkg abuild
-pkglist=
-
-#Set number of jobs while compliling, otherwise it'll be autodetected
-#numjobs=1
-
-#additional files should be copied into ${pkgdir}/usr/doc/${pkgname}-${pkgver} dir from sources
-docs=
-gendeps_blacklist=
-
-#custom_opts: skip_validate skip_gendeps no_postperm no_strip
-custom_opts=""
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-#before_build()
-#{
-#echo ""
-#}
-
-build()
-{
-go_src_dir
-make
-make DESTDIR=$pkgdir install
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+  git cherry-pick -n e9c7693f387835bdf2d1ada85c2ba0b813686ebb
 }
 
-
-#ran after function build() 
-#после сборки
-after_build()
-{
-echo ""
+build(){
+  go_src_dir
+  make DEVELOPMENT_PATHS=0 PREFIX=/usr USE_LUAJIT=1
+  make DESTDIR=${pkgdir} PREFIX=/usr install
 }
