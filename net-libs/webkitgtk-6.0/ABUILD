@@ -1,20 +1,21 @@
-pkgname=webkit2gtk-5.0
-pkgver=2.38.2
+pkgname=webkitgtk-6.0
+pkgver=2.40.5
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Web content engine for GTK.")
-longdesc=("The WebKitGTK package is a port of the portable web rendering engine WebKit to the GTK+ 3 and GTK+ 2 platforms.")
 
 source=("https://webkitgtk.org/releases/webkitgtk-${pkgver}.tar.xz")
 
 tags=("libs net-libs")
 
-build_deps=("cmake ninja python ruby gobject-introspection wayland-protocols gst-plugins-bad gperf
-cairo fontconfig freetype libgcrypt glib2 gtk4 harfbuzz icu libjpeg-turbo libsoup3 libxml2 zlib
-libpng sqlite atk libwebp at-spi2-core libglvnd mesa libwpe wpebackend-fdo libxslt libsecret
-libtasn1 enchant libx11 libxext libice libxt wayland libnotify hyphen openjpeg2 woff2 bubblewrap
-libseccomp xdg-dbus-proxy gstreamer gst-plugins-base-libs libmanette libxcomposite")
+# systemd harfbuzz-icu
+adddep=("at-spi2-core atk bubblewrap cairo enchant fontconfig freetype glib2 gst-plugins-bad-libs
+gst-plugins-base-libs gstreamer gtk4 harfbuzz hyphen icu libavif libdrm libglvnd libepoxy libgcrypt
+libgles libjpeg-turbo libmanette libpng libseccomp libsecret libsoup3 libtasn1 libwebp libwpe libx11
+libxcomposite libxml2 libxslt libxt mesa openjpeg2 sqlite wayland woff2 wpebackend-fdo xdg-dbus-proxy zlib")
+
+build_deps=("${adddep} cmake gi-docgen gobject-introspection gperf gst-plugins-bad ninja python ruby unifdef wayland-protocols")
 
 # NOTE: Это опциональные зависимости
 removedep=("geoclue gst-plugins-good gst-plugins-bad gst-libav")
@@ -22,18 +23,20 @@ removedep=("geoclue gst-plugins-good gst-plugins-bad gst-libav")
 build() {
   go_src_dir
   burn_patches
+  cd ${srcdir}
   CFLAGS+=' -g1'
   CXXFLAGS+=' -g1'
-  cmake -B build -G Ninja \
+  cmake -S webkitgtk-${pkgver} -B build -G Ninja \
     -DPORT=GTK \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
+    -DUSE_AVIF=ON \
     -DUSE_GTK4=ON \
     -DENABLE_DOCUMENTATION=OFF \
     -DENABLE_MINIBROWSER=ON
-  cmake --build build
+  cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 
   find Source -name 'COPYING*' -or -name 'LICENSE*' -print0 | sort -z |
