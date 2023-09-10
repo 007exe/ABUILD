@@ -1,0 +1,36 @@
+pkgname=libpaper
+pkgver=2.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for handling paper characteristics.")
+
+source=("https://github.com/rrthomas/libpaper/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-text libs")
+
+adddep=("glibc")
+
+build_deps=("${adddep} autoconf")
+
+config_files=("etc/papersize")
+
+build() {
+  go_src_dir
+  burn_patches
+  cp -v ${filedir}/localepaper.c src/
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --sbindir=/usr/bin
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+# Установить общесистемный размер бумаги по умолчанию
+  install -dm 755 ${pkgdir}/etc
+  echo '# Simply write the paper name. See papersize(5) for possible values' > ${pkgdir}/etc/papersize
+
+# Создать каталог libpaper.d, который другие пакеты могут использовать для хранения файлов
+  install -dm 755 ${pkgdir}/etc/libpaper.d
+}
