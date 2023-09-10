@@ -1,5 +1,5 @@
 pkgname=mutter
-pkgver=44.1
+pkgver=44.4
 pkgbuild=1
 arch=("auto")
 
@@ -8,15 +8,12 @@ shortdesc=("Window manager and compositor for GNOME.")
 source=("https://gitlab.gnome.org/GNOME/mutter/-/archive/${pkgver}/mutter-${pkgver}.tar.gz")
 tags=("gnome gnome-base")
 
-# libsysprof-capture
-adddep=("colord dconf gnome-desktop gnome-settings-daemon graphene
-gsettings-desktop-schemas lcms2 libcanberra libgudev libinput libsm
-libxkbcommon-x11 libxkbfile pipewire xorg-xwayland
-startup-notification")
+adddep=("colord dconf gnome-desktop gnome-settings-daemon graphene gsettings-desktop-schemas
+iio-sensor-proxy lcms2 libcanberra libgudev libinput libsm libxkbcommon-x11 libxkbfile
+pipewire startup-notification xorg-xwayland")
 
-# sysprof
-build_deps=("${adddep} egl-wayland gi-docgen git gobject-introspection
-meson wayland-protocols xorg-server")
+build_deps=("${adddep} egl-wayland gi-docgen gobject-introspection gtk3 meson sysprof
+wayland-protocols xorg-server xorg-server-xvfb")
 
 build() {
   go_src_dir
