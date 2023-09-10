@@ -1,0 +1,30 @@
+pkgname=iio-sensor-proxy
+pkgver=3.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("IIO accelerometer sensor to input device proxy.")
+
+source=("https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+# systemd
+adddep=("libgudev gtk3 polkit")
+
+build_deps=("${adddep} meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  mkdir build
+  cd build
+  meson .. \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D systemdsystemunitdir=/usr/lib/systemd/system \
+    -D udevrulesdir=/usr/lib/udev/rules.d \
+    -D sysconfdir=/usr/share
+  ninja
+  DESTDIR=${pkgdir} ninja install
+}
