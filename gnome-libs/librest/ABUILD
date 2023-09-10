@@ -1,0 +1,27 @@
+pkgname=librest
+pkgver=0.9.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for accessing RESTful web services.")
+
+source=("https://download.gnome.org/sources/rest/${pkgver%.*}/rest-${pkgver}.tar.xz")
+
+tags=("libs net-libs")
+
+adddep=("glib2 libxml2 libsoup3 json-glib")
+
+build_deps=("${adddep} gobject-introspection git meson gi-docgen vala libadwaita gtksourceview5")
+
+conflicts=("rest")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D vapi=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
