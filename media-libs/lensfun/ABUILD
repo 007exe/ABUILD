@@ -1,24 +1,29 @@
 pkgname=lensfun
-pkgver=0.3.3
+pkgver=0.3.4
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Library for rectifying and simulating photographic lens distortions.")
-longdesc=("Database of photographic lenses and a library that allows advanced access to the database.")
+shortdesc=("Database of photographic lenses and a library that allows advanced access to the database.")
 
 source=("https://github.com/lensfun/lensfun/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("python libpng doxygen cmake glib2")
+adddep=("glib2")
+
+build_deps=("${adddep} python-setuptools python-build python-installer python-wheel libpng doxygen cmake")
 
 build() {
   go_src_dir
   burn_patches
-  cmake . \
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DCMAKE_CXX_FLAGS="${CXXFLAGS} -fno-delete-null-pointer-checks"
-  make all -j${numjobs}
-  make DESTDIR=${pkgdir} install
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS} -fno-delete-null-pointer-checks" \
+    -DINSTALL_PYTHON_MODULE=OFF
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  cd build/apps
+#  python -m build --wheel --no-isolation
+#  python -m installer --destdir=${pkgdir} dist/*.whl
 }
