@@ -1,4 +1,0 @@
-#!/bin/bash
-pushd /usr/share/redeclipse
-exec bin/reclient $*
-popd
