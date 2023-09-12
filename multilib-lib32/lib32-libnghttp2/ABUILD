@@ -1,5 +1,5 @@
 pkgname=lib32-libnghttp2
-pkgver=1.55.1
+pkgver=1.56.0
 pkgbuild=1
 arch=("auto")
 
