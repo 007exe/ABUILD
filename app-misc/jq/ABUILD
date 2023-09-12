@@ -1,16 +1,17 @@
 pkgname=jq
-pkgver=1.6
+pkgver=1.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Command-line JSON processor.")
-longdesc=("A lightweight and flexible command-line JSON processor.")
 
 source=("https://github.com/stedolan/jq/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("utils app-misc")
 
-build_deps=("autoconf automake bison flex python glibc oniguruma")
+adddep=("glibc oniguruma")
+
+build_deps=("${adddep} autoconf automake bison flex python")
 
 build() {
   go_src_dir
