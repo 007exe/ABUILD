@@ -1,7 +1,7 @@
 pkgname=gobject-introspection
-pkgver=1.76.1
-_glibver=2.76.5
-pkgbuild=2
+pkgver=1.78.0
+_glibver=2.78.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Introspection system for GObject-based libraries.")
