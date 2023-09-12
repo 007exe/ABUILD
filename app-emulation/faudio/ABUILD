@@ -1,5 +1,5 @@
 pkgname=faudio
-pkgver=23.08
+pkgver=23.09
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ tags=("app-emulation apps")
 
 adddep=("sdl2 gst-libav")
 
-build_deps=("cmake ninja")
+build_deps=("${adddep} cmake ninja")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
