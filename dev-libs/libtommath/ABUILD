@@ -1,10 +1,9 @@
 pkgname=libtommath
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Highly optimized and portable routines for integer based number theoretic applications.")
-longdesc=("Optimized and portable routines for integer theoretic applications.")
 
 source=("https://github.com/libtom/libtommath/releases/download/v${pkgver}/ltm-${pkgver}.tar.xz")
 
