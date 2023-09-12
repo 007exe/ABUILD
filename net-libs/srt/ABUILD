@@ -1,5 +1,5 @@
 pkgname=srt
-pkgver=1.5.2
+pkgver=1.5.3
 pkgbuild=1
 arch=("auto")
 
