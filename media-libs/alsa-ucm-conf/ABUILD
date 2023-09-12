@@ -1,5 +1,5 @@
 pkgname=alsa-ucm-conf
-pkgver=1.2.9
+pkgver=1.2.10
 pkgbuild=1
 arch=("noarch")
 
