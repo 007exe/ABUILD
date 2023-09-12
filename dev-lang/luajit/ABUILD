@@ -1,6 +1,7 @@
 pkgname=luajit
-_commit=0b5bf71e37b973aad8022f2b3d25e03434e23987
-pkgver=2.1.0.beta3.r506.g${_commit::8}
+_commit=4611e25c0fbe911486cccae4556eb086c0254c5f
+_ct=1694285958
+pkgver="2.1.${_ct}"
 pkgbuild=1
 arch=("auto")
 
@@ -20,6 +21,4 @@ build() {
   make -j${numjobs} amalg PREFIX=/usr LIBDIR=/usr/lib
   make PREFIX=/usr LIBDIR=/usr/lib DESTDIR=${pkgdir} install
   install -Dm644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/COPYRIGHT
-
-  ln -sf luajit-2.1.0-beta3 ${pkgdir}/usr/bin/luajit
 }
