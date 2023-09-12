@@ -1,5 +1,5 @@
 pkgname=gnome-bluetooth
-pkgver=42.5
+pkgver=42.6
 pkgbuild=1
 arch=("auto")
 
