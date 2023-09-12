@@ -1,16 +1,17 @@
 pkgname=libdmapsharing
-pkgver=2.9.41
+pkgver=3.9.13
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library that implements the DMAP family of protocols.")
-longdesc=("A library that implements the DMAP family of protocols.")
 
 source=("https://gitlab.gnome.org/GNOME/libdmapsharing/-/archive/LIBDMAPSHARING_${pkgver//./_}/libdmapsharing-LIBDMAPSHARING_${pkgver//./_}.tar.gz")
 
 tags=("libs net-libs")
 
-build_deps=("gtk-doc gobject-introspection vala libsoup avahi gst-plugins-base-libs gdk-pixbuf")
+adddep=("avahi gdk-pixbuf gst-plugins-base-libs libsoup3")
+
+build_deps=("${adddep} gobject-introspection gtk-doc vala")
 
 build() {
   go_src_dir
