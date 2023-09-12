@@ -2,7 +2,7 @@ pkgname=networkmanager-pptp
 pkgver=1.2.12
 pkgbuild=1
 arch=("auto")
-_pppver=2.4.9
+_pppver=2.5.0
 
 shortdesc=("NetworkManager VPN plugin for PPTP.")
 
