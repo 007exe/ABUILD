@@ -1,5 +1,5 @@
 pkgname=libtiff
-pkgver=4.5.1
+pkgver=4.6.0rc1
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-adddep=("freeglut glu mesa jbigkit")
+adddep=("gcc-libs glibc jbigkit libjpeg-turbo zlib xz zstd")
 
-build_deps=("${adddep} glibc libjpeg-turbo zlib xz zstd")
+build_deps=("${adddep} freeglut glu mesa jbigkit")
 
 build() {
   go_src_dir
