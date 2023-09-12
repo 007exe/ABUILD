@@ -1,16 +1,17 @@
 pkgname=exempi
-pkgver=2.6.2
+pkgver=2.6.4
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library to parse XMP metadata.")
-longdesc=("Exempi is an implementation of XMP (Adobe's Extensible Metadata Platform).")
 
-source=("https://libopenraw.freedesktop.org/download/exempi-${pkgver}.tar.bz2")
+source=("https://libopenraw.freedesktop.org/download/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("boost git autoconf2.13 gcc-libs expat zlib")
+adddep=("expat gcc-libs glibc zlib")
+
+build_deps=("${adddep} boost")
 
 build() {
   go_src_dir
