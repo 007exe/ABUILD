@@ -1,18 +1,18 @@
 pkgname=cheese
-pkgver=41.1
+pkgver=44.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Take photos and videos with your webcam, with fun graphical effects.")
-longdesc=("Cheese is used to take photos and videos with fun graphical effects.")
 
 source=("https://gitlab.gnome.org/GNOME/cheese/-/archive/${pkgver}/cheese-${pkgver}.tar.gz")
 
 tags=("gnome gnome-apps")
 
-build_deps=("gobject-introspection vala git appstream-glib meson yelp-tools
-gtk3 gstreamer gst-plugins-bad gst-plugins-base gst-plugins-good clutter-gst
-clutter-gtk libcanberra librsvg gnome-desktop libgudev dconf gnome-video-effects")
+adddep=("clutter-gst clutter-gtk dconf gnome-desktop gnome-video-effects gst-plugins-bad
+gst-plugins-base gst-plugins-good gstreamer gtk3 libcanberra libgudev librsvg")
+
+build_deps=("${adddep} appstream-glib gobject-introspection meson vala yelp-tools")
 
 build() {
   go_src_dir
