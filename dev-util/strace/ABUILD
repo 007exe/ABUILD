@@ -1,5 +1,5 @@
 pkgname=strace
-pkgver=6.4
+pkgver=6.5
 pkgbuild=1
 arch=("auto")
 
