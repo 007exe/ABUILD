@@ -47,7 +47,8 @@ build() {
     --with-kerberos5=/usr \
     --with-xauth=/usr/bin/xauth \
     --with-pid-dir=/run \
-    --with-default-path='/usr/local/sbin:/usr/local/bin:/usr/bin'
+    --with-default-path='/usr/local/sbin:/usr/local/bin:/usr/bin' \
+    --without-zlib-version-check
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
