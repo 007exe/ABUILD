@@ -1,0 +1,96 @@
+pkgname=nim
+pkgver=2.0.0
+_csourcesver=86742fb02c6606ab01a532a0085784effb2e753e
+pkgbuild=1
+arch=("auto")
+strict_version=1
+
+shortdesc=("Imperative, multi-paradigm, compiled programming language.")
+
+source=("git:https://github.com/nim-lang/csources_v2.git"
+"https://github.com/nim-lang/Nim/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("develop dev-lang")
+
+adddep=("bash gcc")
+
+build_deps=("${adddep}")
+
+config_files=("etc/nim/nim.cfg
+etc/nim/nimdoc.cfg
+etc/nim/nimdoc.tex.cfg
+etc/nim/rename.rules.cfg")
+
+before_build() {
+  cd ${srcdir}
+  mv -v ${srcdir}/nim_git_csources_v2.git.src ${srcdir}/csources_v2
+  cd ${srcdir}/csources_v2
+  git checkout ${_csourcesver}
+}
+
+build(){
+  cd ${srcdir}/Nim-${pkgver}
+  cp -r ../csources_v2/* .
+  rm bin/empty.txt
+  for nimcfg in {compiler,config}/nim.cfg; do
+    echo "gcc.options.always %= \"\${gcc.options.always} ${CFLAGS:-} ${CPPFLAGS}\"" >> "${nimcfg}"
+    echo "gcc.options.linker %= \"\${gcc.options.linker} ${LDFLAGS:-}\"" >> "${nimcfg}"
+  done
+export PATH="${srcdir}/Nim-${pkgver}/bin:${PATH}"
+echo "=============> Building nim"
+  sh build.sh
+
+echo "=============> Building koch"
+  nim c -d:release koch
+  ./koch boot -d:release -d:nativeStacktrace -d:useGnuReadline
+
+echo "=============> Building libs"
+  (cd lib
+    nim c --app:lib -d:createNimRtl -d:release nimrtl.nim
+  )
+
+echo "=============> Building tools"
+  ./koch tools
+  (cd tools
+    nim c -d:release nimgrep.nim
+  )
+
+echo "=============> Building nimsuggest"
+  nim c -d:release nimsuggest/nimsuggest.nim
+
+echo "=============> Install"
+  export PATH="${srcdir}/Nim-${pkgver}/bin:${PATH}"
+
+  ./koch install ${pkgdir}
+
+  install -d ${pkgdir}/usr/lib
+  cp -a lib ${pkgdir}/usr/lib/nim
+  cp -a compiler ${pkgdir}/usr/lib/nim
+  install -Dm 644 nim.nimble ${pkgdir}/usr/lib/nim/compiler
+  install -m 755 lib/libnimrtl.so ${pkgdir}/usr/lib/libnimrtl.so
+
+  install -Dm 644 config/* -t ${pkgdir}/etc/nim
+  install -Dm 755 bin/* -t ${pkgdir}/usr/bin
+
+  # Fix FS#50252
+  install -d ${pkgdir}/usr/include
+  cp -a "${pkgdir}/usr/lib/nim/"*.h ${pkgdir}/usr/include
+
+  # Fix FS#48118
+  ln -s /usr/share/nim/doc ${pkgdir}/usr/lib/nim/doc
+  install -d ${pkgdir}/usr/share/nim/doc
+  cp -a doc/* ${pkgdir}/usr/share/nim/doc
+
+  install -Dm 644 copying.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+
+  # completions
+  for comp in tools/*.bash-completion; do
+    install -Dm 644 "${comp}" "${pkgdir}/usr/share/bash-completion/completions/$(basename "${comp/.bash-completion}")"
+  done
+  for comp in tools/*.zsh-completion; do
+    install -Dm 644 "${comp}" "${pkgdir}/usr/share/zsh/site-functions/_$(basename "${comp/.zsh-completion}")"
+  done
+
+  rm -r ${pkgdir}/nim
+  rm ${pkgdir}/usr/bin/nim-gdb.bat
+}
