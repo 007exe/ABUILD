@@ -1,6 +1,6 @@
 pkgname=plasma-workspace
 pkglist=("plasma-wayland-session")
-pkgver=5.27.7
+pkgver=5.27.8
 pkgbuild=1
 arch=("auto")
 

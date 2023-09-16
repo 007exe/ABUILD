@@ -1,5 +1,5 @@
 pkgname=kwrited
-pkgver=5.27.7
+pkgver=5.27.8
 pkgbuild=1
 arch=("auto")
 
