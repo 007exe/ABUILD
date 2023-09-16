@@ -2,30 +2,28 @@ pkgname=mpkg-i18n
 pkgver=0.17.1
 pkgbuild=1
 arch=("noarch")
+strict_version=1
 
-shortdesc=("MPKG package system: localization files")
-longdesc=("MPKG package system: localization files")
+shortdesc=("MPKG package system: localization files.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
-tags=("app-i18n base")
+tags=("base sys-pkgtools")
 
 adddep=("mpkg-core")
 
-build_deps=("gettext cmake")
+build_deps=("${adddep} gettext cmake")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake ../i18n \
+  cmake -B build -S i18n \
     -DCMAKE_INSTALL_PREFIX=/usr
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 
   mkdir -p ${pkgdir}/usr/share/man/ru/man1/
-  cd ../i18n/man_ru
+  cd i18n/man_ru
   for i in `find . -name '*.1'` ; do
       install -m0644 $i ${pkgdir}/usr/share/man/ru/man1/`basename $i`
   done
