@@ -10,7 +10,7 @@ source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("base sys-pkgtools")
 
-adddep=("glibc gcc-libs mpkg-core mpkgsupport nwidgets texinfo mpkg-i18n")
+adddep=("glibc gcc-libs mpkg-core mpkgsupport nwidgets texinfo mpkg-i18n util-linux coreutils")
 
 build_deps=("${adddep} cmake gcc")
 
