@@ -2,26 +2,22 @@ pkgname=mpkg-manager2
 pkgver=0.16
 pkgbuild=1
 arch="auto"
+strict_version=1
 
-shortdesc=("MPKG package system: GUI front-end")
-longdesc=("MPKG package system: GUI front-end")
+shortdesc=("MPKG package system: GUI front-end.")
 
-source=("git:git://github.com/007exe/mpkg.git")
+source=("git:https://github.com/007exe/mpkg.git")
 
-tags="xapps x11-apps"
+tags=("apps sys-pkgtools")
 
-build_deps="cmake"
-
+build_deps=("cmake")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    ../manager2
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  cmake -B build -S manager2 \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
 
