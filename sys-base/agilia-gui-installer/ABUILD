@@ -1,24 +1,23 @@
 pkgname=agilia-gui-installer
-pkgver=1.1
+pkgver=1.2
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
 shortdesc=("AgiliaLinux system installer.")
-longdesc=("This is an AgiliaLinux installer. It is used to install this operating system from LiveCD. Also you can try to use it from real system.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
-tags=("xapps sys-apps")
+tags=("apps sys-apps")
 
-build_deps=("qt5-base libagiliasetup gcc-libs mpkg-parted mpkg-core mpkgsupport")
+adddep=("qt5-base libagiliasetup glibc gcc-libs mpkg-parted mpkg-core mpkgsupport")
+
+build_deps=("${adddep} cmake gcc")
 
 build() {
   go_src_dir
-  mkdir build
-  cd build
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    ../guiinstaller-qt5
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  cmake -B build -S guiinstaller-qt5 \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
