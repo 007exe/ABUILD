@@ -1,6 +1,6 @@
 pkgname=glibmm-2.68
 pkglist=("docs")
-pkgver=2.76.0
+pkgver=2.78.0
 pkgbuild=1
 arch=("auto")
 
