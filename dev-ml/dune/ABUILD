@@ -1,25 +1,26 @@
 pkgname=dune
-pkgver=3.4.1
+pkgver=3.8.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A composable build system for OCaml.")
-longdesc=("A composable build system for OCaml (formerly jbuilder).")
+shortdesc=("A composable build system for OCaml (formerly jbuilder).")
 
 source=("https://github.com/ocaml/dune/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("glibc ocaml ocaml-csexp ocaml-findlib")
+adddep=("glibc")
 
-adddep=("ocaml ocaml-csexp ocaml-findlib")
+# ocaml-compiler-libs ocaml-pp
+build_deps=("${adddep} ocaml ocaml-csexp ocaml-findlib")
 
-_dune_release_pkgs=('dune' 'dune-action-plugin' 'dune-build-info' 'dune-configurator' 'dune-glob' 'dune-private-libs' 'dune-site' 'dyn' 'stdune' 'ordering' 'xdg' 'fiber')
+_dune_release_pkgs=('dune' 'dune-action-plugin' 'dune-build-info' 'dune-configurator' 'dune-glob' 'dune-private-libs'
+                    'dune-site' 'dune-rpc' 'dyn' 'stdune' 'ordering' 'xdg' 'chrome-trace' 'ocamlc-loc')
 
 build() {
   go_src_dir
   ./configure --libdir /usr/lib/ocaml
-  make dune.exe
+  make _boot/dune.exe
 
   local dune_release_pkgs='dummy'
   for _pkg in "${_dune_release_pkgs[@]}"; do
@@ -31,12 +32,12 @@ build() {
   ./dune.exe build -p "${dune_release_pkgs}" --profile dune-bootstrap
 
   for _pkg in "${_dune_release_pkgs[@]}"; do
-    ./dune.exe install "${_pkg}" --destdir="${pkgdir}" --prefix="/usr" --libdir="$(ocamlfind printconf destdir)"
+    ./dune.exe install "${_pkg}" --destdir=${pkgdir} --prefix="/usr" --libdir="$(ocamlfind printconf destdir)"
   done
 
-  install -d "${pkgdir}"/usr/share
-  mv "${pkgdir}"/usr/{doc,share/}
-  mv "${pkgdir}"/usr/{man,share/}
-  install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  ln -s /usr/share/doc/pp/LICENSE.md "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -d ${pkgdir}/usr/share
+  mv ${pkgdir}/usr/{doc,share/}
+  mv ${pkgdir}/usr/{man,share/}
+  install -dm755 ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s /usr/share/doc/pp/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
