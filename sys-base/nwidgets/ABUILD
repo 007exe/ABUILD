@@ -2,9 +2,9 @@ pkgname=nwidgets
 pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
 shortdesc=("NCurses widgets framework.")
-longdesc=("NCurses widgets framework.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
@@ -15,14 +15,11 @@ build_deps=("mpkgsupport ncurses cmake gcc-libs")
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake ../nwidgets \
+  cmake -B build -S nwidgets \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONF_INSTALL_DIR=/etc \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DMAN_INSTALL_DIR=/usr/share/man
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
-
