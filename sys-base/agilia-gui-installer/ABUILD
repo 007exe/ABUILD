@@ -10,7 +10,7 @@ source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("apps sys-apps")
 
-adddep=("qt5-base libagiliasetup glibc gcc-libs mpkg-parted mpkg-core mpkgsupport")
+adddep=("qt5-base libagiliasetup glibc gcc-libs mpkg-parted mpkg-core mpkgsupport xdg-su")
 
 build_deps=("${adddep} cmake gcc")
 
