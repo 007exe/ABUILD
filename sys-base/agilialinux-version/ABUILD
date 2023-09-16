@@ -1,10 +1,10 @@
+# NOTE: Этот пакет следует объеденить с пакетом base
 pkgname=agilialinux-version
-pkgver=2022
+pkgver=2023
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("AgiliaLinux version package.")
-longdesc=("This package contains /etc/agilialinux-version, which indicates current system version.")
+shortdesc=("This package contains /etc/agilialinux-version, which indicates current system version.")
 
 tags=("base sys-base")
 
