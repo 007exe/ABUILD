@@ -2,9 +2,9 @@ pkgname=mpkgsupport
 pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
-shortdesc=("Support library from mpkg")
-longdesc=("Support library from mpkg. Contains many useful functions, not related directly to mpkg and which can be used in other programs.")
+shortdesc=("Support library from mpkg. Contains many useful functions, not related directly to mpkg and which can be used in other programs.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
@@ -15,13 +15,11 @@ build_deps=("glibc gcc cmake")
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake ../mpkgsupport \
+  cmake -B build -S mpkgsupport \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONF_INSTALL_DIR=/etc \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DMAN_INSTALL_DIR=/usr/share/man
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
