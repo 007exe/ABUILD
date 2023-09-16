@@ -1,22 +1,29 @@
 pkgname=mkpkg
 pkgver=1.3.5
 pkgbuild=1
-arch=('noarch')
+arch=("noarch")
+strict_version=1
 
-shortdesc=("AgiliaLinux package building tool")
-longdesc=("This utility is intended for building packages, the package building script is described in the files ABUILD.")
+shortdesc=("AgiliaLinux package building tool.")
 
-source="https://github.com/007exe/mkpkg/archive/refs/tags/v${pkgver}.tar.gz"
+source=("git:https://github.com/007exe/mkpkg.git")
 
-tags="dev-util develop"
+tags=("dev-util develop")
 
-build_deps="cmake sed"
+adddep=("mpkg-console fakeroot python bash sed grep tar wget")
 
-adddep="mpkg-console fakeroot python bash sed grep tar wget"
+build_deps=("${adddep} cmake sed")
 
-conflicts="mkpkg-git"
+conflicts=("mkpkg-git")
 
-config_files="etc/mkpkg.conf"
+config_files=("etc/mkpkg.conf")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+# before_build() {
+#  go_src_dir
+#  git checkout ${_commit}
+# }
 
 build() {
   go_src_dir
@@ -27,6 +34,8 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -Dm644 ../mkpkg.conf "${pkgdir}/etc/mkpkg.conf"
+
+# NOTE: Указываем версию пакета
   sed s,%MKPKG_VER%,${pkgver}, -i ${pkgdir}/usr/bin/mkpkg
   sed 's,MKPKG_INSTALL_PREFIX=.*,MKPKG_INSTALL_PREFIX=/usr,g' -i ${pkgdir}/usr/bin/mkpkg
 }
