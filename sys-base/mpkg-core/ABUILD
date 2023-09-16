@@ -2,26 +2,24 @@ pkgname=mpkg-core
 pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
-shortdesc=("MPKG package system: core libraries")
-longdesc=("The core of mpkg.")
+shortdesc=("The core of mpkg.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("base sys-pkgtools")
 
-build_deps=("nwidgets mpkgsupport cmake gcc gcc-libs curl sqlite libxml2 mpkg-i18n texinfo")
+adddep=("mpkg-i18n tar xz gzip sed wget which texinfo coreutils util-linux")
 
-adddep=("mpkg-i18n tar xz gzip sed wget which texinfo")
+build_deps=("nwidgets mpkgsupport cmake gcc gcc-libs curl sqlite libxml2")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake ../lib \
+  cmake -B build -S lib \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
