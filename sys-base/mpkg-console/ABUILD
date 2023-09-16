@@ -2,27 +2,25 @@ pkgname=mpkg-console
 pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
-shortdesc=("MPKG package system: console utilities")
-longdesc=("Console tools related to mpkg. A must-have package.")
+shortdesc=("MPKG package system: console utilities.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
 tags=("base sys-pkgtools")
 
-build_deps=("mpkg-core cmake gcc-libs mpkgsupport nwidgets texinfo")
+adddep=("glibc gcc-libs mpkg-core mpkgsupport nwidgets texinfo mpkg-i18n")
 
-adddep=("texinfo")
+build_deps=("${adddep} cmake gcc")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake ../console \
+  cmake -B build -S console \
     -DCMAKE_INSTALL_PREFIX=/usr
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 
   cd ${pkgdir}/usr/bin
   ln -s mpkg buildpkg
