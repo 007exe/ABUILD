@@ -2,27 +2,24 @@ pkgname=agilia-text-installer
 pkgver=2.1
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
 shortdesc=("AgiliaLinux ncurses-based text mode system installer")
-longdesc=("This is text version of AgiliaLinux installer.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
-tags="xapps sys-apps"
+tags=("console sys-apps")
 
-build_deps="libagiliasetup gcc-libs mpkg-parted mpkg-core mpkgsupport nwidgets"
+adddep=("libagiliasetup glibc gcc-libs mpkg-parted mpkg-core mpkgsupport nwidgets mpkg-i18n")
 
-adddep="xdg-su"
+build_deps=("${adddep} cmake gcc")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    ../textinstaller
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  cmake -B build -S textinstaller \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
 
