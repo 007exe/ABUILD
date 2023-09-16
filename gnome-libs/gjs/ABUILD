@@ -1,17 +1,18 @@
 pkgname=gjs
-pkgver=1.72.0
+pkgver=1.76.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Javascript Bindings for GNOME.")
-longdesc=("Javascript bindings for GNOME.")
 
 tags=("libs dev-libs")
 
 source=("https://gitlab.gnome.org/GNOME/gjs/-/archive/${pkgver}/gjs-${pkgver}.tar.gz")
 
 # gobject-introspection-runtime libsysprof-capture
-build_deps=("gobject-introspection git meson dbus cairo gobject-introspection dconf readline js91")
+adddep=("cairo dconf js readline")
+
+build_deps=("${adddep} dbus git gobject-introspection meson")
 
 build() {
   go_src_dir
