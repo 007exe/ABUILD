@@ -2,9 +2,9 @@ pkgname=libagiliasetup
 pkgver=1.1
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
-shortdesc=("AgiliaLinux OS installation library")
-longdesc=("This library was splitted from agilia-gui-setup, mainly for non-GUI setup implementations.")
+shortdesc=("AgiliaLinux OS installation library.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
@@ -12,16 +12,14 @@ tags=("libs sys-libs")
 
 adddep=("bash wget e2fsprogs xfsprogs reiserfsprogs jfsutils btrfs-progs lvm2 mdadm rsync sed laptop-detect")
 
-build_deps=("mpkg-core mpkg-parted parted")
+build_deps=("${adddep} cmake gcc")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake ../libagiliasetup \
+  cmake -B build -S libagiliasetup \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
