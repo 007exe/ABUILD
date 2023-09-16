@@ -1,6 +1,6 @@
 pkgname=unrar
 pkglist=("libunrar")
-pkgver=6.2.6
+pkgver=6.2.10
 pkgbuild=1
 arch=("auto")
 
