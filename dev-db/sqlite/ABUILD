@@ -1,9 +1,9 @@
 pkgname=sqlite
 pkglist=("sqlite-doc")
-pkgver=3.43.0
+pkgver=3.43.1
 pkgbuild=1
 arch=("auto")
-_srcver=3430000
+_srcver=3430100
 _docver=${_srcver}
 
 shortdesc=("A C library that implements an SQL database engine.")
