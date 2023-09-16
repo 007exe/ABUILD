@@ -1,26 +1,27 @@
 pkgname=mpkg-parted
-pkgver=0.17
+pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
-shortdesc=("mpkg parted libs")
-longdesc=("Parted bindings for mpkg, mainly used by system installers such as agilia-gui-installer.")
+shortdesc=("Parted bindings for mpkg, mainly used by system installers such as agilia-gui-installer.")
 
 source=("git:https://github.com/007exe/mpkg.git")
 
-tags=("console dev-util")
+tags=("libs dev-libs")
 
-build_deps=("mpkgsupport parted cmake gcc-libs")
+adddep=("glibc gcc-libs mpkgsupport parted")
+
+build_deps=("${adddep} gcc cmake")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake ../mpkg-parted \
+  cmake -B build -S mpkg-parted \
     -DCMAKE_INSTALL_PREFIX=/usr
-  make -j${numjobs}
-  make install DESTDIR=${pkgdir}
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+
 # FIXME: Следует исправить CmakeList.txt, а пока вручную фиксим
   mkdir -p ${pkgdir}/usr/lib/
   mv ${pkgdir}/usr/lib64/* ${pkgdir}/usr/lib/
