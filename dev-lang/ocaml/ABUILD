@@ -1,25 +1,25 @@
 pkgname=ocaml
-pkgver=4.14.0
+pkgver=5.0.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Objective Caml compiler and programming environment.")
-longdesc=("OCaml is a high-level, strongly-typed, functional and object-oriented programming language from the ML family of languages.")
 
 source=("https://caml.inria.fr/distrib/ocaml-${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("develop dev-lang")
 
-build_deps=("ncurses>=5.6-7")
+build_deps=("ncurses")
 
 build() {
   go_src_dir
   burn_patches
+  CFLAGS+=' -ffat-lto-objects'
+  CXXFLAGS+=' -ffat-lto-objects'
   ./configure \
     --prefix /usr \
-    --libdir /usr/lib/ocaml \
     --mandir /usr/share/man \
-    --disable-force-safe-string
+    -enable-frame-pointers
   make --debug=v world.opt
   make DESTDIR=${pkgdir} install
 
