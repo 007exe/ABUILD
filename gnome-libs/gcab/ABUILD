@@ -1,16 +1,17 @@
 pkgname=gcab
-pkgver=1.5
+pkgver=1.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A GObject library to create cabinet files.")
-longdesc=("Library and tool for working with Microsoft Cabinet (CAB) files.")
 
 source=("https://download.gnome.org/sources/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs gnome-libs")
 
-build_deps=("glib2 meson")
+adddep=("glib2")
+
+build_deps=("${adddep} gobject-introspection gtk-doc meson vala")
 
 build() {
   go_src_dir
