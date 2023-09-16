@@ -1,5 +1,5 @@
 pkgname=kross
-pkgver=5.109.0
+pkgver=5.110.0
 pkgbuild=1
 arch=("auto")
 
