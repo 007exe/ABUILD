@@ -1,5 +1,5 @@
 pkgname=python-gobject
-pkgver=3.44.1
+pkgver=3.46.0
 pkgbuild=1
 arch=("auto")
 
