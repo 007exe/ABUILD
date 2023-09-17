@@ -1,24 +1,33 @@
 pkgname=lsb-release
-pkgver=1.4.1
-_srcver=1.4
-pkgbuild=5
-arch=('noarch')
+pkgver=2.0.r53.a86f885
+_commit=a86f885597a91cd41837d706bf6a08d4c239a54b
+pkgbuild=1
+arch=("noarch")
+strict_version='yes'
 
-shortdesc=("Linux Standard Base tools")
-longdesc=("The program queries the installed state of the distribution to display certain properties such as the version of the LSB against which the distribution claims compliance as well. It can also attempt to display the name and release of the distribution along with an identifier of who produces the distribution.")
+shortdesc=("LSB version query program.")
 
-source=("http://downloads.sourceforge.net/project/lsb/lsb_release/${_srcver}/lsb-release-${_srcver}.tar.gz")
+source=("git:https://github.com/LinuxStandardBase/lsb-samples.git")
 
-tags="base sys-base"
+tags=("base sys-base")
 
-adddep="etc agilialinux-version"
+adddep=("etc bash")
 
-build_deps="mkpkg bash"
+build_deps=("${adddep} git")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
 
 build() {
   go_src_dir
   burn_patches
+  cd lsb_release/src
   make -j${numjobs}
-  make install prefix=${pkgdir}/usr mandir=${pkgdir}/usr/share/man
+  install -Dm644 lsb_release.1.gz -t ${pkgdir}/usr/share/man/man1
+  install -Dm755 lsb_release -t ${pkgdir}/usr/bin
   install -Dm644 ${filedir}/lsb-release ${pkgdir}/etc/lsb-release
 }
