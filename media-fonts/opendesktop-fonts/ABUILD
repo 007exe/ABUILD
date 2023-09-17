@@ -1,0 +1,19 @@
+pkgname=opendesktop-fonts
+pkgver=1.4.2
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Chinese TrueType Fonts.")
+
+source=("https://sources.archlinux.org/other/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("media-fonts fonts")
+
+build_deps=("mkpkg")
+
+build() {
+  go_src_dir
+  install -d ${pkgdir}/usr/share/fonts/TTF
+  install -m 644 *.ttf *.ttc ${pkgdir}/usr/share/fonts/TTF
+  install -D -m644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
