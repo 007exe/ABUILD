@@ -3,7 +3,6 @@ pkgver=0.17.1
 pkgbuild=1
 arch=("auto")
 strict_version=1
-
 shortdesc=("MPKG package system: console utilities.")
 
 source=("git:https://github.com/007exe/mpkg.git")
@@ -11,8 +10,14 @@ source=("git:https://github.com/007exe/mpkg.git")
 tags=("base sys-pkgtools")
 
 adddep=("glibc gcc-libs mpkg-core mpkgsupport nwidgets texinfo mpkg-i18n util-linux coreutils")
-
 build_deps=("${adddep} cmake gcc")
+
+# NOTE: mpkg-update-blacklist Список пакетов которые не будут обновляться
+#       mpkg-remove-blacklist Список пакетов защищённых от удаления. Их можно удалить только с ключём --force-essential
+#       mpkg-unremovable      Список пакетов файлы которых не будут удалены ни при каких обстоятельствах. Но запись о них будут удалены из базы данных
+config_files=("/etc/mpkg-update-blacklist
+/etc/mpkg-remove-blacklist
+/etc/mpkg-unremovable")
 
 build() {
   go_src_dir
@@ -25,4 +30,9 @@ build() {
   cd ${pkgdir}/usr/bin
   ln -s mpkg buildpkg
   ln -s mpkg buildsrcpkg
+
+  mkdir ${pkgdir}/etc
+  cp -v ${filedir}/mpkg-update-blacklist ${pkgdir}/etc/
+  cp -v ${filedir}/mpkg-remove-blacklist ${pkgdir}/etc/
+  cp -v ${filedir}/mpkg-unremovable ${pkgdir}/etc/
 }

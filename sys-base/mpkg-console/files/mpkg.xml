@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<mpkgconfig>
+	<run_scripts>
+		yes
+	</run_scripts>
+	<checkFileConflicts>
+		preinstall
+	</checkFileConflicts>
+	<sys_root>
+		/
+	</sys_root>
+	<sys_cache>
+		/var/mpkg/cache/
+	</sys_cache>
+	<database_url>
+		sqlite:///var/mpkg/packages.db
+	</database_url>
+	<cdrom_device>
+		/dev/cdrom
+	</cdrom_device>
+	<cdrom_mountpoint>
+		/mnt/cdrom
+	</cdrom_mountpoint>
+	<scripts_dir>
+		/var/mpkg/scripts/
+	</scripts_dir>
+	<sys_backup>
+		/var/mpkg/backup/
+	</sys_backup>
+	<disable_dependencies>
+		no
+	</disable_dependencies>
+</mpkgconfig>
