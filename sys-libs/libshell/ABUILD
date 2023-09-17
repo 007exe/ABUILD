@@ -22,12 +22,7 @@ before_build() {
 build() {
   go_src_dir
   burn_patches
-sed -i -e 's,^#!/bin/ash,#!/bin/sh,' utils/cgrep.in
-#  ./autogen.sh
-#  ./configure \
-#    --prefix=/usr \
-#    --libdir=/usr/lib \
-#    --disable-static
-#  make -j${numjobs}
+  sed -i -e 's,^#!/bin/ash,#!/bin/sh,' utils/cgrep.in
+  make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
