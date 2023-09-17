@@ -1,18 +1,15 @@
 pkgname=etc
-pkgver=20220721
+pkgver=20230917
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("System configuration files.")
-longdesc=("System configuration files. The /etc directory is traditionally the location where configuration files are found.")
 
 tags=("base sys-libs")
 
 custom_opts=("no_postperm skip_gendeps")
 
 build_deps=("mkpkg")
-
-adddep=("agilialinux-version")
 
 build() {
   go_src_dir
