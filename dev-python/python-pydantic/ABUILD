@@ -1,5 +1,5 @@
 pkgname=python-pydantic
-pkgver=1.10.9
+pkgver=2.3.0
 pkgbuild=1
 arch=("auto")
 
@@ -11,11 +11,9 @@ tags=("libs dev-python")
 
 # NOTE: Пакет python-typing-extensions это пакет python-typing_extensions
 
-# FIXME: Какого то хрена не находит пакет python-pydantic хотя он присутствует
-adddep=("python python-typing_extensions")
+adddep=("python python-annotated-types python-typing_extensions python-pydantic-core")
 
-build_deps=("${adddep} python python-build python-installer python-setuptools
-python-wheel python cython")
+build_deps=("${adddep} cython python-build python-installer python-importlib-metadata python-hatchling python-hatch-fancy-pypi-readme python-wheel")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
