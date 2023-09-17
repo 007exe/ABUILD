@@ -1,0 +1,33 @@
+pkgname=libshell
+pkgver=0.4.11
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("A library of shell functions.")
+
+source=("git:https://github.com/legionus/libshell.git")
+
+tags=("libs sys-libs")
+
+build_deps=("help2man coreutils scdoc")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+sed -i -e 's,^#!/bin/ash,#!/bin/sh,' utils/cgrep.in
+#  ./autogen.sh
+#  ./configure \
+#    --prefix=/usr \
+#    --libdir=/usr/lib \
+#    --disable-static
+#  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
