@@ -4,14 +4,14 @@ pkgbuild=1
 arch=("auto")
 strict_version='yes'
 
-shortdesc=("This is a tool for building initramfs format images used for booting Linux OS..")
+shortdesc=("This is a tool for building initramfs format images used for booting Linux OS.")
 
 source=("git:https://github.com/osboot/make-initrd.git")
 
 tags=("base sys-kernel")
 
-# busybox libshell
-adddep=("bash make sed coreutils findutils grep glibc util-linux")
+# busybox
+adddep=("bash make sed coreutils findutils grep glibc util-linux libshell")
 
 build_deps=("${adddep} autoconf eudev flex bison kmod elfutils zlib bzip2 xz zstd help2man")
 
