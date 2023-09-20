@@ -4,15 +4,22 @@ pkgbuild=2
 arch=("auto")
 
 shortdesc=("Compatibility Result module.")
-longdesc=("Projects that want to use the new result type defined in OCaml >= 4.03 while staying compatible with older version of OCaml should use the Result module defined in this library.")
 
 source=("https://github.com/janestreet/result/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("ocaml ocaml-findlib ocaml-result dune")
-
 adddep=("ocaml")
+
+build_deps=("${adddep} ocaml-findlib dune")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
