@@ -1,5 +1,5 @@
 pkgname=suitesparse
-pkgver=7.1.0
+pkgver=7.2.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}/$
 
 tags=("libs sci-libs")
 
-build_deps=("gcc-fortran cmake lapack mpfr")
+adddep=("lapack mpfr")
+
+build_deps=("${adddep} gcc-fortran cmake")
 
 build() {
   go_src_dir
