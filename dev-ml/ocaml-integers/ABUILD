@@ -4,13 +4,20 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Library for binding to C libraries using pure OCaml.")
-longdesc=("Various signed and unsigned integer types for OCaml.")
 
-source=("https://github.com/ocamllabs/$pkgname/archive/$pkgver.tar.gz")
+source=("https://github.com/ocamllabs/$pkgname/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
 build_deps=("dune ocaml-topkg ocaml-findlib ocaml ocamlbuild opam ocaml-stdlib-shims")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
