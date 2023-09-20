@@ -1,5 +1,5 @@
 pkgname=gnome-commander
-pkgver=1.16.0
+pkgver=1.16.1
 pkgbuild=1
 arch=("auto")
 
