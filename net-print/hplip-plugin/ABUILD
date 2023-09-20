@@ -1,5 +1,5 @@
 pkgname=hplip-plugin
-pkgver=3.23.5
+pkgver=3.23.8
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://developers.hp.com/sites/default/files/hplip-${pkgver}-plugin.ru
 
 tags=("net-print drivers")
 
-build_deps=("hplip>=${pkgver}")
-
 adddep=("hplip>=${pkgver}")
+
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
