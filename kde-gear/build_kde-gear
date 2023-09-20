@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KDE_GEAR_VERSION=23.08.0
+pkgver=23.08.1
 
 LIST="libkdcraw
 libkexiv2
@@ -219,13 +219,12 @@ ktuberling
 palapeli"
 
 STARTD=`pwd`
-
 LOGFILE=~
 
 echo "============================= Начало сборки `date` =============================" >> $LOGFILE/kde_gear_build.log
 for i in $LIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -wd ~/mkpkg/build -si -bv $KDE_GEAR_VERSION -bb 1; then
+    if mkpkg -ba -wd ~/mkpkg/build -si -bv $pkgver -bb 1; then
            echo "$i" >> $LOGFILE/kde_gear_build.log
            cd $STARTD
     else
