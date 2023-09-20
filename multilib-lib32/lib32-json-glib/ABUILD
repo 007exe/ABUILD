@@ -1,5 +1,5 @@
 pkgname=lib32-json-glib
-pkgver=1.6.6
+pkgver=1.8.0
 pkgbuild=1
 arch=("auto")
 
