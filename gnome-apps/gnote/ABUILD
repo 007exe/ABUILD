@@ -1,5 +1,5 @@
 pkgname=gnote
-pkgver=43.1
+pkgver=44.1
 pkgbuild=1
 arch=("auto")
 
