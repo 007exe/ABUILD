@@ -1,5 +1,5 @@
 pkgname=file-roller
-pkgver=3.42.0
+pkgver=43.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,10 +10,9 @@ source=("https://gitlab.gnome.org/GNOME/file-roller/-/archive/${pkgver}/file-rol
 
 tags=("gnome gnome-apps")
 
-build_deps=("yelp-tools libnautilus-extension meson appstream-glib
-libhandy dconf libarchive file json-glib libnotify zip unzip")
-
 adddep=("libhandy dconf libarchive file json-glib libnotify zip unzip")
+
+build_deps=("${adddep} yelp-tools libnautilus-extension meson appstream-glib")
 
 # NOTE: Это опциональные зависимости
 removedep=("p7zip unrar unace lrzip squashfs-tools")
