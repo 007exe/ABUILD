@@ -1,5 +1,5 @@
 pkgname=hplip
-pkgver=3.23.5
+pkgver=3.23.8
 pkgbuild=1
 arch=("auto")
 
@@ -10,11 +10,9 @@ source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.g
 tags=("net-print drivers")
 
 # foomatic-db-engine
-build_deps=("python-pyqt5 sane rpcbind cups libusb
-dbus-python python-distro ghostscript net-snmp python-gobject")
-
-# foomatic-db-engine
 adddep=("dbus-python python-distro ghostscript net-snmp python-gobject")
+
+build_deps=("${adddep} python-pyqt5 sane rpcbind cups libusb")
 
 # NOTE: Это опциональные зависимости
 removedep=("cups sane xsane python-pillow python-reportlab rpcbind python-pyqt5 libusb wget")
