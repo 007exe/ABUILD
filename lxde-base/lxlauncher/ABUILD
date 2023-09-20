@@ -4,13 +4,14 @@ pkgbuild=1
 arch=('auto')
 
 shortdesc=("Open source clone of the Asus launcher for EeePC")
-longdesc=("LXLauncher is part of LXDE project. It's designed for Asus EeePC as an open source replacement for Asus Launcher included in EeePC provided by Xandros. LXLauncher is standard-compliant and desktop-independent. It follows freedesktop.org specs, so newly added applications will automatically show up in the launcher, and vice versa for the removed ones.")
 
 source=("https://downloads.sourceforge.net/lxde/lxlauncher-$pkgver.tar.xz")
 
-tags="lxde lxde-base"
+tags=("lxde lxde-base")
 
-build_deps="gtk3 startup-notification lxmenu-data menu-cache"
+adddep=("gtk3 startup-notification lxmenu-data menu-cache")
+
+build_deps=("${adddep} intltool")
 
 config_files="etc/xdg/lxlauncher/gtk.css
 etc/xdg/lxlauncher/gtkrc
@@ -21,7 +22,7 @@ build() {
   burn_patches
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --enable-gtk3
   make -j${numjobs}
