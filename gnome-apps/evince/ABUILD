@@ -1,5 +1,5 @@
 pkgname=evince
-pkgver=43.1
+pkgver=44.3
 pkgbuild=1
 arch=("auto")
 
