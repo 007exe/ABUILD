@@ -1,5 +1,5 @@
 pkgname=python-sphinx
-pkgver=7.2.5
+pkgver=7.2.6
 pkgbuild=1
 arch=("auto")
 
