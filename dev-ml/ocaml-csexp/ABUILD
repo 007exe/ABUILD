@@ -1,18 +1,17 @@
 pkgname=ocaml-csexp
-pkgver=1.5.1
+pkgver=1.5.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("OCaml canonical S-expressions.")
-longdesc=("Parsing and printing of S-expressions in Canonical form.")
 
 source=("https://github.com/ocaml-dune/csexp/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("ocaml ocaml-findlib ocaml-result dune")
+adddep=("glibc ocaml ocaml-findlib ocaml-result")
 
-adddep=("ocaml")
+build_deps=("${adddep} dune")
 
 build(){
   go_src_dir
