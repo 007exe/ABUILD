@@ -1,5 +1,5 @@
 pkgname=discord
-pkgver=0.0.29
+pkgver=0.0.30
 pkgbuild=1
 arch=("auto")
 
