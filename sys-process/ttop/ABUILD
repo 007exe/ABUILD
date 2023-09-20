@@ -1,0 +1,33 @@
+pkgname=ttop
+pkgver=1.2.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("System monitoring tool with TUI, historical data service and triggers.")
+
+source=("https://github.com/inv2004/ttop/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("sys-process console")
+
+build_deps=("nim")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  nimble -y -d:release build
+  nim r src/ttop/onoff.nim
+  install -D ${pkgname} ${pkgdir}/usr/bin/${pkgname}
+  mkdir -p ${pkgdir}/usr/lib/systemd/system
+  install -m644 usr/lib/systemd/system/* ${pkgdir}/usr/lib/systemd/system
+  mkdir -p ${pkgdir}/etc
+  install -m644 etc/* ${pkgdir}/etc
+  mkdir -p ${pkgdir}/var/log/ttop
+}
