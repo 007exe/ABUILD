@@ -1,5 +1,5 @@
 pkgname=intel-gmmlib
-pkgver=22.3.3
+pkgver=22.3.11
 pkgbuild=1
 arch=("auto")
 
