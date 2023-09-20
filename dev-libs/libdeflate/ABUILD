@@ -1,5 +1,5 @@
 pkgname=libdeflate
-pkgver=1.18
+pkgver=1.19
 pkgbuild=1
 arch=("auto")
 
@@ -10,6 +10,14 @@ source=("https://github.com/ebiggers/libdeflate/archive/refs/tags/v${pkgver}.tar
 tags=("libs dev-libs")
 
 build_deps=("cmake ninja")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
