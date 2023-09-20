@@ -1,5 +1,5 @@
 pkgname=liblouis
-pkgver=3.26.0
+pkgver=3.27.0
 pkgbuild=1
 arch=("auto")
 
