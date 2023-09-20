@@ -1,5 +1,5 @@
 pkgname=libadwaita
-pkgver=1.3.5
+pkgver=1.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ tags=("libs gnome-libs")
 
 source=("https://gitlab.gnome.org/GNOME/libadwaita/-/archive/${pkgver}/libadwaita-${pkgver}.tar.gz")
 
-adddep=("gtk4")
+adddep=("gtk4 appstream")
 
 build_deps=("${adddep} meson gi-docgen sassc gobject-introspection vala")
 
