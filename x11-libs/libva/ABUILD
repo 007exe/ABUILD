@@ -1,5 +1,5 @@
 pkgname=libva
-pkgver=2.19.0
+pkgver=2.20.0
 pkgbuild=1
 arch=("auto")
 
