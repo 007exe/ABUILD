@@ -1,10 +1,9 @@
 pkgname=baobab
-pkgver=41.0
+pkgver=44.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A graphical directory tree analyzer")
-longdesc=("The Baobab package contains a graphical directory tree analyzer.")
 
 source=("https://download.gnome.org/sources/baobab/${pkgver%.*}/baobab-${pkgver}.tar.xz")
 
@@ -17,7 +16,7 @@ build() {
   burn_patches
   meson build \
     -Dprefix=/usr \
-    -Dlibdir=/usr/lib${LIBDIRSUFFIX}
+    -Dlibdir=/usr/lib
   meson compile -C build
-  meson install -C build --destdir "$pkgdir"
+  meson install -C build --destdir ${pkgdir}
 }
