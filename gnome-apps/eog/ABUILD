@@ -1,5 +1,5 @@
 pkgname=eog
-pkgver=43.2
+pkgver=44.3
 pkgbuild=1
 arch=("auto")
 
