@@ -1,6 +1,6 @@
 pkgname=vte-common
 pkglist=("vte3 vte4")
-pkgver=0.72.2
+pkgver=0.74.0
 pkgbuild=1
 arch=("auto")
 
@@ -11,9 +11,7 @@ source=("https://gitlab.gnome.org/GNOME/vte/-/archive/${pkgver}/vte-${pkgver}.ta
 tags=("libs x11-libs")
 
 vte3_adddep=("fribidi gnutls gtk3 pcre2")
-
 vte4_adddep=("fribidi gnutls gtk4 pcre2")
-
 adddep=("bash")
 
 build_deps=("${adddep} ${vte3_adddep} ${vte4_adddep} gi-docgen gobject-introspection gperf meson vala")
@@ -66,7 +64,7 @@ build() {
 #  _pick docs usr/share/doc
 }
 
-##########################################################################################
+# vte3 #########################################################################################
 
 vte3(){
   pkgname=vte3
@@ -78,7 +76,7 @@ vte3_prep(){
   mv ${srcdir}/gtk3/* ${pkgdir}
 }
 
-##########################################################################################
+# vte4 #########################################################################################
 
 vte4(){
   pkgname=vte4
@@ -90,7 +88,7 @@ vte4_prep(){
   mv ${srcdir}/gtk4/* ${pkgdir}
 }
 
-##########################################################################################
+# vte-docs #########################################################################################
 
 vte-docs(){
   pkgname=vte-docs
