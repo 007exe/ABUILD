@@ -4,16 +4,22 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Compatibility library to use Stdlib.Bigarray when possible.")
-longdesc=("Compatibility library to use Stdlib.Bigarray when possible.")
 
 source=("https://github.com/mirage/bigarray-compat/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("dev-ml libs")
 
-build_deps=("ocaml dune")
-
 adddep=("ocaml")
 
+build_deps=("${adddep} dune")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 build() {
   go_src_dir
   burn_patches
