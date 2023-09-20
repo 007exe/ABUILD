@@ -1,5 +1,5 @@
 pkgname=gnome-system-monitor
-pkgver=42.0
+pkgver=44.0
 pkgbuild=1
 arch=("auto")
 
