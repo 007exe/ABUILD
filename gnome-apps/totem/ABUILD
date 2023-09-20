@@ -1,25 +1,22 @@
 pkgname=totem
 pkgver=43.0
 strict_version=1
-# NOTE: Коммит версии 42.0
+# NOTE: Коммит версии 43.0
 _commit=7bb879e1f6746ca19f99629794e918cdbbd06008
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Media player for GNOME.")
-longdesc=("Movie player for the GNOME desktop based on GStreamer.")
+shortdesc=("Movie player for the GNOME desktop based on GStreamer.")
 
 source=("git:https://gitlab.gnome.org/GNOME/totem.git"
 "git:https://gitlab.gnome.org/GNOME/libgd.git")
 
 tags=("gnome gnome-apps")
 
-# libnautilus-extension python-pylint appstream-glib
-build_deps=("iso-codes libpeas gsettings-desktop-schemas python-gobject gnome-desktop
-gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugin-gtk libhandy itstool git
-docbook-xsl gobject-introspection gtk-doc meson intltool totem-pl-parser grilo")
+adddep=("totem-pl-parser iso-codes libpeas grilo gsettings-desktop-schemas python-gobject
+gnome-desktop gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugin-gtk libhandy libportal-gtk3")
 
-adddep=("gsettings-desktop-schemas")
+build_deps=("${adddep} docbook-xsl gobject-introspection git appstream-glib gtk-doc meson yelp-tools")
 
 # NOTE: Это опциональные зависимости
 removedep=("gst-plugins-ugly gst-libav grilo-plugins")
