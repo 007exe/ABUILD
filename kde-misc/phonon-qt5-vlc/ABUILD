@@ -1,0 +1,25 @@
+pkgname=phonon-qt5-vlc
+pkgver=0.11.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Phonon VLC backend for Qt5.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/phonon/phonon-backend-vlc/$pkgver/phonon-backend-vlc-$pkgver.tar.xz")
+
+tags=("libs kde-misc")
+
+adddep=("vlc phonon-qt5")
+
+build_deps=("extra-cmake-modules qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
