@@ -1,5 +1,5 @@
 pkgname=lib32-harfbuzz
-pkgver=8.2.0
+pkgver=8.2.1
 pkgbuild=1
 arch=("auto")
 
