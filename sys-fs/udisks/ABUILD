@@ -1,5 +1,5 @@
 pkgname=udisks
-pkgver=2.10.0
+pkgver=2.10.1
 pkgbuild=1
 arch=("auto")
 
