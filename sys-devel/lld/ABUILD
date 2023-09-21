@@ -1,5 +1,5 @@
 pkgname=lld
-pkgver=16.0.6
+pkgver=17.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -26,6 +26,7 @@ build(){
     -DLLVM_ENABLE_SPHINX=ON \
     -DSPHINX_WARNINGS_AS_ERRORS=OFF \
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+    -DLLVM_INCLUDE_TESTS=OFF \
     -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm-project-llvmorg-${pkgver}/llvm
   ninja
   DESTDIR=${pkgdir} ninja install
