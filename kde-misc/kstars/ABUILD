@@ -1,0 +1,29 @@
+pkgname=kstars
+pkgver=3.6.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Desktop Planetarium.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("kde-misc apps")
+
+adddep=("stellarsolver libraw kplotting knewstuff knotifyconfig qt5-datavis3d qt5-quickcontrols
+qt5-websockets qtkeychain-qt5 libxisf libindi breeze-icons hicolor-icon-theme")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools eigen")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DCMAKE_C_FLAGS="$CFLAGS -ffat-lto-objects" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS -ffat-lto-objects"
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
