@@ -1,5 +1,5 @@
 pkgname=at-spi2-core
-pkgver=2.48.4
+pkgver=2.50.0
 pkgbuild=1
 arch=("auto")
 

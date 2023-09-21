@@ -1,5 +1,5 @@
 pkgname=libblockdev
-pkgver=3.0
+pkgver=3.0.3
 pkgbuild=1
 arch=("auto")
 
@@ -8,8 +8,9 @@ shortdesc=("A library for manipulating block devices.")
 source=("https://github.com/storaged-project/libblockdev/releases/download/$pkgver-1/libblockdev-$pkgver.tar.gz")
 
 tags=("libs sys-libs")
-
-adddep=("cryptsetup device-mapper e2fsprogs gcc-libs glib2 glibc gptfdisk kmod libbytesize mdadm nss parted util-linux volume_key")
+# systemd
+adddep=("cryptsetup device-mapper e2fsprogs gcc-libs glib2 glibc kmod keyutils libbytesize
+libnvme mdadm nss parted util-linux volume_key")
 
 build_deps=("${adddep} autoconf-archive gobject-introspection gtk-doc python ndctl")
 
