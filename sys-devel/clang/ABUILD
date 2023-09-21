@@ -1,5 +1,5 @@
 pkgname=clang
-pkgver=16.0.6
+pkgver=17.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -38,6 +38,7 @@ build(){
     -DLLVM_INCLUDE_DOCS=ON \
     -DLLVM_LINK_LLVM_DYLIB=ON \
     -DSPHINX_WARNINGS_AS_ERRORS=OFF \
+    -DLLVM_INCLUDE_TESTS=OFF \
     -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm-project-llvmorg-${pkgver}/llvm
   ninja
   DESTDIR=${pkgdir} ninja install
