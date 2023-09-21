@@ -1,4 +1,4 @@
-pkgname=mythes
+pkgname=libmythes
 pkgver=1.2.3
 pkgbuild=1
 arch=('auto')
