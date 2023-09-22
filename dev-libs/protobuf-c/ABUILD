@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Protocol Buffers implementation in C.")
-longdesc=("Protocol Buffers implementation in C.")
 
 source=("https://github.com/protobuf-c/protobuf-c/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("develop dev-libs")
 
-build_deps=("protobuf")
+adddep=("protobuf")
+
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
