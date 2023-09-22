@@ -1,5 +1,5 @@
 pkgname=lib32-clang
-pkgver=15.0.7
+pkgver=17.0.1
 pkgbuild=1
 arch=("auto")
 
@@ -34,6 +34,7 @@ build(){
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_LIBDIR_SUFFIX=32 \
     -DLLVM_LINK_LLVM_DYLIB=ON \
+    -DLLVM_INCLUDE_TESTS=OFF \
     -DLLVM_MAIN_SRC_DIR=${srcdir}/llvm-project-llvmorg-${pkgver}/llvm
   ninja
   DESTDIR=${pkgdir} ninja install-distribution
