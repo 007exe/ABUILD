@@ -3,8 +3,7 @@ pkgver=4.15.2
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("The GNU shar utilities for packaging and unpackaging shell archives")
-longdesc=("The sharutils package contains the GNU shar utilities, a set of tools for encoding and decoding packages of files (in binary or text format) in a special plain text format called shell archives (shar). This format can be sent through email (which can be problematic for regular binary files). ")
+shortdesc=("The GNU shar utilities for packaging and unpackaging shell archives.")
 
 tags=("base app-arch")
 
@@ -22,7 +21,7 @@ build() {
   CFLAGS+=' -fcommon' # https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX \
+    --libdir=/usr/lib \
     --mandir=/usr/share/man \
     --infodir=/usr/share/info
   make -j${numjobs}
