@@ -1,5 +1,5 @@
 pkgname=libsecret
-pkgver=0.21.0
+pkgver=0.21.1
 pkgbuild=1
 arch=("auto")
 
