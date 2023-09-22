@@ -1,6 +1,6 @@
 pkgname=gtk4
 pkglist=("gtk-update-icon-cache gtk4-demos gtk4-docs")
-pkgver=4.12.1
+pkgver=4.12.2
 pkgbuild=1
 arch=("auto")
 
@@ -10,14 +10,15 @@ source=("https://gitlab.gnome.org/GNOME/gtk/-/archive/${pkgver}/gtk-${pkgver}.ta
 
 tags=("libs x11-libs")
 
+dep_update_icon_cache=("gdk-pixbuf librsvg hicolor-icon-theme")
 dep_gtk4=("adwaita-icon-theme cairo cantarell-fonts dconf desktop-file-utils fontconfig
 fribidi gdk-pixbuf glib2 graphene gst-plugins-bad-libs harfbuzz iso-codes libcloudproviders
 colord libcups libglvnd libepoxy mesa libjpeg-turbo libpng librsvg libtiff libx11 libxcursor
 libxdamage libxext libxi libxfixes libxinerama libxkbcommon libxrandr libxrender pango tracker3
 wayland shared-mime-info")
 
-build_deps=("${dep_gtk4} docbook-xsl gi-docgen gobject-introspection meson python-docutils shaderc
-python-gobject sassc wayland-protocols")
+build_deps=("${dep_gtk4} ${dep_update_icon_cache} docbook-xsl gi-docgen gobject-introspection
+meson python-docutils shaderc python-gobject sassc wayland-protocols")
 
 adddep=("${dep_gtk4} gtk-update-icon-cache")
 
@@ -41,12 +42,12 @@ build() {
   cp ${filedir}/settings.ini $pkgdir/usr/share/gtk-4.0/settings.ini
 }
 
-#####################################################################################################
+# gtk-update-icon-cache ####################################################################################################
 
 gtk-update-icon-cache() {
     pkgname=gtk-update-icon-cache
     shortdesc=("GTK icon cache update tool.")
-    adddep=("gtk4")
+    adddep=("${dep_update_icon_cache}")
 }
 
 gtk-update-icon-cache_prep() {
