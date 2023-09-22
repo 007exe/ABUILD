@@ -1,9 +1,10 @@
 pkgname=gstreamer
 pkglist=("gst-plugins-bad-libs gst-plugins-base-libs gst-plugins-base gst-plugins-good
 gst-plugins-bad gst-plugin-gtk gst-plugin-msdk gst-plugin-opencv gst-plugin-qmlgl
-gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server
+gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server gst-plugin-qsv
 gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
-pkgver=1.22.5
+# NOTE: пока не собирается gst-plugin-qml6
+pkgver=1.22.6
 strict_version=1
 pkgbuild=1
 arch=("auto")
@@ -15,19 +16,39 @@ source=("git:https://gitlab.freedesktop.org/gstreamer/gstreamer.git"
 
 tags=("libs media-libs")
 
-build_deps=("git meson valgrind libunwind gobject-introspection bash-completion gtk3
-libcap python glib2 cdparanoia graphene libvisual opus libtheora libxv sdl2 qt5-base
-qt5-tools zlib libglvnd wayland wayland-protocols libx11 libgudev libdrm mesa orc nasm
-v4l-utils aalib flac jack lame libcaca libdv mpg123 libraw1394 libavc1394 libiec61883
-qt5-declarative qt5-x11extras libpulse libshout taglib twolame libvpx wavpack cairo
-libsoup3 opencv vulkan-icd-loader vulkan-headers vulkan-validation-layers shaderc
-libltc bluez-libs libavtp libbs2b bzip2 chromaprint libdca faac faad2 libfdk-aac
-fluidsynth libgme libkate liblrdf ladspa libde265 lilv lv2 libmicrodns mjpegtools
-libmpcdec neon openal libdvdnav rtmpdump sbc soundtouch spandsp libsrtp svt-hevc zvbi
-libnice webrtc-audio-processing wildmidi zxing-cpp zbar nettle libxml2 gsm libopenmpt
-wpewebkit libldac libfreeaptx qrencode json-glib libva libxkbcommon-x11 a52dec
-opencore-amr libcdio libdvdread libmpeg2 x264 ffmpeg libxrandr python-gobject
-qt5-wayland")
+dep_gst_plugin_qsv=("libmfx")
+dep_gst_plugin_gtk=("gtk3")
+dep_gst_libav=("bzip2 ffmpeg")
+dep_gst_plugin_msdk=("libmfx")
+gst_editing_services=("python")
+dep_gst_plugin_opencv=("opencv")
+dep_gst_plugin_wpe=("wpewebkit")
+dep_gstreamer_vaapi=("libxrandr")
+dep_gst_python=("python-gobject")
+dep_gst_plugin_qml6=("qt6-declarative qt6-wayland")
+dep_gst_plugin_qmlgl=("qt5-declarative qt5-wayland qt5-x11extras")
+dep_gst_plugins_ugly=("a52dec libcdio libdvdread libmpeg2 opencore-amr x264")
+dep_gst_plugins_bad=("aom bzip2 chromaprint curl faac faad2 fluidsynth gsm json-glib lcms2 libass libavtp zvbi
+libbs2b libdc1394 libdca libde265 libdvdnav libdvdread libfdk-aac libfreeaptx libgme libkate libldac neon x265
+liblrdf libltc libmicrodns libmodplug libmpcdec libopenmpt librsvg libsndfile libsrtp libwebp libxml2 lilv srt
+mjpegtools nettle openal openexr svt-hevc openjpeg2 openssl opus pango qrencode rtmpdump sbc soundtouch spandsp
+zxing-cpp webrtc-audio-processing wildmidi zbar")
+dep_gst_plugins_good=("aalib cairo flac gdk-pixbuf gst-plugins-base-libs lame libavc1394 libcaca libdv twolame
+libgudev libiec61883 libpulse libraw1394 libshout libsoup3 libvpx libxdamage mpg123 nettle speex taglib v4l-utils wavpack")
+dep_gst_plugins_base=("alsa-lib cdparanoia graphene libjpeg-turbo libpng libtheora libvorbis opus pango")
+dep_gst_plugins_base_libs=("iso-codes libglvnd libgudev libxi libxv mesa orc wayland")
+dep_gst_plugins_bad_libs=("libdrm libgudev libnice libusb libva libx11 libxkbcommon-x11 orc
+vulkan-icd-loader wayland wayland-protocols")
+
+adddep=("glib2 libcap elfutils libunwind libxml2")
+build_deps=("${adddep} ${dep_gst_plugins_bad_libs} ${dep_gst_plugins_base_libs} ${dep_gst_plugins_base}
+${dep_gst_plugins_good} ${dep_gst_plugins_bad} ${dep_gst_plugin_gtk} ${dep_gst_plugin_opencv} zlib nasm
+${dep_gst_plugin_qmlgl} ${dep_gst_plugin_wpe} ${dep_gst_plugins_ugly} ${dep_gst_libav} qt5-base qt5-tools
+${gst_editing_services} ${dep_gstreamer_vaapi} ${dep_gst_python} ${dep_gst_plugin_qsv} ${dep_gst_plugin_qml6}
+bash-completion libvisual sdl2 ladspa git meson valgrind gobject-introspection jack vulkan-headers shaderc
+bluez-libs lv2 vulkan-validation-layers")
+
+##########################################################
 
 _install() {
   local src dir
@@ -37,6 +58,8 @@ _install() {
     mv -v "$src" "$dir"
   done
 }
+
+# gstreamer ###################################################################################
 
 build() {
   cd ${srcdir}/gstreamer_git_gstreamer.git.src
@@ -99,20 +122,15 @@ build() {
     usr/lib/pkgconfig/gstreamer{,-base,-check,-controller,-net}-1.0.pc
     usr/lib/girepository-1.0/Gst{,Base,Check,Controller,Net}-1.0.typelib
     usr/share/gir-1.0/Gst{,Base,Check,Controller,Net}-1.0.gir
-
     usr/libexec/gstreamer-1.0/gst-{completion,ptp}-helper usr/libexec/gstreamer-1.0/gst-{hotdoc-plugins,plugin}-scanner
     usr/libexec/gstreamer-1.0/gst-plugins-doc-cache-generator
     usr/lib/gstreamer-1.0/libgstcoreelements.so
     usr/lib/gstreamer-1.0/libgstcoretracers.so
-
     usr/share/locale/*/LC_MESSAGES/gstreamer-1.0.mo
-
     usr/bin/gst-{inspect,launch,stats,tester,typefind}-1.0
     usr/share/man/man1/gst-{inspect,launch,stats,typefind}-1.0.1
-
     usr/share/bash-completion/completions/gst-{inspect,launch}-1.0
     usr/share/bash-completion/helpers/gst
-
     usr/share/gdb/auto-load/usr/lib/libgstreamer-1.0.so*.py
     usr/share/gstreamer-1.0/gdb/glib_gobject_helper.py
     usr/share/gstreamer-1.0/gdb/gst_gdb.py
@@ -121,15 +139,16 @@ build() {
   ); _install
 }
 
+# gst-plugins-bad-libs ###################################################################################
+
 gst-plugins-bad-libs() {
   pkgname=gst-plugins-bad-libs
   shortdesc=("Multimedia graph framework - bad.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugins_bad_libs}")
 }
 
 gst-plugins-bad-libs_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/include/gstreamer-1.0/gst/audio/{audio-bad-prelude,gstnonstreamaudiodecoder,gstplanaraudioadapter}.h
     usr/include/gstreamer-1.0/gst/{basecamerabinsrc,codecparsers,insertbin,interfaces,isoff,mpegts,play,player,sctp,transcoder,uridownloader,vulkan,wayland,webrtc}
@@ -137,7 +156,6 @@ gst-plugins-bad-libs_prep() {
     usr/lib/pkgconfig/gstreamer-{bad-audio,codecparsers,insertbin,mpegts,photography,play,player,sctp,transcoder,vulkan{,-wayland,-xcb},wayland,webrtc}-1.0.pc
     usr/lib/girepository-1.0/Gst{BadAudio,Codecs,InsertBin,Mpegts,Play,Player,Transcoder,Vulkan{,Wayland,XCB},WebRTC}-1.0.typelib
     usr/share/gir-1.0/Gst{BadAudio,Codecs,InsertBin,Mpegts,Play,Player,Transcoder,Vulkan{,Wayland,XCB},WebRTC}-1.0.gir
-
     usr/lib/pkgconfig/gstreamer-plugins-bad-1.0.pc
     usr/lib/gstreamer-1.0/libgstaccurip.so
     usr/lib/gstreamer-1.0/libgstadpcmdec.so
@@ -214,32 +232,29 @@ gst-plugins-bad-libs_prep() {
     usr/lib/gstreamer-1.0/libgstvideosignal.so
     usr/lib/gstreamer-1.0/libgstvmnc.so
     usr/lib/gstreamer-1.0/libgsty4mdec.so
-
     usr/share/gstreamer-1.0/encoding-profiles
     usr/share/gstreamer-1.0/presets/GstFreeverb.prs
-
     usr/share/locale/*/LC_MESSAGES/gst-plugins-bad-1.0.mo
-
     usr/bin/gst-transcoder-1.0
   ); _install
 }
 
-##########
+# gst-plugins-base-libs ###################################################################################
+
 gst-plugins-base-libs() {
   pkgname=gst-plugins-base-libs
   shortdesc=("Multimedia graph framework - base")
   tags=("libs media-plugins")
+  adddep=("gstreamer=${pkgver} ${dep_gst_plugins_base_libs}")
 }
 
 gst-plugins-base-libs_prep() {
-
     cd ${srcdir}/root; local files=(
     usr/include/gstreamer-1.0/gst/{allocators,app,audio,fft,gl,pbutils,riff,rtp,rtsp,sdp,tag,video}
     usr/lib/libgst{allocators,app,audio,fft,gl,pbutils,riff,rtp,rtsp,sdp,tag,video}-1.0.so*
     usr/lib/pkgconfig/gstreamer-{allocators,app,audio,fft,gl{,-egl,-prototypes,-wayland,-x11},pbutils,riff,rtp,rtsp,sdp,tag,video}-1.0.pc
     usr/lib/girepository-1.0/Gst{Allocators,App,Audio,GL{,EGL,Wayland,X11},Pbutils,Rtp,Rtsp,Sdp,Tag,Video}-1.0.typelib
     usr/share/gir-1.0/Gst{Allocators,App,Audio,GL{,EGL,Wayland,X11},Pbutils,Rtp,Rtsp,Sdp,Tag,Video}-1.0.gir
-
     usr/lib/pkgconfig/gstreamer-plugins-base-1.0.pc
     usr/lib/gstreamer-1.0/include/gst/gl/gstglconfig.h
     usr/lib/gstreamer-1.0/libgstadder.so
@@ -265,26 +280,23 @@ gst-plugins-base-libs_prep() {
     usr/lib/gstreamer-1.0/libgstvolume.so
     usr/lib/gstreamer-1.0/libgstximagesink.so
     usr/lib/gstreamer-1.0/libgstxvimagesink.so
-
     usr/share/locale/*/LC_MESSAGES/gst-plugins-base-1.0.mo
-
     usr/bin/gst-{device-monitor,discoverer,play}-1.0
     usr/share/man/man1/gst-{device-monitor,discoverer,play}-1.0.1
-
     usr/share/gst-plugins-base
   ); _install
 }
 
-##########
+# gst-plugins-base ###################################################################################
+
 gst-plugins-base() {
   pkgname=gst-plugins-base
   shortdesc=("Multimedia graph framework - base plugins")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugins_base}")
 }
 
 gst-plugins-base_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgstalsa.so
     usr/lib/gstreamer-1.0/libgstcdparanoia.so
@@ -298,16 +310,16 @@ gst-plugins-base_prep() {
   ); _install
 }
 
-##########
+# gst-plugins-good ###################################################################################
+
 gst-plugins-good() {
   pkgname=gst-plugins-good
   shortdesc=("Multimedia graph framework - good plugins.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugins_good}")
 }
 
 gst-plugins-good_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgst1394.so
     usr/lib/gstreamer-1.0/libgstaasink.so
@@ -379,24 +391,22 @@ gst-plugins-good_prep() {
     usr/lib/gstreamer-1.0/libgstwavparse.so
     usr/lib/gstreamer-1.0/libgstximagesrc.so
     usr/lib/gstreamer-1.0/libgsty4menc.so
-
     usr/share/gstreamer-1.0/presets/GstIirEqualizer{3,10}Bands.prs
     usr/share/gstreamer-1.0/presets/Gst{QTMux,VP8Enc}.prs
-
     usr/share/locale/*/LC_MESSAGES/gst-plugins-good-1.0.mo
   ); _install
 }
 
-##########
+# gst-plugins-bad ###################################################################################
+
 gst-plugins-bad() {
   pkgname=gst-plugins-bad
   shortdesc=("Multimedia graph framework - bad plugins.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-bad-libs=${pkgver}")
+  adddep=("gst-plugins-bad-libs=${pkgver} ${dep_gst_plugins_bad}")
 }
 
 gst-plugins-bad_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgstaes.so
     usr/lib/gstreamer-1.0/libgstaom.so
@@ -464,46 +474,46 @@ gst-plugins-bad_prep() {
   ); _install
 }
 
-##########
+# gst-plugin-gtk ###################################################################################
+
 gst-plugin-gtk() {
   pkgname=gst-plugin-gtk
   shortdesc=("Multimedia graph framework - gtk plugin.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugin_gtk}")
 }
 
 gst-plugin-gtk_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgstgtk.so
   ); _install
 }
 
-##########
+# gst-plugin-msdk ###################################################################################
+
 gst-plugin-msdk() {
   pkgname=gst-plugin-msdk
   shortdesc=("Multimedia graph framework - msdk plugin.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-bad-libs=${pkgver}")
+  adddep=("gst-plugins-bad-libs=${pkgver} ${dep_gst_plugin_msdk}")
 }
 
 gst-plugin-msdk_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgstmsdk.so
   ); _install
 }
 
-##########
+# gst-plugin-opencv ###################################################################################
+
 gst-plugin-opencv() {
   pkgname=gst-plugin-opencv
   shortdesc=("Multimedia graph framework - opencv plugin.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugin_opencv}")
 }
 
 gst-plugin-opencv_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/include/gstreamer-1.0/gst/opencv
     usr/lib/libgstopencv-1.0.so*
@@ -512,22 +522,23 @@ gst-plugin-opencv_prep() {
   ); _install
 }
 
-##########
+# gst-plugin-qmlgl ###################################################################################
+
 gst-plugin-qmlgl() {
   pkgname=gst-plugin-qmlgl
   shortdesc=("Multimedia graph framework - qmlgl plugin.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugin_qmlgl}")
 }
 
 gst-plugin-qmlgl_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgstqmlgl.so
   ); _install
 }
 
-##########
+# gst-plugin-va ###################################################################################
+
 gst-plugin-va() {
   pkgname=gst-plugin-va
   shortdesc=("Multimedia graph framework - va plugin.")
@@ -536,7 +547,6 @@ gst-plugin-va() {
 }
 
 gst-plugin-va_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/libgstva-1.0.so*
 
@@ -544,12 +554,13 @@ gst-plugin-va_prep() {
   ); _install
 }
 
-##########
+# gst-plugin-wpe ###################################################################################
+
 gst-plugin-wpe() {
   pkgname=gst-plugin-wpe
   shortdesc=("Multimedia graph framework - wpe plugin.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugin_wpe}")
 }
 
 gst-plugin-wpe_prep() {
@@ -560,15 +571,16 @@ gst-plugin-wpe_prep() {
   ); _install
 }
 
-##########
+# gst-plugins-ugly ###################################################################################
+
 gst-plugins-ugly() {
   pkgname=gst-plugins-ugly
   shortdesc=("Multimedia graph framework - ugly plugins.")
   tags=("libs media-plugins")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugins_ugly}")
 }
 
 gst-plugins-ugly_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgsta52dec.so
     usr/lib/gstreamer-1.0/libgstamrnb.so
@@ -589,12 +601,13 @@ gst-plugins-ugly_prep() {
   ); _install
 }
 
-##########
+# gst-libav ###################################################################################
+
 gst-libav() {
   pkgname=gst-libav
   shortdesc=("Multimedia graph framework - libav plugin.")
   tags=("libs media-plugins")
-  adddep=("gst-libav=${pkgver}")
+  adddep=("gst-libav=${pkgver} ${dep_gst_libav}")
 }
 
 gst-libav_prep() {
@@ -603,7 +616,8 @@ gst-libav_prep() {
   ); _install
 }
 
-##########
+# gst-rtsp-server ###################################################################################
+
 gst-rtsp-server() {
   pkgname=gst-rtsp-server
   shortdesc=("Multimedia graph framework - rtsp server.")
@@ -624,16 +638,16 @@ gst-rtsp-server_prep() {
   ); _install
 }
 
-##########
+# gst-editing-services ###################################################################################
+
 gst-editing-services() {
   pkgname=gst-editing-services
   shortdesc=("Multimedia graph framework - editing services.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-base-libs=${pkgver}")
+  adddep=("gst-plugins-base-libs=${pkgver} ${gst_editing_services}")
 }
 
 gst-editing-services_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/include/gstreamer-1.0/ges
     usr/lib/libges-1.0.so*
@@ -656,32 +670,32 @@ gst-editing-services_prep() {
   python -O -m compileall -d /usr/lib "$pkgdir/usr/lib"
 }
 
-##########
+# gstreamer-vaapi ###################################################################################
+
 gstreamer-vaapi() {
   pkgname=gstreamer-vaapi
   shortdesc=("Multimedia graph framework - vaapi plugin.")
   tags=("libs media-plugins")
-  adddep=("gst-plugins-bad-libs=${pkgver}")
+  adddep=("gst-plugins-bad-libs=${pkgver} ${dep_gstreamer_vaapi}")
 }
 
 gstreamer-vaapi_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgstvaapi.so
   ); _install
 }
 
 
-##########
+# gst-python ###################################################################################
+
 gst-python() {
   pkgname=gst-python
   shortdesc=("Multimedia graph framework - python plugin.")
   tags=("libs dev-python")
-  adddep=("gst-plugins-base-libs=${pkgver} python-gobject")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_python}")
 }
 
 gst-pytho_prep() {
-
   cd ${srcdir}/root; local files=(
     usr/lib/gstreamer-1.0/libgstpython.so
     usr/lib/python*/site-packages/gi/overrides
@@ -691,7 +705,36 @@ gst-pytho_prep() {
   python -O -m compileall -d /usr/lib "$pkgdir/usr/lib"
 }
 
-##########
+# gst-plugin-qsv ###################################################################################
+
+gst-plugin-qsv() {
+  pkgname=gst-plugin-qsv
+  shortdesc=("Multimedia graph framework - qsv plugin.")
+  adddep=("gst-plugins-bad-libs=${pkgver} ${dep_gst_plugin_qsv}")
+}
+
+gst-plugin-qsv_prep() {
+  cd ${srcdir}/root; local files=(
+    usr/lib/gstreamer-1.0/libgstqsv.so
+  ); _install
+}
+
+# gst-plugin-qml6 ###################################################################################
+
+gst-plugin-qml6() {
+  pkgname=gst-plugin-qml6
+  shortdesc=("Multimedia graph framework - qml6 plugin.")
+  adddep=("gst-plugins-base-libs=${pkgver} ${dep_gst_plugin_qml6}")
+}
+
+gst-plugin-qml6_prep() {
+  cd ${srcdir}/root; local files=(
+    usr/lib/gstreamer-1.0/libgstqml6.so
+  ); _install
+}
+
+# gstreamer-docs ###################################################################################
+
 gstreamer-docs() {
   pkgname=gstreamer-docs
   shortdesc=("Multimedia graph framework - documentation.")
