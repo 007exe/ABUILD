@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("General-purpose scalable concurrent malloc implementation.")
-longdesc=("jemalloc is a general purpose malloc implementation that emphasizes fragmentation avoidance and scalable concurrency support.")
 
 source=("https://github.com/jemalloc/jemalloc/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("libs dev-libs")
 
-build_deps=("glibc clang")
+adddep=("glibc")
+
+build_deps=("${adddep} clang")
 
 build() {
   go_src_dir
