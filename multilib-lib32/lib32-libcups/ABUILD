@@ -1,5 +1,5 @@
 pkgname=lib32-libcups
-pkgver=2.4.6
+pkgver=2.4.7
 pkgbuild=1
 arch=("auto")
 
