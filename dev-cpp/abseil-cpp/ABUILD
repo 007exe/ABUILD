@@ -1,5 +1,5 @@
 pkgname=abseil-cpp
-pkgver=20230125.3
+pkgver=20230802.1
 pkgbuild=1
 arch=("auto")
 
