@@ -1,5 +1,5 @@
 pkgname=google-chrome
-pkgver=117.0.5938.88
+pkgver=117.0.5938.92
 pkgbuild=1
 arch=("auto")
 
