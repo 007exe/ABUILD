@@ -3,10 +3,9 @@ pkgver=20121017
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("General-purpose fonts released by Google as part of Android")
-longdesc=("A font created by Ascender Corporation for use by the Open Handset Alliance platform, Android.")
+shortdesc=("General-purpose fonts released by Google as part of Android.")
 
-source=("https://sources.archlinux.org/other/community/ttf-droid/ttf-droid-${pkgver}.tar.xz")
+source=("https://sources.archlinux.org/other/packages/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("media-fonts fonts")
 
