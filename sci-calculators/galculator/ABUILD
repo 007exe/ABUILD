@@ -1,28 +1,26 @@
 pkgname=galculator
-pkgver=2.1.2
+pkgver=2.1.4
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="GTK+ based scientific calculator"
+shortdesc=("GTK+ based scientific calculator.")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("http://galculator.mnim.org/downloads/${pkgname}-${pkgver}.tar.bz2")
 
-tags="xapps sci-mathematics"
+tags=("apps sci-mathematics")
 
-build_deps="make gcc intltool perl"
+adddep=("gtk3")
 
-BUILD_SYSTEM="autotools"
+build_deps=("gtk3 intltool")
 
-BUILD_WORD="LDFLAGS=\"${SLKLDFLAGS}\" CFLAGS=\"${SLKCFLAGS}\" CXXFLAGS=\"${SLKCFLAGS}\" ./configure" # --help"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---disable-gtk3"
-
-INSTALL_KEYS="DESTDIR=${pkgdir}"
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS+=' -fcommon'
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
