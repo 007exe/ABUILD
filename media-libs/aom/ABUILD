@@ -25,5 +25,5 @@ build() {
   DESTDIR=${pkgdir} cmake --install build
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE PATENTS
   mkdir -p ${pkgdir}/usr/share/doc
-  cp -r build/docs/html ${pkgdir}/usr/share/doc/${pkgbase}
+  cp -r build/docs/html ${pkgdir}/usr/share/doc/aom
 }
