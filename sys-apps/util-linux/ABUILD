@@ -1,7 +1,11 @@
+# NOTE: Утилиты chfn, chsh, login, newgrp, nologin и их документацию можно собрать в пакете shadow
+# для отключения сборки chfn, chsh, login, newgrp, nologin --disable-chfn-chsh --disable-chfn-chsh --disable-login --disable-nologin
+# su можно собрать в пакете shadow
+# для отключения сборки su --disable-su
 pkgname=util-linux
 _pkgmajor=2.39
 pkgver=2.39.2
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Miscellaneous system utilities for Linux.")
@@ -11,7 +15,7 @@ source=("https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor
 tags=("base sys-apps")
 
 # systemd
-adddep=("linux-pam shadow coreutils libcap-ng libutempter libxcrypt glibc")
+adddep=("linux-pam shadow coreutils libcap-ng libutempter libxcrypt glibc shadow coreutils eudev file ncurses")
 
 build_deps=("${adddep} asciidoctor bash-completion python")
 
@@ -45,8 +49,13 @@ build() {
     --disable-static \
     --disable-hardlink \
     --disable-logger \
+    --enable-line \
+    --enable-chfn-chsh \
+    --without-econf \
+    --with-ncursesw \
+    --without-ncurses \
+    --without-user \
     --with-python=3
-
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
@@ -54,7 +63,7 @@ build() {
   rm -r ${pkgdir}/usr/sbin
 
 # setuid chfn and chsh
-  chmod 4755 "$pkgdir"/usr/bin/{newgrp,ch{sh,fn}}
+  chmod 4755 ${pkgdir}/usr/bin/{newgrp,ch{sh,fn}}
 
   cd ${pkgdir}/usr/bin
   ln -s hwclock clock
