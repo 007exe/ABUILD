@@ -30,12 +30,15 @@ build() {
   export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib32 \
     --disable-examples \
     --disable-python-bindings \
-    --enable-lib-only \
-    --libdir=/usr/lib32
+    --enable-lib-only
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/lib32-libnghttp2/COPYING
   rm -r ${pkgdir}/usr/include
+  rm -r ${pkgdir}/usr/share/doc
+  rm -r ${pkgdir}/usr/share/man
+  rm -r ${pkgdir}/usr/share/nghttp2
 }
