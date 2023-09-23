@@ -4,13 +4,16 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("The GL Vendor-Neutral Dispatch library.")
-longdesc=("libglvnd is an implementation of the vendor-neutral dispatch layer for arbitrating OpenGL API calls between multiple vendors on a per-screen basis.")
 
-source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v$pkgver/libglvnd-v$pkgver.tar.gz")
+source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v$pkgver/libglvnd-v${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
-build_deps=("libxext libx11 xorgproto python meson")
+adddep=("libxext mesa")
+
+build_deps=("${adddep} libx11 xorgproto python")
+
+#provides=("libgl libegl libgles libEGL.so libGL.so libGLESv2.so libGLX.so libGLdispatch.so libOpenGL.so")
 
 build() {
   go_src_dir
