@@ -1,16 +1,17 @@
 pkgname=guile2
-pkgver=2.0.14
-pkgbuild=3
+pkgver=2.2.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Portable, embeddable Scheme implementation written in C.")
-longdesc=("The Guile package contains the GNU Project's extension language library. Guile also contains a stand alone Scheme interpreter.")
 
-source=("https://ftp.gnu.org/pub/gnu/guile/guile-$pkgver.tar.gz")
+source=("https://ftp.gnu.org/pub/gnu/guile/guile-${pkgver}.tar.gz")
 
 tags=("dev-scheme develop")
 
-build_deps=("gmp libltdl ncurses texinfo libunistring gc libffi")
+adddep=("gc gmp libffi libltdl libunistring libxcrypt")
+
+build_deps=("ncurses texinfo")
 
 build() {
   go_src_dir
@@ -19,14 +20,12 @@ build() {
     --libdir=/usr/lib \
     --disable-static \
     --disable-error-on-warning \
-    --program-suffix=2.0
+    --program-suffix=2.2
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  rm ${pkgdir}/usr/lib/libguile-2.?.so.*-gdb.scm
-
-  sed -i '1s/guile/guile2.0/' -i ${pkgdir}/usr/bin/guile-config2.0
-  mv ${pkgdir}/usr/share/aclocal/guile.m4 ${pkgdir}/usr/share/aclocal/guile20.m4
-
-  rm -r ${pkgdir}/usr/share/info/
+  rm ${pkgdir}/usr/lib/libguile-2.2.so.*-gdb.scm
+  sed -i '1s/guile/guile2.2/' -i ${pkgdir}/usr/bin/guile-config2.2
+  rm -rf ${pkgdir}/usr/share/info
+  mv ${pkgdir}/usr/share/aclocal/guile.m4 ${pkgdir}/usr/share/aclocal/guile22.m4
 }
