@@ -1,16 +1,18 @@
 pkgname=xterm
-pkgver=372
+pkgver=384
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Terminal emulator for X")
-longdesc=("This package is not a part of the Xorg katamari and is provided only as a dependency to other packages or for testing the completed Xorg installation.")
+shortdesc=("X Terminal Emulator.")
 
 tags=("xorg xorg-apps")
 
 source=("https://invisible-mirror.net/archives/${pkgname}/${pkgname}-${pkgver}.tgz")
 
-build_deps=("libxft libxaw ncurses luit xbitmaps libxkbfile libutempter")
+# luit
+adddep=("libxft libxaw ncurses xbitmaps libutempter libxkbfile")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
@@ -49,7 +51,7 @@ build() {
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
-  chmod 0755 "${pkgdir}/usr/bin/xterm"
+  chmod 0755 ${pkgdir}/usr/bin/xterm
 
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
