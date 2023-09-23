@@ -21,10 +21,10 @@ build() {
   export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
   meson build \
     --prefix=/usr \
-    --libdir=/usr/lib32
+    -D libdir=/usr/lib32
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
-  rm -rf ${pkgdir}/{etc,usr/include}
+  rm -rf ${pkgdir}/{etc,usr/include,usr/share/doc}
   install -dm 755 ${pkgdir}/usr/share/licenses
   ln -s libvdpau ${pkgdir}/usr/share/licenses/lib32-libvdpau
 }
