@@ -16,6 +16,9 @@ adddep=("bash m4 tar")
 
 build_deps=("${adddep} gcc>=${_gcc_ver} help2man")
 
+conflicts=("libltdl")
+#provides=("libltdl")
+
 build() {
   go_src_dir
   burn_patches
