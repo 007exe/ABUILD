@@ -4,13 +4,15 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("An ncurses console audio player designed to be powerful and easy to use")
-longdesc=("MOC is a console audio player with ncurses interface")
 
+#source=("http://ftp.daper.net/pub/soft/moc/stable/${pkgname}-${pkgver}.tar.xz")
 source=("http://ftp.daper.net/pub/soft/moc/unstable/${pkgname}-${pkgver}.tar.xz")
 
 tags=("console media-sound")
 
-build_deps=("curl file speex ffmpeg libmodplug flac libmad libid3tag faad2 wavpack libmpcdec taglib jack libltdl")
+adddep=("libmad libid3tag jack curl libtool file")
+
+build_deps=("${adddep} speex ffmpeg taglib libmpcdec wavpack libmodplug faad2")
 
 # NOTE: Это опциональные зависимости
 removedep=("speex ffmpeg taglib libmpcdec wavpack faad2 libmodplug")
