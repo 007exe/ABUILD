@@ -19,7 +19,7 @@ dep_bluetooth=("bluez bluez-libs gst-plugins-base-libs sbc")
 dep_rtp=("gst-plugins-base gst-plugins-base-libs gst-plugins-good openssl")
 # systemd
 dep_libpulse=("dbus libasyncns libsndfile libxcb")
-dep_pulse=("alsa-lib fftw libcap libltdl libsm libsoxr libxtst orc speexdsp tdb webrtc-audio-processing rtkit")
+dep_pulse=("alsa-lib fftw libcap libtool libsm libsoxr libxtst orc speexdsp tdb webrtc-audio-processing rtkit")
 adddep=("libpulse=${pkgver} ${dep_pulse}")
 # systemd
 build_deps=("${dep_pulse} ${dep_libpulse} ${dep_zeroconf} ${dep_lirc} ${dep_jack} ${dep_bluetooth} ${dep_equalizer}
