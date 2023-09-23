@@ -3,14 +3,15 @@ pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Framework for pseudo terminal devices and running child processes.")
-longdesc=("Interface for terminal emulators such as screen and xterm to record user sessions to utmp and wtmp files.")
+shortdesc=("Interface for terminal emulators such as screen and xterm to record user sessions to utmp and wtmp files.")
 
 source=("ftp://ftp.altlinux.org/pub/people/ldv/utempter/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs sys-libs")
 
-build_deps=("glibc")
+adddep=("glibc")
+# systemd
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
