@@ -1,3 +1,6 @@
+# NOTE: Необходимо пересобирать после каждого обновления gcc.
+_gcc_ver=`gcc --version | grep gcc | cut -c11-`
+
 pkgname=lib32-libltdl
 pkgver=2.4.7
 pkgbuild=1
@@ -11,7 +14,10 @@ tags=("lib32 dev-libs")
 
 adddep=("tar lib32-glibc libtool")
 
-build_deps=("${adddep} gcc help2man")
+build_deps=("${adddep} gcc>=${_gccver} help2man")
+
+conflicts=("lib32-libtool")
+#provides=("lib32-libtool")
 
 build() {
   go_src_dir
