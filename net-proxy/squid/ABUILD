@@ -1,16 +1,16 @@
 pkgname=squid
-pkgver=5.7
+pkgver=6.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Full-featured Web proxy cache server.")
 
-source=("http://www.squid-cache.org/Versions/v5/${pkgname}-${pkgver}.tar.xz")
+source=("http://www.squid-cache.org/Versions/v6/${pkgname}-${pkgver}.tar.xz")
 
 tags=("server net-proxy")
 
 # systemd
-adddep=("openssl linux-pam perl libltdl libcap nettle gnutls libnsl libxml2 tdb")
+adddep=("openssl linux-pam perl libtool libcap nettle gnutls libnsl libxml2 tdb")
 
 build_deps=("${adddep} krb5 openldap")
 
