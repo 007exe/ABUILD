@@ -26,6 +26,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib32 \
+    -D libexecdir=lib32 \
     -D glib_debug=disabled \
     -D selinux=disabled \
     -D sysprof=disabled \
@@ -37,5 +38,4 @@ build() {
   rm -r ${pkgdir}/usr/{share,include}
   find ${pkgdir}/usr/bin -type f -not -name gio-querymodules -printf 'Removing %P\n' -delete
   mv ${pkgdir}/usr/bin/gio-querymodules{,-32}
-
 }
