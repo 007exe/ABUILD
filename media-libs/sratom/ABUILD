@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("An LV2 Atom RDF serialisation library.")
-longdesc=("Library for serialising LV2 atoms to/from RDF, particularly the Turtle syntax.")
 
 source=("https://download.drobilla.net/sratom-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("doxygen lv2 meson python-sphinx python-sphinx-lv2-theme serd sord")
+adddep=("glibc lv2")
+
+build_deps=("${adddep} doxygen meson python-sphinx python-sphinx-lv2-theme serd sord")
 
 build() {
   go_src_dir
@@ -18,7 +19,8 @@ build() {
   sed -iE "s%install_dir: docdir / 'sratom-0',%install_dir: docdir / '${PF}',%g" doc/c/meson.build
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib
+    -D libdir=/usr/lib \
+    -D docs=disabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 
