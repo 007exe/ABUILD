@@ -46,7 +46,7 @@ build(){
 
   rm ${pkgdir}/usr/lib/bfd-plugins/libdep.so
 
-  for info in as bfd binutils gprof ld ctf-spec; do
+  for info in as bfd binutils gprof ld ctf-spec sframe-spec ldint; do
         mv ${pkgdir}/usr/share/info/${info}.info ${pkgdir}/usr/share/info/avr-${info}.info
   done
 
