@@ -1,0 +1,7 @@
+echo -e " "
+echo -e "The following packages extend mpg123 capabilities:"
+echo -e "sdl2: for sdl audio support"
+echo -e "jack: for jack audio support"
+echo -e "libpulse: for pulse audio support"
+echo -e "perl: for conplay"
+echo -e " "

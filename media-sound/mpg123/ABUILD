@@ -9,7 +9,12 @@ source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${p
 
 tags=("media-sound libs")
 
-build_deps=("sdl2 jack libpulse libltdl alsa-lib")
+adddep=("alsa-lib")
+
+build_deps=("${adddep} sdl2 jack libpulse")
+
+# NOTE: Это опциональные зависимости
+removedep=("sdl2 jack libpulse perl")
 
 build() {
   go_src_dir
