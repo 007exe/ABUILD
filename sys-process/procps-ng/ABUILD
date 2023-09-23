@@ -1,6 +1,6 @@
 pkgname=procps-ng
 pkgver=4.0.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Utilities for monitoring your system and its processes.")
@@ -18,8 +18,11 @@ build() {
   go_src_dir
 #NOTE: Фикс сборки
   sed 's:<ncursesw/:<:g' -i src/watch.c
+  burn_patches
+  autoreconf -fi
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
     --exec-prefix=/ \
     --sysconfdir=/etc \
     --libdir=/usr/lib \
@@ -27,8 +30,11 @@ build() {
     --sbindir=/usr/bin \
     --enable-watch8bit \
     --disable-modern-top \
-    --disable-static \
     --disable-kill
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+# NOTE: kill находится в util-linux и доки следует использовать от туда
+  rm ${pkgdir}/usr/share/man/de/man1/kill.1
+  rm ${pkgdir}/usr/share/man/fr/man1/kill.1
+  rm ${pkgdir}/usr/share/man/uk/man1/kill.1
 }
