@@ -9,7 +9,7 @@ source=("https://github.com/gphoto/libgphoto2/releases/download/v${pkgver}/libgp
 
 tags=("libs media-libs")
 
-adddep=("curl gd libexif libjpeg-turbo libltdl libusb libxml2")
+adddep=("curl gd libexif libjpeg-turbo libtool libusb libxml2")
 
 build_deps=("${adddep} autoconf-archive curl autoconf")
 
