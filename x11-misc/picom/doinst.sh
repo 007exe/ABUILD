@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend picom capabilities:"
+echo -e "dbus:          for controlling picom via D-Bus"
+echo -e "python:        for running picom-convgen.py"
+echo -e "xorg-xprop:    for picom-trans"
+echo -e "xorg-xwininfo: for picom-trans"

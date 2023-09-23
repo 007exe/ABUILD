@@ -1,7 +1,7 @@
 pkgname=picom
-pkgver=10.1
+pkgver=10.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
 shortdesc=("X compositor that may fix tearing issues.")
 
@@ -9,9 +9,12 @@ source=("https://github.com/yshui/picom/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("x11-apps apps")
 
-build_deps=("asciidoc mesa meson ninja libev pcre uthash libconfig libev pixman xcb-util-image xcb-util-renderutil")
+adddep=("hicolor-icon-theme libconfig dbus libev libglvnd pcre pixman xcb-util-image xcb-util-renderutil")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} asciidoc mesa meson ninja setconf uthash")
+
+# NOTE: Это опциональные зависимости
+removedep=("dbus python xorg-xprop xorg-xwininfo")
 
 config_files=("etc/xdg/picom.conf")
 
