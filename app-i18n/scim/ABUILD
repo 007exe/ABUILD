@@ -4,16 +4,25 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Input method user interface and development platform.")
-longdesc=("Smart Common Input Method (SCIM) is an Input Method (IM) development platform.")
 
 source=("https://github.com/scim-im/scim/archive/${pkgver}.tar.gz")
 
 tags=("develop app-i18n")
 
-build_deps=("libltdl gtk2 intltool gtk3")
+adddep=("libtool gtk3")
 
-# NOTE: Это опциональные зависимости
-removedep=("gtk3")
+build_deps=("${adddep} intltool")
+
+# NOTE: Цепляет gtk2 хотя явно указанно собирать с gtk3
+removedep=("gtk2")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -22,7 +31,8 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --with-gtk-version=2
+    --with-gtk-version=3
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
