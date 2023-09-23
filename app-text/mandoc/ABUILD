@@ -4,13 +4,17 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A suite of tools compiling mdoc from the OpenBSD project.")
-longdesc=("mandoc is an utility to format manual pages.")
 
 source=("https://mdocml.bsd.lv/snapshots/${pkgname}-${pkgver}.tar.gz")
 
 tags=("console app-text")
 
-build_deps=("zlib")
+adddep=("zlib")
+
+build_deps=("${adddep}")
+
+conflicts=("man-db man")
+#provides=("man-db man")
 
 build() {
   go_src_dir
