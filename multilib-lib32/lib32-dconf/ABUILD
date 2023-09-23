@@ -22,6 +22,7 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib32 \
+    -D libexecdir=lib32 \
     -D bash_completion=false \
     -D man=false \
     -D vapi=false
