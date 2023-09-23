@@ -15,6 +15,9 @@ build_deps=("${adddep} autoconf")
 
 config_files=("etc/papersize")
 
+conflicts=("paper")
+provides=("paper")
+
 build() {
   go_src_dir
   burn_patches
