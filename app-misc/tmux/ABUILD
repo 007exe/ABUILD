@@ -1,22 +1,27 @@
 pkgname=tmux
-pkgver=3.2a
+pkgver=3.3a
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A terminal multiplexer.")
 
-source=("https://github.com/tmux/tmux/releases/download/${pkgver}/tmux-${pkgver}.tar.gz")
+source=("https://github.com/tmux/tmux/releases/download/${pkgver/_/}/tmux-${pkgver/_/}.tar.gz")
 
 tags=("console app-misc")
 
-build_deps=("ncurses libevent utempter")
+# --enable-systemd systemd
+adddep=("ncurses libevent libutempter")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
   burn_patches
+  autoreconf -fi
   ./configure \
     --prefix=/usr \
-    --enable-utempter
+    --enable-utempter \
+    --disable-systemd
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 
