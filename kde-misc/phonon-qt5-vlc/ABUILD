@@ -9,9 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/phonon/phonon-backe
 
 tags=("libs kde-misc")
 
-adddep=("vlc phonon-qt5")
+adddep=("vlc phonon")
 
-build_deps=("extra-cmake-modules qt5-tools")
+build_deps=("${adddep} extra-cmake-modules qt5-tools")
 
 build() {
   go_src_dir
