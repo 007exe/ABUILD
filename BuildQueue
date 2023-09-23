@@ -1,20 +1,51 @@
 #!/bin/bash
 
-# NOTE: Этот скрипт предназначен для организации очереди сборки пакетов
+# Конфликты файлов ##############################################################################
+# glib2                     ||  lib32-glib2
+# speex                     ||  lib32-speex
+# dconf                     ||  lib32-dconf
+# libnghttp2                ||  lib32-libnghttp2
+# libvdpau                  ||  lib32-libvdpau
+# lib32-libltdl             ||  lib32-libtool
 
-# Конфликты
-# python-pyproject-metadata || python-pep621
-#
-# python-pyxdg || python-xdg
-# CudaText 1.192.0
+# python-pyproject-metadata ||  python-pep621
+# mupdf                     ||  mupdf-gl
+# mandoc                    ||  man-db
+# paper                     ||  libpaper
+# avr-binutils              ||  binutils
+# libltdl                   ||  libtool
+# c-blosc                   ||  blosc
+# boost                     ||  boost-libs
+# libgles                   ||  libglvnd
+# mariadb                   ||  mariadb-clients
+# postgresql                ||  postgresql-libs
+# zip                       ||  infozip
+# unzip                     ||  infozip
+# utempter                  ||  libutempter
+# util-linux                ||  procps-ng
+# shadow                    ||  man-pages-ru
+# lilv                      ||  sratom aom
+# aom                       ||  sratom lilv
+# lib2geom                  ||  inkscape
+# jack                      ||  pipewire
+# libxscrnsaver             ||  libxss
+# intltool                  ||  fpc
+# openbabel                 ||  python-openbabel
+# exfatprogs                ||  exfat-utils
+# ocaml-findlib             ||  ocaml
+# fcitx5                    ||  fcitx
+# bluez                     ||  bluez-cups bluez-hid2hci
+# bluez-libs                ||  bluez bluez-hid2hci bluez-cups
+# network-manager-applet    ||  libnma-common
+# libfm                     ||  libfm-extra
+# gssdp                     ||  gupnp
+# libappindicator-gtk2      ||  libappindicator-gtk3
+# qca-qt6                   ||  qca-qt5
+# lazarus-gtk2              ||  lazarus-qt5
 
-# https://gitlab.freedesktop.org/groups/xorg/-/archived
-# xorg-apps/luit
-# driver/xf86-input-*: большинство драйверов больше не поддерживаются, за исключением xf86-input-libinput, xf86-input-evdev, xf86-input-keyboard, xf86-input-mouse, xf86-input-elographics, xf86-input-joystick, xf86-input-synaptics, xf86-input-vmmouse и xf86-input-void.
-
+# Пакеты в очереди на добавление #########################################################################################
 # php-legacy
 # net-libs/grpc
-
 # qhexedit2
 # gperftools
 # ocaml-compiler-libs
@@ -31,735 +62,804 @@
 # sbcl
 # python3-dateutils
 # strip-nondeterminism
-
+# texlive-fontutils
+# texlive-fontsrecommended
+# texlive-plaingeneric
 # apache-orc
 # google-glog
 # gmock
 # zeroc-ice
+# libgovirt
+# texlive-bin
+# spatialindex
+# pdal
+# opencl-clhpp
+# lua51-filesystem
+# glyr
+# libclastfm
+# python-confuse
+# python-jellyfish
+# python-mediafile
+# python-musicbrainzngs
+# python-reflink
+# python-polib
+# python-jaraco.packaging
+# python-rst.linker
+# cmark
+# ruby-rake
+# texlive-plainextra
+# libopenshot
+# libopenshot-audio
+# python-pyqt5-webengine
+# python-pyzmq
+# nodejs-lts-hydrogen
+# expac
+# umockdev
+# webp-pixbuf-loader
+# libsynctex
+# cups-pk-helper
+# gnome-bluetooth
+# gnome-color-manager
+# gnome-desktop-4
+# gnome-shell
+# smbclient
+# libcanberra-pulse
+# libgdm
+# gnome-control-center
+# libgexiv2
+# nim
+# geocode-glib-2
+# ocaml-cairo
+# ocaml-compiler-libs
+# camlp-streams
+# stoken
+# tpm2-tss
+# vpnc
+# stellarsolver
+# libxisf
+# libindi
+# ttf-anonymous-pro
+# ttf-arphic-ukai
+# ttf-arphic-uming
+# ttf-atkinson-hyperlegible
+# ttf-baekmuk
+# ttf-caladea
+# ttf-cormorant
+# ttf-crimson
+# ttf-crimson-pro
+# ttf-crimson-pro-variable
+# ttf-croscore
+# ttf-eurof
+# ttf-fantasque-sans-mono
+# ttf-fira-code
+# ttf-fira-mono
+# ttf-fira-sans
+# ttf-hanazono
+# ttf-hannom
+# ttf-ibm-plex
+# ttf-indic-otf
+# ttf-input
+# ttf-ionicons
+# ttf-jetbrains-mono
+# ttf-joypixels
+# ttf-junicode
+# ttf-khmer
+# ttf-lato
+# ttf-linux-libertine-g
+# ttf-monofur
+# ttf-nerd-fonts-symbols
+# ttf-nerd-fonts-symbols-common
+# ttf-nerd-fonts-symbols-mono
+# ttf-overpass
+# ttf-proggy-clean
+# ttf-sarasa-gothic
+# ttf-sazanami
+# ttf-scheherazade-new
+# ttf-tibetan-machine
+# haskell-regex-compat
+# haskell-zlib
+# haskell-regex-posix
+# haskell-hslogger
+# haskell-html
+# haskell-mmap
+# haskell-utf8-string
+# haskell-digest
+# haskell-dbus
+# haskell-statevar
+# haskell-dataenc
+# haskell-x11
+# haskell-parallel
+# haskell-tar
+# haskell-ghc-paths
+# haskell-fgl
+# haskell-xml
+# haskell-http
+# haskell-x11-xft
+# haskell-regex-base
+# haskell-syb
+# haskell-zip-archive
 
-# libndctl
-# libnvme
-# sys-libs/libblockdev
-# sys-fs/udisks
+# Пакеты в очереди на исправление ######################################################################################################
+
+# media-libs/phonon-gstreamer
+# media-libs/gnonlin
+# media-libs/libdvbpsi
+# media-libs/plib
+# media-sound/lash
+# media-sound/pavucontrol
+# media-sound/mpd
+# media-sound/normalize
+# media-sound/qjackctl
+# media-sound/soundconverter
+# media-sound/lmms
+# www-apache/mod_wsgi
+# games-emulation/desmume
+# gnome-base/gnome-common
+# sys-process/time
+# xorg-apps/xdg-su
+# dev-util/oprofile
+# net-fs/netatalk
+# net-fs/davfs2
+# net-dialup/freeradius-client
+# lxde-apps/gpicview
+# media-video/kino
+# media-video/motion
+# media-video/pitivi
+# media-video/dirac
+# media-video/dvdauthor
+# mail-mta/exim
+
+# # doom3
+# # nyancat
+# # fillets-ng
+# # frogatto-data
+# # xonotic
+# # pysolfc-cardsets
+# # scummvm
+# # pysolfc
+# # pingus
+# # torcs
+# # freedroidrpg
+# # fillets-ng-data
+# # violetland-bin
+# # simsu
+# # freeciv
+# # warsow
+# # tremulous-data
+# # openarena
+# # cowsay
+# # fillets-ng-data
+# # gnugo
+# # mfe
+# # openttd-openmsx
+# # prboom-plus
+# # simsu
+# # tremulous-data
+# # wesnoth
+# # crimson
+# # freeciv
+# # hedgewars
+# # nyancat
+# # openttd-opensfx
+# # pylotro
+# # steam
+# # urbanterror
+# # wesnoth-data
+# # armagetronad
+# # doom3
+# # freedroidrpg
+# # hedgewars-bin
+# # openarena
+# # pingus
+# # pysolfc
+# # supertux
+# # violetland-bin
+# # widelands
+# # chocolate-doom
+# # extremetuxracer
+# # frogatto-data
+# # hedgewars-data
+# # openttd
+# # pipewalker
+# # pysolfc-cardsets
+# # supertuxkart
+# # warsow
+# # xonotic
+# # chromium-bsu
+# # fillets-ng
+# # gnubg
+# # mednafen
+# # openttd-opengfx
+# # pokerth 
+# # scummvm
+# # torcs
+# # warzone2100
+# # zaz
+
+# Очередь на обновление ###################################################################################################################
+
+#  onevpl (для пакета ffmpeg)                                 -> 2023.3.1-1
+#  ffmpeg                                2:6.0-10             -> 2:6.0-11
+#  libdovi (для пакета libplacebo)                            -> 3.2.0-2
+#  libplacebo                            5.264.1-3            -> 5.264.1-4
+# 
 
 
-# mumble
-# lazygit                               0.39.4-1             -> 0.40.2-1
-# octave                                8.2.0-2              -> 8.3.0-2
-# linux                                 6.4.10.arch1-1       -> 6.4.11.arch2-1
-# linux-headers                         6.4.10.arch1-1       -> 6.4.11.arch2-1
-
-
-
-LIST="sys-process/audit
-sys-apps/highway
-app-accessibility/speech-dispatcher
-net-misc/modemmanager
-sys-cluster/openmpi
-media-video/pipewire
-media-libs/webrtc-audio-processing
-sys-apps/file
-dev-libs/weston
-app-emulation/faudio
-sys-apps/less
-dev-ml/fmt
-x11-libs/gtk4
-gnome-libs/libsecret
-sys-apps/man-pages
-app-text/poppler
-media-libs/glu
-net-libs/gnutls
-media-gfx/graphicsmagick
-sci-electronics/kicad
-sci-electronics/kicad-library
-sys-libs/libcloudproviders
-dev-lang/vala
-dev-libs/re2
-dev-lang/luajit
-dev-qt/qt5-webengine
-media-libs/sdl2_mixer
-sci-electronics/ngspice
-sys-apps/kbd
-dev-python/python-sphinx
-net-libs/wvstreams
-net-libs/sofia-sip
-dev-libs/libmowgli
-dev-libs/sqlcipher
-app-text/mupdf
-net-wireless/aircrack-ng
-net-ftp/vsftpd
-net-misc/freerdp
-net-misc/remmina
-www-client/links
-dev-libs/thrift
-net-irc/kvirc
-dev-db/redis
-x11-misc/x11vnc
-sys-block/partimage
-net-vpn/openvpn
-net-mail/dovecot
-net-dns/bind
-dev-libs/poco
-net-firewall/fwbuilder
-net-misc/axel
-games-misc/supertuxkart
-net-ftp/gftp
-app-arch/unshield
-net-p2p/transmission
-net-wireless/hostapd
-net-libs/libircclient
-net-libs/serf
-net-analyzer/tcpdump
-net-proxy/squid
-www-client/uget
-net-libs/libtorrent
-net-misc/icecast
-sys-libs/gwenhywfar
-net-libs/imap
-app-pda/libimobiledevice
-app-misc/far2l
-net-print/hplip
-dev-libs/libxmlrpc
-net-vpn/i2pd
-net-ftp/proftpd
-www-client/links
-kde-gear/falkon
-net-vpn/tor
-app-admin/gkrellm
-kde-frameworks/extra-cmake-modules
-kde-frameworks/solid
-kde-frameworks/ki18n
-kde-frameworks/karchive
-kde-frameworks/kdoctools
-kde-frameworks/kwindowsystem
-kde-frameworks/kconfig
-kde-frameworks/kcoreaddons
-kde-frameworks/knotifications
-kde-frameworks/kauth
-kde-frameworks/kcodecs
-kde-frameworks/kguiaddons
-kde-frameworks/kwidgetsaddons
-kde-frameworks/kconfigwidgets
-kde-frameworks/kitemviews
-kde-frameworks/kiconthemes
-kde-frameworks/kdbusaddons
-kde-frameworks/kservice
-kde-frameworks/kwallet
-kde-frameworks/kjobwidgets
-kde-frameworks/kcrash
-kde-frameworks/kglobalaccel
-kde-frameworks/kxmlgui
-kde-frameworks/kbookmarks
-kde-frameworks/kcompletion
-kde-frameworks/sonnet
-kde-frameworks/ktextwidgets
-kde-frameworks/kded
-kde-frameworks/kio
-kde-frameworks/kparts
-kde-frameworks/kidletime
-kde-frameworks/kfilemetadata
-kde-frameworks/baloo
-kde-frameworks/kdesignerplugin
-kde-frameworks/kunitconversion
-kde-frameworks/kitemmodels
-kde-frameworks/kemoticons
-kde-frameworks/kdelibs4support
-kde-frameworks/kpackage
-kde-frameworks/kdeclarative
-kde-frameworks/kcmutils
-kde-frameworks/attica
-kde-frameworks/syndication
-kde-frameworks/knewstuff
-kde-frameworks/kactivities
-kde-frameworks/kwayland
-kde-frameworks/kirigami2
-kde-frameworks/plasma-framework
-kde-frameworks/threadweaver
-kde-frameworks/krunner
-kde-frameworks/purpose
-kde-frameworks/knotifyconfig
-kde-frameworks/syntax-highlighting
-kde-frameworks/ktexteditor
-kde-frameworks/kdnssd
-kde-frameworks/kimageformats
-kde-frameworks/kplotting
-kde-frameworks/networkmanager-qt
-kde-frameworks/kpty
-kde-frameworks/kdesu
-kde-frameworks/frameworkintegration
-kde-frameworks/kinit
-kde-frameworks/modemmanager-qt
-kde-frameworks/kpeople
-kde-frameworks/kxmlrpcclient
-kde-frameworks/bluez-qt
-kde-frameworks/breeze-icons
-kde-frameworks/oxygen-icons
-kde-frameworks/kactivities-stats
-kde-frameworks/prison
-kde-frameworks/qqc2-desktop-style
-kde-frameworks/kjs
-kde-frameworks/khtml
-kde-frameworks/kjsembed
-kde-frameworks/kmediaplayer
-kde-frameworks/kross
-kde-frameworks/kholidays
-kde-frameworks/kcalendarcore
-kde-frameworks/kcontacts
-kde-frameworks/kquickcharts
-kde-frameworks/kdav
-kde-frameworks/kapidox
-xorg-libs/libxcb
-media-sound/mac
-xorg-misc/xcb-proto
-xorg-base/xorg-xwayland
-x11-libs/intel-media-driver
-app-admin/keepassxc
-sys-apps/util-linux
-multilib-lib32/lib32-util-linux
-xorg-libs/mesa
-net-vpn/openvpn
-dev-db/unixodbc
-dev-lang/vala
-xorg-misc/xdg-utils
-sys-libs/glibc
-sys-fs/lvm2
-net-analyzer/net-snmp
-net-misc/ntp
-net-dns/openldap
-media-gfx/chafa
-media-libs/liblqr
-media-video/ffmpeg
-media-libs/libjxl
-media-gfx/graphicsmagick
-kde-plasma/flatpak-kcm
-kde-plasma/plasma-workspace
-kde-plasma/kde-cli-tools
-kde-plasma/systemsettings
-kde-plasma/khotkeys
-kde-plasma/plasma-browser-integration
-kde-plasma/powerdevil
-kde-plasma/plasma-desktop
-kde-plasma/plasma-sdk
-media-fonts/noto-fonts
-sys-apps/accountsservice
-xorg-apps/xorg-xdm
-dev-python/python-validate-pyproject
-dev-python/python-sphinxcontrib-towncrier
-dev-python/python-pip
-dev-python/python-rpds-py
-dev-python/python-referencing
-dev-python/python-jsonschema-specifications
-dev-python/python-rapidfuzz
-dev-python/python-filelock
-dev-python/python-regex
-dev-python/python-jaraco.text
-dev-python/python-jsonschema
-dev-python/python-sphinx_rtd_theme
-dev-python/python-uvloop
-dev-python/python-anyio
-dev-python/python-httpcore
-dev-python/python-pylast
-dev-python/python-aiohttp
-dev-python/python-pytest-runner
-dev-python/python-exceptiongroup
-dev-python/python-webcolors
-dev-python/python-genshi
-dev-python/cython
-dev-python/python-mpi4py
-dev-python/python-breathe
-dev-python/python-jaraco.classes
-dev-python/python-flit-scm
-dev-python/glad
-
-dev-python/python-pyudev
-dev-python/python-sphinx-furo
-dev-python/python-prettytable
-dev-python/python-frozenlist
-dev-python/python-matplotlib
-dev-python/python-inflect
-dev-python/python-sphinxcontrib-towncrier
-dev-python/python-utils
-dev-python/python-kikit
-dev-python/python-certifi
-dev-python/python-hypothesis
-dev-python/python-lxml
-dev-python/python-css-parser
-dev-python/python-distro
-dev-python/python-contourpy
-dev-python/python-pastel
-dev-python/python-pylint
-dev-python/python-uc-micro-py
-dev-python/python-referencing
-dev-python/python-platformdirs
-dev-python/python-pyproject-metadata
-dev-python/python-jsonschema-specifications
-dev-python/python-markdown
-dev-python/python-cachy
-dev-python/python-fonttools
-dev-python/python-jaraco.context
-dev-python/python-rapidfuzz
-dev-python/python-pyelftools
-dev-python/python-solidpython
-dev-python/python-editables
-dev-python/python-progress
-dev-python/python-wxpython
-dev-python/python-pkginfo
-dev-python/python-gnupg
-dev-python/python-yaml
-dev-python/python-sphinx-lv2-theme
-dev-python/python-iniconfig
-dev-python/sip
-dev-python/python-mutagen
-dev-python/python-cleo
-dev-python/python-jaraco.functools
-dev-python/python-tomlkit
-dev-python/python-importlib-metadata
-dev-python/python-sphinx-autodoc-typehints
-dev-python/python-pam
-dev-python/python-pillow
-dev-python/python-rpds-py
-dev-python/python-apipkg
-dev-python/python-yarl
-dev-python/python-termcolor
-dev-python/python-docker
-dev-python/python-nbxmpp
-dev-python/python-tabulate
-dev-python/python-nspektr
-dev-python/python-click
-dev-python/python-wcwidth
+LIST="dev-libs/gumbo-parser
+multilib-lib32/lib32-faudio
+multilib-lib32/lib32-gmp
+multilib-lib32/lib32-libxss
+multilib-lib32/lib32-sqlite
+multilib-lib32/lib32-tdb
 dev-python/python-poetry
-dev-python/python-pyqt6
-dev-python/python-crashtest
-dev-python/python-chardet
-dev-python/python-attrdict
-dev-python/python-zipp
-dev-python/python-pep621
-dev-python/python-rapidfuzz-capi
-dev-python/python-sphinxcontrib-towncrie
-dev-python/python-jedi
-dev-python/python-urllib3
-dev-python/python-certifi
-dev-python/python-fastjsonschema
-dev-python/python-platformdirs
-dev-python/python-zipp
-dev-python/python-pillow
-dev-python/python-pygment
-dev-python/python-virtualenv
-dev-python/python-distlib
-dev-python/python-lark-parser
-dev-python/python-platformdirs
-dev-python/python-rapidfuzz
-dev-python/python-zipp
-dev-python/pypy
-net-dialup/ppp
-app-pda/libimobiledevice
-
-dev-java/npm
-dev-util/meson
-media-libs/devil
-media-libs/imlib2
-media-libs/intel-media-sdk
-media-libs/libjxl
-media-libs/libgpod
-media-libs/qtav
-media-libs/projectm
-media-libs/libquvi
-media-libs/libtiger
-media-libs/vigra
-media-libs/liblqr
-media-libs/ilmbase
-media-libs/gnonlin
-media-libs/imlib
-media-libs/phonon-gstreamer
-media-libs/svgalib
-media-libs/chromaprint
-media-libs/plib
-media-libs/flickcurl
-media-libs/phonon-vlc
-media-libs/libofa
-media-libs/giblib
-media-libs/libicns
-media-libs/ffmpegsource
-media-libs/libv4l
-media-libs/libpgf
-media-libs/libmikmod
-media-libs/mutagen
-media-libs/quesoglc
-media-libs/libiptcdata
-media-libs/lcms
-media-libs/stk
-media-sound/gpodder
-media-sound/easytag
-media-sound/qjackctl
-media-sound/ario
-media-sound/beets
-media-sound/gmpc
-media-sound/kid3
-media-sound/normalize
-media-sound/shntool
-media-sound/soundconverter
-media-sound/lmms
-media-sound/musique
-media-sound/lash
-media-sound/strawberry
-media-sound/solfege
-media-sound/cmus
-media-sound/clementine
-media-sound/foobnix
-media-sound/lollypop
-media-sound/pragha
-media-sound/gqradio
-media-sound/ardour
-media-sound/audacity
-media-sound/qmmp
-media-video/pitivi
-media-video/dvgrab
-media-video/mkvtoolnix
-media-video/ffmpeg2theora
-media-video/dvdauthor
-media-video/dirac
-media-video/kino
-media-video/aegisub
-media-video/motion
-media-video/openshot
-media-video/recordmydesktop
-media-video/movit
-media-video/handbrake
-media-video/obs-studio
-multilib-lib32/lib32-curl
-multilib-lib32/lib32-at-spi2-core
-multilib-lib32/lib32-libcap
-multilib-lib32/lib32-linux-pam
-multilib-lib32/lib32-pipewire
-multilib-lib32/lib32-jack
-multilib-lib32/lib32-portaudio
-multilib-lib32/lib32-polkit
-multilib-lib32/lib32-colord
-multilib-lib32/lib32-fontconfig
-multilib-lib32/lib32-libxft
-multilib-lib32/lib32-cairo
-multilib-lib32/lib32-pango
-multilib-lib32/lib32-gtk2
-multilib-lib32/lib32-libdrm
-multilib-lib32/lib32-libglvnd
-multilib-lib32/lib32-libva
-multilib-lib32/lib32-mesa
-multilib-lib32/lib32-libcanberra
-multilib-lib32/lib32-libepoxy
-multilib-lib32/lib32-librsvg
-multilib-lib32/lib32-libxkbcommon
-multilib-lib32/lib32-gtk3
-multilib-lib32/lib32-libpulse
-multilib-lib32/lib32-fluidsynth
-multilib-lib32/lib32-openal
-multilib-lib32/lib32-libtheora
-multilib-lib32/lib32-libvisual
-multilib-lib32/lib32-gpm
-multilib-lib32/lib32-aalib
-multilib-lib32/lib32-imlib2
-multilib-lib32/lib32-libcaca
-multilib-lib32/lib32-libshout
-multilib-lib32/lib32-libproxy
-multilib-lib32/lib32-glib-networking
-multilib-lib32/lib32-libsoup3
-multilib-lib32/lib32-taglib
-multilib-lib32/lib32-gstreamer
-app-emulation/wine
-app-emulation/wine-gecko
-multilib-lib32/lib32-freetype
-multilib-lib32/lib32-libwebp
-multilib-lib32/lib32-libxslt
-net-fs/netatalk
-net-fs/davfs2
-net-fs/cifs-utils
-net-fs/samba
-net-libs/grpc
-net-libs/wpewebkit
-net-libs/webkit2gtk
-net-libs/webkit2gtk-4.1
-net-libs/webkit2gtk-5.0
-net-libs/libotr
-net-libs/gupnp-igd
-net-libs/gssdp
-    vpnc
-    stoken
-    tpm2-tss
-    oath-toolkit
-net-vpn/openconnect
-net-misc/connman
-net-misc/unison
-net-misc/freerdp
-net-misc/bridge-utils
-net-news/liferea
-net-p2p/deluge
-sci-libs/gdal
-sci-libs/vtk
-sci-libs/avogadrolibs
-sci-libs/spglib
-sci-libs/cln
-sci-libs/netcdf
-sys-apps/accountsservice
-sys-apps/dbus-broker
-sys-apps/flatpak
-sys-apps/tcp_wrappers
-sys-apps/mlocate
-sys-apps/hwinfo
-sys-libs/compiler-rt
-sys-libs/glibc_x64x
-sys-power/upower
-sys-power/acpi_call
-sys-process/iotop
-sys-process/dcron
-sys-process/latencytop
-sys-process/at
-www-client/seamonkey
-www-client/firefox
-www-client/elinks
-www-client/luakit
-www-client/chromium
-www-client/midori
-x11-libs/qscintilla
-x11-libs/goffice
-dev-dotnet/dotnet-sdk
-dev-vcs/tortoisehg
-dev-vcs/git-cola
-dev-vcs/cvs
-media-gfx/zbar
-media-gfx/graphicsmagick
-media-gfx/pinta
-media-gfx/librecad
-www-apache/mod_perl
-www-apache/mod_wsgi
-games-emulation/desmume
-xorg-apps/xorg-xdm
-kde-misc/calligra
-kde-misc/kjots
-net-voip/mumble
-net-analyzer/nmap
-net-analyzer/cacti
-net-im/poezio
-net-im/ejabberd
-x11-misc/xsel
-x11-misc/synergy
-x11-misc/xmobar
-x11-misc/wmctrl
-x11-misc/xlockmore
-app-editors/neovim
-www-servers/nginx
-sci-mathematics/maxima
-mail-mta/msmtp
-mail-mta/exim
-sci-astronomy/stellarium
-sci-astronomy/kstars
-mail-client/sylpheed
-mail-client/claws-mail
-mail-client/mailx
-sys-boot/unetbootin
-sys-boot/plymouth
-mail-filter/maildrop
-sci-electronics/ngspice
-sci-electronics/iverilog
-app-antivirus/clamav
-app-antivirus/clamtk
-dev-scheme/slib
-games-misc/widelands
-xfce-extra/xfce4-artwork
-xfce-extra/thunar-shares-plugin
-kde-frameworks/kapidox
-kde-frameworks/kapidox
-kde-plasma/plasma-sdk
-sys-kernel/bbswitch
-sci-geosciences/qgis
-sci-geosciences/liblas
-dev-embedded/arduino
-dev-embedded/mspdebug
-dev-embedded/stm32flash
-kde-gear/kitinerary
-net-ftp/tftp-hpa
-dev-ruby/asciidoctor
-net-dialup/rp-pppoe
-net-dialup/freeradius-client
-dev-lua/luafilesystem
-app-accessibility/flite
-app-pda/usbmuxd
-app-pda/libimobiledevice
-dev-python/python-jaraco.classes
-media-gfx/chafa
-media-video/ffmpeg
-dev-libs/libgudev
-media-libs/liblqr
-media-libs/libmfx
-net-libs/libsoup
-net-libs/libsoup3
-media-libs/libvpx
-xorg-libs/lbxinerama
-dev-libs/libxslt
-xorg-libs/mesa
-sys-auth/polkit
-app-text/poppler
-app-text/qpdf
-x11-misc/shared-mime-info
-app-arch/snappy
-sys-apps/tcp_wrappers
+sys-apps/shadow
+media-libs/gstreamer
+dev-libs/libclc
+dev-util/spirv-llvm-translator
+dev-lang/rust
+media-libs/opencv
+dev-libs/protobuf
+dev-qt/qt5-webengine
 dev-qt/qt6-base
-dev-qt/qt6-3d
+dev-qt/qt6-shadertools
+dev-qt/qt6-languageserver
+dev-qt/qt6-declarative
 dev-qt/qt6-5compat
 dev-qt/qt6-charts
 dev-qt/qt6-connectivity
 dev-qt/qt6-datavis3d
-dev-qt/qt6-declarative
 dev-qt/qt6-imageformats
-dev-qt/qt6-languageserver
 dev-qt/qt6-lottie
 dev-qt/qt6-multimedia
 dev-qt/qt6-networkauth
+dev-qt/qt6-serialport
 dev-qt/qt6-positioning
 dev-qt/qt6-quick3d
+dev-qt/qt6-3d
 dev-qt/qt6-quicktimeline
 dev-qt/qt6-remoteobjects
 dev-qt/qt6-scxml
 dev-qt/qt6-sensors
 dev-qt/qt6-serialbus
-dev-qt/qt6-serialport
-dev-qt/qt6-shadertools
 dev-qt/qt6-svg
 dev-qt/qt6-tools
 dev-qt/qt6-translations
 dev-qt/qt6-virtualkeyboard
 dev-qt/qt6-wayland
+dev-qt/qt6-websockets
 dev-qt/qt6-webchannel
 dev-qt/qt6-webengine
-dev-qt/qt6-websockets
 dev-qt/qt6-webview
+dev-qt/qtcreator
+media-gfx/blender
+media-gfx/chafa
+media-gfx/fontforge
+media-gfx/gimp
+media-gfx/graphicsmagick
+media-gfx/graphviz
+media-gfx/librecad
+media-gfx/pinta
+media-gfx/zbar
+multilib-lib32/lib32-glib-networking
+multilib-lib32/lib32-at-spi2-core
+net-libs/libsoup3
+x11-misc/nitrogen
+x11-misc/nitrogen
+media-libs/chromaprint
+media-libs/devil
+media-libs/ffmpegsource
+media-libs/gegl
+media-libs/gnonlin
+media-libs/imlib2
+media-libs/intel-media-sdk
+media-libs/lensfun
+media-libs/libgpod
+media-libs/libjxl
+media-libs/libmfx
+media-libs/libopenraw
+media-libs/libpgf
+media-libs/libquvi
+media-libs/lilv
+media-libs/mutagen
+media-libs/phonon-gstreamer
+media-libs/plib
+media-libs/projectm
+media-libs/qtav
+media-libs/quesoglc
+media-libs/raptor
+media-libs/sratom
+media-plugins/qmmp-plugin-pack
+media-sound/ardour
+media-sound/audacity
+media-sound/clementine
+media-sound/cmus
+media-sound/foobnix
+media-sound/gmpc
+media-sound/gpodder
+media-sound/gqradio
+media-sound/lash
+media-sound/lmms
+media-sound/lollypop
+media-sound/normalize
+media-sound/pragha
+media-sound/qjackctl
+media-sound/qmmp
+media-sound/qsynth
+media-sound/solfege
+media-sound/soundconverter
+media-sound/strawberry
+media-video/aegisub
+media-video/avidemux
+media-video/dirac
+media-video/dvdauthor
+media-video/ffmpeg2theora
+media-video/handbrake
+media-video/kino
+media-video/mkvtoolnix
+media-video/motion
+media-video/movit
+media-video/obs-studio
+media-video/openshot
+media-video/pitivi
+media-libs/aubio
+media-libs/aubio
+media-video/rav1e
+media-video/transcode
+multilib-lib32/lib32-aalib
+multilib-lib32/lib32-acl
+multilib-lib32/lib32-at-spi2-core
+multilib-lib32/lib32-cairo
+multilib-lib32/lib32-clang
+multilib-lib32/lib32-colord
+multilib-lib32/lib32-dbus
+multilib-lib32/lib32-fluidsynth
+multilib-lib32/lib32-fontconfig
+multilib-lib32/lib32-freetype
+multilib-lib32/lib32-glib-networking
+multilib-lib32/lib32-gpm
+multilib-lib32/lib32-gstreamer
+multilib-lib32/lib32-gtk2
+multilib-lib32/lib32-gtk3
+multilib-lib32/lib32-imlib2
+multilib-lib32/lib32-jack
+multilib-lib32/lib32-libcaca
+multilib-lib32/lib32-libcanberra
+multilib-lib32/lib32-libdrm
+multilib-lib32/lib32-libepoxy
+multilib-lib32/lib32-libproxy
+multilib-lib32/lib32-libpulse
+multilib-lib32/lib32-librsvg
+multilib-lib32/lib32-libshout
+multilib-lib32/lib32-libsoup3
+multilib-lib32/lib32-libtheora
+multilib-lib32/lib32-libva
+multilib-lib32/lib32-libvisual
+multilib-lib32/lib32-libxft
+multilib-lib32/lib32-libxkbcommon
+multilib-lib32/lib32-mesa
+multilib-lib32/lib32-openal
+multilib-lib32/lib32-pango
+multilib-lib32/lib32-pipewire
+multilib-lib32/lib32-polkit
+multilib-lib32/lib32-portaudio
+multilib-lib32/lib32-sqlite
+multilib-lib32/lib32-taglib
+net-analyzer/cacti
+net-analyzer/nmap
+net-dialup/freeradius-client
+net-dialup/rp-pppoe
+net-dialup/xl2tpd
+net-fs/cifs-utils
+net-fs/davfs2
+net-fs/netatalk
+net-fs/samba
+net-ftp/tftp-hpa
+net-im/ejabberd
+net-im/gajim
+net-im/poezio
+net-im/psi
+net-im/telegram-desktop
+net-irc/weechat
+net-libs/farstream
+net-libs/grpc
+net-libs/gssdp
+net-libs/gupnp-igd
+net-libs/libotr
+net-libs/libsoup
+net-libs/libsoup3
+net-libs/serf
+net-libs/signon-ui
+net-libs/webkit2gtk
+net-libs/webkit2gtk-4.1
+net-libs/webkit2gtk-5.0
+net-libs/webkitgtk-6.0
+net-libs/wpewebkit
+net-misc/bridge-utils
+net-misc/connman
+net-misc/remmina
+net-misc/unison
+net-news/liferea
+net-p2p/deluge
+net-p2p/qbittorrent
+net-p2p/transmission
+net-voip/mumble
+net-vpn/i2pd
+net-vpn/openconnect
+oath-toolkit
+kde-misc/kstars
+sci-astronomy/stellarium
+sci-electronics/iverilog
+sci-geosciences/liblas
+sci-geosciences/qgis
+sci-libs/avogadrolibs
+sci-libs/cln
+sci-libs/gdal
+sci-libs/geos
+sci-libs/netcdf
+sci-libs/spglib
+sci-libs/vtk
+sci-mathematics/maxima
+sci-mathematics/octave
+sys-apps/accountsservice
+sys-apps/dbus-broker
+sys-apps/flatpak
+sys-apps/hwinfo
+sys-apps/mlocate
+sys-apps/openrc
+sys-apps/tcp_wrappers
+sys-boot/grub
+sys-boot/plymouth
+sys-devel/bin86
+sys-firmware/ipw2100-fw
+sys-firmware/ipw2200-fw
+sys-kernel/bbswitch
+sys-libs/glibc_x64x
+sys-libs/gpm
+sys-libs/gwenhywfar
+sys-power/acpi_call
+sys-power/upower
+sys-process/at
+sys-process/ttop
+www-apache/mod_wsgi
+www-client/chromium
+www-client/elinks
+www-client/firefox
+www-client/luakit
+www-client/midori
+www-client/otter-browser
+www-client/seamonkey
+x11-libs/gl2ps
+x11-libs/goffice
+x11-libs/qscintilla
+x11-misc/obconf
+x11-misc/synergy
+x11-misc/wmctrl
+x11-misc/xlockmore
+x11-misc/xmobar
+x11-misc/xsel
+x11-terms/guake
+x11-terms/rxvt-unicode
+x11-terms/terminator
+x11-terms/tilda
+x11-themes/adwaita-qt
+x11-wm/openbox
+xfce-extra/thunar-shares-plugin
+xfce-extra/xfce4-artwork
+xorg-apps/xorg-xdm
+xorg-apps/xorg-xdm
+xorg-drivers/nvidia-driver
+xorg-drivers/nvidia-open
+xorg-libs/lbxinerama
+xorg-libs/mesa
+xorg-misc/mesa-demos
+app-accessibility/flite
+app-antivirus/clamav
+app-antivirus/clamtk
+app-arch/mgard
+app-arch/pigz
 app-arch/rpm
 app-arch/snappy
-app-arch/mgard
 app-arch/unace
+app-crypt/gpgme
+app-editors/neovim
+app-editors/notepadqq
 app-emulation/aqemu
+app-emulation/qemu
 app-emulation/virt-manager
 app-emulation/virt-viewer
-app-emulation/qemu
 app-emulation/virtualbox
+app-emulation/wine
+app-emulation/wine-gecko
 app-emulation/winetricks
-app-emulation/libvirt-glib
+app-i18n/fcitx5
 app-i18n/poedit
-app-text/docbook-utils
-app-text/poppler
-app-text/qpdf
-app-text/a2ps
-app-text/dblatex
-app-text/fbreader
-app-text/libgepub
-app-text/pdftk
-app-text/podofo
-app-text/xpdf
-app-text/texlive-bin
-app-text/psiconv
-app-text/pandoc
-app-text/mythes
-app-text/asciidoc
 app-office/abiword
 app-office/gnucash
 app-office/gnumeric
+app-office/homebank
 app-office/libreoffice
 app-office/scribus
+app-office/texmaker
 app-office/unoconv
-app-office/homebank
-dev-db/postgis
+app-pda/libimobiledevice
+app-pda/usbmuxd
+app-text/a2ps
+app-text/asciidoc
+app-text/dblatex
+app-text/docbook-utils
+app-text/fbreader
+app-text/ghostscript
+app-text/kchmviewer
+app-text/libgepub
+app-text/libwps
+app-text/pandoc
+app-text/pdftk
+app-text/poppler
+app-text/qpdf
+app-text/recode
+app-text/texlive-bin
+app-text/xpdf
+dev-cpp/gtest
+dev-cpp/tbb
+dev-cpp/yaml-cpp
+dev-db/libfbclient
 dev-db/mysql-workbench
-dev-db/sqlitebrowser
-dev-java/npm
+dev-db/postgis
+dev-dotnet/dotnet-sdk
+dev-embedded/arduino
 dev-java/bcprov
 dev-java/eclipse-ecj
 dev-java/icedtea-web
-dev-lang/ocaml
+dev-java/npm
+dev-lang/ghc
 dev-lang/julia
-dev-lang/tcc
 dev-lang/mono
-dev-libs/apr-util
-dev-libs/js91
-dev-libs/libgudev
-dev-libs/libphonenumber
-dev-libs/libxslt
-dev-libs/nodejs-nopt
-dev-libs/protobuf
-dev-libs/libportal-qt5
-dev-libs/tl-expected
-dev-libs/cloog
-dev-libs/mm
-dev-libs/arrow
-dev-libs/gmime
-dev-libs/libx86emu
-dev-libs/libdbi-drivers
-dev-libs/lockdev
-dev-libs/opensc
-dev-libs/stfl
-dev-libs/kdevelop-pg-qt
+dev-lang/tcc
 dev-libs/adios2
+dev-libs/arrow
+dev-libs/cloog
+dev-libs/gmime
+dev-libs/kdevelop-pg-qt
+dev-libs/libclc
+dev-libs/libdbi-drivers
+dev-libs/libgudev
+dev-libs/libkolabxml
+dev-libs/libphonenumber
+dev-libs/libportal-docs
+dev-libs/libportal-gtk4
+dev-libs/libportal-qt5
+dev-libs/libx86emu
+dev-libs/lockdev
+dev-libs/nlohmann-json
+dev-libs/nodejs-nopt
+dev-libs/opensc
+dev-libs/protobuf
+dev-libs/qcoro
+dev-libs/qtkeychain
+dev-libs/stfl
+dev-lua/luafilesystem
 dev-ml/lablgtk3
-dev-qt/qtcreator
-dev-util/cppcheck
-dev-util/pvs-studio
-dev-util/how-to-use-pvs-studio-free
-dev-util/apitrace
-dev-util/oprofile
-dev-util/gpp
-dev-util/maturin
+dev-ml/ocaml-ctypes
+dev-ml/ocaml-findlib
+dev-ml/ocaml-stdlib-shims
+dev-ml/ocaml-topkg
+dev-ml/ocamlbuild
+dev-python/beets
 dev-python/cython
+dev-python/glad
+dev-python/python-aiohttp
+dev-python/python-anyio
+dev-python/python-apipkg
+dev-python/python-attrdict
+dev-python/python-breathe
+dev-python/python-cachy
 dev-python/python-certifi
+dev-python/python-chardet
 dev-python/python-cleo
+dev-python/python-click
+dev-python/python-contourpy
+dev-python/python-crashtest
+dev-python/python-css-parser
+dev-python/python-distlib
+dev-python/python-distro
+dev-python/python-docker
+dev-python/python-editables
+dev-python/python-exceptiongroup
+dev-python/python-fastjsonschema
+dev-python/python-filelock
+dev-python/python-flit-scm
+dev-python/python-fonttools
+dev-python/python-frozenlist
+dev-python/python-genshi
+dev-python/python-gnupg
+dev-python/python-hatch-vcs
+dev-python/python-httpcore
+dev-python/python-hypothesis
+dev-python/python-importlib-metadata
 dev-python/python-inflect
+dev-python/python-iniconfig
+dev-python/python-installer
+dev-python/python-jaraco.classes
+dev-python/python-jaraco.context
 dev-python/python-jaraco.functools
+dev-python/python-jaraco.text
 dev-python/python-jedi
 dev-python/python-jsonschema
+dev-python/python-jsonschema-specifications
+dev-python/python-kikit
+dev-python/python-lark-parser
+dev-python/python-lxml
+dev-python/python-markdown
+dev-python/python-matplotlib
+dev-python/python-mpi4py
+dev-python/python-mutagen
+dev-python/python-nbxmpp
+dev-python/python-nspektr
+dev-python/python-pam
+dev-python/python-pastel
+dev-python/python-pep621
+dev-python/python-pillow
+dev-python/python-pip
+dev-python/python-pkginfo
 dev-python/python-platformdirs
 dev-python/python-poetry
-dev-python/python-rapidfuzz
-dev-python/python-sphinx_rtd_theme
-dev-python/python-anyio
-dev-python/python-httpcore
-dev-python/python-httpx
-dev-python/python-jsonschema-specifications
+dev-python/python-poetry-core
+dev-python/python-prettytable
+dev-python/python-progress
+dev-python/python-pydantic
+dev-python/python-pydantic-core
+dev-python/python-pyelftools
+dev-python/python-pygment
+dev-python/python-pygments
 dev-python/python-pylast
+dev-python/python-pylint
+dev-python/python-pyproject-metadata
+dev-python/python-pyqt6
+dev-python/python-pytest-runner
+dev-python/python-pyudev
+dev-python/python-rapidfuzz
+dev-python/python-rapidfuzz-capi
 dev-python/python-referencing
+dev-python/python-regex
 dev-python/python-rpds-py
-dev-python/python-trio
-dev-python/python-crashtest
-dev-python/python-pastel
+dev-python/python-solidpython
+dev-python/python-soupsieve
+dev-python/python-sphinx-autodoc-typehints
+dev-python/python-sphinx-furo
+dev-python/python-sphinx-lv2-theme
+dev-python/python-sphinx_rtd_theme
+dev-python/python-sphinxcontrib-towncrie
+dev-python/python-sphinxcontrib-towncrier
+dev-python/python-tabulate
+dev-python/python-termcolor
 dev-python/python-tomlkit
-dev-python/python-certifi
-dev-python/python-jedi
+dev-python/python-uc-micro-py
 dev-python/python-urllib3
-dev-python/python-jaraco.functools
-dev-python/cython
-dev-python/python-mutagen
+dev-python/python-utils
+dev-python/python-uvloop
+dev-python/python-validate-pyproject
+dev-python/python-virtualenv
+dev-python/python-wcwidth
+dev-python/python-webcolors
+dev-python/python-wheel
+dev-python/python-wxpython
+dev-python/python-yaml
+dev-python/python-yarl
+dev-python/python-zipp
+dev-python/sip
+dev-ruby/asciidoctor
+dev-scheme/slib
+dev-texlive/texlive-formatsextra
+dev-texlive/texlive-latexextra
+dev-texlive/texlive-pictures
+dev-texlive/texlive-science
+dev-util/apitrace
+dev-util/cppcheck
+dev-util/geany
+dev-util/geany-plugins
+dev-util/glslang
+dev-util/how-to-use-pvs-studio-free
+dev-util/marked
+dev-util/marked-man
+dev-util/maturin
+dev-util/meson
+dev-util/node-gyp
+dev-util/oprofile
+dev-util/pvs-studio
+dev-util/semver
+dev-util/spirv-llvm-translator
+dev-vcs/git-cola
+dev-vcs/lazygit
+games-emulation/desmume
+games-misc/supertuxkart
+games-misc/widelands
 gnome-apps/evolution
 gnome-apps/gedit
+gnome-apps/gedit-plugins
+gnome-apps/gnome-mplayer
+gnome-apps/gnome-power-manager
+gnome-apps/gnome-terminal
 gnome-apps/gtg
 gnome-apps/lollypop
-gnome-apps/gnome-power-manager
-gnome-apps/gnome-mplayer
-gnome-apps/gnome-terminal
-gnome-base/gnome-control-center
-gnome-base/gnome-session
-gnome-base/gnome-shell
-gnome-base/gnome-settings-daemon
-gnome-base/gnome-applets
-gnome-base/yelp
-gnome-base/nautilus
-gnome-base/gnome-panel
 gnome-base/gdm
-gnome-extra/yad
-gnome-extra/sysprof
-gnome-extra/nautilus-sendto
+gnome-base/gexiv2
+gnome-base/gnome-applets
+gnome-base/gnome-control-center
+gnome-base/gnome-panel
+gnome-base/gnome-session
+gnome-base/gnome-settings-daemon
+gnome-base/gnome-shell
+gnome-base/gvfs
+gnome-base/nautilus
+gnome-base/yelp
 gnome-extra/gnome-user-share
+gnome-extra/nautilus-sendto
+gnome-extra/yad
 gnome-libs/evolution-data-server
-gnome-libs/gcab
-gnome-libs/libgweather-4
-gnome-libs/retro-gtk
 gnome-libs/gnome-games
 gnome-libs/gnome-online-accounts
-mate-extra/atril"
+gnome-libs/libgweather-4
+gnome-libs/retro-gtk
+kde-frameworks/kapidox
+kde-gear/akonadi-calendar
+kde-gear/akonadi-calendar-tools
+kde-gear/akonadi-import-wizard
+kde-gear/akonadiconsole
+kde-gear/akregator
+kde-gear/calendarsupport
+kde-gear/cantor
+kde-gear/eventviews
+kde-gear/falkon
+kde-gear/grantlee-editor
+kde-gear/incidenceeditor
+kde-gear/k3b
+kde-gear/kaddressbook
+kde-gear/kalgebra
+kde-gear/kalzium
+kde-gear/kdenetwork-filesharing
+kde-gear/kdepim-addons
+kde-gear/kdepim-runtime
+kde-gear/kdevelop
+kde-gear/kdevelop-php
+kde-gear/kfloppy
+kde-gear/kimagemapeditor
+kde-gear/kio-extras
+kde-gear/kitinerary
+kde-gear/kmail
+kde-gear/knotes
+kde-gear/konqueror
+kde-gear/kontact
+kde-gear/kontrast
+kde-gear/korganizer
+kde-gear/kwordquiz
+kde-gear/marble
+kde-gear/mbox-importer
+kde-gear/merkuro
+kde-gear/parley
+kde-gear/pim-data-exporter
+kde-gear/pim-sieve-editor
+kde-gear/skanpage
+kde-gear/umbrello
+kde-gear/zanshin
+kde-misc/calligra
+kde-misc/digikam
+kde-misc/kjots
+kde-misc/krename
+kde-plasma/flatpak-kcm
+kde-plasma/kde-cli-tools
+kde-plasma/plasma-browser-integration
+kde-plasma/plasma-desktop
+kde-plasma/plasma-workspace
+kde-plasma/powerdevil
+kde-plasma/systemsettings
+lxde-apps/lxterminal
+mail-client/claws-mail
+mail-filter/maildrop
+mail-mta/exim
+mail-mta/msmtp
+mate-base/mate-panel
+mate-extra/atril
+media-fonts/noto-fonts"
 
 STARTD=`pwd`
 LOGFILE=~/Yandex.Disk
