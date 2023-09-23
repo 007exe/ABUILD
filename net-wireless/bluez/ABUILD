@@ -1,5 +1,5 @@
 pkgname=bluez
-pkglist=("bluez-libs bluez-cups bluez-hid2hci")
+pkglist=("bluez-libs bluez-cups bluez-utils bluez-hid2hci bluez-plugins")
 pkgver=5.69
 pkgbuild=1
 arch=("auto")
@@ -11,11 +11,16 @@ source=("http://www.kernel.org/pub/linux/bluetooth/bluez-${pkgver}.tar.gz")
 tags=("network net-wireless")
 
 # systemd
+dep_bluez_plugins=("glibc")
+# systemd
+dep_bluez_utils=("dbus glib2 glibc readline")
+# systemd
 dep_bluez_hid2hci=("glibc")
 dep_bluez_cups=("cups glib2 glibc dbus")
 dep_bluez_libs=("glibc")
 # systemd
-build_deps=("${dep_bluez_libs} ${dep_bluez_cups} ${dep_bluez_hid2hci} dbus libical alsa-lib json-c ell python-docutils")
+build_deps=("${dep_bluez_libs} ${dep_bluez_cups} ${dep_bluez_hid2hci} ${dep_bluez_utils}
+${dep_bluez_plugins} dbus libical alsa-lib json-c ell python-docutils")
 adddep=("bluez-libs>=${pkgver}")
 
 config_files=("etc/bluetooth/main.conf")
@@ -56,11 +61,40 @@ build() {
   install -dm755 ${pkgdir}/usr/lib/modules-load.d
   echo "crypto_user" > ${pkgdir}/usr/lib/modules-load.d/bluez.conf
 
+  rm ${pkgdir}/usr/lib/libbluetooth.so*
+
 # Сервис OpenRC
   install -Dm755 ${filedir}/bluetooth.init ${pkgdir}/etc/init.d/bluetooth
 }
 
-#####################################################################
+# bluez-utils ####################################################################
+
+bluez-utils() {
+  pkgname=bluez-utils
+  shortdesc=("Development and debugging utilities for the bluetooth protocol stack.")
+  adddep=("${dep_bluez_utils}")
+}
+
+bluez-utils_prep() {
+  go_src_dir
+  make DESTDIR=${pkgdir} \
+       install-binPROGRAMS \
+       install-dist_zshcompletionDATA \
+       install-man1
+  for files in `find tools/ -type f -perm -755`; do
+    filename=$(basename $files)
+    install -Dm755 ${srcdir}/bluez-${pkgver}/tools/${filename} ${pkgdir}/usr/bin/${filename}
+  done
+
+  install -dm555 ${pkgdir}/etc/bluetooth
+  install -Dm644 ${srcdir}/bluez-${pkgver}/mesh/mesh-main.conf ${pkgdir}/etc/bluetooth/mesh-main.conf.nev
+
+  rm -rf ${pkgdir}/usr/lib
+
+  mv ${pkgdir}/usr/share/man/man1/hid2hci.1 ${srcdir}/
+}
+
+# bluez-libs ####################################################################
 
 bluez-libs() {
   pkgname=bluez-libs
@@ -75,9 +109,10 @@ bluez-libs_prep() {
     install-pkgincludeHEADERS \
     install-libLTLIBRARIES \
     install-pkgconfigDATA
+  rm ${pkgdir}/usr/lib/libbluetooth.so*
 }
 
-#####################################################################
+# bluez-cups ####################################################################
 
 bluez-cups() {
   pkgname=bluez-cups
@@ -88,9 +123,10 @@ bluez-cups() {
 bluez-cups_prep() {
   go_src_dir
   make DESTDIR=${pkgdir} install-cupsPROGRAMS
+  rm ${pkgdir}/usr/lib/libbluetooth.so*
 }
 
-#####################################################################
+# bluez-hid2hci ####################################################################
 
 bluez-hid2hci() {
   pkgname=bluez-hid2hci
@@ -103,4 +139,22 @@ bluez-hid2hci_prep() {
   make DESTDIR=${pkgdir} \
     install-udevPROGRAMS \
     install-rulesDATA
+  install -dm755 ${pkgdir}/usr/share/man/man1
+  mv ${srcdir}/hid2hci.1 ${pkgdir}/usr/share/man/man1/hid2hci.1
+  rm ${pkgdir}/usr/lib/libbluetooth.so*
+}
+
+# bluez-plugins ####################################################################
+
+bluez-plugins() {
+  pkgname=bluez-plugins
+  shortdesc=("bluez plugins (PS3 Sixaxis controller).")
+  adddep=("${dep_bluez_plugins}")
+}
+
+bluez-plugins_prep() {
+  go_src_dir
+  make DESTDIR=${pkgdir} \
+       install-pluginLTLIBRARIES
+  rm ${pkgdir}/usr/lib/libbluetooth.so*
 }
