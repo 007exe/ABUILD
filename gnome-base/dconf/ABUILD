@@ -10,7 +10,9 @@ source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${
 
 tags=("gnome gnome-base")
 
-build_deps=("glib2 vala dbus git gtk-doc python meson bash-completion")
+adddep=("glib2")
+
+build_deps=("${adddep} vala dbus git gtk-doc python meson bash-completion")
 
 build() {
   go_src_dir
@@ -19,6 +21,8 @@ build() {
   sed -i 's/install_dir: systemd_userunitdir,//' service/meson.build
   meson build \
     -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
     -D gtk_doc=true
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
