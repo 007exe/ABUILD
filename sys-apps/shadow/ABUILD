@@ -1,3 +1,5 @@
+# NOTE: Утилиты chfn, chsh, login, newgrp, nologin и их документацию предоставляет пакет util-linux
+# su предоставляет пакет util-linux
 pkgname=shadow
 pkgver=4.14.0
 pkgbuild=1
@@ -9,7 +11,9 @@ source=("https://github.com/shadow-maint/shadow/releases/download/${pkgver}/${pk
 
 tags=("base sys-apps")
 
-build_deps=("linux-pam acl audit docbook-xsl itstool libcap libxslt")
+adddep=("acl attr audit glibc libxcrypt linux-pam")
+
+build_deps=("docbook-xsl itstool libcap libxslt")
 
 config_files=("etc/pam.d/chage
 etc/pam.d/passwd
@@ -39,9 +43,12 @@ build() {
     --mandir=/usr/share/man \
     --disable-account-tools-setuid \
     --with-libpam \
-    --without-selinux \
     --with-audit \
+    --with-fcaps \
     --with-group-name-max-length=32 \
+    --enable-man \
+    --without-selinux \
+    --without-libbsd \
     --without-su
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
@@ -74,4 +81,36 @@ build() {
   ln -s ../shadow.timer ${pkgdir}/usr/lib/systemd/system/timers.target.wants/shadow.timer
 
   install -vDm 644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}
+
+  rm -f ${pkgdir}/usr/bin/chfn
+  rm -f ${pkgdir}/usr/bin/chsh
+  rm -f ${pkgdir}/usr/bin/login
+  rm -f ${pkgdir}/usr/bin/newgrp
+  rm -f ${pkgdir}/usr/bin/nologin
+  rm -f ${pkgdir}/usr/share/man/cs/man1/su.1
+  rm -f ${pkgdir}/usr/share/man/de/man1/chfn.1
+  rm -f ${pkgdir}/usr/share/man/de/man1/chsh.1
+  rm -f ${pkgdir}/usr/share/man/de/man1/login.1
+  rm -f ${pkgdir}/usr/share/man/de/man1/newgrp.1
+  rm -f ${pkgdir}/usr/share/man/de/man1/su.1
+  rm -f ${pkgdir}/usr/share/man/de/man8/nologin.8
+  rm -f ${pkgdir}/usr/share/man/de/man8/vigr.8
+  rm -f ${pkgdir}/usr/share/man/de/man8/vipw.8
+  rm -f ${pkgdir}/usr/share/man/fr/man1/chsh.1
+  rm -f ${pkgdir}/usr/share/man/fr/man1/login.1
+  rm -f ${pkgdir}/usr/share/man/man1/chfn.1
+  rm -f ${pkgdir}/usr/share/man/man1/chsh.1
+  rm -f ${pkgdir}/usr/share/man/man1/login.1
+  rm -f ${pkgdir}/usr/share/man/man1/newgrp.1
+  rm -f ${pkgdir}/usr/share/man/man8/nologin.8
+  rm -f ${pkgdir}/usr/share/man/man8/vigr.8
+  rm -f ${pkgdir}/usr/share/man/man8/vipw.8
+  rm -f ${pkgdir}/usr/share/man/uk/man1/chfn.1
+  rm -f ${pkgdir}/usr/share/man/uk/man1/chsh.1
+  rm -f ${pkgdir}/usr/share/man/uk/man1/login.1
+  rm -f ${pkgdir}/usr/share/man/uk/man1/newgrp.1
+  rm -f ${pkgdir}/usr/share/man/uk/man1/su.1
+  rm -f ${pkgdir}/usr/share/man/uk/man8/nologin.8
+  rm -f ${pkgdir}/usr/share/man/uk/man8/vigr.8
+  rm -f ${pkgdir}/usr/share/man/uk/man8/vipw.8
 }
