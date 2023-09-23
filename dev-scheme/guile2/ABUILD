@@ -9,7 +9,7 @@ source=("https://ftp.gnu.org/pub/gnu/guile/guile-${pkgver}.tar.gz")
 
 tags=("dev-scheme develop")
 
-adddep=("gc gmp libffi libltdl libunistring libxcrypt")
+adddep=("gc gmp libffi libtool libunistring libxcrypt")
 
 build_deps=("ncurses texinfo")
 
