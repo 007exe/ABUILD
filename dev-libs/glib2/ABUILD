@@ -22,9 +22,10 @@ build() {
   burn_patches
   CFLAGS+=" -DG_DISABLE_CAST_CHECKS"
   meson build \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --buildtype=release \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D libexecdir=lib \
+    -D buildtype=release \
     -D glib_debug=disabled \
     -D selinux=disabled \
     -D man=true \
