@@ -12,7 +12,7 @@ source=("https://imagemagick.org/archive/$_tarname.tar.xz")
 
 tags=("media-gfx xapps")
 
-adddep=("libltdl lcms2 fontconfig libxext liblqr libraqm libpng libxml2")
+adddep=("libtool lcms2 fontconfig libxext liblqr libraqm libpng libxml2")
 
 build_deps=("${adddep} ghostscript openexr libwmf librsvg openjpeg2 libraw
 opencl-headers libwebp libzip libjxl chrpath ocl-icd glu ghostpcl ghostxps
