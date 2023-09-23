@@ -4,13 +4,15 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Swiss Army knife of sound processing tools.")
-longdesc=("The swiss army knife of sound processing programs.")
 
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("console media-sound")
-# ibao
-build_deps=("libmad libid3tag wavpack libpulse opusfile twolame libltdl file libsndfile libpng lame opencore-amr gsm")
+
+adddep=("file gcc-libs gsm libid3tag libtool libpng zlib")
+
+build_deps=("${adddep} alsa-lib autoconf-archive flac lame libao libmad libpulse
+libsndfile libvorbis opencore-amr opusfile twolame wavpack")
 
 # NOTE: Это опциональные зависимости
 removedep=("libao libmad libid3tag wavpack libpulse opusfile twolame")
