@@ -1,23 +1,26 @@
 pkgname=redland
+pkglist=("storage-mysql storage-postgresql storage-virtuoso storage-sqlite")
 pkgver=1.0.17
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("High-level interface for the Resource Description Framework.")
-longdesc=("Redland is a set of free software C libraries that provide support for the Resource Description Framework (RDF).")
+shortdesc=("Library that provides a high-level interface to RDF data.")
 
 source=("http://download.librdf.org/source/${pkgname}-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
-build_deps=("rasqal raptor db postgresql-libs mariadb-libs unixodbc sqlite")
-
-pkglist=("storage-mysql storage-postgresql storage-virtuoso storage-sqlite")
+dep_redland_storage_sqlite=("sqlite")
+dep_redland_storage_virtuoso=("unixodbc")
+dep_redland_storage_postgresql=("postgresql-libs")
+dep_redland_storage_mysql=("mariadb-libs")
+adddep=("rasqal raptor libtool")
+build_deps=("${adddep} ${dep_redland_storage_mysql} ${dep_redland_storage_postgresql}
+${dep_redland_storage_virtuoso} ${dep_redland_storage_sqlite}")
 
 build(){
   go_src_dir
   burn_patches
-
   ./configure \
     --prefix=/usr \
     --enable-release \
@@ -31,11 +34,13 @@ build(){
   rm -rf ${pkgdir}/usr/lib/redland
 }
 
+# storage-mysql #############################################################################################
+
 storage-mysql() {
  pkgname=redland-storage-mysql
  shortdesc=("MySQL storage support for Redland.")
  tags=("dev-libs libs")
- adddep=(redland)
+ adddep=("redland ${dep_redland_storage_mysql}")
 
 }
 
@@ -45,11 +50,13 @@ storage-mysql_prep() {
   install -m755 src/.libs/librdf_storage_mysql.so ${pkgdir}/usr/lib/redland/librdf_storage_mysql.so
 }
 
+# storage-postgresql #############################################################################################
+
 storage-postgresql() {
  pkgname=redland-storage-postgresql
  shortdesc=("PostgreSQL storage support for Redland")
  tags=("dev-libs libs")
- adddep=(redland)
+ adddep=(redland ${dep_redland_storage_postgresql})
 }
 
 storage-postgresql_prep() {
@@ -58,11 +65,13 @@ storage-postgresql_prep() {
   install -m755 src/.libs/librdf_storage_postgresql.so ${pkgdir}/usr/lib/redland/
 }
 
+# storage-virtuoso #############################################################################################
+
 storage-virtuoso() {
  pkgname=redland-storage-virtuoso
  shortdesc=("Virtuoso storage support for Redland")
  tags=("dev-libs libs")
- adddep=(redland db)
+ adddep=(redland ${dep_redland_storage_virtuoso})
 }
 
 storage-virtuoso_prep() {
@@ -71,11 +80,13 @@ storage-virtuoso_prep() {
   install -m755 src/.libs/librdf_storage_virtuoso.so ${pkgdir}/usr/lib/redland/
 }
 
+# storage-sqlite #############################################################################################
+
 storage-sqlite() {
  pkgname=redland-storage-sqlite
  shirtdesc=("SQLite storage support for Redland")
  tags=("dev-libs libs")
- adddep=(redland sqlite db)
+ adddep=(redland ${dep_redland_storage_sqlite})
 }
 
 storage-sqlite_prep() {
