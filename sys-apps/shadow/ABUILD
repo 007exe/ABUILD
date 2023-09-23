@@ -1,15 +1,15 @@
 pkgname=shadow
-pkgver=4.13
-pkgbuild=2
+pkgver=4.14.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Password and account management tool suite with support for shadow files and PAM.")
 
+source=("https://github.com/shadow-maint/shadow/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
 tags=("base sys-apps")
 
-build_deps=("linux-pam acl audit libcap-ng libcap")
-
-source=("https://github.com/shadow-maint/shadow/releases/download/${pkgver}/shadow-${pkgver}.tar.xz")
+build_deps=("linux-pam acl audit docbook-xsl itstool libcap libxslt")
 
 config_files=("etc/pam.d/chage
 etc/pam.d/passwd
