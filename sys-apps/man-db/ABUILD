@@ -9,9 +9,14 @@ source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz")
 
 tags=("console sys-apps")
 
-build_deps=("bash gdbm zlib groff less gzip libpipeline less libseccomp")
+adddep=("bash gdbm zlib groff libpipeline less libseccomp")
 
-adddep=("groff zlib gdbm less libseccomp")
+build_deps=("${adddep} gzip")
+
+conflicts=("mandoc man")
+#provides=("mandoc man")
+
+config_files=("etc/man_db.conf")
 
 build(){
   go_src_dir
