@@ -1,16 +1,17 @@
 pkgname=guile
-pkgver=3.0.8
+pkgver=3.0.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Portable, embeddable Scheme implementation written in C.")
-longdesc=("The Guile package contains the GNU Project's extension language library. Guile also contains a stand alone Scheme interpreter.")
+
+source=("https://ftp.gnu.org/pub/gnu/$pkgname/${pkgname}-${pkgver}.tar.gz")
 
 tags=("dev-scheme develop")
 
-build_deps=("gmp libltdl ncurses texinfo libunistring gc libffi")
+adddep=("gmp ncurses libunistring gc libffi libxcrypt")
 
-source=("https://ftp.gnu.org/pub/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+build_deps=("${adddep} texinfo")
 
 build() {
   go_src_dir
@@ -22,7 +23,5 @@ build() {
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
-  mkdir -p ${pkgdir}/usr/share/gdb/auto-load/usr/lib
-  mv ${pkgdir}/usr/lib/libguile-*-gdb.scm ${pkgdir}/usr/share/gdb/auto-load/usr/lib
+  rm ${pkgdir}/usr/lib/libguile-3.?.so.*-gdb.scm
 }
