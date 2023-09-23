@@ -4,26 +4,26 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("The Adaptable Input/Output System version 2.")
-longdesc=("The Adaptable Input/Output System version 2.")
 
 source=("https://github.com/ornladios/ADIOS2/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("c-blosc bzip2 glibc gcc-libs hdf5 libfabric libpng mgard nlohmann-json openmpi pugixml pybind11 sz yaml-cpp zeromq zfp zlib")
+adddep=("blosc bzip2 glibc gcc-libs hdf5 libfabric libpng nlohmann-json openmpi sz
+pugixml pybind11 yaml-cpp zeromq zfp zlib")
+
+build_deps=("${adddep} cmake gcc-fortran gtest python python-mpi4py python-numpy")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake .. \
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_SKIP_RPATH=ON \
-    -DADIOS2_USE_EXTERNAL_DEPENDENCIES=OFF \
+    -DADIOS2_USE_EXTERNAL_DEPENDENCIES=ON \
+    -DADIOS2_HAVE_HDF5_VOL=OFF \
     -DADIOS2_BUILD_EXAMPLES=OFF
-#    -DMGARD_INCLUDE_DIR=/usr/include/mgard
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }

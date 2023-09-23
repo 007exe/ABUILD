@@ -1,0 +1,80 @@
+From a04395e066fad6249472f2d53657d01640d3b4a7 Mon Sep 17 00:00:00 2001
+From: Junmin Gu <jgu@lbl.gov>
+Date: Sat, 9 Jul 2022 22:48:53 -0700
+Subject: [PATCH] clang-format
+
+---
+ source/h5vol/H5VolReadWrite.c | 13 ++++++++-----
+ source/h5vol/H5Vol_dataset.c  | 12 ++++++------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/source/h5vol/H5VolReadWrite.c b/source/h5vol/H5VolReadWrite.c
+index 0d211cad72..b9f8fd9cad 100644
+--- a/source/h5vol/H5VolReadWrite.c
++++ b/source/h5vol/H5VolReadWrite.c
+@@ -143,8 +143,9 @@ void gInitADIOS2(hid_t acc_tpl)
+     MPI_Initialized(&flag);
+     if (!flag)
+     {
+-      RANK_ZERO_MSG("H5VL_ADIOS2 WARNING: MPI is not initialized, will use Serial ADIOS\n");
+-      m_ADIOS2=adios2_init_serial();
++        RANK_ZERO_MSG("H5VL_ADIOS2 WARNING: MPI is not initialized, will use "
++                      "Serial ADIOS\n");
++        m_ADIOS2 = adios2_init_serial();
+     }
+     else
+     {
+@@ -881,9 +882,11 @@ herr_t gADIOS2ReadVar(H5VL_VarDef_t *varDef)
+         adios2_set_selection(varDef->m_Variable, varDef->m_DimCount, start,
+                              count);
+ 
+-	if (varDef->m_MemSpaceID > 0) {
+-	  RANK_ZERO_MSG("\n## No memory space is supported. Expect limited support when VOL supports BP5. \n");
+-	}
++        if (varDef->m_MemSpaceID > 0)
++        {
++            RANK_ZERO_MSG("\n## No memory space is supported. Expect limited "
++                          "support when VOL supports BP5. \n");
++        }
+     }
+     adios2_get(varDef->m_Engine, varDef->m_Variable, varDef->m_Data,
+                adios2_mode_sync);
+diff --git a/source/h5vol/H5Vol_dataset.c b/source/h5vol/H5Vol_dataset.c
+index a2fbbb2d7b..db0f0df140 100644
+--- a/source/h5vol/H5Vol_dataset.c
++++ b/source/h5vol/H5Vol_dataset.c
+@@ -113,13 +113,13 @@ herr_t H5VL_adios2_dataset_get(void *dset, H5VL_dataset_get_args_t *args,
+     case H5VL_DATASET_GET_SPACE:
+     {
+         REQUIRE_SUCC_MSG((varDef->m_ShapeID >= 0), -1,
+-			  "H5VOL-ADIOS2: Unable to get space id.");
++                         "H5VOL-ADIOS2: Unable to get space id.");
+         args->args.get_space.space_id = H5Scopy(varDef->m_ShapeID);
+         break;
+     }
+     case H5VL_DATASET_GET_TYPE:
+     {
+-        args->args.get_type.type_id  = H5Tcopy(varDef->m_TypeID);
++        args->args.get_type.type_id = H5Tcopy(varDef->m_TypeID);
+         break;
+     }
+     default:
+@@ -142,14 +142,14 @@ herr_t H5VL_adios2_dataset_write(void *dset, hid_t mem_type_id,
+     varDef->m_Data = (void *)buf;
+ 
+     if (file_space_id > 0)
+-      varDef->m_HyperSlabID = file_space_id;
++        varDef->m_HyperSlabID = file_space_id;
+     else
+-      varDef->m_HyperSlabID = varDef->m_ShapeID;
++        varDef->m_HyperSlabID = varDef->m_ShapeID;
+ 
+     if (mem_space_id > 0)
+-      varDef->m_MemSpaceID = mem_space_id;
++        varDef->m_MemSpaceID = mem_space_id;
+     else
+-      varDef->m_MemSpaceID = varDef->m_ShapeID;
++        varDef->m_MemSpaceID = varDef->m_ShapeID;
+ 
+     varDef->m_PropertyID = plist_id;
+ 

@@ -1,0 +1,131 @@
+From bc67316d463831312611e875f5f132d287882e6d Mon Sep 17 00:00:00 2001
+From: Junmin Gu <jgu@lbl.gov>
+Date: Sat, 9 Jul 2022 22:36:31 -0700
+Subject: [PATCH] Necessary revision to get VOL work HDF5 1.13 & BP4
+
+---
+ source/h5vol/H5VolReadWrite.c              |  7 ++++++-
+ source/h5vol/H5VolReadWrite.h              | 12 +++++------
+ source/h5vol/H5Vol_dataset.c               | 24 ++++++++++++++--------
+ testing/h5vol/TestH5VolWriteReadBPFile.cpp |  3 +++
+ 4 files changed, 31 insertions(+), 15 deletions(-)
+
+diff --git a/source/h5vol/H5VolReadWrite.c b/source/h5vol/H5VolReadWrite.c
+index d27b22f337..0d211cad72 100644
+--- a/source/h5vol/H5VolReadWrite.c
++++ b/source/h5vol/H5VolReadWrite.c
+@@ -143,7 +143,8 @@ void gInitADIOS2(hid_t acc_tpl)
+     MPI_Initialized(&flag);
+     if (!flag)
+     {
+-        SHOW_ERROR_MSG("H5VL_ADIOS2: Error: MPI is not initialized");
++      RANK_ZERO_MSG("H5VL_ADIOS2 WARNING: MPI is not initialized, will use Serial ADIOS\n");
++      m_ADIOS2=adios2_init_serial();
+     }
+     else
+     {
+@@ -879,6 +880,10 @@ herr_t gADIOS2ReadVar(H5VL_VarDef_t *varDef)
+ 
+         adios2_set_selection(varDef->m_Variable, varDef->m_DimCount, start,
+                              count);
++
++	if (varDef->m_MemSpaceID > 0) {
++	  RANK_ZERO_MSG("\n## No memory space is supported. Expect limited support when VOL supports BP5. \n");
++	}
+     }
+     adios2_get(varDef->m_Engine, varDef->m_Variable, varDef->m_Data,
+                adios2_mode_sync);
+diff --git a/source/h5vol/H5VolReadWrite.h b/source/h5vol/H5VolReadWrite.h
+index b07222e65b..a07f3ffe42 100644
+--- a/source/h5vol/H5VolReadWrite.h
++++ b/source/h5vol/H5VolReadWrite.h
+@@ -51,13 +51,13 @@ static herr_t H5VL_adios2_datatype_close(void *dt, hid_t H5_ATTR_UNUSED dxpl_id,
+ // Define H5VOL functions
+ //
+ static const H5VL_class_t H5VL_adios2_def = {
+-    H5VL_ADIOS2_VERSION,
++    H5VL_VERSION, /* Version # of connector, needed for v1.13 */
+     (H5VL_class_value_t)H5VL_ADIOS2_VALUE,
+-    H5VL_ADIOS2_NAME,   /* name */
+-    0,                  /* Version # of connector */
+-    H5VL_CAP_FLAG_NONE, /* Capability flags for connector */
+-    H5VL_adios2_init,   /* initialize */
+-    H5VL_adios2_term,   /* terminate */
++    H5VL_ADIOS2_NAME,    /* name */
++    H5VL_ADIOS2_VERSION, /* version of this vol, not as important  */
++    H5VL_CAP_FLAG_NONE,  /* Capability flags for connector */
++    H5VL_adios2_init,    /* initialize */
++    H5VL_adios2_term,    /* terminate */
+     {
+         /* info_cls */
+         (size_t)0, /* info size    */
+diff --git a/source/h5vol/H5Vol_dataset.c b/source/h5vol/H5Vol_dataset.c
+index 462b304446..a2fbbb2d7b 100644
+--- a/source/h5vol/H5Vol_dataset.c
++++ b/source/h5vol/H5Vol_dataset.c
+@@ -96,6 +96,7 @@ herr_t H5VL_adios2_dataset_read(void *dset, hid_t mem_type_id,
+ 
+     var->m_HyperSlabID = file_space_id;
+     var->m_MemSpaceID = mem_space_id;
++
+     var->m_Data = buf;
+     return gADIOS2ReadVar(var);
+ }
+@@ -111,16 +112,14 @@ herr_t H5VL_adios2_dataset_get(void *dset, H5VL_dataset_get_args_t *args,
+     {
+     case H5VL_DATASET_GET_SPACE:
+     {
+-        hid_t *ret_id = (hid_t *)args->args.get_space.space_id;
+-        *ret_id = H5Scopy(varDef->m_ShapeID);
+-        REQUIRE_SUCC_MSG((*ret_id >= 0), -1,
+-                         "H5VOL-ADIOS2: Unable to get space id.");
++        REQUIRE_SUCC_MSG((varDef->m_ShapeID >= 0), -1,
++			  "H5VOL-ADIOS2: Unable to get space id.");
++        args->args.get_space.space_id = H5Scopy(varDef->m_ShapeID);
+         break;
+     }
+     case H5VL_DATASET_GET_TYPE:
+     {
+-        hid_t *ret_id = (hid_t *)args->args.get_type.type_id;
+-        *ret_id = H5Tcopy(varDef->m_TypeID);
++        args->args.get_type.type_id  = H5Tcopy(varDef->m_TypeID);
+         break;
+     }
+     default:
+@@ -141,8 +140,17 @@ herr_t H5VL_adios2_dataset_write(void *dset, hid_t mem_type_id,
+ 
+     // H5VL_VarDef_t *varDef = (H5VL_VarDef_t *)dset;
+     varDef->m_Data = (void *)buf;
+-    varDef->m_MemSpaceID = mem_space_id;
+-    varDef->m_HyperSlabID = file_space_id;
++
++    if (file_space_id > 0)
++      varDef->m_HyperSlabID = file_space_id;
++    else
++      varDef->m_HyperSlabID = varDef->m_ShapeID;
++
++    if (mem_space_id > 0)
++      varDef->m_MemSpaceID = mem_space_id;
++    else
++      varDef->m_MemSpaceID = varDef->m_ShapeID;
++
+     varDef->m_PropertyID = plist_id;
+ 
+     gADIOS2CreateVar(vol->m_FileIO, varDef);
+diff --git a/testing/h5vol/TestH5VolWriteReadBPFile.cpp b/testing/h5vol/TestH5VolWriteReadBPFile.cpp
+index 5282ce1957..091b970e2b 100644
+--- a/testing/h5vol/TestH5VolWriteReadBPFile.cpp
++++ b/testing/h5vol/TestH5VolWriteReadBPFile.cpp
+@@ -462,9 +462,12 @@ void HDF5NativeReader::ReadVar(const std::string varName, void *dataArray,
+                 "Unable to create a selection for dataset" + varName);
+         }
+ 
++        /*
+         hsize_t dimsm[1];
+         dimsm[0] = memspaceSize;
+         hid_t memspace = H5Screate_simple(1, dimsm, NULL);
++        */
++        memspace = H5S_ALL;
+ 
+         hid_t ret = H5Dread(dataSetId, h5type, memspace, dataspace, H5P_DEFAULT,
+                             dataArray);

@@ -1,0 +1,22 @@
+From c3967d39bd530f9f9127f3a3666b3b0c387cac2c Mon Sep 17 00:00:00 2001
+From: Junmin Gu <jgu@lbl.gov>
+Date: Sat, 9 Jul 2022 23:35:28 -0700
+Subject: [PATCH] typo fix
+
+---
+ testing/h5vol/TestH5VolWriteReadBPFile.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/testing/h5vol/TestH5VolWriteReadBPFile.cpp b/testing/h5vol/TestH5VolWriteReadBPFile.cpp
+index 091b970e2b..59008ea761 100644
+--- a/testing/h5vol/TestH5VolWriteReadBPFile.cpp
++++ b/testing/h5vol/TestH5VolWriteReadBPFile.cpp
+@@ -467,7 +467,7 @@ void HDF5NativeReader::ReadVar(const std::string varName, void *dataArray,
+         dimsm[0] = memspaceSize;
+         hid_t memspace = H5Screate_simple(1, dimsm, NULL);
+         */
+-        memspace = H5S_ALL;
++        hid_t memspace = H5S_ALL;
+ 
+         hid_t ret = H5Dread(dataSetId, h5type, memspace, dataspace, H5P_DEFAULT,
+                             dataArray);
