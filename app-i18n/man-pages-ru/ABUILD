@@ -23,4 +23,6 @@ build() {
 # cs da de el es fi fr hu id it mk nb nl pl pt_BR ro ru sr sv uk vi
   make -C po/ru
   make -C po/ru DESTDIR=${pkgdir} install
+# NOTE: Конфликт с shadow
+  rm -f ${pkgdir}/usr/share/man/ru/man3/getspnam.3
 }
