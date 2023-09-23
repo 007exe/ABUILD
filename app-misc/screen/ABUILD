@@ -1,16 +1,17 @@
 pkgname=screen
-pkgver=4.9.0
-pkgbuild=2
+pkgver=4.9.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Full-screen window manager that multiplexes a physical terminal.")
-longdesc=("Screen is a full-screen window manager that multiplexes a physical terminal between several processes (typically interactive shells).")
 
 source=("https://ftp.gnu.org/gnu/screen/screen-${pkgver}.tar.gz")
 
 tags=("console app-misc")
 
-build_deps=("ncurses linux-pam")
+adddep=("ncurses linux-pam")
+
+build_deps=("${adddep}")
 
 config_files=("etc/screenrc
 etc/pam.d/screen")
