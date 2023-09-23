@@ -2,10 +2,18 @@ pkgname=inkscape
 pkgver=1.3
 pkgbuild=1
 arch=("auto")
+strict_version='yes'
 
 shortdesc=("Professional vector graphics editor.")
 
-source=("https://media.inkscape.org/dl/resources/file/inkscape-${pkgver}.tar.xz")
+source=("git:https://gitlab.com/inkscape/inkscape.git"
+"git:https://gitlab.com/inkscape/extensions.git"
+"git:https://gitlab.com/inkscape/lib2geom.git"
+"git:https://gitlab.com/inkscape/themes.git"
+"git:https://gitlab.com/inkscape/extras/extensions-gcodetools.git"
+"git:https://gitlab.com/inkscape/extras/extension-manager.git"
+"git:https://gitlab.com/inkscape/extras/inkscape-import-clipart.git"
+"git:https://gitlab.com/inkscape/extras/extension-xaml.git")
 
 tags=("apps media-gfx")
 
@@ -20,16 +28,49 @@ build_deps=("${adddep} cmake boost")
 # NOTE: Это опциональные зависимости
 removedep=("fig2dev gvfs pstoedit texlive-pstricks")
 
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  cd ${srcdir}
+  mv -v ${srcdir}/inkscape_git_inkscape-import-clipart.git.src ${srcdir}/inkscape-extras-inkscape-import-clipart
+  mv -v ${srcdir}/inkscape_git_extensions-gcodetools.git.src ${srcdir}/inkscape-extras-extensions-gcodetools
+  mv -v ${srcdir}/inkscape_git_extension-manager.git.src ${srcdir}/inkscape-extras-extension-manager
+  mv -v ${srcdir}/inkscape_git_extension-xaml.git.src ${srcdir}/inkscape-extras-extension-xaml
+  mv -v ${srcdir}/inkscape_git_extensions.git.src ${srcdir}/inkscape-extensions
+  mv -v ${srcdir}/inkscape_git_lib2geom.git.src ${srcdir}/inkscape-lib2geom
+  mv -v ${srcdir}/inkscape_git_inkscape.git.src ${srcdir}/inkscape
+  mv -v ${srcdir}/inkscape_git_themes.git.src ${srcdir}/inkscape-themes
+  cd ${srcdir}/inkscape
+  git checkout INKSCAPE_${pkgver/./_}
+  git submodule set-url share/extensions ${srcdir}/inkscape-extensions/
+  git submodule set-url src/3rdparty/2geom ${srcdir}/inkscape-lib2geom/
+  git submodule set-url share/themes ${srcdir}/inkscape-themes/
+  git -c protocol.file.allow=always submodule update --init
+
+  ( cd share/extensions/
+    git submodule set-url other/gcodetools ${srcdir}/inkscape-extras-extensions-gcodetools/
+    git submodule set-url other/inkman ${srcdir}/inkscape-extras-extension-manager/
+    git submodule set-url other/clipart ${srcdir}/inkscape-extras-inkscape-import-clipart/
+    git submodule set-url other/extension-xaml ${srcdir}/inkscape-extras-extension-xaml/
+    git -c protocol.file.allow=always submodule update --init )
+}
+
 build() {
-  go_src_dir
+  cd ${srcdir}/inkscape
   burn_patches
   mkdir -p build
   export PKG_CONFIG_PATH='/usr/lib/imagemagick6/pkgconfig'
-  cmake -Bbuild \
+  cmake -B build \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DWITH_DBUS=ON
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --build build --target install
+
+#usr/include
+#usr/lib/cmake
+#usr/lib/lib2geom.so
+#usr/lib/lib2geom.so.1.3.0
+#usr/lib/pkgconfig/2geom.pc
 }
