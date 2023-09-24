@@ -10,9 +10,9 @@ source=("http://0pointer.de/lennart/projects/${pkgname}/${pkgname}-${pkgver}.tar
 
 tags=("libs media-sound")
 
-build_deps=("libvorbis alsa-lib gtk-doc gtk2 sound-theme-freedesktop gtk3 libpulse tdb libltdl")
+adddep=("libvorbis libtool alsa-lib libpulse tdb sound-theme-freedesktop")
 
-adddep=("sound-theme-freedesktop")
+build_deps=("${addep} gtk-doc gtk2 gtk3 git")
 
 #Удалить из зависимостей gtk2, gtk3 и gtk4
 removedep=("gtk2 gtk3 gtk4")
@@ -32,8 +32,6 @@ build() {
     --disable-oss
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-
   rm -r ${pkgdir}/usr/share/{gnome,gdm}
-
   install -Dt ${pkgdir}/etc/X11/xinit/xinitrc.d ${filedir}/40-libcanberra-gtk-module.sh
 }
