@@ -1,0 +1,5 @@
+echo -e " "
+echo -e "The following packages extend qca-qt6 capabilities:"
+echo -e "pkcs11-helper: PKCS-11 plugin"
+echo -e "botan: botan plugin"
+echo -e " "

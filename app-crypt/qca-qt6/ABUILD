@@ -1,0 +1,31 @@
+# NOTE: Обнови пакет qca-qt5
+pkgname=qca-qt6
+pkgver=2.3.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt6 Cryptographic Architecture.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/qca/${pkgver}/qca-${pkgver}.tar.xz")
+
+tags=("app-crypt libs")
+
+adddep=("qt6-5compat nss ca-certificates")
+
+build_deps=("${adddep} cmake doxygen pkcs11-helper botan qt6-5compat")
+
+# NOTE: Это опциональные зависимости
+removedep=("pkcs11-helper botan")
+
+build() {
+  cd ${srcdir}
+  cmake -B build -S qca-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DQT6=ON \
+    -DBUILD_TESTS=OFF \
+    -DQCA_INSTALL_IN_QT_PREFIX=ON \
+    -DQCA_MAN_INSTALL_DIR=/usr/share/man
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
