@@ -4,17 +4,17 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Flexible Context-aware Input Tool with eXtension.")
-longdesc=("Fcitx (Flexible Context-aware Input Tool with eXtension) input method framework.")
 
 source=("https://download.fcitx-im.org/$pkgname/$pkgname-${pkgver}_dict.tar.xz")
 
 tags=("base app-i18n")
 
-build_deps=("extra-cmake-modules doxygen gtk2 gtk3 mesa opencc iso-codes gobject-introspection
-enchant python pango libxinerama gtk-update-icon-cache shared-mime-info hicolor-icon-theme
+adddep=("pango libxinerama gtk-update-icon-cache shared-mime-info hicolor-icon-theme
 desktop-file-utils libxkbfile libxfixes dbus icu libxkbcommon")
 
-adddep=("gtk-update-icon-cache shared-mime-info hicolor-icon-theme desktop-file-utils icu")
+build_deps=("extra-cmake-modules doxygen gtk2 gtk3 mesa opencc iso-codes gobject-introspection enchant python")
+
+conflicts=("fcitx5")
 
 # NOTE: Это опциональные зависимости
 removedep=("enchant opencc gettext fcitx-configtool kcm-fcitx")
@@ -22,9 +22,8 @@ removedep=("enchant opencc gettext fcitx-configtool kcm-fcitx")
 build() {
   go_src_dir
   burn_patches
-  mkdir -p build
-  cd build
-  cmake .. \
+  sed -e 's|enchant/enchant.h|enchant-2/enchant.h|' -i cmake/FindEnchant.cmake
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSYSCONFDIR=/etc \
     -DFORCE_OPENCC=ON \
@@ -36,6 +35,6 @@ build() {
     -DENABLE_GTK3_IM_MODULE=ON \
     -DENCHANT_INCLUDE_DIR=/usr/include/enchant-2/ \
     -DENCHANT_LIBRARIES=/usr/lib/libenchant-2.so
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 }
