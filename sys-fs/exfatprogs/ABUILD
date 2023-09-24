@@ -1,5 +1,5 @@
 pkgname=exfatprogs
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
 
@@ -10,6 +10,9 @@ source=("https://github.com/exfatprogs/exfatprogs/archive/${pkgver}/${pkgname}-$
 tags=("base sys-fs")
 
 build_deps=("glibc")
+
+conflicts=("exfat-utils")
+#provides=("exfat-utils")
 
 build() {
   go_src_dir
