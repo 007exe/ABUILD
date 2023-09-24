@@ -1,5 +1,5 @@
 pkgname=fcitx5
-pkgver=5.0.21
+pkgver=5.1.0
 pkgbuild=1
 arch=("auto")
 
@@ -8,9 +8,10 @@ shortdesc=("Next generation of fcitx.")
 source=("https://download.fcitx-im.org/fcitx5/fcitx5/fcitx5-${pkgver}_dict.tar.xz")
 
 tags=("libs app-i18n")
+# systemd
+adddep=("cairo enchant iso-codes libglvnd libxkbcommon-x11 pango wayland xcb-imdkit xcb-util-wm libxkbfile gdk-pixbuf")
 
-build_deps=("extra-cmake-modules ninja cairo enchant iso-codes libxkbcommon-x11
-pango wayland wayland-protocols xcb-util-wm libxkbfile fmt gdk-pixbuf xcb-imdkit")
+build_deps=("${adddep} extra-cmake-modules ninja wayland-protocols fmt")
 
 conflicts=("fcitx")
 
