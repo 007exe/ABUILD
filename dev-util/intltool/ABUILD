@@ -4,15 +4,14 @@ pkgbuild=3
 arch=("noarch")
 
 shortdesc=("The internationalization tool collection.")
-longdesc=("The Intltool is an internationalization tool used for extracting translatable strings from source files.")
 
 source=("http://edge.launchpad.net/intltool/trunk/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
 
 tags=("develop dev-util")
 
-build_deps=("perl-xml-parser")
-
 adddep=("perl-xml-parser")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
