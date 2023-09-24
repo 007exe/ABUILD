@@ -18,8 +18,8 @@ build() {
   burn_patches
   meson build \
     -D prefix=/usr \
-    -D libdir=/usr/lib
-#    -D gtk_doc=true
+    -D libdir=/usr/lib \
+    -D gtk_doc=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
