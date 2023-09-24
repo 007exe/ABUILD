@@ -1,18 +1,18 @@
 pkgname=libappindicator-gtk3
+pkglist=("libappindicator-gtk2")
 pkgver=12.10.0
 pkgbuild=3
 arch=("auto")
 
 shortdesc=("Allow applications to extend a menu via Ayatana indicators in Unity, KDE or Systray GTK+ 3 library.")
-longdesc=("A library to allow applications to export a menu into the Unity Menu bar GTK+ 3 library.")
 
-source=("https://launchpad.net/libappindicator/${pkgver%.*}/$pkgver/+download/libappindicator-$pkgver.tar.gz")
+source=("https://launchpad.net/libappindicator/${pkgver%.*}/$pkgver/+download/libappindicator-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
 
-build_deps=("dbus-glib gnome-common gobject-introspection gtk-doc libdbusmenu-gtk2 libdbusmenu-gtk3 libindicator-gtk2 libindicator-gtk3 vala")
-
-pkglist=("libappindicator-gtk2")
+dep_gtk2=("libdbusmenu-gtk2")
+adddep=("libdbusmenu-gtk3")
+build_deps=("${adddep} breezy dbus-glib gnome-common gobject-introspection gtk-doc libdbusmenu-gtk2 libdbusmenu-gtk3 vala")
 
 before_build() {
   go_src_dir
@@ -27,6 +27,8 @@ before_build() {
   cp -r ${srcdir}/libappindicator-${pkgver} ${srcdir}/libappindicator-gtk2
 }
 
+# libappindicator-gtk3 ############################################################################################################
+
 build(){
   export MAKEOPTS+=" -j1"
   cd ${srcdir}/libappindicator-${pkgver}
@@ -36,12 +38,22 @@ build(){
     --sysconfdir=/etc \
     --localstatedir=/var \
     --with-gtk=3 \
-    --disable-static \
     --disable-gtk-doc
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j1 V=1
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
+}
 
+# libappindicator-gtk2 ############################################################################################################
+
+libappindicator-gtk2() {
+  pkgname=libappindicator-gtk2
+  shortdesc=("Allow applications to extend a menu via Ayatana indicators in Unity, KDE or Systray GTK+ 2 library.")
+  adddep=("${dep_gtk2}")
+}
+
+libappindicator-gtk2_prep() {
+  export MAKEOPTS+=" -j1"
   cd ${srcdir}/libappindicator-gtk2
   ./configure \
     --prefix=/usr \
@@ -50,19 +62,12 @@ build(){
     --localstatedir=/var \
     --with-gtk=2 \
     --disable-static \
-    --disable-introspection
+    --disable-introspection \
+    --disable-gtk-doc
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j1 V=1
-}
+  make DESTDIR=${pkgdir} install
 
-libappindicator-gtk2() {
-  pkgname=libappindicator-gtk2
-  shortdesc=("Allow applications to extend a menu via Ayatana indicators in Unity, KDE or Systray GTK+ 2 library.")
-  longdesc=("A library to allow applications to export a menu into the Unity Menu bar GTK+ 2 library.")
-}
-
-libappindicator-gtk2_prep() {
-  go_src_dir
-  cd ${srcdir}/libappindicator-gtk2
-  make DESTDIR="${pkgdir}" install
+# NOTE: Документация предоставлена libappindicator-gtk3
+  rm -r ${pkgdir}/usr/share/gtk-doc
 }
