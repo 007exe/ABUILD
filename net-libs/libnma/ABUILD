@@ -1,4 +1,5 @@
 pkgname=libnma-common
+pkglist=("libnma libnma-gtk4")
 pkgver=1.10.6
 pkgbuild=1
 arch=("auto")
@@ -9,11 +10,15 @@ source=("https://download.gnome.org/sources/libnma/${pkgver%.*}/libnma-${pkgver}
 
 tags=("libs net-libs")
 
-build_deps=("gcr gtk3 gtk4 iso-codes networkmanager vala mobile-broadband-provider-info gobject-introspection gtk-doc meson")
+dep_libnma=("gtk3")
+dep_libnma_gtk4=("gtk4")
+# gcr-4 libnm
+dep_comon=("dconf iso-codes mobile-broadband-provider-info")
+build_deps=("${dep_comon} ${dep_libnma} ${dep_libnma_gtk4} gobject-introspection gtk-doc gtk4 meson vala")
 
-pkglist=("libnma libnma-gtk4")
+adddep=("${dep_comon}")
 
-adddep=("libnma iso-codes mobile-broadband-provider-info dconf")
+####################################################################
 
 _pick() {
   local p="$1" f d; shift
@@ -24,6 +29,8 @@ _pick() {
     rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
   done
 }
+
+####################################################################
 
 build() {
   go_src_dir
@@ -48,13 +55,17 @@ build() {
   _pick gtk4 usr/lib/girepository-1.0/NMA4-*
   _pick gtk4 usr/share/gir-1.0/NMA4-*
   _pick gtk4 usr/share/vala/vapi/libnma-gtk4.*
+
+# NOTE: Предостваляет пакет network-manager-applet
+  rm usr/share/glib-2.0/schemas/org.gnome.nm-applet.gschema.xml
 }
+
+# libnma ######################################################################
 
 libnma() {
   pkgname=libnma
   shortdesc=("NetworkManager GUI client library (GTK3).")
-  longdesc=("The libnma package contains an implementation of the NetworkManager GUI functions.")
-  adddep=("libnma-common=${pkgver} gtk3 gcr")
+  adddep=("libnma-common=${pkgver} ${dep_libnma}")
 }
 
 libnma_prep() {
@@ -62,11 +73,12 @@ libnma_prep() {
   mv gtk3/* ${pkgdir}
 }
 
+# libnma-gtk4 ######################################################################
+
 libnma-gtk4() {
   pkgname=libnma-gtk4
   shortdesc=("NetworkManager GUI client library (GTK4).")
-  longdesc=("The libnma package contains an implementation of the NetworkManager GUI functions.")
-  adddep=("libnma-common=${pkgver} gtk4")
+  adddep=("libnma-common=${pkgver} ${dep_libnma_gtk4}")
 }
 
 libnma-gtk4_prep() {
