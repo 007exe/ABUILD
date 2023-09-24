@@ -1,20 +1,18 @@
 pkgname=ruby
-pkgver=3.0.4
+pkglist=("rubydocs") # rubygems ruby-stdlib ruby-bundledgems
+pkgver=3.0.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("An object-oriented language for quick and easy programming")
-longdesc=("The Ruby package contains the Ruby development environment. This is useful for object-oriented scripting.")
 
 source=("https://cache.ruby-lang.org/pub/ruby/${pkgver:0:3}/ruby-${pkgver}.tar.xz")
 
 tags=("develop dev-lang")
+# rubygems ruby-stdlib ruby-bundledgems
+adddep=("gdbm openssl libffi libyaml libxcrypt gmp zlib")
 
-pkglist=("rubydocs")
-
-build_deps=("gdbm openssl libffi ttf-dejavu valgrind doxygen graphviz libyaml tk")
-
-adddep=("zlib")
+build_deps=("${adddep} doxygen gdbm graphviz libffi libyaml openssl ttf-dejavu tk")
 
 build() {
   go_src_dir
@@ -28,15 +26,15 @@ build() {
     --with-dbm-type=gdbm_compat
   make -j${numjobs}
   make DESTDIR=${pkgdir} install-nodoc
-
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/ruby/LICENSE
   install -D -m644 BSDL ${pkgdir}/usr/share/licenses/ruby/BSDL
 }
 
+# rubydocs ###############################################################################################
+
 rubydocs() {
   pkgname=ruby-docs
   shortdesc=("Documentation files for ruby")
-  longdesc=("The Ruby package contains the Ruby development environment. This is useful for object-oriented scripting.")
   arch=("noarch")
   custom_opts=no_strip
 }
