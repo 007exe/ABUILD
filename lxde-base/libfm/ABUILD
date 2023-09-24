@@ -1,16 +1,18 @@
+# NOTE: Первым следует обновить пакет libfm-extra
 pkgname=libfm
 pkgver=1.3.2
 pkgbuild=2
 arch=("auto")
 
 shortdesc=("Library for file management")
-longdesc=("LibFM is a GIO-based library used to develop file manager-like programs. It is developed as the core of next generation PCManFM and takes care of all file-related operations such as copy & paste, drag & drop, file associations or thumbnails support. By utilizing glib/gio and gvfs, libfm can access remote filesystems supported by gvfs.")
 
-source=("https://downloads.sourceforge.net/pcmanfm/libfm-$pkgver.tar.xz")
+source=("https://downloads.sourceforge.net/pcmanfm/libfm-${pkgver}.tar.xz")
 
 tags=("libs x11-libs")
 
-build_deps=("intltool gtk-doc gtk3 menu-cache libexif vala")
+adddep=("gtk3 libexif libfm-extra=${pkgver} menu-cache")
+
+build_deps=("${adddep} intltool gtk-doc")
 
 build() {
   go_src_dir
@@ -30,5 +32,11 @@ build() {
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-}
 
+# NOTE: Предоставляется пакетом libfm-extra
+  rm -rf ${pkgdir}/usr/include/libfm-1.0/fm-extra.h
+  rm -rf ${pkgdir}/usr/include/libfm-1.0/fm-version.h
+  rm -rf ${pkgdir}/usr/include/libfm-1.0/fm-xml-file.h
+  rm -rf ${pkgdir}/usr/lib/libfm-extra.*
+  rm -rf ${pkgdir}/usr/lib/pkgconfig/libfm-extra.pc
+}
