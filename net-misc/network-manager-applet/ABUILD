@@ -1,17 +1,33 @@
 pkgname=network-manager-applet
+pkglist=("editor")
 pkgver=1.32.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Applet for managing network connections.")
 
-source=(" https://download.gnome.org/sources/network-manager-applet/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("https://download.gnome.org/sources/network-manager-applet/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("network net-misc")
 
-adddep=("networkmanager ppp libappindicator-gtk3 libmm-glib libnma libsecret networkmanager")
+dep_editor=("jansson libnma")
+build_deps=("${dep_editor} gobject-introspection gtk-doc meson")
 
-build_deps=("${adddep} gobject-introspection gtk-doc libgudev meson")
+adddep=("nm-connection-editor")
+
+############################################################
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+############################################################
 
 build() {
   go_src_dir
@@ -22,4 +38,25 @@ build() {
     -D selinux=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
+
+  cd ${pkgdir}
+  _pick nmce usr/bin/nm-connection-editor
+  _pick nmce usr/share/applications/nm-connection-editor.desktop
+  _pick nmce usr/share/icons/hicolor/*/*/nm-device-wwan{,-symbolic}.*
+  _pick nmce usr/share/locale
+  _pick nmce usr/share/man/man1/nm-connection-editor.1
+  _pick nmce usr/share/metainfo
+}
+
+# nm-connection-editor #################################################################
+
+editor() {
+  pkgname=nm-connection-editor
+  shortdesc=("NetworkManager GUI connection editor and widgets.")
+  adddep=("${dep_editor}")
+}
+
+editor_prep() {
+  cd ${srcdir}
+  mv nmce/* ${pkgdir}
 }
