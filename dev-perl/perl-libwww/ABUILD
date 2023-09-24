@@ -1,5 +1,5 @@
 pkgname=perl-libwww
-pkgver=6.60
+pkgver=6.72
 pkgbuild=1
 arch=("noarch")
 
@@ -9,13 +9,11 @@ source=("https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-${pkgver}
 
 tags=("libs dev-perl")
 
-build_deps=("perl perl-encode-locale perl-file-listing perl-html-parser perl-http-cookies
-perl-http-daemon perl-http-date perl-http-negotiate perl-lwp-mediatypes perl-net-http
-perl-try-tiny perl-uri perl-www-robotrules")
+adddep=("perl perl-encode-locale perl-file-listing perl-html-parser perl-http-cookies
+perl-http-daemon perl-http-cookiejar perl-http-date perl-http-negotiate perl-uri
+perl-lwp-mediatypes perl-net-http perl-try-tiny perl-www-robotrules")
 
-adddep=("perl-encode-locale perl-file-listing perl-html-parser perl-http-cookies
-perl-http-daemon perl-http-date perl-http-negotiate perl-lwp-mediatypes perl-net-http
-perl-try-tiny perl-uri perl-www-robotrules")
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
