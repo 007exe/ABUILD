@@ -9,7 +9,12 @@ source=("https://gitlab.gnome.org/GNOME/gssdp/-/archive/gssdp-${pkgver}/gssdp-gs
 
 tags=("libs net-libs")
 
-build_deps=("gobject-introspection gi-docgen vala meson gtk4 pandoc")
+adddep=("glib2 libsoup3")
+# pandoc
+build_deps=("${adddep} gobject-introspection gi-docgen vala meson gtk4")
+
+# NOTE: Это опциональные зависимости
+removedep=("gtk4")
 
 build() {
   go_src_dir
@@ -17,7 +22,8 @@ build() {
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
-    -D gtk_doc=true
+    -D gtk_doc=false \
+    -D manpages=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
