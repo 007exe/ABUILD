@@ -1,0 +1,26 @@
+pkgname=gts
+pkgver=0.7.6.121130
+_snap=gts-snapshot-121130
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Provides useful functions to deal with 3D surfaces meshed with interconnected triangles.")
+
+source=("http://gts.sourceforge.net/tarballs/${_snap}.tar.gz")
+
+tags=("libs sci-libs")
+# netpbm
+adddep=("glib2")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
