@@ -9,11 +9,13 @@ source=("https://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgna
 
 tags=("sys-block apps")
 
-# NOTE: Бошльшая часть зависчимостей является опциональными но мы их всё равно включим дабы gparted не потерял функциональности
-adddep=("parted gtkmm3
-dosfstools jfsutils f2fs-tools btrfs-progs exfatprogs ntfs-3g reiserfsprogs udftools xfsprogs nilfs-utils polkit gpart mtools xorg-xhost")
+adddep=("parted gtkmm3")
 
-build_deps=("${adddep} intltool itstool yelp-tools polkit")
+build_deps=("${adddep} intltool itstool  yelp-tools polkit")
+
+# NOTE: Это опциональные зависимости
+removedep=("dosfstools jfsutils f2fs-tools btrfs-progs exfatprogs ntfs-3g
+reiserfsprogs udftools xfsprogs nilfs-utils polkit gpart")
 
 build() {
   go_src_dir
