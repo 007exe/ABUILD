@@ -1,5 +1,5 @@
 pkgname=exfat-utils
-pkgver=1.3.0
+pkgver=1.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,20 @@ source=("https://github.com/relan/exfat/archive/v${pkgver}.tar.gz")
 
 tags=("base sys-fs")
 
-build_deps=("glibc fuse")
+adddep=("glibc fuse")
+
+build_deps=("${adddep}")
+
+conflicts=("exfatprogs")
+#provides=("fuse-exfat")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build(){
   go_src_dir
@@ -20,6 +33,5 @@ build(){
     --sbindir=/usr/bin
   make CCFLAGS="${CFLAGS} ${CPPFLAGS} -std=c99" LINKFLAGS="${LDFLAGS}"
   make DESTDIR=${pkgdir} install
-  install -Dm 644 */*.8 -t ${pkgdir}/usr/share/man/man8
+  install -Dm0644 -t ${pkgdir}/usr/share/man/man8 */*.8
 }
-
