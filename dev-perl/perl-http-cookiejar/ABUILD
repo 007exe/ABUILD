@@ -1,0 +1,23 @@
+pkgname=perl-http-cookiejar
+pkgver=0.014
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A minimalist HTTP user agent cookie jar.")
+
+source=("http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/HTTP-CookieJar-${pkgver}.tar.gz")
+
+tags=("libs dev-perl")
+
+adddep=("perl-http-date")
+
+build_deps=("${adddep} perl")
+
+build(){
+  go_src_dir
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
+  perl Makefile.PL INSTALLDIRS=vendor
+  make -j${numjobs}
+  make install INSTALLDIRS=vendor DESTDIR=${pkgdir}
+}
