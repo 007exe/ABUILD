@@ -1,4 +1,5 @@
 pkgname=ocaml
+pkglist=("libs")
 pkgver=5.0.0
 pkgbuild=1
 arch=("auto")
@@ -23,6 +24,27 @@ build() {
   make --debug=v world.opt
   make DESTDIR=${pkgdir} install
 
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/
+
+# NOTE: Предоставляется пакетом ocaml-compiler-libs
+  rm -rf ${pkgdir}/usr/lib/ocaml/compiler-libs
+}
+
+# ocaml-compiler-libs #################################################################################
+
+libs() {
+  pkgname=ocaml-compiler-libs
+  shortdesc=("Several modules used internally by the OCaml compiler.")
+  adddep=("ocaml")
+}
+
+libs_prep() {
+  go_src_dir
+  make DESTDIR=${pkgdir} install
+# NOTE: Предоставляется пакетом ocaml
+  find "${pkgdir}/usr/lib/ocaml/" -mindepth 1 -maxdepth 1 -not -name "compiler-libs" -execdir rm -rf "{}" "+"
+  rm -rf   ${pkgdir}/usr/bin ${pkgdir}/usr/share
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/
 }
