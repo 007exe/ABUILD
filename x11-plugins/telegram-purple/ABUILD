@@ -1,0 +1,26 @@
+pkgname=telegram-purple
+pkgver=1.4.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Adds support for Telegram to Pidgin, Adium, Finch and other Libpurple based messengers.")
+
+source=("https://github.com/majn/${pkgname}/releases/download/v${pkgver}/telegram-purple_${pkgver}.orig.tar.gz")
+
+tags=("x11-plugins network")
+
+adddep=("glib2 libgcrypt libpurple zlib libwebp")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  CFLAGS="$CFLAGS -w"
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-deprecated
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
