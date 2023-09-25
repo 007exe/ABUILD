@@ -1,18 +1,17 @@
 pkgname=ocaml-findlib
-pkgver=1.9.5
+pkgver=1.9.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("OCaml package manager.")
-longdesc=("OCaml tool to find/use non-standard packages.")
 
-source=("http://download.camlcity.org/download/findlib-$pkgver.tar.gz")
+source=("http://download.camlcity.org/download/findlib-${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("ocaml")
+adddep=("ocaml-compiler-libs ocaml")
 
-adddep=("ocaml")
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
