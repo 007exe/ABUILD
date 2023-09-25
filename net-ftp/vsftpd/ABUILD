@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Very Secure File Transfer Protocol Daemon.")
-longdesc=("The vsftpd package contains a very secure and very small FTP daemon. This is useful for serving files over a network.")
 
 source=("https://security.appspot.com/downloads/${pkgname}-${pkgver}.tar.gz")
 
 tags=("net-ftp network")
 
-build_deps=("glibc openssl libcap linux-pam libnsl")
+adddep=("glibc openssl libcap linux-pam libnsl")
+
+build_deps=("${adddep}")
 
 config_files=("etc/vsftpd.conf
 etc/pam.d/vsftpd
