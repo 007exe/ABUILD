@@ -1,25 +1,26 @@
 pkgname=pidgin
-pkgver=2.14.10
+pkglist=("finch libpurple")
+pkgver=2.14.12
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multi-protocol instant messaging client.")
-longdesc=("Pidgin is a Gtk+ instant messaging client that can connect with a wide range of networks including Bonjour, ICQ, GroupWise, Jabber/XMPP, IRC, Gadu-Gadu, SILC, SIMPLE, and Zephyr.")
 
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("net-im apps")
 
-# libsm
-build_deps=("startup-notification gtkspell libxss nss libidn libgadu python cyrus-sasl
-hicolor-icon-theme farstream tk libnsl avahi ca-certificates intltool dbus-glib libgnt")
+dep_finch=("libgnt libx11")
+dep_pidgin=("startup-notification gtkspell libxss libsm")
+# libnm libsasl
+dep_libpurple=("farstream libidn libnsl libgadu dbus-glib nss libxcrypt")
+build_deps=("${dep_libpurple} ${dep_pidgin} ${dep_finch} python hicolor-icon-theme tk
+avahi ca-certificates intltool")
 
-adddep=("libpurple==${pkgver} hicolor-icon-theme")
+adddep=("libpurple==${pkgver} ${dep_pidgin}")
 
 # NOTE: Это опциональные зависимости
 removedep=("aspell")
-
-pkglist=("finch libpurple")
 
 build(){
   go_src_dir
@@ -46,12 +47,13 @@ build(){
   rm ${pkgdir}/usr/share/man/man1/finch.1
 }
 
+# libpurple ##################################################################################
 
 libpurple() {
   pkgname=libpurple
   shortdesc=("IM library extracted from Pidgin")
-  longdesc=("Pidgin is a Gtk+ instant messaging client that can connect with a wide range of networks including Bonjour, ICQ, GroupWise, Jabber/XMPP, IRC, Gadu-Gadu, SILC, SIMPLE, and Zephyr.")
   tags=("net-libs libs")
+  adddep=("${dep_libpurple}")
 # NOTE: Это опциональные зависимости
   removedep=("avahi ca-certificates python-dbus tk")
 }
@@ -63,12 +65,13 @@ libpurple_prep(){
   done
 }
 
+# finch ##################################################################################
+
 finch() {
   pkgname=finch
   shortdesc=("A ncurses-based messaging client.")
-  longdesc=("Pidgin is a Gtk+ instant messaging client that can connect with a wide range of networks including Bonjour, ICQ, GroupWise, Jabber/XMPP, IRC, Gadu-Gadu, SILC, SIMPLE, and Zephyr.")
   tags=("net-im console")
-  adddep="libpurple==${pkgver}"
+  adddep="libpurple==${pkgver} ${dep_finch}"
 }
 
 finch_prep(){
