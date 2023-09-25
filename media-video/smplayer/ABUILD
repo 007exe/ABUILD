@@ -1,18 +1,17 @@
 pkgname=smplayer
-pkgver=22.7.0
+pkgver=23.6.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Great Qt GUI front-end for mplayer/mpv.")
-longdesc=("Media player with built-in codecs that can play virtually all video and audio formats.")
+shortdesc=("Media player with built-in codecs that can play virtually all video and audio formats.")
 
-source=("https://github.com/smplayer-dev/${pkgname}/releases/download/v$pkgver/${pkgname}-${pkgver}.tar.bz2")
+source=("https://github.com/smplayer-dev/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("apps media-video")
 
-build_deps=("qt5-tools glibc qt5-base mpv libx11 zlib gcc-libs")
+adddep=("glibc qt5-base mpv libx11 zlib gcc-libs hicolor-icon-theme")
 
-adddep=("mpv hicolor-icon-theme")
+build_deps=("${adddep} qt5-tools")
 
 # NOTE: Это опциональные зависимости
 removedep=("smplayer-themes smplayer-skins smtube youtube-dl yt-dlp mplayer")
