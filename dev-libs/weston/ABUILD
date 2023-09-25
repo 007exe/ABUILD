@@ -11,7 +11,7 @@ tags=("dev-libs libs")
 
 adddep=("glibc wayland libxkbcommon libinput libunwind pixman libdrm linux-pam cairo libpng
 libjpeg-turbo libwebp mesa glib2 pango lcms2 mtdev libx11 libxcb dbus libva libxcursor colord
-gstreamer gst-plugins-base-libs pipewire seatd libgles")
+gstreamer gst-plugins-base-libs pipewire seatd libglvnd")
 
 # neatvnc
 build_deps=("${adddep} wayland-protocols meson ninja freerdp xorg-xwayland xcb-util-cursor")
