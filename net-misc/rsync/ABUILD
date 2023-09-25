@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A program for synchronizing files over a network.")
-longdesc=("Rsync uses a quick and reliable algorithm to very quickly bring remote and host files into sync.")
 
 source=("https://github.com/WayneD/rsync/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("network net-misc")
 
-build_deps=("acl lz4 openssl perl popt xxhash zlib zstd python-commonmark")
+adddep=("acl lz4 openssl popt xxhash zlib zstd")
+
+build_deps=("${adddep} python-commonmark")
 
 config_files=("etc/rsyncd.conf")
 
