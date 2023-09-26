@@ -1,0 +1,39 @@
+pkgname=libdovi
+pkgver=3.2.0
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("Library to read and write Dolby Vision metadata.")
+
+source=("git:https://github.com/quietvoid/dovi_tool.git")
+
+tags=("libs media-libs")
+
+adddep=("gcc-libs glibc")
+
+build_deps=("${adddep} cargo-c git rust")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout libdovi-${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cargo fetch --manifest-path dolby_vision/Cargo.toml
+  cargo cbuild \
+    --release \
+    --frozen \
+    --prefix=/usr \
+    --manifest-path dolby_vision/Cargo.toml
+  cargo cinstall \
+    --release \
+    --frozen \
+    --prefix /usr \
+    --destdir ${pkgdir}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/libdovi/
+}
