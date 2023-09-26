@@ -9,7 +9,8 @@ source=("https://code.videolan.org/videolan/libplacebo/-/archive/v${pkgver}/libp
 
 tags=("libs media-libs")
 
-adddep=("vulkan-icd-loader glslang lcms2 shaderc glibc gcc-libs libunwind")
+adddep=("vulkan-icd-loader glslang lcms2 shaderc glibc gcc-libs
+libdovi libunwind")
 
 build_deps=("${adddep} meson ninja vulkan-headers glad nuklear python
 python-setuptools python-mako python-markupsafe python-jinja")
