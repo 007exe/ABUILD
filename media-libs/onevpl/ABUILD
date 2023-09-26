@@ -1,0 +1,43 @@
+pkgname=onevpl
+pkgver=2023.3.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("oneAPI Video Processing Library.")
+
+source=("https://github.com/oneapi-src/oneVPL/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+adddep=("libdrm libva wayland")
+
+build_deps=("${adddep} cmake libx11 wayland-protocols")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS+=' -DNDEBUG'
+  export CXXFLAGS+=' -DNDEBUG'
+  cmake -B build -G 'Unix Makefiles' \
+    -DCMAKE_BUILD_TYPE:STRING='None' \
+    -DCMAKE_INSTALL_PREFIX:PATH='/usr' \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_SYSCONFDIR:PATH='/etc' \
+    -DBUILD_EXAMPLES:BOOL='OFF' \
+    -DBUILD_TESTS:BOOL='ON' \
+    -DINSTALL_EXAMPLE_CODE:BOOL='OFF' \
+    -DVPL_INSTALL_LICENSEDIR:STRING="share/licenses/${pkgname}" \
+    -Wno-dev
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+
+  local _file
+  while read -r -d '' _file
+  do
+      if ! grep -q '^vpl-' <<< "$_file"
+      then
+          mv "${pkgdir}/usr/bin"/{,vpl-}"$_file"
+      fi
+  done < <(find "${pkgdir}/usr/bin" -mindepth 1 -maxdepth 1 -type f -print0 | sed -z 's|.*/||')
+}
+
