@@ -1,0 +1,25 @@
+From e4be854668d9554ab5ffdba1d0c75a35388b265c Mon Sep 17 00:00:00 2001
+From: Matt Rose <mattrose@folkwolf.net>
+Date: Wed, 8 Mar 2023 17:17:57 -0500
+Subject: [PATCH] Fix context menu keybinding reading.
+
+When the keybinding for an action that also appears in the context menu
+is None, python can't do it's usual string tricks and throws a
+backtrace, and doesn't display the menu.
+---
+ terminatorlib/terminal_popup_menu.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/terminatorlib/terminal_popup_menu.py b/terminatorlib/terminal_popup_menu.py
+index 34e6a3fe..581a9ae1 100644
+--- a/terminatorlib/terminal_popup_menu.py
++++ b/terminatorlib/terminal_popup_menu.py
+@@ -30,6 +30,8 @@ def __init__(self, terminal):
+ 
+     def get_menu_item_mask(self, maskstr):
+         mask = 0
++        if maskstr is None:
++            return mask
+         maskstr = maskstr.lower()
+         if maskstr.find('<Shift>'.lower()) >= 0:
+             mask = mask | Gdk.ModifierType.SHIFT_MASK
