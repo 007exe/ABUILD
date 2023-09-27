@@ -1,27 +1,25 @@
 pkgname=cairo
-pkgver=1.17.8
+pkglist=("cairo-docs")
+pkgver=1.18.0
 pkgbuild=1
 strict_version=1
 arch=("auto")
 
 shortdesc=("2D graphics library with support for multiple output devices.")
 
-#source=("https://gitlab.freedesktop.org/cairo/cairo/-/archive/${pkgver}/cairo-${pkgver}.tar.gz")
 source=("git:https://gitlab.freedesktop.org/cairo/cairo.git")
 
 tags=("xserver x11-libs")
 
-build_deps=("lzo zlib libpng fontconfig freetype libx11 libxext libxrender libxcb glib2 pixman valgrind meson")
+adddep=("fontconfig freetype glib2 libpng libx11 libxcb libxext libxrender lzo pixman zlib")
+
+build_deps=("${adddep} git gtk-doc meson valgrind")
 
 # NOTE: Переходим к коммиту
 # FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
 before_build() {
   go_src_dir
   git checkout ${pkgver}
-
-  # https://bugs.archlinux.org/task/77432
-  # https://gitlab.freedesktop.org/cairo/cairo/-/issues/639
-  git revert -n 47a21c6e30eef91db503a5a183d5c8cf558aaa56
 }
 
 build(){
@@ -36,4 +34,19 @@ build(){
     -D tests=disabled
   meson compile -C build
   DESTDIR=${pkgdir} meson install -C build
+}
+
+# cairo-docs ###########################################################################################################################
+
+cairo-docs() {
+  pkgname=cairo-docs
+  shortdesc=("2D graphics library with support for multiple output devices (documentation).")
+  skip_gendeps=1
+}
+
+cairo-docs_prep() {
+  go_src_dir
+echo "===========> Документация <==========="
+  mkdir -p ${pkgdir}/usr/share
+  mv -v ${p_pkgdir}/usr/share/gtk-doc ${pkgdir}/usr/share/gtk-doc
 }
