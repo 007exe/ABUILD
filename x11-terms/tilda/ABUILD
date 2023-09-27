@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Gtk based drop down terminal for Linux and Unix.")
-longdesc=("A drop down terminal, similar to the consoles found in first person shooters.")
 
 source=("https://github.com/lanoxx/${pkgname}/archive/${pkgname}-${pkgver}.tar.gz")
 
 tags=("x11-terms apps")
 
-build_deps=("vte confuse python")
+adddep=("vte3 confuse")
+
+build_deps=("${adddep} python")
 
 build(){
   go_src_dir
