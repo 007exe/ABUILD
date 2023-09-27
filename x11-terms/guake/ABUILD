@@ -1,18 +1,25 @@
 pkgname=guake
-pkgver=3.9.0
+pkgver=3.10
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Drop-down terminal for GNOME")
-longdesc=("Guake is a top-down terminal for Gnome (in the style of Yakuake for KDE, Tilda or the terminal used in Quake).")
+shortdesc=("Drop-down terminal for GNOME.")
 
 source=("https://github.com/Guake/guake/archive/refs/tags/${pkgver}.tar.gz")
 
-tags=("xapps x11-terms")
+tags=("apps x11-terms")
 
-build_deps=("dbus-python python-yaml python-gobject python-cairo python-pbr vte libkeybinder3 libnotify libutempter libwnck3 python-setuptools-scm")
+adddep=("libkeybinder3 libnotify libutempter libwnck3 python-cairo dbus-python python-gobject python-pbr vte3 python-yaml")
 
-adddep=("dbus-python python-yaml python-gobject python-cairo python-pbr")
+build_deps=("${adddep}")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build(){
   go_src_dir
