@@ -1,18 +1,17 @@
 pkgname=ocaml-topkg
-pkgver=1.0.5
+pkgver=1.0.7
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A packager for distributing OCaml software.")
-longdesc=("The transitory OCaml software packager.")
 
 source=("https://erratique.ch/software/topkg/releases/topkg-${pkgver}.tbz")
 
 tags=("libs dev-ml")
 
-build_deps=("ocaml ocaml-findlib ocamlbuild opam ocaml-result")
+adddep=("ocaml ocaml-result")
 
-adddep=("ocaml>=4.13.1 ocaml-result")
+build_deps=("${adddep} ocaml-findlib ocamlbuild opam")
 
 build() {
   go_src_dir
