@@ -9,14 +9,19 @@ source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
 
 tags=("libs media-video")
 
-adddep=("libmfx libsoxr vmaf rav1e dav1d aom svt-av1 zimg vidstab v4l-utils libvpx jack librsvg libpulse
-sdl2 fontconfig fribidi libraw1394 libssh libxml2 libwebp alsa-lib xz bzip2 zlib gmp gnutls ladspa libass
-libbluray libdrm gsm libmodplug lame opencore-amr openjpeg2 opus speex x264 x265 xvidcore libavc1394 libx11
-libtheora srt libiec61883 libvdpau libxext libxv libxcb")
+adddep=("alsa-lib aom bzip2 fontconfig fribidi gmp gnutls gsm jack lame libass libavc1394 libbluray
+libbs2b dav1d libdrm freetype libglvnd libiec61883 libjxl libmodplug libopenmpt libpulse rav1e vmaf
+librsvg libsoxr libssh libtheora libva libvdpau libvorbis libvpx libwebp libx11 x264 x265 libxcb xz
+libxext libxml2 libxv xvidcore zimg ocl-icd onevpl opencore-amr openjpeg2 opus sdl2 speex srt zlib
+libraw1394 v4l-utils  vulkan-icd-loader svt-av1 vidstab")
 
-build_deps=("${adddep} amf-headers avisynthplus clang ffnvcodec-headers ladspa mesa nasm opencl-headers vulkan-headers")
+build_deps=("${adddep} amf-headers avisynthplus clang ffnvcodec-headers ladspa mesa nasm opencl-headers
+vulkan-headers")
 
-removedep=("avisynthplus intel-media-sdk ladspa nvidia-utils")
+#provides=("libavcodec.so libavdevice.so libavfilter.so libavformat.so libavutil.so libpostproc.so libswresample.so libswscale.so")
+
+# NOTE: Это опциональные зависимости
+removedep=("avisynthplus intel-media-sdk onevpl-intel-gpu ladspa nvidia-utils")
 
 build(){
   go_src_dir
@@ -75,12 +80,12 @@ build(){
     --enable-libdav1d \
     --enable-librav1e \
     --enable-libvmaf \
-    --enable-libmfx \
     --enable-nonfree \
     --enable-avisynth \
+    --enable-libvpl \
     --enable-libopenmpt
-#    --enable-libjxl
-#    --enable-libsoxr
+#   --enable-libjxl
+#   --enable-libsoxr
 
   make -j${numjobs}
   make tools/qt-faststart -j${numjobs}
