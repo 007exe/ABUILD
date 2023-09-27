@@ -1,15 +1,25 @@
 pkgname=xsel
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=("auto")
+strict_version='yes'
 
 shortdesc=("Command-line program for getting and setting the contents of the X selection.")
 
-source=("http://www.kfish.org/software/${pkgname}/download/${pkgname}-${pkgver}.tar.gz")
+source=("git:https://github.com/kfish/xsel.git")
 
-tags=("xserver x11-utils")
+tags=("xserver x11-misc")
 
-build_deps=("libxt git libx11")
+adddep=("libx11")
+
+build_deps=("${adddep} libxt")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+}
 
 build() {
   go_src_dir
