@@ -4,13 +4,14 @@ pkgbuild=3
 arch=("auto")
 
 shortdesc=("Highly configurable and lightweight X11 window manager.")
-longdesc=("Standards compliant, fast, light-weight, extensible window manager.")
 
 source=("http://openbox.org/dist/openbox/openbox-${pkgver}.tar.gz")
 
 tags=("lxde x11-wm")
 
-build_deps=("python libxcursor pango libsm libxml2 libxinerama libxrandr librsvg imlib2 startup-notification")
+adddep=("startup-notification libxml2 libxinerama libxrandr libxcursor pango imlib2 librsvg libsm")
+
+build_deps=("${adddep} python-pyxdg")
 
 config_files=("etc/xdg/openbox/menu.xml
 etc/xdg/openbox/rc.xml
