@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Shim to substitute Pervasives with Stdlib before 4.08.")
-longdesc=("Compiling against this library allows to replace your uses of Pervasives with Stdlib before 4.08.")
 
 source=("https://github.com/ocaml/stdlib-shims/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("dune ocaml")
+adddep=("ocaml ocaml-compiler-libs")
+
+build_deps=("${adddep} dune")
 
 build() {
   go_src_dir
