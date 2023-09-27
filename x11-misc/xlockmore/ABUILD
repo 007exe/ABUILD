@@ -1,17 +1,16 @@
 pkgname=xlockmore
-pkgver=5.69
+pkgver=5.73
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Just another screensaver application for X")
-longdesc=("Screen saver / locker for the X Window System.")
+shortdesc=("Screen saver / locker for the X Window System.")
 
-source=("http://sillycycle.com/xlock/xlockmore-${pkgver}.tar.xz")
+source=("https://sillycycle.com/xlock/xlockmore-${pkgver}.tar.xz")
 
-tags=("xapps x11-misc")
+tags=("apps x11-misc")
 
 # openmotif
-build_deps=("mesa freetype gtk2 libxpm linux-pam libxmu glu")
+build_deps=("freetype gtk2 libxpm linux-pam libxmu glu")
 
 build() {
   go_src_dir
