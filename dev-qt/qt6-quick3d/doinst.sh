@@ -1,5 +1,5 @@
 echo -e "\n"
 echo -e "The following packages extend qt6-quick3d capabilities:"
-echo -e "qt6-shadertools: for shadergen"
-echo -e "assimp: assimp import plugin"
+echo -e "    qt6-shadertools: for shadergen"
+echo -e "    assimp: assimp import plugin"
 echo -e " "

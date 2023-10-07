@@ -1,5 +1,5 @@
 echo -e "\n"
 echo -e "The following packages extend qt6-tools capabilities:"
-echo -e "clang: for qdoc and lupdate"
-echo -e "qt6-declarative: for qdoc"
+echo -e "    clang: for qdoc and lupdate"
+echo -e "    qt6-declarative: for qdoc"
 echo -e " "

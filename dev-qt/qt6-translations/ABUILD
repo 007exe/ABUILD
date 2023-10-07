@@ -1,13 +1,13 @@
 pkgname=qt6-translations
-pkgver=6.5.0
+pkgver=6.5.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework (Translations).")
 
-tags=("qt6 dev-qt")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qttranslations-everywhere-src-${pkgver}.tar.xz")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qttranslations-everywhere-src-${pkgver}.tar.xz")
+tags=("qt6 dev-qt")
 
 build_deps=("cmake ninja qt6-tools qt6-base")
 

@@ -1,13 +1,13 @@
 pkgname=qt6-scxml
-pkgver=6.5.0
+pkgver=6.5.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Static and runtime integration of SCXML models into Qt code.")
 
-tags=("qt6 dev-qt")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtscxml-everywhere-src-${pkgver}.tar.xz")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtscxml-everywhere-src-${pkgver}.tar.xz")
+tags=("qt6 dev-qt")
 
 build_deps=("cmake ninja qt6-declarative git qt6-base")
 

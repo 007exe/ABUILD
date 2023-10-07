@@ -1,5 +1,5 @@
 pkgname=qt6-3d
-pkgver=6.5.0
+pkgver=6.5.3
 pkgbuild=1
 arch=("auto")
 
@@ -7,9 +7,11 @@ shortdesc=("C++ and QML APIs for easy inclusion of 3D graphics.")
 
 tags=("qt6 dev-qt")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qt3d-everywhere-src-${pkgver}.tar.xz")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qt3d-everywhere-src-${pkgver}.tar.xz")
 
-build_deps=("cmake ninja qt6-declarative qt6-shadertools assimp qt6-base")
+adddep=("qt6-base")
+
+build_deps=("${adddep} cmake ninja qt6-declarative qt6-shadertools assimp")
 
 # NOTE: Это опциональная зависимость
 removedep=("qt6-shadertools qt6-declarative assimp")

@@ -1,11 +1,11 @@
 pkgname=qt6-svg
-pkgver=6.5.0
+pkgver=6.5.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classes for displaying the contents of SVG files.")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtsvg-everywhere-src-${pkgver}.tar.xz")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtsvg-everywhere-src-${pkgver}.tar.xz")
 
 tags=("qt6 dev-qt")
 

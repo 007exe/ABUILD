@@ -1,6 +1,6 @@
 #!/bin/bash
 
-QT_VERSION=6.5.0
+QT_VERSION=6.5.3
 BUILD_VERSION=1
 
 # NOTE: После сборки qt6-base следует пересобрать qt6-webengine
@@ -45,7 +45,7 @@ echo "============================= Начало сборки `date` ===========
 
 for i in $MLIST ; do
     cd $STARTD/$i
-    if mkpkg -ba -wd ~/mkpkg/build -pod ~/mkpkg/repository/dev-qt -si -bv $QT_VERSION -bb $BUILD_VERSION; then
+    if mkpkg -ba -wd ~/mkpkg/build -si -bv $QT_VERSION -bb $BUILD_VERSION; then
             DATETMP=`date`
             echo "`date` || Пакет: $i ГОТОВ" >> $LOGFILE
             cd $STARTD
