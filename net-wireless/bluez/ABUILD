@@ -1,6 +1,6 @@
 pkgname=bluez
 pkglist=("bluez-libs bluez-cups bluez-utils bluez-hid2hci bluez-plugins")
-pkgver=5.69
+pkgver=5.70
 pkgbuild=1
 arch=("auto")
 
