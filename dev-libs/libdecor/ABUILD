@@ -1,16 +1,17 @@
 pkgname=libdecor
-pkgver=0.1.1
+pkgver=0.2.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Client-side decorations library for Wayland clients.")
-longdesc=("libdecor is a library that can help Wayland clients draw window decorations for them. It aims to provide multiple backends that implements the decoration drawing.")
 
-source=("https://gitlab.gnome.org/jadahl/libdecor/-/archive/${pkgver}/libdecor-${pkgver}.tar.gz")
+source=("https://gitlab.freedesktop.org/libdecor/libdecor/-/archive/${pkgver}/libdecor-${pkgver}.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps=("cmake ninja meson wayland-protocols wayland pango dbus egl-wayland libxkbcommon")
+adddep=("wayland pango dbus gtk3")
+
+build_deps=("${adddep} cmake ninja meson wayland-protocols")
 
 build() {
   go_src_dir
