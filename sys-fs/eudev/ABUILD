@@ -1,16 +1,17 @@
 pkgname=eudev
-pkgver=3.2.12
+pkgver=3.2.14
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The userspace dev tools (udev) forked by Gentoo.")
-longdesc=("The Eudev package contains programs for dynamic creation of device nodes.")
 
 source=("https://github.com/eudev-project/eudev/releases/download/v${pkgver}/eudev-${pkgver}.tar.gz")
 
 tags=("base sys-fs")
 
-build_deps=("kmod util-linux openssl xz zstd gperf")
+adddep=("kmod util-linux openssl xz zstd gperf")
+
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
