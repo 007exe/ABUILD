@@ -1,20 +1,26 @@
 pkgname=brotli
-pkgver=1.0.9
-pkgbuild=3
+pkglist=("python-brotli brotli-testdata")
+pkgver=1.1.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Generic-purpose lossless compression algorithm.")
-longdesc=("Brotli provides a general-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling. Its libraries are particularly used for WOFF2 fonts on webpages.")
 
 source=("https://github.com/google/brotli/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("develop dev-ruby")
 
-pkglist=("python-brotli brotli-testdata")
+adddep=("glibc")
 
-build_deps=("git glibc gcc-libs cmake python-setuptools")
+build_deps=("${adddep} git cmake python-setuptools python-build python-installer python-wheel")
 
-adddep=("gcc-libs")
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
@@ -24,7 +30,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=True
-  make -C build VERBOSE=1
+  make -C build VERBOSE=1 -j${numjobs}
   make -C build DESTDIR=${pkgdir} install
 
   local man;
@@ -34,10 +40,11 @@ build() {
   install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
+# python-brotli ###################################################################################
+
 python-brotli() {
   pkgname=python-brotli
   shortdesc=("Generic-purpose lossless compression algorithm - python library.")
-  longdesc=("Brotli provides a general-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling. Its libraries are particularly used for WOFF2 fonts on webpages.")
   tags=("libs dev-python")
 }
 
@@ -47,10 +54,11 @@ python-brotli_prep() {
   install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
+# brotli-testdata ###################################################################################
+
 brotli-testdata() {
   pkgname=brotli-testdata
   shortdesc=("Generic-purpose lossless compression algorithm - test data.")
-  longdesc=("Brotli provides a general-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling. Its libraries are particularly used for WOFF2 fonts on webpages.")
 }
 
 brotli-testdata_prep() {
