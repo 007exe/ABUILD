@@ -1,5 +1,5 @@
 echo -e "\n"
 echo -e "The following packages extend telegram-desktop capabilities:"
-echo -e "webkit2gtk: embedded browser features"
-echo -e "xdg-desktop-portal: desktop integration"
+echo -e "    webkit2gtk: embedded browser features"
+echo -e "    xdg-desktop-portal: desktop integration"
 echo -e " "
