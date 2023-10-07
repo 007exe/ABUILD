@@ -1,0 +1,26 @@
+pkgname=openfec
+pkgver=1.4.2.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Open Forward Erasure Codecs.")
+
+source=("https://github.com/roc-streaming/openfec/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+build_deps=("cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DBUILD_SHARED_LIBS=ON \
+    -W no-dev
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm 644 {LICENCE,Licence}* -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
