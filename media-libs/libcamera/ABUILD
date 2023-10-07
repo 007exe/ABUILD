@@ -1,0 +1,127 @@
+pkgname=libcamera
+pkglist=("libcamera-ipa libcamera-tools gst-plugin-libcamera") # libcamera-docs
+pkgver=0.1.0
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("A complex camera support library for Linux, Android, and ChromeOS.")
+
+source=("git:https://git.libcamera.org/libcamera/libcamera.git")
+
+tags=("libs media-libs")
+
+dep_gst_plugin=("gcc-libs glibc glib2 gstreamer gst-plugins-base-libs")
+dep_libcamera_tools=("gcc-libs glibc gtest libdrm libevent libjpeg-turbo libtiff libyaml qt5-base sdl2")
+dep_libcamera_ipa=("gcc-libs glibc")
+# systemd
+dep_libcamera=("gcc-libs glibc gnutls elfutils libunwind libyaml bash")
+# python-pyyaml
+build_deps=("${dep_libcamera} ${dep_libcamera_ipa} ${dep_libcamera_tools} ${dep_gst_plugin}
+doxygen git glib2 graphviz gst-plugins-base gtest libdrm libjpeg-turbo libtiff libyaml meson
+python-jinja python-ply python-sphinx qt5-base qt5-tools sdl2 texlive-core python-yaml")
+adddep=("${dep_libcamera} libcamera-ipa")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugin-libcamera libcamera-docs libcamera-tools")
+
+######################################################################################
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+######################################################################################
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+  mv ${srcdir}/libcamera_git_libcamera.git.src ${srcdir}/libcamera
+}
+
+build() {
+  cd ${srcdir}/libcamera
+  burn_patches
+  printf "%s\n" "$pkgver" > .tarball-version
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D v4l2=true \
+    -D tracing=disabled \
+    -D test=true \
+    -D documentation=disabled
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+
+  cd ${pkgdir}
+#  _pick libcamera-docs usr/share/doc
+  _pick libcamera-ipa usr/lib/libcamera/
+  _pick libcamera-tools usr/bin/{cam,qcam,lc-compliance}
+  _pick gst-plugin-libcamera usr/lib/gstreamer-*
+}
+
+# libcamera-docs #####################################################################################
+
+libcamera-docs() {
+  pkgname=libcamera-docs
+  shortdesc=("A complex camera support library for Linux, Android, and ChromeOS - documentation.")
+  skip_gendeps=1
+}
+
+libcamera-docs_prep() {
+  cd ${srcdir}
+  mv -v libcamera-docs/* ${pkgdir}
+  mv -v ${pkgdir}/usr/share/doc/libcamera-${pkgver}/ ${pkgdir}/usr/share/doc/libcamera/
+  rm -frv ${pkgdir}/usr/share/doc/libcamera/html/.buildinfo
+}
+
+# libcamera-ipa #####################################################################################
+
+libcamera-ipa() {
+  pkgname=libcamera-ipa
+  shortdesc=("A complex camera support library for Linux, Android, and ChromeOS - signed IPA.")
+  adddep=("${dep_libcamera_ipa} libcamera")
+}
+
+libcamera-ipa_prep() {
+  cd ${srcdir}
+#  strip $pkgname/usr/lib/libcamera/*{.so,proxy}
+#  for _lib in libcamera-ipa/usr/lib/libcamera/*.so; do
+#    libcamera/src/ipa/ipa-sign.sh "$(find build -type f -iname "*ipa-priv-key.pem")" "$_lib" "$_lib.sign"
+#  done
+  mv -v libcamera-ipa/* ${pkgdir}
+}
+
+# libcamera-tools #####################################################################################
+
+libcamera-tools() {
+  pkgname=libcamera-tools
+  shortdesc=("A complex camera support library for Linux, Android, and ChromeOS - tools.")
+  adddep=("${dep_libcamera_tools} libcamera")
+}
+
+libcamera-tools_prep() {
+  cd ${srcdir}
+  mv -v libcamera-tools/* ${pkgdir}
+}
+
+# gst-plugin-libcamera #####################################################################################
+
+gst-plugin-libcamera() {
+  pkgname=gst-plugin-libcamera
+  shortdesc=("Multimedia graph framework - libcamera plugin.")
+  adddep=("${dep_gst_plugin} libcamera")
+}
+
+gst-plugin-libcamera_prep() {
+  cd ${srcdir}
+  mv -v gst-plugin-libcamera/* ${pkgdir}
+}
