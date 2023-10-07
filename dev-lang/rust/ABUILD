@@ -1,6 +1,6 @@
 pkgname=rust
 pkglist=("lib32-rust-libs rust-src")
-pkgver=1.72.1
+pkgver=1.73.0
 pkgbuild=1
 arch=("auto")
 
