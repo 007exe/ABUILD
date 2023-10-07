@@ -1,0 +1,25 @@
+pkgname=gengetopt
+pkgver=2.23
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A tool to write command line option parsing code for C programs.")
+
+source=("https://ftp.gnu.org/gnu/gengetopt/${pkgname}-${pkgver}.tar.xz")
+
+tags=("develop dev-util")
+
+adddep=("gcc-libs")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
