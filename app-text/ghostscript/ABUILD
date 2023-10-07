@@ -1,6 +1,6 @@
 pkgname=ghostscript
 pkglist=("ghostxps ghostpcl")
-pkgver=10.01.2
+pkgver=10.02.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,9 @@ source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download
 
 tags=("app-text console")
 
-build_deps=("libxt libcups fontconfig zlib libpng libjpeg-turbo libtiff lcms2 dbus openjpeg2 libidn gnutls gtk3 glu freeglut jbig2dec libpaper ijs")
+adddep=("libxt libcups fontconfig zlib libpng libjpeg-turbo jbig2dec libtiff lcms2
+libpaper ijs openjpeg2 libidn poppler-data cairo glibc libx11 gdk-pixbuf glib2")
+build_deps=("${adddep} gtk3 gnutls glu freeglut")
 
 build() {
   go_src_dir
@@ -39,6 +41,8 @@ build() {
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
 }
 
+# ghostxps ################################################################################################
+
 ghostxps() {
   pkgname=ghostxps
   shortdesc=("An interpreter for the PostScript language/PostScript/XPS document.")
@@ -54,6 +58,8 @@ ghostxps_prep() {
 
   install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 LICENSE
 }
+
+# ghostpcl ################################################################################################
 
 ghostpcl() {
   pkgname=ghostpcl
