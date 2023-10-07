@@ -1,11 +1,11 @@
 pkgname=qt6-shadertools
-pkgver=6.5.0
+pkgver=6.5.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides functionality for the shader pipeline that allows Qt Quick to operate on Vulkan, Metal, and Direct3D, in addition to OpenGL.")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtshadertools-everywhere-src-${pkgver}.tar.xz")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtshadertools-everywhere-src-${pkgver}.tar.xz")
 
 tags=("qt6 dev-qt")
 
