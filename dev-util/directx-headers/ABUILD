@@ -1,5 +1,5 @@
 pkgname=directx-headers
-pkgver=1.606.4
+pkgver=1.610.0
 pkgbuild=1
 arch=("auto")
 
@@ -11,6 +11,14 @@ tags=("dev-util develop")
 
 build_deps=("meson")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
 build() {
   go_src_dir
   export CXXFLAGS="$CXXFLAGS -fno-lto"
@@ -21,12 +29,4 @@ build() {
   ninja -C build
   DESTDIR=${pkgdir} meson install -C build
   install -m644 -Dt ${pkgdir}/usr/share/licenses/${pkgname} LICENSE
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибками когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
