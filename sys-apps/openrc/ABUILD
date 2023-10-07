@@ -1,5 +1,5 @@
 pkgname=openrc
-pkgver=0.47.1
+pkgver=0.50
 pkgbuild=1
 arch=("auto")
 
