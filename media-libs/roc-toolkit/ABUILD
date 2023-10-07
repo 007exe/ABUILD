@@ -1,0 +1,27 @@
+pkgname=roc-toolkit
+pkgver=0.2.5
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Real-time audio streaming over the network.")
+
+source=("https://github.com/roc-streaming/roc-toolkit/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+adddep=("glibc gcc-libs libunwind libuv")
+
+build_deps=("${adddep} alsa-lib libpulse ragel scons sox speexdsp openfec gengetopt cpputest")
+
+build() {
+  go_src_dir
+  burn_patches
+  scons \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-openssl \
+    --enable-tests \
+    --enable-examples
+  scons DESTDIR=${pkgdir} --prefix=/usr --libdir=/usr/lib install
+  install -vDm 644 3rdparty/hedley/COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}/hedley.COPYING
+}
