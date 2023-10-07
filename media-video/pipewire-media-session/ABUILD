@@ -1,0 +1,29 @@
+pkgname=pipewire-media-session
+pkgver=0.4.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Legacy session manager for PipeWire (deprecated).")
+
+source=("https://gitlab.freedesktop.org/pipewire/media-session/-/archive/${pkgver}/media-session-${pkgver}.tar.gz")
+
+tags=("libs media-libs")
+
+adddep=("pipewire")
+
+# systemd
+build_deps=("${adddep} alsa-lib dbus meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D buildtype=release \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D with-module-sets=[]
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/doc/${pkgname} -m644 {NEWS,README}*
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
