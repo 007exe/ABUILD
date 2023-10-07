@@ -1,16 +1,18 @@
 pkgname=boost
 pkglist=("boost-libs")
 pkgver=1.83.0
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
-shortdesc=("Free peer-reviewed portable C++ source libraries development headers.")
+shortdesc=("Free peer-reviewed portable C++ source libraries (development headers).")
 
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${pkgver//./_}.tar.bz2")
 
 tags=("develop dev-libs")
 
-build_deps=("icu python python-numpy bzip2 zlib openmpi zstd")
+dep_libs=("bzip2 zlib icu zstd")
+
+build_deps=("${dep_libs} python python-numpy openmpi")
 
 adddep=("boost-libs=${pkgver}")
 
@@ -19,9 +21,10 @@ removedep=("python")
 
 build() {
   go_src_dir
+  burn_patches
   local JOBS="$(sed 's/.*\(-j *[0-9]\+\).*/\1/' <<<$MAKEFLAGS)"
 # NOTE: Версия pythonn
-  _python_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4)
+  local python_version=$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 
   pushd tools/build
   ./bootstrap.sh --cxxflags="$CXXFLAGS $LDFLAGS"
@@ -45,7 +48,7 @@ build() {
     runtime-link=shared \
     link=shared,static \
     toolset=gcc \
-    python=${_python_ver} \
+    python=${python_version} \
     cflags="$CPPFLAGS $CFLAGS -fPIC -O3 -ffat-lto-objects" \
     cxxflags="$CPPFLAGS $CXXFLAGS -fPIC -O3 -ffat-lto-objects" \
     linkflags="$LDFLAGS" \
@@ -54,37 +57,42 @@ build() {
     \
     --prefix=${srcdir}/fakeinstall
 
+  cd ${srcdir}
+#  make DESTDIR=${pkgdir} install
+
   install -d ${pkgdir}/usr/lib
   cp -a ${srcdir}/fakeinstall/lib/*.{a,so} ${pkgdir}/usr/lib/
   cp -a ${srcdir}/fakeinstall/lib/cmake ${pkgdir}/usr/lib/
   cp -a ${srcdir}/fakeinstall/{bin,include,share} ${pkgdir}/usr/
 
 # https://github.com/boostorg/python/issues/203#issuecomment-391477685
-  _python_minor_ver=$(python --version | cut -d " " -f2 | cut -c 1,2,3,4,5 | cut -d "." -f2)
   for _lib in python numpy; do
-    ln -srL ${pkgdir}/usr/lib/libboost_${_lib}3{${_python_minor_ver},}.so
+    ln -srL ${pkgdir}/usr/lib/libboost_${_lib}{${python_version/.},${python_version%.*}}.so
   done
 
   install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ${srcdir}/boost_${pkgver//./_}/LICENSE_1_0.txt
 }
 
+# boost-libs ####################################################################################################
+
 boost-libs() {
   pkgname=boost-libs
-  shortdesc=("Free peer-reviewed portable C++ source libraries runtime libraries.")
+  shortdesc=("Free peer-reviewed portable C++ source libraries (runtime libraries).")
+  adddep=("${dep_libs}")
   # NOTE: Это опциональные зависимости
   removedep=("openmpi")
 }
 
 boost-libs_prep() {
   install -dm755 ${pkgdir}/usr/lib
-  cp -a ${srcdir}/fakeinstall/lib/*.so* ${pkgdir}/usr/lib/
+  
+  cp -a ${srcdir}/fakeinstall/lib/*.so.* ${pkgdir}/usr/lib/
 
 # https://github.com/boostorg/mpi/issues/112
-  install -d ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost
-  touch ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost/__init__.py
-  python -m compileall -o 0 -o 1 -o 2 ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost
-  cp ${srcdir}/fakeinstall/lib/boost-python${_python_ver}/mpi.so \
-    ${pkgdir}/usr/lib/python${_python_ver}/site-packages/boost/mpi.so
-
+  local site_packages=$(python -c 'import site; print(site.getsitepackages()[0])')
+  install -d "$pkgdir"$site_packages/boost
+  touch "$pkgdir"$site_packages/boost/__init__.py
+  python -m compileall -o 0 -o 1 -o 2 "$pkgdir"$site_packages/boost
+  cp ${srcdir}/fakeinstall/lib/boost-python*/mpi.so "$pkgdir"$site_packages/boost/mpi.so
   install -Dm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ${srcdir}/boost_${pkgver//./_}/LICENSE_1_0.txt
 }
