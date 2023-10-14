@@ -1,16 +1,24 @@
 pkgname=x264
-pkgver=20220222
+#pkgver=
 pkgbuild=1
 arch=("auto")
+strict_version='yes'
 
-shortdesc=("Open Source H264/AVC video encoder")
-longdesc=("x264 package provides a library for encoding video streams into the H.264/MPEG-4 AVC format.")
+shortdesc=("Open Source H264/AVC video encoder.")
 
-source=("https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable-$pkgver.tar.bz2")
+source=("git:https://code.videolan.org/videolan/x264.git")
 
 tags=("libs media-libs")
 
+# adddep=("l-smash")
+
 build_deps=("yasm nasm")
+
+# NOTE: Получаем текущую версию из из сырцов
+before_build() {
+  go_src_dir
+  pkgver=`./version.sh | grep X264_POINTVER | sed -r 's/^#define X264_POINTVER "([0-9]+\.[0-9]+)\.([0-9]+) (.*)"$/\1.r\2.\3/'`
+}
 
 build() {
   go_src_dir
