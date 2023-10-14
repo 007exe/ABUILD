@@ -10,7 +10,6 @@ shortdesc=("A featureful, general-purpose sound server.")
 source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs media-sound")
-
 dep_jack=("jack")
 dep_lirc=("lirc")
 dep_zeroconf=("avahi")
@@ -21,9 +20,9 @@ dep_rtp=("gst-plugins-base gst-plugins-base-libs gst-plugins-good openssl")
 dep_libpulse=("dbus libasyncns libsndfile libxcb")
 dep_pulse=("alsa-lib fftw libcap libtool libsm libsoxr libxtst orc speexdsp tdb webrtc-audio-processing rtkit")
 adddep=("libpulse=${pkgver} ${dep_pulse}")
-# systemd
+# systemd -D systemd=disabled
 build_deps=("${dep_pulse} ${dep_libpulse} ${dep_zeroconf} ${dep_lirc} ${dep_jack} ${dep_bluetooth} ${dep_equalizer}
-${dep_rtp} alsa-lib attr check doxygen gtk3 meson valgrind xmltoman")
+${dep_rtp} attr check doxygen gtk3 meson valgrind webrtc-audio-processing xmltoman")
 
 config_files=("etc/pulse/daemon.conf
 etc/pulse/default.pa
@@ -60,19 +59,18 @@ build() {
     -D gstreamer=enabled
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
-
   cd ${pkgdir}
 
 # Заменяется активацией сокета systemd
 #  sed -e '/autospawn/iautospawn = no' -i ${pkgdir}/etc/pulse/client.conf
 
 # Отключение модуля пробкового запроса
-  sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' -i ${pkgdir}/usr/bin/start-pulseaudio-x11
+#  sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' -i ${pkgdir}/usr/bin/start-pulseaudio-x11
 
 # Требуется qpaeq
-  sed -e '/Load several protocols/aload-module module-dbus-protocol' -i ${pkgdir}/etc/pulse/default.pa
+#  sed -e '/Load several protocols/aload-module module-dbus-protocol' -i ${pkgdir}/etc/pulse/default.pa
 
-  rm -r etc/dbus-1
+#  rm -r etc/dbus-1
 }
 
 #######################################################################################################################
