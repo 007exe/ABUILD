@@ -1,5 +1,5 @@
 pkgname=qt5-3d
-pkgver=5.15.10
+pkgver=5.15.11
 pkgbuild=1
 arch=("auto")
 
@@ -7,16 +7,9 @@ shortdesc=("C++ and QML APIs for easy inclusion of 3D graphics.")
 
 tags=("qt5 dev-qt")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qt3d-everywhere-opensource-src-${pkgver}.tar.xz")
-#strict_version=1
-#source=("git:https://invent.kde.org/qt/qt/qt3d.git")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qt3d-everywhere-opensource-src-${pkgver}.tar.xz")
 
 build_deps=("qt5-declarative assimp git vulkan-headers")
-
-#before_build() {
-#  go_src_dir
-#  git checkout v${pkgver}-lts-lgpl
-#}
 
 build() {
   go_src_dir

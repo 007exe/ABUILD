@@ -1,22 +1,22 @@
 pkgname=qt5-script
-pkgver=5.15.10
+pkgver=5.15.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Classes for making Qt applications scriptable. Provided for Qt 4.x compatibility.")
 
-#source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtscript-everywhere-opensource-src-${pkgver}.tar.xz")
-strict_version=1
-source=("git:https://invent.kde.org/qt/qt/qtscript.git")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtscript-everywhere-opensource-src-${pkgver}.tar.xz")
+#strict_version=1
+#source=("git:https://invent.kde.org/qt/qt/qtscript.git")
 
 tags=("qt5 dev-qt")
 
 build_deps=("git qt5-base")
 
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}-lts
-}
+#before_build() {
+#  go_src_dir
+#  git checkout v${pkgver}-lts
+#}
 
 build() {
   go_src_dir

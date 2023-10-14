@@ -1,9 +1,9 @@
 #!/bin/bash
 
-QT_VERSION=5.15.10
+QT_VERSION=5.15.11
 BUILD_VERSION=1
 # NOTE: Измени значение переменной _qtbasever в файле qt5-webengine/ABUILD
-WEBENGINE_VERSION=5.15.14
+WEBENGINE_VERSION=5.15.15
 BUILD_VERSION_WEB=1
 
 # NOTE: После сборки qt5-base следует пересобрать qt5-webengine

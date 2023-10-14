@@ -1,11 +1,11 @@
 pkgname=qt5-remoteobjects
-pkgver=5.15.10
+pkgver=5.15.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Support for XPath, XQuery, XSLT and XML schema validation.")
 
-source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtremoteobjects-everywhere-opensource-src-${pkgver}.tar.xz")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtremoteobjects-everywhere-opensource-src-${pkgver}.tar.xz")
 #strict_version=1
 #source=("git:https://invent.kde.org/qt/qt/qtremoteobjects.git")
 

@@ -1,13 +1,13 @@
 pkgname=qt5-websockets
-pkgver=5.15.10
+pkgver=5.15.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Provides WebSocket communication compliant with RFC 6455.")
 
-#source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwebsockets-everywhere-opensource-src-${pkgver}.tar.xz")
-strict_version=1
-source=("git:https://invent.kde.org/qt/qt/qtwebsockets.git")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtwebsockets-everywhere-opensource-src-${pkgver}.tar.xz")
+#strict_version=1
+#source=("git:https://invent.kde.org/qt/qt/qtwebsockets.git")
 
 tags=("qt5 dev-qt")
 
@@ -16,10 +16,10 @@ build_deps=("qt5-declarative qt5-base git")
 # NOTE: это опциональная зависимость
 removedep=("qt5-declarative")
 
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}-lts-lgpl
-}
+#before_build() {
+#  go_src_dir
+#  git checkout v${pkgver}-lts-lgpl
+#}
 
 build() {
   go_src_dir

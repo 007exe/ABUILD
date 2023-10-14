@@ -1,13 +1,13 @@
 pkgname=qt5-quick3d
-pkgver=5.15.10
+pkgver=5.15.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt module and API for defining 3D content in Qt Quick.")
 
-#source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtquick3d-everywhere-opensource-src-${pkgver}.tar.xz")
-strict_version=1
-source=("git:https://invent.kde.org/qt/qt/qtquick3d.git")
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qtquick3d-everywhere-opensource-src-${pkgver}.tar.xz")
+#strict_version=1
+#source=("git:https://invent.kde.org/qt/qt/qtquick3d.git")
 
 tags=("qt5 dev-qt")
 
@@ -16,10 +16,10 @@ build_deps=("qt5-declarative assimp git")
 # NOTE: это опциональная зависимость
 removedep=("assimp")
 
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}-lts-lgpl
-}
+#before_build() {
+#  go_src_dir
+#  git checkout v${pkgver}-lts-lgpl
+#}
 
 build() {
   go_src_dir

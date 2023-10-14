@@ -1,27 +1,27 @@
 pkgname=qt5-tools
-pkgver=5.15.10
+pkgver=5.15.11
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A cross-platform application and UI framework.")
 
+source=("https://www.nic.funet.fi/pub/mirrors/download.qt-project.org/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qttools-everywhere-opensource-src-${pkgver}.tar.xz")
+#strict_version=1
+#source=("git:https://invent.kde.org/qt/qt/qttools.git")
+
 tags=("qt5 dev-qt")
 
-#source=("https://mirror.yandex.ru/mirrors/qt.io/official_releases/qt/${pkgver%.*}/${pkgver}/submodules/qttools-everywhere-opensource-src-${pkgver}.tar.xz")
-strict_version=1
-source=("git:https://invent.kde.org/qt/qt/qttools.git")
+adddep=("qt5-base hicolor-icon-theme")
 
-build_deps=("vulkan-headers clang qt5-base hicolor-icon-theme qt5-declarative")
-
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} qt5-declarative vulkan-headers llvm clang git")
 
 # NOTE: Это опциональные зависимости
 removedep=("clang qt5-webkit")
 
-before_build() {
-  go_src_dir
-  git checkout v${pkgver}-lts-lgpl
-}
+#before_build() {
+#  go_src_dir
+#  git checkout v${pkgver}-lts-lgpl
+#}
 
 build() {
   go_src_dir
