@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Simple passphrase entry dialogs which utilize the Assuan protocol.")
-longdesc=("Collection of simple PIN or passphrase entry dialogs which utilize the Assuan protocol.")
 
 source=("https://www.gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("network app-crypt")
 
-build_deps=("glibc ncurses libcap libassuan libsecret glib2 gtk2 qt5-base gcr")
+adddep=("glibc ncurses libassuan libsecret glib2")
+
+build_deps=("${adddep} gtk2 qt5-base qt5-x11extras kwayland gcr")
 
 # NOTE: Это опциональные зависимости
 removedep=("gtk2 qt5-base gcr")
@@ -30,7 +31,7 @@ build() {
     --enable-libsecret
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
-  
+
   install -Dm 755 ${filedir}/pinentry -t ${pkgdir}/usr/bin
   install -Dm 755 ${filedir}/preexec -t ${pkgdir}/etc/pinentry
 }
