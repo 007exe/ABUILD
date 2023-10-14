@@ -17,6 +17,8 @@ build_deps=("${adddep} doxygen expat libffado libsamplerate opus waf")
 # NOTE: Это опциональные зависимости
 removedep=("a2jmidid libffado jack-example-tools jack-dbus jack-docs realtime-privileges")
 
+conflicts=("pipewire-jack")
+
 build() {
   go_src_dir
 # Удаляем пользовательский waflib
