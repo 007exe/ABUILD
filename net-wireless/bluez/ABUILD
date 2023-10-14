@@ -109,7 +109,6 @@ bluez-libs_prep() {
     install-pkgincludeHEADERS \
     install-libLTLIBRARIES \
     install-pkgconfigDATA
-  rm ${pkgdir}/usr/lib/libbluetooth.so*
 }
 
 # bluez-cups ####################################################################
