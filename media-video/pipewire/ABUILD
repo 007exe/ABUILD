@@ -259,6 +259,7 @@ pipewire-jack() {
   shortdesc=("Low-latency audio/video router and processor - JACK replacement.")
   adddep=("${dep_jack} libpipewire pipewire pipewire-audio")
   conflicts=("jack jack2 pipewire-jack-client")
+  provides=("jack")
 # provides=("jack libjack.so libjackserver.so libjacknet.so")
 }
 
