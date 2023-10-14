@@ -3,7 +3,7 @@ pkgver=20230201
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Filter that can be run between an arbitrary application and a UTF-8 terminal emulator")
+shortdesc=("Filter that can be run between an arbitrary application and a UTF-8 terminal emulator.")
 
 source=("https://invisible-mirror.net/archives/luit/luit-${pkgver}.tgz")
 
