@@ -1,5 +1,5 @@
 pkgname=qtcreator
-pkgver=10.0.1
+pkgver=11.0.3
 pkgbuild=1
 arch=("auto")
 
