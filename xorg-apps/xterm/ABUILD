@@ -1,5 +1,5 @@
 pkgname=xterm
-pkgver=384
+pkgver=386
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,7 @@ tags=("xorg xorg-apps")
 
 source=("https://invisible-mirror.net/archives/${pkgname}/${pkgname}-${pkgver}.tgz")
 
-# luit
-adddep=("libxft libxaw ncurses xbitmaps libutempter libxkbfile")
+adddep=("libxft libxaw ncurses xbitmaps libutempter libxkbfile luit")
 
 build_deps=("${adddep}")
 
