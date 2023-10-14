@@ -1,11 +1,12 @@
-# NOTE: В будущем этот пакет стоит разделить на:
-# pipewire alsa-card-profiles pipewire-docs pipewire-audio pipewire-alsa pipewire-jack
-# pipewire-pulse gst-plugin-pipewire pipewire-zeroconf pipewire-v4l2 pipewire-x11-bell
 # NOTE: Рассмотреть заману pulseaudio на pipewire
 pkgname=pipewire
-pkgver=0.3.80
+pkglist=("libpipewire alsa-card-profiles pipewire-docs pipewire-audio pipewire-alsa pipewire-ffado
+pipewire-jack-client pipewire-jack pipewire-pulse pipewire-roc gst-plugin-pipewire pipewire-zeroconf
+pipewire-v4l2 pipewire-x11-bell")
+pkgver=0.3.82
 pkgbuild=1
 arch=("auto")
+_ver=${pkgver:0:3}
 
 shortdesc=("Low-latency audio/video router and processor.")
 
@@ -13,9 +14,40 @@ source=("https://github.com/PipeWire/pipewire/archive/${pkgver}/pipewire-${pkgve
 
 tags=("libs media-libs")
 
-build_deps=("alsa-lib bluez-libs avahi dbus doxygen graphviz gst-plugins-base libcanberra
-libfdk-aac libfreeaptx libldac libpulse libsndfile libusb libx11 libxfixes lilv meson ncurses
-python-docutils sbc sdl2 valgrind webrtc-audio-processing rtkit liblc3")
+dep_roc=("glibc roc-toolkit")
+dep_ffado=("glibc libffado")
+dep_libpipewire=("glibc gcc-libs")
+dep_jack_client=("glibc dbus jack")
+dep_alsa=("pipewire-media-session")
+dep_jack=("glibc pipewire-media-session")
+dep_v4l2=("glibc pipewire-media-session")
+dep_bell=("glibc libcanberra libx11 libxfixes")
+dep_zeroconf=("gcc-libs glibc avahi openssl opus")
+dep_pipewire=("gcc-libs glibc dbus glib2 ncurses readline libcamera") # systemd
+dep_pulse=("dbus gcc-libs glibc avahi glib2 libpulse pipewire-media-session") # systemd
+dep_gst_plugin=("glib2 glibc gst-plugins-base-libs gstreamer pipewire-media-session")
+dep_audio=("dbus gcc-libs glib2 glibc alsa-lib bluez-libs libfdk-aac libfreeaptx liblc3 libldac lilv libmysofa opus sbc libsndfile libusb webrtc-audio-processing") # systemd
+build_deps=("${dep_pipewire} ${dep_libpipewire} ${dep_audio} ${dep_alsa} ${dep_ffado} ${dep_jack_client} ${dep_jack} ${dep_pulse} ${dep_roc} ${dep_gst_plugin}
+${dep_zeroconf} ${dep_v4l2} ${dep_bell} avahi doxygen git graphviz gst-plugins-base jack valgrind libusb meson python-docutils readline rtkit sdl2")
+adddep=("libpipewire=${pkgver}")
+
+# NOTE: Это опциональные зависимости
+removedep=("gst-plugin-pipewire pipewire-alsa pipewire-audio pipewire-docs pipewire-ffado pipewire-jack-client pipewire-jack pipewire-pulse pipewire-roc
+pipewire-session-manager pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges rtkit")
+
+###############################################################################
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+###############################################################################
 
 build() {
   go_src_dir
@@ -26,13 +58,309 @@ build() {
     -D libdir=/usr/lib \
     -D bluez5-codec-lc3plus=disabled \
     -D docs=enabled \
-    -D jack=disabled \
     -D jack-devel=true \
     -D libjack-path=/usr/lib \
-    -D libcamera=disabled \
-    -D udevrulesdir=/usr/lib/udev/rules.d \
-    -D roc=disabled \
-    -D session-managers=[]
+    -D rlimits-install=false \
+    -D session-managers=[] \
+    -D udevrulesdir=/usr/lib/udev/rules.d
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
+
+    (
+    cd ${pkgdir}
+
+    for _f in pipewire-{aes67,avb,pulse}; do
+      cmp usr/bin/pipewire usr/bin/$_f
+      ln -sf pipewire usr/bin/$_f
+    done
+
+    _pick lib usr/include/{pipewire-$_ver,spa-0.2}
+    _pick lib usr/lib/libpipewire-$_ver.so*
+    _pick lib usr/lib/pkgconfig/lib{pipewire-$_ver,spa-0.2}.pc
+
+    _pick acp usr/lib/udev
+    _pick acp usr/share/alsa-card-profile
+
+    _pick docs usr/share/doc
+
+    _pick audio usr/bin/pipewire-{aes67,avb}
+    _pick audio usr/bin/pw-{cat,{,enc}play,record,midi{play,record},dsdplay}
+    _pick audio usr/bin/pw-{loopback,mididump}
+    _pick audio usr/bin/spa-{acp-tool,resample}
+    _pick audio usr/lib/alsa-lib
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-avb.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-echo-cancel.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-fallback-sink.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-filter-chain*.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-loopback.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-netjack2-*.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-pipe-tunnel.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-protocol-simple.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-rtp-{sap,sink,source}.so
+    _pick audio usr/lib/pipewire-$_ver/libpipewire-module-vban-{recv,send}.so
+    _pick audio usr/lib/spa-0.2/{aec,alsa,audio*,avb,bluez5}
+#    _pick audio usr/lib/systemd/user/filter-chain.service
+    _pick audio usr/share/alsa
+    _pick audio usr/share/man/man1/pw-{cat,mididump}.1
+    _pick audio usr/share/pipewire/filter-chain*
+    _pick audio usr/share/pipewire/pipewire-{aes67,avb}.conf
+    _pick audio usr/share/spa-0.2/bluez5
+
+    _pick ffado usr/lib/pipewire-$_ver/libpipewire-module-ffado*.so
+
+    _pick jack-client usr/lib/pipewire-$_ver/libpipewire-module-jack{-tunnel,dbus-detect}.so
+    _pick jack-client usr/lib/spa-0.2/jack
+
+    _pick jack usr/bin/pw-jack
+    _pick jack usr/include/jack
+    _pick jack usr/lib/libjack*
+    _pick jack usr/lib/pkgconfig/jack.pc
+    _pick jack usr/share/man/man1/pw-jack.1
+    _pick jack usr/share/pipewire/jack.conf
+
+    _pick pulse usr/bin/pipewire-pulse
+    _pick pulse usr/lib/pipewire-$_ver/libpipewire-module-protocol-pulse.so
+    _pick pulse usr/lib/pipewire-$_ver/libpipewire-module-pulse-tunnel.so
+#    _pick pulse usr/lib/systemd/user/pipewire-pulse.*
+    _pick pulse usr/share/man/man1/pipewire-pulse.1
+    _pick pulse usr/share/pipewire/pipewire-pulse.conf
+
+    _pick roc usr/lib/pipewire-$_ver/libpipewire-module-roc*.so
+
+    _pick gst usr/lib/gstreamer-1.0
+
+    _pick zeroconf usr/lib/pipewire-$_ver/libpipewire-module-{raop,zeroconf}-*.so
+    _pick zeroconf usr/lib/pipewire-$_ver/libpipewire-module-rtp-session.so
+
+    _pick v4l2 usr/bin/pw-v4l2 usr/lib/pipewire-$_ver/v4l2
+
+    _pick x11-bell usr/lib/pipewire-$_ver/libpipewire-module-x11-bell.so
+
+    # directories for overrides
+    mkdir -p etc/pipewire/{client-rt,client,minimal,pipewire}.conf.d
+  )
+
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# libpipewire ##################################################################################################
+
+libpipewire() {
+  pkgname=libpipewire
+  shortdesc=("Low-latency audio/video router and processor - client library.")
+  adddep=("${dep_libpipewire}")
+}
+
+libpipewire_prep() {
+  echo "===============> libpipewire <==============="
+  cd ${srcdir}
+  mv ${srcdir}/lib/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# alsa-card-profiles ###########################################################################################
+
+alsa-card-profiles() {
+  pkgname=alsa-card-profiles
+  shortdesc=("Low-latency audio/video router and processor - ALSA card profiles.")
+}
+
+alsa-card-profiles_prep() {
+  echo "===============> alsa-card-profiles <==============="
+  cd ${srcdir}
+  mv ${srcdir}/acp/* ${pkgdir}
+}
+
+# pipewire-docs ################################################################################################
+
+pipewire-docs() {
+  pkgname=pipewire-docs
+  shortdesc=("Low-latency audio/video router and processor - documentation.")
+}
+
+pipewire-docs_prep() {
+  echo "===============> pipewire-docs <==============="
+  cd ${srcdir}
+  mv ${srcdir}/docs/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-audio ###############################################################################################
+
+pipewire-audio() {
+  pkgname=pipewire-audio
+  shortdesc=("Low-latency audio/video router and processor - Audio support.")
+  adddep=("${dep_audio} pipewire libpipewire alsa-card-profiles")
+}
+
+pipewire-audio_prep() {
+  echo "===============> pipewire-audio <==============="
+  cd ${srcdir}
+  mv ${srcdir}/audio/* ${pkgdir}
+  mkdir -p ${pkgdir}/etc/alsa/conf.d
+  ln -st ${pkgdir}/etc/alsa/conf.d /usr/share/alsa/alsa.conf.d/50-pipewire.conf
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-alsa ################################################################################################
+
+pipewire-alsa() {
+  pkgname=pipewire-alsa
+  shortdesc=("Low-latency audio/video router and processor - ALSA configuration.")
+  adddep=("${dep_alsa} pipewire pipewire-audio")
+  conflicts=("pulseaudio-alsa")
+# provides=("pulseaudio-alsa")
+}
+
+pipewire-alsa_prep() {
+  echo "===============> pipewire-alsa <==============="
+  cd ${srcdir}
+  mkdir -p ${pkgdir}/etc/alsa/conf.d
+  ln -st ${pkgdir}/etc/alsa/conf.d /usr/share/alsa/alsa.conf.d/99-pipewire-default.conf
+  install -Dm644 /dev/null ${pkgdir}/usr/share/pipewire/media-session.d/with-alsa
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-ffado ###############################################################################################
+
+pipewire-ffado() {
+  pkgname=pipewire-ffado
+  shortdesc=("Low-latency audio/video router and processor - FireWire support.")
+  adddep=("${dep_ffado} pipewire pipewire-audio libpipewire")
+}
+
+pipewire-ffado_prep() {
+  echo "===============> pipewire-ffado <==============="
+  cd ${srcdir}
+  mv ${srcdir}/ffado/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-jack-client #########################################################################################
+
+pipewire-jack-client() {
+  pkgname=pipewire-jack-client
+  shortdesc=("Low-latency audio/video router and processor - PipeWire as JACK client.")
+  adddep=("${dep_jack_client} libpipewire pipewire pipewire-audio")
+  conflicts=("pipewire-jack")
+}
+
+pipewire-jack-client_prep() {
+  echo "===============> pipewire-jack-client <==============="
+  cd ${srcdir}
+  mv ${srcdir}/jack-client/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-jack ################################################################################################
+
+pipewire-jack() {
+  pkgname=pipewire-jack
+  shortdesc=("Low-latency audio/video router and processor - JACK replacement.")
+  adddep=("${dep_jack} libpipewire pipewire pipewire-audio")
+  conflicts=("jack jack2 pipewire-jack-client")
+# provides=("jack libjack.so libjackserver.so libjacknet.so")
+}
+
+pipewire-jack_prep() {
+  echo "===============> pipewire-jack <==============="
+  cd ${srcdir}
+  mv ${srcdir}/jack/* ${pkgdir}
+  install -Dm644 /dev/null ${pkgdir}/usr/share/pipewire/media-session.d/with-jack
+  mkdir -p ${pkgdir}/etc/pipewire/jack.conf.d
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-pulse ###############################################################################################
+
+pipewire-pulse() {
+  pkgname=pipewire-pulse
+  shortdesc=("Low-latency audio/video router and processor - PulseAudio replacement.")
+  adddep=("${dep_pulse} libpipewire pipewire pipewire-audio pipewire-audio")
+  conflicts=("pulseaudio pulseaudio-bluetooth")
+# provides=("pulseaudio pulseaudio-bluetooth")
+}
+
+pipewire-pulse_prep() {
+  echo "===============> pipewire-pulse <==============="
+  cd ${srcdir}
+  mv ${srcdir}/pulse/* ${pkgdir}
+  mkdir -p ${pkgdir}/etc/pipewire/pipewire-pulse.conf.d
+  install -Dm644 /dev/null ${pkgdir}/usr/share/pipewire/media-session.d/with-pulseaudio
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-roc #################################################################################################
+
+pipewire-roc() {
+  pkgname=pipewire-roc
+  shortdesc=("Low-latency audio/video router and processor - ROC streaming support.")
+  adddep=("${dep_pulse} libpipewire pipewire pipewire-audio")
+}
+
+pipewire-roc_prep() {
+  echo "===============> pipewire-roc <==============="
+  cd ${srcdir}
+  mv ${srcdir}/roc/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# gst-plugin-pipewire ##########################################################################################
+
+gst-plugin-pipewire() {
+  pkgname=gst-plugin-pipewire
+  shortdesc=("Multimedia graph framework - pipewire plugin.")
+  adddep=("${dep_gst_plugin} libpipewire pipewire")
+}
+
+gst-plugin-pipewire_prep() {
+  echo "===============> gst-plugin-pipewire <==============="
+  cd ${srcdir}
+  mv ${srcdir}/gst/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-zeroconf ############################################################################################
+
+pipewire-zeroconf() {
+  pkgname=pipewire-zeroconf
+  shortdesc=("Low-latency audio/video router and processor - Zeroconf support.")
+  adddep=("${dep_zeroconf} libpipewire pipewire pipewire-audio")
+}
+
+pipewire-zeroconf_prep() {
+  echo "===============> pipewire-zeroconf <==============="
+  cd ${srcdir}
+  mv ${srcdir}/zeroconf/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-v4l2 ################################################################################################
+
+pipewire-v4l2() {
+  pkgname=pipewire-v4l2
+  shortdesc=("Low-latency audio/video router and processor - V4L2 interceptor")
+  adddep=("${dep_v4l2} libpipewire pipewire")
+}
+
+pipewire-v4l2_prep() {
+  echo "===============> pipewire-v4l2 <==============="
+  cd ${srcdir}
+  mv ${srcdir}/v4l2/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
+}
+
+# pipewire-x11-bell ############################################################################################
+
+pipewire-x11-bell() {
+  pkgname=pipewire-x11-bell
+  shortdesc=("Low-latency audio/video router and processor - X11 bell")
+  adddep=("${dep_bell} libpipewire pipewire pipewire-audio")
+}
+
+pipewire-x11-bell_prep() {
+  echo "===============> pipewire-x11-bell <==============="
+  cd ${srcdir}
+  mv ${srcdir}/x11-bell/* ${pkgdir}
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 ${srcdir}/pipewire-${pkgver}/COPYING
 }
