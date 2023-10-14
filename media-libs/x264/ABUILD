@@ -17,7 +17,7 @@ build_deps=("yasm nasm")
 # NOTE: Получаем текущую версию из из сырцов
 before_build() {
   go_src_dir
-  pkgver=`./version.sh | grep X264_POINTVER | sed -r 's/^#define X264_POINTVER "([0-9]+\.[0-9]+)\.([0-9]+) (.*)"$/\1.r\2.\3/'`
+  pkgver=3:`./version.sh | grep X264_POINTVER | sed -r 's/^#define X264_POINTVER "([0-9]+\.[0-9]+)\.([0-9]+) (.*)"$/\1.r\2.\3/'`
 }
 
 build() {
