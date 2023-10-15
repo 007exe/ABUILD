@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend system-monitoring-center capabilities:"
+echo -e "    amdgpu_top: for video engine load on GPU tab and per-process GPU usage, GPU memory columns on Processes tab"
+echo -e "    hwdata: for device vendor-model information of new devices"
+echo -e "    xorg-xrandr: for more accurate screen resolution and refresh rate detection"
+echo -e " "

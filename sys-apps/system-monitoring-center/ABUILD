@@ -1,0 +1,35 @@
+pkgname=system-monitoring-center
+pkgver=2.25.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Multi-featured system monitor.")
+
+source=("https://github.com/hakandundar34coding/system-monitoring-center/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("sys-apps utils")
+
+adddep=("dmidecode iproute2 libadwaita polkit procps-ng python-cairo python-gobject util-linux")
+
+build_deps=("${adddep} meson")
+
+# NOTE: Это опциональные зависимости
+removedep=("amdgpu_top hwdata xorg-xrandr")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
