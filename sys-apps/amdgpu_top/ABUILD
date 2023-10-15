@@ -1,0 +1,35 @@
+pkgname=amdgpu_top
+pkgver=0.2.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Tool that shows AMD GPU utilization.")
+
+source=("https://github.com/Umio-Yasuno/amdgpu_top/archive/refs/tags/v${pkgver}.tar.gz")
+
+tags=("sys-apps utils")
+
+adddep=("glibc libdrm")
+
+build_deps=("${adddep} rust")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  export RUSTUP_TOOLCHAIN=stable
+  export CARGO_TARGET_DIR=target
+  cargo fetch --locked --target x86_64-unknown-linux-gnu
+  export RUSTUP_TOOLCHAIN=stable
+  export CARGO_TARGET_DIR=target
+  cargo build --frozen --release
+  install -Dm755 target/release/amdgpu_top ${pkgdir}/usr/bin/amdgpu_top
+  install -Dm644 assets/amdgpu_top.desktop ${pkgdir}/usr/share/applications/amdgpu_top.desktop
+}
