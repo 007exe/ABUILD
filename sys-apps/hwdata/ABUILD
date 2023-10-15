@@ -1,0 +1,29 @@
+pkgname=hwdata
+pkgver=0.375
+pkgbuild=1
+arch=("noarch")
+strict_version='yes'
+
+shortdesc=("Hardware identification databases.")
+
+source=("git:https://github.com/vcrhonek/hwdata.git")
+
+tags=("sys-apps utils")
+
+build_deps=("git")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --disable-blacklist
+  make DESTDIR=${pkgdir} install
+}
