@@ -1,6 +1,6 @@
 pkgname=kernel
-pkglist=("kernel-headers kernel-sources")
-pkgver=6.5.5
+pkglist=("kernel-headers") # kernel-sources
+pkgver=6.5.7
 pkgbuild=1
 arch=("auto")
 
@@ -134,14 +134,14 @@ fi
 EOF
 }
 
-#################################################################################################################################
+# kernel-headers ################################################################################################################################
 
 kernel-headers() {
   pkgname=kernel-headers
-  arch=("noarch")
   shortdesc=("Headers and scripts for building modules for the linux kernel.")
-  skip_gendeps=1
+  arch=("noarch")
   tags=("develop sys-kernel")
+  skip_gendeps=1
 }
 
 kernel-headers_prep() {
@@ -156,7 +156,7 @@ kernel-headers_prep() {
   make headers_install INSTALL_HDR_PATH=${pkgdir}/usr
 }
 
-#################################################################################################################################
+# kernel-sources ################################################################################################################################
 # NOTE: Возможно этот пакет более не нужен но на всякий случай его создадим
 
 kernel-sources() {
