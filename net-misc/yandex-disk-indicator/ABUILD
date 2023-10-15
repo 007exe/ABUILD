@@ -1,6 +1,6 @@
 pkgname=yandex-disk-indicator
-pkgver=1.11.0
-pkgbuild=3
+pkgver=1.12.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Panel indicator (GUI) for YandexDisk CLI client for Linux.")
@@ -9,23 +9,22 @@ source=("https://github.com/slytomcat/yandex-disk-indicator/archive/${pkgver}.ta
 
 tags=("network net-misc")
 
-adddep=("yandex-disk python-pyinotify python-gobject python-gobject libappindicator-gtk3 xclip zenity")
+adddep=("yandex-disk python python-pyinotify python-gobject python-gobject libappindicator-gtk3 xclip zenity")
 
-build_deps=("${adddep} python")
-
-build() {
-  go_src_dir
-  cd build
-  chmod +x prepare.sh
-  mkdir ${pkgdir}/usr
-  export TARGET=${pkgdir}/usr
-  sh prepare.sh
-}
+build_deps=("${adddep}")
 
 # NOTE: Удаляем исходники пакета после сборки
 # FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
 # ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
+before_build(){
   go_src_dir
-  rm ${srcache}/${pkgver}.tar.gz
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}/build
+  chmod +x prepare.sh
+  mkdir ${pkgdir}/usr
+  export TARGET=${pkgdir}/usr
+  sh prepare.sh
 }
