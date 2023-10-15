@@ -1,0 +1,89 @@
+pkgname=qtcurve-utils
+pkglist=("qtcurve-gtk2 qtcurve-qt5 qtcurve-kde")
+pkgver=1.9
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A configurable set of widget styles for KDE and Gtk (shared libraries).")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/qtcurve/qtcurve-${pkgver}.tar.xz")
+
+tags=("themes kde-misc")
+
+dep_kde=("frameworkintegration gcc-libs glibc karchive kcompletion kconfig kcoreaddons kdelibs4support
+kconfigwidgets kguiaddons ki18n kiconthemes kio kwidgetsaddons kwindowsystem kxmlgui qt5-base qt5-svg qt5-x11extras")
+dep_qt5=("gcc-libs glibc qt5-base qt5-svg qt5-x11extras")
+dep_gtk2=("cairo gcc-libs gdk-pixbuf glib2 glibc gtk2 pango perl")
+adddep=("gcc-libs glibc libx11 libxcb")
+build_deps=("${adddep} ${dep_gtk2} ${dep_qt5} ${dep_kde} extra-cmake-modules gtk2 kdelibs4support kdoctools
+frameworkintegration kdesignerplugin kinit")
+
+before_build(){
+  go_src_dir
+  burn_patches
+}
+
+build() {
+  cd ${srcdir}
+  cmake -B build -S qtcurve-${pkgver} \
+    -DQTC_QT5_ENABLE_KDE=false \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DENABLE_GTK2=true
+  cmake --build build
+
+  cmake -B build-kde S qtcurve-${pkgver} \
+    -DQTC_QT5_ENABLE_KDE=true \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DENABLE_GTK2=false
+  cmake --build build-kde
+
+  DESTDIR=${pkgdir} cmake --install build/lib/utils
+
+# Переводы
+  mkdir ${pkgdir}/usr/share
+  cp -r build/locale ${pkgdir}/usr/share
+}
+
+# qtcurve-gtk2 ###########################################################
+
+qtcurve-gtk2() {
+  pkgname=qtcurve-gtk2
+  shortdesc=("A configurable set of widget styles for Gtk2.")
+  adddep=("${dep_gtk2} qtcurve-utils")
+}
+
+qtcurve-gtk2_prep() {
+  cd ${srcdir}
+  DESTDIR=${pkgdir} cmake --install build/gtk2
+  DESTDIR=${pkgdir} cmake --install build/lib/cairo
+}
+
+# qtcurve-qt5 ###########################################################
+
+qtcurve-qt5() {
+  pkgname=qtcurve-qt5
+  shortdesc=("A configurable set of widget styles for Qt5.")
+  adddep=("${dep_qt5} qtcurve-utils")
+  conflicts=("qtcurve-kde")
+}
+
+qtcurve-qt5_prep() {
+  cd ${srcdir}
+  DESTDIR=${pkgdir} cmake --install build/qt5
+}
+
+# qtcurve-kde ###########################################################
+
+qtcurve-kde() {
+  pkgname=qtcurve-kde
+  shortdesc=("A configurable set of widget styles for Qt5 (with KDE integration).")
+  adddep=("${dep_kde} qtcurve-utils")
+  conflicts=("qtcurve-qt5")
+}
+
+qtcurve-kde_prep() {
+  cd ${srcdir}
+  DESTDIR=${pkgdir} cmake --install build-kde/qt5
+}
