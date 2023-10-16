@@ -20,11 +20,11 @@ build() {
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --with-libcap=yes \
     --sbindir=/usr/bin \
-    --disable-systemd
+    --disable-systemd \
+    --with-libcap=yes
   make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} ROOTSBINDIR=/usr/bin install
 
   mkdir -p ${pkgdir}/etc/request-key.d
   install -m 644 contrib/request-key.d/cifs.idmap.conf ${pkgdir}/etc/request-key.d
