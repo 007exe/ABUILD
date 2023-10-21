@@ -1,0 +1,53 @@
+pkgname=libteam
+pkglist=("libteam-docs")
+pkgver=1.32
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Library for controlling team network device.")
+
+tags=("libs net-misc")
+
+source=("https://github.com/jpirko/libteam/archive/refs/tags/v${pkgver}.tar.gz")
+
+adddep=("bash jansson libdaemon dbus libnl zeromq")
+
+build_deps=("${adddep} doxygen graphviz")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  NOCONFIGURE=1 ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libexecdir=/usr/lib \
+    --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs} all html
+  make DESTDIR=${pkgdir} install
+  install -Dt ${pkgdir}/usr/lib/systemd/system -m644 teamd/redhat/systemd/teamd@.service
+  install -Dt ${pkgdir}/usr/share/dbus-1/system.d -m644 teamd/dbus/teamd.conf
+}
+
+# libteam-docs ##################################################################################
+
+libteam-docs() {
+  pkgname=libteam-docs
+  shortdesc=("Library for controlling team network device (documentation).")
+}
+
+libteam-docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share/doc/libteam
+  cp -a ${p_pkgdir}/usr/bin/* ${pkgdir}/usr/share/doc/libteam
+}
