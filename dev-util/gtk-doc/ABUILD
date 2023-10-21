@@ -4,15 +4,15 @@ pkgbuild=3
 arch=("noarch")
 
 shortdesc=("Documentation tool for public library API.")
-longdesc=("The GTK-Doc package contains a code documenter. This is useful for extracting specially formatted comments from the code to create API documentation. This package is optional; if it is not installed, packages will not build the documentation. This does not mean that you will not have any documentation. If GTK-Doc is not available, the install process will copy any pre-built documentation to your system.")
 
 source=("https://download.gnome.org/sources/gtk-doc/${pkgver%.*}/gtk-doc-${pkgver}.tar.xz")
 
 tags=("dev-util develop")
 
-build_deps=("yelp-tools docbook-xml docbook-xsl itstool libxslt glib2 python-lxml python-pygments python-anytree")
+adddep=("docbook-xml docbook-xsl glib2 python-lxml python-pygments")
 
-adddep=("docbook-xsl docbook-xml python-lxml python-pygments python-anytree")
+# dblatex
+build_deps=("${adddep} meson yelp-tools")
 
 build() {
   go_src_dir
