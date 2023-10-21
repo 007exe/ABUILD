@@ -1,0 +1,40 @@
+pkgname=gcr-4
+pkglist=("gcr-4-docs")
+pkgver=4.1.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library for bits of crypto UI and parsing.")
+
+source=("https://gitlab.gnome.org/GNOME/gcr/-/archive/${pkgver}/gcr-${pkgver}.tar.gz")
+
+tags=("app-crypt libs")
+
+# systemd
+adddep=("glib2 libgcrypt libsecret openssh p11-kit")
+
+build_deps=("${adddep} gi-docgen gobject-introspection gtk4 meson vala")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D systemd=disabled
+#    -D gtk_doc=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
+
+# gcr-4-docs ##########################################################################################################
+gcr-4-docs() {
+  pkgname=gcr-4-docs
+  shortdesc=("A library for bits of crypto UI and parsing (documentation).")
+}
+
+gcr-4-docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share/doc
+  mv ${p_pkgdir}/usr/share/doc ${pkgdir}/usr/share
+}
