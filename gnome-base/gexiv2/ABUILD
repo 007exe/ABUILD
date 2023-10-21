@@ -1,16 +1,20 @@
+# NOTE: данный пакет заменяет libgexiv2
 pkgname=gexiv2
-pkgver=0.14.0
-pkgbuild=2
+pkgver=0.14.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("GObject-based wrapper around the Exiv2 library.")
-longdesc=("gexiv2 is a GObject-based wrapper around the Exiv2 library.")
 
 tags=("libs media-libs")
 
-source=("https://gitlab.gnome.org/GNOME/gexiv2/-/archive/gexiv2-$pkgver/gexiv2-gexiv2-$pkgver.tar.bz2")
+source=("https://gitlab.gnome.org/GNOME/gexiv2/-/archive/gexiv2-$pkgver/gexiv2-gexiv2-${pkgver}.tar.bz2")
 
-build_deps="gobject-introspection meson python-gobject vala exiv2 glib2"
+adddep=("exiv2 glib2")
+
+build_deps=("${adddep} gobject-introspection meson python-gobject vala")
+
+#provides=("libgexiv2")
 
 build() {
   go_src_dir
