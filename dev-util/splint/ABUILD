@@ -1,0 +1,36 @@
+pkgname=splint
+pkgver=3.1.2.git20180129
+# NOTE: Коммит версии
+_commit=3fb908d0d8a4daa26dc770e1f2aa133f93100503
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("A tool for statically checking C programs for security vulnerabilities and coding mistakes.")
+
+source=("git:https://repo.or.cz/splint-patched.git")
+
+tags=("dev-util utils")
+
+adddeps=("flex")
+
+build_deps=("${adddep} git")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
+build() {
+  go_src_dir
+  autoreconf -fi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --mandir=/usr/share/man
+  make -j1
+  make DESTDIR=${pkgdir} install
+  install -D -m755 ${filedir}/splint.sh ${pkgdir}/etc/profile.d/splint.sh
+}
