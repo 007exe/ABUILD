@@ -1,0 +1,36 @@
+pkgname=pegtl
+pkgver=3.2.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Parsing Expression Grammar Template Library.")
+
+source=("https://github.com/taocpp/PEGTL/archive/refs/tags/${pkgver}.tar.gz")
+
+tags=("develop dev-libs")
+
+build_deps=("cmake")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
+    -DPEGTL_INSTALL_DOC_DIR=share/doc/${pkgname} \
+    -DPEGTL_INSTALL_CMAKE_DIR=lib/cmake/${pkgname} \
+    -DPEGTL_BUILD_EXAMPLES=OFF \
+    -DPEGTL_BUILD_TESTS=ON
+  make -C build VERRBOSE=1
+  make -C build DESTDIR=${pkgdir} install
+  install -Dpm 644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dpm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
