@@ -1,16 +1,18 @@
 pkgname=gcr
 pkgver=3.41.1
+pkglist=("gcr-docs")
 pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library for bits of crypto UI and parsing.")
-longdesc=("The Gcr package contains libraries used for displaying certificates and accessing key stores. It also provides the viewer for crypto files on the GNOME Desktop.")
 
 source=("https://gitlab.gnome.org/GNOME/gcr/-/archive/${pkgver}/gcr-${pkgver}.tar.gz")
 
 tags=("app-crypt libs")
 
-build_deps=("gobject-introspection vala libxslt git gtk-doc meson gtk3 libgcrypt p11-kit gnupg")
+adddep=("gtk3 libgcrypt libsecret openssh p11-kit")
+
+build_deps=("${adddep} gi-docgen gobject-introspection libxslt meson vala")
 
 config_files=("etc/security/limits.d/10-gcr.conf")
 
@@ -23,7 +25,9 @@ build(){
     -D prefix=/usr \
     -D libdir=/usr/lib \
     -D systemd=disabled \
-    -D gtk_doc=false
+    -D ssh_agent=false
+# NOTE: ssh_agent предоставляет gcr-4
+#    -D gtk_doc=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 
@@ -32,4 +36,19 @@ build(){
 install -Dm644 /dev/stdin "$pkgdir/etc/security/limits.d/10-gcr.conf" <<END
 @users - memlock 1024
 END
+}
+
+# gcr-docs ##########################################################################################
+
+gcr-docs() {
+  pkgname=gcr-docs
+  shortdesc=("A library for bits of crypto UI and parsing (documentation).")
+  skip_gendeps=1
+  arch=("noarch")
+}
+
+gcr-docs_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/share/doc
+  mv ${p_pkgdir}/usr/share/doc ${pkgdir}/usr/share
 }
