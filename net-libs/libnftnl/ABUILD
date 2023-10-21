@@ -1,0 +1,25 @@
+pkgname=libnftnl
+pkgver=1.2.6
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Netfilter library providing interface to the nf_tables subsystem.")
+
+source=("https://netfilter.org/projects/libnftnl/files/libnftnl-${pkgver}.tar.xz")
+
+tags=("libs net-libs")
+
+adddep=("libmnl")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
