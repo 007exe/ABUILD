@@ -1,0 +1,93 @@
+pkgname=geocode-glib-common
+pkglist=("glib glib2")
+pkgver=3.26.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Helper library for geocoding services (common files).")
+
+source=("https://gitlab.gnome.org/GNOME/geocode-glib/-/archive/${pkgver}/geocode-glib-${pkgver}.tar.gz")
+
+tags=("libs sci-libs")
+
+dep_glib=("libsoup")
+dep_glib2=("libsoup3")
+adddep=("glib2 json-glib")
+build_deps=("${adddep} ${dep_glib} ${dep_glib2} gobject-introspection gtk-doc libsoup libsoup3 meson")
+
+################################################################
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+################################################################
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build2 \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D soup2=true \
+    -D enable-installed-tests=false
+  meson compile -C build2
+
+  meson build3 \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D soup2=false \
+    -D enable-installed-tests=false
+  meson compile -C build3
+
+  meson install -C build2 --destdir ${pkgdir}
+  meson install -C build3 --destdir ${pkgdir}
+
+  cd ${pkgdir}
+
+  _pick soup2 usr/include/geocode-glib-1.0
+  _pick soup2 usr/lib/libgeocode-glib.so*
+  _pick soup2 usr/lib/pkgconfig/geocode-glib-1.0.pc
+  _pick soup2 usr/lib/girepository-1.0/GeocodeGlib-1.0.typelib
+  _pick soup2 usr/share/gir-1.0/GeocodeGlib-1.0.gir
+  _pick soup2 usr/share/gtk-doc/html/geocode-glib
+
+  _pick soup3 usr/include/geocode-glib-2.0
+  _pick soup3 usr/lib/libgeocode-glib-2.so*
+  _pick soup3 usr/lib/pkgconfig/geocode-glib-2.0.pc
+  _pick soup3 usr/lib/girepository-1.0/GeocodeGlib-2.0.typelib
+  _pick soup3 usr/share/gir-1.0/GeocodeGlib-2.0.gir
+  _pick soup3 usr/share/gtk-doc/html/geocode-glib-2
+}
+
+# geocode-glib-2 ########################################################################################
+
+glib2() {
+  pkgname=geocode-glib-2
+  shortdesc=("Helper library for geocoding services (legacy).")
+  adddep=("geocode-glib-common=${pkgver}")
+}
+
+glib2_prep() {
+  cd ${srcdir}
+  mv ${srcdir}/soup3/* ${pkgdir}
+}
+
+# geocode-glib ########################################################################################
+
+glib() {
+  pkgname=geocode-glib
+  shortdesc=("Helper library for geocoding services (legacy).")
+  adddep=("geocode-glib-common=${pkgver}")
+}
+
+glib_prep() {
+  cd ${srcdir}
+  mv ${srcdir}/soup2/* ${pkgdir}
+}
