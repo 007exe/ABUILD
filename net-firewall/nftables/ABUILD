@@ -1,0 +1,49 @@
+pkgname=nftables
+pkgver=1.0.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Netfilter tables userspace tools.")
+
+source=("https://netfilter.org/projects/nftables/files/nftables-${pkgver}.tar.xz")
+
+tags=("net-firewall apps")
+
+adddep=("libmnl libnftnl gmp readline ncurses jansson")
+
+build_deps=("${adddep} asciidoc python python-setuptools python-build python-installer python-wheel
+python-platformdirs python-jaraco.text python-inflect python-pydantic")
+
+# NOTE: Это опциональные зависимости
+removedep=("python")
+
+config_files=("etc/nftables.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --sysconfdir=/usr/share \
+    --with-json \
+    --with-cli=readline \
+    --disable-python \
+    --disable-debug
+  make -j${numjobs}
+  cd py
+#  python -m build --wheel --no-isolation
+  cd ..
+  make DESTDIR=${pkgdir} install
+#  python -m installer --destdir=${pkgdir} py/dist/*.whl
+
+#  popd
+# Базоввые настройки
+  install -Dm644 ${filedir}/nftables.conf ${pkgdir}/etc/nftables.conf
+# systemd
+  install -Dm644 ${filedir}/nftables.service ${pkgdir}/usr/lib/systemd/system/nftables.service
+
+# openrc
+  install -Dm644 ${filedir}/nftables.init ${pkgdir}/etc/init.d/nftables
+  install -Dm0644 ${filedir}/nftables.confd ${pkgdir}/etc/conf.d/nftables
+}
