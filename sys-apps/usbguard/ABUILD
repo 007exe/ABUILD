@@ -1,0 +1,46 @@
+pkgname=usbguard
+pkgver=1.1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Software framework for implementing USB device authorization policies.")
+
+source=("https://github.com/USBGuard/usbguard/releases/download/usbguard-${pkgver}/usbguard-${pkgver}.tar.gz")
+
+tags=("sys-apps utils")
+
+adddep=("glibc libqb libsodium libcap-ng protobuf polkit dbus-glib audit libseccomp")
+
+# --enable-systemd systemd
+build_deps=("${adddep} catch pegtl libxslt libxml2 asciidoc")
+
+config_files=("etc/usbguard/usbguard-daemon.conf
+etc/usbguard/rules.conf")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --sys=/etc \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --enable-systemd \
+    --without-bundled-catch \
+    --without-bundled-pegtl \
+    --with-dbus \
+    --with-polkit \
+    --disable-systemd \
+    --with-crypto-library=sodium
+  make -j${numjobs}
+  touch rules.conf
+  make INSTALL='install -p' DESTDIR=${pkgdir} install
+  chmod 750 ${pkgdir}/etc/usbguard
+  install -Dpm 600 usbguard-daemon.conf rules.conf -t ${pkgdir}/etc/usbguard
+  install -Dpm 644 scripts/bash_completion/usbguard -t ${pkgdir}/usr/share/bash-completion/completions
+  install -Dpm 644 scripts/usbguard-zsh-completion ${pkgdir}/usr/share/zsh/site-functions/_usbguard
+  install -Dm 644 CHANGELOG.md README.adoc -t ${pkgdir}/usr/share/doc/${pkgname}
+}
