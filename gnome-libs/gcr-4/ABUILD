@@ -31,6 +31,8 @@ build(){
 gcr-4-docs() {
   pkgname=gcr-4-docs
   shortdesc=("A library for bits of crypto UI and parsing (documentation).")
+  skip_gendeps=1
+  arch=("noarch")
 }
 
 gcr-4-docs_prep() {
