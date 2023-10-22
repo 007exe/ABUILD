@@ -1,0 +1,64 @@
+pkgname=pacrunner
+pkgver=0.19
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("Proxy configuration daemon.")
+
+source=("git:https://git.kernel.org/pub/scm/network/connman/pacrunner.git")
+
+tags=("server net-proxy")
+
+adddep=("glib2 dbus curl duktape")
+
+build_deps=("${adddep} git")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${pkgver}
+  git apply -3 ${filedir}/duktape-shared.diff
+  ./bootstrap
+}
+
+build() {
+  go_src_dir
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --sbindir=/usr/bin \
+    --libexecdir=/usr/lib \
+    --with-dbusconfdir=/usr/share \
+    --enable-pie \
+    --enable-duktape \
+    --enable-curl
+  make -j${numjobs}
+  make install DESTDIR=${pkgdir}
+
+  install -Dm644 /dev/stdin "$pkgdir/usr/lib/systemd/system/pacrunner.service" <<END
+[Unit]
+Description=Proxy configuration daemon
+Before=network.target
+Wants=network.target
+
+[Service]
+Type=dbus
+BusName=org.pacrunner
+ExecStart=/usr/bin/pacrunner
+
+[Install]
+WantedBy=multi-user.target
+END
+
+  install -Dm644 /dev/stdin "$pkgdir/usr/share/dbus-1/system-services/org.pacrunner.service" <<END
+[D-BUS Service]
+Name=org.pacrunner
+Exec=/usr/bin/pacrunner
+User=root
+SystemdService=pacrunner.service
+END
+}
