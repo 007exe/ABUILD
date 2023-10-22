@@ -1,15 +1,20 @@
 pkgname=botan
-pkgver=3.1.1
+pkgver=3.2.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("C++ crypto library.")
 
-tags=("libs dev-libs")
-
 source=("https://botan.randombit.net/releases/Botan-${pkgver}.tar.xz")
 
-build_deps=("python boost")
+tags=("libs dev-libs")
+
+adddep=("sqlite xz")
+
+build_deps=("${adddep} python boost")
+
+# NOTE: Это опциональные зависимости
+removedep=("boost-libs python")
 
 build() {
   go_src_dir
