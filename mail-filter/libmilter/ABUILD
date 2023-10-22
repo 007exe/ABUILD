@@ -17,7 +17,6 @@ build() {
   cp ${filedir}/site.config.m4 devtools/Site
   cd ${pkgname}
   ./Build
-  cd ..
   install -vd ${pkgdir}/usr/lib
   ./Build DESTDIR=${pkgdir} install
   install -vDm644 -t ${pkgdir}/usr/share/licenses/${pkgname} ../LICENSE
