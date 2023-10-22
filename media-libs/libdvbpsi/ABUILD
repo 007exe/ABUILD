@@ -1,41 +1,26 @@
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=libdvbpsi
 pkgver=1.3.3
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Libdvbpsi (MPEG TS and DVB PSI tables library)"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Libdvbpsi is a simple library designed for decoding and generation of MPEG TS and DVB PSI tables."
-	  ""
-	  "Homepage: http://download.videolan.org/pub/libdvbpsi/"
-)
+shortdesc=("Library designed for decoding and generation of MPEG TS and DVB PSI tables.")
 
-source=("http://download.videolan.org/pub/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://code.videolan.org/videolan/libdvbpsi/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
+tags=("libs media-libs")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
+adddep=("glibc")
 
-tags="libs media-libs"     #short and long tags / длинный и короткий тег
-build_deps=" " 
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
+build_deps=("${adddep}")
 
-
-BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
-INSTALL_KEYS="DESTDIR=$pkgdir"
-
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fiv
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
