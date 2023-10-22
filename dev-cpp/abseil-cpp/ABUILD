@@ -3,18 +3,20 @@ pkgver=20230802.1
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Abseil Common Libraries (C++), LTS Branch.")
+shortdesc=("Collection of C++ library code designed to augment the C++ standard library.")
 
 source=("https://github.com/abseil/abseil-cpp/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("libs dev-cpp")
 
-build_deps=("cmake")
+adddep=("gcc-libs")
+
+build_deps=("${adddep} cmake")
 
 build() {
   go_src_dir
   burn_patches
-  cmake -Bbuild \
+  cmake -B build \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_CXX_FLAGS="-DNDEBUG" \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -22,7 +24,6 @@ build() {
     -DCMAKE_CXX_STANDARD=17 \
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-  cd build
-  cmake --build .
-  DESTDIR=${pkgdir} cmake --install .
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 }
