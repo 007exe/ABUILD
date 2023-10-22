@@ -1,31 +1,22 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=openshot
-pkgver=1.4.3
+pkgver=3.1.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="A non-linear video editor"
+shortdesc=("An award-winning free and open-source video editor.")
 
-longdesc=("OpenShot Video Editor is a free, open-source video editor for Linux "
-"licensed under the GPL version 3.0. http://www.openshotvideo.com")
+source=("https://github.com/OpenShot/openshot-qt/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-source=("http://launchpad.net/${pkgname}/1.4/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz")
+tags=("media-video apps")
 
-tags="media-video xapps"
+adddep=("ffmpeg hicolor-icon-theme libopenshot libopenshot-audio python python-pyqt5 python-pyqt5-webengine python-pyzmq python-requests qt5-base qt5-svg")
 
-build_deps="python=2.6.6"
-
-adddep="python=2.6.6 mlt python-mlt pygoocanvas pil librsvg sdl pyxdg frei0r-plugins blender pycairo"
+build_deps=("${adddep} python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
-  python setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 || return 1
-}
-
-
-after_build()
-{
-  #для x86_64 перебросим lib
-   [ "$LIBDIRSUFFIX" = "64" ] && mv $pkgdir/usr/lib $pkgdir/usr/lib${LIBDIRSUFFIX}
+  burn_patches
+  python -m build --wheel --no-isolation
+  python -m installer --destdir=${pkgdir} dist/*.whl
+  install -vDm 644 {AUTHORS,{CONTRIBUTING,README}.md} -t ${pkgdir}/usr/share/doc/${pkgname}/
 }
