@@ -1,19 +1,19 @@
 pkgname=meson
-pkgver=1.1.0
+pkgver=1.2.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("High productivity build system.")
 
-source=("https://github.com/mesonbuild/meson/releases/download/${pkgver}/meson-${pkgver}.tar.gz"
+source=("https://github.com/mesonbuild/meson/releases/download/$pkgver/meson-${pkgver}.tar.gz"
         "https://github.com/mesonbuild/meson/releases/download/${pkgver}/meson-reference.3"
         "https://github.com/mesonbuild/meson/releases/download/${pkgver}/reference_manual.json")
 
 tags=("dev-util develop")
+# python-tqdm
+adddep=("ninja python-typing_extensions")
 
-adddep=("ninja python")
-
-build_deps=("${adddep} python-build python-installer python-wheel python-setuptools")
+build_deps=("${adddep} python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
