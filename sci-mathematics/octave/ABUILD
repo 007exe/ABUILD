@@ -1,0 +1,39 @@
+pkgname=octave
+pkgver=8.3.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A high-level language, primarily intended for numerical computations.")
+
+source=("https://ftp.gnu.org/gnu/octave/octave-${pkgver}.tar.gz")
+
+tags=("libs sci-mathematics")
+
+# glpk arpack sundials qscintilla-qt5 qrupdate
+adddep=("fftw curl graphicsmagick hdf5 qhull glu ghostscript gl2ps libsndfile qt5-tools pcre2")
+
+# jdk-openjdk gnuplot
+build_deps=("${adddep} gcc-fortran suitesparse texinfo fltk portaudio rapidjson")
+
+build() {
+  go_src_dir
+  burn_patches
+  export EGREP="grep -E"
+  ./configure \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --enable-shared \
+    --disable-static \
+    --with-quantum-depth=16
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -d ${pkgdir}/etc/ld.so.conf.d
+  echo /usr/lib/${pkgname}/${pkgver} > ${pkgdir}/etc/ld.so.conf.d/${pkgname}.conf
+
+#  local ARCHIVE_DATE="$(TZ=UTC date --reference=ChangeLog --iso-8601=seconds)"
+#  mkdir tmpdir
+#  cd tmpdir
+#  jar --extract --file=${pkgdir}/usr/share/octave/${pkgver}/m/java/octave.jar
+#  rm -rf ${pkgdir}/usr/share/octave/${pkgver}/m/java/octave.jar
+#  jar --create --date="$ARCHIVE_DATE" --file=${pkgdir}/usr/share/octave/${pkgver}/m/java/octave.jar ./*
+}
