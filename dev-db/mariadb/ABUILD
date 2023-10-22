@@ -1,6 +1,6 @@
 pkgname=mariadb
 pkglist=("mariadb-libs mariadb-clients mytop")
-pkgver=11.0.3
+pkgver=11.1.2
 pkgbuild=1
 arch=("auto")
 
@@ -22,6 +22,8 @@ adddep=("mariadb-clients=${pkgver} ${adddep_mariadb}")
 # NOTE: Это опциональные зависимости
 removedep=("cracklib curl galera judy perl-dbd-mariadb python-mysqlclient xz")
 
+conflicts=("mysql")
+
 config_files=("etc/my.cnf
 etc/my.cnf.d/client.cnf
 etc/my.cnf.d/enable_encryption.preset
@@ -30,24 +32,25 @@ etc/my.cnf.d/server.cnf
 etc/my.cnf.d/s3.cnf
 etc/my.cnf.d/spider.cnf
 etc/security/user_map.conf")
-
+# -DWITH_SYSTEMD=yes
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake .. \
+  cmake -B build \
     -DCOMPILATION_COMMENT="AgiliaLinux" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DINSTALL_LIBDIR=/usr/lib \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -Wno-dev \
     -DINSTALL_SYSCONFDIR=/etc \
     -DINSTALL_SYSCONF2DIR=/etc/my.cnf.d \
     -DINSTALL_UNIX_ADDRDIR=/run/mysqld/mysqld.sock \
-    -DCMAKE_INSTALL_PREFIX=/usr \
     -DINSTALL_SCRIPTDIR=bin \
     -DINSTALL_INCLUDEDIR=include/mysql \
     -DINSTALL_PLUGINDIR=lib/mysql/plugin \
-    -DINSTALL_LIBDIR=/usr/lib \
+    -DINSTALL_SYSTEMD_UNITDIR=/usr/lib/systemd/system/ \
+    -DINSTALL_SYSTEMD_SYSUSERSDIR=/usr/lib/sysusers.d/ \
+    -DINSTALL_SYSTEMD_TMPFILESDIR=/usr/lib/tmpfiles.d/ \
     -DINSTALL_SHAREDIR=share \
     -DINSTALL_SUPPORTFILESDIR=share/mysql \
     -DINSTALL_MYSQLSHAREDIR=share/mysql \
@@ -65,14 +68,14 @@ build() {
     -DWITH_EXTRA_CHARSETS=complex \
     -DWITH_JEMALLOC=ON \
     -DWITH_LIBWRAP=OFF \
-    -DWITH_PCRE=bundled \
+    -DWITH_PCRE2=system \
     -DWITH_READLINE=ON \
     -DWITH_SSL=system \
     -DWITH_SYSTEMD=no \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
 
   cd ${pkgdir}
 
@@ -103,7 +106,7 @@ build() {
 
   rm usr/bin/mytop
 
-  rm -r usr/{mysql-test,sql-bench}
+#  rm -r usr/{mysql-test,sql-bench}
   rm usr/share/man/man1/mysql-test-run.pl.1
 }
 
@@ -143,6 +146,7 @@ mariadb-clients() {
   pkgname=mariadb-clients
   shortdesc=("MariaDB client tools.")
   adddep=("mariadb-libs=${pkgver} ${adddep_clients}")
+  conflicts=("mysql-clients")
 }
 
 mariadb-clients_prep() {
