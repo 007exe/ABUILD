@@ -1,79 +1,48 @@
 pkgname=claws-mail
-pkgver=3.11.1
-pkgbuild=2
-arch=('auto')
+pkgver=4.1.1
+pkgbuild=1
+arch=("auto")
 
-shortdesc="Claws Mail is an email client (and news reader), based on GTK+"
+shortdesc=("A GTK+ based e-mail client.")
 
-source=("http://downloads.sourceforge.net/project/sylpheed-claws/Claws%20Mail/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://www.claws-mail.org/download.php?file=releases/claws-mail-${pkgver}.tar.xz")
 
-tags="mail-client network"
+tags=("mail-client network")
 
-custom_opts="no_ccache"
+adddep=("gtk3 gnutls startup-notification enchant gpgme libetpan compface libsm dbus-glib")
 
-build_deps="bison poppler libetpan gpgme"
-removedep="mesa  libgl  udev libdrm fontconfig freetype xulrunner  util-linux-ng clang  libdrm-nouveau-dev"
+build_deps=("${adddep} spamassassin bogofilter networkmanager valgrind libgdata libnotify libcanberra
+poppler-glib libytnef libical dillo python gumbo-parser webkit2gtk docbook-utils texlive-formatsextra")
 
+# NOTE: Это опциональные зависимости
+removedep=("python perl spamassassin bogofilter libnotify libcanberra dbus libxml2 curl libarchive
+libytnef libgdata poppler-glib ghostscript libical dillo webkit2gtk gumbo-parser")
 
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --enable-enchant \
+    --enable-gnutls \
+    --enable-ldap \
+    --enable-crash-dialog \
+    --enable-pgpmime-plugin \
+    --enable-spamassassin-plugin \
+    --enable-bogofilter-plugin \
+    --enable-fancy-plugin \
+    --enable-manual
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-build()
-{
-cd $srcdir/${pkgname}-${pkgver} || exit 1
+  install -Dm 644 ${filedir}/bash_completion ${pkgdir}/usr/share/bash-completion/completions/claws-mail
 
-./configure \
---prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---enable-largefile \
---enable-fancy-plugin \
---enable-tnef_parse-plugin \
---enable-vcalendar-plugin \
---enable-notification-plugin \
---enable-pdf_viewer-plugin \
---enable-newmail-plugin \
---enable-notification-plugin \
---enable-python-plugin \
---enable-pgpcore-plugin \
---enable-pgpmime-plugin \
---enable-pgpinline-plugin \
---enable-rssyl-plugin \
---enable-smime-plugin \
---enable-enchant \
---enable-gnutls \
---enable-ldap \
---enable-nls
-
-make -j4 || echo "Katana kai!"
-
-make DESTDIR=$pkgdir install || echo "Katana kai! Katana bye!!!"
-
-
- # build and install extra tools
-cd tools
-make
-  # all executables and .conf files ; only top directory
-find -maxdepth 1 -type f -and -perm /111 -or -name '*.conf' | while read i ; do
-
-install -D -m755 ${i} \
-${pkgdir}/usr/lib/claws-mail/tools/${i}
-
-done
-                          
-
-}
-
-after_build()
-{
-
-mkdir -p ${pkgdir}/usr/share/applications/kde4/services/ServiceMenus || exit 1
-cd $srcdir/${pkgname}-${pkgver} || exit 1
-cp ./claws-mail.desktop ${pkgdir}/usr/share/applications/kde4 || exit 1
-cp ${filedir}/claws-mail-kdeservicemenu.pl ${pkgdir}/usr/bin || exit 1
-cp ${filedir}/claws-mail-attach-files.desktop ${pkgdir}/usr/share/applications/kde4/services/ServiceMenus || exit 1
-chmod 644 ${pkgdir}/usr/share/applications/kde4/services/ServiceMenus/claws-mail-attach-files.desktop
-chmod 755 ${pkgdir}/usr/bin/claws-mail-kdeservicemenu.pl
-
+  cd tools
+  install -m755 -d ${pkgdir}/usr/lib/claws-mail/tools
+  for files in *.pl *.py *.sh *.conf tb2claws-mail update-po uudec uuooffice README; do
+    cp -arv $files ${pkgdir}/usr/lib/claws-mail/tools/
+  done
 }
