@@ -1,72 +1,109 @@
 pkgname=gdal
-pkgver=3.4.2
+pkglist=("python-gdal")
+pkgver=3.7.2
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("A translator library for raster geospatial data formats")
-longdesc=("Gdal is a translator library for raster geospatial data formats that is released under an X/MIT style Open Source license. As a library, it presents a single abstract data model to the calling application for all supported formats.")
+shortdesc=("A translator library for raster geospatial data formats.")
 
 source=("https://download.osgeo.org/gdal/${pkgver}/gdal-${pkgver}.tar.xz")
 
 tags=("libs sci-libs")
 
-build_deps=("curl geos giflib hdf5 libgeotiff libjpeg-turbo libpng libspatialite libtiff netcdf openjpeg2 poppler cfitsio sqlite mariadb-libs postgresql-libs xerces-c json-c perl swig chrpath doxygen python-breathe python-numpy python-sphinx boost python-charset-normalizer")
+dep_python_gdal=("python-numpy")
 
-pkglist=("python-gdal")
+adddep=("proj crypto++ curl expat libfreexl geos libgeotiff giflib
+libjpeg-turbo json-c xz libxml2 lz4 unixodbc ocl-icd openssl pcre2
+libpng qhull libspatialite sqlite libtiff xerces-c zlib zstd blosc
+libdeflate")
+# -DGDAL_USE_ARROW=ON arrow
+build_deps=("${adddep} ${dep_python_gdal} cmake opencl-headers swig
+python-setuptools cfitsio libheif hdf5 libjxl netcdf podofo poppler
+postgresql-libs mariadb-libs openexr openjpeg2 libwebp")
+
+# NOTE: Это опциональные зависимости
+removedep=("arrow cfitsio hdf5 libheif libjxl mariadb-libs netcdf
+openexr openjpeg2 podofo poppler postgresql-libs libwebp")
 
 build() {
   go_src_dir
   burn_patches
-  export CFLAGS="$SLKCFLAGS -fno-strict-aliasing"
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --with-libz=/usr/lib \
-    --with-netcdf \
-    --with-libtiff \
-    --with-sqlite3 \
-    --with-geotiff \
-    --with-mysql \
-    --with-curl \
-    --with-hdf5 \
-    --with-perl \
-    --with-geos \
-    --with-png \
-    --with-poppler \
-    --with-spatialite \
-    --with-openjpeg
-  make -j${numjobs}
-  make man
-
-  make DESTDIR=${pkgdir} install
-  make DESTDIR=${pkgdir} install-man
-
-  install -Dm644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-
-# Удаляем RPATH
-  eval local $(perl -V:vendorarch)
-  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/OSR/OSR.so
-  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/OGR/OGR.so
-  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/GDAL/GDAL.so
-  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/GDAL/Const/Const.so
-  chrpath --delete ${pkgdir}${vendorarch}/auto/Geo/GNM/GNM.so
-
+# NOTE: Фикс сборки podofo-0.9
+  sed -e 's|podofo.h|podofo/podofo.h|' -i frmts/pdf/pdfsdk_headers.h
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_CXX_STANDARD=17 \
+    -DENABLE_IPO=ON \
+    -DBUILD_PYTHON_BINDINGS=ON \
+    -DGDAL_ENABLE_PLUGINS=ON \
+    -DGDAL_USE_ARROW=OFF \
+    -DGDAL_USE_BLOSC=ON \
+    -DGDAL_USE_CFITSIO=ON \
+    -DGDAL_USE_CURL=ON \
+    -DGDAL_USE_CRYPTOPP=ON \
+    -DGDAL_USE_DEFLATE=ON \
+    -DGDAL_USE_EXPAT=ON \
+    -DGDAL_USE_FREEXL=ON \
+    -DGDAL_USE_GEOTIFF=ON \
+    -DGDAL_USE_GEOS=ON \
+    -DGDAL_USE_GIF=ON \
+    -DGDAL_USE_HEIF=ON \
+    -DGDAL_USE_ICONV=ON \
+    -DGDAL_USE_JPEG=ON \
+    -DGDAL_USE_JSONC=ON \
+    -DGDAL_USE_LIBLZMA=ON \
+    -DGDAL_USE_LIBXML2=ON \
+    -DGDAL_USE_LZ4=ON \
+    -DGDAL_USE_MYSQL=ON \
+    -DGDAL_USE_NETCDF=ON \
+    -DGDAL_USE_ODBC=ON \
+    -DGDAL_USE_JXL=ON \
+    -DGDAL_USE_HDF5=ON \
+    -DGDAL_USE_OPENCL=ON \
+    -DGDAL_USE_OPENEXR=ON \
+    -DGDAL_USE_OPENJPEG=ON \
+    -DGDAL_USE_OPENSSL=ON \
+    -DGDAL_USE_PARQUET=ON \
+    -DGDAL_USE_PCRE2=ON \
+    -DGDAL_USE_PNG=ON \
+    -DGDAL_USE_POPPLER=ON \
+    -DGDAL_USE_POSTGRESQL=ON \
+    -DGDAL_USE_QHULL=ON \
+    -DGDAL_USE_SPATIALITE=ON \
+    -DGDAL_USE_SQLITE3=ON \
+    -DGDAL_USE_TIFF=ON \
+    -DGDAL_USE_WEBP=ON \
+    -DGDAL_USE_XERCESC=ON \
+    -DGDAL_USE_ZLIB=ON \
+    -DGDAL_USE_ZSTD=ON \
+    -DPODOFO_INCLUDE_DIR=/usr/include/podofo-0.9 \
+    -DPODOFO_LIBRARY=/usr/lib/podofo-0.9/libpodofo.so
+  make -C build
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE.TXT -t ${pkgdir}/usr/share/licenses/gdal/
+# Move python stuff
+  mkdir ${srcdir}/{bin,lib}
+  mv ${pkgdir}/usr/bin/*py ${srcdir}/bin
+  mv ${pkgdir}/usr/lib/python* ${srcdir}/lib
 }
+
+# python-gdal ######################################################################################
 
 python-gdal() {
   pkgname=python-gdal
   shortdesc=("Python bindings for GDAL")
-  longdesc=("GDAL is a translator library for raster and vector geospatial data formats that is released under an X/MIT style Open Source License by the Open Source Geospatial Foundation.")
   tags=("libs dev-python")
-  adddep=("gdal=$pkgver python-numpy")
+  adddep=("gdal=${pkgver} ${dep_python_gdal}")
 }
 
 python-gdal_prep() {
   go_src_dir
-  cd swig/python
-  python setup.py build
-  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
-
+  install -d ${pkgdir}/usr/{bin,lib}
+  mv ${srcdir}/bin/* ${pkgdir}/usr/bin
+  mv ${srcdir}/lib/* ${pkgdir}/usr/lib
   install -dm755 ${pkgdir}/usr/share/licenses
   ln -s gdal ${pkgdir}/usr/share/licenses/${pkgname}
+  local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+  python -m compileall -o 0 -o 1 -o 2 --hardlink-dupes -s ${pkgdir} ${pkgdir}${site_packages}
 }
