@@ -1,0 +1,26 @@
+pkgname=tracker3-miners
+pkgver=3.6.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Filesystem indexer and metadata extractor.")
+
+source=("https://gitlab.gnome.org/GNOME/tracker-miners/-/archive/${pkgver}/tracker-miners-${pkgver}.tar.gz")
+
+tags=("gnome-libs libs")
+
+adddep=("exempi giflib gst-plugins-base-libs libcue libexif gexiv2 libgrss libgsf libgxps libiptcdata
+libnm libosinfo libseccomp poppler-glib totem-pl-parser tracker3 upower")
+
+build_deps=("${adddep} asciidoc meson")
+
+build(){
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D tests_tap_protocol=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
