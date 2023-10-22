@@ -1,0 +1,28 @@
+From 2d109b9ecb8a84ccfd20fbf0a018cdb44b4f757f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ball=C3=B3=20Gy=C3=B6rgy?= <ballogyor@gmail.com>
+Date: Tue, 7 Mar 2023 12:00:46 +0100
+Subject: [PATCH] Substitute gtk version in .pc file
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Use the right gtk version when generating the .pc file.
+
+Signed-off-by: Balló György <ballogyor@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ zbar-gtk.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/zbar-gtk.pc.in b/zbar-gtk.pc.in
+index fc712a25..c82c1697 100644
+--- a/zbar-gtk.pc.in
++++ b/zbar-gtk.pc.in
+@@ -7,6 +7,6 @@ Name: zbar-gtk
+ Description: bar code scanning and decoding GTK widget
+ URL: http://zbar.sourceforge.net
+ Version: @VERSION@
+-Requires: zbar, gtk+-2.0, gthread-2.0
++Requires: zbar, gtk+-@GTK_VERSION_MAJOR@, gthread-2.0
+ Libs: -L${libdir} -lzbargtk
+ Cflags: -I${includedir}
