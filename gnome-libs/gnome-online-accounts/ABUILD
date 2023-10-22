@@ -1,16 +1,21 @@
 pkgname=gnome-online-accounts
-pkgver=3.44.0
+pkglist=("libgoa")
+pkgver=3.48.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Single sign-on framework for GNOME.")
-longdesc=("The GNOME Online Accounts package contains a framework used to access the user's online accounts.")
 
 source=("https://gitlab.gnome.org/GNOME/gnome-online-accounts/-/archive/${pkgver}/gnome-online-accounts-${pkgver}.tar.gz")
 
 tags=("gnome gnome-libs")
 
-build_deps=("gobject-introspection gtk-doc vala meson webkit2gtk json-glib libnotify libsecret krb5 gcr rest")
+adddep=("gcr json-glib krb5 libnotify librest libsecret webkit2gtk-4.1")
+
+build_deps=("${adddep} gobject-introspection gtk-doc meson vala")
+
+# NOTE: Это опциональные зависимости
+removedep=("gvfs-goa gvfs-google")
 
 build() {
   go_src_dir
@@ -23,4 +28,27 @@ build() {
     -D man=true
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
+}
+
+# libgoa ################################################################################
+
+libgoa() {
+  pkgname=libgoa
+  shortdesc=("Single sign-on framework for GNOME - client library.")
+  tags=("libs gnome-libs")
+}
+
+libgoa_prep() {
+  go_src_dir
+  mkdir -p ${pkgdir}/usr/include/goa-1.0/goa
+  mkdir -p ${pkgdir}/usr/lib/{girepository-1.0,pkgconfig,goa-1.0/include}
+  mkdir -p ${pkgdir}/usr/share/{gtk-doc,gir-1.0,vala/vapi}
+  mv -v ${p_pkgdir}/usr/include/goa-1.0/goa ${pkgdir}/usr/include/goa-1.0/
+  mv -v ${p_pkgdir}/usr/lib/libgoa-1.0.so* ${pkgdir}/usr/lib/
+  mv -v ${p_pkgdir}/usr/lib/girepository-1.0/Goa-1.0.typelib ${pkgdir}/usr/lib/girepository-1.0/Goa-1.0.typelib
+  mv -v ${p_pkgdir}/usr/lib/goa-1.0/include ${pkgdir}/usr/lib/goa-1.0/
+  mv -v ${p_pkgdir}/usr/lib/pkgconfig/goa-1.0.pc ${pkgdir}/usr/lib/pkgconfig/goa-1.0.pc
+  mv -v ${p_pkgdir}/usr/share/gir-1.0/Goa-1.0.gir ${pkgdir}/usr/share/gir-1.0/Goa-1.0.gir
+  mv -v ${p_pkgdir}/usr/share/vala/vapi/goa-1.0.* ${pkgdir}/usr/share/vala/vapi/
+  mv -v ${p_pkgdir}/usr/share/gtk-doc ${pkgdir}/usr/share/gtk-doc
 }

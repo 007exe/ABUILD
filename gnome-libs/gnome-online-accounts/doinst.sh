@@ -1,0 +1,5 @@
+echo -e " "
+echo -e "The following packages extend gnome-online-accounts capabilities:"
+echo -e "    gvfs-goa: Virtual file systems, e.g. OwnCloud"
+echo -e "    gvfs-google: Google Drive"
+echo -e " "
