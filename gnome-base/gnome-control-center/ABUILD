@@ -1,38 +1,48 @@
 pkgname=gnome-control-center
-pkgver=2.32.1
-pkgbuild=3
-arch=('auto')
+pkgver=45.0
+pkgbuild=1
+arch=("auto")
+strict_version=1
 
-shortdesc="utilities for setting GNOME desktop"
-longdesc=("This is GNOME Control Center, set of applications for setting all aspects of GNOME Desktop"
-)
+shortdesc=("GNOME's main interface to configure various aspects of the desktop.")
 
-source=("ftp://ftp.gnome.org/pub/GNOME/sources/${pkgname}/2.32/${pkgname}-${pkgver}.tar.bz2")
+source=("git:https://gitlab.gnome.org/GNOME/gnome-control-center.git"
+"git:https://gitlab.gnome.org/GNOME/libgnome-volume-control.git")
 
+tags=("gnome-base gnome")
 
-tags="gnome-base gnome"     			#short and long tags / длинный и короткий тег
+# cups-pk-helper gnome-bluetooth-3.0 gnome-color-manager gnome-desktop-4 gnome-shell smbclient
+# -D malcontent=true libmalcontent
+adddep=("accountsservice bolt gcr gnome-online-accounts gnome-settings-daemon gsettings-desktop-schemas gsound gtk4 libadwaita
+libgnomekbd libgtop libgudev libibus libmm-glib libnma-gtk4 libpwquality sound-theme-freedesktop udisks upower colord-gtk4")
 
-adddep="sound-theme-freedesktop"
+build_deps=("${adddep} docbook-xsl git meson modemmanager python")
 
+# NOTE: Это опциональные зависимости
+removedep=("fwupd gnome-remote-desktop gnome-user-share malcontent networkmanager openssh power-profiles-daemon rygel system-config-printer")
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--program-prefix= \
-	--program-suffix= \
-	--enable-aboutme \
-	--disable-docs \
-	--disable-scrollkeeper \
-	--disable-update-mimedb"
-after_build() {
-	install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
-	gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" --domain gnome-control-center-2.0 ${pkgdir}/etc/gconf/schemas/*.schemas || return 1
-	rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  cd ${srcdir}
+  mv -v ${srcdir}/gnome-control-center_git_gnome-control-center.git.src ${srcdir}/gnome-control-center
+  mv -v ${srcdir}/gnome-control-center_git_libgnome-volume-control.git.src ${srcdir}/libgnome-volume-control
+  cd ${srcdir}/gnome-control-center
+  git checkout ${pkgver}
+  git submodule init subprojects/gvc
+  git submodule set-url subprojects/gvc ${srcdir}/libgnome-volume-control
+  git -c protocol.file.allow=always submodule update
+}
 
-	# --disable-update-mimedb?
-	rm -f "${pkgdir}/usr/share/applications/mimeinfo.cache"
+build() {
+  cd ${srcdir}/gnome-control-center
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D documentation=false \
+    -D malcontent=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+  install -d -o root -g 102 -m 750 ${pkgdir}/usr/share/polkit-1/rules.d
 }
