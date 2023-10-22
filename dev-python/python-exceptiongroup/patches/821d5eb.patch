@@ -1,0 +1,98 @@
+From 821d5ebaadfd0b5b16c785a942f69e89933217bf Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Alex=20Gr=C3=B6nholm?= <alex.gronholm@nextday.fi>
+Date: Mon, 3 Jul 2023 00:54:13 +0300
+Subject: [PATCH] Changed handling of a single exception raised in exception
+ group handlers to match Python 3.11.4
+
+Fixes #64.
+---
+ CHANGES.rst                  | 6 ++++++
+ src/exceptiongroup/_catch.py | 5 ++++-
+ tests/test_catch.py          | 8 +-------
+ tests/test_catch_py311.py    | 8 +-------
+ 4 files changed, 12 insertions(+), 15 deletions(-)
+
+diff --git a/CHANGES.rst b/CHANGES.rst
+index 31831a3..3c2b08f 100644
+--- a/CHANGES.rst
++++ b/CHANGES.rst
+@@ -3,6 +3,12 @@ Version history
+ 
+ This library adheres to `Semantic Versioning 2.0 <http://semver.org/>`_.
+ 
++**UNRELEASED**
++
++- Changed handling of exceptions in exception group handler callbacks to not wrap a
++  single exception in an exception group, as per
++  `CPython issue 103590 <https://github.com/python/cpython/issues/103590>`_
++
+ **1.1.1**
+ 
+ - Worked around
+diff --git a/src/exceptiongroup/_catch.py b/src/exceptiongroup/_catch.py
+index aa16d16..0be39b4 100644
+--- a/src/exceptiongroup/_catch.py
++++ b/src/exceptiongroup/_catch.py
+@@ -37,7 +37,7 @@ def __exit__(
+ 
+         return False
+ 
+-    def handle_exception(self, exc: BaseException) -> BaseExceptionGroup | None:
++    def handle_exception(self, exc: BaseException) -> BaseException | None:
+         excgroup: BaseExceptionGroup | None
+         if isinstance(exc, BaseExceptionGroup):
+             excgroup = exc
+@@ -57,6 +57,9 @@ def handle_exception(self, exc: BaseException) -> BaseExceptionGroup | None:
+                 break
+ 
+         if new_exceptions:
++            if len(new_exceptions) == 1:
++                return new_exceptions[0]
++
+             if excgroup:
+                 new_exceptions.append(excgroup)
+ 
+diff --git a/tests/test_catch.py b/tests/test_catch.py
+index bc520b9..0af2fa0 100644
+--- a/tests/test_catch.py
++++ b/tests/test_catch.py
+@@ -148,15 +148,9 @@ def test_catch_handler_raises():
+     def handler(exc):
+         raise RuntimeError("new")
+ 
+-    try:
++    with pytest.raises(RuntimeError, match="new"):
+         with catch({(ValueError, ValueError): handler}):
+             raise ExceptionGroup("booboo", [ValueError("bar")])
+-    except ExceptionGroup as exc:
+-        assert exc.message == ""
+-        assert len(exc.exceptions) == 1
+-        assert isinstance(exc.exceptions[0], RuntimeError)
+-    else:
+-        pytest.fail("Did not raise an ExceptionGroup")
+ 
+ 
+ def test_catch_subclass():
+diff --git a/tests/test_catch_py311.py b/tests/test_catch_py311.py
+index cc161e7..4351be8 100644
+--- a/tests/test_catch_py311.py
++++ b/tests/test_catch_py311.py
+@@ -122,17 +122,11 @@ def test_catch_full_match():
+ 
+ 
+ def test_catch_handler_raises():
+-    try:
++    with pytest.raises(RuntimeError, match="new"):
+         try:
+             raise ExceptionGroup("booboo", [ValueError("bar")])
+         except* ValueError:
+             raise RuntimeError("new")
+-    except ExceptionGroup as exc:
+-        assert exc.message == ""
+-        assert len(exc.exceptions) == 1
+-        assert isinstance(exc.exceptions[0], RuntimeError)
+-    else:
+-        pytest.fail("Did not raise an ExceptionGroup")
+ 
+ 
+ def test_catch_subclass():

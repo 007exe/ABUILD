@@ -1,5 +1,5 @@
 pkgname=python-exceptiongroup
-pkgver=1.1.1
+pkgver=1.1.2
 pkgbuild=1
 arch=("auto")
 
@@ -13,6 +13,8 @@ build_deps=("python python-build python-installer python-wheel python-flit-scm")
 
 build(){
   go_src_dir
+#  sed -e '15,31d' ${startdir}/patches/821d5eb.patch
+#  burn_patches
   export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
   python -m build -wn
   python -m installer -d ${pkgdir} dist/*.whl
