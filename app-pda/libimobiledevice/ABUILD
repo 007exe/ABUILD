@@ -5,23 +5,25 @@ arch=("auto")
 
 shortdesc=("Library that talks the protocols to support iPhone and iPod Touch devices on Linux.")
 
-source=("https://github.com/libimobiledevice/libimobiledevice/archive/refs/tags/${pkgver}.tar.gz")
+source=("https://github.com/libimobiledevice/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("libs app-pda")
 
-adddep=("usbmuxd gnutls")
+adddep=("glibc libplist libusbmuxd openssl")
 
-build_deps=("${adddep} libusbmuxd python cython libplist autoconf")
+build_deps=("${adddep} cython python")
 
 build() {
   go_src_dir
   burn_patches
-  ./autogen.sh
+  autoreconf -fi
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
-    --disable-openssl \
     --disable-static
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+  install -dm755 ${pkgdir}/usr/share/doc/${pkgname}
+  cp -r docs/html ${pkgdir}/usr/share/doc/${pkgname}
 }
