@@ -1,7 +1,7 @@
 pkgname=protobuf
 pkglist=("python_protobuf")
-pkgver=21.12
-pkgbuild=2
+pkgver=24.4
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Protocol Buffers - Google's data interchange format.")
@@ -10,22 +10,28 @@ source=("https://github.com/protocolbuffers/protobuf/archive/v${pkgver}/${pkgnam
 
 tags=("libs dev-libs")
 
-adddep=("gcc-libs glibc zlib")
+adddep=("gcc-libs glibc zlib abseil-cpp")
 
-build_deps=("${adddep} python-setuptools cmake gtest")
+build_deps=("${adddep} cmake gtest python-build python-installer python-setuptools python-wheel")
 
 build() {
   go_src_dir
   burn_patches
+  sed -e 's|c++14|c++17|' -i python/setup.py
   cmake -B build \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
-    -Dprotobuf_USE_EXTERNAL_GTEST=ON \
-    -Dprotobuf_BUILD_SHARED_LIBS=ON
-  cmake --build build -j${numjobs}
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
+    -D CMAKE_BUILD_TYPE=None \
+    -D protobuf_BUILD_SHARED_LIBS=ON \
+    -D protobuf_USE_EXTERNAL_GTEST=ON \
+    -D protobuf_ABSL_PROVIDER=package \
+    -D protobuf_BUILD_TESTS=OFF \
+    -W no-dev
+  cmake --build build -j${numjobs} #--verbose
 
   ln -rs build src/.libs
   cd python
+#  LDFLAGS+=" -L../build" \
   PROTOC=../build/protoc \
   python -m build --wheel --no-isolation
 
@@ -36,7 +42,7 @@ build() {
   install -vDm 644 editors/proto.vim -t ${pkgdir}/usr/share/vim/vimfiles/syntax
 }
 
-#########################################################################################################
+# python_protobuf ########################################################################################################
 
 python_protobuf(){
   pkgname=python-protobuf

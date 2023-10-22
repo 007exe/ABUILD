@@ -14,3 +14,4 @@ diff -ruN a/python/setup.py b/python/setup.py
      # Link libprotobuf.a and libprotobuf-lite.a statically with the
      # extension. Note that those libraries have to be compiled with
      # -fPIC for this to work.
+
