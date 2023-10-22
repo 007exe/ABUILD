@@ -1,0 +1,6 @@
+echo -e " "
+echo -e "The following packages extend mumble capabilities:"
+echo -e "    lib32-glibc: for mumble-overlay"
+echo -e "    espeak-ng: Text-to-speech support"
+echo -e "    speech-dispatcher: Text-to-speech support"
+echo -e " "
