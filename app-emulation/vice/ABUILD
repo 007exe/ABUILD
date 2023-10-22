@@ -1,0 +1,34 @@
+pkgname=vice
+pkgver=3.7.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Versatile Commodore Emulator.")
+
+source=("https://downloads.sourceforge.net/project/vice-emu/releases/$pkgname-${pkgver%.0}.tar.gz")
+
+tags=("app-emulation libs")
+
+adddep=("alsa-lib giflib glew gtk3 libjpeg-turbo libpng libpulse python sdl2 sdl2_image")
+
+# texlive-bin xorg-mkfontdir
+build_deps=("${adddep} dos2unix ffmpeg libpcap libxaw texlive-core xa xorg-bdftopcf")
+
+# FIXME: Данная версия требует ffmpeg4x по этой причине поддержку ffmpeg пришлось отключить
+# --enable-ffmpeg
+
+build() {
+  go_src_dir
+  burn_patches
+  export CFLAGS="$CFLAGS -w -Wl,--allow-multiple-definition"
+  ./configure \
+    --disable-ffmpeg \
+    --enable-gtk3ui \
+    --enable-sdl2ui \
+    --enable-x64 \
+    --libdir=/usr/lib \
+    --prefix=/usr \
+    --disable-pdf-docs
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} realdocdir=/usr/share/doc/vice install
+}
