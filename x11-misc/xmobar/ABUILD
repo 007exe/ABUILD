@@ -1,5 +1,5 @@
 pkgname=xmobar
-pkgver=0.44.1
+pkgver=0.46
 pkgbuild=1
 arch=("auto")
 
@@ -9,17 +9,24 @@ source=("https://codeberg.org/xmobar/xmobar/archive/${pkgver}.tar.gz")
 
 tags=("apps x11-misc")
 
-build_deps=("ghc haskell-hspec haskell-temporary libxft libxinerama libxrandr libxpm ghc-libs haskell-x11
-haskell-x11-xft haskell-utf8-string haskell-network-uri haskell-hinotify haskell-parsec-numbers alsa-lib
-haskell-regex-compat haskell-old-locale haskell-http haskell-dbus haskell-libmpd haskell-cereal haskell-netlink
-haskell-async haskell-aeson haskell-timezone-olson haskell-timezone-series haskell-extensible-exceptions
-haskell-http-conduit haskell-http-types haskell-http-client-tls haskell-alsa-core haskell-alsa-mixer")
+adddep=("haskell-aeson haskell-timezone-olson haskell-timezone-series
+haskell-extensible-exceptions haskell-http-conduit haskell-http-types
+libxft libxinerama libxrandr libxpm ghc-libs haskell-x11 pango alsa-lib
+haskell-x11-xft haskell-utf8-string haskell-network-uri haskell-hinotify
+haskell-dbus haskell-libmpd haskell-cereal haskell-netlink haskell-async
+haskell-http-client-tls haskell-alsa-core haskell-alsa-mixer haskell-cairo
+haskell-parsec-numbers haskell-regex-compat haskell-old-locale haskell-http
+haskell-pango haskell-colour")
 
-adddep=("libxft libxinerama libxrandr libxpm ghc-libs haskell-x11
-haskell-x11-xft haskell-utf8-string haskell-network-uri haskell-hinotify haskell-parsec-numbers alsa-lib
-haskell-regex-compat haskell-old-locale haskell-http haskell-dbus haskell-libmpd haskell-cereal haskell-netlink
-haskell-async haskell-aeson haskell-timezone-olson haskell-timezone-series haskell-extensible-exceptions
-haskell-http-conduit haskell-http-types haskell-http-client-tls haskell-alsa-core haskell-alsa-mixer")
+build_deps=("${adddep} ghc haskell-hspec haskell-temporary")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
