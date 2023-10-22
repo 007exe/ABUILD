@@ -1,0 +1,21 @@
+pkgname=xa
+pkgver=2.3.14
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Cross-assembler for the 6502 microprocessor.")
+
+source=("http://www.floodgap.com/retrotech/xa/dists/${pkgname}-${pkgver}.tar.gz")
+
+tags=("app-emulation libs")
+
+build_deps=("setconf")
+
+build() {
+  go_src_dir
+  burn_patches
+  setconf Makefile CFLAGS="$CFLAGS -fPIC -Wl,-z,relro,-z,now"
+  setconf Makefile LDFLAGS="$LDFLAGS -z,relro,-z,now"
+  make -j${numjobs}
+  make DESTDIR=${pkgdir}/usr install
+}
