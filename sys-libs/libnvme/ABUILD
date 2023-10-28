@@ -1,5 +1,5 @@
 pkgname=libnvme
-pkgver=1.5
+pkgver=1.6
 pkgbuild=1
 arch=("auto")
 
