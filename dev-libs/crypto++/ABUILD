@@ -1,5 +1,5 @@
 pkgname=crypto++
-pkgver=8.8.0
+pkgver=8.9.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://github.com/weidai11/cryptopp/archive/refs/tags/CRYPTOPP_${pkgve
 
 tags=("develop dev-libs")
 
-build_deps=("gcc-libs unzip")
+adddep=("gcc-libs")
+
+build_deps=("${adddep} unzip")
 
 build(){
   go_src_dir
