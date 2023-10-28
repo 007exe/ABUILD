@@ -1,5 +1,5 @@
 pkgname=gsettings-desktop-schemas
-pkgver=44.0
+pkgver=45.0
 pkgbuild=1
 arch=("auto")
 
