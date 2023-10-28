@@ -1,5 +1,5 @@
 pkgname=btrfs-progs
-pkgver=6.5.1
+pkgver=6.5.3
 pkgbuild=1
 arch=("auto")
 
