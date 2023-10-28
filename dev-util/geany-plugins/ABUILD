@@ -1,18 +1,19 @@
 pkgname=geany-plugins
-pkgver=1.38
-pkgbuild=2
+pkgver=2.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plugins for Geany.")
-longdesc=("A collection of different plugins for Geany, a lightweight IDE.")
 
 source=("http://plugins.geany.org/geany-plugins/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("dev-util utils")
 
-build_deps=("intltool geany webkit2gtk python vte lua51")
+# ctpl libgit2
+dep_plug=("gpgme gtkspell3 lua51 python vte3 webkit2gtk")
+build_deps=("${dep_plug} intltool geany python")
 
-adddep=("geany>=$pkgver")
+adddep=("geany>=${pkgver} ${dep_plug}")
 
 build() {
   go_src_dir
