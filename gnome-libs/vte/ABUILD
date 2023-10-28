@@ -1,6 +1,6 @@
 pkgname=vte-common
 pkglist=("vte3 vte4")
-pkgver=0.74.0
+pkgver=0.74.1
 pkgbuild=1
 arch=("auto")
 
