@@ -1,5 +1,5 @@
 pkgname=extra-cmake-modules
-pkgver=5.110.0
+pkgver=5.111.0
 pkgbuild=1
 arch=("noarch")
 

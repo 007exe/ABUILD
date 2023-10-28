@@ -1,0 +1,151 @@
+Пакеты из этой группы kf5 следует переименовать и пересобрать все пакеты зависящие от них
+attica                === Переименован в ===> attica5
+baloo                 === Переименован в ===> baloo5
+bluez-qt              === Переименован в ===> bluez-qt5
+frameworkintegration  === Переименован в ===> frameworkintegration5
+kactivities           === Переименован в ===> kactivities5
+kactivities-stats     === Переименован в ===> kactivities-stats5
+karchive              === Переименован в ===> karchive5
+kauth                 === Переименован в ===> kauth5
+kbookmarks            === Переименован в ===> kbookmarks5
+kcalendarcore         === Переименован в ===> kcalendarcore5 
+kcmutils              === Переименован в ===> kcmutils5
+kcodecs               === Переименован в ===> kcodecs5
+kcompletion           === Переименован в ===> kcompletion5
+kconfig               === Переименован в ===> kconfig5
+kconfigwidgets        === Переименован в ===> kconfigwidgets5
+kcontacts             === Переименован в ===> kcontacts5
+kcoreaddons           === Переименован в ===> kcoreaddons5
+kcrash                === Переименован в ===> kcrash5
+kdbusaddons           === Переименован в ===> kdbusaddons5
+kdeclarative          === Переименован в ===> kdeclarative5
+kded                  === Переименован в ===> kded5
+kdesu                 === Переименован в ===> kdesu5
+kdnssd                === Переименован в ===> kdnssd5
+kdoctools             === Переименован в ===> kdoctools5
+kfilemetadata         === Переименован в ===> kfilemetadata5  
+kglobalaccel          === Переименован в ===> kglobalaccel5
+kguiaddons            === Переименован в ===> kguiaddons5
+kholidays             === Переименован в ===> kholidays5
+ki18n                 === Переименован в ===> ki18n5
+kiconthemes           === Переименован в ===> kiconthemes5  
+kidletime             === Переименован в ===> kidletime5
+kio                   === Переименован в ===> kio5
+kitemmodels           === Переименован в ===> kitemmodels5
+kitemviews            === Переименован в ===> kitemviews5
+kjobwidgets           === Переименован в ===> kjobwidgets5
+knewstuff             === Переименован в ===> knewstuff5
+knotifications        === Переименован в ===> knotifications5 
+knotifyconfig         === Переименован в ===> knotifyconfig5
+kpackage              === Переименован в ===> kpackage5
+kparts                === Переименован в ===> kparts5
+kpeople               === Переименован в ===> kpeople5
+kpty                  === Переименован в ===> kpty5
+kquickcharts          === Переименован в ===> kquickcharts5 
+krunner               === Переименован в ===> krunner5
+kservice              === Переименован в ===> kservice5
+ktexteditor           === Переименован в ===> ktexteditor5
+ktextwidgets          === Переименован в ===> ktextwidgets5
+kunitconversion       === Переименован в ===> kunitconversion5
+kwallet               === Переименован в ===> kwallet5
+kwayland              === Переименован в ===> kwayland5
+kwidgetsaddons        === Переименован в ===> kwidgetsaddons5 
+kwindowsystem         === Переименован в ===> kwindowsystem5
+kxmlgui               === Переименован в ===> kxmlgui5
+modemmanager-qt       === Переименован в ===> modemmanager-qt5
+networkmanager-qt     === Переименован в ===> networkmanager-qt5
+prison                === Переименован в ===> prison5
+purpose               === Переименован в ===> purpose5
+qqc2-desktop-style    === Переименован в ===> qqc2-desktop-style5
+solid                 === Переименован в ===> solid5
+sonnet                === Переименован в ===> sonnet5
+syndication           === Переименован в ===> syndication5
+syntax-highlighting   === Переименован в ===> syntax-highlighting5
+threadweaver          === Переименован в ===> threadweaver5
+kdav                  === Переименован в ===> kdav5
+kimageformats         === Переименован в ===> kimageformats5
+kplotting             === Переименован в ===> kplotting5
+plasma-framework      === Переименован в ===> plasma-framework5
+breeze-icons
+extra-cmake-modules
+kapidox
+kemoticons
+kinit
+kirigami2
+oxygen-icons
+
+
+Как только эта группа пакетов kf6 станет стабильной необходимо её обновить до qt6
+attica
+baloo
+bluez-qt
+extra-cmake-modules
+frameworkintegration
+kactivities
+kactivities-stats
+karchive
+kauth
+kbookmarks
+kcalendarcore
+kcmutils
+kcodecs
+kcolorscheme
+kcompletion
+kconfig
+kconfigwidgets
+kcontacts
+kcoreaddons
+kcrash
+kdav
+kdbusaddons
+kdeclarative
+kded
+kdesu
+kdnssd
+kdoctools
+kfilemetadata
+kglobalaccel
+kguiaddons
+kholidays
+ki18n
+kiconthemes
+kidletime
+kimageformats
+kio
+kirigami
+kitemmodels
+kitemviews
+kjobwidgets
+knewstuff
+knotifications
+knotifyconfig
+kpackage
+kparts
+kpeople
+kplotting
+kpty
+kquickcharts
+krunner
+kservice
+kstatusnotifieritem
+ksvg
+ktexteditor
+ktexttemplate
+ktextwidgets
+kunitconversion
+kwallet
+kwayland
+kwidgetsaddons
+kwindowsystem
+kxmlgui
+modemmanager-qt
+networkmanager-qt
+plasma-framework
+prison
+purpose
+qqc2-desktop-style
+solid
+sonnet
+syndication
+syntax-highlighting
+threadweaver
