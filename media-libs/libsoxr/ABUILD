@@ -4,13 +4,14 @@ pkgbuild=3
 arch=("auto")
 
 shortdesc=("The SoX Resampler library that aims to give fast and high quality results for any constant resampling ratio.")
-longdesc=("The SoX Resampler library libsoxr performs one-dimensional sample-rate conversion -- it may be used, for example, to resample PCM-encoded audio.")
 
 source=("https://downloads.sourceforge.net/project/soxr/soxr-$pkgver-Source.tar.xz")
 
 tags=("libs media-libs")
 
-build_deps=("cmake gcc-libs")
+adddep=("gcc-libs")
+
+build_deps=("${adddep} cmake")
 
 build() {
   go_src_dir
