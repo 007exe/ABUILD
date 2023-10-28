@@ -1,5 +1,5 @@
 pkgname=lib32-mpg123
-pkgver=1.32.1
+pkgver=1.32.3
 pkgbuild=1
 arch=("auto")
 
