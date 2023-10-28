@@ -1,18 +1,16 @@
 pkgname=cairomm
-pkgver=1.14.4
+pkglist=("cairomm-docs")
+pkgver=1.14.5
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("C++ bindings for Cairo")
-longdesc=("The libcairomm-1.0 package provides a C++ interface to Cairo.")
+shortdesc=("C++ bindings for Cairo.")
 
 source=("http://www.cairographics.org/releases/cairomm-${pkgver}.tar.xz")
 
 tags=("libs dev-cpp")
 
 build_deps=("meson mm-common")
-
-pkglist=("cairomm-docs")
 
 build() {
   go_src_dir
@@ -25,10 +23,11 @@ build() {
   meson install -C build --destdir ${pkgdir}
 }
 
+# cairomm-docs ############################################################################
+
 cairomm-docs() {
   pkgname=cairomm-docs
-  shortdesc=("libsigc++ Documentation")
-  longdesc=("The libsigc++ package implements a typesafe callback system for standard C++.")
+  shortdesc=("libsigc++ Documentation.")
   arch="noarch"
 }
 
