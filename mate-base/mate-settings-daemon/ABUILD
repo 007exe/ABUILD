@@ -13,7 +13,7 @@ tags=("mate mate-base")
 build_deps=("dbus-glib libcanberra libmatekbd libmatemixer libnotify mate-desktop nss polkit gettext python")
 
 # NOTE: Это опциональные зависимости
-removedep=("libcanberra-pulse pulseaudio-alsa")
+removedep=("libcanberra pulseaudio-alsa")
 
 build() {
   go_src_dir
