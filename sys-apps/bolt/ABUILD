@@ -1,16 +1,17 @@
 pkgname=bolt
-pkgver=0.9.4
+pkgver=0.9.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Thunderbolt 3 device manager.")
-longdesc=("Userspace system daemon to enable security levels for Thunderbolt 3.")
 
 source=("https://gitlab.freedesktop.org/${pkgname}/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("sys-apps utils")
+# systemd
+adddep=("polkit")
 
-build_deps=("polkit asciidoc meson python-setuptools patch")
+build_deps=("${adddep} asciidoc meson python-setuptools patch")
 
 build() {
   go_src_dir
