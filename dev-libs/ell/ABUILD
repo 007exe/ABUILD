@@ -1,5 +1,5 @@
 pkgname=ell
-pkgver=0.58
+pkgver=0.59
 pkgbuild=1
 arch=("auto")
 
