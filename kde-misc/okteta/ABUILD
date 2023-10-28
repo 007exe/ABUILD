@@ -9,9 +9,11 @@ source=("https://download.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${p
 
 tags=("develop kde-misc")
 
-build_deps=("extra-cmake-modules kdoctools qt5-tools kcmutils kparts knewstuff qca-qt5 qt5-script")
+adddep=("gcc-libs glibc kcmutils kcodecs kcompletion kconfig kconfigwidgets kcoreaddons kcrash
+kdbusaddons ki18n kiconthemes kio kjobwidgets knewstuff kparts kservice kwidgetsaddons kxmlgui
+qca-qt5 qt5-base qt5-declarative qt5-script")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} extra-cmake-modules kdoctools qt5-tools")
 
 build() {
   go_src_dir
