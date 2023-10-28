@@ -1,18 +1,17 @@
 pkgname=cronie
-pkgver=1.6.1
+pkgver=1.7.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Daemon that runs specified programs at scheduled times and related tools.")
-longdesc=("Cronie is a standard UNIX daemon cron based on the original vixie-cron.")
 
 source=("https://github.com/cronie-crond/cronie/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags=("base sys-process")
 
-build_deps=("glibc linux-pam run-parts")
+adddep=("linux-pam bash run-parts")
 
-adddep=("run-parts")
+build_deps=("${adddep} glibc")
 
 config_files=("etc/cron.deny
 etc/pam.d/crond
@@ -38,6 +37,7 @@ build() {
   install -d ${pkgdir}/var/spool/{ana,}cron
   install -d ${pkgdir}/etc/cron.{d,hourly,daily,weekly,monthly}
 
+# Openrc
   install -Dm0644 ${filedir}/deny ${pkgdir}/etc/cron.deny
   install -Dm0644 ${filedir}/pam.d ${pkgdir}/etc/pam.d/crond
   install -Dm755 ${filedir}/cron.init ${pkgdir}/etc/init.d/cron
@@ -45,4 +45,12 @@ build() {
   install -Dm0644 contrib/anacrontab ${pkgdir}/etc/anacrontab
   install -Dm0644 contrib/0hourly ${pkgdir}/etc/cron.d/0hourly
   install -Dm0755 contrib/0anacron ${pkgdir}/etc/cron.hourly/0anacron
+
+# Systemd
+  install -Dm0644 contrib/cronie.systemd ${pkgdir}/usr/lib/systemd/system/cronie.service
+  install -Dm0644 crond.sysconfig ${pkgdir}/etc/sysconfig/crond
+
+  install -Dm0644 pam/crond ${pkgdir}/etc/pam.d/crond
+
+  install -Dm0644 COPYING ${pkgdir}/usr/share/licenses/cronie/COPYING
 }
