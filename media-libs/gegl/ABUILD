@@ -1,5 +1,5 @@
 pkgname=gegl
-pkgver=0.4.42
+pkgver=0.4.46
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,7 @@ source=("https://download.gimp.org/pub/gegl/${pkgver%.*}/gegl-${pkgver}.tar.xz")
 
 tags=("libs media-libs")
 
-# libgexiv2
-adddep=("babl jasper json-glib lensfun libraw librsvg libspiro libtiff luajit openexr poppler-glib suitesparse")
+adddep=("babl jasper json-glib lensfun libraw librsvg libspiro libtiff luajit openexr poppler-glib suitesparse gexiv2")
 
 build_deps=("${adddep} exiv2 ffmpeg glu gobject-introspection intltool mesa meson python-gobject ruby vala")
 
