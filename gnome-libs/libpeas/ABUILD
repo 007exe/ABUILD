@@ -1,5 +1,5 @@
 pkgname=libpeas
-pkgver=1.32.0
+pkgver=1.36.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,11 @@ longdesc=("libpeas is a GObject based plugins engine, and is targeted at giving 
 source=("https://gitlab.gnome.org/GNOME/libpeas/-/archive/libpeas-${pkgver}/libpeas-libpeas-${pkgver}.tar.gz")
 
 tags=("dev-libs libs")
+# gobject-introspection-runtime
+adddep=("gtk3")
 
-# python-gobject glade gobject-introspection-runtime
-build_deps=("gtk-doc gobject-introspection meson vala gtk3")
+# lua51-lgi
+build_deps=("${adddep} gi-docgen glade gobject-introspection luajit meson python-gobject vala")
 
 build() {
   go_src_dir
