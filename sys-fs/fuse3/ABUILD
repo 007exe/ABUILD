@@ -1,6 +1,6 @@
 pkgname=fuse3
 pkglist=("fuse-common")
-pkgver=3.16.1
+pkgver=3.16.2
 pkgbuild=1
 arch=("auto")
 
@@ -29,6 +29,8 @@ build() {
 # Cтатические узлы устройств вызызавают конфликты.
   rm -r ${pkgdir}/dev
 }
+
+# fuse-common ###################################################################################
 
 fuse-common() {
   pkgname=fuse-common
