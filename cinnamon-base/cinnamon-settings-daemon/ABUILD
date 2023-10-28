@@ -9,9 +9,9 @@ source=("https://github.com/linuxmint/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("cinnamon cinnamon-base")
 
-# libcanberra-pulse
 adddep=("cinnamon-desktop colord dbus-glib libcups pulseaudio-alsa
-libgnomekbd libgudev libnotify librsvg libwacom nss polkit upower")
+libgnomekbd libgudev libnotify librsvg libwacom nss polkit upower
+libcanberra")
 
 build_deps=("${adddep} meson samurai xf86-input-wacom")
 
