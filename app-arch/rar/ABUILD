@@ -1,6 +1,6 @@
 pkgname=rar
-pkgver=6.23.0
-_pkgver=623
+pkgver=6.24.0
+_pkgver=624
 pkgbuild=1
 arch=("auto")
 
@@ -15,6 +15,7 @@ adddep=("gcc-libs")
 build_deps=("${adddep}")
 
 conflicts=("unrar")
+#provides=("unrar")
 
 config_files=("etc/rarfiles.lst")
 
