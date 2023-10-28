@@ -1,16 +1,17 @@
 pkgname=libsodium
-pkgver=1.0.18
-pkgbuild=2
+pkgver=1.0.19
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("P(ortable|ackageable) NaCl-based crypto library.")
-longdesc=("Sodium is a new, easy-to-use software library for encryption, decryption, signatures, password hashing and more.")
 
 source=("https://download.libsodium.org/libsodium/releases/libsodium-$pkgver.tar.gz")
 
 tags=("libs dev-libs")
 
-build_deps="glibc"
+adddep=("glibc")
+# minisign
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
