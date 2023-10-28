@@ -1,10 +1,9 @@
 pkgname=libutf8proc
-pkgver=2.8.0
+pkgver=2.9.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("C library for processing UTF-8 encoded Unicode strings.")
-longdesc=("A clean C Library for processing UTF-8 Unicode data.")
 
 source=("https://github.com/JuliaStrings/utf8proc/archive/refs/tags/v${pkgver}.tar.gz")
 
