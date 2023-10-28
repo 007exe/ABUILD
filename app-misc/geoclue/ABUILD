@@ -1,10 +1,9 @@
 pkgname=geoclue
-pkgver=2.6.0
+pkgver=2.7.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Modular geoinformation service built on the D-Bus messaging system.")
-longdesc=("GeoClue is a modular geoinformation service built on top of the D-Bus messaging system.")
 
 source=("https://gitlab.freedesktop.org/geoclue/geoclue/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 
