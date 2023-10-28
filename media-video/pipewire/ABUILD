@@ -3,7 +3,7 @@ pkgname=pipewire
 pkglist=("libpipewire alsa-card-profiles pipewire-docs pipewire-audio pipewire-alsa pipewire-ffado
 pipewire-jack-client pipewire-jack pipewire-pulse pipewire-roc gst-plugin-pipewire pipewire-zeroconf
 pipewire-v4l2 pipewire-x11-bell")
-pkgver=0.3.82
+pkgver=0.3.83
 pkgbuild=1
 arch=("auto")
 _ver=${pkgver:0:3}
