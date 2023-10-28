@@ -1,5 +1,5 @@
 pkgname=libmbim
-pkgver=1.28.4
+pkgver=1.30.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,10 @@ source=("https://gitlab.freedesktop.org/mobile-broadband/libmbim/-/archive/${pkg
 
 tags=("libs net-libs")
 
-build_deps=("gtk-doc meson git help2man gobject-introspection bash-completion glib2")
+# systemd
+adddep=("bash glib2")
 
-adddep=("bash")
+build_deps=("${adddep} bash-completion git gobject-introspection gtk-doc help2man meson")
 
 build() {
   go_src_dir
