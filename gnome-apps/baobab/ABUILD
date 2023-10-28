@@ -1,5 +1,5 @@
 pkgname=baobab
-pkgver=44.0
+pkgver=45.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://download.gnome.org/sources/baobab/${pkgver%.*}/baobab-${pkgver}
 
 tags=("xapps sys-apps")
 
-build_deps=("itstool libhandy vala gtk3 ")
+adddep=("dconf gsettings-desktop-schemas gtk4 libadwaita librsvg")
+
+build_deps=("${adddep} appstream-glib gobject-introspection meson vala yelp-tools")
 
 build() {
   go_src_dir
