@@ -1,5 +1,5 @@
 pkgname=rhash
-pkgver=1.4.3
+pkgver=1.4.4
 pkgbuild=1
 arch=("auto")
 
