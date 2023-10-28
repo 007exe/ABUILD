@@ -1,5 +1,5 @@
 pkgname=xkeyboard-config
-pkgver=2.39
+pkgver=2.40
 pkgbuild=1
 arch=("noarch")
 
@@ -20,7 +20,7 @@ build() {
     -D xkb-base=/usr/share/X11/xkb \
     -D compat-rules=true \
     -D xorg-rules-symlinks=true
-  meson configure build
+#  meson configure build
   ninja -C build
   DESTDIR=${pkgdir} ninja -C build install
   install -m755 -d ${pkgdir}/var/lib/xkb
