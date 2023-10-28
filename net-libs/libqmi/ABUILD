@@ -1,5 +1,5 @@
 pkgname=libqmi
-pkgver=1.32.4
+pkgver=1.34.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://gitlab.freedesktop.org/mobile-broadband/libqmi/-/archive/${pkgv
 
 tags=("libs net-libs")
 
-build_deps=("gtk-doc meson help2man gobject-introspection bash-completion")
+adddep=("libgudev libmbim libqrtr-glib")
+
+build_deps=("${adddep} bash-completion git gobject-introspection gtk-doc help2man meson")
 
 build() {
   go_src_dir
