@@ -1,6 +1,6 @@
 pkgname=libsigc++-3.0
 pkglist=("docs")
-pkgver=3.4.0
+pkgver=3.6.0
 pkgbuild=1
 arch=("auto")
 
