@@ -1,5 +1,5 @@
 pkgname=python-soupsieve
-pkgver=2.4
+pkgver=2.5
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/facelessuser/soupsieve/archive/${pkgver}/${pkgname}-
 
 tags=("libs dev-python")
 
-build_deps=("python python-setuptools")
+build_deps=("python python-build python-installer python-hatchling")
 
 build() {
   go_src_dir
