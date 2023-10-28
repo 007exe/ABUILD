@@ -1,5 +1,5 @@
 pkgname=wxwidgets-gtk3
-pkgver=3.2.2.1
+pkgver=3.2.3
 pkgbuild=1
 arch=("auto")
 
