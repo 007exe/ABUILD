@@ -44,14 +44,16 @@ build() {
     --with-uuid=e2fs \
     --with-icu \
     --with-ldap \
-    --with-llvm \
     --with-libxslt \
     --with-lz4 \
     --with-zstd \
     --enable-nls \
     --enable-thread-safety \
     --disable-rpath \
-    --disable-static
+    --disable-static \
+    --without-llvm
+# FIXMI: Не собирается с LLVM --with-llvm
+
   make world -j${numjobs}
   make DESTDIR=${pkgdir} install
   make -C contrib DESTDIR=${pkgdir} install
