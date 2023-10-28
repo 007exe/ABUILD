@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend geany capabilities:"
+echo -e "    geany-plugins: additional functionality"
+echo -e "    vte3: embedded terminal support"
+echo -e " "

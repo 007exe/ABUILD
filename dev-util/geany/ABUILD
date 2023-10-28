@@ -1,19 +1,20 @@
 pkgname=geany
-pkgver=1.38
-pkgbuild=2
+pkgver=2.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Fast and lightweight IDE")
-longdesc=("Geany is a small C editor using GTK with basic features of an integrated development environment.")
+shortdesc=("Fast and lightweight IDE.")
 
 source=("https://download.geany.org/$pkgname-$pkgver.tar.bz2")
 
 tags=("apps dev-util")
 
-build_deps=("doxygen intltool python-lxml gtk3 vte")
+adddep=("gtk3")
+
+build_deps=("${adddep} doxygen intltool python-lxml")
 
 # NOTE: Это опциональная зависимость
-removedep=("vte")
+removedep=("geany-plugins vte3")
 
 build() {
   go_src_dir
