@@ -1,7 +1,7 @@
 pkgname=libportal
 # FIXME: Проблемы со сборкой документации libportal-docs
 pkglist=("libportal-gtk3 libportal-gtk4 libportal-qt5 libportal-docs")
-pkgver=0.7
+pkgver=0.7.1
 pkgbuild=1
 arch=("auto")
 
@@ -16,6 +16,8 @@ dep_gtk4=("gtk4")
 dep_qt5=("qt5-base qt5-x11extras")
 build_deps=("${dep_gtk3} ${dep_gtk4} ${dep_qt5} gi-docgen gjs gobject-introspection meson vala")
 
+###############################################################################################
+
 _pick() {
   local p=${1} f d; shift
   for f; do
@@ -25,6 +27,8 @@ _pick() {
     rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
   done
 }
+
+###############################################################################################
 
 build() {
   go_src_dir
