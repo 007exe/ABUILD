@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend usbutils capabilities:"
+echo -e "    coreutils: for lsusb.py usage"
+echo -e "    python: for lsusb.py usage"
+echo -e "    bash: for usb-devices"
+echo -e " "
