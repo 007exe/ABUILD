@@ -1,5 +1,5 @@
 pkgname=evince
-pkgver=44.3
+pkgver=45.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,8 +10,9 @@ source=("https://gitlab.gnome.org/GNOME/evince/-/archive/${pkgver}/evince-${pkgv
 tags=("gnome gnome-apps")
 
 # libsynctex
-adddep=("dconf gtk3 libgxps libspectre gsfonts poppler-glib djvulibre dconf libsecret
-gsettings-desktop-schemas gnome-desktop libarchive gst-plugins-base-libs gspell libhandy gvfs")
+adddep=("dconf djvulibre gnome-desktop gsettings-desktop-schemas gsfonts gspell
+gst-plugins-base-libs gtk3 gvfs libarchive libgxps libhandy libsecret libspectre
+libxml2 poppler-glib")
 
 # texlive-bin
 build_deps=("${adddep} gobject-introspection gi-docgen git meson appstream-glib yelp-tools")
@@ -24,5 +25,5 @@ build() {
     -D libdir=/usr/lib \
     -D ps=enabled
   meson compile -C build
-   meson install -C build --destdir ${pkgdir}
+  meson install -C build --destdir ${pkgdir}
 }
