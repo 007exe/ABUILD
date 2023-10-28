@@ -1,6 +1,6 @@
 pkgname=libnsl
-pkgver=2.0.0
-pkgbuild=2
+pkgver=2.0.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Public client interface library for NIS(YP) and NIS+.")
