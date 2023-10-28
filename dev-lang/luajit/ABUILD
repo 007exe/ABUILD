@@ -1,6 +1,6 @@
 pkgname=luajit
-_commit=4611e25c0fbe911486cccae4556eb086c0254c5f
-_ct=1694285958
+_commit=e826d0c101d750fac8334d71e221c50d8dbe236c
+_ct=1697887905
 pkgver="2.1.${_ct}"
 pkgbuild=1
 arch=("auto")
