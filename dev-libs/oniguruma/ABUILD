@@ -1,12 +1,11 @@
 pkgname=oniguruma
-pkgver=6.9.8
+pkgver=6.9.9
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A regular expressions library.")
-longdesc=("Regular expression library for different character encodings.")
 
-source=("https://github.com/kkos/oniguruma/releases/download/v$pkgver/onig-${pkgver/_/-}.tar.gz")
+source=("https://github.com/kkos/oniguruma/releases/download/v${pkgver}/onig-${pkgver/_/-}.tar.gz")
 
 tags=("libs dev-libs")
 
