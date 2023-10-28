@@ -1,5 +1,5 @@
 pkgname=qt6-charts
-pkgver=6.5.3
+pkgver=6.6.0
 pkgbuild=1
 arch=("auto")
 
