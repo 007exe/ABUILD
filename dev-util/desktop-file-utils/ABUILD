@@ -1,16 +1,17 @@
 pkgname=desktop-file-utils
-pkgver=0.26
-pkgbuild=2
+pkgver=0.27
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Command line utilities for working with desktop entries.")
-longdesc=("The Desktop File Utils package contains command line utilities for working with Desktop entries. These utilities are used by Desktop Environments and other applications to manipulate the MIME-types application databases and help adhere to the Desktop Entry Specification.")
 
 source=("http://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-${pkgver}.tar.xz")
 
 tags=("dev-util utils")
 
-build_deps=("meson")
+adddep=("glib2")
+
+build_deps=("${adddep} meson")
 
 build() {
   go_src_dir
