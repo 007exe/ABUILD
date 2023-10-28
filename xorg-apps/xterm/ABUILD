@@ -1,5 +1,5 @@
 pkgname=xterm
-pkgver=386
+pkgver=388
 pkgbuild=1
 arch=("auto")
 
