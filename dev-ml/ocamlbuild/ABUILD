@@ -1,25 +1,29 @@
 pkgname=ocamlbuild
-pkgver=0.14.1
+pkgver=0.14.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Build tool, that has built-in rules for building OCaml library and programs.")
-longdesc=("Generic build tool with built-in rules for building OCaml library and programs.")
 
 source=("https://github.com/ocaml/${pkgname}/archive/${pkgver}.tar.gz")
 
 tags=("libs dev-ml")
 
-build_deps=("ocaml")
+adddep=("ocaml")
 
-adddep=("ocaml>=4.13.1")
+build_deps=("${adddep}")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
 
 build() {
   go_src_dir
   burn_patches
-#NOTE: Обход проверки безопасности
-  export CHECK_IF_PREINSTALLED=false
-
   make configure PREFIX="/usr" MANDIR="/usr/share/man"
   make
   make DESTDIR=${pkgdir} install
