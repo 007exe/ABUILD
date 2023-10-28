@@ -1,40 +1,34 @@
-#ABUILD created by/создан: khvalera, khvalera at narod.ru 
-
 pkgname=clamtk
-pkgver=4.44
+pkgver=6.14
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="GUI front-end for ClamAV using gtk2-perl"
+shortdesc=("Easy to use, light-weight, on-demand virus scanner for Linux systems.")
 
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/dave-theunsub/clamtk/releases/download/v${pkgver}/clamtk-${pkgver}.tar.xz")
 
-tags="app-misc utils"
+tags=("app-misc utils")
 
-adddep="clamav perl-gtk2 udev perl-date-calc perl-gettext perl-file-find-rule perl-libwww perl-net-dns perl-http-message"
+adddep=("clamav perl perl-gtk3 perl-locale-gettext perl-libwww perl-http-message perl-lwp-protocol-https
+perl-text-csv perl-json python zenity desktop-file-utils cronie")
 
-docs="CHANGES DISCLAIMER"
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
-  install -Dm755  clamtk ${pkgdir}/usr/bin/clamtk
-
-  # libs
-  for n in lib/* ; do
-      install -Dm644 ${n} ${pkgdir}/usr/lib${LIBDIRSUFFIX}/perl5/vendor_perl/ClamTk/`basename ${n}`
+  install -Dm 755 clamtk -t ${pkgdir}/usr/bin
+  for f in lib/* ; do
+    install -Dm 644 "${f}" "${pkgdir}/usr/share/perl5/vendor_perl/ClamTk/$(basename "${f}")"
   done
 
-  #localization
-  for n in po/*.mo ; do
-      install -Dm644 ${n} ${pkgdir}/usr/share/locale/`basename ${n} .mo`/LC_MESSAGES/clamtk.mo
+  for f in po/*.mo ; do
+    install -Dm 644 "${f}" "${pkgdir}/usr/share/locale/$(basename "${f}" .mo)/LC_MESSAGES/clamtk.mo"
   done
 
-  # man pages
-  install -Dm644 clamtk.1.gz ${pkgdir}/usr/man/man1/clamtk.1.gz
-  # pixmaps
-  install -Dm644 images/clamtk.xpm ${pkgdir}/usr/share/pixmaps/clamtk.xpm
-  install -Dm644 images/clamtk.png ${pkgdir}/usr/share/pixmaps/clamtk.png
-  install -Dm644 images/clamtk-loader.gif ${pkgdir}/usr/share/pixmaps/clamtk-loader.gif
-  # menu
-  install -Dm644  clamtk.desktop ${pkgdir}/usr/share/applications/clamtk.desktop
+  install -Dm 644 clamtk.1.gz -t ${pkgdir}/usr/share/man/man1
+  install -Dm 644 CHANGES DISCLAIMER README.md -t ${pkgdir}/usr/share/doc/${pkgname}
+  install -Dm 644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+
+  install -Dm 644 images/clamtk.{xpm,png} -t ${pkgdir}/usr/share/pixmaps
+  install -Dm 644 clamtk.desktop -t ${pkgdir}/usr/share/applications
 }
