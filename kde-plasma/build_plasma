@@ -1,6 +1,6 @@
 #!/bin/bash
 
-P_VERSION=5.27.8
+P_VERSION=5.27.9
 BUILD_VERSION=1
 
 LIST="flatpak-kcm
