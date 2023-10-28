@@ -1,5 +1,5 @@
 echo -e "\n"
 echo -e "The following packages extend kmail capabilities:"
-echo -e "kleopatra: mail encryption support"
-echo -e "kdepim-addons: additional plugins"
+echo -e "    kleopatra: mail encryption support"
+echo -e "    kdepim-addons: additional plugins"
 echo -e " "

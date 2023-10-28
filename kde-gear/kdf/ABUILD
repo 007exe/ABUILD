@@ -1,5 +1,5 @@
 pkgname=kdf
-pkgver=23.08.1
+pkgver=23.08.2
 pkgbuild=1
 arch=("auto")
 
