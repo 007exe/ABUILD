@@ -1,10 +1,9 @@
 pkgname=orca
-pkgver=43.1
+pkgver=45.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Screen reader for individuals who are blind or visually impaired.")
-longdesc=("Extensible screen reader that provides access to the desktop.")
 
 source=("https://gitlab.gnome.org/GNOME/orca/-/archive/ORCA_${pkgver//./_}/orca-ORCA_${pkgver//./_}.tar.gz")
 
