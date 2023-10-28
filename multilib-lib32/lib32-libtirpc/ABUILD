@@ -1,5 +1,5 @@
 pkgname=lib32-libtirpc
-pkgver=1.3.3
+pkgver=1.3.4
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("http://downloads.sourceforge.net/sourceforge/libtirpc/libtirpc-${pkgver
 
 tags=("lib32 net-libs")
 
-build_deps=("lib32-krb5")
+adddep=("libtirpc lib32-krb5")
 
-adddep=("libtirpc")
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
