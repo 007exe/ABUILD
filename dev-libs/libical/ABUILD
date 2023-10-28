@@ -1,6 +1,6 @@
 pkgname=libical
-pkgver=3.0.16
-pkgbuild=2
+pkgver=3.0.17
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("An open source reference implementation of the icalendar data type and serialization format.")
@@ -9,13 +9,15 @@ source=("https://github.com/libical/libical/releases/download/v${pkgver}/libical
 
 tags=("libs dev-libs")
 
-build_deps=("cmake gtk-doc doxygen vala gobject-introspection glibc glib2 icu db libxml2")
+adddep=("glibc glib2 icu libxml2")
+
+build_deps=("${adddep} cmake ninja gtk-doc doxygen vala gobject-introspection")
 
 build() {
   go_src_dir
   burn_patches
   mkdir build
-  cmake -Bbuild \
+  cmake -B build \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
