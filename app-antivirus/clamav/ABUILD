@@ -11,7 +11,7 @@ source=("https://github.com/Cisco-Talos/clamav/archive/refs/tags/clamav-1.2.0.ta
 tags=("utils app-misc")
 
 # systemd
-adddep=("bzip2 libltdl libxml2 curl pcre2 json-c libmspack ncurses")
+adddep=("bzip2 libtool libxml2 curl pcre2 json-c libmspack ncurses")
 
 build_deps=("${adddep} cmake ninja python rust libmilter")
 
