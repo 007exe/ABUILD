@@ -1,11 +1,11 @@
 pkgname=obs-studio
-pkgver=29.0.2
+pkgver=29.1.3
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Free and open source software for video recording and live streaming.")
 
-source=("https://github.com/jp9000/obs-studio/archive/$pkgver.tar.gz")
+source=("https://github.com/jp9000/obs-studio/archive/${pkgver}.tar.gz")
 
 tags=("media-video apps")
 
@@ -17,12 +17,20 @@ build_deps=("${adddep} cmake libfdk-aac x264 swig python luajit sndio")
 # NOTE: Это опциональные зависимости
 removedep=("libfdk-aac libva-intel-driver libva-mesa-driver luajit python sndio v4l2loopback-dkms")
 
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/${pkgver}.tar.gz
+}
+
 build() {
   go_src_dir
   burn_patches
-  cd ${srcdir}
-  cmake -B build -S ${srcdir}/${pkgname}-${pkgver} \
-    -DCMAKE_INSTALL_PREFIX="/usr" \
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DENABLE_BROWSER=OFF \
     -DENABLE_VST=ON \
     -DENABLE_VLC=OFF \
@@ -34,4 +42,5 @@ build() {
     -Wno-dev
   cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
+
 }
