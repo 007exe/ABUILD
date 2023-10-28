@@ -1,5 +1,5 @@
 pkgname=python-rapidfuzz
-pkgver=3.2.0
+pkgver=3.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -30,9 +30,11 @@ before_build() {
 
 build() {
   cd ${srcdir}/rapidfuzz
-  RAPIDFUZZ_BUILD_EXTENSION=1 \
-  python -m build --wheel --no-isolation
-  python -m installer --destdir=${pkgdir} dist/*.whl
+  python setup.py build
+  python setup.py install --root="$pkgdir" --optimize=1 --skip-build
+#  RAPIDFUZZ_BUILD_EXTENSION=1 \
+#  python -m build --wheel --no-isolation
+#  python -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 README.md -t ${pkgdir}/usr/share/doc/${pkgname}
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
