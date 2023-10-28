@@ -1,10 +1,9 @@
 pkgname=libcue
-pkgver=2.2.1
+pkgver=2.3.0
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("CUE Sheet Parser Library.")
-longdesc=("Parses so-called cue sheets and handles the parsed data.")
 
 source=("https://github.com/lipnitsk/libcue/archive/v${pkgver}.tar.gz")
 
