@@ -1,0 +1,48 @@
+pkgname=ttf-fira-code
+pkglist=("woff woff2")
+pkgver=6.2
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Monospaced font with programming ligatures.")
+
+source=("https://github.com/tonsky/FiraCode/releases/download/${pkgver}/Fira_Code_v${pkgver}.zip")
+
+tags=("media-fonts fonts")
+
+build_deps=("mkpkg")
+
+build() {
+  cd ${srcdir}
+  mkdir -p ${pkgdir}/usr/share/fonts/TTF/
+  install -D -m644 ttf/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+}
+
+# woff-fira-code #####################################################################
+
+woff() {
+  pkgname=woff-fira-code
+  shortdesc=("Monospaced font with programming ligatures.")
+  arch=("noarch")
+}
+
+woff_prep() {
+  cd ${srcdir}
+  mkdir -p ${pkgdir}/usr/share/fonts/WOFF/
+  install -D -m644 woff/*.woff ${pkgdir}/usr/share/fonts/WOFF/
+}
+
+# woff2-fira-code #####################################################################
+
+woff2() {
+  pkgname=woff2-fira-code
+  shortdesc=("Monospaced font with programming ligatures.")
+  arch=("noarch")
+}
+
+woff2_prep() {
+  cd ${srcdir}
+  mkdir -p ${pkgdir}/usr/share/fonts/WOFF2/
+  install -D -m644 woff2/*.woff2 ${pkgdir}/usr/share/fonts/WOFF2/
+}
+
