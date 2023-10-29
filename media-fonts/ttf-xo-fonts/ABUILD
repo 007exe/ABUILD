@@ -1,13 +1,11 @@
 pkgname=ttf-xo-fonts
-# Поддельная версия, оригинал не имеет версии
-_ver=`date +%y.%m`
-pkgver=${_ver}
+pkgver=23.10
 pkgbuild=1
 arch=("noarch")
 
 shortdesc=("XO by MyOffice provide metric-compatible fonts with Microsoft to display documents without distortion and violation of the structure.")
 
-source=("https://myoffice.ru/files/fonts/all_fonts_myoffice.zip")
+source=("https://myoffice.ru/files/fonts/MyOffice_XO_Fonts_1.1.zip")
 
 tags=("media-fonts fonts")
 
