@@ -1,0 +1,34 @@
+pkgname=ttf-crimson
+pkglist=("otf")
+pkgver=0.800
+_pkgver=f8255058575d26ddf35ab0b2d5ab7832c40f7a1a
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A font family for book production in the tradition of beautiful oldstyle typefaces.")
+
+source=("https://github.com/skosch/Crimson/archive/${_pkgver}/Crimson-${_pkgver}.zip")
+
+tags=("media-fonts fonts")
+
+build_deps=("unzip")
+
+build() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/TTF/ "Desktop Fonts/TTF/"*.ttf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE.txt
+}
+
+#  ##################################################################################
+
+otf() {
+  pkgname=otf-crimson
+  shortdesc=("A font family for book production in the tradition of beautiful oldstyle typefaces.")
+  arch=("noarch")
+}
+
+otf_prep() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/OTF/ "Desktop Fonts/OTF/"*.otf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} LICENSE.txt
+}
