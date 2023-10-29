@@ -1,0 +1,33 @@
+pkgname=ttf-cormorant
+pkglist=("otf")
+pkgver=3.609
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Open-source display font family.")
+
+source=("https://github.com/CatharsisFonts/Cormorant/archive/v${pkgver}/cormorant-${pkgver}.tar.gz")
+
+tags=("media-fonts fonts")
+
+build_deps=("mkpkg")
+
+build() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/TTF/ "1. TrueType Font Files/"*.ttf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} OFL.txt
+}
+
+# otf-cormorant ###############################################################################################
+
+otf() {
+  pkgname=otf-cormorant
+  shortdesc=("Open-source display font family.")
+  arch=("noarch")
+}
+
+otf_prep() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/OTF/ "2. OpenType Files/"*.otf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} OFL.txt
+}
