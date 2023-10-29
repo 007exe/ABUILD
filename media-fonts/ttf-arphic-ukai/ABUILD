@@ -1,0 +1,18 @@
+pkgname=ttf-arphic-ukai
+pkgver=0.2.20080216.2
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("CJK Unicode font Kaiti style.")
+
+source=("https://deb.debian.org/debian/pool/main/f/fonts-arphic-ukai/fonts-arphic-ukai_${pkgver}.orig.tar.bz2")
+
+tags=("media-fonts fonts")
+
+build_deps=("mkpkg")
+
+build() {
+  go_src_dir
+  install -D -m644 ukai.ttc ${pkgdir}/usr/share/fonts/TTF/ukai.ttc
+  install -D -m644 license/english/ARPHICPL.TXT ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
