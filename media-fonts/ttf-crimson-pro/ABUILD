@@ -1,0 +1,48 @@
+pkgname=ttf-crimson-pro
+pkglist=("otf variable")
+pkgver=1.003
+_pkgver=f21e0a4292421d45430194302c6770d6430cb6a6
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A professionally produced redesign of Crimson by Jacques Le Bailly (8 fixed weights).")
+
+source=("https://github.com/Fonthausen/CrimsonPro/archive/${_pkgver}/CrimsonPro-${_pkgver}.zip")
+
+tags=("media-fonts fonts")
+
+build_deps=("unzip")
+
+build() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/TTF/ fonts/ttf/*.ttf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} OFL.txt
+}
+
+# otf-crimson-pro ######################################################################################
+
+otf() {
+  pkgname=otf-crimson-pro
+  shortdesc=("A professionally produced redesign of Crimson by Jacques Le Bailly (8 fixed weights).")
+  arch=("noarch")
+}
+
+otf_prep() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/OTF/ fonts/otf/*.otf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} OFL.txt
+}
+
+# ttf-crimson-pro-variable ######################################################################################
+
+variable() {
+  pkgname=ttf-crimson-pro-variable
+  shortdesc=("A professionally produced redesign of Crimson by Jacques Le Bailly (variable weight).")
+  arch=("noarch")
+}
+
+variable_prep() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/TTF/ fonts/variable/*.ttf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} OFL.txt
+}
