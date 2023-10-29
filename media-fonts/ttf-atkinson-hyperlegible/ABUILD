@@ -1,0 +1,34 @@
+pkgname=ttf-atkinson-hyperlegible
+pkglist=("otf")
+pkgver=1.006
+_pkgver=1cb311624b2ddf88e9e37873999d165a8cd28b46
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("A typeface focusing on leterform distinction for legibility for low vision readers.")
+
+source=("https://github.com/googlefonts/atkinson-hyperlegible/archive/${_pkgver}/atkinson-hyperlegible-${_pkgver}.tar.gz")
+
+tags=("media-fonts fonts")
+
+build_deps=("mkpkg")
+
+build() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/TTF/ fonts/ttf/*.ttf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} OFL.txt
+}
+
+#  ######################################################################################
+
+otf() {
+  pkgname=otf-atkinson-hyperlegible
+  shortdesc=("A typeface focusing on leterform distinction for legibility for low vision readers.")
+  arch=("noarch")
+}
+
+otf_prep() {
+  go_src_dir
+  install -Dm0644 -t ${pkgdir}/usr/share/fonts/OTF/ fonts/otf/*.otf
+  install -Dm0644 -t ${pkgdir}/usr/share/licenses/${pkgname} OFL.txt
+}
