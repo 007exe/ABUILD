@@ -1,10 +1,9 @@
 pkgname=audacious-plugins
-pkgver=4.3
+pkgver=4.3.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Plugins for Audacious.")
-longdesc=("This is a collection of plugins for Audacious to support additional media formats. The webpage for Audacious is: http://www.audacious-media-player.org.")
 
 source=("http://distfiles.audacious-media-player.org/$pkgname-$pkgver.tar.bz2")
 
