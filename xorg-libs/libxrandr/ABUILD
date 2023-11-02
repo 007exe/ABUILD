@@ -1,16 +1,17 @@
 pkgname=libxrandr
-pkgver=1.5.3
+pkgver=1.5.4
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("X11 RandR extension library.")
-longdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
+shortdesc=("The Xorg librarie provide library routines that are used within all X Window applications.")
 
 source=("https://xorg.freedesktop.org/releases/individual/lib/libXrandr-${pkgver}.tar.xz")
 
 tags=("libs xorg-libs")
 
-build_deps=("libxext libxrender xorg-util-macros xorgproto")
+adddep=("libxext libxrender libx11 glibc")
+
+build_deps=("${adddep} xorg-util-macros xorgproto")
 
 build() {
   go_src_dir
