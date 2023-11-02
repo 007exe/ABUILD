@@ -1,6 +1,6 @@
 pkgname=poppler
 pkglist=("poppler-glib poppler-qt5 poppler-qt6")
-pkgver=23.06.0
+pkgver=23.10.0
 pkgbuild=1
 arch=("auto")
 
@@ -10,9 +10,13 @@ source=("http://poppler.freedesktop.org/poppler-${pkgver}.tar.xz")
 
 tags=("app-text libs")
 
-build_deps=("libjpeg-turbo gcc-libs cairo fontconfig openjpeg2 lcms2 gobject-introspection icu gtk-doc curl cmake python boost nss gtk3 qt5-base qt6-base")
+dep_glib=("glib2 gcc-libs freetype cairo glibc")
+dep_qt5=("qt5-base lcms2 freetype gcc-libs glibc")
+dep_qt6=("qt6-base lcms2 freetype gcc-libs glibc")
+adddep=("libjpeg-turbo gcc-libs cairo fontconfig openjpeg2 lcms2 nss curl gpgme nspr libpng freetype zlib libtiff glibc")
+build_deps=("${adddep} ${dep_glib} ${dep_qt5} ${dep_qt6} gtk3 gobject-introspection icu gtk-doc poppler-data cmake python boost")
 
-removedep=("freetype libpng libtiff zlib nspr")
+removedep=("freetype libpng libtiff zlib nspr poppler-data")
 
 build() {
   go_src_dir
@@ -41,7 +45,7 @@ build() {
 poppler-glib() {
   pkgname=poppler-glib
   shortdesc=("Poppler glib bindings.")
-  adddep=("poppler=${pkgver}")
+  adddep=("poppler=${pkgver} ${dep_glib}")
   removedep=("cairo freetype gcc-libs")
 }
 
@@ -60,7 +64,7 @@ poppler-glib_prep() {
 poppler-qt5() {
   pkgname=poppler-qt5
   shortdesc=("Poppler Qt5 bindings.")
-  adddep=("poppler=${pkgver}")
+  adddep=("poppler=${pkgver} ${dep_qt5}")
   removedep=("freetype lcms2 gcc-libs")
 }
 
@@ -77,7 +81,7 @@ poppler-qt5_prep() {
 poppler-qt6() {
   pkgname=poppler-qt6
   shortdesc=("Poppler Qt6 bindings.")
-  adddep=("poppler=${pkgver}")
+  adddep=("poppler=${pkgver} ${dep_qt6}")
   removedep=("freetype lcms2 gcc-libs")
 }
 
