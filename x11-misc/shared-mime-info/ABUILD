@@ -1,5 +1,5 @@
 pkgname=shared-mime-info
-pkgver=2.2
+pkgver=2.3
 pkgbuild=1
 arch=("auto")
 
