@@ -1,6 +1,7 @@
 pkgname=gobject-introspection
 pkgver=1.78.1
-_glibver=2.78.0
+# NOTE: Версия glib2
+_glibver=`sqlite3 /var/mpkg/packages.db "select package_version from packages where package_name='glib2' and package_installed='1';"`
 pkgbuild=1
 arch=("auto")
 
