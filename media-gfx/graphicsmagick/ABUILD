@@ -1,5 +1,5 @@
 pkgname=graphicsmagick
-pkgver=1.3.40
+pkgver=1.3.42
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgve
 
 tags=("apps media-gfx")
 
-build_deps=("perl jasper libwmf libxml2 freetype libxext libsm lcms2 libltdl bzip2 xz libpng libtiff libwebp")
+adddep=("bzip2 freetype lcms2 libtool libpng libsm libtiff libwebp libxext xz")
 
-adddep=("python-lxml python-numpy")
+build_deps=("${adddep} jasper libheif libjxl libwmf libxml2 perl")
 
 # NOTE: Это опциональные зависимости
 removedep=("jasper libwmf libxml2 ghostscript libheif libjxl")
