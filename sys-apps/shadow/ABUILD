@@ -1,7 +1,7 @@
 # NOTE: Утилиты chfn, chsh, login, newgrp, nologin и их документацию предоставляет пакет util-linux
 # su предоставляет пакет util-linux
 pkgname=shadow
-pkgver=4.14.0
+pkgver=4.14.1
 pkgbuild=1
 arch=("auto")
 
