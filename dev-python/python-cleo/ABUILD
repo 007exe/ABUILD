@@ -9,7 +9,7 @@ source=("https://github.com/python-poetry/cleo/archive/${pkgver}/cleo-${pkgver}.
 
 tags=("libs dev-python")
 
-adddep=("python-crashtest python-pylev python-typing_extensions python-rapidfuzz")
+adddep=("python-crashtest python-rapidfuzz python-typing_extensions")
 
 build_deps=("${adddep} python python-build python-installer python-wheel python-poetry-core")
 
