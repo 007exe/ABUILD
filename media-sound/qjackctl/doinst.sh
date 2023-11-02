@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend qjackctl capabilities:"
+echo -e "    jack-dbus: for JACK dbus support"
+echo -e "    qt6-wayland: for native wayland support"
+echo -e " "

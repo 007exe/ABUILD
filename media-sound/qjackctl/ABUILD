@@ -1,18 +1,31 @@
 pkgname=qjackctl
-pkgver=0.3.8
+pkgver=0.9.12
 pkgbuild=1
-arch=('auto')
-shortdesc="QjackCtl (a Qt application to control the JACK sound server)"
-longdesc=("Provides a simple GUI dialog for setting several JACK daemon parameters, which are properly saved between sessions, and a way control of the status of the audio server daemon. With time, this primordial interface has become richer by including a enhanced patchbay and connection control features."
-	  ""
-	  "Homepage: http://qjackctl.sourceforge.net/"
-)
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-tags="xapps media-sound"
+arch=("auto")
+
+shortdesc=("A Qt front-end for the JACK low-latency audio server.")
+
+source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("apps media-sound")
+
+adddep=("gcc-libs glibc hicolor-icon-theme qt6-base qt6-svg")
+
+build_deps=("${adddep} alsa-lib cmake jack jack-dbus qt6-tools portaudio")
+
+# NOTE: Это опциональные зависимости
+removedep=("jack-dbus qt6-wayland")
 
 build() {
-    go_src_dir
-    ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib${LIBDIRSUFFIX} --disable-static
-    make
-    make DESTDIR="${pkgdir}" install
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -D CMAKE_BUILD_TYPE=None \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib \
+    -D CONFIG_QT6=ON \
+    -W no-dev
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm 644 {ChangeLog,README,TRANSLATORS} -t ${pkgdir}/usr/share/doc/${pkgname}
 }
