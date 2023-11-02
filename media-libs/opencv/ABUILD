@@ -1,5 +1,7 @@
 pkgname=opencv
-pkgver=4.8.0
+# NOTE: Пока рано собирать этот пакет opencv-cuda
+pkglist=("opencv-samples python-opencv")
+pkgver=4.8.1
 pkgbuild=1
 arch=("auto")
 
@@ -12,9 +14,6 @@ tags=("libs media-libs")
 # vtk ant java-environment cudnn
 build_deps=("cmake python-numpy python-setuptools mesa eigen hdf5 lapacke qt5-base glew pugixml
 openmpi fmt tbb openexr gst-plugins-base libdc1394 cblas lapack libgphoto2 openjpeg2 ffmpeg protobuf")
-
-# NOTE: Пока рано собирать этот пакет opencv-cuda
-pkglist=("opencv-samples python-opencv")
 
 # NOTE: Отключил Qt -DWITH_QT=ON
 
