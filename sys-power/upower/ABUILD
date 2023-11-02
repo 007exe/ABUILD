@@ -1,6 +1,6 @@
 pkgname=upower
-pkgver=1.90.0
-pkgbuild=2
+pkgver=1.90.2
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Abstraction for enumerating power devices, listening to device events and querying history and statistics.")
