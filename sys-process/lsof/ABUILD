@@ -1,5 +1,5 @@
 pkgname=lsof
-pkgver=4.96.5
+pkgver=4.98.0
 pkgbuild=1
 arch=("auto")
 
