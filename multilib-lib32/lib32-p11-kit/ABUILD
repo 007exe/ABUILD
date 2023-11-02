@@ -1,5 +1,5 @@
 pkgname=lib32-p11-kit
-pkgver=0.25.0
+pkgver=0.25.1
 pkgbuild=1
 arch=("auto")
 
