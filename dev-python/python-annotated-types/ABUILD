@@ -1,5 +1,5 @@
 pkgname=python-annotated-types
-pkgver=0.5.0
+pkgver=0.6.0
 pkgbuild=1
 arch=("auto")
 
