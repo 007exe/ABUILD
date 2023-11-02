@@ -1,5 +1,5 @@
 pkgname=lib32-glib2
-pkgver=2.78.0
+pkgver=2.78.1
 pkgbuild=1
 arch=("auto")
 
