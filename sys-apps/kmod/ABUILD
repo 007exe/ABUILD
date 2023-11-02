@@ -1,10 +1,9 @@
 pkgname=kmod
-pkgver=30
+pkgver=31
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Linux kernel module management tools and library.")
-longdesc=("The Kmod package contains libraries and utilities for loading kernel modules.")
 
 source=("https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz")
 
