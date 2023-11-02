@@ -1,5 +1,5 @@
 pkgname=amdgpu_top
-pkgver=0.2.1
+pkgver=0.2.3
 pkgbuild=1
 arch=("auto")
 
