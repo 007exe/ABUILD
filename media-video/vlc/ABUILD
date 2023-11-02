@@ -1,11 +1,9 @@
-
 pkgname=vlc
-pkgver=3.0.18
+pkgver=3.0.19
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Multi-platform MPEG, VCD/DVD, and DivX player.")
-longdesc=("Media player and framework with support for most multimedia files and streaming.")
 
 source=("https://download.videolan.org/vlc/${pkgver}/vlc-${pkgver}.tar.xz")
 
@@ -36,17 +34,15 @@ build() {
   sed -e 's:truetype/ttf-dejavu:TTF:g' -i modules/visualization/projectm.cpp
   sed -e 's|-Werror-implicit-function-declaration||g' -i configure
   sed 's|whoami|echo builduser|g' -i configure
-  sed 's|hostname -f|echo arch|g' -i configure
+  sed 's|hostname -f|echo agilia|g' -i configure
   autoreconf -vf
   export CFLAGS+=" -I/usr/include/samba-4.0 -ffat-lto-objects"
   export CPPFLAGS+=" -I/usr/include/samba-4.0"
-  export CXXFLAGS+=" -std=c++11"
+  export CXXFLAGS+=" -std=c++17"
   export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig"
-# upstream doesn't support lua 5.4 yet: https://trac.videolan.org/vlc/ticket/25036
-  export LUAC=/usr/bin/luac5.2
-  export LUA_LIBS="$(pkg-config --libs lua5.2)"
+  export LUAC=/usr/bin/luac
+  export LUA_LIBS="$(pkg-config --libs lua)"
   export RCC=/usr/bin/rcc-qt5
-#  export PKG_CONFIG_PATH="/usr/lib/ffmpeg4.4/pkgconfig/:$PKG_CONFIG_PATH"
   ./configure \
     --prefix=/usr \
     --libdir=/usr/lib \
@@ -145,6 +141,12 @@ build() {
     --enable-aom \
     --enable-srt \
     --enable-dav1d
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
+
+  for res in 16 32 48 128 256; do
+    install -Dm 644 ${srcdir}/vlc-${pkgver}/share/icons/${res}x${res}/vlc.png \
+                    ${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png
+  done
 }
