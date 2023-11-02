@@ -26,7 +26,7 @@ build() {
     -DAVIF_CODEC_RAV1E=ON \
     -DAVIF_CODEC_SVT=ON \
     -DAVIF_BUILD_GDK_PIXBUF=ON
-  make -C build
+  make -C build -j${numjobs}
   make -C build DESTDIR=${pkgdir} install
   install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
