@@ -23,6 +23,6 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DAOM_ENCODER=ON
-  cmake --build build
+  cmake --build build -j${numjobs}
   DESTDIR=${pkgdir} cmake --install build
 }
