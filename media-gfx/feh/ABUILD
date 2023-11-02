@@ -1,5 +1,5 @@
 pkgname=feh
-pkgver=3.10
+pkgver=3.10.1
 pkgbuild=1
 arch=("auto")
 
