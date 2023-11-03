@@ -1,5 +1,5 @@
 pkgname=python-pyopenssl
-pkgver=23.2.0
+pkgver=23.3.0
 pkgbuild=1
 arch=("auto")
 
