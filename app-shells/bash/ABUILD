@@ -1,16 +1,17 @@
 pkgname=bash
-pkgver=5.2
+pkgver=5.2.15
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("The GNU Bourne Again shell.")
-longdesc=("The Bash package contains the Bourne-Again SHell.")
 
 source=("https://ftp.gnu.org/gnu/bash/bash-${pkgver}.tar.gz")
 
 tags=("app-shells base")
 
-build_deps=("readline glibc ncurses")
+adddep=("readline glibc ncurses")
+
+build_deps=("${adddep}")
 
 config_files=("etc/bash.bashrc
 etc/bash.bash_logout
