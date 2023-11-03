@@ -14,6 +14,7 @@ adddep=("glib2 libxml2 libsoup3 json-glib")
 build_deps=("${adddep} gobject-introspection git meson gi-docgen vala libadwaita gtksourceview5")
 
 #conflicts=("rest")
+#provides=("rest")
 
 build() {
   go_src_dir
