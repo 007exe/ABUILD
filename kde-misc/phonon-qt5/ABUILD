@@ -1,0 +1,58 @@
+pkgname=phonon-qt5
+pkglist=("qt6")
+pkgver=4.12.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("The multimedia framework by KDE.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/phonon/${pkgver}/phonon-${pkgver}.tar.xz")
+
+tags=("libs kde-misc")
+
+# phonon-qt6-backend qt6-5compat
+dep_qt6=("qt6-5compat qt6-base")
+# phonon-qt5-backend
+dep_qt5=("gcc-libs glibc libpulse qt5-base")
+build_deps=("${dep_qt5} ${dep_qt6} extra-cmake-modules qt5-base qt5-tools qt6-5compat qt6-base qt6-tools")
+
+adddep=("${dep_qt5}")
+
+# NOTE: это опциональные зависимости
+removedep=("qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build5 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DPHONON_BUILD_QT6=OFF
+  cmake --build build5 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build5
+}
+
+# phonon-qt6 ######################################################################################################
+
+qt6() {
+  pkgname=phonon-qt6
+  shortdesc=("The multimedia framework by KDE.")
+  adddep=("${dep_qt6}")
+# NOTE: это опциональные зависимости
+  removedep=("qt6-tools")
+}
+
+qt6_prep() {
+  go_src_dir
+    cmake -B build6 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DPHONON_BUILD_QT5=OFF \
+    -DPHONON_BUILD_SETTINGS=OFF
+  cmake --build build6 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build6
+
+  rm -r ${pkgdir}/usr/share # Предоставляется пакетом phonon-qt5
+
+  cp ${filedir}/doinst.sh ${pkgdir}/install/doinst.sh
+}
