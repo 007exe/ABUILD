@@ -1,5 +1,5 @@
 pkgname=fwupd
-pkgver=1.9.6
+pkgver=1.9.7
 pkgbuild=1
 arch=("auto")
 
