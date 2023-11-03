@@ -1,6 +1,6 @@
 pkgname=xorg-server
 pkglist=("xorg-server-xephyr xorg-server-xvfb xorg-server-xnest xorg-server-common xorg-server-devel")
-pkgver=21.1.8
+pkgver=21.1.9
 pkgbuild=1
 arch=("auto")
 
