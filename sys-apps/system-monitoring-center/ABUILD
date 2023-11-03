@@ -1,5 +1,5 @@
 pkgname=system-monitoring-center
-pkgver=2.25.1
+pkgver=2.26.0
 pkgbuild=1
 arch=("auto")
 
