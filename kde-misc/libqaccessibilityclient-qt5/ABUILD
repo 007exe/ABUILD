@@ -1,0 +1,45 @@
+pkgname=libqaccessibilityclient-qt5
+pkglist=("qt6")
+pkgver=0.5.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Helper library to make writing accessibility tools easier.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/libqaccessibilityclient/libqaccessibilityclient-${pkgver}.tar.xz")
+
+tags=("libs kde-misc")
+
+dep_qt6=("qt6-base")
+adddep=("gcc-libs glibc qt5-base")
+build_deps=("${adddep} ${dep_qt6} extra-cmake-modules")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build5 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF
+  make -C build5 -j${numjobs}
+  make -C build5 DESTDIR=${pkgdir} install
+}
+
+# libqaccessibilityclient-qt6 ###################################################################################
+
+qt6() {
+  pkgname=libqaccessibilityclient-qt6
+  shortdesc=("Helper library to make writing accessibility tools easier.")
+  adddep=("${dep_qt6}")
+}
+
+qt6_prep() {
+  go_src_dir
+  cmake -B build6 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DQT_MAJOR_VERSION=6 \
+    -DBUILD_TESTING=OFF
+  make -C build6 -j${numjobs}
+  make -C build6 DESTDIR=${pkgdir} install
+}
