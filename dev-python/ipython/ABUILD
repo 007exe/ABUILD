@@ -1,5 +1,5 @@
 pkgname=ipython
-pkgver=8.12.0
+pkgver=8.17.2
 pkgbuild=1
 arch=("auto")
 
@@ -11,21 +11,22 @@ source=("http://archive.ipython.org/release/$pkgver/ipython-${pkgver}.tar.gz"
 tags=("develop dev-python")
 
 # python-jedi
-adddep=("python-traitlets python-pexpect sqlite python-pickleshare
-python-prompt_toolkit python-pygments python-backcall
-python-matplotlib-inline python-stack-data")
+adddep=("python-decorator python-matplotlib-inline python-pexpect python-prompt_toolkit python-pygments python-stack-data python-traitlets sqlite")
 
 build_deps=("${adddep} python python-build python-installer python-setuptools python-wheel")
+
+# NOTE: Это опциональные зависимости
+removedep=("python-black python-pickleshare yapf")
 
 build() {
   go_src_dir
   burn_patches
   python -m build --wheel --skip-dependency-check --no-isolation
+  install -Dm644 ${srcache}/icon.png ${pkgdir}/usr/share/pixmaps/ipython.png
   python -m installer --destdir=${pkgdir} dist/*.whl
   cd "examples/IPython Kernel"
   sed -i 's/gnome-netstatus-idle/ipython/' ipython.desktop
   install -Dm644 -t ${pkgdir}/usr/share/applications ipython.desktop
-  install -Dm644 ${srcache}/icon.png ${pkgdir}/usr/share/pixmaps/ipython.png
   local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
   install -d ${pkgdir}/usr/share/licenses/${pkgname}
   ln -s "$site_packages"/${pkgname}-${pkgver}.dist-info/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

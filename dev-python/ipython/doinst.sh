@@ -1,0 +1,6 @@
+echo -e "\n"
+echo -e "The following packages extend ipython capabilities:"
+echo -e "    python-black: to auto format with Black"
+echo -e "    python-pickleshare: for the ip.db database"
+echo -e "    yapf: to auto format with YAPF"
+echo -e " "
