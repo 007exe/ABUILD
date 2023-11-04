@@ -1,0 +1,25 @@
+pkgname=libnbd
+pkgver=1.18.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("NBD client library in userspace.")
+
+source=("http://download.libguestfs.org/libnbd/${pkgver%.*}-stable/libnbd-${pkgver}.tar.gz")
+
+tags=("libs sys-libs")
+
+build_deps=("perl")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -i
+  ./configure \
+    --prefix=/usr \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
