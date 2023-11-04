@@ -1,16 +1,18 @@
 pkgname=kjots
-pkgver=5.1.0
+pkgver=5.1.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A note taking application for KDE.")
-longdesc=("Note taking utility by KDE.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
 
 tags=("utils kde-misc")
 
-build_deps=("kontactinterface akonadi akonadi-notes kpimtextedit grantlee extra-cmake-modules kdoctools")
+adddep=("akonadi akonadi-notes gcc-libs glibc grantlee kbookmarks kconfig kconfigwidgets kcoreaddons
+ki18n kio kitemmodels kmime kontactinterface kparts kpimtextedit kwidgetsaddons ktextaddons kxmlgui qt5-base")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir
