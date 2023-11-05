@@ -3,14 +3,13 @@ pkgver=1.9
 pkgbuild=2
 arch=("auto")
 
-shortdesc=("A GNU utility for monitoring a program's use of system resources")
-longdesc=("The GNU time utility runs another program, collects information about the resources used by that program while it is running and displays the results.")
-
-tags=("base sys-process")
+shortdesc=("Utility for monitoring a program's use of system resources.")
 
 source=("http://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc"
+tags=("base sys-process")
+
+build_deps=("glibc")
 
 build() {
   go_src_dir
@@ -18,7 +17,9 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib$LIBDIRSUFFIX
+    --libdir=/usr/lib \
+    --infodir=/usr/share/info \
+    --disable-static
   make -j${numjobs}
   make exec_prefix=${pkgdir}/usr infodir=${pkgdir}/usr/share/info install
 }
