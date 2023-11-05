@@ -2,10 +2,10 @@
 Type=Application
 Version=2.5
 Encoding=UTF-8
-Name=Xonotic
+Name=Xonotic (GLX)
 Comment=a free open-source first person shooter
 Icon=xonotic
-Exec=xonotic-glx
+Exec=/usr/bin/xonotic-glx
 Terminal=false
 StartupNotify=false
 Categories=Game;
