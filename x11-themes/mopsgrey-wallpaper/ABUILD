@@ -1,0 +1,16 @@
+pkgname=mopsgrey-wallpaper
+pkgver=0.2
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("Simple Grey Wallpapers")
+
+tags=("themes x11-themes")
+
+build_deps=("mkpkg")
+
+build() {
+  cd ${pkgdir}
+  mkdir -p ${pkgdir}/usr/share/
+  cp -a ${filedir}/wallpapers ${pkgdir}/usr/share/
+}
