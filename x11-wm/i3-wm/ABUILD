@@ -1,5 +1,5 @@
 pkgname=i3-wm
-pkgver=4.22
+pkgver=4.23
 pkgbuild=1
 arch=("auto")
 
@@ -9,11 +9,9 @@ source=("https://i3wm.org/downloads/i3-${pkgver}.tar.xz")
 
 tags=("x11-wm i3")
 
-build_deps=("meson xmlto libev libxkbcommon-x11 pango startup-notification xcb-util-cursor
-xcb-util-keysyms xcb-util-wm xcb-util-xrm yajl")
+adddep=("libev libxkbcommon-x11 pango startup-notification xcb-util-cursor xcb-util-keysyms xcb-util-wm xcb-util-xrm yajl")
 
-adddep=("libev libxkbcommon-x11 pango startup-notification xcb-util-cursor xcb-util-keysyms
-xcb-util-wm xcb-util-xrm yajl")
+build_deps=("${adddep} meson xmlto")
 
 # NOTE: Это опциональные зависимости
 removedep=("rxvt-unicode dmenu i3lock i3status perl-json-xs perl-anyevent-i3")
