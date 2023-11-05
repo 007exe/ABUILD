@@ -1,8 +1,0 @@
-pkgname=pycharm
-
-prodname="JetBrains PyCharm"
-shortdesc="Professional Python IDE"
-source="http://download.jetbrains.com/python/pycharm-$pkgver.tar.gz"
-
-
-launcher="pycharm.sh"

@@ -1,8 +1,0 @@
-pkgname=rubymine
-
-prodname="JetBrains RubyMine"
-shortdesc="Professional Ruby IDE"
-source="http://download.jetbrains.com/ruby/RubyMine-$pkgver.tar.gz"
-
-
-launcher="rubymine.sh"
