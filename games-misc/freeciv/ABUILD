@@ -1,27 +1,34 @@
-#ABUILD created by/создан: PavelVyazovoi, vyazovoi at googlemail.com 
-
 pkgname=freeciv
-pkgver=2.3.0
+pkgver=3.0.8
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Freeciv is a Free and Open Source empire-building strategy game inspired by the history of human civilization"
+shortdesc=("A multiuser clone of the famous Microprose game of Civilization.")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
-tags="games games-strategy"
+tags=("games games-strategy")
 
-BUILD_SYSTEM="autotools"
+adddep=("gtk3 sdl_mixer lua53 sqlite curl")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+build_deps=("${adddep} python")
 
-BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
+config_files=("etc/freeciv/database.lua")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static \
+    --sysconfdir=/etc \
+    --enable-shared \
+    --enable-sys-lua \
+    --enable-client=gtk3 \
+    --enable-fcmp=gtk3 \
+    --enable-fcdb=sqlite3 \
+    --enable-aimodules
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
