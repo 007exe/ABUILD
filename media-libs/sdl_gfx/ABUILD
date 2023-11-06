@@ -1,0 +1,27 @@
+pkgname=sdl_gfx
+pkgver=2.0.26
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SDL graphics drawing primitives and other support functions.")
+
+source=("https://www.ferzkopp.net/Software/SDL_gfx-2.0/SDL_gfx-${pkgver}.tar.gz")
+
+tags="libs dev-libs"
+
+adddep=("sdl12-compat")
+
+build_deps=("sdl12-compat")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -fvi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-mmx \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+}
