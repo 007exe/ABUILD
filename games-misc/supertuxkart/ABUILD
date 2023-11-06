@@ -9,9 +9,9 @@ source=("https://github.com/supertuxkart/stk-code/releases/download/${pkgver}/Su
 
 tags=("games games-sports")
 
-build_deps=("cmake setconf ninja openal libvorbis freetype harfbuzz curl bluez-libs sqlite libjpeg-turbo libpng hicolor-icon-theme sdl2 shaderc")
-
 adddep=("openal libvorbis freetype harfbuzz curl bluez-libs sqlite libjpeg-turbo libpng hicolor-icon-theme sdl2 shaderc")
+
+build_deps=("${adddep} cmake setconf ninja")
 
 build() {
   go_src_dir
