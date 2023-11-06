@@ -9,7 +9,7 @@ source=("https://mplayerhq.hu/MPlayer/releases/MPlayer-${pkgver}.tar.xz")
 
 tags=("apps media-video")
 
-build_deps=("libglvnd sdl libx11 libxext libxinerama libxss libxv libxxf86vm
+build_deps=("libglvnd sdl12-compat libx11 libxext libxinerama libxss libxv libxxf86vm
 a52dec aalib alsa-lib libass ffmpeg libbluray libbs2b bzip2 glibc libcaca libcdio
 libcdio-paranoia libdca libdv libdvdnav libdvdread enca faac faad2 fontconfig freetype
 fribidi giflib gnutls gsm jack libjpeg-turbo lirc lzo libmad libmng lame libmpeg2 mpg123
