@@ -1,29 +1,38 @@
 pkgname=spirv-llvm-translator
-pkgver=15.0.0
+pkgver=17.0.0
 pkgbuild=1
 arch=("auto")
+strict_version=1
 
 shortdesc=("Tool and a library for bi-directional translation between SPIR-V and LLVM IR.")
-longdesc=("Bi-directional translator between SPIR-V and LLVM IR.")
 
-source=("https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("git:https://github.com/KhronosGroup/SPIRV-LLVM-Translator.git")
 
 tags=("develop dev-util")
 
-build_deps=("llvm-libs cmake llvm spirv-tools python python-setuptools clang")
+adddep=("llvm-libs spirv-tools")
+
+build_deps=("${adddep} cmake llvm spirv-headers")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout v${pkgver}
+}
 
 build() {
   go_src_dir
   burn_patches
-  cmake -B build  \
+  export CC=clang CXX=clang++
+  LDFLAGS+=" -fuse-ld=lld"
+  cmake -B build \
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
     -DCMAKE_SKIP_RPATH=ON \
     -DLLVM_INCLUDE_TESTS=ON \
-    -DCCACHE_ALLOWED="OFF" \
-    -DLLVM_BUILD_TOOLS="ON" \
     -DLLVM_EXTERNAL_LIT=/usr/bin/lit \
     -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=/usr/include/spirv/ \
     -Wno-dev
