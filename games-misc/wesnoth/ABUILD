@@ -1,40 +1,34 @@
 pkgname=wesnoth
-pkgver=1.11.12
+pkgver=1.17.22
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Turn-based tactical strategy game"
+shortdesc=("A turn-based strategy game on a fantasy world.")
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("https://deac-riga.dl.sourceforge.net/project/wesnoth/wesnoth/wesnoth-${pkgver}/wesnoth-${pkgver}.tar.bz2")
 
-tags="games games-strategy"
+tags=("games games-strategy")
 
-build_deps="cmake gcc sdl_ttf scons"
-adddep="wesnoth-data==$pkgver"
-pkglist="data"
+adddep=("sdl2_mixer sdl2_image boost-libs pango dbus")
+
+build_deps=("${adddep} boost cmake ninja")
 
 
+build(){
+  go_src_dir
+  burn_patches
+  cmake -GNinja -Bbuild \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DENABLE_TOOLS=ON \
+    -DFIFO_DIR=/run/wesnothd \
+    -DENABLE_DISPLAY_REVISION=OFF
+  ninja -C build
+  DESTDIR=${pkgdir} ninja -C build install
+  echo "Linux repository" > "$pkgdir"/usr/share/wesnoth/data/dist
 
-build()
-{
-go_src_dir
-cmake -DCMAKE_INSTALL_PREFIX=/usr .
-make
-make DESTDIR=${pkgdir} install
-#scons prefix=/usr LIBDIR=/usr/lib{LIBDIRSUFIX}
-#scons prefix=/usr LIBDIR=/usr/lib{LIBDIRSUFIX}   destdir=${pkgdir} install
-#
+  mkdir -p "$pkgdir"/usr/lib/{tmpfiles.d,systemd/system}
+  sed "s|@FIFO_DIR@|/run/wesnothd|" packaging/systemd/wesnothd.tmpfiles.conf.in > ${pkgdir}/usr/lib/tmpfiles.d/wesnothd.conf
+  sed -e "s|@FIFO_DIR@|/run/wesnothd|" -e "s|@BINARY_SUFFIX@||" -e "s|@CMAKE_INSTALL_FULL_BINDIR@|/usr/bin|" packaging/systemd/wesnothd.service.in > ${pkgdir}/usr/lib/systemd/system/wesnothd.service
 }
 
-
-data() {
-	pkgname="wesnoth-data"
-	shortdesc="Data files for Wesnoth"
-	arch='noarch'
-	custom_opts="skip_gendeps no_strip"
-}
-
-data_prep() {
-	mkdir -p ${pkgdir}/usr/
-	mv ${p_pkgdir}/usr/{doc,share} ${pkgdir}/usr/
-}
