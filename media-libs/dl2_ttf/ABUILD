@@ -1,0 +1,28 @@
+pkgname=dl2_ttf
+pkgver=2.20.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that allows you to use TrueType fonts in your SDL applications (Version 2).")
+
+source=("https://github.com/libsdl-org/SDL_ttf/releases/download/release-${pkgver}/SDL2_ttf-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+adddep=("sdl2 freetype")
+
+build_deps=("${adddep} ")
+
+build() {
+  go_src_dir
+  burn_patches
+  autoreconf -vi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
