@@ -1,69 +1,41 @@
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=hedgewars
-pkgver=0.9.17
+pkgver=1.0.2
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="Worms-like strategy game"
-#-ruler---|--------------------------------------------------------------------------|
+shortdesc=("Turn-based strategy artillery game similiar to Worms.")
 
-source=("http://download.gna.org/hedgewars/${pkgname}-src-${pkgver}.tar.bz2")
+source=("https://www.hedgewars.org/download/releases/hedgewars-src-${pkgver}.tar.bz2")
 
-patch_opts=("")
+tags=("games games-strategy")
 
-#----------------------------- MOPS vars --------------------------------------
-#--------------------- Специфичные для MOPSLinux ------------------------------
+adddep=("qt5-base sdl2 sdl2_mixer sdl2_image sdl2_net sdl2_ttf lua51 ffmpeg glut physfs
+ghc-libs haskell-entropy haskell-sha haskell-random haskell-regex-tdfa haskell-sandi
+haskell-hslogger haskell-network haskell-network-bsd haskell-utf8-string haskell-vector")
 
-tags="games games-strategy"     			#short and long tags / длинный и короткий тег
-build_deps="fpc" 			
+build_deps=("${adddep} fpc cmake qt5-tools ghc haskell-bytestring-show haskell-zlib haskell-base-prelude imagemagick mesa")
 
-provides=""
-conflicts=""
+build(){
+  go_src_dir
+  burn_patches
+  sed -i 's|set(ghc_flags|set(ghc_flags -dynamic|' gameServer/CMakeLists.txt
+  cmake -Bbuild \
+    -DCMAKE_BUILD_TYPE="Release" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DDATA_INSTALL_DIR=/usr/share/hedgewars \
+    -DNOSERVER=0
+  make -C build
+  for _size in 16 32 48 64 128 256; do
+    convert +set date:create +set date:modify misc/hedgewars.png -resize ${_size}x${_size} hedgewars_${_size}.png
+  done
+  DESTDIR=${pkgdir} make -C build install
+  install -D -m644 Fonts_LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/Fonts_LICENSE.txt
 
-adddep="hedgewars-data"
-removedep=""
+  install -D -m644 misc/hedgewars.png ${pkgdir}/usr/share/icons/hicolor/512x512/apps/hedgewars.png
+  for _size in 16 32 48 64 128 256; do
+    install -D -m644 hedgewars_${_size}.png ${pkgdir}/usr/share/icons/hicolor/${_size}x${_size}/apps/hedgewars.png
+  done
+  rm -rf ${pkgdir}/usr/share/pixmaps
 
-#author=Unnamed_Hero
-#email=sorry@email.hide
-
-pkglist="data"
-
-#numjobs=1 #Set number of jobs while compliling, otherwise it'll be autodetected
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-
-#set configure options, make and make install 
-#конфигурация, сборка, подготовка пакета
-build() 
-{
-go_src_dir
-burn_patches
-
-#qmake                                                                                                             
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-cmake -DCMAKE_CXX_FLAGS="$SLKCFLAGS" -DCMAKE_INSTALL_PREFIX="/opt/hedgewars" -DCMAKE_BUILD_TYPE="Release" \
--DDATA_INSTALL_DIR="/opt/hedgewars" .
-
-make -j${numjobs} || exit 1
-make install DESTDIR=${pkgdir} || exit 1
-}
-
-data()
-{
-pkgname=hedgewars-data
-arch=('noarch')
-shortdesc="Data files for hedgewars"
-tags="games games-strategy"
-}
-
-data_prep()
-{
-mkdir -p ${pkgdir}/opt/hedgewars/
-mv ${p_pkgdir}/opt/hedgewars/hedgewars ${pkgdir}/opt/hedgewars
+  install -D -m644 share/hedgewars/Data/misc/hedgewars.desktop ${pkgdir}/usr/share/applications/hedgewars.desktop
 }
