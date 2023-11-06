@@ -9,7 +9,7 @@ source=("https://github.com/Libvisual/libvisual/releases/download/${pkgname}-${p
 
 tags=("libs media-libs")
 
-build_deps=("glibc")
+build_deps=("glibc sdl12-compat")
 
 build() {
   go_src_dir
