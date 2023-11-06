@@ -9,10 +9,9 @@ source=("https://github.com/SuperTux/supertux/releases/download/v${pkgver}/Super
 
 tags=("games games-arcade")
 
-build_deps=("cmake boost mesa optipng glm
-sdl2_image curl openal libvorbis glew physfs freetype boost-libs hicolor-icon-theme")
-
 adddep=("sdl2_image curl openal libvorbis glew physfs freetype boost-libs hicolor-icon-theme")
+
+build_deps=("${adddep} cmake boost mesa optipng glm")
 
 build() {
   go_src_dir
