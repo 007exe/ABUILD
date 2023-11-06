@@ -1,0 +1,27 @@
+pkgname=sdl2_gfx
+pkgver=1.0.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SDL graphics drawing primitives and other support functions (Version 2).")
+
+source=("https://www.ferzkopp.net/Software/SDL2_gfx/SDL2_gfx-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+adddep=("sdl2")
+
+build_deps=("${adddep}")
+
+build() {
+  go_src_dir
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
