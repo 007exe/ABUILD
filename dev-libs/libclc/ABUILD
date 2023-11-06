@@ -1,5 +1,5 @@
 pkgname=libclc
-pkgver=15.0.7
+pkgver=17.0.1
 pkgbuild=1
 arch=("noarch")
 
