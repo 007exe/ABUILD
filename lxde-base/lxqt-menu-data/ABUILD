@@ -1,0 +1,22 @@
+pkgname=lxqt-menu-data
+pkgver=1.4.0
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("LXQt menu files.")
+
+source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+
+tags=("lxde lxde-base")
+
+build_deps=("cmake lxqt-build-tools qt5-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+}
