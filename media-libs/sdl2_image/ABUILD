@@ -9,7 +9,9 @@ source=("https://www.libsdl.org/projects/SDL_image/release/SDL2_image-${pkgver}.
 
 tags=("media-libs libs")
 
-build_deps=("cmake sdl2 libpng libtiff libjpeg-turbo libwebp")
+adddep=("sdl2 libpng libtiff libjpeg-turbo libwebp libavif libjxl")
+
+build_deps=("${adddep} cmake")
 
 build() {
   go_src_dir
