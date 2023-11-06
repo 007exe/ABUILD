@@ -1,0 +1,27 @@
+pkgname=sdl12-compat
+pkgver=1.2.68
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("SDL 1.2 runtime compatibility library using SDL 2.0.")
+
+source=("https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-${pkgver}.tar.gz")
+
+tags=("media-libs libs")
+
+adddep=("sdl2 glu")
+
+build_deps=("${adddep} cmake")
+
+conflicts=("sdl")
+#provides=("sdl")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build -G Ninja \
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_INSTALL_LIBDIR=lib
+  cmake --build build
+  DESTDIR=${pkgdir} cmake --install build
+}
