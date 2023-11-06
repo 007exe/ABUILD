@@ -4,20 +4,22 @@ pkgbuild=2
 arch=("noarch")
 
 shortdesc=("Freedesktop.org desktop menus for LXDE.")
-longdesc=("The LXMenu Data package provides files required to build freedesktop.org menu spec-compliant desktop menus for LXDE.")
 
-source=("https://downloads.sourceforge.net/lxde/$pkgname-$pkgver.tar.xz")
+source=("https://downloads.sourceforge.net/lxde/${pkgname}-${pkgver}.tar.xz")
 
-tags=("lxde lxde-base")
+tags=("libs lxde-base")
 
-build_deps="intltool"
+build_deps=("intltool")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
-    --sysconfdir=/etc
+    --libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
+
