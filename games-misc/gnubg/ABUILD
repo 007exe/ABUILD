@@ -1,76 +1,34 @@
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=gnubg
-pkgver=20100525
+pkgver=1.07.001
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc="GNU Backgammon (command line or a gui backgammon)"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("GNU Backgammon (gnubg) is for playing and analysing backgammon positions, games and matches. It's based on a neural network. It currently plays at about the level of a championship flight tournament player. Command line and Graphical (GTK+) interfaces are available. OpenGL is optional for 3D board support."
-	  ""
-	  "Homepage: http://www.gnubg.org/"
-)
+shortdesc=("World class backgammon application.")
 
-source=("http://www.gnubg.org/media/sources/${pkgname}-source-SNAPSHOT-${pkgver}.tar.gz")
+source=("https://ftp.gnu.org/gnu/gnubg/gnubg-release-${pkgver}-sources.tar.gz")
 
-patch_opts=("")
+tags=("games games-board")
 
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
+adddep=("python gtkglext curl")
 
-tags="games games-board"     			#short and long tags / длинный и короткий тег
-build_deps="" 			#
+build_deps=("${adddep}")
 
-provides=""
-conflicts=""
+build(){
+  go_src_dir
+  burn_patches
+  sed -i 's/-f/-fn/' doc/Makefile.in doc/Makefile.am
+  ./autogen.sh
+  PYTHONWARNINGS=ignore
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --bindir=/usr/bin \
+    --sysconfdir=/etc \
+    --mandir=/usr/share/man \
+    --enable-simd=sse2 \
+    --disable-static
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
 
-adddep=""
-removedep=""
-
-
-#numjobs=1 #Set number of jobs while compliling, otherwise it'll be autodetected
-
-docs=				#additional files should be copied into /usr/docs/${pkgname} dir from sources
-gendeps_blacklist=
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
-
-#ran before function build()
-#запускается перед сборкой
-before_build()
-{
-echo ""
-}
-
-build()
-{
-go_src_dir
-burn_patches
-
-./autogen.sh || exit 1
-
-LDFLAGS="$SLKLDFLAGS" \
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
---prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= || exit 1
-
-make -j${numjobs} || exit 1
-make install DESTDIR=$startdir/pkg || exit 1
-}
-
-#ran after function build() 
-#после сборки
-after_build()
-{
- echo ""
+  install -Dm644 ${filedir}/${pkgname}.desktop ${pkgdir}/usr/share/applications/${pkgname}.desktop
 }

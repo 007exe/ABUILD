@@ -1,9 +1,19 @@
 [Desktop Entry]
 Name=GNU Backgammon
+Name[hr]=GNU Tavla
+Name[ru]=GNU  Нарды
+Name[sr]=ГНУ Тавла
 GenericName=Backgammon
-Comment=GTK or console backgammon program with analysis
-Exec=gnubg -w
+GenericName[hr]=Tavla
+GenericName[ru]=Нарды
+GenericName[sr]=Тавла
+Comment=GNU Backgammon
+Comment[hr]=GNU Tavla
+Comment[ru]=GNU Короткие нарды
+Comment[sr]=GNU Тавла
+Exec=gnubg
+Icon=gnubg
+StartupNotify=true
 Terminal=false
-Icon=/usr/share/gnubg/gnubg.png
 Type=Application
-Categories=Game;BoardGame;GTK;
+Categories=GTK;Game;StrategyGame;
