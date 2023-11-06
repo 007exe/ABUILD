@@ -1,5 +1,5 @@
 pkgname=armagetronad
-pkgver=0.2.9.1.0
+pkgver=0.2.9.1.1
 pkgbuild=1
 arch=("auto")
 
