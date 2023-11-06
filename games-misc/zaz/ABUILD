@@ -4,13 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Puzzle game where the player has to arrange balls in triplets.")
-longdesc=("A puzzle game where the player has to arrange balls in triplets.")
 
 source=("https://download.sourceforge.net/sourceforge/zaz/files/${pkgname}-${pkgver}.tar.gz")
 
 tags=("games games-puzzle")
 
-build_deps=("ftgl sdl sdl_image libvorbis libtheora")
+adddep=("ftgl sdl12-compat sdl_image libvorbis libtheora")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
