@@ -9,7 +9,7 @@ source=("http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-${pkgver}.tar.gz
 
 tags=("media-libs libs")
 
-adddep=("sdl freetype")
+adddep=("sdl12-compat freetype")
 
 build_deps=("${adddep}")
 
