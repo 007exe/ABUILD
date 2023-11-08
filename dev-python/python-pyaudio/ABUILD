@@ -1,5 +1,5 @@
 pkgname=python-pyaudio
-pkgver=0.2.12
+pkgver=0.2.13
 pkgbuild=1
 arch=("auto")
 
