@@ -1,6 +1,6 @@
 pkgname=python-editables
-pkgver=0.3
-pkgbuild=2
+pkgver=0.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Python library for creating editable wheels.")
