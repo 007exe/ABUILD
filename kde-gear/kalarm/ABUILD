@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-pim")
 
-build_deps=("extra-cmake-modules kdoctools phonon kidletime knotifyconfig pimcommon kmailtransport kholidays kcalutils")
+adddep=("phonon-qt5 kmime kidletime knotifyconfig pimcommon kmailtransport kholidays kcalutils")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir
