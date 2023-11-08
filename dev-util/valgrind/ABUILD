@@ -1,20 +1,26 @@
 pkgname=valgrind
-pkgver=3.19.0
+pkgver=3.21.0
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An instrumentation framework for building dynamic analysis tools.")
-longdesc=("Valgrind is an instrumentation framework for building dynamic analysis tools. You can also use it to build new tools.")
+shortdesc=("Tool to help find memory-management problems in programs.")
 
 source=("https://sourceware.org/pub/valgrind/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("dev-util develop")
-
-build_deps=("glibc perl gdb gcc-libs")
+# debuginfod
+adddep=("glibc perl")
+# docbook-sgml
+build_deps=("${adddep} gdb lib32-glibc lib32-gcc-libs docbook-xml docbook-xsl")
 
 build() {
   go_src_dir
   burn_patches
+  sed -i 's|sgml/docbook/xsl-stylesheets|xml/docbook/xsl-stylesheets-1.79.2-nons|' docs/Makefile.am
+  autoreconf -ifv
+  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+  CFLAGS=${CFLAGS/-fno-plt/}
+  CXXFLAGS=${CXXFLAGS/-fno-plt/}
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
