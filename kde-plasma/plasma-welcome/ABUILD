@@ -9,7 +9,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("kde-plasma apps")
 
-adddep=("kaccounts-integration kuserfeedback kirigami2 plasma-framework knewstuff")
+adddep=("kaccounts-integration kuserfeedback5 kirigami2 plasma-framework knewstuff")
 
 build_deps=("${adddep} extra-cmake-modules")
 
