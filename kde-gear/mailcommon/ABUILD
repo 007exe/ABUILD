@@ -9,7 +9,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("libs kde-gear")
 
-adddep=("mailimporter messagelib phonon")
+adddep=("mailimporter messagelib phonon-qt5")
 
 build_deps=("${adddep} extra-cmake-modules qt5-tools doxygen")
 
