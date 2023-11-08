@@ -1,6 +1,6 @@
 pkgname=python-unidecode
-pkgver=1.3.6
-pkgbuild=2
+pkgver=1.3.7
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("ASCII transliterations of Unicode text.")
