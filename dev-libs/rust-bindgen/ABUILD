@@ -1,6 +1,6 @@
 pkgname=rust-bindgen
 _pkgname=bindgen
-pkgver=0.66.1
+pkgver=0.69.1
 pkgbuild=1
 arch=("auto")
 
