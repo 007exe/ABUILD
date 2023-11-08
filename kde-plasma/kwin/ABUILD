@@ -10,7 +10,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 tags=("plasma kde-plasma")
 
 # pipewire-session-manager
-adddep=("kscreenlocker xcb-util-cursor plasma-framework kcmutils breeze libqaccessibilityclient lcms2 libxcvt")
+adddep=("kscreenlocker xcb-util-cursor plasma-framework kcmutils breeze libqaccessibilityclient-qt5 lcms2 libxcvt")
 
 build_deps=("${adddep} extra-cmake-modules qt5-tools kdoctools krunner wayland-protocols plasma-wayland-protocols python")
 
