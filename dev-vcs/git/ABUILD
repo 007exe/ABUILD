@@ -1,5 +1,5 @@
 pkgname=git
-pkgver=2.42.0
+pkgver=2.42.1
 pkgbuild=1
 arch=("auto")
 
