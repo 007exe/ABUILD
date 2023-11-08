@@ -1,5 +1,5 @@
 pkgname=python-patiencediff
-pkgver=0.2.13
+pkgver=0.2.14
 pkgbuild=1
 arch=("auto")
 
