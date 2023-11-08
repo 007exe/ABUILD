@@ -1,7 +1,7 @@
 pkgname=python-babel
-pkgver=2.11.0
-_core=41
-pkgbuild=2
+pkgver=2.12.1
+_core=42
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Internationalization utilities for Python.")
