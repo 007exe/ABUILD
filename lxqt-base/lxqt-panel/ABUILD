@@ -1,5 +1,5 @@
 pkgname=lxqt-panel
-pkgver=1.3.0
+pkgver=1.4.0
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgnam
 
 tags=("lxqt lxqt-base")
 
-adddep=("lxmenu-data libdbusmenu-qt5 libxcomposite lxmenu-data libxtst lxqt-globalkeys solid libxcb libqtxdg")
+adddep=("lxqt-menu-data libdbusmenu-qt5 libxcomposite lxmenu-data libxtst lxqt-globalkeys solid libxcb libqtxdg")
 
 build_deps=("${adddep} lxqt-build-tools liblxqt libpulse libstatgrab libsysstat lm_sensors libxdamage alsa-lib")
 
