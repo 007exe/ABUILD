@@ -9,9 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-accessibility")
 
-build_deps=("knotifications kxmlgui phonon extra-cmake-modules kdoctools libxt")
+adddep=("knotifications kxmlgui phonon-qt5 hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} extra-cmake-modules kdoctools libxt")
 
 build() {
   go_src_dir
