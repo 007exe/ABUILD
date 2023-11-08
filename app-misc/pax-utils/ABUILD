@@ -1,18 +1,25 @@
 pkgname=pax-utils
-pkgver=1.3.5
+pkgver=1.3.7
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("'ELF utils that can check files for security relevant properties.")
+shortdesc=("ELF utils that can check files for security relevant properties.")
 
-source=("https://distfiles.gentoo.org/distfiles/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/gentoo/pax-utils/archive/refs/tags/v${pkgver}.tar.gz")
 
 tags=("app-misc console")
 
-build_deps=("bash docbook-xml docbook-xsl kernel-headers meson xmlto
-libcap libseccomp python python-pyelftools")
+adddep=("bash libcap libseccomp python python-pyelftools")
 
-adddep=("bash python-pyelftools")
+build_deps=("${adddep} docbook-xml docbook-xsl kernel-headers meson xmlto")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build(){
   go_src_dir
@@ -23,7 +30,7 @@ build(){
     -D libdir=/usr/lib \
     -D use_seccomp=true \
     -D build_manpages=disabled
-  meson configure
+#  meson configure
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
 }
