@@ -1,5 +1,5 @@
 echo -e "\n"
 echo -e "The following packages extend pcmanfm-qt capabilities:"
-echo -e "gvfs-mtp: MTP support (Media Transfer Protocol)"
-echo -e "lxqt-archiver: archive management"
+echo -e "    gvfs-mtp: MTP support (Media Transfer Protocol)"
+echo -e "    lxqt-archiver: archive management"
 echo -e " "
