@@ -1,5 +1,5 @@
 pkgname=telegram-desktop
-pkgver=4.11.2
+pkgver=4.11.3
 pkgbuild=1
 arch=("auto")
 
