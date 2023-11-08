@@ -1,5 +1,5 @@
 pkgname=python-black
-pkgver=23.3.0
+pkgver=23.10.1
 pkgbuild=1
 arch=("auto")
 
