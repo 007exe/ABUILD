@@ -1,5 +1,5 @@
 pkgname=python-dill
-pkgver=0.3.6
+pkgver=0.3.7
 pkgbuild=1
 arch=("auto")
 
