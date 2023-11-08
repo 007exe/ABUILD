@@ -1,24 +1,36 @@
-#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=desmume
-pkgver=0.9.9
+pkgver=0.9.13
 pkgbuild=1
-arch=('auto')
-shortdesc="Nintendo DS emulator"
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-tags="games games-emulation"
-build_deps="agg gtkglext libpcap alsa-lib soundtouch freeglut lua" # zziplib
+arch=("auto")
+strict_version='yes'
 
-BUILD_SYSTEM="autotools"
+shortdesc=("Nintendo DS emulator.")
 
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+source=("git:https://github.com/TASEmulators/desmume.git")
 
-BUILD_KEYS="--prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --mandir=/usr/man \
-    --enable-wifi \
-    --program-prefix= \
-    --program-suffix="
+tags=("games games-emulation")
 
-INSTALL_KEYS="DESTDIR=$pkgdir"
+adddep=("alsa-lib desktop-file-utils glu gtk3 libpcap sdl2 soundtouch zlib zziplib")
+
+build_deps=("${adddep} git intltool mesa meson")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout release_${pkgver//./_}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  export CXXFLAGS+=' -Wno-format-security'
+  meson desmume/src/frontend/posix build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D openal=true \
+    -D wifi=true
+  ninja -C build
+  DESTDIR=${pkgdir} ninja install -C build
+}
+
