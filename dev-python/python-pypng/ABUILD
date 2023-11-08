@@ -1,11 +1,11 @@
 pkgname=python-pypng
-pkgver=0.0.21
-pkgbuild=3
+pkgver=0.20231004.0
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("  Pure Python library for PNG image encoding/decoding.")
+shortdesc=("Pure Python library for PNG image encoding/decoding.")
 
-source=("https://github.com/drj11/pypng/archive/pypng-${pkgver}.tar.gz")
+source=("https://gitlab.com/drj11/pypng/-/archive/pypng-${pkgver}/pypng-pypng-${pkgver}.tar.gz")
 
 tags=("libs dev-python")
 
