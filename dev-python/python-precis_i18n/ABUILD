@@ -1,6 +1,6 @@
 pkgname=python-precis_i18n
-pkgver=1.0.4
-pkgbuild=2
+pkgver=1.0.5
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("PRECIS framework (RFC 8264, RFC 8265, RFC 8266).")
