@@ -1,12 +1,13 @@
 pkgname=sudo
-_sudover=1.9.14p3
-pkgver=${_sudover/p/.p}
+#_sudover=1.9.14p3
+#pkgver=${_sudover/p/.p}
+pkgver=1.9.15
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Give certain users the ability to run some commands as root.")
 
-source=("https://www.sudo.ws/sudo/dist/${pkgname}-${_sudover}.tar.gz")
+source=("https://www.sudo.ws/sudo/dist/${pkgname}-${pkgver}.tar.gz")
 
 tags=("console sys-auth")
 
