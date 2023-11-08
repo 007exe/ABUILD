@@ -1,6 +1,6 @@
 pkgname=kernel
 pkglist=("kernel-headers") # kernel-sources
-pkgver=6.5.7
+pkgver=6.5.9
 pkgbuild=1
 arch=("auto")
 
