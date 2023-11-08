@@ -1,5 +1,5 @@
 pkgname=python-simplejson
-pkgver=3.19.1
+pkgver=3.19.2
 pkgbuild=1
 arch=("auto")
 
