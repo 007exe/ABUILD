@@ -1,6 +1,6 @@
 pkgname=python-async-timeout
-pkgver=4.0.2
-pkgbuild=3
+pkgver=4.0.3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Asyncio-compatible timeout class.")
