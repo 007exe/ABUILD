@@ -1,5 +1,5 @@
 pkgname=papirus-icon-theme
-pkgver=20230901
+pkgver=20231101
 pkgbuild=1
 arch=("noarch")
 
