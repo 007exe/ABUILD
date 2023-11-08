@@ -1,5 +1,5 @@
 pkgname=python-django
-pkgver=4.1.7
+pkgver=4.2.6
 pkgbuild=1
 arch=("auto")
 
