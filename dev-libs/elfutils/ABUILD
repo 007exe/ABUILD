@@ -1,5 +1,5 @@
 pkgname=elfutils
-pkgver=0.189
+pkgver=0.190
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://sourceware.org/ftp/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz
 
 tags=("develop dev-libs")
 
-build_deps=("bzip2 curl gcc-libs libarchive libmicrohttpd sqlite xz zlib zstd")
+adddep=("gcc-libs glibc libarchive libmicrohttpd sqlite bzip2 curl xz zlib zstd")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
