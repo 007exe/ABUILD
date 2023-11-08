@@ -1,5 +1,5 @@
 pkgname=python-fsspec
-pkgver=2022.11.0
+pkgver=2023.9.2
 pkgbuild=1
 arch=("auto")
 
