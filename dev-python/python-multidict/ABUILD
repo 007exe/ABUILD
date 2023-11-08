@@ -1,5 +1,5 @@
 pkgname=python-multidict
-pkgver=6.0.3
+pkgver=6.0.4
 pkgbuild=1
 arch=("auto")
 
