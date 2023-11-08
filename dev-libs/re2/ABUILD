@@ -1,12 +1,12 @@
 pkgname=re2
-_re2ver=2023-09-01
+_re2ver=2023-11-01
 pkgver=${_re2ver//-}
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Fast, safe, thread-friendly regular expression engine.")
 
-source=("https://github.com/google/re2/archive/$_re2ver.tar.gz")
+source=("https://github.com/google/re2/archive/${_re2ver}.tar.gz")
 
 tags=("libs dev-libs")
 
