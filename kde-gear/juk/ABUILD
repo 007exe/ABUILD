@@ -9,9 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-multimedia")
 
-build_deps=("kio taglib phonon hicolor-icon-theme extra-cmake-modules kdoctools")
+adddep=("kio taglib phonon-qt5 hicolor-icon-theme")
 
-adddep=("hicolor-icon-theme")
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir
