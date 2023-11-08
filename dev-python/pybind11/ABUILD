@@ -1,5 +1,5 @@
 pkgname=pybind11
-pkgver=2.10.4
+pkgver=2.11.1
 pkgbuild=1
 arch=("auto")
 
