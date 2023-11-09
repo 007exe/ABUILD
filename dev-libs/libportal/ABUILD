@@ -14,7 +14,8 @@ source=("https://github.com/flatpak/libportal/archive/refs/tags/${pkgver}.tar.gz
 dep_gtk3=("gtk3")
 dep_gtk4=("gtk4")
 dep_qt5=("qt5-base qt5-x11extras")
-build_deps=("${dep_gtk3} ${dep_gtk4} ${dep_qt5} gi-docgen gjs gobject-introspection meson vala")
+adddep=("xdg-desktop-portal glib2")
+build_deps=("${adddep} ${dep_gtk3} ${dep_gtk4} ${dep_qt5} gjs gobject-introspection gtk3 gtk4 meson qt5-base qt5-x11extras vala")
 
 ###############################################################################################
 
