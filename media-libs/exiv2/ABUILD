@@ -1,5 +1,5 @@
 pkgname=exiv2
-pkgver=0.28.0
+pkgver=0.28.1
 pkgbuild=1
 arch=("auto")
 
