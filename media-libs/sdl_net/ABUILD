@@ -9,7 +9,7 @@ source=("http://www.libsdl.org/projects/SDL_net/release/SDL_net-${pkgver}.tar.gz
 
 tags=("media-libs libs")
 
-adddep=("sdl")
+adddep=("sdl12-compat")
 
 build_deps=("${adddep}")
 
