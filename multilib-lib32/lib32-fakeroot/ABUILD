@@ -1,5 +1,5 @@
 pkgname=lib32-fakeroot
-pkgver=1.31
+pkgver=1.32.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,10 +9,10 @@ source=("https://deb.debian.org/debian/pool/main/f/fakeroot/fakeroot_${pkgver}.o
 
 tags=("lib32 sys-apps")
 
-# po4a
-build_deps=("lib32-gcc-libs")
+adddep=("lib32-glibc fakeroot")
 
-adddep=("fakeroot")
+# po4a
+build_deps=("${adddep} lib32-gcc-libs")
 
 build() {
   go_src_dir
