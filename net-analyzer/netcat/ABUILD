@@ -4,7 +4,6 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("GNU rewrite of netcat, the network piping application.")
-longdesc=("GNU rewrite of netcat, the network piping application.")
 
 source=("https://downloads.sourceforge.net/sourceforge/netcat/netcat-${pkgver}.tar.bz2")
 
