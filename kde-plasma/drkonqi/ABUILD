@@ -9,7 +9,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/plasma/${pkgver}/${
 
 tags=("plasma kde-plasma")
 
-adddep=("kidletime syntax-highlighting kirigami2 kitemmodels kuserfeedback kio gdb python-distro python-psutil qt5-tools")
+adddep=("kidletime syntax-highlighting kirigami2 kitemmodels kuserfeedback5 kio gdb python-distro python-psutil qt5-tools")
 
 build_deps=("${adddep} extra-cmake-modules")
 
