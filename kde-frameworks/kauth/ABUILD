@@ -4,16 +4,14 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Abstraction to system policy and authentication features.")
-longdesc=("Framework to let applications perform actions as a privileged user.")
 
 source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/frameworks/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("kde-frameworks kf5")
 
-build_deps=("extra-cmake-modules qt5-tools clang doxygen kcoreaddons polkit-qt")
+adddep=("kcoreaddons polkit-qt5")
 
-# NOTE: Это опциональная зависимость
-removedep=("qt5-declarative")
+build_deps=("${adddep} extra-cmake-modules qt5-tools doxygen")
 
 build() {
   go_src_dir
