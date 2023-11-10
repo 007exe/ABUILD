@@ -1,7 +1,7 @@
 pkgname=pvs-studio
-pkgver=7.23.68432.289
+pkgver=7.27.75620.346
 pkgbuild=1
-arch=('x86_64')
+arch=("x86_64")
 
 shortdesc=("Static code analyzer for C, C++ and C#")
 
