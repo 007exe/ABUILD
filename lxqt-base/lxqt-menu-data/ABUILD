@@ -1,5 +1,5 @@
 pkgname=lxqt-menu-data
-pkgver=1.4.0
+pkgver=1.4.1
 pkgbuild=1
 arch=("noarch")
 
@@ -7,7 +7,7 @@ shortdesc=("LXQt menu files.")
 
 source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
-tags=("lxde lxde-base")
+tags=("lxqt lxqt-base")
 
 build_deps=("cmake lxqt-build-tools qt5-tools")
 
