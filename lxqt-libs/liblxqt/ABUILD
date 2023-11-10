@@ -9,7 +9,7 @@ source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgnam
 
 tags=("lxqt lxqt-libs")
 
-adddep=("kwindowsystem libxss polkit-qt")
+adddep=("kwindowsystem libxss polkit-qt5")
 
 build_deps=("${adddep} lxqt-build-tools")
 
