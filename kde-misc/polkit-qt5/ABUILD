@@ -1,0 +1,45 @@
+pkgname=polkit-qt5
+pkglist=("qt6")
+pkgver=0.175.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library that allows developers to access PolicyKit API with a nice Qt-style API.")
+
+source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/unstable/polkit-qt-1/polkit-qt-1-${pkgver}.tar.xz")
+
+tags=("libs sys-auth")
+
+dep_qt6=("gcc-libs glib2 glibc polkit qt6-base")
+adddep=("gcc-libs glib2 glibc polkit qt5-base")
+build_deps=("${adddep} ${dep_qt6} polkit cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build5 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release
+  cmake --build build5 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build5
+}
+
+# polkit-qt6 ##################################################################################################
+
+qt6() {
+  pkgname=polkit-qt6
+  shortdesc=("A library that allows developers to access PolicyKit API with a nice Qt-style API.")
+  adddep=("${dep_qt6}")
+}
+
+qt6_prep() {
+  go_src_dir
+  cmake -B build6 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DQT_MAJOR_VERSION=6
+  cmake --build build6 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build6
+}
