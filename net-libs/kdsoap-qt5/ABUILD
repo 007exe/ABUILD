@@ -1,0 +1,50 @@
+pkgname=kdsoap-qt5
+pkglist=("qt6")
+pkgver=2.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Qt-based client-side and server-side SOAP component.")
+
+source=("https://github.com/KDAB/KDSoap/releases/download/kdsoap-${pkgver}/kdsoap-${pkgver}.tar.gz")
+
+tags=("net-libs libs")
+
+dep_qt6=("qt6-base gcc-libs glibc")
+
+adddep=("qt5-base gcc-libs glibc")
+
+build_deps=("${adddep} ${dep_qt6} cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build5 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DINSTALL_INCLUDE_DIR=/usr/include/KDSoap-qt5
+  cmake --build build5 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build5
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
+# kdsoap-qt6 ###########################################################################
+
+qt6() {
+  pkgname=kdsoap-qt6
+  shortdesc=("Qt-based client-side and server-side SOAP component.")
+  adddep=("${dep_qt6}")
+}
+
+qt6_prep() {
+  go_src_dir
+  cmake -B build6 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=None \
+    -DKDSoap_QT6=ON
+  cmake --build build6 -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build6
+  install -Dm644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
