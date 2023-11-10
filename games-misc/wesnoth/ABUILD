@@ -13,7 +13,6 @@ adddep=("sdl2_mixer sdl2_image boost-libs pango dbus")
 
 build_deps=("${adddep} boost cmake ninja")
 
-
 build(){
   go_src_dir
   burn_patches
