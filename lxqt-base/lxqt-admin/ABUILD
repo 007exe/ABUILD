@@ -9,7 +9,7 @@ source=("https://github.com/lxqt/${pkgname}/releases/download/${pkgver}/${pkgnam
 
 tags=("lxqt lxqt-base")
 
-adddep=("qt5-base liblxqt kwindowsystem polkit-qt")
+adddep=("qt5-base liblxqt kwindowsystem polkit-qt5")
 
 build_deps=("${adddep} cmake qt5-tools lxqt-build-tools")
 
