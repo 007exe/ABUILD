@@ -9,7 +9,8 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-network")
 
-adddep=("kio kdnssd libssh smbclient libmtp libkexiv2 phonon-qt5 syntax-highlighting kdsoap-ws-discovery-client libxcursor")
+# smbclient
+adddep=("kio kdnssd libssh libmtp libkexiv2 phonon-qt5 syntax-highlighting libxcursor kdsoap-qt5")
 
 # libappimage
 build_deps=("${adddep} extra-cmake-modules kdoctools gperf taglib openexr kactivities-stats")
