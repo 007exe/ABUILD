@@ -1,5 +1,5 @@
 pkgname=vivaldi
-pkgver=6.4.3160.41
+pkgver=6.4.3160.42
 _rpmversion=${pkgver}-1
 pkgbuild=1
 arch=("auto")
