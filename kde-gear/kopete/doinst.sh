@@ -1,0 +1,5 @@
+echo -e "\n"
+echo -e "The following packages extend kopete capabilities:"
+echo -e "    libgadu: Gadu-Gadu protocol"
+echo -e "    kdnssd5: bonjour protocol"
+echo -e " "

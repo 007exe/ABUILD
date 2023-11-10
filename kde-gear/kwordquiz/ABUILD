@@ -1,5 +1,5 @@
 pkgname=kwordquiz
-pkgver=23.08.2
+pkgver=23.08.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,9 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-education")
 
-build_deps=("knotifyconfig libkeduvocdocument knewstuff phonon extra-cmake-modules kdoctools")
+adddep=("knotifyconfig libkeduvocdocument knewstuff kirigami-addons")
+
+build_deps=("${adddep} extra-cmake-modules kdoctools")
 
 build() {
   go_src_dir

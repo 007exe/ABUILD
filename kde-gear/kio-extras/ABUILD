@@ -1,5 +1,5 @@
 pkgname=kio-extras
-pkgver=23.08.2
+pkgver=23.08.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-network")
 
-adddep=("kio kdnssd libssh smbclient libmtp libkexiv2 phonon syntax-highlighting kdsoap-ws-discovery-client libxcursor")
+adddep=("kio kdnssd libssh smbclient libmtp libkexiv2 phonon-qt5 syntax-highlighting kdsoap-ws-discovery-client libxcursor")
 
 # libappimage
 build_deps=("${adddep} extra-cmake-modules kdoctools gperf taglib openexr kactivities-stats")

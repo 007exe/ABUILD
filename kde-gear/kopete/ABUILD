@@ -1,5 +1,5 @@
 pkgname=kopete
-pkgver=23.08.2
+pkgver=23.08.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,13 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-network")
 
-# mediastreamer libotr
-build_deps=("knotifyconfig kcmutils ktexteditor kcontacts qca-qt5 kdelibs4support libkleo khtml
-libidn extra-cmake-modules libgadu jsoncpp kdoctools kdesignerplugin kdnssd kinit kidentitymanagement")
+# libotr
+adddep=("knotifyconfig kcmutils ktexteditor kcontacts kidentitymanagement libkleo qca-qt5 kdelibs4support khtml libidn")
+
+build_deps=("${adddep} extra-cmake-modules libgadu jsoncpp kdoctools5 kdesignerplugin kdnssd5 kinit")
+
+# NOTE: Это опциональные зависимости
+removedep=("libgadu kdnssd5")
 
 build() {
   go_src_dir

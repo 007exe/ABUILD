@@ -1,6 +1,6 @@
 pkgname=marble-common
 pkglist=("marble-qt marble-maps marble")
-pkgver=23.08.2
+pkgver=23.08.3
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("libs kde-education")
 
-adddep=("qt5-svg qt5-webengine phonon protobuf")
+adddep=("qt5-svg qt5-webengine phonon-qt5 protobuf")
 dep_marble=("kparts")
 dep_marble_maps=("kirigami2")
 # libwlocate shapelib

@@ -1,5 +1,5 @@
 pkgname=akregator
-pkgver=23.08.2
+pkgver=23.08.3
 pkgbuild=1
 arch=("auto")
 
@@ -9,7 +9,7 @@ source=("https://mirror.yandex.ru/mirrors/ftp.kde.org/stable/release-service/${p
 
 tags=("kde kde-pim")
 
-adddep=("kontactinterface messagelib knotifyconfig kuserfeedback")
+adddep=("kontactinterface messagelib knotifyconfig kuserfeedback5")
 
 build_deps=("${adddep} extra-cmake-modules kdoctools")
 
