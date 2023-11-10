@@ -4,13 +4,17 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Qt Widgets for Technical Applications.")
-longdesc=("2D plotting library for Qt5")
 
 source=("https://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("libs x11-libs")
 
-build_deps=("qt5-base qt5-svg qt5-tools")
+adddep=("qt5-base qt5-svg")
+
+build_deps=("${adddep} qt5-tools")
+
+# NOTE: Это опциональные зависимости
+removedep=("qt5-tools")
 
 build(){
   go_src_dir
