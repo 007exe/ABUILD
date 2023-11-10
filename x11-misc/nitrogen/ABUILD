@@ -1,16 +1,17 @@
 pkgname=nitrogen
 pkgver=1.6.1
 pkgbuild=1
-arch=('auto')
+arch=("auto")
 
-shortdesc=("Background browser and setter for X windows")
-longdesc=("It is written in C++ using the gtkmm toolkit. It can be used in two modes: browser and recall. Nitrogen has been in development for over 2 years, due to real life and laziness. For more info, check out the features section.")
+shortdesc=("Background browser and setter for X windows.")
 
 source=("https://github.com/l3ib/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
-tags="x11-misc xapps"
+tags=("x11-misc apps")
 
-build_deps="gtkmm hicolor-icon-theme librsvg"
+adddep=("gtkmm hicolor-icon-theme librsvg")
+
+build_deps=("${adddep}")
 
 build() {
   go_src_dir
@@ -18,7 +19,7 @@ build() {
   CXXFLAGS+=' -std=c++11'
   ./configure \
     --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX}
+    --libdir=/usr/lib
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
