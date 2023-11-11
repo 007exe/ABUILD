@@ -4,9 +4,8 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Open source implementation of Audio Video Transport Protocol.")
-longdesc=("Open source implementation of Audio Video Transport Protocol (AVTP) specified in IEEE 1722-2016 spec.")
 
-source=("https://github.com/Avnu/${pkgname}/archive/v${pkgver}.tar.gz")
+source=("https://github.com/Avnu/libavtp/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.gz")
 
 tags=("libs media-libs")
 
