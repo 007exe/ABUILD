@@ -1,0 +1,26 @@
+pkgname=libdex
+pkgver=0.4.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A library supporting 'Deferred Execution'.")
+
+source=("https://gitlab.gnome.org/GNOME/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+adddep=("glib2 liburing")
+# -D sysprof=true libsysprof-capture
+build_deps=("${adddep} gi-docgen gobject-introspection libsoup3 meson vala")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D docs=false \
+    -D sysprof=false
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
