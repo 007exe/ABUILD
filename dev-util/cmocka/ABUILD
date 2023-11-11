@@ -1,27 +1,26 @@
 pkgname=cmocka
-pkgver=1.1.5
-pkgbuild=2
+pkgver=1.1.7
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("Unit testing framework for C.")
-longdesc=("Elegant unit testing framework for C with support for mock objects.")
+shortdesc=("Elegant unit testing framework for C with support for mock objects.")
 
 source=("https://cmocka.org/files/1.1/cmocka-${pkgver}.tar.xz")
 
 tags=("utils dev-util")
 
-build_deps="glibc cmake"
+adddep=("glibc")
+
+build_deps=("${adddep} cmake")
 
 build() {
   go_src_dir
   burn_patches
-  mkdir build
-  cd build
-  cmake .. \
+  cmake -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
     -DUNIT_TESTING=ON
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
 }
