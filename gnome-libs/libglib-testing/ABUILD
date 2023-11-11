@@ -1,0 +1,24 @@
+pkgname=libglib-testing
+pkgver=0.1.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Test harnesses and mock classes for GLib.")
+
+source=("https://gitlab.gnome.org/pwithnall/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("gnome gnome-libs")
+
+adddep=("dbus glib2")
+
+build_deps=("${adddep} gtk-doc meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
