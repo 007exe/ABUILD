@@ -1,0 +1,37 @@
+pkgname=libei
+pkgver=1.1.0
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("Library for Emulated Input.")
+
+source=("git:https://gitlab.freedesktop.org/libinput/libei.git"
+"git:https://github.com/nemequ/munit")
+
+tags=("dev-libs libs")
+# systemd
+adddep=("libevdev")
+# python-dbusmock python-structlog
+build_deps=("${adddep} git libxkbcommon meson python-attrs python-jinja python-pytest python-yaml")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  mv -v ${srcdir}/libei_git_libei.git.src ${srcdir}/libei
+  mv -v ${srcdir}/libei_git_munit.src ${srcdir}/munit
+  cd ${srcdir}/libei
+  git checkout ${pkgver}
+  ln -sr ../munit subprojects/munit
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir} --skip-subprojects
+  install -Dt ${pkgdir}/usr/share/licenses/${pkgname} -m644 COPYING
+}
