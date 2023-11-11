@@ -1,0 +1,26 @@
+pkgname=gnome-photos
+pkgver=44.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Access, organize, and share your photos on GNOME.")
+
+source=("https://gitlab.gnome.org/GNOME/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("apps gnome-apps")
+
+adddep=("babl dleyna gegl geocode-glib-2 gnome-online-accounts gsettings-desktop-schemas gtk3
+libdazzle libgexiv2 libhandy libportal-gtk3 librsvg tracker3-miners")
+
+build_deps=("${adddep} docbook-xsl meson python yelp-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D manuals=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
