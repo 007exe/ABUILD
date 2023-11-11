@@ -1,0 +1,24 @@
+pkgname=epiphany
+pkgver=45.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A GNOME web browser based on the WebKit rendering engine.")
+
+source=("https://gitlab.gnome.org/GNOME/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("apps gnome-apps")
+
+adddep=("gcr-4 gstreamer gtk4 libadwaita libarchive libportal-gtk4 libsoup3 webkitgtk-6.0")
+
+build_deps=("${adddep} gobject-introspection lsb-release meson startup-notification yelp-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -Dprefix=/usr \
+    -Dlibdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
