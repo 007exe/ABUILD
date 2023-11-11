@@ -1,0 +1,30 @@
+pkgname=lib32-alsa-oss
+pkgver=1.1.8
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Advanced Linux Sound Architecture (ALSA) library (32 bit).")
+
+source=("https://www.alsa-project.org/files/pub/oss-lib/alsa-oss-${pkgver}.tar.bz2")
+
+tags=("lib32 media-libs")
+
+adddep=("lib32-glibc alsa-oss")
+
+build_deps=("${adddep} lib32-alsa-lib")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export PKG_CONFIG_PATH=/usr/lib32/pkgconfig
+  CFLAGS+=" -ffat-lto-objects"
+  autoreconf -vfi
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib32
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  rm -rvf ${pkgdir}/usr/{bin,include,share}
+}
