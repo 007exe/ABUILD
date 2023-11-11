@@ -1,0 +1,30 @@
+pkgname=lib32-cmocka
+pkgver=1.1.7
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Elegant unit testing framework for C with support for mock objects (32-bit).")
+
+source=("https://cmocka.org/files/1.1/cmocka-${pkgver}.tar.xz")
+
+tags=("lib32 dev-util")
+
+adddep=("cmocka lib32-glibc")
+
+build_deps=("${adddep} cmake")
+
+build() {
+  go_src_dir
+  burn_patches
+  export CC='gcc -m32'
+  export PKG_CONFIG_PATH='/usr/lib32/pkgconfig'
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib32 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DUNIT_TESTING=ON \
+    -W no-dev
+  cmake --build build --verbose -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+  rm -rvf ${pkgdir}/usr/include
+}
