@@ -1,13 +1,15 @@
 pkgname=waf
-pkgver=2.0.25
+pkgver=2.0.26
 pkgbuild=1
 arch=("noarch")
 
-shortdesc=("Waf is a Python-based framework for configuring, compiling and installing applications.")
+shortdesc=("General-purpose build system modelled after Scons.")
 
 tags=("develop sys-devel")
 
 source=("https://waf.io/${pkgname}-${pkgver}.tar.bz2")
+
+adddep=("python")
 
 build_deps=("unzip")
 
