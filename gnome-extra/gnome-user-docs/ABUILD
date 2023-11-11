@@ -1,0 +1,27 @@
+pkgname=gnome-user-docs
+pkgver=45.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("User documentation for GNOME.")
+
+source=("https://gitlab.gnome.org/GNOME/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("gnome gnome-extra")
+
+adddep=("yelp")
+
+build_deps=("${adddep} yelp-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  NOCONFIGURE=1 ./autogen.sh
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    --sysconfdir=/etc \
+    --localstatedir=/var
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
