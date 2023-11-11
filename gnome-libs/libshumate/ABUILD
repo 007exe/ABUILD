@@ -1,0 +1,25 @@
+pkgname=libshumate
+pkgver=1.1.2
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Map widget for GTK 4.")
+
+source=("https://gitlab.gnome.org/GNOME/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs gnome-libs")
+
+adddep=("cairo glib2 gtk4 libsoup3 sqlite")
+
+build_deps=("${adddep} gi-docgen gobject-introspection meson vala")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D demos=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
