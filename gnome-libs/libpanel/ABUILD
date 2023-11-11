@@ -1,0 +1,25 @@
+pkgname=libpanel
+pkgver=1.4.0
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Dock/panel library for GTK 4.")
+
+source=("https://gitlab.gnome.org/GNOME/${pkgname}/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("dev-libs libs")
+
+adddep=("cairo glib2 graphene gtk4 hicolor-icon-theme libadwaita")
+
+build_deps=("${adddep} gi-docgen gobject-introspection meson vala")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D install-examples=true
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
