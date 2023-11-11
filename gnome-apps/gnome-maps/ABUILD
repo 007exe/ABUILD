@@ -1,0 +1,24 @@
+pkgname=gnome-maps
+pkgver=45.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("A simple GNOME 3 maps application.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-calendar/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("apps gnome-apps")
+
+adddep=("dconf hicolor-icon-theme geoclue geocode-glib-2 gjs glib2 gtk4 libadwaita libgweather-4 libportal librest libshumate libxml2")
+
+build_deps=("${adddep} gobject-introspection meson yelp-tools")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -Dprefix=/usr \
+    -Dlibdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
