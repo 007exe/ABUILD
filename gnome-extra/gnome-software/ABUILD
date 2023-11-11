@@ -31,8 +31,7 @@ before_build() {
 }
 
 build() {
-  go_src_dir
-  burn_patches
+  cd ${srcdir}/gnome-software
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
