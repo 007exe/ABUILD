@@ -1,0 +1,25 @@
+pkgname=gnome-calendar
+pkgver=45.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Simple and beautiful calendar application designed to perfectly fit the GNOME desktop.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-calendar/-/archive/${pkgver}/gnome-calendar-${pkgver}.tar.gz")
+
+tags=("apps gnome-apps")
+
+adddep=("dconf evolution-data-server geoclue geocode-glib-2 glib2 graphene gsettings-desktop-schemas
+gtk4 hicolor-icon-theme libadwaita libedataserverui4 libgweather-4 libical libsoup3 pango")
+
+build_deps=("${adddep} meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -Dprefix=/usr \
+    -Dlibdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
