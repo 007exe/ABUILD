@@ -1,0 +1,42 @@
+pkgname=gnome-software
+pkgver=45.1
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("GNOME Software Tools.")
+
+source=("git:https://gitlab.gnome.org/GNOME/gnome-software.git"
+"git:https://gitlab.gnome.org/mwleeds/gnome-pwa-list.git")
+
+tags=("gnome gnome-extra")
+
+adddep=("appstream gsettings-desktop-schemas gtk4 libadwaita libsoup3 libsysprof-capture libxmlb polkit")
+# flatpak fwupd malcontent
+build_deps=("${adddep} docbook-xsl git gobject-introspection gtk-doc libglib-testing meson")
+
+# NOTE: Это опциональные зависимости
+removedep=("flatpak fwupd malcontent ")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  mv -v ${srcdir}/gnome-software_git_gnome-software.git.src ${srcdir}/gnome-software
+  mv -v ${srcdir}/gnome-software_git_gnome-pwa-list.git.src ${srcdir}/gnome-pwa-list
+  cd ${srcdir}/gnome-software
+  git checkout ${pkgver}
+  git submodule init
+  git submodule set-url subprojects/gnome-pwa-list ${srcdir}/gnome-pwa-list
+  git -c protocol.file.allow=always submodule update
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib \
+    -D packagekit=false
+  meson compile -C build
+  DESTDIR=${pkgdir} meson install -C build
+}
