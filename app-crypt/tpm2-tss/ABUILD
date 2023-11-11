@@ -1,0 +1,33 @@
+pkgname=tpm2-tss
+pkgver=4.0.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Implementation of the TCG Trusted Platform Module 2.0 Software Stack (TSS2).")
+
+source=("https://github.com/tpm2-software/tpm2-tss/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz"
+"https://raw.githubusercontent.com/tpm2-software/tpm2-tss/e237e4d33cbf280292a480edd8ad061dcd3a37a2/lib/tss2-tcti-libtpms.map")
+
+tags=("app-crypt libs")
+
+adddep=("curl json-c openssl")
+# libtpms
+build_deps=("${adddep} cmocka doxygen")
+
+build() {
+  go_src_dir
+  cp ${srcache}/tss2-tcti-libtpms.map lib
+  burn_patches
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --with-runstatedir=/run \
+    --with-sysusersdir=/usr/lib/sysusers.d \
+    --with-tmpfilesdir=/usr/lib/tmpfiles.d \
+    --with-udevrulesprefix=60- \
+    --enable-unit $( ((CHECKFUNC)) && echo --enable-integration)
+  make -j${numjobs}
+  make DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
