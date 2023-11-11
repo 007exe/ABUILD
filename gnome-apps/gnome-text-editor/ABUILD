@@ -11,7 +11,8 @@ tags=("gnome gnome-apps")
 
 adddep=("cairo dconf editorconfig-core-c enchant glib2 gtk4 gtksourceview5 hicolor-icon-theme icu libadwaita pango")
 
-build_deps=("${adddep} appstream-glib meson yelp-tools libedataserverui4")
+# evolution-data-server заменяет libedataserverui4
+build_deps=("${adddep} appstream-glib meson yelp-tools evolution-data-server")
 
 build() {
   go_src_dir
