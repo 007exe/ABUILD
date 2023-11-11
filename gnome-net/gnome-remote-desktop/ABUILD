@@ -1,0 +1,25 @@
+pkgname=gnome-remote-desktop
+pkgver=45.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("GNOME Remote Desktop server.")
+
+source=("https://gitlab.gnome.org/GNOME/gnome-calendar/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("gnome net-misc")
+
+# systemd
+adddep=("cairo dconf freerdp fuse3 glib2 libdrm libei libepoxy libfdk-aac libnotify libpipewire libsecret libvncserver libxkbcommon pipewire tpm2-tss")
+
+build_deps=("${adddep} asciidoc ffnvcodec-headers meson")
+
+build() {
+  go_src_dir
+  burn_patches
+  meson build \
+    -Dprefix=/usr \
+    -Dlibdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
+}
