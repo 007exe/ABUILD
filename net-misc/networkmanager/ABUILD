@@ -1,5 +1,6 @@
 pkgname=networkmanager
-pkgver=1.44.0
+pkglist=("libnm") # nm-cloud-setup
+pkgver=1.44.2
 _pppver=2.5.0
 pkgbuild=1
 arch=("auto")
@@ -10,18 +11,34 @@ source=("https://download.gnome.org/sources/NetworkManager/${pkgver:0:4}/Network
 
 tags=("network net-misc")
 
-# libnewt libteam
-adddep=("audit bluez-libs curl iproute2 libmm-glib libndp libpsl mobile-broadband-provider-info
-wpa_supplicant")
-
-# nftables openresolv pacrunner
-build_deps=("${adddep} elogind audit bluez-libs curl dhclient dhcpcd dnsmasq glib2 gobject-introspection gtk-doc iwd iproute2
-iptables jansson libmm-glib libndp libpsl meson modemmanager nss perl-yaml polkit python-gobject vala wpa_supplicant")
+# systemd
+dep_libnm=("glib2 nss util-linux")
+dep_manager=("audit bluez-libs curl iproute2 jansson libmm-glib libndp newt libpsl libteam
+mobile-broadband-provider-info wpa_supplicant")
+# systemd
+build_deps=("${dep_manager} ${dep_libnm} audit bluez-libs curl dhclient dhcpcd dnsmasq glib2 gobject-introspection
+gtk-doc iproute2 iptables iwd jansson libmm-glib libndp libpsl meson modemmanager nftables nss
+openresolv pacrunner perl-yaml polkit ppp python-gobject vala wpa_supplicant")
+adddep=("${dep_manager} libnm")
 
 # NOTE: Это опциональнеые зависимости
-removedep=("polkit dnsmasq nftables iptables bluez modemmanager iwd dhclient dhcpcd openresolv firewalld ppp=${_pppver}")
+removedep=("polkit dnsmasq nftables iptables bluez modemmanager iwd dhclient dhcpcd openresolv firewalld ppp=")
 
 config_files=("etc/NetworkManager/NetworkManager.conf")
+
+##########################################################################################################
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+##########################################################################################################
 
 build() {
   go_src_dir
@@ -53,10 +70,79 @@ build() {
     -D qt=false
   meson compile -C build
   meson install -C build --destdir ${pkgdir}
+  cd ${pkgdir}
+
+# /etc/NetworkManager
+  install -d etc/NetworkManager/{conf,dnsmasq}.d
+  install -dm700 etc/NetworkManager/system-connections
+  install -m644 /dev/stdin etc/NetworkManager/NetworkManager.conf <<END
+# Configuration file for NetworkManager.
+# See "man 5 NetworkManager.conf" for details.
+END
+
+# NOTE: Настройки
+  install -Dm644 /dev/stdin usr/lib/NetworkManager/conf.d/20-connectivity.conf <<END
+[connectivity]
+uri=http://ping.archlinux.org/nm-check.txt
+END
+
+  shopt -s globstar
+#  Принадлежат пакету libnm
+  _pick libnm usr/include/libnm
+  _pick libnm usr/lib/girepository-1.0/NM-*
+  _pick libnm usr/lib/libnm.*
+  _pick libnm usr/lib/pkgconfig/libnm.pc
+  _pick libnm usr/share/gir-1.0/NM-*
+  _pick libnm usr/share/gtk-doc/html/libnm
+  _pick libnm usr/share/vala/vapi/libnm.*
+
+#  Принадлежат пакету nm-cloud-setup
+#  _pick cloud usr/lib/**/*nm-cloud-setup*
+#  _pick cloud usr/share/man/*/nm-cloud-setup*
+
+  install -d usr/lib/NetworkManager/dispatcher.d/no-wait.d
+
+# openrc init
 
   install -m755 -D ${filedir}/networkmanager.initd ${pkgdir}/etc/init.d/networkmanager
   install -m644 -D ${filedir}/NetworkManager.conf ${pkgdir}/etc/NetworkManager/NetworkManager.conf
 
 # NOTE: Разрешить обычным пользователям настраивать сетевое подключение, пользователь должен состоять в группе netdev
   install -m644 -D ${filedir}/networkmanager.rules  ${pkgdir}/usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules
+}
+
+# libnm ##########################################################################################################
+
+libnm() {
+  pkgname=libnm
+  shortdesc=("NetworkManager client library.")
+  adddep=("${dep_libnm}")
+}
+
+libnm_prep() {
+  cd ${srcdir}
+  mv ${srcdir}/libnm/* ${pkgdir}
+}
+
+# nm-cloud-setup ##########################################################################################################
+
+nm-cloud-setup() {
+  pkgname=nm-cloud-setup
+  shortdesc=("Automatically configure NetworkManager in cloud.")
+  adddep=("networkmanager")
+}
+
+nm-cloud-setup_prep() {
+  cd ${srcdir}
+#  mv ${srcdir}/cloud/* ${pkgdir}
+  mkdir -p ${pkgdir}/usr/lib/NetworkManager/{dispatcher.d,pre-up.d}
+  mkdir -p ${pkgdir}/usr/libexec
+  mkdir -p ${pkgdir}/usr/lib/systemd/system
+
+  mv ${p_pkgdir}/usr/libexec/nm-cloud-setup ${pkgdir}/usr/libexec/nm-cloud-setup
+  mv ${p_pkgdir}/usr/lib/NetworkManager/dispatcher.d/90-nm-cloud-setup.sh ${pkgdir}/usr/lib/NetworkManager/dispatcher.d/90-nm-cloud-setup.sh
+  mv ${p_pkgdir}/usr/lib/NetworkManager/pre-up.d/90-nm-cloud-setup.sh ${pkgdir}/usr/lib/NetworkManager/pre-up.d/90-nm-cloud-setup.sh
+  mv ${p_pkgdir}/usr/lib/NetworkManager/90-nm-cloud-setup.sh ${pkgdir}/usr/lib/NetworkManager/90-nm-cloud-setup.sh
+  mv ${p_pkgdir}/usr/lib/systemd/system/nm-cloud-setup.service ${pkgdir}/usr/lib/systemd/system/nm-cloud-setup.service
+  mv ${p_pkgdir}/usr/lib/systemd/system/nm-cloud-setup.timer ${pkgdir}/usr/lib/systemd/system/nm-cloud-setup.timer
 }
