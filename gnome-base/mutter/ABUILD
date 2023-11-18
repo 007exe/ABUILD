@@ -1,11 +1,12 @@
 pkgname=mutter
-pkgver=44.4
+pkgver=45.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Window manager and compositor for GNOME.")
 
 source=("https://gitlab.gnome.org/GNOME/mutter/-/archive/${pkgver}/mutter-${pkgver}.tar.gz")
+
 tags=("gnome gnome-base")
 
 adddep=("colord dconf gnome-desktop gnome-settings-daemon graphene gsettings-desktop-schemas
