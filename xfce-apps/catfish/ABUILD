@@ -1,18 +1,17 @@
 pkgname=catfish
-pkgver=4.16.4
-pkgbuild=2
+pkgver=4.18.0
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("Versatile file searching tool.")
-longdesc=("A frontend for find, (s)locate, doodle, tracker, beagle, strigi and pinot.")
 
 source=("http://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("dbus-python gtk3 python-cairo python-gobject python-pexpect xdg-utils xfconf intltool python-distutils-extra")
-
 adddep=("dbus-python python-cairo python-gobject python-pexpect xdg-utils xfconf")
+
+build_deps=("${adddep} intltool python-distutils-extra")
 
 build() {
   go_src_dir
