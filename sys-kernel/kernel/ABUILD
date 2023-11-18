@@ -1,6 +1,6 @@
 pkgname=kernel
 pkglist=("kernel-headers") # kernel-sources
-pkgver=6.5.9
+pkgver=6.6.1
 pkgbuild=1
 arch=("auto")
 
@@ -113,9 +113,9 @@ build() {
 
   make -j${numjobs} INSTALL_MOD_PATH=${pkgdir}/usr INSTALL_MOD_STRIP=1 modules_install
 # rm -rf ${pkgdir}/usr/lib/firmware
-  rm ${pkgdir}/usr/lib/modules/${pkgver}/{source,build}
-  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/source
-  ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/build
+# rm ${pkgdir}/usr/lib/modules/${pkgver}/{source,build}
+# ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/source
+# ln -sf /usr/src/linux-${pkgver} ${pkgdir}/usr/lib/modules/${pkgver}/build
 
 # Пост установочный скрипт
   echo "*******************************************************"
@@ -157,7 +157,6 @@ kernel-headers_prep() {
 }
 
 # kernel-sources ################################################################################################################################
-# NOTE: Возможно этот пакет более не нужен но на всякий случай его создадим
 
 kernel-sources() {
   pkgname=kernel-source
