@@ -1,15 +1,18 @@
 pkgname=dhcpcd
-pkgver=10.0.4
+pkgver=10.0.5
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("RFC2131 compliant DHCP client daemon.")
+shortdesc=("DHCP, IPv4LL, IPv6RA, DHCPv6 client.")
 
 source=("https://github.com/NetworkConfiguration/dhcpcd/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
 tags=("network net-misc")
 
-build_deps=("glibc bash eudev")
+# systemd-libs
+adddep=("bash glibc openssl")
+
+build_deps=("${adddep}")
 
 config_files=("etc/dhcpcd.conf
 etc/conf.d/dhcpcd")
