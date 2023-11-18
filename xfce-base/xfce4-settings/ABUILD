@@ -1,5 +1,5 @@
 pkgname=xfce4-settings
-pkgver=4.18.2
+pkgver=4.18.3
 pkgbuild=1
 arch=("auto")
 
