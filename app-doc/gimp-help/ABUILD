@@ -1,5 +1,5 @@
 pkgname=gimp-help
-pkgver=2.10.0
+pkgver=2.10.34
 pkgbuild=1
 arch=("auto")
 
