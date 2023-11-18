@@ -1,5 +1,5 @@
 pkgname=libavif
-pkgver=1.0.1
+pkgver=1.0.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,8 +9,7 @@ source=("https://github.com/AOMediaCodec/libavif/archive/v${pkgver}/${pkgname}-$
 
 tags=("media-libs libs")
 
-# libyuv
-adddep=("glibc aom dav1d rav1e svt-av1 zlib libpng libjpeg-turbo")
+adddep=("glibc aom dav1d rav1e svt-av1 zlib libpng libjpeg-turbo libyuv")
 
 build_deps=("${adddep} cmake nasm pkgconf gdk-pixbuf")
 
