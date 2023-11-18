@@ -1,5 +1,5 @@
 pkgname=xfce4-clipman-plugin
-pkgver=1.6.3
+pkgver=1.6.5
 pkgbuild=1
 arch=("auto")
 
