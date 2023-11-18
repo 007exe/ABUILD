@@ -1,5 +1,6 @@
 pkgname=wxwidgets-gtk3
-pkgver=3.2.3
+pkglist=("wxwidgets-common wxwidgets-qt5")
+pkgver=3.2.4
 pkgbuild=1
 arch=("auto")
 
@@ -15,8 +16,6 @@ build_deps=("${adddep} cmake gst-plugins-base glu webkit2gtk libnotify qt5-base 
 
 # NOTE: Это опциональные зависимости
 removedep=("webkit2gtk")
-
-pkglist=("wxwidgets-common wxwidgets-qt5")
 
 build() {
   go_src_dir
@@ -98,6 +97,8 @@ build() {
   install -Dm644 wxWidgets-${pkgver}/docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
+# wxwidgets-common ##########################################################################
+
 wxwidgets-common() {
   pkgname=wxwidgets-common
   shortdesc=("Common libraries and headers for wxwidgets.")
@@ -123,6 +124,8 @@ wxwidgets-common_prep() {
 
   install -Dm644 ${srcdir}/wxWidgets-${pkgver}/docs/licence.txt ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
 }
+
+# wxwidgets-qt5 ##########################################################################
 
 wxwidgets-qt5() {
   pkgname=wxwidgets-qt5
