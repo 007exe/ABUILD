@@ -1,0 +1,24 @@
+pkgname=ayatana-ido
+pkgver=0.10.1
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Ayatana Indicator Display Objects.")
+
+source=("https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("gtk3")
+
+build_deps=("${adddep} cmake gobject-introspection vala gtest")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
