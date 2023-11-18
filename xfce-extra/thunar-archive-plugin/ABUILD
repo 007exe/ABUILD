@@ -1,5 +1,5 @@
 pkgname=thunar-archive-plugin
-pkgver=0.5.1
+pkgver=0.5.2
 pkgbuild=1
 arch=("auto")
 
