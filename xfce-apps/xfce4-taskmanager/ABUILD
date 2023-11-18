@@ -1,16 +1,17 @@
 pkgname=xfce4-taskmanager
-pkgver=1.5.5
+pkgver=1.5.6
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Easy to use task manager.")
-longdesc=("xfce-taskmanager is a small taskmanager based on the Xfce libraries.")
 
 source=("https://archive.xfce.org/src/apps/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-apps")
 
-build_deps=("libwnck3 libxmu intltool")
+adddep=("libxfce4ui xfconf libxmu libwnck3")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
