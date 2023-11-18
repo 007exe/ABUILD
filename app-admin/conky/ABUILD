@@ -1,19 +1,28 @@
 pkgname=conky
-pkgver=1.17.0
+pkgver=1.19.6
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("Lightweight system monitor for X.")
+shortdesc=("Light-weight system monitor for X, Wayland, and other things, too.")
 
 source=("https://github.com/brndnmtthws/conky/archive/v${pkgver}.tar.gz")
 
 tags=("app-admin utils")
 
 # -D BUILD_NVIDIA=ON libxnvctrl
-adddep=("glibc glib2 lua wireless_tools libxdamage libxinerama libxft imlib2 libxml2 libpulse ncurses curl")
+adddep=("cairo curl fontconfig gcc-libs glib2 glibc hicolor-icon-theme imlib2 libpulse libx11
+libxdamage libxext libxfixes libxft libxinerama libxml2 lua ncurses pango wayland wireless_tools")
 
 # -D BUILD_DOCS=ON pandoc
-build_deps=("${adddep} cmake docbook2x docbook-xsl man-db catch python-yaml python-jinja")
+build_deps=("${adddep} catch cmake docbook2x docbook-xsl man-db python-yaml python-jinja wayland-protocols")
+
+# NOTE: Удаляем исходники пакета после сборки
+# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
+# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
+before_build(){
+  go_src_dir
+  rm -f ${srcache}/v${pkgver}.tar.gz
+}
 
 build(){
   go_src_dir
@@ -21,7 +30,7 @@ build(){
 # fix glibc 2.35
   rm -r tests/catch2
   ln -s /usr/include/catch2 tests
-  cmake -B build -S . \
+  cmake -B build \
     -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_CXX_FLAGS="$CXXFLAGS -ffat-lto-objects" \
     -D MAINTAINER_MODE=OFF \
@@ -43,12 +52,4 @@ build(){
   install -Dm 644 COPYING -t ${pkgdir}/usr/share/licenses/${pkgname}
   install -Dm 644 build/extras/vim/syntax/conkyrc.vim -t ${pkgdir}/usr/share/vim/vimfiles/syntax
   install -Dm 644 extras/vim/ftdetect/conkyrc.vim -t ${pkgdir}/usr/share/vim/vimfiles/ftdetect
-}
-
-# NOTE: Удаляем исходники пакета после сборки
-# FIXME: mkpkg не умеет сохранять скачанные файлы под новыми именами, что может приводить к
-# ошибкам когда в кеше имеется архив с исходниками от другого пакета с тем же именем
-after_build(){
-  go_src_dir
-  rm ${srcache}/v${pkgver}.tar.gz
 }
