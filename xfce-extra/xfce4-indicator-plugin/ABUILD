@@ -1,5 +1,5 @@
 pkgname=xfce4-indicator-plugin
-pkgver=2.4.1
+pkgver=2.4.2
 pkgbuild=1
 arch=("auto")
 
@@ -9,18 +9,19 @@ source=("https://archive.xfce.org/src/panel-plugins/${pkgname}/${pkgver%.*}/${pk
 
 tags=("xfce xfce-extra")
 
-build_deps=("xfce4-panel intltool")
+adddep=("hicolor-icon-theme xfce4-panel xdg-utils libayatana-indicator")
+
+build_deps=("${adddep} intltool")
 
 build() {
   go_src_dir
   burn_patches
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --libdir=/usr/lib \
-    --disable-static \
-    --disable-debug
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
