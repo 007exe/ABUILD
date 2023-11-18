@@ -1,5 +1,5 @@
 pkgname=texmaker
-pkgver=5.1.3
+pkgver=5.1.4
 pkgbuild=1
 arch=("auto")
 
@@ -9,9 +9,9 @@ source=("https://www.xm1math.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("apps app-office")
 
-build_deps=("qt6-declarative qt6-5compat texlive-core")
-
 adddep=("qt6-declarative qt6-5compat texlive-core")
+
+build_deps=("${adddep}")
 
 build(){
   go_src_dir
