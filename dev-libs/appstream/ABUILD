@@ -6,7 +6,7 @@
 # в пост установочные скрипты пакетов которые это требуют
 
 pkgname=appstream
-pkgver=0.16.3
+pkgver=0.16.4
 pkglist=("appstream-qt")
 pkgbuild=1
 arch=("auto")
@@ -33,6 +33,8 @@ build() {
 # Предоставляется пакетом appstream-qt
   rm -r ${pkgdir}/usr/{include/AppStreamQt,lib/cmake,lib/libAppStreamQt.*}
 }
+
+# appstream-qt #############################################################################
 
 appstream-qt() {
   pkgname=appstream-qt
