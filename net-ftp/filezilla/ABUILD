@@ -1,5 +1,5 @@
 pkgname=filezilla
-pkgver=3.64.0
+pkgver=3.66.1
 pkgbuild=1
 arch=("auto")
 
@@ -11,7 +11,7 @@ tags=("network net-ftp")
 
 adddep=("dbus xdg-utils wxwidgets-gtk3 libidn hicolor-icon-theme sqlite gnutls libfilezilla")
 
-build_deps=("${adddep}")
+build_deps=("${adddep} boost gnutls libidn")
 
 build() {
   go_src_dir
@@ -22,7 +22,8 @@ build() {
     --libdir=/usr/lib \
     --disable-manualupdatecheck \
     --disable-autoupdatecheck \
-    --with-pugixml=builtin
+    --with-pugixml=builtin \
+    --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
 }
