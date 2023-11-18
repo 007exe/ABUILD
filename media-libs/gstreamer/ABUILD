@@ -4,7 +4,7 @@ gst-plugins-bad gst-plugin-gtk gst-plugin-msdk gst-plugin-opencv gst-plugin-qmlg
 gst-plugin-va gst-plugin-wpe gst-plugins-ugly gst-libav gst-rtsp-server gst-plugin-qsv
 gst-editing-services gstreamer-vaapi gst-python gstreamer-docs")
 # NOTE: пока не собирается gst-plugin-qml6
-pkgver=1.22.6
+pkgver=1.22.7
 strict_version=1
 pkgbuild=1
 arch=("auto")
