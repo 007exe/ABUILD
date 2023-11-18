@@ -1,5 +1,5 @@
 pkgname=xfce4-whiskermenu-plugin
-pkgver=2.7.3
+pkgver=2.8.1
 pkgbuild=1
 arch=("auto")
 
