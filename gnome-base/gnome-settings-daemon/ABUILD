@@ -1,37 +1,38 @@
 pkgname=gnome-settings-daemon
-pkgver=42.2
-# NOTE: Коммит версии 42.2
-_commit=4bdf8b5ae38a382be4126bbc0ce8d87bac46177e
+pkgver=45.0
 pkgbuild=1
 arch=("auto")
+strict_version='yes'
 
 shortdesc=("GNOME Settings Daemon.")
-longdesc=("Gnome Settings Daemon.")
 
-strict_version='yes'
 source=("git:https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git"
 "git:https://gitlab.gnome.org/GNOME/libgnome-volume-control.git")
 
 tags=("gnome gnome-base")
+# systemd
+adddep=("dconf gcr-4 geoclue geocode-glib-2 gnome-desktop gsettings-desktop-schemas
+gtk3 libcanberra libgudev libgweather-4 libnm libnotify librsvg libwacom nss upower
+pulseaudio pulseaudio-alsa")
 
-#usbguard libcanberra-pulse libnm
-build_deps=("libxslt docbook-xsl python git meson dconf gnome-desktop gsettings-desktop-schemas libgweather-4
-libnotify libwacom pulseaudio pulseaudio-alsa upower librsvg geoclue nss libgudev gtk3 gcr geocode-glib")
-
-adddep=("gnome-desktop gsettings-desktop-schemas")
+build_deps=("${adddep} docbook-xsl git libxslt meson python usbguard")
 
 config_files=("etc/xdg/Xwayland-session.d/00-xrdb")
 
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
 before_build() {
-  cd ${srcdir}/gnome-settings-daemon_git_gnome-settings-daemon.git.src
-  git checkout ${_commit}
+  mv ${srcdir}/gnome-settings-daemon_git_gnome-settings-daemon.git.src ${srcdir}/gnome-settings-daemon
+  mv ${srcdir}/gnome-settings-daemon_git_libgnome-volume-control.git.src ${srcdir}/libgnome-volume-control
+  cd ${srcdir}/gnome-settings-daemon
+  git checkout ${pkgver}
   git submodule init
-  git submodule set-url subprojects/gvc ${srcdir}/gnome-settings-daemon_git_libgnome-volume-control.git.src
-  git submodule update
+  git submodule set-url subprojects/gvc ${srcdir}/libgnome-volume-control
+  git -c protocol.file.allow=always submodule update
 }
 
 build() {
-  cd ${srcdir}/gnome-settings-daemon_git_gnome-settings-daemon.git.src
+  cd ${srcdir}/gnome-settings-daemon
   meson build \
     -D prefix=/usr \
     -D libdir=/usr/lib \
