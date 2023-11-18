@@ -1,5 +1,5 @@
 pkgname=libfilezilla
-pkgver=0.43.0
+pkgver=0.45.0
 pkgbuild=1
 arch=("auto")
 
@@ -20,6 +20,7 @@ build() {
   export CC=clang
   ./configure \
     --prefix=/usr \
+    --libdir=/usr/lib \
     --disable-static
   make -j${numjobs}
   make DESTDIR=${pkgdir} install
