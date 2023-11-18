@@ -1,16 +1,15 @@
 pkgname=thunar-shares-plugin
-pkgver=0.5.0
+pkgver=0.3.2
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Thunar plugin to share files using Samba.")
-longdesc=("Thunar plugin to quickly share a folder using Samba without requiring root access.")
 
-source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.bz2")
+source=("https://archive.xfce.org/src/thunar-plugins/$pkgname/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 
 tags=("xfce xfce-extra")
 
-build_deps=("intltool samba")
+build_deps=("intltool") # samba")
 
 adddep=("thunar hicolor-icon-theme")
 
