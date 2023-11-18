@@ -1,0 +1,36 @@
+pkgname=libyuv
+pkgver=r2426+464c51a0
+# Версия, необходимая libavif
+_commit=464c51a0353c71f08fe45f683d6a97a638d47833
+pkgbuild=1
+arch=("auto")
+strict_version='yes'
+
+shortdesc=("Library for YUV scaling.")
+
+source=("git:https://chromium.googlesource.com/libyuv/libyuv")
+
+tags=("libs dev-libs")
+
+adddep=("gcc-libs libjpeg-turbo")
+
+build_deps=("${adddep} cmake git")
+
+# NOTE: Переходим к коммиту
+# FIXME: mkpkg не умеет самостоятельно переключаться по веткам и коммитам
+before_build() {
+  go_src_dir
+  git checkout ${_commit}
+}
+
+build() {
+  go_src_dir
+  burn_patches
+  sed -i 's|yuvconvert ${JPEG_LIBRARY}|${ly_lib_shared} ${JPEG_LIBRARY}|' CMakeLists.txt
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make -C build -j${numjobs}
+  make -C build DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
