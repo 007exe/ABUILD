@@ -1,16 +1,17 @@
 pkgname=libgtop
-pkgver=2.40.0
-pkgbuild=2
+pkgver=2.41.2
+pkgbuild=1
 arch=("auto")
 
-shortdesc=("A library for collecting system monitoring data.")
-longdesc=("The libgtop package contains the GNOME top libraries.")
+shortdesc=("Library for collecting system monitoring data.")
 
 source=("https://download.gnome.org/sources/libgtop/${pkgver%.*}/libgtop-${pkgver}.tar.xz")
 
 tags=("gnome-base libs")
 
-build_deps=("glib2 libxau gobject-introspection git gtk-doc")
+adddep=("glib2 glibc libxau")
+
+build_deps=("${adddep} gobject-introspection gtk-doc")
 
 build() {
   go_src_dir
