@@ -1,16 +1,17 @@
 pkgname=libgsf
-pkgver=1.14.49
+pkgver=1.14.51
 pkgbuild=1
 arch=("auto")
 
-shortdesc=("An extensible I/O abstraction library for dealing with structured file formats.")
-longdesc=("The libgsf package contains a library used for providing an extensible input/output abstraction layer for structured file formats.")
+shortdesc=("Extensible I/O abstraction library for dealing with structured file formats.")
 
 source=("https://download.gnome.org/sources/libgsf/${pkgver%.*}/libgsf-${pkgver}.tar.xz")
 
 tags="libs gnome-extra"
 
-build_deps=("libxml2 gdk-pixbuf bzip2 gobject-introspection gtk-doc")
+adddep=("bzip2 gdk-pixbuf libxml2")
+
+build_deps=("${adddep} autoconf-archive gobject-introspection gtk-doc")
 
 build() {
   go_src_dir
