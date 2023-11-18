@@ -1,0 +1,24 @@
+pkgname=libayatana-indicator
+pkgver=0.9.4
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("Ayatana Indicators shared library")
+
+source=("https://github.com/AyatanaIndicators/${pkgname}/archive/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+
+tags=("libs dev-libs")
+
+adddep=("ayatana-ido gdk-pixbuf glib2 glibc gtk3")
+
+build_deps=("${adddep} cmake gobject-introspection vala")
+
+build() {
+  go_src_dir
+  burn_patches
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib
+  cmake --build build -j${numjobs}
+  DESTDIR=${pkgdir} cmake --install build
+}
