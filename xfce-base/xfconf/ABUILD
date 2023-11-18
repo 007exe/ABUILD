@@ -1,5 +1,5 @@
 pkgname=xfconf
-pkgver=4.18.1
+pkgver=4.18.3
 pkgbuild=1
 arch=("auto")
 
