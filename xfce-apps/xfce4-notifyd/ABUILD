@@ -1,5 +1,5 @@
 pkgname=xfce4-notifyd
-pkgver=0.8.2
+pkgver=0.9.3
 pkgbuild=1
 arch=("auto")
 
