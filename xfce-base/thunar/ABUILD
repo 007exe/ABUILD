@@ -1,5 +1,5 @@
 pkgname=thunar
-pkgver=4.18.6
+pkgver=4.18.8
 pkgbuild=1
 arch=("auto")
 
