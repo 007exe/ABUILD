@@ -1,25 +1,24 @@
 pkgname=xdg-desktop-portal
-pkgver=1.15.0
+pkgver=1.18.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("Desktop integration portal.")
-longdesc=("Desktop integration portals for sandboxed apps.")
 
 source=("https://github.com/flatpak/xdg-desktop-portal/releases/download/${pkgver}/xdg-desktop-portal-${pkgver}.tar.xz")
 
 tags=("apps sys-apps")
-
-# rtkit
-build_deps=("glib2 pipewire fuse3 python xmlto docbook-xsl libportal geoclue")
+# systemd rtkit
+adddep=("fuse3 gdk-pixbuf geoclue glib2 pipewire")
+# flatpak python-dbusmock
+build_deps=("${adddep} docbook-xsl git libportal meson dbus-python python-docutils python-gobject python-pytest xmlto")
 
 build() {
   go_src_dir
   burn_patches
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib \
-    --without-systemd
-  make -j${numjobs}
-  make DESTDIR=${pkgdir} install
+  meson build \
+    -D prefix=/usr \
+    -D libdir=/usr/lib
+  meson compile -C build
+  meson install -C build --destdir ${pkgdir}
 }
